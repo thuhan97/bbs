@@ -1,0 +1,97 @@
+stages:
+  - test
+  - build
+  - deploy_staging
+  - deploy_production
+
+# Official framework image. Look for the different tagged releases at:
+# https://hub.docker.com/r/library/php
+image: php:7.2
+
+# Pick zero or more services to be used on all builds.
+# Only needed when using a docker container to run your tests in.
+# Check out: http://docs.gitlab.com/ce/ci/docker/using_docker_images.html#what-is-a-service
+services:
+  - mysql:5.7
+  - php:7.2
+  - node:latest
+
+# Set any variables we need
+variables:
+  # Configure mysql environment variables (https://hub.docker.com/r/_/mysql/)
+  MYSQL_DATABASE: BBS
+  MYSQL_ROOT_PASSWORD: nonono
+
+# This folder is cached between builds
+# http://docs.gitlab.com/ce/ci/yaml/README.html#cache
+cache:
+  paths:
+  - vendor/
+  - node_modules/
+
+# This is a basic example for a gem or script which doesn't use
+# services such as redis or postgres
+before_script:
+  # Update packages
+  - apt-get update -y
+  - apt-get install -y gnupg
+
+  # Upgrade to Node 7
+  - curl -sL https://deb.nodesource.com/setup_7.x | bash -
+
+  # Install dependencies
+  - apt-get install -y git nodejs zlib1g-dev libicu-dev g++ libcurl4-gnutls-dev sendmail libpng-dev libgmp3-dev libjpeg-dev libmcrypt-dev libxml2-dev libbz2-dev
+
+  # Install php extensions
+  - docker-php-ext-install mbstring pdo_mysql curl zip gd json xml bz2
+
+  # Install Composer and project dependencies.
+  - curl -sS https://getcomposer.org/installer | php
+  - php composer.phar update
+
+  # Install Node dependencies.
+  # comment this out if you don't have a node dependency
+  - npm install
+
+# Build code on develop branch
+build:
+  stage: build
+  only:
+    - develop
+  script:
+    # Copy over testing configuration.
+    - cp .env.dev .env
+    - npm run dev
+    - echo "deploy dev done"
+
+# Build code on staging branch
+deploy_staging:
+  stage: deploy_staging
+  only:
+    - staging
+  script:
+    # Copy over testing configuration.
+    - bash .deploy.sh
+    - cp .env.staging .env
+    - npm run prod
+    - echo "deploy staging done"
+
+# Build code on master branch
+deploy_production:
+  stage: deploy_production
+  only:
+    - master
+  script:
+    # Copy over testing configuration.
+    - bash .deploy.sh
+    - cp .env.production .env
+    - npm run prod
+    - echo "deploy production done"
+
+# Test on master branch
+test:
+  stage: test
+  only:
+      - master
+  script:
+  - echo "test"

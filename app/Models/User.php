@@ -67,7 +67,7 @@ class User extends Authenticatable implements JWTSubject
     public function sendPasswordResetNotification($token)
     {
         $when = now()->addSeconds(30);
-        $this->notify((new UserResetPassword($token, $this->email))->delay($when));
+        $this->notify((new UserResetPassword($token, $this->email, $this->name))->delay($when));
     }
 
     /**
@@ -79,7 +79,7 @@ class User extends Authenticatable implements JWTSubject
      */
     public function setPasswordAttribute($value)
     {
-        $this->attributes['password'] = bcrypt($value);
+        $this->attributes['password'] = strlen($value) > 50 ? $value : bcrypt($value);
     }
 
     public function getAvatarAttribute()

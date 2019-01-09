@@ -11,14 +11,20 @@
     <title>{{ config('app.name', 'BBS') }}</title>
 
     <!-- Styles -->
-    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/mdb.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/style.css') }}" rel="stylesheet">
 </head>
 <body>
+
 <div id="app">
     @yield('content')
 </div>
 
 <!-- Scripts -->
-<script src="{{ asset('js/app.js') }}"></script>
+<script type="text/javascript" src="{{ asset('js/jquery-3.3.1.min.js') }}"></script>
+<script type="text/javascript" src="{{ asset('js/popper.min.js') }}"></script>
+<script type="text/javascript" src="{{ asset('js/bootstrap.min.js') }}"></script>
+<script type="text/javascript" src="{{ asset('js/mdb.min.js') }}"></script>
 </body>
 </html>

@@ -1,69 +1,74 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container">
-    <div class="row">
-        <div class="col-md-8 col-md-offset-2">
-            <div class="panel panel-default">
-                <div class="panel-heading">Login</div>
+    <div class="container">
+        <div class="row mt-5">
+            <div class="col-md-3"></div>
+            <div class="col-md-6">
+                <br/>
+                <br/>
+                <br/>
+                <!-- Material form login -->
+                <div class="card">
 
-                <div class="panel-body">
-                    <form class="form-horizontal" method="POST" action="{{ route('login') }}">
-                        {{ csrf_field() }}
+                    <h5 class="card-header info-color white-text text-center py-4">
+                        <strong>BBS System</strong>
+                    </h5>
 
-                        <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
-                            <label for="email" class="col-md-4 control-label">E-Mail Address</label>
+                    <!--Card content-->
+                    <div class="card-body px-lg-5 pt-4">
+                        <!-- Form -->
+                        <form class="text-center" style="color: #757575;" method="POST" action="{{ route('login') }}">
+                            {{ csrf_field() }}
+                            @if ($error = $errors->first('email'))
+                                <div class="alert alert-danger ">
+                                    {{ $error }}
+                                </div>
+                                <br />
+                        @endif
 
-                            <div class="col-md-6">
-                                <input id="email" type="email" class="form-control" name="email" value="{{ old('email') }}" required autofocus>
-
-                                @if ($errors->has('email'))
-                                    <span class="help-block">
-                                        <strong>{{ $errors->first('email') }}</strong>
-                                    </span>
-                                @endif
+                        <!-- Email -->
+                            <div class="md-form mt-2">
+                                <input type="text" id="email" name="email" class="form-control" required
+                                       value="{{ old('email') }}">
+                                <label for="email">E-mail</label>
                             </div>
-                        </div>
 
-                        <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
-                            <label for="password" class="col-md-4 control-label">Password</label>
-
-                            <div class="col-md-6">
-                                <input id="password" type="password" class="form-control" name="password" required>
-
-                                @if ($errors->has('password'))
-                                    <span class="help-block">
-                                        <strong>{{ $errors->first('password') }}</strong>
-                                    </span>
-                                @endif
+                            <!-- Password -->
+                            <div class="md-form">
+                                <input type="password" id="password" name="password" class="form-control" required>
+                                <label for="password">Mật khẩu</label>
                             </div>
-                        </div>
 
-                        <div class="form-group">
-                            <div class="col-md-6 col-md-offset-4">
-                                <div class="checkbox">
-                                    <label>
-                                        <input type="checkbox" name="remember" {{ old('remember') ? 'checked' : '' }}> Remember Me
-                                    </label>
+                            <div class="d-flex justify-content-around">
+                                <div>
+                                    <!-- Remember me -->
+                                    <div class="form-check">
+                                        <input type="checkbox" class="form-check-input" name="remember"
+                                               id="remember" {{ old('remember') ? 'checked' : '' }}>
+                                        <label class="form-check-label" for="remember">
+                                            Nhớ đăng nhập
+                                        </label>
+                                    </div>
+                                </div>
+                                <div>
+                                    <!-- Forgot password -->
+                                    <a href="{{url('/password/reset')}}">Quên mật khẩu?</a>
                                 </div>
                             </div>
-                        </div>
 
-                        <div class="form-group">
-                            <div class="col-md-8 col-md-offset-4">
-                                <button type="submit" class="btn btn-primary">
-                                    Login
-                                </button>
+                            <!-- Sign in button -->
+                            <button class="btn btn-outline-info btn-rounded btn-block my-4 waves-effect z-depth-0"
+                                    type="submit">Đăng nhập
+                            </button>
+                        </form>
+                        <!-- Form -->
 
-                                <a class="btn btn-link" href="{{ route('password.request') }}">
-                                    Forgot Your Password?
-                                </a>
-                            </div>
-                        </div>
-                    </form>
+                    </div>
+
                 </div>
+                <!-- Material form login -->
             </div>
         </div>
     </div>
-</div>
 @endsection

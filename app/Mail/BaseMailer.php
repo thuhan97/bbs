@@ -8,7 +8,7 @@ use Illuminate\Queue\SerializesModels;
 
 class BaseMailer extends Mailable
 {
-    const SUBJECT_PREFIX = '[BBS] ';
+    const SUBJECT_PREFIX = '[BBS-System] ';
 
     use Queueable, SerializesModels;
 
@@ -53,6 +53,7 @@ class BaseMailer extends Mailable
             ->view($this->bodyTemplate)
             ->withSwiftMessage(function ($message) {
                 $message->getHeaders()->addTextHeader('Return-Path', env('RETURN_PATH'));
-            });
+            })
+        ;
     }
 }

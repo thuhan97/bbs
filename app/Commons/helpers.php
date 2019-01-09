@@ -153,3 +153,22 @@ if (!function_exists('unicode_encode')) {
         }, $str);
     }
 }
+
+if (!function_exists('__l')) {
+    /**
+     * Encode unicode
+     *
+     * @param $key
+     *
+     * @return string
+     */
+    function __l($key)
+    {
+        if (\Lang::has("messages.$key")) {
+            return __("messages.$key");
+        } else {
+            \Log::info("messages.$key not exists");
+            return $key;
+        }
+    }
+}

@@ -95,7 +95,18 @@ Route::get('auth/social', 'SocialAuthController@show')->name('social.login');
 Route::any('auth/{driver}', 'SocialAuthController@redirectToProvider')->name('social.oauth');
 Route::any('auth/{driver}/callback', 'SocialAuthController@handleProviderCallback')->name('social.callback');
 
+Auth::routes();
 
-Route::any('/', function () {
-    return view('welcome');
-})->name('default');
+Route::group([
+    'middleware' => ['auth'],
+], function () {
+    Route::any('/', 'HomeController@index')->name('default');
+    Route::get('/home', 'HomeController@index');
+
+    Route::get('/profile', 'HomeController@profile')->name('profile');
+    Route::get('/change-password', 'HomeController@changePassword')->name('changePassword');
+    Route::get('/events', 'EventController@index')->name('event');
+    Route::get('/posts', 'PostController@index')->name('post');
+    Route::get('/reports', 'ReportController@index')->name('report');
+
+});

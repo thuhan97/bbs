@@ -2,19 +2,24 @@
 
 namespace App\Http\Controllers;
 
-use App\Repositories\Contracts\IUserRepository;
-
 class HomeController extends Controller
 {
-    private $userRepository;
-
-    public function __construct(IUserRepository $userRepository)
+    public function __construct()
     {
-        $this->userRepository = $userRepository;
     }
 
     public function index()
     {
-        return view('welcome');
+        return view('end_user.home');
+    }
+
+    public function profile()
+    {
+        return view('end_user.profile.index');
+    }
+
+    public function changePassword()
+    {
+        return view('end_user.profile.change_password');
     }
 }

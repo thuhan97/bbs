@@ -1,45 +1,41 @@
 <?php
 
-// Home
-Breadcrumbs::register('home', function ($breadcrumbs) {
-    $breadcrumbs->push('Home', route('welcome'));
-});
-
-// Home > Login
-Breadcrumbs::register('login', function ($breadcrumbs) {
-    $breadcrumbs->parent('home');
-    $breadcrumbs->push('Login', route('login'));
-});
-
-if (config('adminlte.registration_open')) {
-    // Home > Register
-    Breadcrumbs::register('register', function ($breadcrumbs) {
-        $breadcrumbs->parent('home');
-        $breadcrumbs->push('Register', route('register'));
-    });
-}
-
-// Home > Login > Forgot Password
-Breadcrumbs::register('password-request', function ($breadcrumbs) {
-    $breadcrumbs->parent('login');
-    $breadcrumbs->push('Forgot Password', route('password.request'));
-});
-
-// Home > Login > Forgot Password > Reset Password
-Breadcrumbs::register('password-reset', function ($breadcrumbs) {
-    $breadcrumbs->parent('password-request');
-    $breadcrumbs->push('Reset Password', route('password.reset'));
-});
-
 // Dashboard
 Breadcrumbs::register('dashboard', function ($breadcrumbs) {
     $breadcrumbs->push('Dashboard', route('dashboard::index'));
 });
 
+// Home
+Breadcrumbs::register('home', function ($breadcrumbs) {
+    $breadcrumbs->push(__l('Home'), route('default'));
+});
+
+// Home > Event
+Breadcrumbs::register('event', function ($breadcrumbs) {
+    $breadcrumbs->parent('home');
+    $breadcrumbs->push(__l('Event'), route('event'));
+});
+
+// Home > Post
+Breadcrumbs::register('post', function ($breadcrumbs) {
+    $breadcrumbs->parent('home');
+    $breadcrumbs->push(__l('Post'), route('post'));
+});
+
+// Home > Report
+Breadcrumbs::register('report', function ($breadcrumbs) {
+    $breadcrumbs->parent('home');
+    $breadcrumbs->push(__l('Report'), route('report'));
+});
+
 // Dashboard > Profile
 Breadcrumbs::register('profile', function ($breadcrumbs) {
-    $breadcrumbs->parent('dashboard');
-    $breadcrumbs->push('Profile', route('dashboard::profile'));
+    $breadcrumbs->parent('home');
+    $breadcrumbs->push('Thiết lập cá nhân', route('profile'));
+});
+Breadcrumbs::register('change_password', function ($breadcrumbs) {
+    $breadcrumbs->parent('profile');
+    $breadcrumbs->push('Đổi mật khẩu', route('changePassword'));
 });
 
 // Admin

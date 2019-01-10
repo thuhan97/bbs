@@ -17,18 +17,26 @@
 
             <!-- Links -->
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                @if(View::hasSection('breadcrumbs'))
-                    @yield('breadcrumbs')
-                @else
-                    <ul class="navbar-nav mr-auto">
-                        <li class="nav-item">
-                            <a class="nav-link waves-effect" href="#">{{__l('Home')}}
-                                <span class="sr-only">(current)</span>
-                            </a>
-                        </li>
-                    </ul>
-            @endif
-            <!-- Right -->
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item {{ \App\Utils::checkRoute(['work_time']) ? 'active': '' }}">
+                        <a href="{{route('work_time')}}" class="nav-link waves-effect">{{__l('work_time')}}
+                            <span class="sr-only">(current)</span>
+                        </a>
+                    </li>
+                    <li class="nav-item {{ \App\Utils::checkRoute(['day_off']) ? 'active': '' }}">
+                        <a href="{{route('day_off')}}" class="nav-link waves-effect">{{__l('day_off')}}
+                            <span class="sr-only">(current)</span>
+                        </a>
+                    </li>
+                    <li class="nav-item {{ \App\Utils::checkRoute(['report']) ? 'active': '' }}">
+                        <a href="{{route('report')}}"
+                           class="nav-link waves-effect">{{__l('Report')}}
+                            <span class="sr-only">(current)</span>
+
+                        </a>
+                    </li>
+                </ul>
+                <!-- Right -->
                 <ul class="navbar-nav nav-flex-icons">
                     <li class="nav-item">
                         <span class="nav-link disabled">
@@ -41,7 +49,6 @@
                         <div class="dropdown-menu">
                             <a class="dropdown-item" href="{{route('profile')}}">{{__l('Profile')}}</a>
                             <a class="dropdown-item" href="{{route('changePassword')}}">{{__l('change_password')}}</a>
-                            <a class="dropdown-item" href="#">Quản lý thời gian</a>
                             <div class="dropdown-divider"></div>
                             <a class="dropdown-item"
                                href="{{route('logout')}}">{{__l('logout')}}

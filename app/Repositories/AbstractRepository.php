@@ -74,13 +74,12 @@ abstract class AbstractRepository implements IBaseRepository
     /**
      * @inheritdoc
      */
-    public function findBy(array $searchCriteria = [], $all = false)
+    public function findBy(array $searchCriteria = [], array $fields = ['*'], $all = false)
     {
-
         $limit = !empty($searchCriteria['page_size']) ? (int)$searchCriteria['page_size'] : DEFAULT_PAGE_SIZE; // it's needed for pagination
         $queryBuilder = $this->model->where(function ($query) use ($searchCriteria) {
             $this->applySearchCriteriaInQueryBuilder($query, $searchCriteria);
-        });
+        })->select($fields);
         //order by
 
         $default_order_field = $this->model->getKeyName();
@@ -121,22 +120,29 @@ abstract class AbstractRepository implements IBaseRepository
             }
             //we can pass multiple params for a filter with commas
             if (is_string($value)) {
-                $allValues = explode(',', $value);
-                if (count($allValues) > 1) {
-                    $queryBuilder->whereIn($key, $allValues);
+                if ($key === 'search') {
+                    $queryBuilder->search($value);
                 } else {
-                    $operator = '=';
-                    $queryBuilder->where($key, $operator, $value);
+                    $allValues = explode(',', $value);
+                    if (count($allValues) > 1) {
+                        $queryBuilder->whereIn($key, $allValues);
+                    } else {
+                        $operator = '=';
+                        $queryBuilder->where($key, $operator, $value);
+                    }
                 }
+
             } else {
                 //check if $value has filter by ParseRequestSearch
-                if (isset($value['field']) && isset($value['operator']) && isset($value['value'])) {
+                if ($key === 'search') {
+                } else if (isset($value['field']) && isset($value['operator']) && isset($value['value'])) {
                     $queryBuilder->where($value['field'], $value['operator'], $value['value']);
                 } else {
                     $queryBuilder->where($key, $value);
                 }
             }
         }
+
         return $queryBuilder;
     }
 

@@ -49,12 +49,6 @@ class UserObserver
      */
     public function updating(User $user)
     {
-        if ($user->point > $user->max_point) {
-            $user->max_point = $user->point;
-        }
-        if (empty($user->staff_code)) {
-            $user->staff_code = $this->initStaffCode();
-        }
     }
 
     /**

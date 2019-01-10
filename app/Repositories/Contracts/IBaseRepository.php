@@ -7,6 +7,13 @@ use Illuminate\Database\Eloquent\Model;
 interface IBaseRepository
 {
     /**
+     * Get model
+     *
+     * @return Model
+     */
+    public function getModel();
+
+    /**
      * Find a resource by id
      *
      * @param $id
@@ -28,12 +35,13 @@ interface IBaseRepository
      * Search All resources by criteria
      *
      * @param array $searchCriteria
+     * @param array $fields
      * @param bool  $all
      *
      * @return Collection
      */
 
-    public function findBy(array $searchCriteria = [], $all = false);
+    public function findBy(array $searchCriteria = [], array $fields = ['*'], $all = false);
 
     /**
      * Search All resources by any values of a key

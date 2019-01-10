@@ -16,11 +16,6 @@
             Quy định, Nội quy
         </a>
 
-        <a href="{{route('post')}}"
-           class="list-group-item list-group-item-action waves-effect {{ \App\Utils::checkRoute(['post']) ? 'active': '' }}">
-            <i class="fas fa-map mr-3"></i>{{__l('Post')}}</a>
-
-
         <a href="#" class="list-group-item list-group-item-action waves-effect disabled">
             <i class="fas fa-map mr-3"></i>
             Dự án</a>
@@ -29,12 +24,12 @@
             <i class="fas fa-map mr-3"></i>
             Phòng họp</a>
 
-        <a href="{{route('report')}}"
-           class="list-group-item list-group-item-action waves-effect {{ \App\Utils::checkRoute(['report']) ? 'active': '' }}">
-            <i class="fas fa-money-bill-alt mr-3"></i>{{__l('Report')}}</a>
+        <a href="{{route('post')}}"
+           class="list-group-item list-group-item-action waves-effect {{ \App\Utils::checkRoute(['post', 'post_detail']) ? 'active': '' }}">
+            <i class="fas fa-map mr-3"></i>{{__l('Post')}}</a>
 
         <a href="{{route('event')}}"
-           class="list-group-item list-group-item-action waves-effect {{ \App\Utils::checkRoute(['event']) ? 'active': '' }}">
+           class="list-group-item list-group-item-action waves-effect {{ \App\Utils::checkRoute(['event', 'event_detail']) ? 'active': '' }}">
             <i class="fas fa-table mr-3"></i>{{__l('Event')}}</a>
     </div>
 </div>

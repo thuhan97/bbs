@@ -159,13 +159,14 @@ if (!function_exists('__l')) {
      * Encode unicode
      *
      * @param $key
+     * @param $attr
      *
      * @return string
      */
-    function __l($key)
+    function __l($key, $attr = [])
     {
         if (\Lang::has("messages.$key")) {
-            return __("messages.$key");
+            return __("messages.$key", $attr);
         } else {
             \Log::info("messages.$key not exists");
             return $key;

@@ -32,6 +32,24 @@ class Event extends Model
         'status',
     ];
 
+    const TIME_STATUS = [
+        '1' => 'in_past',
+        '0' => 'in_present',
+        '-1' => 'in_feature',
+    ];
+
+    const TIME_STATUS_NAME = [
+        '1' => '',
+        '0' => '[Hôm nay] - ',
+        '-1' => '[Sắp diễn ra] - ',
+    ];
+
+    const TIME_STATUS_CLASS = [
+        '-1' => 'e8f5e9 green lighten-5',
+        '0' => 'fff9c4 yellow lighten-4',
+        '1' => '',
+    ];
+
     /**
      * The attributes that should be hidden for arrays.
      *
@@ -40,6 +58,21 @@ class Event extends Model
     protected $hidden = [
         'updated_at', 'deleted_at',
     ];
+
+    public function getEventStatusClassAttribute()
+    {
+        return self::TIME_STATUS_CLASS[$this->getEventStatus()];
+    }
+
+    public function getEventStatusNameAttribute()
+    {
+        return self::TIME_STATUS_NAME[$this->getEventStatus()];
+    }
+
+    private function getEventStatus()
+    {
+        return date(DATE_FORMAT) <=> $this->event_date;
+    }
 
     /**
      * Search for course title or subject name

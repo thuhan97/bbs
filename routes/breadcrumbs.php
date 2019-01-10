@@ -10,37 +10,70 @@ Breadcrumbs::register('home', function ($breadcrumbs) {
     $breadcrumbs->push(__l('Home'), route('default'));
 });
 
+Breadcrumbs::register('personal', function ($breadcrumbs) {
+    $breadcrumbs->push(\Auth::user()->name, route('personal'));
+});
+
 // Home > Event
 Breadcrumbs::register('event', function ($breadcrumbs) {
     $breadcrumbs->parent('home');
     $breadcrumbs->push(__l('Event'), route('event'));
 });
-
+Breadcrumbs::register('event_search', function ($breadcrumbs, $search) {
+    $breadcrumbs->parent('event');
+    $breadcrumbs->push(__l('search_with', ['key' => $search]), route('event'));
+});
+Breadcrumbs::register('event_detail', function ($breadcrumbs, $event) {
+    $breadcrumbs->parent('event');
+    $breadcrumbs->push($event->name, route('event_detail', ['id' => $event->id]));
+});
 // Home > Post
 Breadcrumbs::register('post', function ($breadcrumbs) {
     $breadcrumbs->parent('home');
     $breadcrumbs->push(__l('Post'), route('post'));
 });
-
+Breadcrumbs::register('post_search', function ($breadcrumbs, $search) {
+    $breadcrumbs->parent('post');
+    $breadcrumbs->push(__l('search_with', ['key' => $search]), route('post'));
+});
+Breadcrumbs::register('post_detail', function ($breadcrumbs, $post) {
+    $breadcrumbs->parent('post');
+    $breadcrumbs->push($post->name, route('post_detail', ['id' => $post->id]));
+});
 // Home > Report
 Breadcrumbs::register('report', function ($breadcrumbs) {
-    $breadcrumbs->parent('home');
+    $breadcrumbs->parent('personal');
     $breadcrumbs->push(__l('Report'), route('report'));
 });
 
 // Dashboard > Profile
-Breadcrumbs::register('profile', function ($breadcrumbs) {
-    $breadcrumbs->parent('home');
-    $breadcrumbs->push('Thiết lập cá nhân', route('profile'));
-});
-Breadcrumbs::register('change_password', function ($breadcrumbs) {
-    $breadcrumbs->parent('profile');
-    $breadcrumbs->push('Đổi mật khẩu', route('changePassword'));
+Breadcrumbs::register('_personal', function ($breadcrumbs) {
+    $breadcrumbs->parent('personal');
+    $breadcrumbs->push(__l('personal_brief'), route('personal'));
 });
 
+Breadcrumbs::register('profile', function ($breadcrumbs) {
+    $breadcrumbs->parent('personal');
+    $breadcrumbs->push(__l('Profile'), route('profile'));
+});
+
+Breadcrumbs::register('change_password', function ($breadcrumbs) {
+    $breadcrumbs->parent('personal');
+    $breadcrumbs->push(__l('change_password'), route('changePassword'));
+});
+// Dashboard > work_time
+Breadcrumbs::register('work_time', function ($breadcrumbs) {
+    $breadcrumbs->parent('personal');
+    $breadcrumbs->push(__l('work_time'), route('work_time'));
+});
+// Dashboard > day_off
+Breadcrumbs::register('day_off', function ($breadcrumbs) {
+    $breadcrumbs->parent('personal');
+    $breadcrumbs->push(__l('day_off'), route('day_off'));
+});
 // Admin
 Breadcrumbs::register('admin', function ($breadcrumbs) {
-    $breadcrumbs->push('Trang quản trị', route('admin::index'));
+    $breadcrumbs->push(__l('admin_page'), route('admin::index'));
 });
 
 // Admin / {Resource} / {List|Edit|Create}

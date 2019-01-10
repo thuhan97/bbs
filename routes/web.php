@@ -96,6 +96,7 @@ Route::any('auth/{driver}', 'SocialAuthController@redirectToProvider')->name('so
 Route::any('auth/{driver}/callback', 'SocialAuthController@handleProviderCallback')->name('social.callback');
 
 Auth::routes();
+Route::any('logout', 'Auth\LoginController@logout')->name('logout');
 
 Route::group([
     'middleware' => ['auth'],
@@ -103,10 +104,17 @@ Route::group([
     Route::any('/', 'HomeController@index')->name('default');
     Route::get('/home', 'HomeController@index');
 
-    Route::get('/profile', 'HomeController@profile')->name('profile');
-    Route::get('/change-password', 'HomeController@changePassword')->name('changePassword');
+    Route::get('/personal', 'UserController@index')->name('personal');
+    Route::get('/profile', 'UserController@profile')->name('profile');
+    Route::get('/change-password', 'UserController@changePassword')->name('changePassword');
+    Route::get('/work_time', 'UserController@workTime')->name('work_time');
+    Route::get('/day_off', 'UserController@dayOff')->name('day_off');
+
     Route::get('/events', 'EventController@index')->name('event');
+    Route::get('/events/{id}', 'EventController@detail')->where(['id' => '\d+'])->name('event_detail');
     Route::get('/posts', 'PostController@index')->name('post');
+    Route::get('/posts/{id}', 'PostController@detail')->where(['id' => '\d+'])->name('post_detail');
     Route::get('/reports', 'ReportController@index')->name('report');
+    Route::get('/reports/{id}', 'ReportController@detail')->where(['id' => '\d+'])->name('report_detail');
 
 });

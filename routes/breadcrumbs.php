@@ -17,6 +17,19 @@ Breadcrumbs::register('contact', function ($breadcrumbs) {
     $breadcrumbs->parent('home');
     $breadcrumbs->push(__l('contact'), route('contact'));
 });
+// Home > Post
+Breadcrumbs::register('regulation', function ($breadcrumbs) {
+    $breadcrumbs->parent('home');
+    $breadcrumbs->push(__l('Post'), route('regulation'));
+});
+Breadcrumbs::register('regulation_search', function ($breadcrumbs, $search) {
+    $breadcrumbs->parent('regulation');
+    $breadcrumbs->push(__l('search_with', ['key' => $search]), route('regulation'));
+});
+Breadcrumbs::register('regulation_detail', function ($breadcrumbs, $regulation) {
+    $breadcrumbs->parent('regulation');
+    $breadcrumbs->push($regulation->name, route('regulation_detail', ['id' => $regulation->id]));
+});
 // Home > Event
 Breadcrumbs::register('event', function ($breadcrumbs) {
     $breadcrumbs->parent('home');

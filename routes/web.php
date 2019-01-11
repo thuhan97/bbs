@@ -111,6 +111,8 @@ Route::group([
     Route::get('/thoi-gian-lam-viec', 'UserController@workTime')->name('work_time');
     Route::get('/ngay-nghi', 'UserController@dayOff')->name('day_off');
 
+    Route::get('/noi-quy-quy-dinh', 'RegulationController@index')->name('regulation');
+    Route::get('/noi-quy-quy-dinh/{id}', 'RegulationController@detail')->where(['id' => '\d+'])->name('regulation_detail');
     Route::get('/su-kien', 'EventController@index')->name('event');
     Route::get('/su-kien/{id}', 'EventController@detail')->where(['id' => '\d+'])->name('event_detail');
     Route::get('/thong-bao', 'PostController@index')->name('post');

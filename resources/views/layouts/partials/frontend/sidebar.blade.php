@@ -11,10 +11,10 @@
            class="list-group-item list-group-item-action waves-effect {{ \App\Utils::checkRoute(['default']) ? 'active': '' }}">
             <i class="fas fa-chart-pie mr-3"></i>{{__l('Dashboard')}}
         </a>
-        <a href="#" class="list-group-item list-group-item-action waves-effect disabled">
-            <i class="fas fa-map mr-3"></i>
-            Quy định, Nội quy
-        </a>
+        <a href="{{route('regulation')}}"
+           class="list-group-item list-group-item-action waves-effect {{ \App\Utils::checkRoute(['regulation', 'regulation_detail']) ? 'active': '' }}">
+            <i class="fas fa-map mr-3"></i>{{__l('regulation')}}</a>
+
         <a href="{{route('contact')}}"
            class="list-group-item list-group-item-action waves-effect {{ \App\Utils::checkRoute(['contact']) ? 'active': '' }}">
             <i class="fas fa-map mr-3"></i>{{__l('contact')}}</a>

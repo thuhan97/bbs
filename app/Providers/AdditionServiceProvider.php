@@ -4,9 +4,11 @@ namespace App\Providers;
 
 use App\Services\Contracts\IEventService;
 use App\Services\Contracts\IPostService;
+use App\Services\Contracts\IRegulationService;
 use App\Services\Contracts\IUserService;
 use App\Services\EventService;
 use App\Services\PostService;
+use App\Services\RegulationService;
 use App\Services\UserService;
 use Illuminate\Support\ServiceProvider;
 
@@ -25,6 +27,9 @@ class AdditionServiceProvider extends ServiceProvider
         $this->app->bind(IUserService::class, function () {
             return app()->make(UserService::class);
         });
+        $this->app->bind(IRegulationService::class, function () {
+            return app()->make(RegulationService::class);
+        });
         $this->app->bind(IEventService::class, function () {
             return app()->make(EventService::class);
         });
@@ -42,6 +47,7 @@ class AdditionServiceProvider extends ServiceProvider
     {
         return [
             IUserService::class,
+            IRegulationService::class,
             IEventService::class,
             IPostService::class,
         ];

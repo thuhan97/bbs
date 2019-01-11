@@ -24,6 +24,7 @@ return [
     'Home' => 'Trang chủ',
     'change_password' => 'Đổi mật khẩu',
     'personal_brief' => 'Hồ sơ cá nhân',
+    'regulation' => 'Nội quy/Quy Định',
     'work_time' => 'Giờ làm việc',
     'contact' => 'Danh bạ',
     'day_off' => 'Ngày phép',

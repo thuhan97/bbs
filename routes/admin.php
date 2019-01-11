@@ -36,6 +36,10 @@ Route::group([
     Route::post('events/deletes', ['as' => 'events.deletes', 'uses' => 'EventController@deletes']);
     Route::resource('events', 'EventController');
 
+    //regulation
+    Route::post('regulations/deletes', ['as' => 'regulations.deletes', 'uses' => 'RegulationController@deletes']);
+    Route::resource('regulations', 'RegulationController');
+
     //admin
     Route::resource('admins', 'AdminController');
 

@@ -2,15 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use App\Repositories\Contracts\IUserRepository;
+use App\Services\Contracts\IUserService;
+use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
-    private $userRepository;
+    private $userService;
 
-    public function __construct(IUserRepository $userRepository)
+    public function __construct(IUserService $userService)
     {
-        $this->userRepository = $userRepository;
+        $this->userService = $userService;
     }
 
     public function index()
@@ -36,6 +37,13 @@ class UserController extends Controller
     public function dayOff()
     {
         return view('end_user.user.day_off');
+    }
+
+    public function contact(Request $request)
+    {
+        $users = $this->userService->getContact($request, $perPage, $search);
+
+        return view('end_user.user.contact', compact('users', 'search', 'perPage'));
     }
 
 }

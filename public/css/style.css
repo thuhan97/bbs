@@ -18,6 +18,15 @@
     line-height: 40px;
 }
 
+#contactTbl tbody td {
+    vertical-align: middle;
+}
+
+#contactTbl .avatar {
+    width: 80px;
+    height: 80px;
+}
+
 .sidebar-fixed {
     height: 100vh;
     width: 270px;

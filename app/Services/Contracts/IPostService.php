@@ -2,6 +2,10 @@
 
 namespace App\Services\Contracts;
 
+use App\Models\Post;
+use Illuminate\Http\Request;
+use Illuminate\Support\Collection;
+
 /**
  * IPostService contract
  * Author: trinhnv
@@ -18,4 +22,20 @@ interface IPostService extends IBaseService
      * @return mixed
      */
     public function getRelatePosts($currentId, array $tagArrs, $number = 10);
+
+    /**
+     * @param Request $request
+     * @param integer $perPage
+     * @param string  $search
+     *
+     * @return collection
+     */
+    public function search(Request $request, &$perPage, &$search);
+
+    /**
+     * @param int $id
+     *
+     * @return Post
+     */
+    public function detail($id);
 }

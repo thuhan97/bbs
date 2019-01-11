@@ -3,6 +3,7 @@
 namespace App\Services\Contracts;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Collection;
 
 /**
  * IUserService contract
@@ -26,20 +27,11 @@ interface IUserService extends IBaseService
     public function getUserIdByIdCode(string $idCode);
 
     /**
-     * activate
+     * @param Request $request
+     * @param integer $perPage
+     * @param string  $search
      *
-     * @param $data
-     *
-     * @return bool
+     * @return collection
      */
-    public function active($data);
-
-    /**
-     * get total potato
-     *
-     * @param $user_id
-     *
-     * @return int
-     */
-    public function getPotato($user_id);
+    public function getContact(Request $request, &$perPage, &$search);
 }

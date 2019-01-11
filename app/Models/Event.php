@@ -18,7 +18,7 @@ class Event extends Model
 
     protected $table = 'events';
 
-    protected $primaryKey = 'id';
+    public $autoCreator = true;
 
     protected $fillable = [
         'name',

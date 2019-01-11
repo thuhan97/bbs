@@ -15,6 +15,9 @@
             <i class="fas fa-map mr-3"></i>
             Quy định, Nội quy
         </a>
+        <a href="{{route('contact')}}"
+           class="list-group-item list-group-item-action waves-effect {{ \App\Utils::checkRoute(['contact']) ? 'active': '' }}">
+            <i class="fas fa-map mr-3"></i>{{__l('contact')}}</a>
 
         <a href="#" class="list-group-item list-group-item-action waves-effect disabled">
             <i class="fas fa-map mr-3"></i>

@@ -20,6 +20,9 @@ use App\Repositories\UserRepository;
 use Illuminate\Support\ServiceProvider;
 
 ##AUTO_INSERT_USE##
+use App\Repositories\Contracts\IRegulationRepository;
+use App\Repositories\RegulationRepository;
+use App\Models\Regulation;
 
 class RepositoriesServiceProvider extends ServiceProvider
 {
@@ -31,6 +34,9 @@ class RepositoriesServiceProvider extends ServiceProvider
     public function register()
     {
         ##AUTO_INSERT_BIND##
+		$this->app->bind(IRegulationRepository::class, function () {
+			return new RegulationRepository(new Regulation());
+		});
         $this->app->bind(IAdminRepository::class, function () {
             return new AdminRepository(new Admin());
         });
@@ -53,6 +59,7 @@ class RepositoriesServiceProvider extends ServiceProvider
     {
         return [
             ##AUTO_INSERT_NAME##
+			RegulationRepository::class,
             IConfigRepository::class,
             IPostRepository::class,
             IEventRepository::class,

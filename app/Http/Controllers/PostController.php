@@ -2,48 +2,44 @@
 
 namespace App\Http\Controllers;
 
-use App\Repositories\Contracts\IPostRepository;
+use App\Services\Contracts\IPostService;
 use Illuminate\Http\Request;
 
 class PostController extends Controller
 {
-    private $postRepository;
 
-    public function __construct(IPostRepository $postRepository)
+    /**
+     * @var IPostService
+     */
+    private $service;
+
+    public function __construct(IPostService $service)
     {
-        $this->postRepository = $postRepository;
+        $this->service = $service;
     }
 
+    /**
+     * @param Request $request
+     *
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function index(Request $request)
     {
-        $criterias = $request->only('page', 'page_size', 'search');
-
-        $criterias['status'] = ACTIVE_STATUS;
-        $perPage = $criterias['page_size'] ?? DEFAULT_PAGE_SIZE;
-        $search = $criterias['search'] ?? '';
-
-        $posts = $this->postRepository->findBy($criterias, [
-            'id',
-            'name',
-            'slug_name',
-            'tags',
-            'introduction',
-            'created_at',
-        ]);
+        $posts = $this->service->search($request, $perPage, $search);
 
         return view('end_user.post.index', compact('posts', 'search', 'perPage'));
     }
 
+    /**
+     * @param $id
+     *
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function detail($id)
     {
-        $post = $this->postRepository->findOneBy([
-            'id' => $id,
-            'status' => ACTIVE_STATUS
-        ]);
+        $post = $this->service->detail($id);
 
         if ($post) {
-            $post->view_count++;
-            $post->save();
             return view('end_user.post.detail', compact('post'));
         }
         abort(404);

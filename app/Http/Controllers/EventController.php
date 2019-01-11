@@ -2,49 +2,48 @@
 
 namespace App\Http\Controllers;
 
-use App\Repositories\Contracts\IEventRepository;
+use App\Services\Contracts\IEventService;
 use Illuminate\Http\Request;
 
 class EventController extends Controller
 {
-    private $eventRepository;
+    /**
+     * @var IEventService
+     */
+    private $eventService;
 
-    public function __construct(IEventRepository $eventRepository)
+    /**
+     * EventController constructor.
+     *
+     * @param IEventService $eventService
+     */
+    public function __construct(IEventService $eventService)
     {
-        $this->eventRepository = $eventRepository;
+        $this->eventService = $eventService;
     }
 
+    /**
+     * @param Request $request
+     *
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function index(Request $request)
     {
-        $criterias = $request->only('page', 'page_size', 'search');
-
-        $criterias['status'] = ACTIVE_STATUS;
-        $perPage = $criterias['page_size'] ?? DEFAULT_PAGE_SIZE;
-        $search = $criterias['search'] ?? '';
-
-        $events = $this->eventRepository->findBy($criterias, [
-            'id',
-            'name',
-            'slug_name',
-            'event_date',
-            'introduction',
-            'place',
-            'created_at',
-        ]);
+        $events = $this->eventService->search($request, $perPage, $search);
 
         return view('end_user.event.index', compact('events', 'search', 'perPage'));
     }
 
+    /**
+     * @param $id
+     *
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function detail($id)
     {
-        $event = $this->eventRepository->findOneBy([
-            'id' => $id,
-            'status' => ACTIVE_STATUS
-        ]);
+        $event = $this->eventService->detail($id);
 
         if ($event) {
-            $event->view_count++;
-            $event->save();
             return view('end_user.event.detail', compact('event'));
         }
         abort(404);

@@ -19,6 +19,9 @@ class CreateUsersTable extends Migration
             $table->string('name');
             $table->string('phone', 30)->unique();
             $table->string('email', 191)->unique();
+            $table->string('gmail', 191)->unique();
+            $table->string('gitlab', 191)->unique();
+            $table->string('chatwork', 191)->unique();
             $table->string('password');
             $table->string('avatar')->nullable();
             $table->string('id_card')->nullable()->comment('Chứng minh nhân dân');

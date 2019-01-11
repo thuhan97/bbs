@@ -13,12 +13,16 @@ Breadcrumbs::register('home', function ($breadcrumbs) {
 Breadcrumbs::register('personal', function ($breadcrumbs) {
     $breadcrumbs->push(\Auth::user()->name, route('personal'));
 });
-
+Breadcrumbs::register('contact', function ($breadcrumbs) {
+    $breadcrumbs->parent('home');
+    $breadcrumbs->push(__l('contact'), route('contact'));
+});
 // Home > Event
 Breadcrumbs::register('event', function ($breadcrumbs) {
     $breadcrumbs->parent('home');
     $breadcrumbs->push(__l('Event'), route('event'));
 });
+
 Breadcrumbs::register('event_search', function ($breadcrumbs, $search) {
     $breadcrumbs->parent('event');
     $breadcrumbs->push(__l('search_with', ['key' => $search]), route('event'));
@@ -82,6 +86,7 @@ $resources = [
     'users' => 'Quản lý nhân viên',
     'events' => 'Quản lý sự kiện',
     'posts' => 'Quản lý thông báo',
+    'regulations' => 'Nội quy, quy định',
 ];
 foreach ($resources as $resource => $data) {
     $parent = 'admin';

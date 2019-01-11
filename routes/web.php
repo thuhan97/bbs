@@ -102,19 +102,20 @@ Route::group([
     'middleware' => ['auth'],
 ], function () {
     Route::any('/', 'HomeController@index')->name('default');
-    Route::get('/home', 'HomeController@index');
+    Route::get('/trang-chu', 'HomeController@index');
 
-    Route::get('/personal', 'UserController@index')->name('personal');
-    Route::get('/profile', 'UserController@profile')->name('profile');
-    Route::get('/change-password', 'UserController@changePassword')->name('changePassword');
-    Route::get('/work_time', 'UserController@workTime')->name('work_time');
-    Route::get('/day_off', 'UserController@dayOff')->name('day_off');
+    Route::get('/ca-nhan', 'UserController@index')->name('personal');
+    Route::get('/thiet-lap-ca-nhan', 'UserController@profile')->name('profile');
+    Route::get('/danh-ba', 'UserController@contact')->name('contact');
+    Route::get('/doi-mat-khau', 'UserController@changePassword')->name('changePassword');
+    Route::get('/thoi-gian-lam-viec', 'UserController@workTime')->name('work_time');
+    Route::get('/ngay-nghi', 'UserController@dayOff')->name('day_off');
 
-    Route::get('/events', 'EventController@index')->name('event');
-    Route::get('/events/{id}', 'EventController@detail')->where(['id' => '\d+'])->name('event_detail');
-    Route::get('/posts', 'PostController@index')->name('post');
-    Route::get('/posts/{id}', 'PostController@detail')->where(['id' => '\d+'])->name('post_detail');
-    Route::get('/reports', 'ReportController@index')->name('report');
-    Route::get('/reports/{id}', 'ReportController@detail')->where(['id' => '\d+'])->name('report_detail');
+    Route::get('/su-kien', 'EventController@index')->name('event');
+    Route::get('/su-kien/{id}', 'EventController@detail')->where(['id' => '\d+'])->name('event_detail');
+    Route::get('/thong-bao', 'PostController@index')->name('post');
+    Route::get('/thong-bao/{id}', 'PostController@detail')->where(['id' => '\d+'])->name('post_detail');
+    Route::get('/bao-cao', 'ReportController@index')->name('report');
+    Route::get('/bao-cao/{id}', 'ReportController@detail')->where(['id' => '\d+'])->name('report_detail');
 
 });

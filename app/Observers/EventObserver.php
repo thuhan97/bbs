@@ -15,7 +15,7 @@ class EventObserver
      */
     public function creating(Event $event)
     {
-        $event->name_slug = str_slug($event->name);
+        $event->slug_name = str_slug($event->name);
     }
 
     /**

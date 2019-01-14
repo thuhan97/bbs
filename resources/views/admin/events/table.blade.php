@@ -2,7 +2,8 @@
     <table class="table table-hover table-bordered">
         <colgroup>
             <col style="width: 30px">
-            <col style="width: 150px">
+            <col style="">
+            <col style="">
             <col style="">
             <col style="width: 120px">
             <col style="width: 100px">
@@ -15,6 +16,7 @@
         </th>
         <th>Tên sự kiện</th>
         <th>Tóm tắt</th>
+        <th>Ngày diễn ra</th>
         <th>Địa điểm</th>
         <th>Ngày tạo</th>
         <th>Trạng thái</th>
@@ -34,6 +36,7 @@
                     <a href="{{ $editLink }}">{{ $record->name }}</a>
                 </td>
                 <td>{{ $record->introduction }}</td>
+                <td>{{ $record->event_date }}</td>
                 <td>{{ $record->place }}</td>
                 <td class="text-right">{{ $record->created_at->format(DATE_FORMAT) }}</td>
                 @if ($record->status == 1)

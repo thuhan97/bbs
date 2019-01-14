@@ -35,6 +35,19 @@ class EventController extends Controller
     }
 
     /**
+     * @param Request $request
+     *
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function calender(Request $request)
+    {
+        $request->merge(['page_size' => 1000]);
+        $events = $this->eventService->search($request, $perPage, $search);
+
+        return view('end_user.event.calendar', compact('events', 'search', 'perPage'));
+    }
+
+    /**
      * @param $id
      *
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View

@@ -25,6 +25,7 @@ class Event extends Model
         'slug_name',
         'image_url',
         'event_date',
+        'event_end_date',
         'introduction',
         'content',
         'view_count',
@@ -67,6 +68,14 @@ class Event extends Model
     public function getEventStatusNameAttribute()
     {
         return self::TIME_STATUS_NAME[$this->getEventStatus()];
+    }
+
+    public function getEventEndDateAttribute()
+    {
+        if (empty($this->attributes['event_end_date'])) {
+            return $this->attributes['event_date'] ?? '';
+        }
+        return $this->attributes['event_end_date'];
     }
 
     private function getEventStatus()

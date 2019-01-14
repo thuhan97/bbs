@@ -2,10 +2,10 @@
     <table class="table table-hover table-bordered">
         <colgroup>
             <col style="width: 30px">
-            <col style="width: 150px">
+            <col style="width: 50px">
             <col style="width: 150px">
             <col style="">
-            <col style="width: 120px">
+            <col style="">
             <col style="width: 100px">
             <col style="width: 70px">
             <col style="width: 70px">

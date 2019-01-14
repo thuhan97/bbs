@@ -24,6 +24,7 @@ trait ResourceController
         $search = $request->input('search', '');
 
         $records = $this->getSearchRecords($request, $perPage, $search);
+
         $records->appends($request->except('page'));
 
         return view($this->getResourceIndexPath(), $this->filterSearchViewData($request, [

@@ -113,7 +113,8 @@ Route::group([
 
     Route::get('/noi-quy-quy-dinh', 'RegulationController@index')->name('regulation');
     Route::get('/noi-quy-quy-dinh/{id}', 'RegulationController@detail')->where(['id' => '\d+'])->name('regulation_detail');
-    Route::get('/su-kien', 'EventController@index')->name('event');
+    Route::get('/su-kien', 'EventController@calender')->name('event');
+    Route::get('/danh-sach-su-kien', 'EventController@index')->name('event_list');
     Route::get('/su-kien/{id}', 'EventController@detail')->where(['id' => '\d+'])->name('event_detail');
     Route::get('/thong-bao', 'PostController@index')->name('post');
     Route::get('/thong-bao/{id}', 'PostController@detail')->where(['id' => '\d+'])->name('post_detail');

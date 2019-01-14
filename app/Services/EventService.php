@@ -47,6 +47,7 @@ class EventService extends AbstractService implements IEventService
             'name',
             'slug_name',
             'event_date',
+            'event_end_date',
             'introduction',
             'place',
             'created_at',

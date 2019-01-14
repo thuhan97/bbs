@@ -9,7 +9,7 @@
     <div class="list-group list-group-flush">
         <a href="/"
            class="list-group-item list-group-item-action waves-effect {{ \App\Utils::checkRoute(['default']) ? 'active': '' }}">
-            <i class="fas fa-chart-pie mr-3"></i>{{__l('Dashboard')}}
+            <i class="fas fa-home mr-3"></i>{{__l('Dashboard')}}
         </a>
         <a href="{{route('regulation')}}"
            class="list-group-item list-group-item-action waves-effect {{ \App\Utils::checkRoute(['regulation', 'regulation_detail']) ? 'active': '' }}">
@@ -26,7 +26,15 @@
         <a href="#" class="list-group-item list-group-item-action waves-effect disabled">
             <i class="fas fa-map mr-3"></i>
             Phòng họp</a>
-
+        <a href="#" class="list-group-item list-group-item-action waves-effect disabled">
+            <i class="fas fa-map mr-3"></i>
+            Quản lý thiết bị</a>
+        <a href="#" class="list-group-item list-group-item-action waves-effect disabled">
+            <i class="fas fa-map mr-3"></i>
+            Chia sẻ tài liệu</a>
+        <a href="#" class="list-group-item list-group-item-action waves-effect disabled">
+            <i class="fas fa-map mr-3"></i>
+            Kinh nghiệm làm việc</a>
         <a href="{{route('post')}}"
            class="list-group-item list-group-item-action waves-effect {{ \App\Utils::checkRoute(['post', 'post_detail']) ? 'active': '' }}">
             <i class="fas fa-map mr-3"></i>{{__l('Post')}}</a>

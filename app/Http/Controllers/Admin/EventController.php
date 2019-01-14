@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Admin;
 
 use App\Models\Event;
 use App\Repositories\Contracts\IEventRepository;
-use Illuminate\Http\Request;
 
 /**
  * EventController
@@ -64,18 +63,13 @@ class EventController extends AdminBaseController
                 'content' => 'required',
                 'status' => 'required|numeric',
                 'event_date' => 'required|date',
+                'event_end_date' => 'date|after_or_equal:event_date',
 
             ],
             'messages' => [],
             'attributes' => [],
             'advanced' => [],
         ];
-    }
-
-    public function alterValuesToSave(Request $request, $values)
-    {
-        $values['slug_name'] = str_slug($values['name']);
-        return $values;
     }
 
 }

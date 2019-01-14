@@ -6,6 +6,7 @@
 
             <!-- Brand -->
             <a class="navbar-brand waves-effect" href="/">
+                {{--<img src="http://jvb-corp.com/img/logo.png" class="img-fluid" alt="" width="50">--}}
                 <strong class="blue-text">BBS</strong>
             </a>
 
@@ -38,11 +39,14 @@
                 </ul>
                 <!-- Right -->
                 <ul class="navbar-nav nav-flex-icons">
-                    <li class="nav-item">
-                        <span class="nav-link disabled">
-                        </span>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link waves-effect waves-light" id="nav_bar_avatar">
+                            <img src="{{Auth::user()->avatar}}" onerror="this.src='{{URL_IMAGE_NO_IMAGE}}'"
+                                 class="rounded-circle z-depth-0" alt="avatar image">
+                        </a>
                     </li>
                     <li class="nav-item dropdown">
+
                         <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button"
                            aria-haspopup="true"
                            aria-expanded="false">{{Auth::user()->name}}</a>

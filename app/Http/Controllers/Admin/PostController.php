@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Admin;
 
 use App\Models\Post;
 use App\Repositories\Contracts\IPostRepository;
-use Illuminate\Http\Request;
 
 /**
  * PostController
@@ -78,12 +77,6 @@ class PostController extends AdminBaseController
             'attributes' => [],
             'advanced' => [],
         ];
-    }
-
-    public function alterValuesToSave(Request $request, $values)
-    {
-        $values['slug_name'] = str_slug($values['name']);
-        return $values;
     }
 
 }

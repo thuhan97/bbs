@@ -17,17 +17,13 @@
     </form>
     @if($regulations->isNotEmpty())
         <p>{{__l('total_record', ['number' => $regulations->count()])}}</p>
-        @foreach($regulations as $regulation)
-            <div class="card mb-3">
-                <h5 class="card-header h5">{{$regulation->name}}</h5>
-                <div class="card-body">
-
-                    <p class="card-text">{{$regulation->introduction}}</p>
-                    <a href="{{route('regulation_detail', ['id' => $regulation->id])}}"
-                       class="btn btn-primary">{{__l('view_detail')}}</a>
-                </div>
-            </div>
-        @endforeach
+        <ul class="list-group list-group-flush">
+            @foreach($regulations as $regulation)
+                <li class="list-group-item">
+                    <a href="{{route('regulation_detail', ['id' => $regulation->id])}}">{{$regulation->name}}</a>
+                </li>
+            @endforeach
+        </ul>
     @else
         <h2>{{__l('list_empty', ['name'=>'thông báo'])}}</h2>
     @endif

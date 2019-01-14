@@ -57,15 +57,13 @@ class RegulationService extends AbstractService implements IRegulationService
      */
     public function detail($id)
     {
-        $post = $this->repository->findOneBy([
+        $regulation = $this->repository->findOneBy([
             'id' => $id,
             'status' => ACTIVE_STATUS
         ]);
 
-        if ($post) {
-            $post->view_count++;
-            $post->save();
-            return $post;
+        if ($regulation) {
+            return $regulation;
         }
     }
 }

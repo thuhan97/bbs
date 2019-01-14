@@ -15,6 +15,10 @@
     <link href="{{ asset('mdb/css/mdb.min.css') }}" rel="stylesheet">
     <link href="{{ asset('css/style.css') }}" rel="stylesheet">
 
+    <script type="text/javascript" src="{{ asset('mdb/js/jquery-3.3.1.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('mdb/js/popper.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('mdb/js/bootstrap.min.js') }}"></script>
+
     @stack('extend-css')
 </head>
 <body>
@@ -30,10 +34,8 @@
 </main>
 
 <!-- Scripts -->
-<script type="text/javascript" src="{{ asset('mdb/js/jquery-3.3.1.min.js') }}"></script>
-<script type="text/javascript" src="{{ asset('mdb/js/popper.min.js') }}"></script>
-<script type="text/javascript" src="{{ asset('mdb/js/bootstrap.min.js') }}"></script>
 <script type="text/javascript" src="{{ asset('mdb/js/mdb.min.js') }}"></script>
+
 <script type="text/javascript" src="{{ asset('js/main.js') }}"></script>
 @stack('extend-js')
 </body>

@@ -15,7 +15,14 @@
         </div>
     </form>
     @if($events->isNotEmpty())
-        <p>{{__l('total_record', ['number' => $events->total()])}}</p>
+        <div class="row mb-3">
+            <div class="col-sm-6"></div>
+            <div class="col-sm-6 text-right">
+                <a href="{{route('event')}}" class="btn btn-primary waves-effect">
+                    <i class="fas fa-calendar"></i> Xem lịch
+                </a>
+            </div>
+        </div>
         @foreach($events as $event)
             <div class="jumbotron mb-3 {{$event->event_status_class}}">
                 <h2 class="h1-responsive">{{$event->event_status_name .$event->name}}</h2>

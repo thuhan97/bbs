@@ -34,24 +34,45 @@
 <div class="col-md-5">
     <div class="row">
         <div class="col-md-12">
-            <div class="form-group margin-b-5 margin-t-5{{ $errors->has('event_date') ? ' has-error' : '' }}">
-                <label for="event_date">Ngày diễn ra</label>
-                <div class="input-group date">
-                    <div class="input-group-addon">
-                        <i class="fa fa-calendar"></i>
-                    </div>
-                    <input type="text" class="form-control pull-right datepicker"
-                           name="event_date"
-                           value="{{ old('event_date', $record->event_date) }}" id="event_date">
-                </div>
-                @if ($errors->has('event_date'))
-                    <span class="help-block">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group margin-b-5 margin-t-5{{ $errors->has('event_date') ? ' has-error' : '' }}">
+                        <label for="event_date">Ngày bắt đầu *</label>
+                        <div class="input-group date">
+                            <div class="input-group-addon">
+                                <i class="fa fa-calendar"></i>
+                            </div>
+                            <input type="text" class="form-control pull-right datepicker" autocomplete="off"
+                                   name="event_date"
+                                   value="{{ old('event_date', $record->event_date) }}" id="event_date">
+                        </div>
+                        @if ($errors->has('event_date'))
+                            <span class="help-block">
                     <strong>{{ $errors->first('event_date') }}</strong>
                 </span>
-            @endif
-            <!-- /.input group -->
+                        @endif
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group margin-b-5 margin-t-5{{ $errors->has('event_end_date') ? ' has-error' : '' }}">
+                        <label for="event_end_date">Ngày kết thúc</label>
+                        <div class="input-group date">
+                            <div class="input-group-addon">
+                                <i class="fa fa-calendar"></i>
+                            </div>
+                            <input type="text" class="form-control pull-right datepicker"
+                                   name="event_end_date" autocomplete="off"
+                                   value="{{ old('event_end_date', $record->event_end_date) }}" id="event_end_date">
+                        </div>
+                        @if ($errors->has('event_end_date'))
+                            <span class="help-block">
+                    <strong>{{ $errors->first('event_end_date') }}</strong>
+                </span>
+                        @endif
+                    </div>
+                </div>
             </div>
-            <!-- /.form-group -->
+
         </div>
         <div class="col-md-12">
             <div class="form-group margin-b-5 margin-t-5{{ $errors->has('place') ? ' has-error' : '' }}">
@@ -131,7 +152,7 @@
         $(function () {
             myFilemanager($('#lfm'), 'image');
             myEditor($("#content"));
-            myDatePicker($("#event_date"));
+            myDatePicker($("#event_date, #event_end_date"));
         })
     </script>
 @endpush

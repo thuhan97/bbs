@@ -11,7 +11,7 @@
 
             <div class="text-right">
                 <p>
-                    <b>{{$regulation->author_name}}</b>, {{ $regulation->created_at->format(DATE_FORMAT) }}
+                    <b>{{ $regulation->created_at->format(DATE_FORMAT) }}</b>
                 </p>
             </div>
         </div>

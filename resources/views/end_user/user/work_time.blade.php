@@ -3,5 +3,5 @@
     {!! Breadcrumbs::render('work_time') !!}
 @endsection
 @section('content')
-    <i class="fas fa-camera-retro"></i> fa-camera-retro
+    Hôm nay bạn đến lúc 7h50
 @endsection

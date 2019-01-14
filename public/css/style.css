@@ -1,9 +1,20 @@
+
+
 .no-padding-right {
     padding-right: 0 !important;
 }
 
 .mw-100 {
     max-width: 100%;
+}
+
+#nav_bar_avatar {
+    padding: 0;
+}
+
+#nav_bar_avatar img {
+    height: 40px;
+    width: 40px;
 }
 
 .navbar .breadcrumb .breadcrumb-item.active, .navbar .breadcrumb .breadcrumb-item:before {
@@ -18,7 +29,7 @@
     line-height: 40px;
 }
 
-#contactTbl tbody td {
+#contactTbl tbody td, #contactTbl tbody th {
     vertical-align: middle;
 }
 

@@ -146,6 +146,7 @@ return [
         'password' => 'mật khẩu',
         'birthday' => 'ngày sinh',
         'phone' => 'số điện thoại',
+        'event_end_date' => 'Ngày kết thúc',
         'id_card' => 'số chứng minh nhân dân',
     ],
 ];

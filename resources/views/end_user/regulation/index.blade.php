@@ -4,7 +4,6 @@
         {!! Breadcrumbs::render('regulation') !!}
     @else
         {!! Breadcrumbs::render('regulation_search', $search) !!}
-
     @endif
 @endsection
 @section('content')

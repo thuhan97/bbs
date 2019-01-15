@@ -223,7 +223,7 @@ $defaultStaffCode = "J" . str_pad((\App\Models\User::max('id') + 1), 3, '0', STR
                 <label for="status">
                     <input type="checkbox" class="square-blue" name="status" id="status"
                            value="{{ACTIVE_STATUS}}" {{ old('status', $record->status ?? 1) == 1 ? 'checked' : '' }}>
-                    Kích hoạt
+                    Đang làm việc
                 </label>
             </div>
         </div>

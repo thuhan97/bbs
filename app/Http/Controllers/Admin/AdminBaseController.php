@@ -52,4 +52,9 @@ class AdminBaseController extends Controller
     {
         return 'admin._resources.edit';
     }
+
+    public function getResourceShowPath()
+    {
+        return 'admin._resources.show';
+    }
 }

@@ -23,6 +23,13 @@ interface IEventService extends IBaseService
     public function search(Request $request, &$perPage, &$search);
 
     /**
+     * @param Request $request
+     *
+     * @return collection
+     */
+    public function search_calendar(Request $request);
+
+    /**
      * @param int $id
      *
      * @return Event

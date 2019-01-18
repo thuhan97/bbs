@@ -22,6 +22,8 @@ class CreateUsersTable extends Migration
             $table->string('gmail', 191)->unique();
             $table->string('gitlab', 191)->unique();
             $table->string('chatwork', 191)->unique();
+            $table->string('skills', 500)->comment('Khả năng hiện tại');
+            $table->string('in_future', 500)->comment('Định hướng tương lai');
             $table->string('password');
             $table->string('avatar')->nullable();
             $table->string('id_card')->nullable()->comment('Chứng minh nhân dân');
@@ -33,7 +35,7 @@ class CreateUsersTable extends Migration
             $table->date('start_date')->nullable()->comment('Ngày bắt đầu làm việc');
             $table->date('end_date')->nullable()->comment('Ngày nghỉ việc');
 
-            $table->tinyInteger('position')->default(0)->comment('0: Chính thức; 1: Thử việc; 2: Partime; 3: Thực tập ');
+            $table->tinyInteger('contract_type')->default(0)->comment('0: Chính thức; 1: Thử việc; 2: Partime; 3: Thực tập ');
             $table->tinyInteger('status')->default(0);
 
             $table->rememberToken();

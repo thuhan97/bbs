@@ -9,28 +9,20 @@
 @section('content')
     <form class="mb-4">
         <div class="md-form active-cyan-2 mb-3">
-            <input name="search" value="{{old('search', $search)}}" class="form-control" type="text"
+            <input id="txtSearch" name="search" class="form-control" type="text"
                    placeholder="{{__l('Search')}}" aria-label="Search">
-            <input type="hidden" name="page_size" value="{{$perPage}}">
         </div>
     </form>
-    @if($events->isNotEmpty())
-        <div class="row mb-3">
-            <div class="col-sm-6"></div>
-            <div class="col-sm-6 text-right">
-                <a href="{{route('event_list')}}" class="btn btn-primary waves-effect">
-                    <i class="fas fa-calendar"></i> Xem danh sách
-                </a>
-            </div>
+    <div class="row mb-3">
+        <div class="col-sm-6"></div>
+        <div class="col-sm-6 text-right">
+            <a href="{{route('event_list')}}" class="btn btn-primary waves-effect">
+                <i class="fas fa-calendar"></i> Xem danh sách
+            </a>
         </div>
-        <div id="calendar">
-        </div>
-
-        <br/>
-        <br/>
-    @else
-        <h2>{{__l('list_empty', ['name'=>'sự kiện'])}}</h2>
-    @endif
+    </div>
+    <div id="calendar">
+    </div>
 
 @endsection
 
@@ -41,7 +33,41 @@
 
     <script>
         $(function () {
-            $('#calendar').fullCalendar({
+            window.start_date = null;
+            window.end_date = null;
+            var $calendar = $('#calendar');
+            var $search = $('#txtSearch');
+
+            function renderCalendar() {
+                var data = {
+                    start: window.start_date,
+                    end: window.end_date,
+                }, search = $search.val();
+
+                if (search) {
+                    data.search = search;
+                }
+                $.ajax({
+                    url: '{{route('getCalendar')}}',
+                    method: 'GET',
+                    dataType: 'JSON',
+                    data: data,
+                    success: function (response) {
+                        if (response.code == 200 && response.data.events) {
+                            $calendar.fullCalendar('removeEvents');
+                            var events = response.data.events;
+                            $calendar.fullCalendar('addEventSource', events);
+                            $calendar.fullCalendar('rerenderEvents');
+                        }
+                    }
+                });
+            }
+
+            $search.change(function () {
+                renderCalendar();
+            });
+
+            $calendar.fullCalendar({
                 header: {
                     left: 'prev,next today',
                     center: 'title',
@@ -61,22 +87,16 @@
                         container: 'body'
                     });
                 },
+                viewRender: function (newView, oldView) {
+                    window.start_date = newView.start.format('Y/M/D');
+                    window.end_date = newView.end.format('Y/M/D');
+
+                    renderCalendar();
+                },
                 eventClick: function (calEvent, jsEvent, view) {
                     window.open('/su-kien/' + calEvent.id);
-                },
-                events: [
-                        @foreach($events as $event)
-                    {
-                        id: '{{$event->id}}',
-                        title: '{{$event->name}}',
-                        description: '{{$event->introduction}}',
-                        start: '{{$event->event_date}}',
-                        end: '{{$event->event_end_date}}'
-                    },
-                    @endforeach
-                ]
+                }
             });
-        })
-        ;
+        });
     </script>
 @endpush

@@ -34,7 +34,7 @@ class UserController extends AdminBaseController
     /**
      * @var  string
      */
-    protected $resourceTitle = 'nhân viên';
+    protected $resourceTitle = 'Nhân viên';
 
     public function __construct(IUserRepository $repository)
     {

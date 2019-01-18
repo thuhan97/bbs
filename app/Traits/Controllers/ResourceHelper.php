@@ -225,6 +225,17 @@ trait ResourceHelper
     }
 
     /**
+     * @param       $record
+     * @param array $data
+     *
+     * @return array
+     */
+    public function filterShowViewData($record, $data = [])
+    {
+        return $data;
+    }
+
+    /**
      * @param \Illuminate\Http\Request $request
      * @param array                    $data
      *

@@ -18,6 +18,7 @@
             <?php
             $tableCounter++;
             $editLink = route($resourceRoutesAlias . '.edit', $record->id);
+            $showLink = route($resourceRoutesAlias . '.show', $record->id);
             $deleteLink = route($resourceRoutesAlias . '.destroy', $record->id);
             $formId = 'formDeleteModel_' . $record->id;
             ?>
@@ -31,7 +32,7 @@
                     @endcan
                 </td>
                 <td class="table-text">
-                    <a href="{{ $editLink }}">{{ $record->name }}</a>
+                    <a href="{{ $showLink }}">{{ $record->name }}</a>
                 </td>
                 <td>{{ $record->birthday }}</td>
                 <td>{{ $record->email }}</td>

@@ -17,7 +17,7 @@
         <div class="col-sm-6"></div>
         <div class="col-sm-6 text-right">
             <a href="{{route('event_list')}}" class="btn btn-primary waves-effect">
-                <i class="fas fa-calendar"></i> Xem danh sách
+                <i class="fas fa-list"></i> Xem danh sách
             </a>
         </div>
     </div>
@@ -30,6 +30,7 @@
     <link href="{{ asset('fullcalendar/fullcalendar.min.css') }}" rel="stylesheet">
     <script type="text/javascript" src="{{ asset('js/moment.min.js') }}"></script>
     <script type="text/javascript" src="{{ asset('fullcalendar/fullcalendar.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('fullcalendar/locales/vi.js') }}"></script>
 
     <script>
         $(function () {

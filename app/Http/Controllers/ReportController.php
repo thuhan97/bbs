@@ -17,4 +17,9 @@ class ReportController extends Controller
     {
         return view('end_user.report.index');
     }
+
+    public function create()
+    {
+        return view('end_user.report.index');
+    }
 }

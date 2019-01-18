@@ -40,4 +40,5 @@ return [
     'total_record' => ':number bản ghi',
     'event_time' => 'Thời gian tổ chức',
     'event_place' => 'Địa điểm tổ chức',
+    'updating' => 'đang cập nhật'
 ];

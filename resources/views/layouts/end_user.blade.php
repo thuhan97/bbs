@@ -12,7 +12,10 @@
 
     <!-- Styles -->
     <link href="{{ asset('mdb/css/bootstrap.min.css') }}" rel="stylesheet">
-    <link href="{{ asset('mdb/css/mdb.min.css') }}" rel="stylesheet">
+    {{--<link href="{{ asset('mdb/css/mdb.min.css') }}" rel="stylesheet">--}}
+    <link href="{{ asset('css/complied.css') }}" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
     <link href="{{ asset('css/style.css') }}" rel="stylesheet">
 
     <script type="text/javascript" src="{{ asset('mdb/js/jquery-3.3.1.min.js') }}"></script>

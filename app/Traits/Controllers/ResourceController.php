@@ -92,7 +92,16 @@ trait ResourceController
      */
     public function show($id)
     {
-        return redirect(route($this->getResourceRoutesAlias() . '.edit', $id));
+        $record = $this->repository->findOne($id);
+
+        $this->authorize('update', $record);
+
+        return view($this->getResourceShowPath(), $this->filterShowViewData($record, [
+            'record' => $record,
+            'resourceAlias' => $this->getResourceAlias(),
+            'resourceRoutesAlias' => $this->getResourceRoutesAlias(),
+            'resourceTitle' => $this->getResourceTitle(),
+        ]));
     }
 
     /**
@@ -216,5 +225,10 @@ trait ResourceController
     public function getResourceEditPath()
     {
         return '_resources.edit';
+    }
+
+    public function getResourceShowPath()
+    {
+        return '_resources.show';
     }
 }

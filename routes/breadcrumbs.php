@@ -125,6 +125,12 @@ foreach ($resources as $resource => $data) {
         $breadcrumbs->parent($resource);
         $breadcrumbs->push('Sửa', route($resource . '.edit', $id));
     });
+    // Detail
+    Breadcrumbs::register($resource .'.show', function ($breadcrumbs,  $id) use ($resource) {
+        $breadcrumbs->parent($resource);
+        $breadcrumbs->push('Chi tiết', route($resource . '.show', $id));
+    });
+
 }
 
 Breadcrumbs::register('admin::questions.import', function ($breadcrumbs, $data) {

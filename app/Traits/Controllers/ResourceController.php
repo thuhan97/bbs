@@ -97,13 +97,11 @@ trait ResourceController
         $this->authorize('update', $record);
 
         return view($this->getResourceShowPath(), $this->filterShowViewData($record, [
-            'id' => 1,
             'record' => $record,
             'resourceAlias' => $this->getResourceAlias(),
             'resourceRoutesAlias' => $this->getResourceRoutesAlias(),
             'resourceTitle' => $this->getResourceTitle(),
         ]));
-//        return redirect(route($this->getResourceRoutesAlias() . '.edit', $id));
     }
 
     /**

@@ -18,16 +18,4 @@ class AddColumnToUsersTable extends Migration
             $table->tinyInteger('position_id');
         });
     }
-
-    /**
-     * Reverse the migrations.
-     *
-     * @return void
-     */
-    public function down()
-    {
-        Schema::table('users', function (Blueprint $table) {
-            //
-        });
-    }
 }

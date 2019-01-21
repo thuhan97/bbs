@@ -100,6 +100,7 @@ $resources = [
     'events' => 'Quản lý sự kiện',
     'posts' => 'Quản lý thông báo',
     'regulations' => 'Nội quy, quy định',
+    'teams' => 'Quản lý nhóm',
 ];
 foreach ($resources as $resource => $data) {
     $parent = 'admin';
@@ -129,6 +130,10 @@ foreach ($resources as $resource => $data) {
     Breadcrumbs::register($resource .'.show', function ($breadcrumbs,  $id) use ($resource) {
         $breadcrumbs->parent($resource);
         $breadcrumbs->push('Chi tiết', route($resource . '.show', $id));
+    });
+    Breadcrumbs::register($resource .'.deletes', function ($breadcrumbs,  $id) use ($resource) {
+        $breadcrumbs->parent($resource);
+        $breadcrumbs->push('Xóa', route($resource . '.deletes', $id));
     });
 
 }

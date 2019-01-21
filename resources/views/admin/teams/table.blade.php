@@ -4,16 +4,17 @@
         <th style="width: 10px;">
             <button type="button" class="btn btn-default btn-sm checkbox-toggle"><i class="fa fa-square-o"></i></button>
         </th>
-        <th>Mã nhân viên</th>
-        <th>Họ và tên</th>
-        <th>Ngày sinh</th>
-        <th>Email</th>
-        <th>Số điện thoại</th>
-        <th>Loại hợp đồng</th>
+        <th>STT</th>
+        <th>Tên nhóm</th>
+        <th>Trưởng nhóm</th>
+        <th>Khẩu hiệu</th>
         <th>Ngày tạo</th>
         <th style="width: 120px;">Chức năng</th>
         </thead>
         <tbody>
+        @php
+            $i = 1;
+        @endphp
         @foreach ($records as $record)
             <?php
             $tableCounter++;
@@ -25,19 +26,13 @@
             <tr>
                 <td><input type="checkbox" name="ids[]" value="{{ $record->id }}" class="square-blue chkDelete"></td>
                 <td>
-                    @can('update', $record)
-                        <a href="{{ $editLink }}">{{ $record->staff_code }}</a>
-                    @else
-                        {{ $record->staff_code }}
-                    @endcan
+                    {{ $i++ }}
                 </td>
                 <td class="table-text">
                     <a href="{{ $showLink }}">{{ $record->name }}</a>
                 </td>
-                <td>{{ $record->birthday }}</td>
-                <td>{{ $record->email }}</td>
-                <td>{{ $record->phone }}</td>
-                <td>{{ isset(CONTRACT_TYPES_NAME[$record->contract_type]) ? CONTRACT_TYPES_NAME[$record->contract_type] : '' }}</td>
+                <td>{{ $record->getUsersAttribute($record->leader_id) }}</td>
+                <td>{{ $record->banner }}</td>
                 <td class="">{{ $record->created_at }}</td>
 
                 <!-- we will also add show, edit, and delete buttons -->

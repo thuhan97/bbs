@@ -48,6 +48,8 @@ Route::group([
     Route::get('users/download-template', ['as' => 'users.download-template', 'uses' => 'UserController@downloadTemplate']);
     Route::post('users/import', ['uses' => 'UserController@importData']);
     Route::post('users/deletes', ['as' => 'users.deletes', 'uses' => 'UserController@deletes']);
+    Route::post('teams/deletes', ['as' => 'teams.deletes', 'uses' => 'TeamController@deletes']);
     Route::resource('users', 'UserController');
+    Route::resource('teams', 'TeamController');
 
 });

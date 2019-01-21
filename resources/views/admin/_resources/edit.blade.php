@@ -76,7 +76,7 @@ $_printLink = false;
                         <div class="col-xs-6">
                             <div class="text-center margin-b-5 margin-t-5">
                                 <button class="btn btn-info">
-                                    <i class="fa fa-save"></i> <span>Save</span>
+                                    <i class="fa fa-save"></i> <span>Lưu</span>
                                 </button>
                             </div>
                         </div>
@@ -84,7 +84,7 @@ $_printLink = false;
                         <div class="col-xs-6">
                             <div class="text-center margin-b-5 margin-t-5">
                                 <a href="{{ $_listLink }}" class="btn btn-default">
-                                    <i class="fa fa-ban"></i> <span>Cancel</span>
+                                    <i class="fa fa-ban"></i> <span>Hủy</span>
                                 </a>
                             </div>
                         </div>

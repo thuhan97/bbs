@@ -6,6 +6,7 @@ use App\Models\Admin;
 use App\Models\Config;
 use App\Models\Event;
 use App\Models\Post;
+use App\Models\Team;
 use App\Models\User;
 use App\Repositories\AdminRepository;
 use App\Repositories\ConfigRepository;
@@ -14,9 +15,11 @@ use App\Repositories\Contracts\IConfigRepository;
 use App\Repositories\Contracts\IEventRepository;
 use App\Repositories\Contracts\IPostRepository;
 use App\Repositories\Contracts\IUserRepository;
+use App\Repositories\Contracts\ITeamRepository;
 use App\Repositories\EventRepository;
 use App\Repositories\PostRepository;
 use App\Repositories\UserRepository;
+use App\Repositories\TeamRepository;
 use Illuminate\Support\ServiceProvider;
 
 ##AUTO_INSERT_USE##
@@ -52,6 +55,9 @@ class RepositoriesServiceProvider extends ServiceProvider
         });
         $this->app->bind(IUserRepository::class, function () {
             return new UserRepository(new User());
+        });
+        $this->app->bind(ITeamRepository::class, function () {
+            return new TeamRepository(new Team());
         });
     }
 

@@ -42,7 +42,7 @@ $_printLink = false;
                     {{ method_field('PUT') }}
 
                     <div class="box-header with-border">
-                        <h3 class="box-title">Chi tiết nhân viên: {{ $record->getRecordTitle() }}</h3>
+                        <h3 class="box-title">{{ $_pageTitle }} : {{ $record->getRecordTitle() }}</h3>
 
                         <div class="box-tools">
                             {{--<a href="#" class="btn btn-sm btn-default margin-r-5 margin-l-5" onclick="history.go(-1)">--}}

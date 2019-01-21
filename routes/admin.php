@@ -24,6 +24,10 @@ Route::group([
 
     ##AUTO_INSERT_ROUTE##
 
+		//report
+		Route::resource('report', 'ReportController');
+		
+
     //config
     Route::post('config/deletes', ['as' => 'config.deletes', 'uses' => 'ConfigController@deletes']);
     Route::resource('config', 'ConfigController');

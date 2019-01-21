@@ -153,6 +153,53 @@ if (!function_exists('unicode_encode')) {
         }, $str);
     }
 }
+if (!function_exists('get_week_number')) {
+    /**
+     * Get week number
+     *
+     * @param $ddate
+     *
+     * @return string
+     */
+    function get_week_number($ddate = null)
+    {
+        if ($ddate !== null)
+            $ddate = date(DATE_FORMAT);
+        $date = new DateTime($ddate);
+
+        return $date->format("W");
+    }
+}
+if (!function_exists('get_week_info')) {
+    /**
+     * 0: this week, 1: next week; -1: last week
+     *
+     * @param $type
+     * @param $week_number
+     *
+     * @return string
+     */
+    function get_week_info($type = 0, &$week_number = null)
+    {
+        switch ($type) {
+            case -1;
+                $day = date(DATE_FORMAT, strtotime('-7 days'));
+                break;
+            case 1;
+                $day = date(DATE_FORMAT, strtotime('+7 days'));
+                break;
+            default:
+                $day = date(DATE_FORMAT);
+                break;
+        }
+
+        $firstDay = date(DATE_MONTH_REPORT, strtotime("monday this week", strtotime($day)));
+        $lastDay = date(DATE_MONTH_REPORT, strtotime("saturday this week", strtotime($day)));
+        $week_number = get_week_number($day);
+        $year = date('Y');
+        return "$week_number-$year [$firstDay - $lastDay]";
+    }
+}
 
 if (!function_exists('__l')) {
     /**
@@ -173,3 +220,5 @@ if (!function_exists('__l')) {
         }
     }
 }
+
+

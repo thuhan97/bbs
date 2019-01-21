@@ -7,6 +7,10 @@
     max-width: 100%;
 }
 
+.w-45 {
+    width: 45%;
+}
+
 #nav_bar_avatar {
     padding: 0;
 }
@@ -213,11 +217,21 @@
     padding-top: 15px;
 }
 
+.table tbody tr.select {
+    background: #e5edff;
+}
+
 @media (min-width: 1200px) {
     .navbar,
     .page-footer,
     main {
         padding-left: 270px;
+    }
+
+    .split-date {
+        position: relative;
+        top: 10px;
+        left: 20px;
     }
 }
 

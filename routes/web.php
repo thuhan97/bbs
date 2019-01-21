@@ -117,6 +117,8 @@ Route::group([
     Route::get('/thong-bao/{id}', 'PostController@detail')->where(['id' => '\d+'])->name('post_detail');
     Route::get('/bao-cao', 'ReportController@index')->name('report');
     Route::get('/tao-bao-cao', 'ReportController@create')->name('create_report');
+    Route::get('/report', 'ReportController@getReport')->name('getReport');
+    Route::post('/tao-bao-cao', 'ReportController@saveReport')->name('save_report');
     Route::get('/bao-cao/{id}', 'ReportController@detail')->where(['id' => '\d+'])->name('report_detail');
 
 });

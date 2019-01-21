@@ -6,6 +6,8 @@ use App\Models\Admin;
 use App\Models\Config;
 use App\Models\Event;
 use App\Models\Post;
+use App\Models\Regulation;
+use App\Models\Report;
 use App\Models\User;
 use App\Repositories\AdminRepository;
 use App\Repositories\ConfigRepository;
@@ -13,16 +15,17 @@ use App\Repositories\Contracts\IAdminRepository;
 use App\Repositories\Contracts\IConfigRepository;
 use App\Repositories\Contracts\IEventRepository;
 use App\Repositories\Contracts\IPostRepository;
+use App\Repositories\Contracts\IRegulationRepository;
+use App\Repositories\Contracts\IReportRepository;
 use App\Repositories\Contracts\IUserRepository;
 use App\Repositories\EventRepository;
 use App\Repositories\PostRepository;
+use App\Repositories\RegulationRepository;
+use App\Repositories\ReportRepository;
 use App\Repositories\UserRepository;
 use Illuminate\Support\ServiceProvider;
 
 ##AUTO_INSERT_USE##
-use App\Repositories\Contracts\IRegulationRepository;
-use App\Repositories\RegulationRepository;
-use App\Models\Regulation;
 
 class RepositoriesServiceProvider extends ServiceProvider
 {
@@ -34,9 +37,12 @@ class RepositoriesServiceProvider extends ServiceProvider
     public function register()
     {
         ##AUTO_INSERT_BIND##
-		$this->app->bind(IRegulationRepository::class, function () {
-			return new RegulationRepository(new Regulation());
-		});
+        $this->app->bind(IReportRepository::class, function () {
+            return new ReportRepository(new Report());
+        });
+        $this->app->bind(IRegulationRepository::class, function () {
+            return new RegulationRepository(new Regulation());
+        });
         $this->app->bind(IAdminRepository::class, function () {
             return new AdminRepository(new Admin());
         });
@@ -59,7 +65,8 @@ class RepositoriesServiceProvider extends ServiceProvider
     {
         return [
             ##AUTO_INSERT_NAME##
-			RegulationRepository::class,
+            ReportRepository::class,
+            RegulationRepository::class,
             IConfigRepository::class,
             IPostRepository::class,
             IEventRepository::class,

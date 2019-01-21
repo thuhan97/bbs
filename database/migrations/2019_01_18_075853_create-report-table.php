@@ -15,6 +15,8 @@ class CreateReportTable extends Migration
     {
         Schema::create('reports', function (Blueprint $table) {
             $table->increments('id');
+            $table->integer('year');
+            $table->integer('week_num');
             $table->integer('user_id');
             $table->string('to_ids');
             $table->string('title');
@@ -23,6 +25,8 @@ class CreateReportTable extends Migration
 
             $table->timestamps();
             $table->softDeletes();
+
+            $table->index(['week_num', 'user_id']);
         });
     }
 

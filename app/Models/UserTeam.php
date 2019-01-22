@@ -35,7 +35,7 @@ class UserTeam extends Model
      * @var array
      */
     protected $hidden = [
-        'joining_team_date',
+//        'joining_team_date',
         'created_at', 'updated_at', 'deleted_at',
     ];
 
@@ -58,7 +58,14 @@ class UserTeam extends Model
      * @return mixed
      */
     public function getMemberTeamAttribute($id){
-        return UserTeam::where('team_id',  $id)->get();
+        return $this->where('team_id',  $id)->get();
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getMemberIdAttribute(){
+        return $this->select(['user_id'])->groupBy(['user_id'])->get();
     }
 
 }

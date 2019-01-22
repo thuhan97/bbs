@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Repositories\Contracts\IUserRepository;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Team;
@@ -38,6 +37,38 @@ class TeamController extends AdminBaseController
     {
         $this->repository = $repository;
         parent::__construct();
+    }
+//
+    public function resourceStoreValidationData()
+    {
+        return [
+            'rules' => [
+                'name' => 'required|max:255',
+                'leader_id' => 'required',
+            ],
+            'messages' => [],
+            'attributes' => [
+                'name' => 'tên nhóm',
+                'leader_id' => 'trưởng nhóm',
+            ],
+            'advanced' => [],
+        ];
+    }
+
+    public function resourceUpdateValidationData($record)
+    {
+        return [
+            'rules' => [
+                'name' => 'required|max:255',
+                'leader_id' => 'required',
+            ],
+            'messages' => [],
+            'attributes' => [
+                'name' => 'tên nhóm',
+                'leader_id' => 'trưởng nhóm',
+            ],
+            'advanced' => [],
+        ];
     }
 
 }

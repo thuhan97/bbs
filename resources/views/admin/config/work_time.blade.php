@@ -1,43 +1,97 @@
 <h4>Giờ làm việc</h4>
 <div class="row">
     <div class="col-md-6">
-        <div class="form-group margin-b-5 margin-t-5{{ $errors->has('start_work_at') ? ' has-error' : '' }}">
-            <label for="start_work_at">Từ</label>
-            <div class="input-group date">
-                <div class="input-group-addon">
-                    <i class="fa fa-calendar"></i>
-                </div>
-                <input type="time" class="form-control pull-right" autocomplete="off"
-                       name="start_work_at"
-                       value="{{ old('start_work_at', $record->start_work_at) }}" id="start_work_at">
-            </div>
-            @if ($errors->has('start_work_at'))
-                <span class="help-block">
-                    <strong>{{ $errors->first('start_work_at') }}</strong>
+        <h5>Sáng</h5>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group margin-b-5 margin-t-5{{ $errors->has('morning_start_work_at') ? ' has-error' : '' }}">
+                    <span for="morning_start_work_at">Từ</span>
+                    <div class="input-group date">
+                        <div class="input-group-addon">
+                            <i class="fa fa-calendar"></i>
+                        </div>
+                        <input type="time" class="form-control pull-right" autocomplete="off"
+                               name="morning_start_work_at"
+                               value="{{ old('morning_start_work_at', $record->morning_start_work_at) }}"
+                               id="morning_start_work_at">
+                    </div>
+                    @if ($errors->has('morning_start_work_at'))
+                        <span class="help-block">
+                    <strong>{{ $errors->first('morning_start_work_at') }}</strong>
                 </span>
-            @endif
+                    @endif
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group margin-b-5 margin-t-5{{ $errors->has('morning_end_work_at') ? ' has-error' : '' }}">
+                    <span for="morning_end_work_at">Đến</span>
+                    <div class="input-group date">
+                        <div class="input-group-addon">
+                            <i class="fa fa-calendar"></i>
+                        </div>
+                        <input type="time" class="form-control pull-right"
+                               name="morning_end_work_at" autocomplete="off"
+                               value="{{ old('morning_end_work_at', $record->morning_end_work_at) }}"
+                               id="morning_end_work_at">
+                    </div>
+                    @if ($errors->has('morning_end_work_at'))
+                        <span class="help-block">
+                    <strong>{{ $errors->first('morning_end_work_at') }}</strong>
+                </span>
+                    @endif
+                </div>
+            </div>
+
         </div>
+
+
     </div>
     <div class="col-md-6">
-        <div class="form-group margin-b-5 margin-t-5{{ $errors->has('end_work_at') ? ' has-error' : '' }}">
-            <label for="end_work_at">Đến</label>
-            <div class="input-group date">
-                <div class="input-group-addon">
-                    <i class="fa fa-calendar"></i>
-                </div>
-                <input type="time" class="form-control pull-right"
-                       name="end_work_at" autocomplete="off"
-                       value="{{ old('end_work_at', $record->end_work_at) }}" id="end_work_at">
-            </div>
-            @if ($errors->has('end_work_at'))
-                <span class="help-block">
-                    <strong>{{ $errors->first('end_work_at') }}</strong>
+        <h5>Chiều</h5>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group margin-b-5 margin-t-5{{ $errors->has('afternoon_start_work_at') ? ' has-error' : '' }}">
+                    <span for="afternoon_start_work_at">Từ</span>
+                    <div class="input-group date">
+                        <div class="input-group-addon">
+                            <i class="fa fa-calendar"></i>
+                        </div>
+                        <input type="time" class="form-control pull-right" autocomplete="off"
+                               name="afternoon_start_work_at"
+                               value="{{ old('afternoon_start_work_at', $record->afternoon_start_work_at) }}"
+                               id="afternoon_start_work_at">
+                    </div>
+                    @if ($errors->has('afternoon_start_work_at'))
+                        <span class="help-block">
+                    <strong>{{ $errors->first('afternoon_start_work_at') }}</strong>
                 </span>
-            @endif
+                    @endif
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group margin-b-5 margin-t-5{{ $errors->has('afternoon_end_work_at') ? ' has-error' : '' }}">
+                    <span for="afternoon_end_work_at">Đến</span>
+                    <div class="input-group date">
+                        <div class="input-group-addon">
+                            <i class="fa fa-calendar"></i>
+                        </div>
+                        <input type="time" class="form-control pull-right"
+                               name="afternoon_end_work_at" autocomplete="off"
+                               value="{{ old('afternoon_end_work_at', $record->afternoon_end_work_at) }}"
+                               id="afternoon_end_work_at">
+                    </div>
+                    @if ($errors->has('afternoon_end_work_at'))
+                        <span class="help-block">
+                    <strong>{{ $errors->first('afternoon_end_work_at') }}</strong>
+                </span>
+                    @endif
+                </div>
+            </div>
+
         </div>
     </div>
 </div>
-
+<hr/>
 <h4>Ngày làm việc</h4>
 <div class="form-group margin-b-5 margin-t-5{{ $errors->has('work_days') ? ' has-error' : '' }}">
     <label for="work_days">Đến</label>
@@ -50,7 +104,10 @@
                 ?>
                 <li class="">
                     <input type="checkbox" id="{{$inputId}}"
-                           name="day_works[]"
+                           @if(in_array($dayOff, $record->work_days))
+                           checked
+                           @endif
+                           name="work_days[]"
                            value="{{$dayOff}}">
                     <label
                             for="{{$inputId}}">{{$day}}</label>

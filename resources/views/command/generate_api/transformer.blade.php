@@ -5,7 +5,7 @@ use App\Models\{{$Module}};
 
 /**
 * {{$Module}}Transformer class
-* Author: trinhnv
+* Author: jvb
 * Date: {{date('Y/m/d H:i')}}
 */
 class {{$Module}}Transformer extends Fractal\TransformerAbstract

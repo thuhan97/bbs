@@ -7,7 +7,7 @@ use App\Repositories\Contracts\IUserRepository;
 
 /**
  * UserController
- * Author: trinhnv
+ * Author: jvb
  * Date: 2018/07/16 10:24
  */
 class UserController extends AdminBaseController

@@ -20,7 +20,7 @@ use Tymon\JWTAuth\Facades\JWTAuth;
 
 /**
  * UserController
- * Author: trinhnv
+ * Author: jvb
  * Date: 2018/09/16 10:34
  */
 class AuthController extends Controller

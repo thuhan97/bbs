@@ -9,7 +9,7 @@ use Illuminate\Http\Request;
 
 /**
  * ConfigController
- * Author: trinhnv
+ * Author: jvb
  * Date: 2018/11/15 16:31
  */
 class ConfigController extends Controller

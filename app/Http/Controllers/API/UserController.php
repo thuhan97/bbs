@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Auth;
 
 /**
  * UserController
- * Author: trinhnv
+ * Author: jvb
  * Date: 2018/07/16 10:34
  */
 class UserController extends Controller

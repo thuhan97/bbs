@@ -23,6 +23,22 @@ Route::group([
     Route::get('/', ['as' => 'index', 'uses' => 'MasterController@index']);
 
     ##AUTO_INSERT_ROUTE##
+
+    //OverTime
+    Route::resource('over_times', 'OverTimeController');
+
+
+    //WorkTimeDetail
+    Route::resource('work_time_details', 'WorkTimeDetailController');
+
+
+    //WorkTime
+    Route::resource('work_times', 'WorkTimeController');
+
+
+    //DayOff
+    Route::resource('day_offs', 'DayOffController');
+
     //report
     Route::resource('report', 'ReportController');
 

@@ -9,7 +9,7 @@ use App\Transformers\{{$Module}}Transformer;
 
 /**
 * {{$Module}}Controller
-* Author: trinhnv
+* Author: jvb
 * Date: {{date('Y/m/d H:i')}}
 */
 class {{$Module}}Controller extends Controller

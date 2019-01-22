@@ -6,7 +6,7 @@ use App\Repositories\Contracts\IEventRepository;
 
 /**
 * EventRepository class
-* Author: trinhnv
+* Author: jvb
 * Date: 2018/10/07 16:46
 */
 class EventRepository extends AbstractRepository implements IEventRepository

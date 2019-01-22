@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 
 /**
  * QuestionSetsController
- * Author: trinhnv
+ * Author: jvb
  * Date: 2018/11/01 15:25
  */
 class QuestionSetsController extends AdminBaseController

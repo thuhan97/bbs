@@ -8,7 +8,7 @@ use Illuminate\Support\Collection;
 
 /**
  * IEventService contract
- * Author: trinhnv
+ * Author: jvb
  * Date: 2018/10/07 16:46
  */
 interface IEventService extends IBaseService

@@ -9,7 +9,7 @@ use App\Traits\Controllers\ResourceController;
 
 /**
  * ReportController
- * Author: trinhnv
+ * Author: jvb
  * Date: 2019/01/21 03:42
  */
 class ReportController extends Controller
@@ -36,7 +36,7 @@ class ReportController extends Controller
     /**
      * @var  string
      */
-    protected $resourceTitle = 'Report';
+    protected $resourceTitle = 'Báo cáo';
 
     /**
      * Controller construct

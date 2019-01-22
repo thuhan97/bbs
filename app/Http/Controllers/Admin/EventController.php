@@ -7,7 +7,7 @@ use App\Repositories\Contracts\IEventRepository;
 
 /**
  * EventController
- * Author: trinhnv
+ * Author: jvb
  * Date: 2018/10/07 16:46
  */
 class EventController extends AdminBaseController

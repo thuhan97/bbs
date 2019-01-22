@@ -6,7 +6,7 @@ use App\Repositories\Contracts\IReportRepository;
 
 /**
 * ReportRepository class
-* Author: trinhnv
+* Author: jvb
 * Date: 2019/01/21 03:42
 */
 class ReportRepository extends AbstractRepository implements IReportRepository

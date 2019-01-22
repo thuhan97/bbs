@@ -6,7 +6,7 @@ use App\Models\Regulation;
 
 /**
 * RegulationTransformer class
-* Author: trinhnv
+* Author: jvb
 * Date: 2019/01/11 09:23
 */
 class RegulationTransformer extends Fractal\TransformerAbstract

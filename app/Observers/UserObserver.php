@@ -3,7 +3,7 @@
  * Created by PhpStorm.
  * Handle some event for User model
  * Events: retrieved, creating, created, updating, updated, saving, saved, deleting, deleted, restoring, restore
- * User: trinhnv
+ * User: jvb
  * Date: 25/07/2018
  * Time: 15:29
  */

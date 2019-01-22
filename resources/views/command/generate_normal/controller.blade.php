@@ -7,7 +7,7 @@ use App\Traits\Controllers\ResourceController;
 
 /**
  * {{$Module}}Controller
- * Author: trinhnv
+ * Author: jvb
  * Date: {{date('Y/m/d H:i')}}
 */
 class {{$Module}}Controller extends Controller

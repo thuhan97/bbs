@@ -8,7 +8,7 @@ use Illuminate\Support\Collection;
 
 /**
  * IReportService contract
- * Author: trinhnv
+ * Author: jvb
  * Date: 2019/01/21 03:42
  */
 interface IReportService extends IBaseService

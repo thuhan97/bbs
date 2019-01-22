@@ -31,17 +31,17 @@
             <i class="fa fa-podcast"></i> <span>Nội quy/Quy Định</span>
         </a>
     </li>
-    {{--<li class="treeview {{ \App\Utils::checkRoute(['admin::phrases.index', 'admin::keywords.create']) ? 'active': '' }}">--}}
-    {{--<a href="#"><i class="fa fa-cog"></i> <span>Configuration</span>--}}
-    {{--<span class="pull-right-container">--}}
-    {{--<i class="fa fa-angle-left pull-right"></i>--}}
-    {{--</span>--}}
-    {{--</a>--}}
-    {{--<ul class="treeview-menu">--}}
-    {{--<li><a href="#">System configuration</a></li>--}}
-    {{--<li><a href="{{ route('admin::phrases.index') }}">Phrases</a></li>--}}
-    {{--<li><a href="{{ route('admin::keywords.index') }}">Suggest keywords</a></li>--}}
-    {{--</ul>--}}
-    {{--</li>--}}
-    {{--@endif--}}
+    <li class="treeview {{ \App\Utils::checkRoute(['admin::work_times.index', 'admin::day_offs.create']) ? 'active': '' }}">
+        <a href="#"><i class="fa fa-calendar"></i> <span>Thời gian làm việc</span>
+            <span class="pull-right-container">
+    <i class="fa fa-angle-left pull-right"></i>
+    </span>
+        </a>
+        <ul class="treeview-menu">
+            <li><a href="{{ route('admin::day_offs.index') }}"><i class="fa fa-circle"></i> Nghỉ phép</a></li>
+            <li><a href="{{ route('admin::work_times.index') }}"><i class="fa fa-circle"></i> Thời gian làm việc</a>
+            </li>
+            <li><a href="{{ route('admin::over_times.index') }}"><i class="fa fa-circle"></i> Làm thêm</a></li>
+        </ul>
+    </li>
 </ul>

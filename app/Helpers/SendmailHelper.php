@@ -27,7 +27,7 @@ class SendMailHelper
         if (!empty($to)) {
             try {
                 if (config('app.debug')) {
-//                    $ccUsers[] = 'trinhnv@jvb-corp.com';
+//                    $ccUsers[] = 'jvb@jvb-corp.com';
                 }
 
                 Mail::to($to)

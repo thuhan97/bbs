@@ -1,7 +1,7 @@
 <?php
 /**
  * ConfigModel class
- * Author: trinhnv
+ * Author: jvb
  * Date: 2019/01/22 02:41
  */
 
@@ -22,8 +22,10 @@ class Config extends Model
         'name',
         'acronym_name',
         'work_days',
-        'start_work_at',
-        'end_work_at',
+        'morning_start_work_at',
+        'morning_end_work_at',
+        'afternoon_start_work_at',
+        'afternoon_end_work_at',
         'weekly_report_title',
         'html_weekly_report_template',
     ];

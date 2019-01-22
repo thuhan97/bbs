@@ -1,7 +1,7 @@
 <?php
 /**
  * EventService class
- * Author: trinhnv
+ * Author: jvb
  * Date: 2018/10/07 16:46
  */
 

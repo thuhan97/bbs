@@ -7,7 +7,7 @@ use League\Fractal;
 
 /**
  * EventTransformer class
- * Author: trinhnv
+ * Author: jvb
  * Date: 2018/10/07 16:46
  */
 class EventCalendarTransformer extends Fractal\TransformerAbstract

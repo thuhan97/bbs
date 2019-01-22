@@ -6,7 +6,7 @@ use App\Models\Report;
 
 /**
 * ReportTransformer class
-* Author: trinhnv
+* Author: jvb
 * Date: 2019/01/21 03:42
 */
 class ReportTransformer extends Fractal\TransformerAbstract

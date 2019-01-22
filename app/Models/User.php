@@ -1,7 +1,7 @@
 <?php
 /**
  * UserModel class
- * Author: trinhnv
+ * Author: jvb
  * Date: 2018/07/16 10:34
  */
 
@@ -75,7 +75,7 @@ class User extends Authenticatable implements JWTSubject
      *
      * @param $value
      *
-     * @author  TrinhNV
+     * @author  jvb
      */
     public function setPasswordAttribute($value)
     {

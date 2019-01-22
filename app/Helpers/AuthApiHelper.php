@@ -1,7 +1,7 @@
 <?php
 /**
  * Auth Admin Helper
- * User: TrinhNV
+ * User: jvb
  * Date: 8/24/2018
  * Time: 3:55 PM
  */

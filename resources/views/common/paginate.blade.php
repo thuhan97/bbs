@@ -11,7 +11,7 @@
                     </select>
                 </div>
                 <div class="col-md-9">
-                    records per page.
+                    bản ghi trên một trang.
                 </div>
             </div>
 

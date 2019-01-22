@@ -45,9 +45,7 @@ class ReportController extends Controller
             'week_num' => $week_number,
         ])->first();
         if (!$report) {
-            $report = new Report();
-            $report->title = 'Báo cáo tuần ' . get_week_info(0, $week_number) . ': ' . Auth::user()->name;
-            $report->is_new = true;
+            $report = $this->service->newReportFromTemplate();
         }
         return view('end_user.report.create', compact('report'));
     }
@@ -109,4 +107,6 @@ class ReportController extends Controller
 
         return redirect(route('report'));
     }
+
+
 }

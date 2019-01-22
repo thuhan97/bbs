@@ -1,96 +1,24 @@
-{{-- Extends Layout --}}
-@extends('layouts.admin.master')
+<div class="form-group margin-b-5 margin-t-5{{ $errors->has('name') ? ' has-error' : '' }}">
+    <label for="name">Tên hệ thống *</label>
+    <input type="text" class="form-control" name="name" placeholder="BBS System"
+           value="{{ old('name', $record->name) }}" required>
 
-<?php
-$_pageTitle = (isset($addVarsForView['_pageTitle']) && !empty($addVarsForView['_pageTitle']) ? $addVarsForView['_pageTitle'] : ucwords($resourceTitle));
-$_pageSubtitle = (isset($addVarsForView['_pageSubtitle']) && !empty($addVarsForView['_pageSubtitle']) ? $addVarsForView['_pageSubtitle'] : "Add " . str_singular($_pageTitle));
-$_formFiles = isset($addVarsForView['formFiles']) ? $addVarsForView['formFiles'] : false;
-$_listLink = route($resourceRoutesAlias . '.index');
-$_createLink = route($resourceRoutesAlias . '.create');
-$_storeLink = route($resourceRoutesAlias . '.store');
-?>
+    @if ($errors->has('name'))
+        <span class="help-block">
+                    <strong>{{ $errors->first('name') }}</strong>
+                </span>
+    @endif
+</div>
+<div class="tab-pane active" id="tab_1">
+    <div class="form-group margin-b-5 margin-t-5{{ $errors->has('acronym_name') ? ' has-error' : '' }}">
+        <label for="acronym_name">Tên viết tắt *</label>
+        <input type="text" class="form-control" name="acronym_name" placeholder="BBS"
+               value="{{ old('acronym_name', $record->acronym_name) }}" required>
 
-{{-- Breadcrumbs --}}
-@section('breadcrumbs')
-    {!! Breadcrumbs::render($resourceRoutesAlias.'.create') !!}
-@endsection
-
-{{-- Page Title --}}
-@section('page-title', $_pageTitle)
-
-{{-- Page Subtitle --}}
-@section('page-subtitle', $_pageSubtitle)
-
-{{-- Header Extras to be Included --}}
-@section('head-extras')
-
-@endsection
-
-@section('content')
-
-    <div class="row">
-        <div class="col-xs-12">
-
-            <!-- Edit Form -->
-            <div class="box box-info" id="wrap-edit-box">
-
-                <form class="form" role="form" method="POST"
-                      action="{{ $_storeLink }}" {!! $_formFiles === true ? 'enctype="multipart/form-data"' : '' !!}>
-                    {{ csrf_field() }}
-
-                    <div class="box-header with-border">
-                        <h3 class="box-title">Add new</h3>
-
-                        <div class="box-tools">
-                            <a href="{{ $_listLink }}" class="btn btn-sm btn-primary margin-r-5 margin-l-5">
-                                <i class="fa fa-search"></i> <span>List</span>
-                            </a>
-                            <a href="{{ $_createLink }}" class="btn btn-sm btn-success margin-r-5 margin-l-5">
-                                <i class="fa fa-plus"></i> <span>Add</span>
-                            </a>
-                            <button class="btn btn-sm btn-info margin-r-5 margin-l-5">
-                                <i class="fa fa-save"></i> <span>Save</span>
-                            </button>
-                            @yield('more-buttons')
-                        </div>
-                    </div>
-                    <!-- /.box-header -->
-
-                    <div class="box-body">
-                        @include($resourceAlias.'.form')
-                    </div>
-                    <!-- /.box-body -->
-
-                    <div class="box-footer clearfix">
-                        <!-- Edit Button -->
-                        <div class="col-xs-6">
-                            <div class="text-center margin-b-5 margin-t-5">
-                                <button class="btn btn-info">
-                                    <i class="fa fa-save"></i> <span>Save</span>
-                                </button>
-                            </div>
-                        </div>
-                        <!-- /.col-xs-6 -->
-                        <div class="col-xs-6">
-                            <div class="text-center margin-b-5 margin-t-5">
-                                <a href="{{ $_listLink }}" class="btn btn-default">
-                                    <i class="fa fa-ban"></i> <span>Cancel</span>
-                                </a>
-                            </div>
-                        </div>
-                        <!-- /.col-xs-6 -->
-                    </div>
-                    <!-- /.box-footer -->
-                </form>
-            </div>
-            <!-- /.box -->
-            <!-- /End Edit Form -->
-        </div>
+        @if ($errors->has('acronym_name'))
+            <span class="help-block">
+                    <strong>{{ $errors->first('acronym_name') }}</strong>
+                </span>
+        @endif
     </div>
-    <!-- /.row -->
-@endsection
-
-{{-- Footer Extras to be Included --}}
-@section('footer-extras')
-
-@endsection
+</div>

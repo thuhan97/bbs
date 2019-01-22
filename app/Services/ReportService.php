@@ -7,6 +7,7 @@
 
 namespace App\Services;
 
+use App\Models\Config;
 use App\Models\Report;
 use App\Repositories\Contracts\IReportRepository;
 use App\Services\Contracts\IReportService;
@@ -81,5 +82,59 @@ class ReportService extends AbstractService implements IReportService
         ])->with('user:id,name,email,avatar')->first();
 
         return $report;
+    }
+
+    /**
+     * @return Report
+     */
+    public function newReportFromTemplate()
+    {
+        $report = new Report();
+        $report->is_new = true;
+
+        //Fill data from template
+        $config = Config::firstOrNew(['id' => 1]);
+
+        $report->title = $this->generateTitle($config->weekly_report_title);
+
+        $report->content = $config->html_weekly_report_template;
+
+        return $report;
+    }
+
+    /**
+     * @param $template
+     *
+     * @return mixed
+     */
+    private function generateTitle($template)
+    {
+        get_week_info(0, $week_number);
+        [$firstDay, $lastDay] = get_first_last_day_in_week(0, $day);
+
+        'Báo cáo tuần ' . get_week_info(0, $week_number) . ': ' . Auth::user()->name;
+        //1. ${staff_name}
+        $result = str_replace('${staff_name}', Auth::user()->name, $template);
+
+        //2. ${week_number}
+        $result = str_replace('${week_number}', $week_number, $result);
+
+        //3. ${d}
+        $result = str_replace('${d}', date('d'), $result);
+
+        //4. ${m}
+        $result = str_replace('${m}', date('m'), $result);
+
+        //5. ${Y}
+        $result = str_replace('${Y}', date('Y'), $result);
+
+        //6. ${first_day}
+        $result = str_replace('${first_day}', $firstDay, $result);
+
+        //7. ${last_day}
+        $result = str_replace('${last_day}', $lastDay, $result);
+
+        return $result;
+
     }
 }

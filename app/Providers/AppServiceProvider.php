@@ -2,9 +2,8 @@
 
 namespace App\Providers;
 
-use Illuminate\Support\Facades\Auth;
+use App\Models\Config;
 use Illuminate\Support\ServiceProvider;
-use function Psy\debug;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -17,7 +16,8 @@ class AppServiceProvider extends ServiceProvider
     {
         //
 //        \Schema::defaultStringLength(191);
-
+        $config = Config::firstOrNew(['id' => 1]);
+        view()->share('config', $config);
     }
 
     /**
@@ -27,6 +27,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        view()->share('current_potato', 100);
+
     }
 }

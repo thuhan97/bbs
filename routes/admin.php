@@ -23,14 +23,12 @@ Route::group([
     Route::get('/', ['as' => 'index', 'uses' => 'MasterController@index']);
 
     ##AUTO_INSERT_ROUTE##
-
-		//report
-		Route::resource('report', 'ReportController');
-		
+    //report
+    Route::resource('report', 'ReportController');
 
     //config
-    Route::post('config/deletes', ['as' => 'config.deletes', 'uses' => 'ConfigController@deletes']);
-    Route::resource('config', 'ConfigController');
+    Route::get('configs', 'ConfigController@index')->name('configs.index');
+    Route::post('configs', 'ConfigController@store')->name('configs.store');
 
     //post
     Route::post('posts/deletes', ['as' => 'posts.deletes', 'uses' => 'PostController@deletes']);

@@ -6,6 +6,11 @@
             <i class="fa fa-dashboard"></i> <span>Trang quản trị</span>
         </a>
     </li>
+    <li class="{{ \App\Utils::checkRoute(['admin::configs.index']) ? 'active': '' }}">
+        <a href="{{ route('admin::configs.index') }}">
+            <i class="fa fa-cog"></i> <span>Thiết lập hệ thống</span>
+        </a>
+    </li>
     <li class="{{ \App\Utils::checkRoute(['admin::users.index', 'admin::users.create', 'admin::users.edit']) ? 'active': '' }}">
         <a href="{{ route('admin::users.index') }}">
             <i class="fa fa-user"></i> <span>Nhân viên</span>
@@ -27,16 +32,16 @@
         </a>
     </li>
     {{--<li class="treeview {{ \App\Utils::checkRoute(['admin::phrases.index', 'admin::keywords.create']) ? 'active': '' }}">--}}
-        {{--<a href="#"><i class="fa fa-cog"></i> <span>Configuration</span>--}}
-            {{--<span class="pull-right-container">--}}
-                {{--<i class="fa fa-angle-left pull-right"></i>--}}
-              {{--</span>--}}
-        {{--</a>--}}
-        {{--<ul class="treeview-menu">--}}
-            {{--<li><a href="#">System configuration</a></li>--}}
-            {{--<li><a href="{{ route('admin::phrases.index') }}">Phrases</a></li>--}}
-            {{--<li><a href="{{ route('admin::keywords.index') }}">Suggest keywords</a></li>--}}
-        {{--</ul>--}}
+    {{--<a href="#"><i class="fa fa-cog"></i> <span>Configuration</span>--}}
+    {{--<span class="pull-right-container">--}}
+    {{--<i class="fa fa-angle-left pull-right"></i>--}}
+    {{--</span>--}}
+    {{--</a>--}}
+    {{--<ul class="treeview-menu">--}}
+    {{--<li><a href="#">System configuration</a></li>--}}
+    {{--<li><a href="{{ route('admin::phrases.index') }}">Phrases</a></li>--}}
+    {{--<li><a href="{{ route('admin::keywords.index') }}">Suggest keywords</a></li>--}}
+    {{--</ul>--}}
     {{--</li>--}}
     {{--@endif--}}
 </ul>

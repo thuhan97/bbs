@@ -2,7 +2,7 @@
 /**
  * ConfigModel class
  * Author: trinhnv
- * Date: 2018/11/15 16:31
+ * Date: 2019/01/22 02:41
  */
 
 namespace App\Models;
@@ -16,30 +16,27 @@ class Config extends Model
 {
     use SoftDeletes, FillableFields, OrderableTrait, SearchLikeTrait;
 
-    protected $table = 'config';
+    protected $table = 'configs';
 
     protected $fillable = [
         'name',
-        'address',
-        'logo',
-        'slogan',
-        'term_register',
-        'term_charge',
-        'guide_search',
-        'guide_test',
-        'charge_email',
-        'created_at',
-        'updated_at',
-        'deleted_at',
+        'acronym_name',
+        'work_days',
+        'start_work_at',
+        'end_work_at',
+        'weekly_report_title',
+        'html_weekly_report_template',
     ];
 
+    public function setWorkDaysAttribute($value)
+    {
+        $this->attributes['work_days'] = implode(',', $value);
+    }
 
-    /**
-     * The attributes that should be hidden for arrays.
-     *
-     * @var array
-     */
-    protected $hidden = [
-        'created_at', 'deleted_at',
-    ];
+    public function getWorkDaysAttribute()
+    {
+        if (empty($this->attributes['work_days']))
+            return [];
+        return explode(',', $this->attributes['work_days']);
+    }
 }

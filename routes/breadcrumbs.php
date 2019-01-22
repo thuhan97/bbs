@@ -100,6 +100,7 @@ Breadcrumbs::register('admin', function ($breadcrumbs) {
 // Admin / {Resource} / {List|Edit|Create}
 $resources = [
     'admins' => 'Trang quản trị',
+    'configs' => 'Thiết lập hệ thống',
     'users' => 'Quản lý nhân viên',
     'events' => 'Quản lý sự kiện',
     'posts' => 'Quản lý thông báo',

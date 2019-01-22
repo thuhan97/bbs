@@ -29,4 +29,9 @@ interface IReportService extends IBaseService
      * @return Report
      */
     public function detail($id);
+
+    /**
+     * @return Report
+     */
+    public function newReportFromTemplate();
 }

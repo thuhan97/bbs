@@ -24,9 +24,27 @@ Route::group([
 
     ##AUTO_INSERT_ROUTE##
 
+    //OverTime
+    Route::resource('over_times', 'OverTimeController');
+
+
+    //WorkTimeDetail
+    Route::resource('work_time_details', 'WorkTimeDetailController');
+
+
+    //WorkTime
+    Route::resource('work_times', 'WorkTimeController');
+
+
+    //DayOff
+    Route::resource('day_offs', 'DayOffController');
+
+    //report
+    Route::resource('report', 'ReportController');
+
     //config
-    Route::post('config/deletes', ['as' => 'config.deletes', 'uses' => 'ConfigController@deletes']);
-    Route::resource('config', 'ConfigController');
+    Route::get('configs', 'ConfigController@index')->name('configs.index');
+    Route::post('configs', 'ConfigController@store')->name('configs.store');
 
     //post
     Route::post('posts/deletes', ['as' => 'posts.deletes', 'uses' => 'PostController@deletes']);

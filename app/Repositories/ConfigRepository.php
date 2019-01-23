@@ -6,7 +6,7 @@ use App\Repositories\Contracts\IConfigRepository;
 
 /**
 * ConfigRepository class
-* Author: trinhnv
+* Author: jvb
 * Date: 2018/11/15 16:31
 */
 class ConfigRepository extends AbstractRepository implements IConfigRepository

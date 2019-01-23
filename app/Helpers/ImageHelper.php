@@ -4,7 +4,7 @@ namespace App\Helper;
 
 /**
  * Class for image handling and manipulation
- * User: TrinhNV
+ * User: jvb
  * Date: 9/20/2017
  * Time: 11:48 AM
  */

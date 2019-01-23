@@ -39,7 +39,7 @@
             </div>
         @endforeach
 
-        @if ($events->count() > 1)
+        @if ($events->lastPage() > 1)
             @include('common.paginate_eu', ['records' => $events])
         @endif
     @else

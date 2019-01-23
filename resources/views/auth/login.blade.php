@@ -24,7 +24,7 @@
                                 <div class="alert alert-danger ">
                                     {{ $error }}
                                 </div>
-                                <br />
+                                <br/>
                         @endif
 
                         <!-- Email -->
@@ -43,13 +43,10 @@
                             <div class="d-flex justify-content-around">
                                 <div>
                                     <!-- Remember me -->
-                                    <div class="form-check">
-                                        <input type="checkbox" class="form-check-input" name="remember"
-                                               id="remember" {{ old('remember') ? 'checked' : '' }}>
-                                        <label class="form-check-label" for="remember">
-                                            Nhớ đăng nhập
-                                        </label>
-                                    </div>
+                                    <label class="pure-material-checkbox">
+                                        <input type="checkbox" name="remember">
+                                        <span>Nhớ đăng nhập</span>
+                                    </label>
                                 </div>
                                 <div>
                                     <!-- Forgot password -->

@@ -7,6 +7,7 @@ define('INVITE_POTATO', 100);
 define('POTATO_EXPRIRE_DEFAULT', 6);
 define('MAX_SEARCH_RETRY', 10);
 define('DEFAULT_PAGE_SIZE', 10);
+define('REPORT_PAGE_SIZE', 30);
 define('PAGE_LIST', [10, 20, 50, 100]);
 
 define('MESSAGE', 'message');
@@ -26,6 +27,7 @@ define('UTC', 'UTC');
 
 define('DATE_FORMAT', 'Y-m-d');
 define('DATE_FORMAT_SLASH', 'Y/m/d');
+define('DATE_MONTH_REPORT', 'd/m');
 define('DATE_TIME_FORMAT', 'Y-m-d H:i:s');
 define('DATE_TIME_FORMAT_SHORT', 'Y-m-d H:i');
 define('LANG_JP', 'ja');

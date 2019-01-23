@@ -21,6 +21,7 @@ return [
     'Event' => 'Sự kiện',
     'Post' => 'Thông báo',
     'Report' => 'Báo cáo tuần',
+    'Report_create' => 'Tạo báo cáo tuần',
     'Home' => 'Trang chủ',
     'change_password' => 'Đổi mật khẩu',
     'personal_brief' => 'Hồ sơ cá nhân',
@@ -40,4 +41,10 @@ return [
     'total_record' => ':number bản ghi',
     'event_time' => 'Thời gian tổ chức',
     'event_place' => 'Địa điểm tổ chức',
+    'updating' => 'đang cập nhật',
+    'save_as_draft' => 'Lưu nháp',
+    'sent' => 'Gửi',
+    'report_drafted_successully' => 'Lưu nháp báo cáo thành công',
+    'report_resent_successully' => 'Gửi lại báo cáo thành công',
+    'report_created_successully' => 'Tạo báo cáo thành công',
 ];

@@ -7,7 +7,7 @@ use App\Repositories\Contracts\IRegulationRepository;
 
 /**
  * RegulationController
- * Author: trinhnv
+ * Author: jvb
  * Date: 2019/01/11 09:23
  */
 class RegulationController extends AdminBaseController
@@ -32,7 +32,7 @@ class RegulationController extends AdminBaseController
     /**
      * @var  string
      */
-    protected $resourceTitle = 'Regulation';
+    protected $resourceTitle = 'Quy định, nội quy';
 
     /**
      * Controller construct

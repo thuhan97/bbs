@@ -73,11 +73,11 @@ trait ResourceController
         $this->resourceValidate($request, 'store');
 
         if ($record = $this->repository->save($this->alterValuesToSave($request, $valuesToSave))) {
-            flash()->success('Element successfully inserted.');
+            flash()->success('Thêm mới thành công.');
 
             return $this->getRedirectAfterSave($record);
         } else {
-            flash()->info('Element was not inserted.');
+            flash()->info('Thêm mới thất bại.');
         }
 
         return $this->redirectBackTo(route($this->getResourceRoutesAlias() . '.index'));
@@ -147,11 +147,11 @@ trait ResourceController
         $this->resourceValidate($request, 'update', $record);
 
         if ($this->repository->update($record, $this->alterValuesToSave($request, $valuesToSave))) {
-            flash()->success('Element successfully updated.');
+            flash()->success('Cập nhật thành công.');
 
             return $this->getRedirectAfterSave($record);
         } else {
-            flash()->info('Element was not updated.');
+            flash()->info('Cập nhật thất bại.');
         }
 
         return $this->redirectBackTo(route($this->getResourceRoutesAlias() . '.index'));
@@ -176,9 +176,9 @@ trait ResourceController
         }
 
         if ($record->delete()) {
-            flash()->success('Element successfully deleted.');
+            flash()->success('Xóa thành công.');
         } else {
-            flash()->info('Element was not deleted.');
+            flash()->info('Không thể xóa bản ghi.');
         }
 
         return $this->redirectBackTo(route($this->getResourceRoutesAlias() . '.index'));
@@ -204,9 +204,9 @@ trait ResourceController
                 $q->whereIn('id', $ids);
             }
         ]])) {
-            flash()->success('Selected Elements successfully deleted.');
+            flash()->success('Đã xóa những bản ghi được chọn.');
         } else {
-            flash()->info('Selected Elements was not deleted.');
+            flash()->info('Không xóa được những bản ghi được chọn');
         }
 
         return $this->redirectBackTo(route($this->getResourceRoutesAlias() . '.index'));

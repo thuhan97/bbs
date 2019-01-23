@@ -27,7 +27,7 @@ class LoginController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/admin';
+    protected $redirectTo = '/admin/';
 
     /**
      * Create a new controller instance.
@@ -36,6 +36,7 @@ class LoginController extends Controller
      */
     public function __construct()
     {
+        $this->redirectTo = route('admin::index');
         $this->middleware('guest')->except('logout');
     }
 
@@ -69,23 +70,6 @@ class LoginController extends Controller
     protected function guard()
     {
         return Auth::guard(ADMIN_GUARD);
-    }
-
-    /**
-     * Send the response after the user was authenticated.
-     *
-     * @param  \Illuminate\Http\Request $request
-     *
-     * @return \Illuminate\Http\Response
-     */
-    protected function sendLoginResponse(Request $request)
-    {
-        $request->session()->regenerate();
-
-        $this->clearLoginAttempts($request);
-
-        return $this->authenticated($request, $this->guard()->user())
-            ?: redirect()->intended($this->redirectPath());
     }
 
 

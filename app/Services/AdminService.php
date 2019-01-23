@@ -1,7 +1,7 @@
 <?php 
 /**
 * AdminService class
-* Author: trinhnv
+* Author: jvb
 * Date: 2018/09/03 01:52
 */
 

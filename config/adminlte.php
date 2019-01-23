@@ -46,7 +46,7 @@ return [
     |
     */
 
-    'credits' => 'Powered By: <a target="_blank" href="mailto:batrinh1368@gmail.com">TrinhNV</a>',
+    'credits' => 'Powered By: <a target="_blank" href="mailto:batrinh1368@gmail.com">jvb</a>',
 
     /*
     |--------------------------------------------------------------------------

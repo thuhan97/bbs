@@ -6,7 +6,7 @@ use App\Models\Config;
 
 /**
 * ConfigTransformer class
-* Author: trinhnv
+* Author: jvb
 * Date: 2018/11/15 16:31
 */
 class ConfigTransformer extends Fractal\TransformerAbstract

@@ -9,7 +9,7 @@ use App\Traits\Controllers\ResourceController;
 
 /**
  * AdminController
- * Author: trinhnv
+ * Author: jvb
  * Date: 2018/09/03 01:52
  */
 class AdminController extends Controller
@@ -36,7 +36,7 @@ class AdminController extends Controller
     /**
      * @var  string
      */
-    protected $resourceTitle = 'Admin';
+    protected $resourceTitle = 'Quản trị';
 
     /**
      * Controller construct

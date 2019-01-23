@@ -92,7 +92,7 @@ return [
     'numeric' => 'Trường :attribute phải là một số.',
     'present' => 'Trường :attribute phải được cung cấp.',
     'regex' => 'Trường :attribute có định dạng không hợp lệ.',
-    'required' => 'Trường :attribute không được bỏ trống.',
+    'required' => 'Trường :attribute là bắt buộc.',
     'required_if' => 'Trường :attribute không được bỏ trống khi trường :other là :value.',
     'required_unless' => 'Trường :attribute không được bỏ trống trừ khi :other là :values.',
     'required_with' => 'Trường :attribute không được bỏ trống khi một trong :values có giá trị.',

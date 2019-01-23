@@ -1,7 +1,7 @@
 <?php
 /**
  * EventService class
- * Author: trinhnv
+ * Author: jvb
  * Date: 2018/10/07 16:46
  */
 
@@ -42,16 +42,7 @@ class EventService extends AbstractService implements IEventService
         $perPage = $criterias['page_size'] ?? DEFAULT_PAGE_SIZE;
         $search = $criterias['search'] ?? '';
 
-        return $this->repository->findBy($criterias, [
-            'id',
-            'name',
-            'slug_name',
-            'event_date',
-            'event_end_date',
-            'introduction',
-            'place',
-            'created_at',
-        ]);
+        return $this->repository->findBy($criterias, $this->list_fields());
 
     }
 
@@ -73,5 +64,43 @@ class EventService extends AbstractService implements IEventService
 
             return $event;
         }
+    }
+
+    /**
+     * @param Request $request
+     *
+     * @return collection
+     */
+    public function search_calendar(Request $request)
+    {
+        $timeRange = $request->only('start', 'end');
+        $events = $this->model
+            ->select($this->list_fields())
+            ->where('status', ACTIVE_STATUS)
+            ->where(function ($q) use ($timeRange) {
+                $q->whereBetween('event_date', $timeRange)
+                    ->orWhereBetween('event_end_date', $timeRange);
+            })
+            ->search($request->get('search'))
+            ->get();
+
+        return $events;
+    }
+
+    /**
+     * @return array
+     */
+    private function list_fields()
+    {
+        return [
+            'id',
+            'name',
+            'slug_name',
+            'event_date',
+            'event_end_date',
+            'introduction',
+            'place',
+            'created_at',
+        ];
     }
 }

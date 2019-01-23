@@ -5,7 +5,7 @@ use App\Repositories\Contracts\I{{$Module}}Repository;
 
 /**
 * {{$Module}}Repository class
-* Author: trinhnv
+* Author: jvb
 * Date: {{date('Y/m/d H:i')}}
 */
 class {{$Module}}Repository extends AbstractRepository implements I{{$Module}}Repository

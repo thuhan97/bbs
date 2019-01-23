@@ -30,8 +30,8 @@
                 <th scope="col">Ảnh</th>
                 <th scope="col">Mã nhân viên</th>
                 <th scope="col">Tên nhân viên</th>
-                <th scope="col">Ngày sinh</th>
-                <th scope="col">Số điện thoại</th>
+                <th class="text-center" scope="col">Ngày sinh</th>
+                <th class="text-center" scope="col">Số điện thoại</th>
                 <th scope="col">Email</th>
                 {{--<th scope="col">Chi tiết</th>--}}
             </tr>
@@ -48,14 +48,33 @@
                     </td>
                     <td>{{$user->staff_code}}</td>
                     <td>{{$user->name}}</td>
-                    <td class="">{{$user->birthday}}</td>
-                    <td class="">{{$user->phone}}</td>
+                    <td class="text-center">
+                        @if($user->birthday)
+                            <span class="btn-showinfo btn btn-info">
+                                <i class="fas fas-eyes"></i>
+                                Xem
+                            </span>
+                            <span class="info">
+                             {{$user->birthday}}
+                        </span>
+                        @else
+                            <span>{{__l('updating')}}</span>
+                        @endif
+                    </td>
+                    <td class="text-center">
+                        @if($user->phone)
+                            <span class="btn-showinfo btn btn-info">
+                                <i class="fas fas-eyes"></i>
+                                Xem
+                            </span>
+                            <span class="info">
+                             {{$user->phone}}
+                        </span>
+                        @else
+                            <span>{{__l('updating')}}</span>
+                        @endif
+                    </td>
                     <td>{{$user->email}}</td>
-                    {{--<td>--}}
-                    {{--<button type="button" class="btnViewDetail btn btn-primary text-uppercase">--}}
-                    {{--{{__l('detail')}}--}}
-                    {{--</button>--}}
-                    {{--</td>--}}
                 </tr>
             @endforeach
             </tbody>
@@ -66,11 +85,26 @@
     @endif
 @endsection
 
+@push('extend-css')
+    <style>
+        .info, .btn-showinfo.show {
+            display: none;
+        }
+
+        .btn-showinfo.show ~ .info {
+            display: block;
+        }
+    </style>
+@endpush
 @push('extend-js')
     <script type="text/javascript" src="{{ asset('js/jquery.lazy.min.js') }}"></script>
     <script>
         $(function () {
             $('.lazy').Lazy();
+
+            $('.btn-showinfo').click(function () {
+                $(this).addClass('show');
+            });
         });
     </script>
 @endpush

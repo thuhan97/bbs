@@ -1,7 +1,7 @@
 <?php
 /**
  * PostModel class
- * Author: trinhnv
+ * Author: jvb
  * Date: 2018/11/11 13:59
  */
 

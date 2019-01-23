@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\DB;
 
 /**
  * DatabaseHelper
- * Author: trinhnv
+ * Author: jvb
  * Date: 2018/09/09
  */
 class DatabaseHelper

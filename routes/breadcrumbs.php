@@ -62,6 +62,10 @@ Breadcrumbs::register('report', function ($breadcrumbs) {
     $breadcrumbs->parent('personal');
     $breadcrumbs->push(__l('Report'), route('report'));
 });
+Breadcrumbs::register('report_create', function ($breadcrumbs) {
+    $breadcrumbs->parent('report');
+    $breadcrumbs->push(__l('Report_create'), route('create_report'));
+});
 
 // Dashboard > Profile
 Breadcrumbs::register('_personal', function ($breadcrumbs) {
@@ -96,6 +100,7 @@ Breadcrumbs::register('admin', function ($breadcrumbs) {
 // Admin / {Resource} / {List|Edit|Create}
 $resources = [
     'admins' => 'Trang quản trị',
+    'configs' => 'Thiết lập hệ thống',
     'users' => 'Quản lý nhân viên',
     'events' => 'Quản lý sự kiện',
     'posts' => 'Quản lý thông báo',
@@ -127,7 +132,7 @@ foreach ($resources as $resource => $data) {
         $breadcrumbs->push('Sửa', route($resource . '.edit', $id));
     });
     // Detail
-    Breadcrumbs::register($resource .'.show', function ($breadcrumbs,  $id) use ($resource) {
+    Breadcrumbs::register($resource . '.show', function ($breadcrumbs, $id) use ($resource) {
         $breadcrumbs->parent($resource);
         $breadcrumbs->push('Chi tiết', route($resource . '.show', $id));
     });

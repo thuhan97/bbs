@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 
 /**
  * IRegulationService contract
- * Author: trinhnv
+ * Author: jvb
  * Date: 2019/01/11 09:23
  */
 interface IRegulationService extends IBaseService

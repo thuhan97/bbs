@@ -11,5 +11,11 @@
 |
 */
 
-Route::group(['prefix' => 'v1'], function () {
+Route::group([
+    'prefix' => 'v1',
+//    'middleware' => ['auth'],
+], function () {
+    Route::get('/events', 'EventController@index')->name('api_events');
+    Route::get('/events/calendar', 'EventController@calendar')->name('api_events_calendar');
+
 });

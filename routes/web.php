@@ -91,10 +91,6 @@ Route::group(['prefix' => 'file-manager', 'middleware' => ['admin'], 'as' => 'un
     Route::get('/demo', $namespace . 'DemoController@index');
 });
 
-Route::get('auth/social', 'SocialAuthController@show')->name('social.login');
-Route::any('auth/{driver}', 'SocialAuthController@redirectToProvider')->name('social.oauth');
-Route::any('auth/{driver}/callback', 'SocialAuthController@handleProviderCallback')->name('social.callback');
-
 Auth::routes();
 Route::any('logout', 'Auth\LoginController@logout')->name('logout');
 
@@ -113,12 +109,16 @@ Route::group([
 
     Route::get('/noi-quy-quy-dinh', 'RegulationController@index')->name('regulation');
     Route::get('/noi-quy-quy-dinh/{id}', 'RegulationController@detail')->where(['id' => '\d+'])->name('regulation_detail');
-    Route::get('/su-kien', 'EventController@calender')->name('event');
+    Route::get('/su-kien', 'EventController@calendar')->name('event');
+    Route::get('/events', 'EventController@getCalendar')->name('getCalendar');
     Route::get('/danh-sach-su-kien', 'EventController@index')->name('event_list');
     Route::get('/su-kien/{id}', 'EventController@detail')->where(['id' => '\d+'])->name('event_detail');
     Route::get('/thong-bao', 'PostController@index')->name('post');
     Route::get('/thong-bao/{id}', 'PostController@detail')->where(['id' => '\d+'])->name('post_detail');
     Route::get('/bao-cao', 'ReportController@index')->name('report');
+    Route::get('/tao-bao-cao', 'ReportController@create')->name('create_report');
+    Route::get('/report', 'ReportController@getReport')->name('getReport');
+    Route::post('/tao-bao-cao', 'ReportController@saveReport')->name('save_report');
     Route::get('/bao-cao/{id}', 'ReportController@detail')->where(['id' => '\d+'])->name('report_detail');
 
 });

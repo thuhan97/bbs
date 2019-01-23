@@ -6,7 +6,7 @@ use App\Models\Admin;
 
 /**
 * AdminTransformer class
-* Author: trinhnv
+* Author: jvb
 * Date: 2018/09/03 01:52
 */
 class AdminTransformer extends Fractal\TransformerAbstract

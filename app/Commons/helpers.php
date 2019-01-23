@@ -153,6 +153,85 @@ if (!function_exists('unicode_encode')) {
         }, $str);
     }
 }
+if (!function_exists('get_day_of_week')) {
+
+    function get_day_of_week()
+    {
+        return [
+            "0" => "Chủ nhật",
+            "1" => "Thứ 2",
+            "2" => "Thứ 3",
+            "3" => "Thứ 4",
+            "4" => "Thứ 5",
+            "5" => "Thứ 6",
+            "6" => "Thứ 7",
+        ];
+    }
+}
+if (!function_exists('get_week_number')) {
+    /**
+     * Get week number
+     *
+     * @param $ddate
+     *
+     * @return string
+     */
+    function get_week_number($ddate = null)
+    {
+        if ($ddate !== null)
+            $ddate = date(DATE_FORMAT);
+        $date = new DateTime($ddate);
+
+        return $date->format("W");
+    }
+}
+if (!function_exists('get_week_info')) {
+    /**
+     * 0: this week, 1: next week; -1: last week
+     *
+     * @param $type
+     * @param $week_number
+     *
+     * @return string
+     */
+    function get_week_info($type = 0, &$week_number = null)
+    {
+        [$firstDay, $lastDay] = get_first_last_day_in_week($type, $day);
+        $week_number = get_week_number($day);
+        $year = date('Y');
+        return "$week_number-$year [$firstDay - $lastDay]";
+    }
+}
+
+if (!function_exists('get_first_last_day_in_week')) {
+    /**
+     * 0: this week, 1: next week; -1: last week
+     *
+     * @param $type
+     * @param $day
+     *
+     * @return array
+     */
+    function get_first_last_day_in_week($type = 0, &$day = null)
+    {
+        switch ($type) {
+            case -1;
+                $day = date(DATE_FORMAT, strtotime('-7 days'));
+                break;
+            case 1;
+                $day = date(DATE_FORMAT, strtotime('+7 days'));
+                break;
+            default:
+                $day = date(DATE_FORMAT);
+                break;
+        }
+
+        $firstDay = date(DATE_MONTH_REPORT, strtotime("monday this week", strtotime($day)));
+        $lastDay = date(DATE_MONTH_REPORT, strtotime("saturday this week", strtotime($day)));
+
+        return [$firstDay, $lastDay];
+    }
+}
 
 if (!function_exists('__l')) {
     /**
@@ -173,3 +252,5 @@ if (!function_exists('__l')) {
         }
     }
 }
+
+

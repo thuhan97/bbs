@@ -1,8 +1,8 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 class AddColumnToUsersTable extends Migration
 {
@@ -16,6 +16,18 @@ class AddColumnToUsersTable extends Migration
         Schema::table('users', function (Blueprint $table) {
             $table->tinyInteger('jobtitle_id');
             $table->tinyInteger('position_id');
+        });
+    }
+
+    /**
+     * Run the migrations.
+     *
+     * @return void
+     */
+    public function down()
+    {
+        Schema::table('users', function (Blueprint $table) {
+            $table->dropColumn('jobtitle_id', 'position_id');
         });
     }
 }

@@ -7,7 +7,7 @@ use App\Repositories\Contracts\IPostRepository;
 
 /**
  * PostController
- * Author: trinhnv
+ * Author: jvb
  * Date: 2018/11/11 13:59
  */
 class PostController extends AdminBaseController
@@ -32,7 +32,7 @@ class PostController extends AdminBaseController
     /**
      * @var  string
      */
-    protected $resourceTitle = 'Post';
+    protected $resourceTitle = 'Thông báo';
 
     /**
      * Controller construct

@@ -1,6 +1,6 @@
 /**
 * {{$Module}}Service class
-* Author: trinhnv
+* Author: jvb
 * Date: {{date('Y/m/d H:i')}}
 */
 

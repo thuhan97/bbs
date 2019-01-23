@@ -13,7 +13,7 @@ use Illuminate\Http\Request;
 
 /**
  * QuestionController
- * Author: trinhnv
+ * Author: jvb
  * Date: 2018/09/03 01:51
  */
 class QuestionController extends AdminBaseController

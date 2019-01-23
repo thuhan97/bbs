@@ -30,7 +30,7 @@
             </div>
         @endforeach
 
-        @if ($posts->count() > 1)
+        @if ($posts->lastPage() > 1)
             @include('common.paginate_eu', ['records' => $posts])
         @endif
     @else

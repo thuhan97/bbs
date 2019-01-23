@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Models\UserTeam;
+use App\Traits\Controllers\ResourceController;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Team;
@@ -69,6 +71,17 @@ class TeamController extends AdminBaseController
             ],
             'advanced' => [],
         ];
+    }
+
+    public function manageMember(){
+        $team = new Team;
+        $member_other = $team->getMemberNotInTeam();
+//        dd($member_other);
+        $data = array (
+            'members_other'=>$member_other,
+        );
+//
+        return view('admin.teams.user_team')->with($data);
     }
 
 }

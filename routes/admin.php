@@ -49,6 +49,7 @@ Route::group([
     Route::post('users/import', ['uses' => 'UserController@importData']);
     Route::post('users/deletes', ['as' => 'users.deletes', 'uses' => 'UserController@deletes']);
     Route::post('teams/deletes', ['as' => 'teams.deletes', 'uses' => 'TeamController@deletes']);
+    Route::get('teams/manage-member/{id}', [ 'uses' => 'TeamController@manageMember']);
     Route::resource('users', 'UserController');
     Route::resource('teams', 'TeamController');
 

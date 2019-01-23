@@ -105,6 +105,7 @@ $resources = [
     'events' => 'Quản lý sự kiện',
     'posts' => 'Quản lý thông báo',
     'regulations' => 'Nội quy, quy định',
+    'day_offs' => 'Quản lý nghỉ phép',
 ];
 foreach ($resources as $resource => $data) {
     $parent = 'admin';

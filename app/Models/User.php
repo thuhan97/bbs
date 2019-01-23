@@ -106,6 +106,30 @@ class User extends Authenticatable implements JWTSubject
     }
 
     /**
+     * Get avaiable users
+     *
+     * @return mixed
+     */
+    public function availableUsers()
+    {
+        return $this->where('status', ACTIVE_STATUS)
+            ->orderBy('staff_code');
+    }
+
+    /**
+     * Get users who can approve
+     *
+     * @param int $minJobTitle
+     *
+     * @return mixed
+     */
+    public function approverUsers($minJobTitle = MIN_APPROVE_JOB)
+    {
+        return $this->where('status', ACTIVE_STATUS)->where('jobtitle_id', '>=', $minJobTitle)
+            ->orderBy('staff_code');
+    }
+
+    /**
      * Search for course title or subject name
      *
      * @param $query

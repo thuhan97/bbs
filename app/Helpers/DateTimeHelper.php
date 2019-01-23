@@ -87,4 +87,15 @@ class DateTimeHelper
 
         return date('Y-m-d', strtotime($value));
     }
+
+    /**
+     * @param $startAt
+     * @param $endAt
+     *
+     * @return int
+     */
+    public static function getDayOffNumbers($startAt, $endAt)
+    {
+        return 0;
+    }
 }

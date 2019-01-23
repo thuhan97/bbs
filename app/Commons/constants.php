@@ -55,6 +55,7 @@ define('CONTRACT_TYPES', [
     'parttime' => 2,
     'internship' => 3,
 ]);
+
 define('CONTRACT_TYPES_NAME', [
     0 => 'Chính thức',
     1 => 'Thử việc',
@@ -62,3 +63,12 @@ define('CONTRACT_TYPES_NAME', [
     3 => 'Thực tập',
 ]);
 
+
+define('MIN_APPROVE_JOB', 2);
+
+define('JOB_TITLES', [
+    0 => 'Chuyên viên',
+    1 => 'Team leader',
+    2 => 'Manager',
+    3 => 'Giám đốc',
+]);

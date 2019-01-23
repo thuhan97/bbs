@@ -37,6 +37,7 @@ Route::group([
 
 
     //DayOff
+    Route::post('day_offs/deletes', ['as' => 'day_offs.deletes', 'uses' => 'DayOffController@deletes']);
     Route::resource('day_offs', 'DayOffController');
 
     //report

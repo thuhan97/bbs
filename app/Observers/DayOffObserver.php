@@ -17,7 +17,7 @@ class DayOffObserver
      */
     public function creating(DayOff $dayOff)
     {
-        $dayOff->number_off = DateTimeFacade::getDayOffNumbers($dayOff->start_at, $dayOff->end_at);
+//        $dayOff->number_off = DateTimeFacade::getDayOffNumbers($dayOff->start_at, $dayOff->end_at);
     }
 
     /**
@@ -41,7 +41,7 @@ class DayOffObserver
      */
     public function updating(DayOff $dayOff)
     {
-        $dayOff->number_off = DateTimeFacade::getDayOffNumbers($dayOff->start_at, $dayOff->end_at);
+//        $dayOff->number_off = DateTimeFacade::getDayOffNumbers($dayOff->start_at, $dayOff->end_at);
     }
 
     /**

@@ -158,13 +158,13 @@ if (!function_exists('get_day_of_week')) {
     function get_day_of_week()
     {
         return [
-            "0" => "Chủ nhật",
             "1" => "Thứ 2",
             "2" => "Thứ 3",
             "3" => "Thứ 4",
             "4" => "Thứ 5",
             "5" => "Thứ 6",
             "6" => "Thứ 7",
+            "7" => "Chủ nhật",
         ];
     }
 }
@@ -232,6 +232,61 @@ if (!function_exists('get_first_last_day_in_week')) {
         return [$firstDay, $lastDay];
     }
 }
+
+
+if (!function_exists('get_years')) {
+    /**
+     * Encode unicode
+     *
+     * @param integer $num
+     * @param string  $prefix
+     * @param bool    $isDesc
+     *
+     * @return string
+     *
+     */
+    function get_years($num = 5, $prefix = '', $isDesc = true)
+    {
+        $result = [];
+        $currentYear = date('Y');
+        $minYear = $currentYear - $num;
+        $start = $isDesc ? $currentYear : $minYear;
+        $step = $isDesc ? -1 : 1;
+
+        while ($start > $minYear && $start <= $currentYear) {
+            $result[$start] = $prefix . $start;
+            $start = $start + $step;
+        }
+
+        return ['' => 'Chọn năm'] + $result;
+    }
+}
+
+if (!function_exists('get_months')) {
+    /**
+     * Get months
+     *
+     * @param string $prefix
+     * @param bool   $isDesc
+     *
+     * @return string
+     *
+     */
+    function get_months($prefix = '', $isDesc = false)
+    {
+        $result = [];
+        $start = $isDesc ? 12 : 1;
+        $step = $isDesc ? -1 : 1;
+
+        while ($start >= 1 && $start <= 12) {
+            $result[$start] = $prefix . $start;
+            $start = $start + $step;
+        }
+
+        return ['' => 'Chọn tháng'] + $result;
+    }
+}
+
 
 if (!function_exists('__l')) {
     /**

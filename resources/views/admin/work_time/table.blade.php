@@ -7,46 +7,45 @@
             <col style="width: 180px">
             <col style="width: 180px">
             <col style="width: 180px">
-            <col style="width: 100px">
             <col style="width: 70px">
         </colgroup>
         <thead>
         <th style="width: 10px;">
             <button type="button" class="btn btn-default btn-sm checkbox-toggle"><i class="fa fa-square-o"></i></button>
         </th>
+        <th>Ngày</th>
         <th>Nhân viên</th>
-        <th>Lý do xin nghỉ</th>
-        <th>Nghỉ từ</th>
-        <th>Đến ngày</th>
-        <th>Ngày tạo</th>
-        <th>Đã duyệt</th>
+        <th>Checkin</th>
+        <th>Checkout</th>
+        <th>Chú thích</th>
         <th style="width: 100px;">Chức năng</th>
         </thead>
         <tbody>
         @foreach ($records as $record)
             <?php
             $editLink = route($resourceRoutesAlias . '.edit', $record->id);
-            $userLink = route('admin::day_offs.user', $record->user_id);
+            $userLink = route($resourceRoutesAlias . '.index', ['user_id' => $record->user_id]);
 
             $deleteLink = route($resourceRoutesAlias . '.destroy', $record->id);
             $formId = 'formDeleteModel_' . $record->id;
             ?>
             <tr>
                 <td><input type="checkbox" name="ids[]" value="{{ $record->id }}" class="square-blue chkDelete"></td>
+                <td>{{ $record->work_day }}</td>
                 <td class="table-text">
-                    <a href="{{ $userLink }}">{{ $record->user->name }}</a>
+                    <a href="{{ $userLink }}">{{ $record->user->name ?? '' }}</a>
                 </td>
-                <td>{{ $record->title }}</td>
                 <td class="text-right">{{ $record->start_at }}</td>
                 <td class="text-right">{{ $record->end_at }}</td>
-                <td class="text-right">{{ $record->created_at }}</td>
-                @if ($record->status == 1)
-                    <td class="text-center"><span class="label label-info">Yes</span></td>
-                @else
-                    <td class="text-center"><span class="label label-warning">No</span></td>
-            @endif
-
-            <!-- we will also add show, edit, and delete buttons -->
+                <td>
+                    @if($record->type == 1)
+                        <span class="label label-danger">{{ $record->note }}</span>
+                    @elseif($record->type == 2)
+                        <span class="label label-warning">{{ $record->note }}</span>
+                    @elseif($record->type == 3)
+                        <span class="label label-success">{{ $record->note }}</span>
+                    @endif
+                </td>
                 <td>
                     <div class="btn-group">
                         <a href="{{ $editLink }}" class="btn btn-info btn-sm"><i class="fa fa-edit"></i></a>

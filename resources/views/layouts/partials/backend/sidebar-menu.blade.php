@@ -35,7 +35,11 @@
     'admin::day_offs.index',
     'admin::day_offs.create',
     'admin::day_offs.edit',
+    'admin::day_offs.user',
     'admin::work_times.index',
+    'admin::work_times.create',
+    'admin::work_times.import',
+    'admin::work_times.edit',
     ]) ? 'active': '' }}">
         <a href="#"><i class="fa fa-calendar"></i> <span>Thời gian làm việc</span>
             <span class="pull-right-container">

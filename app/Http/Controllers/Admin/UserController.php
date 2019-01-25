@@ -29,8 +29,6 @@ class UserController extends AdminBaseController
      */
     protected $resourceModel = User::class;
 
-    protected $resourceSearchExtend = 'admin.users._partials.search_form';
-
     /**
      * @var  string
      */

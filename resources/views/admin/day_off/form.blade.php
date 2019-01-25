@@ -1,9 +1,10 @@
 <div class="col-md-7">
+    <h3>Dành cho nhân viên xin nghỉ phép</h3>
     <div class="row">
         <div class="col-md-12">
             <div class="form-group margin-b-5 margin-t-5{{ $errors->has('user_id') ? ' has-error' : '' }}">
                 <label for="user_id">Chọn nhân viên *</label>
-                {{ Form::select('user_id', ['' => 'Chọn nhân viên'] +  $request_users, $record->user_id, ['class'=>'select2 form-control']) }}
+                {{ Form::select('user_id', ['' => 'Chọn nhân viên'] +  $request_users, $record->user_id ?? $user_id, ['class'=>'select2 form-control']) }}
                 @if ($errors->has('user_id'))
                     <span class="help-block">
                     <strong>{{ $errors->first('user_id') }}</strong>
@@ -89,6 +90,8 @@
     </div>
 </div>
 <div class="col-md-5">
+    <h3>Dành cho người duyệt</h3>
+
     <div class="row">
         <div class="col-md-12">
             <div class="form-group margin-b-5 margin-t-5{{ $errors->has('approver_id') ? ' has-error' : '' }}">
@@ -97,6 +100,34 @@
                 @if ($errors->has('approver_id'))
                     <span class="help-block">
                     <strong>{{ $errors->first('approver_id') }}</strong>
+                </span>
+                @endif
+            </div>
+            <!-- /.form-group -->
+        </div>
+        <div class="col-md-12">
+            <div class="form-group margin-b-5 margin-t-5{{ $errors->has('number_off') ? ' has-error' : '' }}">
+                <label for="number_off">Số ngày nghỉ được tính (1 ngày hoặc nửa ngày)</label>
+                <input type="text" class="form-control" name="number_off" placeholder="Nhập tiêu đề"
+                       value="{{ old('number_off', $record->number_off ?? 'Xin nghỉ phép') }}" required>
+
+                @if ($errors->has('number_off'))
+                    <span class="help-block">
+                    <strong>{{ $errors->first('number_off') }}</strong>
+                </span>
+                @endif
+            </div>
+            <!-- /.form-group -->
+        </div>
+        <div class="col-md-12">
+            <div class="form-group margin-b-5 margin-t-5{{ $errors->has('approve_comment') ? ' has-error' : '' }}">
+                <label for="approve_comment">Ý kiến</label>
+                <textarea class="form-control" name="approve_comment" id="approve_comment" rows="3"
+                          placeholder="Nhập ý kiến">{{ old('approve_comment', $record->approve_comment) }}</textarea>
+
+                @if ($errors->has('approve_comment'))
+                    <span class="help-block">
+                    <strong>{{ $errors->first('approve_comment') }}</strong>
                 </span>
                 @endif
             </div>

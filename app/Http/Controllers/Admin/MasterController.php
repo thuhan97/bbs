@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Event;
-use App\Models\Post;
 use App\Models\User;
 
 /**
@@ -23,11 +22,10 @@ class MasterController extends Controller
 
     public function index()
     {
-        $postCount = Post::count();
-        $eventCount = Event::count();
-        $userCount = User::count();
+        $probationStaffs = (new User())->probationUsers()->paginate(8);
+        $events = Event::where('status', ACTIVE_STATUS)->orderBy('id', 'desc')->get();
 
-        return view('admin.master', compact('postCount', 'eventCount', 'userCount'));
+        return view('admin.master', compact('probationStaffs', 'events'));
     }
 
 }

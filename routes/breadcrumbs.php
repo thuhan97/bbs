@@ -106,6 +106,7 @@ $resources = [
     'posts' => 'Quản lý thông báo',
     'regulations' => 'Nội quy, quy định',
     'day_offs' => 'Quản lý nghỉ phép',
+    'work_times' => 'Quản lý làm việc',
 ];
 foreach ($resources as $resource => $data) {
     $parent = 'admin';
@@ -139,12 +140,12 @@ foreach ($resources as $resource => $data) {
 
 }
 
-Breadcrumbs::register('admin::questions.import', function ($breadcrumbs, $data) {
-    $breadcrumbs->parent('admin::question-sets');
-    $breadcrumbs->push('Import questions', route('admin::questions.import', ['id' => $data['id']]));
+Breadcrumbs::register('admin::day_offs.user', function ($breadcrumbs, $user) {
+    $breadcrumbs->parent('admin::day_offs');
+    $breadcrumbs->push($user->name, route('admin::day_offs.user', ['id' => $user->id]));
 });
 
-Breadcrumbs::register('admin::question-sets.import', function ($breadcrumbs) {
-    $breadcrumbs->parent('admin::question-sets');
-    $breadcrumbs->push('Import', route('admin::question-sets.import'));
+Breadcrumbs::register('admin::work_times.import', function ($breadcrumbs) {
+    $breadcrumbs->parent('admin::work_times');
+    $breadcrumbs->push('Nhập dữ liệu từ máy chấm công', route('admin::work_times.import'));
 });

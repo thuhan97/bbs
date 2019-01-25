@@ -2,6 +2,7 @@
 
 namespace App\Traits\Controllers;
 
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Http\Request;
 
 trait ResourceController
@@ -19,13 +20,7 @@ trait ResourceController
     {
         $this->authorize('viewList', $this->getResourceModel());
 
-        $perPage = (int)$request->input('per_page', '');
-        $perPage = (is_numeric($perPage) && $perPage > 0 && $perPage <= 100) ? $perPage : DEFAULT_PAGE_SIZE;
-        $search = $request->input('search', '');
-
-        $records = $this->getSearchRecords($request, $perPage, $search);
-
-        $records->appends($request->except('page'));
+        $records = $this->searchRecords($request, $perPage, $search);
 
         return view($this->getResourceIndexPath(), $this->filterSearchViewData($request, [
             'records' => $records,
@@ -34,6 +29,7 @@ trait ResourceController
             'resourceRoutesAlias' => $this->getResourceRoutesAlias(),
             'resourceTitle' => $this->getResourceTitle(),
             'perPage' => $perPage,
+            'resourceSearchExtend' => $this->resourceSearchExtend,
         ]));
     }
 
@@ -210,6 +206,26 @@ trait ResourceController
         }
 
         return $this->redirectBackTo(route($this->getResourceRoutesAlias() . '.index'));
+    }
+
+    /**
+     * @param Request $request
+     * @param         $perPage
+     * @param         $search
+     *
+     * @return LengthAwarePaginator|\Illuminate\Support\Collection
+     */
+    public function searchRecords(Request $request, &$perPage, &$search)
+    {
+        $perPage = (int)$request->input('per_page', '');
+        $perPage = (is_numeric($perPage) && $perPage > 0 && $perPage <= 100) ? $perPage : DEFAULT_PAGE_SIZE;
+        $search = $request->input('search', '');
+
+        $records = $this->getSearchRecords($request, $perPage, $search);
+
+        $records->appends($request->except('page'));
+
+        return $records;
     }
 
     public function getResourceIndexPath()

@@ -26,8 +26,6 @@ class User extends Authenticatable implements JWTSubject
 
     protected $table = 'users';
 
-    protected $primaryKey = 'id';
-
     protected $fillable = [
         'staff_code',
         'name',
@@ -42,10 +40,21 @@ class User extends Authenticatable implements JWTSubject
         'current_address',
         'school',
         'birthday',
+        'probation_at',
         'start_date',
         'end_date',
         'contract_type',
         'status',
+        'jobtitle_id',
+        'position_id',
+        'gmail',
+        'gitlab',
+        'chatwork',
+        'skills',
+        'in_future',
+        'hobby',
+        'foreign_language',
+
     ];
 
     /**
@@ -127,6 +136,16 @@ class User extends Authenticatable implements JWTSubject
     {
         return $this->where('status', ACTIVE_STATUS)->where('jobtitle_id', '>=', $minJobTitle)
             ->orderBy('staff_code');
+    }
+
+    /**
+     * Get users who is probation staff
+     *
+     * @return mixed
+     */
+    public function probationUsers()
+    {
+        return $this->where('status', ACTIVE_STATUS)->where('contract_type', CONTRACT_TYPES['probation']);
     }
 
     /**

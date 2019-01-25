@@ -47,4 +47,5 @@ return [
     'report_drafted_successully' => 'Lưu nháp báo cáo thành công',
     'report_resent_successully' => 'Gửi lại báo cáo thành công',
     'report_created_successully' => 'Tạo báo cáo thành công',
+    'user_not_found' => 'Không tìm thấy người dùng',
 ];

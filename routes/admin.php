@@ -27,17 +27,20 @@ Route::group([
     //OverTime
     Route::resource('over_times', 'OverTimeController');
 
-
     //WorkTimeDetail
     Route::resource('work_time_details', 'WorkTimeDetailController');
 
-
     //WorkTime
+    Route::post('work_times/deletes', ['as' => 'work_times.deletes', 'uses' => 'WorkTimeController@deletes']);
+    Route::get('work_times/download-template', ['as' => 'work_times.download_template', 'uses' => 'WorkTimeController@downloadTemplate']);
+    Route::get('work_times/import', ['as' => 'work_times.import', 'uses' => 'WorkTimeController@import']);
+    Route::post('work_times/import', ['as' => 'work_times.importData', 'uses' => 'WorkTimeController@importData']);
+    Route::get('work_times/user/{id}', ['as' => 'work_times.user', 'uses' => 'WorkTimeController@byUser'])->where(['id' => '\d+']);
     Route::resource('work_times', 'WorkTimeController');
-
 
     //DayOff
     Route::post('day_offs/deletes', ['as' => 'day_offs.deletes', 'uses' => 'DayOffController@deletes']);
+    Route::get('day_offs/user/{id}', ['as' => 'day_offs.user', 'uses' => 'DayOffController@byUser'])->where(['id' => '\d+']);
     Route::resource('day_offs', 'DayOffController');
 
     //report

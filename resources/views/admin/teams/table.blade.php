@@ -7,7 +7,9 @@
         <th>STT</th>
         <th>Tên nhóm</th>
         <th>Trưởng nhóm</th>
-        <th>Khẩu hiệu</th>
+        <th>Biểu ngữ</th>
+        <th>Miêu tả</th>
+        <th>Khẩu ngữ</th>
         <th>Ngày tạo</th>
         <th style="width: 120px;">Chức năng</th>
         </thead>
@@ -31,8 +33,10 @@
                 <td class="table-text">
                     <a href="{{ $showLink }}">{{ $record->name }}</a>
                 </td>
-                <td>{{ $record->getUsersAttribute($record->leader_id) }}</td>
+                <td>{{ $record->leader_name}}</td>
                 <td>{{ $record->banner }}</td>
+                <td>{{ $record->description }}</td>
+                <td>{{ $record->slogan }}</td>
                 <td class="">{{ $record->created_at }}</td>
 
                 <!-- we will also add show, edit, and delete buttons -->

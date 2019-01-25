@@ -17,7 +17,9 @@ class CreateTeamsTable extends Migration
             $table->increments('id');
             $table->string('name');
             $table->integer('leader_id');
-            $table->string('banner')->nullable();
+            $table->string('banner')->nullable()->comment('Biểu ngữ');
+            $table->string('description')->nullable()->comment('Miêu tả');
+            $table->string('slogan')->nullable()->comment('Khẩu ngữ');
             $table->timestamps();
             $table->softDeletes();
         });

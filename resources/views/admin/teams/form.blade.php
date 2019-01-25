@@ -48,13 +48,49 @@
             <div class="row">
                 <div class="col-md-6">
                     <div class="form-group margin-b-5 margin-t-5{{ $errors->has('banner') ? ' has-error' : '' }}">
-                        <label for="id_card">Khẩu hiệu</label>
-                        <input type="text" class="form-control" name="banner" placeholder="Khẩu hiệu"
+                        <label for="banner">Biểu ngữ</label>
+                        <input type="text" class="form-control" name="banner" placeholder="Biểu ngữ"
                                    value="{{ old('banner', $record->banner) }}">
 
                         @if ($errors->has('banner'))
                             <span class="help-block">
                     <strong>{{ $errors->first('banner') }}</strong>
+                </span>
+                        @endif
+                    </div>
+                    <!-- /.form-group -->
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group margin-b-5 margin-t-5{{ $errors->has('description') ? ' has-error' : '' }}">
+                        <label for="description">Miêu tả</label>
+                        <input type="text" class="form-control" name="description" placeholder="Miêu tả"
+                               value="{{ old('description', $record->description) }}">
+
+                        @if ($errors->has('description'))
+                            <span class="help-block">
+                    <strong>{{ $errors->first('description') }}</strong>
+                </span>
+                        @endif
+                    </div>
+                    <!-- /.form-group -->
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group margin-b-5 margin-t-5{{ $errors->has('slogan') ? ' has-error' : '' }}">
+                        <label for="slogan">Khẩu hiệu</label>
+                        <input type="text" class="form-control" name="slogan" placeholder="Khẩu hiệu"
+                               value="{{ old('slogan', $record->slogan) }}">
+
+                        @if ($errors->has('slogan'))
+                            <span class="help-block">
+                    <strong>{{ $errors->first('slogan') }}</strong>
                 </span>
                         @endif
                     </div>

@@ -7,6 +7,7 @@ use App\Models\Config;
 use App\Models\Event;
 use App\Models\Post;
 use App\Models\Team;
+use App\Models\UserTeam;
 use App\Models\Regulation;
 use App\Models\Report;
 use App\Models\User;
@@ -20,12 +21,14 @@ use App\Repositories\Contracts\IRegulationRepository;
 use App\Repositories\Contracts\IReportRepository;
 use App\Repositories\Contracts\IUserRepository;
 use App\Repositories\Contracts\ITeamRepository;
+use App\Repositories\Contracts\IUserTeamRepository;
 use App\Repositories\EventRepository;
 use App\Repositories\PostRepository;
 use App\Repositories\RegulationRepository;
 use App\Repositories\ReportRepository;
 use App\Repositories\UserRepository;
 use App\Repositories\TeamRepository;
+use App\Repositories\UserTeamRepository;
 use Illuminate\Support\ServiceProvider;
 
 ##AUTO_INSERT_USE##
@@ -88,6 +91,9 @@ class RepositoriesServiceProvider extends ServiceProvider
         });
         $this->app->bind(ITeamRepository::class, function () {
             return new TeamRepository(new Team());
+        });
+        $this->app->bind(IUserTeamRepository::class, function () {
+            return new UserTeamRepository(new UserTeam());
         });
     }
 

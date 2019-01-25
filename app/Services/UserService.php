@@ -11,6 +11,7 @@ use App\Events\UserRegistered;
 use App\Models\Potato;
 use App\Models\User;
 use App\Repositories\Contracts\IUserRepository;
+use App\Repositories\Contracts\IUserTeamRepository;
 use App\Services\Contracts\IPotatoService;
 use App\Services\Contracts\IUserService;
 use Carbon\Carbon;
@@ -26,10 +27,11 @@ class UserService extends AbstractService implements IUserService
      * @param \App\Models\User                            $model
      * @param \App\Repositories\Contracts\IUserRepository $repository
      */
-    public function __construct(User $model, IUserRepository $repository)
+    public function __construct(User $model, IUserRepository $repository,IUserTeamRepository $userTeamRepository)
     {
         $this->model = $model;
         $this->repository = $repository;
+        $this->userTeamRepository= $userTeamRepository;
     }
 
     /**
@@ -80,5 +82,24 @@ class UserService extends AbstractService implements IUserService
         $search = $criterias['search'] ?? '';
 
         return $this->repository->findBy($criterias, ['*'], true);
+    }
+
+    /**
+     * @param $id
+     * @return mixed
+     */
+    public function getMemberName($id){
+        return $this->model->where('id',  $id)->first()->name;
+    }
+
+    public function getMemberNotInTeam($id = null){
+        $memberModel = new UserTeam;
+        $member = $this->userTeamRepository->getMemberIdAttribute();
+//        dd($member);
+        $users = '';
+        $users = User::whereNotIn('id', $member)
+            ->orwhere('id',$id)
+            ->get();
+        return $users;
     }
 }

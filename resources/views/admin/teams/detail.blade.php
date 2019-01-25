@@ -18,7 +18,31 @@
             <div class="row">
                 <div class="col-md-6">
                     <div class="form-group margin-b-5 margin-t-5">
-                        <label for="leader_id">Trưởng nhóm:</label> {{ $record->getUsersAttribute($record->leader_id) }}
+                        <label for="leader_id">Trưởng nhóm:</label> {{ $record->leader_name }}
+                    </div>
+                    <!-- /.form-group -->
+                </div>
+            </div>
+
+
+        </div>
+        <div class="col-md-12">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group margin-b-5 margin-t-5">
+                        <label for="leader_id">Biểu ngữ:</label> {{ old('banner', $record->banner)}}
+                    </div>
+                    <!-- /.form-group -->
+                </div>
+            </div>
+
+
+        </div>
+        <div class="col-md-12">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group margin-b-5 margin-t-5">
+                        <label for="leader_id">Miêu tả:</label> {{ old('description', $record->description)}}
                     </div>
                     <!-- /.form-group -->
                 </div>
@@ -31,7 +55,7 @@
             <div class="row">
                 <div class="col-md-6">
                     <div class="form-group margin-b-5 margin-t-5">
-                        <label for="banner">Khẩu hiệu:</label> {{ old('banner', $record->banner) }}
+                        <label for="banner">Khẩu hiệu:</label> {{ old('slogan', $record->slogan) }}
                     </div>
                     <!-- /.form-group -->
                 </div>
@@ -81,7 +105,7 @@
             <tbody>
             @php
                 $i = 1;
-                $members = $record->getAllMember($record->id);
+
             @endphp
             @foreach ($members as $member)
 

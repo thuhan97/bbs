@@ -22,7 +22,8 @@
     "spatie/laravel-fractal": "^5.3",
     "tymon/jwt-auth": "1.0.0-rc.3",
     "unisharp/laravel-filemanager": "~1.8",
-    "zizaco/entrust": "5.2.x-dev"
+    "zizaco/entrust": "5.2.x-dev",
+    "phpoffice/phpexcel": "dev-master"
   },
   "require-dev": {
     "fzaninotto/faker": "~1.4",

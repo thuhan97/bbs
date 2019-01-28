@@ -26,6 +26,9 @@ class Config extends Model
         'morning_end_work_at',
         'afternoon_start_work_at',
         'afternoon_end_work_at',
+        'time_morning_go_late_at',
+        'time_afternoon_go_late_at',
+        'time_ot_early_at',
         'weekly_report_title',
         'html_weekly_report_template',
     ];

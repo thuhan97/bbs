@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Admin;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StartTestRequest extends FormRequest
+class CheckInImportRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,7 +24,16 @@ class StartTestRequest extends FormRequest
     public function rules()
     {
         return [
-            'pick_potato' => 'numeric',
+            'year' => 'required|date|date_format:Y',
+            'month' => 'required|date|date_format:m',
+            'import_file' => 'required',
+        ];
+    }
+
+    public function attributes()
+    {
+        return [
+            'import_file' => 'bảng chấm công',
         ];
     }
 }

@@ -29,8 +29,6 @@ class UserController extends AdminBaseController
      */
     protected $resourceModel = User::class;
 
-    protected $resourceSearchExtend = 'admin.users._partials.search_form';
-
     /**
      * @var  string
      */
@@ -67,8 +65,8 @@ class UserController extends AdminBaseController
                 'email' => 'required|email|unique:users,email,' . $record->id,
                 'staff_code' => 'filled|max:10|unique:users,staff_code,' . $record->id,
                 'birthday' => 'date|before:' . date('Y-m-d', strtotime('- 15 years')),
-                'phone' => 'min:10|max:30|unique:users,phone',
-                'id_card' => 'min:9|max:12|unique:users,id_card',
+                'phone' => 'min:10|max:30|unique:users,phone,' . $record->id,
+                'id_card' => 'min:9|max:12|unique:users,id_card,' . $record->id,
             ],
             'messages' => [],
             'attributes' => [],

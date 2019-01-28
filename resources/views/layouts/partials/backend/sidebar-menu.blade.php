@@ -37,7 +37,16 @@
             <i class="fa fa-podcast"></i> <span>Nội quy/Quy Định</span>
         </a>
     </li>
-    <li class="treeview {{ \App\Utils::checkRoute(['admin::work_times.index', 'admin::day_offs.create']) ? 'active': '' }}">
+    <li class="treeview {{ \App\Utils::checkRoute([
+    'admin::day_offs.index',
+    'admin::day_offs.create',
+    'admin::day_offs.edit',
+    'admin::day_offs.user',
+    'admin::work_times.index',
+    'admin::work_times.create',
+    'admin::work_times.import',
+    'admin::work_times.edit',
+    ]) ? 'active': '' }}">
         <a href="#"><i class="fa fa-calendar"></i> <span>Thời gian làm việc</span>
             <span class="pull-right-container">
     <i class="fa fa-angle-left pull-right"></i>

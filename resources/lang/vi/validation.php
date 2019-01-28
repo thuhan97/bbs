@@ -111,6 +111,7 @@ return [
     'unique' => 'Trường :attribute đã có trong cơ sở dữ liệu.',
     'uploaded' => 'Trường :attribute tải lên thất bại.',
     'url' => 'Trường :attribute không giống với định dạng một URL.',
+    'file_extension_invalid' => 'File :attribute tải lên không đúng định dạng.',
 
     /*
     |--------------------------------------------------------------------------
@@ -148,5 +149,7 @@ return [
         'phone' => 'số điện thoại',
         'event_end_date' => 'Ngày kết thúc',
         'id_card' => 'số chứng minh nhân dân',
+        'year' => 'năm',
+        'month' => 'tháng',
     ],
 ];

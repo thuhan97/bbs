@@ -5,8 +5,9 @@ define('API_GUARD', 'api');
 
 define('INVITE_POTATO', 100);
 define('POTATO_EXPRIRE_DEFAULT', 6);
+define('DAY_OFF_TOTAL', 12);
 define('MAX_SEARCH_RETRY', 10);
-define('DEFAULT_PAGE_SIZE', 10);
+define('DEFAULT_PAGE_SIZE', 20);
 define('REPORT_PAGE_SIZE', 30);
 define('PAGE_LIST', [10, 20, 50, 100]);
 
@@ -55,6 +56,7 @@ define('CONTRACT_TYPES', [
     'parttime' => 2,
     'internship' => 3,
 ]);
+
 define('CONTRACT_TYPES_NAME', [
     0 => 'Chính thức',
     1 => 'Thử việc',
@@ -62,3 +64,12 @@ define('CONTRACT_TYPES_NAME', [
     3 => 'Thực tập',
 ]);
 
+
+define('MIN_APPROVE_JOB', 2);
+
+define('JOB_TITLES', [
+    0 => 'Chuyên viên',
+    1 => 'Team leader',
+    2 => 'Manager',
+    3 => 'Giám đốc',
+]);

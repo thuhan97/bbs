@@ -1,3 +1,11 @@
+<?php
+$postCount = \App\Models\Post::count();
+$eventCount = \App\Models\Event::count();
+$userCount = \App\Models\User::count();
+$regulationCount = \App\Models\Regulation::count();
+
+?>
+
 @extends('layouts.admin.master')
 @section('page-title', 'Admin page')
 @section('breadcrumbs')
@@ -5,16 +13,31 @@
 @endsection
 @section('content')
     <div class="row">
+        <!-- ./col -->
+        <div class="col-lg-3 col-xs-6">
+            <!-- small box -->
+            <div class="small-box bg-yellow">
+                <div class="inner">
+                    <h3>{{number_collapse($userCount)}}</h3>
+
+                    <p>Nhân viên</p>
+                </div>
+                <div class="icon">
+                    <i class="ion ion-person"></i>
+                </div>
+                <a href="/admin/users" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+            </div>
+        </div>
         <div class="col-lg-3 col-xs-6">
             <!-- small box -->
             <div class="small-box bg-aqua">
                 <div class="inner">
                     <h3>{{number_collapse($postCount)}}</h3>
 
-                    <p>Posts</p>
+                    <p>Thông báo</p>
                 </div>
                 <div class="icon">
-                    <i class="fa fa-anchor"></i>
+                    <i class="fa fa-globe"></i>
                 </div>
                 <a href="/admin/topics" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
             </div>
@@ -26,41 +49,27 @@
                 <div class="inner">
                     <h3>{{ number_collapse($eventCount) }}</h3>
 
-                    <p>Events</p>
+                    <p>Sự kiện</p>
                 </div>
                 <div class="icon">
-                    <i class="ion ion-help"></i>
+                    <i class="ion ion-image"></i>
                 </div>
                 <a href="/admin/questions" class="small-box-footer">More info <i
                             class="fa fa-arrow-circle-right"></i></a>
             </div>
         </div>
-        <!-- ./col -->
-        <div class="col-lg-3 col-xs-6">
-            <!-- small box -->
-            <div class="small-box bg-yellow">
-                <div class="inner">
-                    <h3>{{number_collapse($userCount)}}</h3>
 
-                    <p>Users</p>
-                </div>
-                <div class="icon">
-                    <i class="ion ion-person"></i>
-                </div>
-                <a href="/admin/users" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
-            </div>
-        </div>
         <!-- ./col -->
         <div class="col-lg-3 col-xs-6">
             <!-- small box -->
             <div class="small-box bg-red">
                 <div class="inner">
-                    <h3>{{number_collapse(99)}}+</h3>
+                    <h3>{{number_collapse($regulationCount)}}</h3>
 
-                    <p>New Orders</p>
+                    <p>Nội quy/quy định</p>
                 </div>
                 <div class="icon">
-                    <i class="ion ion-bag"></i>
+                    <i class="ion ion-hammer"></i>
                 </div>
                 <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
             </div>
@@ -210,10 +219,10 @@
             <!-- USERS LIST -->
             <div class="box box-danger">
                 <div class="box-header with-border">
-                    <h3 class="box-title">Latest Members</h3>
+                    <h3 class="box-title">Nhân viên mới</h3>
 
                     <div class="box-tools pull-right">
-                        <span class="label label-danger">8 New Members</span>
+                        <span class="label label-danger">{{$probationStaffs->count()}} nhân viên</span>
                         <button type="button" class="btn btn-box-tool" data-widget="collapse"><i
                                     class="fa fa-minus"></i>
                         </button>
@@ -224,52 +233,20 @@
                 <!-- /.box-header -->
                 <div class="box-body no-padding">
                     <ul class="users-list clearfix">
-                        <li>
-                            <img src="/dist/img/user1-128x128.jpg" alt="User Image">
-                            <a class="users-list-name" href="#">Alexander Pierce</a>
-                            <span class="users-list-date">Today</span>
-                        </li>
-                        <li>
-                            <img src="/dist/img/user8-128x128.jpg" alt="User Image">
-                            <a class="users-list-name" href="#">Norman</a>
-                            <span class="users-list-date">Yesterday</span>
-                        </li>
-                        <li>
-                            <img src="/dist/img/user7-128x128.jpg" alt="User Image">
-                            <a class="users-list-name" href="#">Jane</a>
-                            <span class="users-list-date">12 Jan</span>
-                        </li>
-                        <li>
-                            <img src="/dist/img/user6-128x128.jpg" alt="User Image">
-                            <a class="users-list-name" href="#">John</a>
-                            <span class="users-list-date">12 Jan</span>
-                        </li>
-                        <li>
-                            <img src="/dist/img/user2-160x160.jpg" alt="User Image">
-                            <a class="users-list-name" href="#">Alexander</a>
-                            <span class="users-list-date">13 Jan</span>
-                        </li>
-                        <li>
-                            <img src="/dist/img/user5-128x128.jpg" alt="User Image">
-                            <a class="users-list-name" href="#">Sarah</a>
-                            <span class="users-list-date">14 Jan</span>
-                        </li>
-                        <li>
-                            <img src="/dist/img/user4-128x128.jpg" alt="User Image">
-                            <a class="users-list-name" href="#">Nora</a>
-                            <span class="users-list-date">15 Jan</span>
-                        </li>
-                        <li>
-                            <img src="/dist/img/user3-128x128.jpg" alt="User Image">
-                            <a class="users-list-name" href="#">Nadia</a>
-                            <span class="users-list-date">15 Jan</span>
-                        </li>
+                        @foreach($probationStaffs as $probationStaff)
+                            <li>
+                                <img src="{{$probationStaff->avatar}}" onerror="this.src='{{URL_IMAGE_NO_IMAGE}}'"
+                                     alt="{{$probationStaff->name}}">
+                                <a class="users-list-name" href="#">{{$probationStaff->name}}</a>
+                                <span class="users-list-date">{{$probationStaff->probation_at}}</span>
+                            </li>
+                        @endforeach
                     </ul>
                     <!-- /.users-list -->
                 </div>
                 <!-- /.box-body -->
                 <div class="box-footer text-center">
-                    <a href="/admin/users" class="uppercase">View All Users</a>
+                    <a href="/admin/users" class="uppercase">Xem tất cả nhân viên</a>
                 </div>
                 <!-- /.box-footer -->
             </div>
@@ -278,7 +255,7 @@
         <div class="col-md-4">
             <div class="box box-default">
                 <div class="box-header with-border">
-                    <h3 class="box-title">Browser Usage</h3>
+                    <h3 class="box-title">Teams</h3>
 
                     <div class="box-tools pull-right">
                         <button type="button" class="btn btn-box-tool" data-widget="collapse"><i
@@ -301,12 +278,12 @@
                         <!-- /.col -->
                         <div class="col-md-4">
                             <ul class="chart-legend clearfix">
-                                <li><i class="fa fa-circle-o text-red"></i> Chrome</li>
-                                <li><i class="fa fa-circle-o text-green"></i> IE</li>
-                                <li><i class="fa fa-circle-o text-yellow"></i> FireFox</li>
-                                <li><i class="fa fa-circle-o text-aqua"></i> Safari</li>
-                                <li><i class="fa fa-circle-o text-light-blue"></i> Opera</li>
-                                <li><i class="fa fa-circle-o text-gray"></i> Navigator</li>
+                                <li><i class="fa fa-circle-o text-red"></i> Biệt đội bình tĩnh</li>
+                                <li><i class="fa fa-circle-o text-green"></i> Apple</li>
+                                <li><i class="fa fa-circle-o text-yellow"></i> Banana</li>
+                                <li><i class="fa fa-circle-o text-aqua"></i> Warrior</li>
+                                <li><i class="fa fa-circle-o text-light-blue"></i> Badboy</li>
+                                <li><i class="fa fa-circle-o text-gray"></i> HCNS</li>
                             </ul>
                         </div>
                         <!-- /.col -->
@@ -316,13 +293,10 @@
                 <!-- /.box-body -->
                 <div class="box-footer no-padding">
                     <ul class="nav nav-pills nav-stacked">
-                        <li><a href="#">United States of America
-                                <span class="pull-right text-red"><i class="fa fa-angle-down"></i> 12%</span></a></li>
-                        <li><a href="#">India <span class="pull-right text-green"><i
-                                            class="fa fa-angle-up"></i> 4%</span></a>
-                        </li>
-                        <li><a href="#">China
-                                <span class="pull-right text-yellow"><i class="fa fa-angle-left"></i> 0%</span></a></li>
+                        <li><a href="#">Chính thức <span class="pull-right"> 50</span></a></li>
+                        <li><a href="#">Thử việc <span class="pull-right"> 5</span></a></li>
+                        <li><a href="#">Partime <span class="pull-right"> 2</span></a></li>
+                        <li><a href="#">Thực tập <span class="pull-right"> 4</span></a></li>
                     </ul>
                 </div>
                 <!-- /.footer -->
@@ -331,7 +305,7 @@
         <div class="col-md-4">
             <div class="box box-primary">
                 <div class="box-header with-border">
-                    <h3 class="box-title">New feedback</h3>
+                    <h3 class="box-title">Sự kiện</h3>
 
                     <div class="box-tools pull-right">
                         <button type="button" class="btn btn-box-tool" data-widget="collapse"><i
@@ -344,63 +318,27 @@
                 <!-- /.box-header -->
                 <div class="box-body">
                     <ul class="products-list product-list-in-box">
-                        <li class="item">
-                            <div class="product-img">
-                                <img src="/dist/img/default-50x50.gif" alt="Product Image">
-                            </div>
-                            <div class="product-info">
-                                <a href="javascript:void(0)" class="product-title">Samsung TV
-                                    <span class="label label-warning pull-right">$1800</span></a>
-                                <span class="product-description">
-                          Samsung 32" 1080p 60Hz LED Smart HDTV.
+                        @foreach($events as $event)
+                            <li class="item">
+                                <div class="product-img">
+                                    <img src="{{lfm_thumbnail($event->image_url)}}"
+                                         alt="{{$event->name}}">
+                                </div>
+                                <div class="product-info">
+                                    <a href="javascript:void(0)"
+                                       class="product-title">{{$event->name}}
+                                        <span class="label label-warning pull-right">{{$event->event_date}}</span></a>
+                                    <span class="product-description">
+                          {{$event->introduction}}
                         </span>
-                            </div>
-                        </li>
-                        <!-- /.item -->
-                        <li class="item">
-                            <div class="product-img">
-                                <img src="/dist/img/default-50x50.gif" alt="Product Image">
-                            </div>
-                            <div class="product-info">
-                                <a href="javascript:void(0)" class="product-title">Bicycle
-                                    <span class="label label-info pull-right">$700</span></a>
-                                <span class="product-description">
-                          26" Mongoose Dolomite Men's 7-speed, Navy Blue.
-                        </span>
-                            </div>
-                        </li>
-                        <!-- /.item -->
-                        <li class="item">
-                            <div class="product-img">
-                                <img src="/dist/img/default-50x50.gif" alt="Product Image">
-                            </div>
-                            <div class="product-info">
-                                <a href="javascript:void(0)" class="product-title">Xbox One <span
-                                            class="label label-danger pull-right">$350</span></a>
-                                <span class="product-description">
-                          Xbox One Console Bundle with Halo Master Chief Collection.
-                        </span>
-                            </div>
-                        </li>
-                        <!-- /.item -->
-                        <li class="item">
-                            <div class="product-img">
-                                <img src="/dist/img/default-50x50.gif" alt="Product Image">
-                            </div>
-                            <div class="product-info">
-                                <a href="javascript:void(0)" class="product-title">PlayStation 4
-                                    <span class="label label-success pull-right">$399</span></a>
-                                <span class="product-description">
-                          PlayStation 4 500GB Console (PS4)
-                        </span>
-                            </div>
-                        </li>
-                        <!-- /.item -->
+                                </div>
+                            </li>
+                        @endforeach
                     </ul>
                 </div>
                 <!-- /.box-body -->
                 <div class="box-footer text-center">
-                    <a href="javascript:void(0)" class="uppercase">View All Products</a>
+                    <a href="{{route('admin::events.index')}}" class="uppercase">Xem tất cả sự kiện</a>
                 </div>
                 <!-- /.box-footer -->
             </div>

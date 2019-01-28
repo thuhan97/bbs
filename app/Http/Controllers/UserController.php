@@ -2,16 +2,20 @@
 
 namespace App\Http\Controllers;
 
+use App\Services\Contracts\IDayOffService;
 use App\Services\Contracts\IUserService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
     private $userService;
+    private $userDayOff;
 
-    public function __construct(IUserService $userService)
+    public function __construct(IUserService $userService, IDayOffService $userDayOff)
     {
         $this->userService = $userService;
+        $this->userDayOff = $userDayOff;
     }
 
     public function index()
@@ -36,7 +40,8 @@ class UserController extends Controller
 
     public function dayOff()
     {
-        return view('end_user.user.day_off');
+    	$listDate = $this->userDayOff->getDayOffUser(Auth::id());
+        return view('end_user.user.day_off', compact('listDate'));
     }
 
     public function contact(Request $request)

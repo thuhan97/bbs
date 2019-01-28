@@ -19,7 +19,7 @@ class CreateEventTable extends Migration
             $table->string('slug_name');
             $table->string('image_url', 1000);
             $table->date('event_date');
-            $table->date('event_end_date');
+            $table->date('event_end_date')->nullable();
             $table->string('place');
             $table->string('introduction', 500);
             $table->longText('content');

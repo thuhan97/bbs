@@ -4,16 +4,19 @@
         <th style="width: 10px;">
             <button type="button" class="btn btn-default btn-sm checkbox-toggle"><i class="fa fa-square-o"></i></button>
         </th>
-        <th>Mã nhân viên</th>
-        <th>Họ và tên</th>
-        <th>Ngày sinh</th>
-        <th>Email</th>
-        <th>Số điện thoại</th>
-        <th>Loại hợp đồng</th>
+        <th>STT</th>
+        <th>Tên nhóm</th>
+        <th>Trưởng nhóm</th>
+        <th>Biểu ngữ</th>
+        <th>Miêu tả</th>
+        <th>Khẩu ngữ</th>
         <th>Ngày tạo</th>
         <th style="width: 120px;">Chức năng</th>
         </thead>
         <tbody>
+        @php
+            $i = 1;
+        @endphp
         @foreach ($records as $record)
             <?php
             $tableCounter++;
@@ -25,25 +28,20 @@
             <tr>
                 <td><input type="checkbox" name="ids[]" value="{{ $record->id }}" class="square-blue chkDelete"></td>
                 <td>
-                    @can('update', $record)
-                        <a href="{{ $editLink }}">{{ $record->staff_code }}</a>
-                    @else
-                        {{ $record->staff_code }}
-                    @endcan
+                    {{ $i++ }}
                 </td>
                 <td class="table-text">
                     <a href="{{ $showLink }}">{{ $record->name }}</a>
                 </td>
-                <td>{{ $record->birthday }}</td>
-                <td>{{ $record->email }}</td>
-                <td>{{ $record->phone }}</td>
-                <td>{{ isset(CONTRACT_TYPES_NAME[$record->contract_type]) ? CONTRACT_TYPES_NAME[$record->contract_type] : '' }}</td>
+                <td>{{ $record->leader_name}}</td>
+                <td>{{ $record->banner }}</td>
+                <td>{{ $record->description }}</td>
+                <td>{{ $record->slogan }}</td>
                 <td class="">{{ $record->created_at }}</td>
 
                 <!-- we will also add show, edit, and delete buttons -->
                 <td>
                     <div class="btn-group">
-                        <a href="{{ $showLink }}" class="btn btn-info btn-sm"><i class="fa fa-eye"></i></a>
                         <a href="{{ $editLink }}" class="btn btn-info btn-sm"><i class="fa fa-edit"></i></a>
                         <a href="#" class="btn btn-danger btn-sm btnOpenerModalConfirmModelDelete"
                            data-form-id="{{ $formId }}"><i class="fa fa-trash-o"></i></a>

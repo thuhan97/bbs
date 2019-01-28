@@ -17,4 +17,7 @@ class UserRepository extends AbstractRepository implements IUserRepository
      * @var  string
      */
 	  protected $modelName = User::class;
+        public function getMemberName($id){
+            return $this->getModel()->where('id',  $id)->first()->name;
+        }
 }

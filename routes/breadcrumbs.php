@@ -105,6 +105,7 @@ $resources = [
     'events' => 'Quản lý sự kiện',
     'posts' => 'Quản lý thông báo',
     'regulations' => 'Nội quy, quy định',
+    'teams' => 'Quản lý nhóm',
     'day_offs' => 'Quản lý nghỉ phép',
     'work_times' => 'Quản lý làm việc',
 ];
@@ -136,6 +137,10 @@ foreach ($resources as $resource => $data) {
     Breadcrumbs::register($resource . '.show', function ($breadcrumbs, $id) use ($resource) {
         $breadcrumbs->parent($resource);
         $breadcrumbs->push('Chi tiết', route($resource . '.show', $id));
+    });
+    Breadcrumbs::register($resource .'.deletes', function ($breadcrumbs,  $id) use ($resource) {
+        $breadcrumbs->parent($resource);
+        $breadcrumbs->push('Xóa', route($resource . '.deletes', $id));
     });
 
 }

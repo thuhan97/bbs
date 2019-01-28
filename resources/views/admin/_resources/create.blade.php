@@ -65,7 +65,7 @@ $_storeLink = route($resourceRoutesAlias.'.store');
                         <div class="col-xs-6">
                             <div class="text-center margin-b-5 margin-t-5">
                                 <button class="btn btn-info">
-                                    <i class="fa fa-save"></i> <span>Cập nhật</span>
+                                    <i class="fa fa-save"></i> <span>Lưu</span>
                                 </button>
                             </div>
                         </div>

@@ -11,6 +11,8 @@
 |
 */
 
+use Illuminate\Support\Facades\Route;
+
 $this->get('login', 'Auth\LoginController@showLoginForm')->name('admin.login');
 $this->post('login', 'Auth\LoginController@login');
 $this->any('logout', 'Auth\LoginController@logout')->name('admin.logout');

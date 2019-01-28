@@ -77,195 +77,98 @@
             </tr>
             </thead>
             <tbody>
-            <tr>
-                <th scope="row">1</th>
-                <td>22/11/2018</td>
-                <td>22/11/2018</td>
-                <td>Lý do cá nhân</td>
-                <td>0.5 ngày</td>
-                <td>
-                    <div class="red-circle"></div>
-                </td>
-                <td>
-                    <button type="button" class="btn btn-indigo btn-sm m-0" data-toggle="modal"
-                            data-target="#detailAbsence">Chi tiết
-                    </button>
-                </td>
-            </tr>
-            <tr>
-                <th scope="row">1</th>
-                <td>22/11/2018</td>
-                <td>22/11/2018</td>
-                <td>Lý do cá nhân</td>
-                <td>0.5 ngày</td>
-                <td>
-                    <div class="red-circle"></div>
-                </td>
-                <td>
-                    <button type="button" class="btn btn-indigo btn-sm m-0">Chi tiết</button>
-                </td>
-            </tr>
-            <tr>
-                <th scope="row">1</th>
-                <td>22/11/2018</td>
-                <td>22/11/2018</td>
-                <td>Lý do cá nhân</td>
-                <td>0.5 ngày</td>
-                <td>
-                    <div class="red-circle"></div>
-                </td>
-                <td>
-                    <button type="button" class="btn btn-indigo btn-sm m-0">Chi tiết</button>
-                </td>
-            </tr>
-            <tr>
-                <th scope="row">1</th>
-                <td>22/11/2018</td>
-                <td>22/11/2018</td>
-                <td>Lý do cá nhân</td>
-                <td>0.5 ngày</td>
-                <td>
-                    <div class="red-circle"></div>
-                </td>
-                <td>
-                    <button type="button" class="btn btn-indigo btn-sm m-0">Chi tiết</button>
-                </td>
-            </tr>
-            <tr>
-                <th scope="row">1</th>
-                <td>22/11/2018</td>
-                <td>22/11/2018</td>
-                <td>Lý do cá nhân</td>
-                <td>0.5 ngày</td>
-                <td>
-                    <div class="red-circle"></div>
-                </td>
-                <td>
-                    <button type="button" class="btn btn-indigo btn-sm m-0">Chi tiết</button>
-                </td>
-            </tr>
-            <tr>
-                <th scope="row">1</th>
-                <td>22/11/2018</td>
-                <td>22/11/2018</td>
-                <td>Lý do cá nhân</td>
-                <td>0.5 ngày</td>
-                <td>
-                    <div class="red-circle"></div>
-                </td>
-                <td>
-                    <button type="button" class="btn btn-indigo btn-sm m-0">Chi tiết</button>
-                </td>
-            </tr>
-            <tr>
-                <th scope="row">1</th>
-                <td>22/11/2018</td>
-                <td>22/11/2018</td>
-                <td>Lý do cá nhân</td>
-                <td>0.5 ngày</td>
-                <td>
-                    <div class="red-circle"></div>
-                </td>
-                <td>
-                    <button type="button" class="btn btn-indigo btn-sm m-0">Chi tiết</button>
-                </td>
-            </tr>
-            <tr>
-                <th scope="row">2</th>
-                <td>25/11/2018</td>
-                <td>26/11/2018</td>
-                <td>Lý do cá nhân</td>
-                <td>1 ngày</td>
-                <td>
-                    <div class="green-circle"></div>
-                </td>
-                <td>
-                    <button type="button" class="btn btn-indigo btn-sm m-0">Chi tiết</button>
-                </td>
-            </tr>
-            <tr>
-                <th scope="row">3</th>
-                <td>01/12/2018</td>
-                <td>03/12/2018</td>
-                <td>Đám cưới</td>
-                <td>2 ngày</td>
-                <td>
-                    <div class="green-circle"></div>
-                </td>
-                <td>
-                    <button type="button" class="btn btn-indigo btn-sm m-0">Chi tiết</button>
-                </td>
-            </tr>
+            @foreach ($listDate as $absence)
+                <tr>
+                    <th scope="row">{{$loop->index + 1}}</th>
+                    <td>{{$absence->start_at}}</td>
+                    <td>{{$absence->end_at}}</td>
+                    <td>{{$absence->title}}</td>
+                    <td>{{$absence->number_off}} ngày</td>
+                    <td>
+                        @if ($absence->status == 1)
+                            <div class="green-circle"></div>
+                        @else
+                            <div class="red-circle"></div>
+                        @endif
+                    </td>
+                    <td>
+                        <button type="button" class="btn btn-indigo btn-sm m-0" data-toggle="modal"
+                                data-target="{{'#detailAbsence'.($loop->index+1)}}">Chi tiết
+                        </button>
+                        <!-- Modal: modalPoll -->
+                        <div class="modal fade right" id="{{'detailAbsence'.($loop->index+1)}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+                             aria-hidden="true" data-backdrop="false">
+                            <div class="modal-dialog modal-full-height modal-right modal-notify modal-info" role="document">
+                                <div class="modal-content">
+                                    <!--Header-->
+                                    <div class="modal-header">
+                                        <p class="heading lead d-flex flex-row">
+                                            {{$absence->start_at}}
+                                            @if ($absence->status == 1)
+                                                <span class="green-circle ml-2"></span>
+                                            @else
+                                                <span class="red-circle ml-2"></span>
+                                            @endif
+                                        </p>
+
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true" class="white-text">×</span>
+                                        </button>
+                                    </div>
+
+                                    <!--Body-->
+                                    <div class="modal-body">
+                                        <div class="text-left">
+                                            <h4 class="text-bold">Lý do:</h4>
+                                            <p>
+                                                <strong>{{$absence->title}}</strong>
+                                            </p>
+                                            <br>
+                                            <h4 class="text-bold">Ngày nghỉ:</h4>
+                                            <p>
+                                                <strong>{{$absence->start_at}} - {{$absence->end_at}}</strong>
+                                            </p>
+                                            <br>
+                                            <h4 class="text-bold">Thời gian được tính:</h4>
+                                            <p>
+                                                <strong>{{$absence->number_off}} ngày</strong>
+                                            </p>
+                                        </div>
+                                        <hr>
+                                        <div class="text-left">
+                                            <h4 class="text-bold">Chi tiết lý do:</h4>
+                                            <p>
+                                                {{$absence->reason}}
+                                            </p>
+                                            <br>
+                                            <h4 class="text-bold">Ngày duyệt:</h4>
+                                            <p>{{$absence->approver_at == null ? 'Chưa phê duyệt' : $absence->approver_at}}</p>
+                                            <br>
+                                            <h4 class="text-bold">Người duyệt:</h4>
+                                            <p>Admin</p>
+                                            <br>
+                                            <h4 class="text-bold important">Ý kiến</h4>
+                                            <p>
+                                                {{$absence->approve_comment == null ? 'Không có' : $absence->approve_comment}}
+                                            </p>
+                                        </div>
+                                    </div>
+
+                                    <!--Footer-->
+                                    <div class="modal-footer justify-content-center">
+                                        <a type="button" class="btn btn-primary waves-effect waves-light">Báo cáo
+                                            <i class="fa fa-paper-plane ml-1"></i>
+                                        </a>
+                                        <a type="button" class="btn btn-outline-primary waves-effect" data-dismiss="modal">Cancel</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Modal: modalPoll -->
+                    </td>
+                </tr>
+            @endforeach
             </tbody>
         </table>
     </div>
-
-    <!-- Modal: modalPoll -->
-    <div class="modal fade right" id="detailAbsence" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-         aria-hidden="true" data-backdrop="false">
-        <div class="modal-dialog modal-full-height modal-right modal-notify modal-info" role="document">
-            <div class="modal-content">
-                <!--Header-->
-                <div class="modal-header">
-                    <p class="heading lead d-flex flex-row">
-                        Ngày nghỉ 22/11/2018
-                        <span class="red-circle ml-2"></span>
-                    </p>
-
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true" class="white-text">×</span>
-                    </button>
-                </div>
-
-                <!--Body-->
-                <div class="modal-body">
-                    <div class="text-left">
-                        <h4 class="text-bold">Lý do:</h4>
-                        <p>
-                            <strong>Lý do cá nhân</strong>
-                        </p>
-                        <br>
-                        <h4 class="text-bold">Ngày nghỉ:</h4>
-                        <p>
-                            <strong>22/11/2018 - 22/11/2018</strong>
-                        </p>
-                        <br>
-                        <h4 class="text-bold">Thời gian được tính:</h4>
-                        <p>
-                            <strong>0.5 ngày</strong>
-                        </p>
-                    </div>
-                    <hr>
-                    <div class="text-left">
-                        <h4 class="text-bold">Chi tiết lý do:</h4>
-                        <p>
-                            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Alias cum, dicta ea error expedita
-                            facere harum possimus recusandae veritatis vitae.
-                        </p>
-                        <br>
-                        <h4 class="text-bold">Ngày duyệt:</h4>
-                        <p>22/11/2018 11:11:11 AM</p>
-                        <br>
-                        <h4 class="text-bold">Người duyệt:</h4>
-                        <p>Admin</p>
-                        <br>
-                        <h4 class="text-bold important">Ý kiến</h4>
-                        <p>
-                            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Consectetur dolor error et iusto
-                            nemo non. Debitis dolor nisi sed temporibus!
-                        </p>
-                    </div>
-                </div>
-
-                <!--Footer-->
-                <div class="modal-footer justify-content-center">
-                    <a type="button" class="btn btn-primary waves-effect waves-light">Báo cáo
-                        <i class="fa fa-paper-plane ml-1"></i>
-                    </a>
-                    <a type="button" class="btn btn-outline-primary waves-effect" data-dismiss="modal">Cancel</a>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- Modal: modalPoll -->
 @endsection

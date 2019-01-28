@@ -38,9 +38,11 @@ class UserController extends Controller
         return view('end_user.user.work_time');
     }
 
-    public function dayOff()
+    public function dayOff(Request $request)
     {
-    	$listDate = $this->userDayOff->getDayOffUser(Auth::id());
+
+	    $listDate = $this->userDayOff->findList($request);
+//    	dd($listDate);
         return view('end_user.user.day_off', compact('listDate'));
     }
 

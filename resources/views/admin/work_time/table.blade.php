@@ -38,12 +38,22 @@
                 <td class="text-right">{{ $record->start_at }}</td>
                 <td class="text-right">{{ $record->end_at }}</td>
                 <td>
-                    @if($record->type == 1)
-                        <span class="label label-danger">{{ $record->note }}</span>
-                    @elseif($record->type == 2)
-                        <span class="label label-warning">{{ $record->note }}</span>
-                    @elseif($record->type == 3)
-                        <span class="label label-success">{{ $record->note }}</span>
+                    <?php
+                    switch ($record->type) {
+                        case 5:
+                        case 4:
+                            $typeClass = 'success';
+                            break;
+                        case 2:
+                            $typeClass = 'warning';
+                            break;
+                        case 1:
+                            $typeClass = 'danger';
+                            break;
+                    }
+                    ?>
+                    @if(isset($typeClass))
+                        <span class="label label-{{$typeClass}}">{{ $record->note }}</span>
                     @endif
                 </td>
                 <td>

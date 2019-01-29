@@ -92,39 +92,39 @@ class WorkTimeImport implements ToCollection, WithValidation
     private function getWorkTime($date, $startAt, $endAt)
     {
 //        if ($endAt == null) $endAt = self::DEFAULT_END_AT;
-        $note = null;
+        $note = [];
         $type = 0;
         if (($this->config->work_days && in_array($date->format('N'), $this->config->work_days)) || !$this->config->work_days) {
             if ($startAt) {
                 if ($this->config->time_afternoon_go_late_at && $startAt >= $this->config->time_afternoon_go_late_at) {
-                    $note = 'Đi muộn buổi chiều';
-                    $type = WorkTime::TYPES['lately'];
+                    $note[] = 'Đi muộn buổi chiều';
+                    $type += WorkTime::TYPES['lately'];
                 } else if ($this->config->time_morning_go_late_at && $startAt >= $this->config->time_morning_go_late_at) {
-                    $note = 'Đi muộn buổi sáng';
-                    $type = WorkTime::TYPES['lately'];
+                    $note[] = 'Đi muộn buổi sáng';
+                    $type += WorkTime::TYPES['lately'];
                 }
             }
             if ($endAt) {
                 if ($this->config->morning_end_work_at && $endAt <= $this->config->morning_end_work_at) {
-                    $note = 'Về sớm buổi sáng';
-                    $type = WorkTime::TYPES['early'];
+                    $note[] = 'Về sớm buổi sáng';
+                    $type += WorkTime::TYPES['early'];
                 } else if ($this->config->afternoon_end_work_at && $endAt <= $this->config->afternoon_end_work_at) {
-                    $note = 'Về sớm buổi chiều';
-                    $type = WorkTime::TYPES['early'];
+                    $note[] = 'Về sớm buổi chiều';
+                    $type += WorkTime::TYPES['early'];
                 } else if ($this->config->time_ot_early_at && $endAt >= $this->config->time_ot_early_at) {
-                    $note = 'Overtime';
-                    $type = WorkTime::TYPES['ot'];
+                    $note[] = 'Overtime';
+                    $type += WorkTime::TYPES['ot'];
                 }
             }
         } else {
-            $note = 'Overtime';
-            $type = WorkTime::TYPES['ot'];
+            $note[] = 'Overtime';
+            $type += WorkTime::TYPES['ot'];
         }
         //
         return [
             'start_at' => $startAt,
             'end_at' => $endAt,
-            'note' => $note,
+            'note' => implode(', ', $note),
             'type' => $type,
         ];
     }

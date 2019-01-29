@@ -29,12 +29,6 @@
                             <span class="sr-only">(current)</span>
                         </a>
                     </li>
-                    <li class="nav-item {{ \App\Utils::checkRoute(['report']) ? 'active': '' }}">
-                        <a href="{{route('report')}}"
-                           class="nav-link waves-effect">{{__l('Report')}}
-                            <span class="sr-only">(current)</span>
-                        </a>
-                    </li>
                     <?php
                     $user = \Illuminate\Support\Facades\Auth::user();
                     ?>
@@ -46,6 +40,12 @@
                             </a>
                         </li>
                     @endif
+                    <li class="nav-item {{ \App\Utils::checkRoute(['report']) ? 'active': '' }}">
+                        <a href="{{route('report')}}"
+                           class="nav-link waves-effect">{{__l('Report')}}
+                            <span class="sr-only">(current)</span>
+                        </a>
+                    </li>
                 </ul>
                 <!-- Right -->
                 <ul class="navbar-nav nav-flex-icons">

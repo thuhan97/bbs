@@ -108,7 +108,7 @@
         <div class="col-md-12">
             <div class="form-group margin-b-5 margin-t-5{{ $errors->has('number_off') ? ' has-error' : '' }}">
                 <label for="number_off">Số ngày nghỉ được tính (1 ngày hoặc nửa ngày)</label>
-                <input type="text" class="form-control" name="number_off" placeholder="Nhập tiêu đề"
+                <input type="text" class="form-control" name="number_off" placeholder="Số ngày phép bị trừ"
                        value="{{ old('number_off', $record->number_off) }}" required>
 
                 @if ($errors->has('number_off'))
@@ -121,9 +121,9 @@
         </div>
         <div class="col-md-12">
             <div class="form-group margin-b-5 margin-t-5{{ $errors->has('approve_comment') ? ' has-error' : '' }}">
-                <label for="approve_comment">Ý kiến</label>
+                <label for="approve_comment">Ý kiến phê duyệt</label>
                 <textarea class="form-control" name="approve_comment" id="approve_comment" rows="3"
-                          placeholder="Nhập ý kiến">{{ old('approve_comment', $record->approve_comment) }}</textarea>
+                          placeholder="Nhập ý kiến phê duyệt">{{ old('approve_comment', $record->approve_comment) }}</textarea>
 
                 @if ($errors->has('approve_comment'))
                     <span class="help-block">

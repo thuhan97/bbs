@@ -29,7 +29,6 @@ class TeamService extends AbstractService implements ITeamService
         $this->userService = $userService;
     }
 
-
     public function getAllMember($id)
     {
         $members = $this->userTeamService->getMemberTeamAttribute($id);

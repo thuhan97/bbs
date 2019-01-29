@@ -168,33 +168,7 @@ class WorkTimeController extends AdminBaseController
 
     public function getSearchRecords(Request $request, $perPage = 15, $search = null)
     {
-        $model = new WorkTime();
-        $year = $request->get('year');
-
-        if ($year) {
-            $model = $model->whereYear('work_day', $year);
-        }
-        $month = $request->get('month');
-        if ($month) {
-            $model = $model->whereMonth('work_day', $month);
-        }
-        $type = $request->get('type');
-        if ($type) {
-            if ($type == WorkTime::TYPES['lately']) {
-                //lately || lately + early || lately + OT
-                $model = $model->whereIn('type', [1, 3, 5]);
-            } else if ($type == WorkTime::TYPES['ot']) {
-                //OT || lately + OT
-                $model = $model->whereIn('type', [4, 5]);
-            } else {
-                $model = $model->where('type', $type);
-            }
-        }
-        $userId = $request->get('user_id');
-        if ($userId) {
-            $model = $model->where('user_id', $userId);
-        }
-        return $model->search($search)->paginate($perPage);
+        return $this->sevice->search($request, $perPage, $search);
     }
 
     /**

@@ -37,7 +37,7 @@ class WorkTime extends Model
         'normal' => 0,
         'lately' => 1,
         'early' => 2,
-        'ot' => 3,
+        'ot' => 4,
     ];
 
     public function scopeSearch($query, $searchTerm)

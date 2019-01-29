@@ -180,7 +180,15 @@ class WorkTimeController extends AdminBaseController
         }
         $type = $request->get('type');
         if ($type) {
-            $model = $model->where('type', $type);
+            if ($type == WorkTime::TYPES['lately']) {
+                //lately || lately + early || lately + OT
+                $model = $model->whereIn('type', [1, 3, 5]);
+            } else if ($type == WorkTime::TYPES['ot']) {
+                //OT || lately + OT
+                $model = $model->whereIn('type', [4, 5]);
+            } else {
+                $model = $model->where('type', $type);
+            }
         }
         $userId = $request->get('user_id');
         if ($userId) {

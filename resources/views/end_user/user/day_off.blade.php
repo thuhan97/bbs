@@ -153,7 +153,7 @@
 
                         @if ($paginateData['current_page'] - 2 > 0)
                             <li class="page-item">
-                                <a href="{{$paginateData['path'].'?page='.($paginateData['current_page'] - 2). $paginationApprove}}"
+                                <a href="{{$paginateData['path'].'?page='.($paginateData['current_page'] - 2).'&per_page='. $defaultPerPage. $paginationApprove}}"
                                    class="page-link">
                                     {{$paginateData['current_page'] - 2}}
                                 </a>

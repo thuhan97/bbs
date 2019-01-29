@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\DayOffRequest;
 use App\Models\User;
 use App\Services\Contracts\IDayOffService;
 use App\Services\Contracts\IUserService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use PhpOffice\PhpSpreadsheet\Shared\Date;
 
 class UserController extends Controller
 {
@@ -40,36 +40,30 @@ class UserController extends Controller
 		return view('end_user.user.work_time');
 	}
 
-	public function dayOff(Request $request)
+	public function dayOff(DayOffRequest $request)
 	{
 		$conditions = ['user_id' => Auth::id()];
 		$listDate = $this->userDayOff->findList($request, $conditions);
 
 		$paginateData = $listDate->toArray();
 		$recordPerPage = $request->get('per_page');
-		$queryApprove = $request->get('approve');
-		$approve = $queryApprove !== null ? ($queryApprove != 1 && $queryApprove != 0 ? null : $queryApprove) : null;
+		$approve = $request->get('approve');
 
 		$availableDayLeft = $this->userDayOff->getDayOffUser(Auth::id());
-		return view('end_user.user.day_off', compact('listDate', 'paginateData', 'availableDayLeft', 'recordPerPage', 'approve', 'isApproval', 'openApprove'));
+		return view('end_user.user.day_off', compact('listDate', 'paginateData', 'availableDayLeft', 'recordPerPage', 'approve'));
 	}
 
-	public function dayOffApprove(Request $request)
+	public function dayOffApprove(DayOffRequest $request)
 	{
-		$approvalUser = new User();
-		$approvalUser->approverUsers()->where('id', Auth::id())->first();
-		$isApproval = true;
-		if ($approvalUser !== null && $approvalUser->id !== null) {
-			$isApproval = true;
-		}
+		// Checking authorize for action
+		$isApproval = Auth::user()->jobtitle_id >= \App\Models\Report::MIN_APPROVE_JOBTITLE;
 
-		// If user is approved then
-
-		$request->request->add(['year'=>Date('Y')]);
+		// If user is able to do approve then
+		$request->request->add(['year' => Date('Y')]);
 		$search = $criterias['search'] ?? '';
 		$totalRecord = $this->userDayOff->findList($request, [], ['*'], $search, $perPage)->toArray();
 
-		return view('end_user.user.day_off_approval',compact('isApproval', 'totalRecord'));
+		return view('end_user.user.day_off_approval', compact('isApproval', 'totalRecord'));
 	}
 
 	public function contact(Request $request)

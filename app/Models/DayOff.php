@@ -16,6 +16,7 @@ class DayOff extends Model
 {
     use SoftDeletes, FillableFields, OrderableTrait, SearchLikeTrait;
     const APPROVED_STATUS = 1;
+    const NOTAPPROVED_STATUS = 0;
 
     protected $table = 'day_offs';
 

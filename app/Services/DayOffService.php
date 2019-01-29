@@ -44,9 +44,9 @@ class DayOffService extends AbstractService implements IDayOffService
 		$isApprove = $criterias['approve'] ?? null;
 		$isApprove = $isApprove !== null ? (int) $isApprove : null;
 		if ($isApprove === 1) { //approved
-			$moreConditions['day_offs.status'] = 1;
+			$moreConditions['day_offs.status'] = DayOff::APPROVED_STATUS;
 		} else if ($isApprove === 0) { // not approved
-			$moreConditions['day_offs.status'] = 0;
+			$moreConditions['day_offs.status'] = DayOff::NOTAPPROVED_STATUS;
 		}
 
 		$model = $this->model
@@ -60,8 +60,8 @@ class DayOffService extends AbstractService implements IDayOffService
 		if ($year != null) {
 			$model->whereYear('start_at', $year);
 		}
-		$month = $criterias['month'] ?? null;
 
+		$month = $criterias['month'] ?? null;
 		if ($month != null) {
 			$model->whereMonth('start_at', $month);
 		}

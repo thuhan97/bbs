@@ -71,7 +71,7 @@ trait ResourceController
         if ($record = $this->repository->save($this->alterValuesToSave($request, $valuesToSave))) {
             flash()->success('Thêm mới thành công.');
 
-            return $this->getRedirectAfterSave($record);
+            return $this->getRedirectAfterSave($record, $request);
         } else {
             flash()->info('Thêm mới thất bại.');
         }
@@ -145,7 +145,7 @@ trait ResourceController
         if ($this->repository->update($record, $this->alterValuesToSave($request, $valuesToSave))) {
             flash()->success('Cập nhật thành công.');
 
-            return $this->getRedirectAfterSave($record);
+            return $this->getRedirectAfterSave($record, $request);
         } else {
             flash()->info('Cập nhật thất bại.');
         }

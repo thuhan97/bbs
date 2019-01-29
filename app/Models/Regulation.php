@@ -44,4 +44,12 @@ class Regulation extends Model
         return $query->where('name', 'like', '%' . $searchTerm . '%')
             ->orWhere('content', 'like', '%' . $searchTerm . '%');
     }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function regulation_files()
+    {
+        return $this->hasMany(RegulationFile::class);
+    }
 }

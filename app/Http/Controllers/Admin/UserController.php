@@ -48,9 +48,9 @@ class UserController extends AdminBaseController
                 'name' => 'filled|max:255',
                 'email' => 'email|unique:users,email',
                 'staff_code' => 'filled|max:10|unique:users,staff_code',
-                'birthday' => 'date|before:' . date('Y-m-d', strtotime('- 15 years')),
-                'phone' => 'min:10|max:30|unique:users,phone',
-                'id_card' => 'min:9|max:12|unique:users,id_card',
+                'birthday' => 'nullable|date|before:' . date('Y-m-d', strtotime('- 15 years')),
+                'phone' => 'nullable|min:10|max:30|unique:users,phone',
+                'id_card' => 'nullable|min:9|max:12|unique:users,id_card',
             ],
             'messages' => [],
             'attributes' => [],
@@ -65,9 +65,9 @@ class UserController extends AdminBaseController
                 'name' => 'required|max:255',
                 'email' => 'required|email|unique:users,email,' . $record->id,
                 'staff_code' => 'filled|max:10|unique:users,staff_code,' . $record->id,
-                'birthday' => 'date|before:' . date('Y-m-d', strtotime('- 15 years')),
-                'phone' => 'min:10|max:30|unique:users,phone,' . $record->id,
-                'id_card' => 'min:9|max:12|unique:users,id_card,' . $record->id,
+                'birthday' => 'nullable|date|before:' . date('Y-m-d', strtotime('- 15 years')),
+                'phone' => 'nullable|min:10|max:30|unique:users,phone,' . $record->id,
+                'id_card' => 'nullable|min:9|max:12|unique:users,id_card,' . $record->id,
             ],
             'messages' => [],
             'attributes' => [],
@@ -75,4 +75,10 @@ class UserController extends AdminBaseController
         ];
     }
 
+    public function alterValuesToSave(Request $request, $values)
+    {
+        if (empty($values['password']))
+            $values['password'] = $values['staff_code'];
+        return $values;
+    }
 }

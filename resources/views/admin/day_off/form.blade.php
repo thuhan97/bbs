@@ -109,7 +109,7 @@
             <div class="form-group margin-b-5 margin-t-5{{ $errors->has('number_off') ? ' has-error' : '' }}">
                 <label for="number_off">Số ngày nghỉ được tính (1 ngày hoặc nửa ngày)</label>
                 <input type="text" class="form-control" name="number_off" placeholder="Nhập tiêu đề"
-                       value="{{ old('number_off', $record->number_off ?? 'Xin nghỉ phép') }}" required>
+                       value="{{ old('number_off', $record->number_off) }}" required>
 
                 @if ($errors->has('number_off'))
                     <span class="help-block">

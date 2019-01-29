@@ -74,6 +74,13 @@ define('JOB_TITLES', [
     3 => 'Giám đốc',
 ]);
 
+define('POSITIONS', [
+    0 => 'Chuyên viên',
+    1 => 'Kỹ sư cầu nối',
+    2 => 'Manager',
+    3 => 'Giám đốc',
+]);
+
 define('SEXS', [
     '' => 'Không xác định',
     1 => 'Nữ',

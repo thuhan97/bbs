@@ -35,6 +35,8 @@ class UserController extends AdminBaseController
      */
     protected $resourceTitle = 'Nhân viên';
 
+    protected $resourceSearchExtend = 'admin.users._search_extend';
+
     public function __construct(IUserRepository $repository)
     {
         $this->repository = $repository;
@@ -75,10 +77,30 @@ class UserController extends AdminBaseController
         ];
     }
 
-    public function alterValuesToSave(Request $request, $values)
+    public function getSearchRecords(Request $request, $perPage = 15, $search = null)
     {
-        if (empty($values['password']))
-            $values['password'] = $values['staff_code'];
-        return $values;
+        $model = $this->getResourceModel()::search($search);
+
+        $jobtitle_id = $request->get('jobtitle');
+        if (!empty($jobtitle_id)) {
+            $model = $model->where('jobtitle_id', $jobtitle_id);
+        }
+        $position_id = $request->get('position');
+
+        if (!empty($position_id)) {
+            $model = $model->where('position_id', $position_id);
+        }
+        $contract_type = $request->get('contract_type');
+        if (!empty($contract_type)) {
+            $model = $model->where('contract_type', $contract_type);
+        }
+
+        if ($request->has('sort')) {
+            $model->orderBy($request->get('sort'), $request->get('is_desc') ? 'asc' : 'desc');
+        } else {
+            $model->orderBy('id', 'desc');
+        }
+
+        return $model->paginate($perPage);
     }
 }

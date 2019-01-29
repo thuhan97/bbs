@@ -63,13 +63,12 @@ class UserController extends Controller
 		if ($approvalUser !== null && $approvalUser->id !== null) {
 			$isApproval = true;
 		}
-//		if (!$isApproval) return '<h2>Bạn không có quyền truy cập chức năng này</h2>';
 
 		// If user is approved
 		$conditions = ['day_offs.status'=>0];
 		$search = $criterias['search'] ?? '';
 		$records = $this->userDayOff->findList($request, $conditions, ['*'], $search, $perPage)->toArray();
-		return view('end_user.user.day_off_approval',compact('records'));
+		return view('end_user.user.day_off_approval',compact('isApproval', 'records'));
 	}
 
 	public function contact(Request $request)

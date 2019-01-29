@@ -11,6 +11,8 @@
 |
 */
 
+use Illuminate\Support\Facades\Route;
+
 $this->get('login', 'Auth\LoginController@showLoginForm')->name('admin.login');
 $this->post('login', 'Auth\LoginController@login');
 $this->any('logout', 'Auth\LoginController@logout')->name('admin.logout');
@@ -70,6 +72,9 @@ Route::group([
     Route::get('users/download-template', ['as' => 'users.download-template', 'uses' => 'UserController@downloadTemplate']);
     Route::post('users/import', ['uses' => 'UserController@importData']);
     Route::post('users/deletes', ['as' => 'users.deletes', 'uses' => 'UserController@deletes']);
+    Route::post('teams/deletes', ['as' => 'teams.deletes', 'uses' => 'TeamController@deletes']);
+    Route::get('teams/manage-member/{id}', [ 'uses' => 'TeamController@manageMember']);
     Route::resource('users', 'UserController');
+    Route::resource('teams', 'TeamController');
 
 });

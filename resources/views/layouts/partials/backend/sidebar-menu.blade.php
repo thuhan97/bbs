@@ -6,6 +6,7 @@
             <i class="fa fa-dashboard"></i> <span>Trang quản trị</span>
         </a>
     </li>
+
     <li class="{{ \App\Utils::checkRoute(['admin::configs.index']) ? 'active': '' }}">
         <a href="{{ route('admin::configs.index') }}">
             <i class="fa fa-cog"></i> <span>Thiết lập hệ thống</span>
@@ -14,6 +15,11 @@
     <li class="{{ \App\Utils::checkRoute(['admin::users.index', 'admin::users.create', 'admin::users.edit']) ? 'active': '' }}">
         <a href="{{ route('admin::users.index') }}">
             <i class="fa fa-user"></i> <span>Nhân viên</span>
+        </a>
+    </li>
+    <li class="{{ \App\Utils::checkRoute(['admin::teams.index', 'admin::teams.create', 'admin::teams.edit']) ? 'active': '' }}">
+        <a href="{{ route('admin::teams.index') }}">
+            <i class="fa fa-user"></i> <span>Nhóm</span>
         </a>
     </li>
     <li class="{{ \App\Utils::checkRoute(['admin::events.index', 'admin::events.create', 'admin::events.edit']) ? 'active': '' }}">

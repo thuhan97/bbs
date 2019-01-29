@@ -38,7 +38,7 @@
                 <td>{{ $record->email }}</td>
                 <td>{{ $record->phone }}</td>
                 <td>{{ isset(CONTRACT_TYPES_NAME[$record->contract_type]) ? CONTRACT_TYPES_NAME[$record->contract_type] : '' }}</td>
-                <td class="text-right">{{ $record->created_at }}</td>
+                <td class="">{{ $record->created_at }}</td>
 
                 <!-- we will also add show, edit, and delete buttons -->
                 <td>

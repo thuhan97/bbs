@@ -42,6 +42,7 @@ class DayOffService extends AbstractService implements IDayOffService
         $search = $criterias['search'] ?? '';
         $model = $this->model
             ->select($fields)
+	        ->with('approval')
             ->where($moreConditions)
             ->search($search)
             ->orderBy('id');

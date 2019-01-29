@@ -9,48 +9,52 @@ use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
-    private $userService;
-    private $userDayOff;
+	private $userService;
+	private $userDayOff;
 
-    public function __construct(IUserService $userService, IDayOffService $userDayOff)
-    {
-        $this->userService = $userService;
-        $this->userDayOff = $userDayOff;
-    }
+	public function __construct(IUserService $userService, IDayOffService $userDayOff)
+	{
+		$this->userService = $userService;
+		$this->userDayOff = $userDayOff;
+	}
 
-    public function index()
-    {
-        return view('end_user.user.index');
-    }
+	public function index()
+	{
+		return view('end_user.user.index');
+	}
 
-    public function profile()
-    {
-        return view('end_user.user.profile');
-    }
+	public function profile()
+	{
+		return view('end_user.user.profile');
+	}
 
-    public function changePassword()
-    {
-        return view('end_user.user.change_password');
-    }
+	public function changePassword()
+	{
+		return view('end_user.user.change_password');
+	}
 
-    public function workTime()
-    {
-        return view('end_user.user.work_time');
-    }
+	public function workTime()
+	{
+		return view('end_user.user.work_time');
+	}
 
-    public function dayOff(Request $request)
-    {
+	public function dayOff(Request $request)
+	{
+		$conditions = ['user_id' => Auth::id()];
+		$listDate = $this->userDayOff->findList($request, $conditions);
 
-	    $listDate = $this->userDayOff->findList($request);
-//    	dd($listDate);
-        return view('end_user.user.day_off', compact('listDate'));
-    }
+		$paginateData = $listDate->toArray();
+		$recordPerPage = 10;
 
-    public function contact(Request $request)
-    {
-        $users = $this->userService->getContact($request, $perPage, $search);
+		$availableDayLeft = $this->userDayOff->getDayOffUser(Auth::id());
 
-        return view('end_user.user.contact', compact('users', 'search', 'perPage'));
-    }
+		return view('end_user.user.day_off', compact('listDate', 'paginateData', 'availableDayLeft', 'recordPerPage'));
+	}
+
+	public function contact(Request $request)
+	{
+		$users = $this->userService->getContact($request, $perPage, $search);
+		return view('end_user.user.contact', compact('users', 'search', 'perPage'));
+	}
 
 }

@@ -53,8 +53,7 @@ class Team extends Model
             $query->orWhere('users.name', 'LIKE', '%' . $searchTerm . '%');
         })
             ->select('teams.*')
-            ->join('users', 'teams.leader_id', '=', 'users.id')
-            ->orderBy('teams.name');
+            ->join('users', 'teams.leader_id', '=', 'users.id');
     }
 
     /**

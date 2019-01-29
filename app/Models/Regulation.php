@@ -42,7 +42,14 @@ class Regulation extends Model
     public function scopeSearch($query, $searchTerm)
     {
         return $query->where('name', 'like', '%' . $searchTerm . '%')
-            ->orWhere('content', 'like', '%' . $searchTerm . '%')
-            ->orderBy('name', 'asc');
+            ->orWhere('content', 'like', '%' . $searchTerm . '%');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function regulation_files()
+    {
+        return $this->hasMany(RegulationFile::class);
     }
 }

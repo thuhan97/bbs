@@ -54,6 +54,7 @@ class User extends Authenticatable implements JWTSubject
         'in_future',
         'hobby',
         'foreign_language',
+        'sex',
 
     ];
 
@@ -161,8 +162,7 @@ class User extends Authenticatable implements JWTSubject
         return $query->where('name', 'like', '%' . $searchTerm . '%')
             ->orwhere('staff_code', 'like', '%' . $searchTerm . '%')
             ->orwhere('phone', 'like', '%' . $searchTerm . '%')
-            ->orWhere('email', 'like', '%' . $searchTerm . '%')
-            ->orderBy('name');
+            ->orWhere('email', 'like', '%' . $searchTerm . '%');
     }
 
 }

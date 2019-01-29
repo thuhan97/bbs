@@ -44,11 +44,15 @@ class UserController extends Controller
 		$listDate = $this->userDayOff->findList($request, $conditions);
 
 		$paginateData = $listDate->toArray();
-		$recordPerPage = 10;
+		$recordPerPage = $request->only('per_page');
+		$recordPerPage = $recordPerPage['per_page'] ?? null;
+		$queryApprove = $request->only('approve');
+		$queryApprove = $queryApprove['approve'] ?? null;
+		$approve = $queryApprove !== null ? ($queryApprove != 1 && $queryApprove != 0 ? null : $queryApprove) : null;
 
 		$availableDayLeft = $this->userDayOff->getDayOffUser(Auth::id());
 
-		return view('end_user.user.day_off', compact('listDate', 'paginateData', 'availableDayLeft', 'recordPerPage'));
+		return view('end_user.user.day_off', compact('listDate', 'paginateData', 'availableDayLeft', 'recordPerPage', 'approve'));
 	}
 
 	public function contact(Request $request)

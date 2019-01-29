@@ -4,7 +4,9 @@
 @endsection
 @section('content')
     @php
-    $defaultPerPage = $recordPerPage !== null && $recordPerPage > 0 ? $recordPerPage : 10;
+        $defaultPerPage = $recordPerPage !== null && $recordPerPage > 0 ? $recordPerPage : 10;
+        $defaultApprove = $approve !== null && ($approve == '1' || $approve == '0') ? (int) $approve : null;
+        $paginationApprove = $defaultApprove !== null ? '&approve='.$defaultApprove : '';
     @endphp
 
     <div class="container-fluid col-12 row">
@@ -13,7 +15,8 @@
                 <div class="card-body">
                     <h1 class="white-text font-weight-light">{{$availableDayLeft[0]}}</h1>
                     <p class="card-subtitle text-white-50">ngày đã nghỉ</p>
-                    <p class="card-title text-uppercase font-weight-bold card-text white-text">Trong năm {{date('Y')}}</p>
+                    <p class="card-title text-uppercase font-weight-bold card-text white-text">Trong
+                        năm {{date('Y')}}</p>
                 </div>
             </div>
         </div>
@@ -40,24 +43,28 @@
     <hr>
     <div class="container-fluid col-12 flex-row-reverse d-flex">
         <button class="btn btn-primary dropdown-toggle mr-4" type="button" data-toggle="dropdown" aria-haspopup="true"
-                aria-expanded="false">Hiển thị
+                aria-expanded="false">
+            Hiển thị
         </button>
 
         <div class="dropdown-menu">
-            <a class="dropdown-item">
+            <a class="dropdown-item {{$defaultApprove !== 1 && $defaultApprove !== 0 ? 'active' : ''}}"
+               href="{{url()->current().'?page=1&per_page='.$defaultPerPage}}">
                 <span class="d-flex">
                     <span class="green-red-circle mr-2"></span>
                     <span class="content">Tất cả</span>
                 </span>
             </a>
             <div class="dropdown-divider"></div>
-            <a class="dropdown-item" href="#">
+            <a class="dropdown-item {{$defaultApprove === 0 ? 'active' : ''}}"
+               href="{{url()->current().'?page=1&per_page='.$defaultPerPage.'&approve=0'}}">
                 <span class="d-flex">
                     <span class="red-circle mr-2"></span>
                     <span class="content">Chưa duyệt</span>
                 </span>
             </a>
-            <a class="dropdown-item" href="#">
+            <a class="dropdown-item {{$defaultApprove === 1 ? 'active' : ''}}"
+               href="{{url()->current().'?page=1&per_page='.$defaultPerPage.'&approve=1'}}">
                 <span class="d-flex">
                     <span class="green-circle mr-2"></span>
                     <span class="content">Đã duyệt</span>
@@ -110,108 +117,118 @@
             @endif
             </tbody>
         </table>
-        <div class="container-fluid d-flex flex-center">
-            <nav aria-label="Page navigation">
-                <ul class="pagination pg-blue">
-                    <li class="page-item {{$paginateData['current_page'] === 1 ? 'disabled': ''}}">
-                        <a href="{{$paginateData['first_page_url'].'&per_page='. $defaultPerPage}}" class="page-link">Trang đầu</a>
-                    </li>
-                    <li class="page-item {{$paginateData['current_page'] === 1 ? 'disabled': ''}}">
-                        <a href="{{$paginateData['prev_page_url'].'&per_page='. $defaultPerPage}}" class="page-link" tabindex="-1">
-                            <i class="fas fa-chevron-left"></i>
-                        </a>
-                    </li>
-
-                    @if ($paginateData['current_page'] - 4 > 0)
-                        <li class="page-item">
-                            <a href="{{$paginateData['path'].'?page='.($paginateData['current_page'] - 4).'&per_page='. $defaultPerPage}}" class="page-link">
-                                ...
+        @if($paginateData['last_page'] > 1)
+            {{--Pagination--}}
+            <div class="container-fluid d-flex flex-center">
+                <nav aria-label="Page navigation">
+                    <ul class="pagination pg-blue">
+                        <li class="page-item {{$paginateData['current_page'] === 1 ? 'disabled': ''}}">
+                            <a href="{{$paginateData['first_page_url'].'&per_page='. $defaultPerPage. $paginationApprove}}"
+                               class="page-link">Trang đầu</a>
+                        </li>
+                        <li class="page-item {{$paginateData['current_page'] === 1 ? 'disabled': ''}}">
+                            <a href="{{$paginateData['prev_page_url'].'&per_page='. $defaultPerPage. $paginationApprove}}"
+                               class="page-link" tabindex="-1">
+                                <i class="fas fa-chevron-left"></i>
                             </a>
                         </li>
-                    @endif
 
-                    @if ($paginateData['current_page'] - 3 > 0)
-                        <li class="page-item">
-                            <a href="{{$paginateData['path'].'?page='.($paginateData['current_page'] - 3).'&per_page='. $defaultPerPage}}" class="page-link">
-                                {{$paginateData['current_page'] - 3}}
-                            </a>
-                        </li>
-                    @endif
+                        @if ($paginateData['current_page'] - 4 > 0)
+                            <li class="page-item">
+                                <a href="{{$paginateData['path'].'?page='.($paginateData['current_page'] - 4).'&per_page='. $defaultPerPage. $paginationApprove}}"
+                                   class="page-link">
+                                    ...
+                                </a>
+                            </li>
+                        @endif
 
-                    @if ($paginateData['current_page'] - 2 > 0)
-                        <li class="page-item">
-                            <a href="{{$paginateData['path'].'?page='.($paginateData['current_page'] - 2)}}" class="page-link">
-                                {{$paginateData['current_page'] - 2}}
-                            </a>
-                        </li>
-                    @endif
+                        @if ($paginateData['current_page'] - 3 > 0)
+                            <li class="page-item">
+                                <a href="{{$paginateData['path'].'?page='.($paginateData['current_page'] - 3).'&per_page='. $defaultPerPage. $paginationApprove}}"
+                                   class="page-link">
+                                    {{$paginateData['current_page'] - 3}}
+                                </a>
+                            </li>
+                        @endif
 
-                    @if($paginateData['current_page'] - 1 > 0)
-                        <li class="page-item">
-                            <a href="{{$paginateData['path'].'?page='.($paginateData['current_page'] - 1).'&per_page='. $defaultPerPage}}"
-                               class="page-link">
-                                {{$paginateData['current_page'] - 1}}
-                            </a>
-                        </li>
-                    @endif
+                        @if ($paginateData['current_page'] - 2 > 0)
+                            <li class="page-item">
+                                <a href="{{$paginateData['path'].'?page='.($paginateData['current_page'] - 2). $paginationApprove}}"
+                                   class="page-link">
+                                    {{$paginateData['current_page'] - 2}}
+                                </a>
+                            </li>
+                        @endif
 
-                    <li class="page-item active">
-                        <a class="page-link">
-                            {{$paginateData['current_page']}}
-                            <span class="sr-only">
+                        @if($paginateData['current_page'] - 1 > 0)
+                            <li class="page-item">
+                                <a href="{{$paginateData['path'].'?page='.($paginateData['current_page'] - 1).'&per_page='. $defaultPerPage. $paginationApprove}}"
+                                   class="page-link">
+                                    {{$paginateData['current_page'] - 1}}
+                                </a>
+                            </li>
+                        @endif
+
+                        <li class="page-item active">
+                            <a class="page-link">
+                                {{$paginateData['current_page']}}
+                                <span class="sr-only">
                                 (current)
                             </span>
-                        </a>
-                    </li>
-
-                    @if($paginateData['current_page'] + 1 <= $paginateData['last_page'])
-                        <li class="page-item">
-                            <a href="{{$paginateData['path'].'?page='.($paginateData['current_page'] + 1).'&per_page='. $defaultPerPage}}"
-                               class="page-link">
-                                {{$paginateData['current_page'] + 1}}
                             </a>
                         </li>
-                    @endif
 
-                    @if($paginateData['current_page'] + 2 <= $paginateData['last_page'])
-                        <li class="page-item">
-                            <a href="{{$paginateData['path'].'?page='.($paginateData['current_page'] + 2).'&per_page='. $defaultPerPage}}"
+                        @if($paginateData['current_page'] + 1 <= $paginateData['last_page'])
+                            <li class="page-item">
+                                <a href="{{$paginateData['path'].'?page='.($paginateData['current_page'] + 1).'&per_page='. $defaultPerPage. $paginationApprove}}"
+                                   class="page-link">
+                                    {{$paginateData['current_page'] + 1}}
+                                </a>
+                            </li>
+                        @endif
+
+                        @if($paginateData['current_page'] + 2 <= $paginateData['last_page'])
+                            <li class="page-item">
+                                <a href="{{$paginateData['path'].'?page='.($paginateData['current_page'] + 2).'&per_page='. $defaultPerPage. $paginationApprove}}"
+                                   class="page-link">
+                                    {{$paginateData['current_page'] + 2}}
+                                </a>
+                            </li>
+                        @endif
+
+                        @if($paginateData['current_page'] + 3 <= $paginateData['last_page'])
+                            <li class="page-item">
+                                <a href="{{$paginateData['path'].'?page='.($paginateData['current_page'] + 3).'&per_page='. $defaultPerPage. $paginationApprove}}"
+                                   class="page-link">
+                                    {{$paginateData['current_page'] + 3}}
+                                </a>
+                            </li>
+                        @endif
+
+                        @if($paginateData['current_page'] + 4 <= $paginateData['last_page'])
+                            <li class="page-item">
+                                <a href="{{$paginateData['path'].'?page='.($paginateData['current_page'] + 4).'&per_page='. $defaultPerPage. $paginationApprove}}"
+                                   class="page-link">
+                                    ...
+                                </a>
+                            </li>
+                        @endif
+
+
+                        <li class="page-item {{$paginateData['current_page'] === $paginateData['last_page'] ? 'disabled': ''}}">
+                            <a href="{{$paginateData['next_page_url'].'&per_page='. $defaultPerPage. $paginationApprove}}"
                                class="page-link">
-                                {{$paginateData['current_page'] + 2}}
+                                <i class="fas fa-chevron-right"></i>
                             </a>
                         </li>
-                    @endif
-
-                    @if($paginateData['current_page'] + 3 <= $paginateData['last_page'])
-                        <li class="page-item">
-                            <a href="{{$paginateData['path'].'?page='.($paginateData['current_page'] + 3).'&per_page='. $defaultPerPage}}"
-                               class="page-link">
-                                {{$paginateData['current_page'] + 3}}
-                            </a>
+                        <li class="page-item {{$paginateData['current_page'] === $paginateData['last_page'] ? 'disabled': ''}}">
+                            <a href="{{$paginateData['last_page_url'].'&per_page='. $defaultPerPage. $paginationApprove}}"
+                               class="page-link">Trang cuối</a>
                         </li>
-                    @endif
-
-                    @if($paginateData['current_page'] + 4 <= $paginateData['last_page'])
-                        <li class="page-item">
-                            <a href="{{$paginateData['path'].'?page='.($paginateData['current_page'] + 4).'&per_page='. $defaultPerPage}}"
-                               class="page-link">
-                                ...
-                            </a>
-                        </li>
-                    @endif
-
-
-                    <li class="page-item {{$paginateData['current_page'] === $paginateData['last_page'] ? 'disabled': ''}}">
-                        <a href="{{$paginateData['next_page_url'].'&per_page='. $defaultPerPage}}" class="page-link">
-                            <i class="fas fa-chevron-right"></i>
-                        </a>
-                    </li>
-                    <li class="page-item {{$paginateData['current_page'] === $paginateData['last_page'] ? 'disabled': ''}}">
-                        <a href="{{$paginateData['last_page_url'].'&per_page='. $defaultPerPage}}" class="page-link">Trang cuối</a>
-                    </li>
-                </ul>
-            </nav>
-        </div>
+                    </ul>
+                </nav>
+            </div>
+        @endif
     </div>
 
     <!-- Modal: modalPoll -->

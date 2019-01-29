@@ -63,12 +63,12 @@ class UserController extends Controller
 			$isApproval = true;
 		}
 
-		// If user is approved
-		$conditions = ['start_at'=>0];
+		// If user is approved then
+
 		$request->request->add(['year'=>Date('Y')]);
 		$search = $criterias['search'] ?? '';
 		$totalRecord = $this->userDayOff->findList($request, [], ['*'], $search, $perPage)->toArray();
-//		$totalRecord = $this->userDayOff->findList($request, $conditions, ['*'], $search, $perPage)->toArray();
+
 		return view('end_user.user.day_off_approval',compact('isApproval', 'totalRecord'));
 	}
 

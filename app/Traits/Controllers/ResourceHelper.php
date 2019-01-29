@@ -190,7 +190,14 @@ trait ResourceHelper
      */
     public function getSearchRecords(Request $request, $perPage = 15, $search = null)
     {
-        return $this->getResourceModel()::search($search)->paginate($perPage);
+        $model = $this->getResourceModel()::search($search);
+        if ($request->has('sort')) {
+            $model->orderBy($request->get('sort'), $request->get('is_desc') ? 'asc' : 'desc');
+        } else {
+            $model->orderBy('id', 'desc');
+        }
+
+        return $model->paginate($perPage);
     }
 
     /**

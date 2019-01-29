@@ -1,16 +1,33 @@
 <div class="table-responsive list-records">
-    <table class="table table-hover table-bordered">
+    <table class="table table-hover table-bordered dataTable">
         <thead>
         <th style="width: 10px;">
             <button type="button" class="btn btn-default btn-sm checkbox-toggle"><i class="fa fa-square-o"></i></button>
         </th>
-        <th>Mã nhân viên</th>
-        <th>Họ và tên</th>
-        <th>Ngày sinh</th>
-        <th>Email</th>
-        <th>Số điện thoại</th>
-        <th>Loại hợp đồng</th>
-        <th>Ngày tạo</th>
+        <th class="no-wap">
+            Mã nhân viên
+            {!! __admin_sortable('staff_code') !!}
+        </th>
+        <th>
+            Họ và tên
+            {!! __admin_sortable('name') !!}
+        </th>
+        <th>Ngày sinh
+            {!! __admin_sortable('birthday') !!}
+        </th>
+
+        <th>Email
+            {!! __admin_sortable('email') !!}
+        </th>
+        <th>Số điện thoại
+            {!! __admin_sortable('phone') !!}
+        </th>
+        <th>Loại hợp đồng
+            {!! __admin_sortable('contract_type') !!}
+        </th>
+        <th>Ngày tạo
+            {!! __admin_sortable('created_at') !!}
+        </th>
         <th style="width: 120px;">Chức năng</th>
         </thead>
         <tbody>
@@ -63,3 +80,9 @@
         </tbody>
     </table>
 </div>
+@push('footer-scripts')
+    <script>
+        $(function () {
+        })
+    </script>
+@endpush

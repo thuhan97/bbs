@@ -287,7 +287,6 @@ if (!function_exists('get_months')) {
     }
 }
 
-
 if (!function_exists('__l')) {
     /**
      * Encode unicode
@@ -308,4 +307,22 @@ if (!function_exists('__l')) {
     }
 }
 
-
+if (!function_exists('__admin_sortable')) {
+    /**
+     * Echo sortable url
+     *
+     * @param $field
+     *
+     * @return string
+     */
+    function __admin_sortable($field)
+    {
+        echo '<a href="' . \Request::fullUrlWithQuery(['sort' => $field, 'is_desc' => !request('is_desc', false)]) . '"class="ic-ca">';
+        if (request('sort') == $field && request('is_desc') == 1) {
+            echo '<span class="dropup"><span class="caret"></span></span>';
+        } else {
+            echo '<span class="caret"></span>';
+        }
+        echo '</a>';
+    }
+}

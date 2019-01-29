@@ -140,4 +140,5 @@ class TeamController extends AdminBaseController
             'perPage' => $perPage,
         ]));
     }
+
 }

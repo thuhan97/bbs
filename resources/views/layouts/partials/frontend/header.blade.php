@@ -33,9 +33,19 @@
                         <a href="{{route('report')}}"
                            class="nav-link waves-effect">{{__l('Report')}}
                             <span class="sr-only">(current)</span>
-
                         </a>
                     </li>
+                    <?php
+                    $user = \Illuminate\Support\Facades\Auth::user();
+                    ?>
+                    @if($user->jobtitle_id >= \App\Models\Report::MIN_APPROVE_JOBTITLE)
+                        <li class="nav-item {{ \App\Utils::checkRoute(['day_off_approval']) ? 'active': '' }}">
+                            <a href="{{route('day_off_approval')}}"
+                               class="nav-link waves-effect">{{__l('day_off_approval')}}
+                                <span class="sr-only">(current)</span>
+                            </a>
+                        </li>
+                    @endif
                 </ul>
                 <!-- Right -->
                 <ul class="navbar-nav nav-flex-icons">

@@ -44,5 +44,6 @@
 
 <script type="text/javascript" src="{{ asset('js/main.js') }}"></script>
 @stack('extend-js')
+@stack('eu-dayoff')
 </body>
 </html>

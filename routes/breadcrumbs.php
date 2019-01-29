@@ -92,6 +92,12 @@ Breadcrumbs::register('day_off', function ($breadcrumbs) {
     $breadcrumbs->parent('personal');
     $breadcrumbs->push(__l('day_off'), route('day_off'));
 });
+// Dashboard > day_off_approval
+Breadcrumbs::register('day_off_approval', function ($breadcrumbs) {
+	$breadcrumbs->parent('personal');
+	$breadcrumbs->push(__l('day_off_approval'), route('day_off_approval'));
+});
+
 // Admin
 Breadcrumbs::register('admin', function ($breadcrumbs) {
     $breadcrumbs->push(__l('admin_page'), route('admin::index'));

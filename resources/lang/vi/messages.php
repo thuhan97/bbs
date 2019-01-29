@@ -29,6 +29,7 @@ return [
     'work_time' => 'Giờ làm việc',
     'contact' => 'Danh bạ',
     'day_off' => 'Ngày phép',
+	'day_off_approval' => 'Phê duyệt nghỉ phép',
     'Login' => 'Đăng nhập',
     'logout' => 'Đăng xuất',
     'detail' => 'Chi tiết',

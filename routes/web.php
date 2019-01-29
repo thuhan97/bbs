@@ -108,6 +108,7 @@ Route::group([
     Route::get('/doi-mat-khau', 'UserController@changePassword')->name('changePassword');
     Route::get('/thoi-gian-lam-viec', 'UserController@workTime')->name('work_time');
     Route::get('/ngay-nghi', 'UserController@dayOff')->name('day_off');
+    Route::get('/phe-duyet-ngay-nghi', 'UserController@dayOffApprove')->name('day_off_approval');
 
     Route::get('/noi-quy-quy-dinh', 'RegulationController@index')->name('regulation');
     Route::get('/noi-quy-quy-dinh/{id}', 'RegulationController@detail')->where(['id' => '\d+'])->name('regulation_detail');

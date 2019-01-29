@@ -16,6 +16,7 @@ class DayOff extends Model
 {
     use SoftDeletes, FillableFields, OrderableTrait, SearchLikeTrait;
     const APPROVED_STATUS = 1;
+    const NOTAPPROVED_STATUS = 0;
 
     protected $table = 'day_offs';
 
@@ -64,4 +65,9 @@ class DayOff extends Model
     {
         return $this->belongsTo(User::class);//->where('status', ACTIVE_STATUS);
     }
+
+	public function approval()
+	{
+		return $this->hasOne(User::class,'id','approver_id');
+	}
 }

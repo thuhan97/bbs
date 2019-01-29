@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use App\Services\Contracts\IDayOffService;
 use App\Services\Contracts\IUserService;
 use Illuminate\Http\Request;
@@ -51,8 +52,24 @@ class UserController extends Controller
 		$approve = $queryApprove !== null ? ($queryApprove != 1 && $queryApprove != 0 ? null : $queryApprove) : null;
 
 		$availableDayLeft = $this->userDayOff->getDayOffUser(Auth::id());
+		return view('end_user.user.day_off', compact('listDate', 'paginateData', 'availableDayLeft', 'recordPerPage', 'approve', 'isApproval', 'openApprove'));
+	}
 
-		return view('end_user.user.day_off', compact('listDate', 'paginateData', 'availableDayLeft', 'recordPerPage', 'approve'));
+	public function dayOffApprove(Request $request)
+	{
+		$approvalUser = new User();
+		$approvalUser->approverUsers()->where('id', Auth::id())->first();
+		$isApproval = false;
+		if ($approvalUser !== null && $approvalUser->id !== null) {
+			$isApproval = true;
+		}
+//		if (!$isApproval) return '<h2>Bạn không có quyền truy cập chức năng này</h2>';
+
+		// If user is approved
+		$conditions = ['day_offs.status'=>0];
+		$search = $criterias['search'] ?? '';
+		$records = $this->userDayOff->findList($request, $conditions, ['*'], $search, $perPage)->toArray();
+		return view('end_user.user.day_off_approval',compact('records'));
 	}
 
 	public function contact(Request $request)

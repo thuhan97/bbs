@@ -33,7 +33,12 @@
                         <a href="{{route('report')}}"
                            class="nav-link waves-effect">{{__l('Report')}}
                             <span class="sr-only">(current)</span>
-
+                        </a>
+                    </li>
+                    <li class="nav-item {{ \App\Utils::checkRoute(['day_off_approval']) ? 'active': '' }}">
+                        <a href="{{route('day_off_approval')}}"
+                           class="nav-link waves-effect">{{__l('day_off_approval')}}
+                            <span class="sr-only">(current)</span>
                         </a>
                     </li>
                 </ul>

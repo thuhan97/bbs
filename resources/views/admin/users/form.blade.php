@@ -223,7 +223,7 @@ $defaultStaffCode = "J" . str_pad((\App\Models\User::max('id') + 1), 3, '0', STR
         <div class="col-md-6">
             <div class="form-group margin-b-5 margin-t-5{{ $errors->has('position_id') ? ' has-error' : '' }}">
                 <label for="position_id">Chức vụ</label>
-                {{ Form::select('position_id', JOB_TITLES, $record->position_id ?? 0, ['class'=>'form-control']) }}
+                {{ Form::select('position_id', POSITIONS, $record->position_id ?? 0, ['class'=>'form-control']) }}
 
                 @if ($errors->has('position_id'))
                     <span class="help-block">

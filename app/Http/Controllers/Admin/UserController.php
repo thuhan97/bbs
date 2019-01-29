@@ -80,10 +80,15 @@ class UserController extends AdminBaseController
     public function getSearchRecords(Request $request, $perPage = 15, $search = null)
     {
         $model = $this->getResourceModel()::search($search);
-        $jobtitle_id = $request->get('jobtitle_id');
 
+        $jobtitle_id = $request->get('jobtitle');
         if (!empty($jobtitle_id)) {
             $model = $model->where('jobtitle_id', $jobtitle_id);
+        }
+        $position_id = $request->get('position');
+
+        if (!empty($position_id)) {
+            $model = $model->where('position_id', $position_id);
         }
         $contract_type = $request->get('contract_type');
         if (!empty($contract_type)) {

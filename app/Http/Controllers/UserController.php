@@ -37,8 +37,8 @@ class UserController extends Controller
             if ($request->hasFile('avatar')) {
                 $avatar = request()->file('avatar');
                 $avatarName = $avatar->getClientOriginalName();
-                $destinationPath = public_path('/uploads/avatar/');
-                $data['avatar']='uploads/avatar/'.$avatarName;
+                $destinationPath = public_path(URL_IMAGE_AVATAR);
+                $data['avatar']=URL_IMAGE_AVATAR.$avatarName;
                 $avatar->move($destinationPath, $avatarName);    
             }
             

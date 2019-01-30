@@ -111,6 +111,7 @@ return [
     'unique' => 'Trường :attribute đã có trong cơ sở dữ liệu.',
     'uploaded' => 'Trường :attribute tải lên thất bại.',
     'url' => 'Trường :attribute không giống với định dạng một URL.',
+    'file_extension_invalid' => 'File :attribute tải lên không đúng định dạng.',
 
     /*
     |--------------------------------------------------------------------------
@@ -144,9 +145,13 @@ return [
         'name' => 'họ và tên',
         'email' => 'email',
         'password' => 'mật khẩu',
+        'current_password' => 'mật khẩu hiện tại',
+        'password_confirmation' => 'Xác nhận mật khẩu',
         'birthday' => 'ngày sinh',
         'phone' => 'số điện thoại',
         'event_end_date' => 'Ngày kết thúc',
         'id_card' => 'số chứng minh nhân dân',
+        'year' => 'năm',
+        'month' => 'tháng',
     ],
 ];

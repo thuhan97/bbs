@@ -14,11 +14,11 @@ class AddColumnUsers extends Migration
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->string('gmail', 191);
-            $table->string('gitlab', 191);
-            $table->string('chatwork', 191);
-            $table->text('skills')->comment('Khả năng hiện tại');
-            $table->text('in_future')->comment('Định hướng tương lai');
+            $table->string('gmail', 191)->nullable();
+            $table->string('gitlab', 191)->nullable();
+            $table->string('chatwork', 191)->nullable();
+            $table->text('skills')->comment('Khả năng hiện tại')->nullable();
+            $table->text('in_future')->comment('Định hướng tương lai')->nullable();
             $table->string('hobby', 1000)->nullable();
             $table->string('foreign_language', 1000)->nullable();
         });

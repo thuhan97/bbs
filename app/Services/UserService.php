@@ -21,12 +21,13 @@ use Illuminate\Support\Collection;
 class UserService extends AbstractService implements IUserService
 {
 
-    /**
-     * UserService constructor.
-     *
-     * @param \App\Models\User                            $model
-     * @param \App\Repositories\Contracts\IUserRepository $repository
-     */
+	/**
+	 * UserService constructor.
+	 *
+	 * @param \App\Models\User $model
+	 * @param \App\Repositories\Contracts\IUserRepository $repository
+	 * @param IUserTeamRepository $userTeamRepository
+	 */
     public function __construct(User $model, IUserRepository $repository,IUserTeamRepository $userTeamRepository)
     {
         $this->model = $model;

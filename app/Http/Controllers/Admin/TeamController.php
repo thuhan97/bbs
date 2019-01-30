@@ -137,4 +137,5 @@ class TeamController extends AdminBaseController
         }
         return redirect()->action('Admin\TeamController@manageMember', ['id' => $request->id]);
     }
+
 }

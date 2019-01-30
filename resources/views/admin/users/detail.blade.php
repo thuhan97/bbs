@@ -119,7 +119,7 @@ $defaultStaffCode = "J" . str_pad((\App\Models\User::max('id') + 1), 3, '0', STR
     </div>
 
     <hr/>
-
+<a href="{{route('admin::day_offs.user', $record->id)}}" class="btn btn-info">Xem ngày nghỉ phép nhân viên</a>
     <!-- /.form-group -->
 </div>
 <!-- /.col-md-5 -->

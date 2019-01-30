@@ -11,6 +11,10 @@
     width: 45%;
 }
 
+.no-border {
+    border: none;
+}
+
 #nav_bar_avatar {
     padding: 0;
 }
@@ -219,6 +223,67 @@
 
 .table tbody tr.select {
     background: #e5edff;
+}
+
+/*Day_off CSS*/
+.red-circle {
+    display: block;
+    height: 1.5rem;
+    width: 1.5rem;
+    background: tomato;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    border-radius: 50%;
+}
+
+.green-circle {
+    display: block;
+    height: 1.5rem;
+    width: 1.5rem;
+    background: limegreen;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    border-radius: 50%;
+}
+
+.green-red-circle {
+    display: block;
+    height: 1.5rem;
+    width: 1.5rem;
+    background: transparent;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    border-radius: 50%;
+    position: relative;
+    overflow: hidden;
+}
+
+.green-red-circle::before {
+    content: '';
+    display: block;
+    width: .75rem;
+    height: 1.5rem;
+    position: absolute;
+    left: 0;
+    top: 0;
+    background: tomato;
+}
+
+.green-red-circle::after {
+    content: '';
+    display: block;
+    width: .75rem;
+    height: 1.5rem;
+    position: absolute;
+    right: 0;
+    top: 0;
+    background: limegreen;
 }
 
 @media (min-width: 1200px) {

@@ -15,6 +15,8 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class DayOff extends Model
 {
     use SoftDeletes, FillableFields, OrderableTrait, SearchLikeTrait;
+    const APPROVED_STATUS = 1;
+    const NOTAPPROVED_STATUS = 0;
 
     protected $table = 'day_offs';
 
@@ -30,5 +32,42 @@ class DayOff extends Model
         'status',
         'approver_id',
         'approver_at',
+        'approve_comment',
     ];
+
+    /**
+     * Search for course title or subject name
+     *
+     * @param $query
+     * @param $searchTerm
+     *
+     * @return mixed
+     */
+    public function scopeSearch($query, $searchTerm)
+    {
+        return $query->where(function ($q) use ($searchTerm) {
+            $q->orWhere('title', 'like', '%' . $searchTerm . '%')
+                ->orWhere('reason', 'like', '%' . $searchTerm . '%')
+                ->orWhere('start_at', 'like', '%' . $searchTerm . '%')
+                ->orWhere('end_at', 'like', '%' . $searchTerm . '%')
+                ->orWhere('users.name', 'like', '%' . $searchTerm . '%')
+                ->orWhere('users.staff_code', 'like', '%' . $searchTerm . '%');
+        })
+            ->join('users', 'users.id', 'user_id')
+            ->select('day_offs.*')
+            ->orderBy('day_offs.id', 'desc');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function user()
+    {
+        return $this->belongsTo(User::class);//->where('status', ACTIVE_STATUS);
+    }
+
+	public function approval()
+	{
+		return $this->hasOne(User::class,'id','approver_id');
+	}
 }

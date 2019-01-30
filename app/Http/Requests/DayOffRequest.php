@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StartTestRequest extends FormRequest
+class DayOffRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,7 +24,7 @@ class StartTestRequest extends FormRequest
     public function rules()
     {
         return [
-            'pick_potato' => 'numeric',
+	        'approve' => 'integer|between:0,1|nullable',
         ];
     }
 }

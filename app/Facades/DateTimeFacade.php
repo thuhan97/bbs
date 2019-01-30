@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Facade;
  *
  * @method static mixed|string prettyTime($seconds)
  * @method static mixed|string getQuerySql($model)
+ * @method static float getDayOffNumbers($startAt, $endAt)
  *
  * @see \App\Helpers\DateTimeHelper
  */

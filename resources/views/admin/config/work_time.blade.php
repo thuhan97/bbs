@@ -43,8 +43,6 @@
             </div>
 
         </div>
-
-
     </div>
     <div class="col-md-6">
         <h5>Chiều</h5>
@@ -88,6 +86,80 @@
                 </div>
             </div>
 
+        </div>
+    </div>
+</div>
+<hr/>
+<h4>Giờ tính đi muộn</h4>
+<div class="row">
+    <div class="col-md-6">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group margin-b-5 margin-t-5{{ $errors->has('time_morning_go_late_at') ? ' has-error' : '' }}">
+                    <span for="time_morning_go_late_at">Sáng</span>
+                    <div class="input-group date">
+                        <div class="input-group-addon">
+                            <i class="fa fa-calendar"></i>
+                        </div>
+                        <input type="time" class="form-control pull-right" autocomplete="off"
+                               name="time_morning_go_late_at"
+                               value="{{ old('time_morning_go_late_at', $record->time_morning_go_late_at) }}"
+                               id="time_morning_go_late_at">
+                    </div>
+                    @if ($errors->has('time_morning_go_late_at'))
+                        <span class="help-block">
+                    <strong>{{ $errors->first('time_morning_go_late_at') }}</strong>
+                </span>
+                    @endif
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group margin-b-5 margin-t-5{{ $errors->has('time_afternoon_go_late_at') ? ' has-error' : '' }}">
+                    <span for="time_afternoon_go_late_at">Chiều</span>
+                    <div class="input-group date">
+                        <div class="input-group-addon">
+                            <i class="fa fa-calendar"></i>
+                        </div>
+                        <input type="time" class="form-control pull-right"
+                               name="time_afternoon_go_late_at" autocomplete="off"
+                               value="{{ old('time_afternoon_go_late_at', $record->time_afternoon_go_late_at) }}"
+                               id="time_afternoon_go_late_at">
+                    </div>
+                    @if ($errors->has('time_afternoon_go_late_at'))
+                        <span class="help-block">
+                    <strong>{{ $errors->first('time_afternoon_go_late_at') }}</strong>
+                </span>
+                    @endif
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+<hr/>
+<h4>Giờ tính Overtime</h4>
+<div class="row">
+    <div class="col-md-6">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group margin-b-5 margin-t-5{{ $errors->has('time_ot_early_at') ? ' has-error' : '' }}">
+                    <span for="time_ot_early_at">Sáng</span>
+                    <div class="input-group date">
+                        <div class="input-group-addon">
+                            <i class="fa fa-calendar"></i>
+                        </div>
+                        <input type="time" class="form-control pull-right" autocomplete="off"
+                               name="time_ot_early_at"
+                               value="{{ old('time_ot_early_at', $record->time_ot_early_at) }}"
+                               id="time_ot_early_at">
+                    </div>
+                    @if ($errors->has('time_ot_early_at'))
+                        <span class="help-block">
+                    <strong>{{ $errors->first('time_ot_early_at') }}</strong>
+                </span>
+                    @endif
+                </div>
+            </div>
         </div>
     </div>
 </div>

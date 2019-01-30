@@ -51,7 +51,7 @@ before_script:
 
   # Install Node dependencies.
   # comment this out if you don't have a node dependency
-  - npm install
+  #- npm install
 
 # Build code on develop branch
 build:
@@ -61,7 +61,7 @@ build:
   script:
     # Copy over testing configuration.
     - cp .env.dev .env
-    - npm run dev
+    #- npm run dev
     - echo "deploy dev done"
 
 # Build code on staging branch
@@ -71,9 +71,9 @@ deploy_staging:
     - staging
   script:
     # Copy over testing configuration.
-    - bash .deploy.sh
+    #- bash .deploy.sh
     - cp .env.staging .env
-    - npm run prod
+    #- npm run prod
     - echo "deploy staging done"
 
 # Build code on master branch
@@ -83,9 +83,9 @@ deploy_production:
     - master
   script:
     # Copy over testing configuration.
-    - bash .deploy.sh
+    #- bash .deploy.sh
     - cp .env.production .env
-    - npm run prod
+    #- npm run prod
     - echo "deploy production done"
 
 # Test on master branch

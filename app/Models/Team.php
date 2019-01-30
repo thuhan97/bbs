@@ -2,14 +2,16 @@
 
 namespace App\Models;
 
+
 use http\Env\Request;
 use Illuminate\Database\Eloquent\Model;
+
 use App\Traits\Eloquent\OrderableTrait;
 use App\Traits\Eloquent\SearchLikeTrait;
 use App\Traits\Models\FillableFields;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+
 use Illuminate\Support\Facades\DB;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 use App\Models\UserTeam;
@@ -24,8 +26,6 @@ class Team extends Model
     const LEVEL_DEFAULT = 1;
 
     protected $table = 'teams';
-
-    protected $primaryKey = 'id';
 
     protected $fillable = [
         'name',
@@ -56,15 +56,15 @@ class Team extends Model
      */
     public function scopeSearch($query, $searchTerm)
     {
-        return $query->where(function($query) use ($searchTerm){
-                $query->where('teams.name', 'LIKE', '%'.$searchTerm.'%');
-                $query->orWhere('banner', 'LIKE', '%'.$searchTerm.'%');
-                $query->orWhere('users.name', 'LIKE', '%'.$searchTerm.'%');
-            })
+        return $query->where(function ($query) use ($searchTerm) {
+            $query->where('teams.name', 'LIKE', '%' . $searchTerm . '%');
+            $query->orWhere('banner', 'LIKE', '%' . $searchTerm . '%');
+            $query->orWhere('users.name', 'LIKE', '%' . $searchTerm . '%');
+        })
             ->select('teams.*')
-            ->join('users', 'teams.leader_id', '=', 'users.id')
-            ->orderBy('teams.name');
+            ->join('users', 'teams.leader_id', '=', 'users.id');
     }
+
 
 
     public function user()
@@ -94,17 +94,18 @@ class Team extends Model
     }
 
 
-
     /**
      * @return mixed
      */
-    public function getMemberNotInTeam($id = null){
+    public function getMemberNotInTeam($id = null)
+    {
         $memberModel = new UserTeam;
         $member = $memberModel->getMemberIdAttribute();
         $users = '';
         $users = User::whereNotIn('id', $member)
             ->where('jobtitle_id',2)
             ->orwhere('id',$id)
+
             ->get();
         return $users;
     }
@@ -127,6 +128,7 @@ class Team extends Model
             throw new Exception($e->getMessage());
         }
     }
+
 
 
 }

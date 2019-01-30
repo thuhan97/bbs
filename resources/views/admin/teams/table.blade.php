@@ -5,10 +5,11 @@
             <button type="button" class="btn btn-default btn-sm checkbox-toggle"><i class="fa fa-square-o"></i></button>
         </th>
         <th>STT</th>
-        <th>Tên nhóm</th>
+        <th>Tên nhóm
+            {!! __admin_sortable('name') !!}
+        </th>
         <th>Trưởng nhóm</th>
         <th>Biểu ngữ</th>
-        <th>Miêu tả</th>
         <th>Khẩu ngữ</th>
         <th>Ngày tạo</th>
         <th style="width: 120px;">Chức năng</th>
@@ -35,7 +36,6 @@
                 </td>
                 <td>{{ $record->user->name}}</td>
                 <td>{{ $record->banner }}</td>
-                <td>{{ $record->description }}</td>
                 <td>{{ $record->slogan }}</td>
                 <td class="">{{ $record->created_at }}</td>
 

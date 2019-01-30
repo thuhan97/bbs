@@ -12,9 +12,15 @@
             <button type="button" class="btn btn-default btn-sm checkbox-toggle"><i class="fa fa-square-o "></i>
             </button>
         </th>
-        <th>Tên</th>
-        <th>Ngày tạo</th>
-        <th>Ngày cập nhật</th>
+        <th>Tên
+            {!! __admin_sortable('name') !!}
+        </th>
+        <th>Ngày tạo
+            {!! __admin_sortable('created_at') !!}
+        </th>
+        <th>Ngày cập nhật
+            {!! __admin_sortable('updated_at') !!}
+        </th>
         <th style="width: 100px;">Actions</th>
         </thead>
         <tbody>

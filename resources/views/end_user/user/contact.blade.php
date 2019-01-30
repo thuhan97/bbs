@@ -30,7 +30,7 @@
                 <th scope="col">Ảnh</th>
                 <th scope="col">Mã nhân viên</th>
                 <th scope="col">Tên nhân viên</th>
-                <th class="text-center" scope="col">Ngày sinh</th>
+                <th class="text-center" scope="col">Sinh nhật</th>
                 <th class="text-center" scope="col">Số điện thoại</th>
                 <th scope="col">Email</th>
                 {{--<th scope="col">Chi tiết</th>--}}
@@ -50,13 +50,13 @@
                     <td>{{$user->name}}</td>
                     <td class="text-center">
                         @if($user->birthday)
-                            <span class="btn-showinfo btn btn-info">
-                                <i class="fas fas-eyes"></i>
-                                Xem
-                            </span>
-                            <span class="info">
-                             {{$user->birthday}}
-                        </span>
+                            <?php
+                            $birthDay = date("d/m", strtotime($user->birthday));
+                            ?>
+                            @if($birthDay == date("d/m"))
+                                <i class="fas fa-birthday-cake"></i>
+                            @endif
+                            {{ $birthDay }}
                         @else
                             <span>{{__l('updating')}}</span>
                         @endif

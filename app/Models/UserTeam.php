@@ -2,14 +2,12 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
 use App\Traits\Eloquent\OrderableTrait;
 use App\Traits\Eloquent\SearchLikeTrait;
 use App\Traits\Models\FillableFields;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Tymon\JWTAuth\Contracts\JWTSubject;
 
 class UserTeam extends Model
 {
@@ -20,8 +18,6 @@ class UserTeam extends Model
     const LEVEL_DEFAULT = 1;
 
     protected $table = 'user_teams';
-
-    protected $primaryKey = 'id';
 
     protected $fillable = [
         'name',
@@ -60,16 +56,17 @@ class UserTeam extends Model
     }
     /**
      * @param $id
+     *
      * @return mixed
      */
-//    public function getMemberTeamAttribute($id){
-//        return $this->where('team_id',  $id)->get();
-//    }
+
+
 
     /**
      * @return mixed
      */
-    public function getMemberIdAttribute(){
+    public function getMemberIdAttribute()
+    {
         return $this->select(['user_id'])->groupBy(['user_id'])->get();
     }
 

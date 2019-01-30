@@ -9,7 +9,7 @@
                 </span>
     @endif
 </div>
-<div class="tab-pane active" id="tab_1">
+<div class="tab-pane active">
     <div class="form-group margin-b-5 margin-t-5{{ $errors->has('acronym_name') ? ' has-error' : '' }}">
         <label for="acronym_name">Tên viết tắt *</label>
         <input type="text" class="form-control" name="acronym_name" placeholder="BBS"
@@ -22,3 +22,24 @@
         @endif
     </div>
 </div>
+<div class="tab-pane active">
+    <div class="form-group margin-b-5 margin-t-5{{ $errors->has('description') ? ' has-error' : '' }}">
+        <label for="acronym_name">Mô tả</label>
+        <textarea class="form-control" id="description" name="description"
+                  placeholder="Nhập mô tả">{{ old('description', $record->description) }}</textarea>
+
+        @if ($errors->has('description'))
+            <span class="help-block">
+                    <strong>{{ $errors->first('description') }}</strong>
+                </span>
+        @endif
+    </div>
+</div>
+
+@push('footer-scripts')
+    <script>
+        $(function () {
+            myEditor($("#description"));
+        })
+    </script>
+@endpush

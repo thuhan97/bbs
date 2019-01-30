@@ -24,8 +24,8 @@
     <!-- Select2 -->
     <link href="{{ asset('/adminlte/plugins/select2/css/select2.min.css') }}" rel="stylesheet" type="text/css">
     <!-- datetimepicker -->
-    {{--<link href="{{ asset('/bootstrap-datepicker/css/bootstrap-datepicker.min.css') }}">--}}
-    <link href="{{ asset('/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css') }}"
+    <link href="{{ cdn_asset('/bootstrap-datepicker/css/bootstrap-datepicker.min.css') }}">
+    <link href="{{ cdn_asset('/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css') }}"
           rel="stylesheet" type="text/css">
     <!-- END - Plugins -->
 

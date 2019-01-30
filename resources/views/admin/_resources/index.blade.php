@@ -70,7 +70,9 @@ if (count($records) > 0) {
                     <div class="row">
                         <div class="col-sm-6">
                             <a href="#" class="btn btn-sm btn-danger" id="btnDeleteMutiple">
+
                                 <i class="fa fa-close"></i> <span>Xóa bản ghi được chọn</span>
+
                             </a>
                             <form style="display: none" method="post" action="{{$_mutipleDeleteLink}}"
                                   id="formDeleteMutiple">
@@ -81,13 +83,17 @@ if (count($records) > 0) {
                             </form>
                         </div>
                         <div class="col-sm-6 text-right">
+
                             <span class="text-green padding-l-5">Tất cả: {{ $total }} bản ghi.</span>&nbsp;
+
                         </div>
                     </div>
                 </div>
                 @include($resourceAlias.'.table')
             @else
+
                 <p class="margin-l-5 lead text-green">Không có dữ liệu.</p>
+
             @endif
         </div>
         <!-- /.box-body -->

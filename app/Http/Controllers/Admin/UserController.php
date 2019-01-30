@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Models\User;
 use App\Repositories\Contracts\IUserRepository;
+use Illuminate\Http\Request;
 
 /**
  * UserController
@@ -29,12 +30,12 @@ class UserController extends AdminBaseController
      */
     protected $resourceModel = User::class;
 
-    protected $resourceSearchExtend = 'admin.users._partials.search_form';
-
     /**
      * @var  string
      */
     protected $resourceTitle = 'Nhân viên';
+
+    protected $resourceSearchExtend = 'admin.users._search_extend';
 
     public function __construct(IUserRepository $repository)
     {
@@ -49,9 +50,9 @@ class UserController extends AdminBaseController
                 'name' => 'filled|max:255',
                 'email' => 'email|unique:users,email',
                 'staff_code' => 'filled|max:10|unique:users,staff_code',
-                'birthday' => 'date|before:' . date('Y-m-d', strtotime('- 15 years')),
-                'phone' => 'min:10|max:30|unique:users,phone',
-                'id_card' => 'min:9|max:12|unique:users,id_card',
+                'birthday' => 'nullable|date|before:' . date('Y-m-d', strtotime('- 15 years')),
+                'phone' => 'nullable|min:10|max:30|unique:users,phone',
+                'id_card' => 'nullable|min:9|max:12|unique:users,id_card',
             ],
             'messages' => [],
             'attributes' => [],
@@ -66,9 +67,9 @@ class UserController extends AdminBaseController
                 'name' => 'required|max:255',
                 'email' => 'required|email|unique:users,email,' . $record->id,
                 'staff_code' => 'filled|max:10|unique:users,staff_code,' . $record->id,
-                'birthday' => 'date|before:' . date('Y-m-d', strtotime('- 15 years')),
-                'phone' => 'min:10|max:30|unique:users,phone',
-                'id_card' => 'min:9|max:12|unique:users,id_card',
+                'birthday' => 'nullable|date|before:' . date('Y-m-d', strtotime('- 15 years')),
+                'phone' => 'nullable|min:10|max:30|unique:users,phone,' . $record->id,
+                'id_card' => 'nullable|min:9|max:12|unique:users,id_card,' . $record->id,
             ],
             'messages' => [],
             'attributes' => [],
@@ -76,96 +77,57 @@ class UserController extends AdminBaseController
         ];
     }
 
-    public function importData(QuestionSetImportRequest $request)
+    public function getSearchRecords(Request $request, $perPage = 15, $search = null)
     {
-        //Do validation file
-        $extensions = array("xls", "xlsx", "xlm", "xla", "xlc", "xlt", "xlw", "csv");
-        $fileExtension = $request->file('import_file')->getClientOriginalExtension();
-        $request->merge(['ext' => strtolower($fileExtension)]);
-        $this->validate($request, [
-            'ext' => 'in:' . implode(',', $extensions),
-        ], [
-            'ext.in' => 'The selected file is invalid.'
-        ]);
+        $model = $this->getResourceModel()::search($search);
 
-        $requestData = $request->all();
-        $insertDatas = [];
-        $importErrors = [];
+        $jobtitle_id = $request->get('jobtitle');
+        if (!empty($jobtitle_id)) {
+            $model = $model->where('jobtitle_id', $jobtitle_id);
+        }
+        $position_id = $request->get('position');
 
-        $path = $request->file('import_file')->getRealPath();
-        \Excel::load($path, function ($reader) use ($request, &$importErrors, &$insertDatas) {
-
-            // reader methods
-            $reader->each(function ($cellCollection, $rowNumber) use (&$importErrors, &$insertDatas) {
-                $row = $cellCollection->toArray();
-                if (!is_null($row[0])) {
-                    $data = [
-                        'name' => $row['name'],
-                        'image' => 'browse to change',
-                        'description' => $row['description'],
-                        'total_question' => $row['total_question'],
-                        'potato' => $row['potato'],
-                        'min_pick_potato' => $row['min_pick_potato'],
-                        'max_pick_potato' => $row['max_pick_potato'],
-                        'number_to_pass' => $row['number_to_pass'],
-                        'total_time' => $row['total_time'],
-                        'level_name' => $row['level'],
-                        'topic_name' => $row['topic'],
-                    ];
-
-                    $validationData = $this->validationData($row);
-                    $validationRules = $validationData['rules'];
-                    unset($validationRules['level_id'], $validationRules['topic_id']);
-
-                    //do row validate
-                    $validator = $this->getValidationFactory()->make($data, $validationRules, $validationData['messages'], $validationData['attributes']);
-                    if ($validator->fails()) {
-                        $errorMsgs = $validator->errors()->getMessages();
-                        $lineMsg = ' - Row ' . ($rowNumber + 1) . ':';
-                        foreach ($errorMsgs as $errorMsg) {
-                            $lineMsg .= ' ' . $errorMsg[0];
-                        }
-                        array_push($importErrors, $lineMsg);
-                    } else {
-                        array_push($insertDatas, $data);
-                    }
-                }
-            });
-        });
-
-        if (empty($importErrors)) {
-            $relationData = $this->makeRelationData();
-            $levels = $relationData['levels'];
-            $topics = $relationData['topics'];
-            \DB::beginTransaction();
-            foreach ($insertDatas as &$insertData) {
-                $insertData['level_id'] = $this->getLevelId($levels, $insertData['level_name']);
-                $insertData['topic_id'] = $this->getTopicId($topics, $insertData['topic_name']);
-
-                unset($insertData['level_name'], $insertData['topic_name']);
-            }
-
-            if (isset($requestData['delete_old_data']) && $requestData['delete_old_data']) {
-                $currentTableName = with(new QuestionSets())->getTable();;
-                $newTableName = $currentTableName . '_' . date('Ymd_his');
-                \DB::statement("CREATE TABLE $newTableName LIKE $currentTableName;");
-                \DB::statement("INSERT $newTableName SELECT * FROM $currentTableName;");
-                QuestionSets::truncate();
-            } else {
-            }
-            QuestionSets::insertAll($insertDatas);
-            \DB::commit();
-            $message = 'Import data successfully.';
-        } else {
-            $message = 'Import data failed. There are some errors: ';
+        if (!empty($position_id)) {
+            $model = $model->where('position_id', $position_id);
+        }
+        $contract_type = $request->get('contract_type');
+        if (!empty($contract_type)) {
+            $model = $model->where('contract_type', $contract_type);
         }
 
-        return view('admin.question_sets.import', [
-            'resourceAlias' => $this->getResourceAlias(),
-            'resourceRoutesAlias' => $this->getResourceRoutesAlias(),
-            'resourceTitle' => $this->getResourceTitle(),
-            'import_errors' => $importErrors,
-            'message' => $message
-        ]);
+        if ($request->has('sort')) {
+            $model->orderBy($request->get('sort'), $request->get('is_desc') ? 'asc' : 'desc');
+        } else {
+            $model->orderBy('id', 'desc');
+        }
+
+        return $model->paginate($perPage);
+    }
+
+    public function resetPassword(Request $request)
+    {
+        $isAll = $request->get('is_all', false);
+        if ($isAll) {
+            $users = User::all();
+        } else {
+            $this->validate($request, [
+                'user_ids' => 'required',
+            ]);
+            $user_ids = $request->get('user_ids');
+            if (!is_array($user_ids)) {
+                $user_ids = [$user_ids];
+            }
+            $users = User::whereIn('id', $user_ids)->get();
+        }
+        if ($users->isNotEmpty()) {
+            foreach ($users as $user) {
+                $user->password = $user->staff_code;
+                $user->save();
+            }
+            flash()->success('Reset mật khẩu thành công');
+        } else {
+            flash()->error('Không tìm thấy nhân viên');
+        }
+        return redirect(route('admin::users.index'));
     }
 }

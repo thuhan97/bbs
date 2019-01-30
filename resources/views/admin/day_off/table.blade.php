@@ -26,7 +26,7 @@
         @foreach ($records as $record)
             <?php
             $editLink = route($resourceRoutesAlias . '.edit', $record->id);
-            $userLink = route('admin::users.show', $record->user_id);
+            $userLink = route('admin::day_offs.user', $record->user_id);
 
             $deleteLink = route($resourceRoutesAlias . '.destroy', $record->id);
             $formId = 'formDeleteModel_' . $record->id;

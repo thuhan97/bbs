@@ -29,6 +29,7 @@ return [
     'work_time' => 'Giờ làm việc',
     'contact' => 'Danh bạ',
     'day_off' => 'Ngày phép',
+	'day_off_approval' => 'Phê duyệt nghỉ phép',
     'Login' => 'Đăng nhập',
     'logout' => 'Đăng xuất',
     'detail' => 'Chi tiết',
@@ -47,4 +48,8 @@ return [
     'report_drafted_successully' => 'Lưu nháp báo cáo thành công',
     'report_resent_successully' => 'Gửi lại báo cáo thành công',
     'report_created_successully' => 'Tạo báo cáo thành công',
+    'user_not_found' => 'Không tìm thấy người dùng',
+    'save' => 'Lưu',
+    'update' => 'Cập nhật',
+    'cancel' => 'Hủy bỏ',
 ];

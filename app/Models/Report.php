@@ -18,6 +18,8 @@ class Report extends Model
 
     protected $table = 'reports';
 
+    const MIN_APPROVE_JOBTITLE = 1;
+
     protected $fillable = [
         'id',
         'year',

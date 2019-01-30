@@ -96,7 +96,6 @@ class Event extends Model
         return $query->where('name', 'like', '%' . $searchTerm . '%')
             ->orWhere('slug_name', 'like', '%' . $searchTerm . '%')
             ->orWhere('introduction', 'like', '%' . $searchTerm . '%')
-            ->orWhere('content', 'like', '%' . $searchTerm . '%')
-            ->orderBy('id', 'desc');
+            ->orWhere('content', 'like', '%' . $searchTerm . '%');
     }
 }

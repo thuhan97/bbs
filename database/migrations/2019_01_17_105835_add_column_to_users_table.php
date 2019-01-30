@@ -14,8 +14,8 @@ class AddColumnToUsersTable extends Migration
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->tinyInteger('jobtitle_id');
-            $table->tinyInteger('position_id');
+            $table->tinyInteger('jobtitle_id')->nullable();
+            $table->tinyInteger('position_id')->nullable();
         });
     }
 

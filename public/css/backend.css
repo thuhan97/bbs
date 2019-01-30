@@ -293,3 +293,27 @@
 .box-danger .table thead tr th {
     background: #fffcf1;
 }
+
+.w-22 {
+    width: 23% !important;
+}
+
+.w-30 {
+    width: 30% !important;
+}
+
+.w-35 {
+    width: 35% !important;
+}
+
+.w-45 {
+    width: 45% !important;
+}
+
+.mr-1 {
+    margin-right: 1rem;
+}
+
+.mr-2 {
+    margin-right: 2rem;
+}

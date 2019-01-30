@@ -37,6 +37,8 @@ class DayOffRequest extends FormRequest
                 })
             ],
             'approver_at' => 'nullable|date|after_or_equal:start_at',
+            'number_off' => array('regex:/^\d(\.[05])?$/', 'min:1', 'max:10'),
+            'approve_comment' => 'nullable|max:255',
         ];
     }
 
@@ -49,6 +51,15 @@ class DayOffRequest extends FormRequest
             'end_at' => 'nghỉ đến ngày',
             'user_id' => 'người đề xuất',
             'approver_id' => 'người duyệt',
+            'number_off' => 'số ngày nghỉ được tính',
+            'approve_comment' => 'người duyệt',
+        ];
+    }
+
+    public function messages()
+    {
+        return [
+//            'number_off.regex' => ''
         ];
     }
 }

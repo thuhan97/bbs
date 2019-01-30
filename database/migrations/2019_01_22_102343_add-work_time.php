@@ -17,8 +17,8 @@ class AddWorkTime extends Migration
             $table->increments('id');
             $table->integer('user_id');
             $table->date('work_day');
-            $table->time('start_at');
-            $table->time('end_at');
+            $table->time('start_at')->nullable();
+            $table->time('end_at')->nullable();
 
             $table->timestamps();
             $table->softDeletes();

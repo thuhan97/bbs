@@ -26,6 +26,10 @@ Route::group([
 
     ##AUTO_INSERT_ROUTE##
 
+		//feedback
+		Route::resource('feedback', 'FeedbackController');
+		
+
     //OverTime
     Route::resource('over_times', 'OverTimeController');
 

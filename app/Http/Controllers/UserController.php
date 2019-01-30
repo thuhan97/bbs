@@ -60,9 +60,13 @@ class UserController extends Controller
         // If user is able to do approve then
         $request->merge(['year' => date('Y')]);
         $search = $criterias['search'] ?? '';
-        $totalRecord = $this->userDayOff->findList($request, [], ['*'], $search, $perPage)->toArray();
+        // get all request
+        $totalRequest = $this->userDayOff->findList($request, [], ['*'], $search, $perPage)->toArray();
+		// get only approved request
+        $request->merge(['approve'=> 1]);
+        $approvedRequest = $this->userDayOff->findList($request, [], ['*'], $search, $perPage)->toArray();
 
-        return view('end_user.user.day_off_approval', compact('isApproval', 'totalRecord'));
+        return view('end_user.user.day_off_approval', compact('isApproval', 'totalRequest', 'approvedRequest'));
     }
 
     public function contact(Request $request)

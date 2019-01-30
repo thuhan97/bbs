@@ -62,3 +62,11 @@ define('CONTRACT_TYPES_NAME', [
     3 => 'Thực tập',
 ]);
 
+define('JOB_TITLES', [
+    0 => 'Chuyên viên',
+    1 => 'Team leader',
+    2 => 'Manager',
+    3 => 'Giám đốc',
+]);
+
+

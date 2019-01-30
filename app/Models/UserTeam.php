@@ -53,13 +53,18 @@ class UserTeam extends Model
 
     }
 
+
+    public function user()
+    {
+        return $this->hasOne('App\Models\User', 'id','user_id');
+    }
     /**
      * @param $id
      * @return mixed
      */
-    public function getMemberTeamAttribute($id){
-        return $this->where('team_id',  $id)->get();
-    }
+//    public function getMemberTeamAttribute($id){
+//        return $this->where('team_id',  $id)->get();
+//    }
 
     /**
      * @return mixed

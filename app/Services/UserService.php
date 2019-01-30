@@ -88,18 +88,5 @@ class UserService extends AbstractService implements IUserService
      * @param $id
      * @return mixed
      */
-    public function getMemberName($id){
-        return $this->model->where('id',  $id)->first()->name;
-    }
 
-    public function getMemberNotInTeam($id = null){
-        $memberModel = new UserTeam;
-        $member = $this->userTeamRepository->getMemberIdAttribute();
-//        dd($member);
-        $users = '';
-        $users = User::whereNotIn('id', $member)
-            ->orwhere('id',$id)
-            ->get();
-        return $users;
-    }
 }

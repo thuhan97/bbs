@@ -33,7 +33,7 @@
                 <td class="table-text">
                     <a href="{{ $showLink }}">{{ $record->name }}</a>
                 </td>
-                <td>{{ $record->leader_name}}</td>
+                <td>{{ $record->user->name}}</td>
                 <td>{{ $record->banner }}</td>
                 <td>{{ $record->description }}</td>
                 <td>{{ $record->slogan }}</td>

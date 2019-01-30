@@ -17,7 +17,7 @@
             <i class="fa fa-user"></i> <span>Nhân viên</span>
         </a>
     </li>
-    <li class="{{ \App\Utils::checkRoute(['admin::teams.index', 'admin::teams.create', 'admin::teams.edit']) ? 'active': '' }}">
+    <li class="{{ \App\Utils::checkRoute(['admin::teams.index', 'admin::teams.create', 'admin::teams.edit', 'admin::teams.show']) ? 'active': '' }}">
         <a href="{{ route('admin::teams.index') }}">
             <i class="fa fa-user"></i> <span>Nhóm</span>
         </a>

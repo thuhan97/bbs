@@ -137,7 +137,7 @@ trait ResourceController
      * @throws \Illuminate\Validation\ValidationException
      */
     public function update(Request $request, $id)
-    {
+    {dd('ahihi');
         $record = $this->repository->findOne($id);
 
         $this->authorize('update', $record);

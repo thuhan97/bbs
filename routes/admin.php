@@ -68,6 +68,7 @@ Route::group([
     Route::post('users/deletes', ['as' => 'users.deletes', 'uses' => 'UserController@deletes']);
     Route::post('teams/deletes', ['as' => 'teams.deletes', 'uses' => 'TeamController@deletes']);
     Route::get('teams/manage-member/{id}', [ 'uses' => 'TeamController@manageMember']);
+    Route::post('teams/save-member', [ 'uses' => 'TeamController@saveUserTeam']);
     Route::resource('users', 'UserController');
     Route::resource('teams', 'TeamController');
 

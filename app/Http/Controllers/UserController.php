@@ -6,7 +6,9 @@ use App\Http\Requests\DayOffRequest;
 use App\Services\Contracts\IDayOffService;
 use App\Services\Contracts\IUserService;
 use Illuminate\Http\Request;
+use App\Http\Requests\ProfileRequest;
 use Illuminate\Support\Facades\Auth;
+use App\Models\User;
 
 class UserController extends Controller
 {
@@ -36,7 +38,7 @@ class UserController extends Controller
                 $avatar = request()->file('avatar');
                 $avatarName = $avatar->getClientOriginalName();
                 $destinationPath = public_path('/uploads/');
-                $data['avatar']=$avatarName;
+                $data['avatar']='uploads/'.$avatarName;
                 $avatar->move($destinationPath, $avatarName);    
             }
             

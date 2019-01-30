@@ -47,7 +47,7 @@
                 <div class="md-form">
         			<div class="file-field float-right">
                         <div class=" mb-4 ">
-                          <img src="{{($user->avatar== URL_IMAGE_NO_IMAGE)? URL_IMAGE_NO_IMAGE: asset('uploads/'.$user->avatar)}}" id="output" 
+                          <img src="{{$user->avatar}}" id="output" 
                             alt="example placeholder avatar" width="200px" height="200px">
                         </div>
                         <div class="d-flex justify-content-center">
@@ -57,8 +57,8 @@
                           </div>
 
                         </div>
-                                }
-                        </div>
+                                
+                        
                       </div>
                     </div>
     		    </div>

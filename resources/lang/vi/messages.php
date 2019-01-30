@@ -49,4 +49,7 @@ return [
     'report_resent_successully' => 'Gửi lại báo cáo thành công',
     'report_created_successully' => 'Tạo báo cáo thành công',
     'user_not_found' => 'Không tìm thấy người dùng',
+    'save' => 'Lưu',
+    'update' => 'Cập nhật',
+    'cancel' => 'Hủy bỏ',
 ];

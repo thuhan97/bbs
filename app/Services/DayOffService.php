@@ -57,6 +57,7 @@ class DayOffService extends AbstractService implements IDayOffService
 			->orderBy('id');
 
 		$year = $criterias['year'] ?? null;
+
 		if ($year != null) {
 			$model->whereYear('start_at', $year);
 		}

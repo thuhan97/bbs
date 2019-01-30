@@ -11,16 +11,6 @@
 
     <div class="container-fluid col-12 row">
         <div class="col-sm-3 col-xs-6">
-            <div class="card bg-warning">
-                <div class="card-body">
-                    <h1 class="white-text font-weight-light">{{$availableDayLeft[0]}}</h1>
-                    <p class="card-subtitle text-white-50">ngày đã nghỉ</p>
-                    <p class="card-title text-uppercase font-weight-bold card-text white-text">Trong
-                        năm {{date('Y')}}</p>
-                </div>
-            </div>
-        </div>
-        <div class="col-sm-3 col-xs-6">
             <div class="card bg-primary">
                 <div class="card-body">
                     <h1 class="white-text font-weight-light">{{DAY_OFF_TOTAL*2 - $availableDayLeft[1] - $availableDayLeft[0]}}</h1>
@@ -39,6 +29,28 @@
                 </div>
             </div>
         </div>
+        <div class="col-sm-3 col-xs-6">
+            <div class="card bg-warning">
+                <div class="card-body">
+                    <h1 class="white-text font-weight-light">{{$availableDayLeft[0]}}</h1>
+                    <p class="card-subtitle text-white-50">ngày đã nghỉ</p>
+                    <p class="card-title text-uppercase font-weight-bold card-text white-text">Trong
+                        năm {{date('Y')}}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-3 col-xs-6">
+            <div class="card bg-danger">
+                <div class="card-body">
+                    <h1 class="white-text font-weight-light">Thêm</h1>
+                    <p class="card-subtitle text-white-50">&nbsp</p>
+                    <p class="card-title text-uppercase font-weight-bold card-text white-text">
+                        Xin nghỉ phép
+                    </p>
+                </div>
+            </div>
+        </div>
+
     </div>
     <hr>
     <div class="container-fluid col-12 flex-row-reverse d-flex">

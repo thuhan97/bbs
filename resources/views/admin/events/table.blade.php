@@ -14,11 +14,19 @@
         <th style="width: 10px;">
             <button type="button" class="btn btn-default btn-sm checkbox-toggle"><i class="fa fa-square-o"></i></button>
         </th>
-        <th>Tên sự kiện</th>
+        <th>Tên sự kiện
+            {!! __admin_sortable('name') !!}
+        </th>
         <th>Tóm tắt</th>
-        <th>Ngày diễn ra</th>
-        <th>Địa điểm</th>
-        <th>Ngày tạo</th>
+        <th>Ngày diễn ra
+            {!! __admin_sortable('event_date') !!}
+        </th>
+        <th>Địa điểm
+            {!! __admin_sortable('place') !!}
+        </th>
+        <th>Ngày tạo
+            {!! __admin_sortable('created_at') !!}
+        </th>
         <th>Trạng thái</th>
         <th style="width: 100px;">Chức năng</th>
         </thead>

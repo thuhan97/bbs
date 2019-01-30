@@ -123,7 +123,14 @@ return [
         'image/gif',
         'image/svg+xml',
         'application/pdf',
+        'application/msword',
+        'application/docx',
+        'application/vnd.ms-powerpoint',
         'text/plain',
+        'image/vnd.microsoft.icon',
+        'image/x-icon',
+        'application/vnd.ms-excel','application/vnd.openxmlformats-officedocument.wordprocessingml.document','application/docx',
+        'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
     ],
 
     /*

@@ -34,6 +34,7 @@ class Post extends Model
         'dislike_count',
         'share_count',
         'status',
+        'notify_date',
     ];
 
 
@@ -69,7 +70,6 @@ class Post extends Model
             ->orWhere('author_name', 'like', '%' . $searchTerm . '%')
             ->orWhere('tags', 'like', '%' . $searchTerm . '%')
             ->orWhere('introduction', 'like', '%' . $searchTerm . '%')
-            ->orWhere('content', 'like', '%' . $searchTerm . '%')
-            ->orderBy('id', 'desc');
+            ->orWhere('content', 'like', '%' . $searchTerm . '%');
     }
 }

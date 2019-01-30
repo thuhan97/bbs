@@ -190,15 +190,23 @@ trait ResourceHelper
      */
     public function getSearchRecords(Request $request, $perPage = 15, $search = null)
     {
-        return $this->getResourceModel()::search($search)->paginate($perPage);
+        $model = $this->getResourceModel()::search($search);
+        if ($request->has('sort')) {
+            $model->orderBy($request->get('sort'), $request->get('is_desc') ? 'asc' : 'desc');
+        } else {
+            $model->orderBy('id', 'desc');
+        }
+
+        return $model->paginate($perPage);
     }
 
     /**
-     * @param $record
+     * @param         $record
+     * @param Request $request
      *
      * @return \Illuminate\Http\Response
      */
-    public function getRedirectAfterSave($record)
+    public function getRedirectAfterSave($record, $request)
     {
         return $this->redirectBackTo(route($this->getResourceRoutesAlias() . '.index'));
     }

@@ -15,6 +15,8 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class DayOff extends Model
 {
     use SoftDeletes, FillableFields, OrderableTrait, SearchLikeTrait;
+    const APPROVED_STATUS = 1;
+    const NOTAPPROVED_STATUS = 0;
 
     protected $table = 'day_offs';
 
@@ -30,6 +32,7 @@ class DayOff extends Model
         'status',
         'approver_id',
         'approver_at',
+        'approve_comment',
     ];
 
     /**
@@ -60,6 +63,11 @@ class DayOff extends Model
      */
     public function user()
     {
-        return $this->belongsTo(User::class)->where('status', ACTIVE_STATUS);
+        return $this->belongsTo(User::class);//->where('status', ACTIVE_STATUS);
     }
+
+	public function approval()
+	{
+		return $this->hasOne(User::class,'id','approver_id');
+	}
 }

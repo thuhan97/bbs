@@ -11,6 +11,8 @@
 |
 */
 
+use Illuminate\Support\Facades\Route;
+
 $this->get('login', 'Auth\LoginController@showLoginForm')->name('admin.login');
 $this->post('login', 'Auth\LoginController@login');
 $this->any('logout', 'Auth\LoginController@logout')->name('admin.logout');
@@ -27,17 +29,20 @@ Route::group([
     //OverTime
     Route::resource('over_times', 'OverTimeController');
 
-
     //WorkTimeDetail
     Route::resource('work_time_details', 'WorkTimeDetailController');
 
-
     //WorkTime
+    Route::post('work_times/deletes', ['as' => 'work_times.deletes', 'uses' => 'WorkTimeController@deletes']);
+    Route::get('work_times/download-template', ['as' => 'work_times.download_template', 'uses' => 'WorkTimeController@downloadTemplate']);
+    Route::get('work_times/import', ['as' => 'work_times.import', 'uses' => 'WorkTimeController@import']);
+    Route::post('work_times/import', ['as' => 'work_times.importData', 'uses' => 'WorkTimeController@importData']);
+    Route::get('work_times/user/{id}', ['as' => 'work_times.user', 'uses' => 'WorkTimeController@byUser'])->where(['id' => '\d+']);
     Route::resource('work_times', 'WorkTimeController');
-
 
     //DayOff
     Route::post('day_offs/deletes', ['as' => 'day_offs.deletes', 'uses' => 'DayOffController@deletes']);
+    Route::get('day_offs/user/{id}', ['as' => 'day_offs.user', 'uses' => 'DayOffController@byUser'])->where(['id' => '\d+']);
     Route::resource('day_offs', 'DayOffController');
 
     //report
@@ -67,6 +72,11 @@ Route::group([
     Route::get('users/download-template', ['as' => 'users.download-template', 'uses' => 'UserController@downloadTemplate']);
     Route::post('users/import', ['uses' => 'UserController@importData']);
     Route::post('users/deletes', ['as' => 'users.deletes', 'uses' => 'UserController@deletes']);
+    Route::get('users/reset-password', 'UserController@resetPassword');
     Route::resource('users', 'UserController');
+
+    Route::post('teams/deletes', ['as' => 'teams.deletes', 'uses' => 'TeamController@deletes']);
+    Route::get('teams/manage-member/{id}', ['uses' => 'TeamController@manageMember']);
+    Route::resource('teams', 'TeamController');
 
 });

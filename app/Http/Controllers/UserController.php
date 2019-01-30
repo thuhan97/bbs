@@ -34,6 +34,30 @@ class UserController extends Controller
         return view('end_user.user.change_password');
     }
 
+    public function updatePassword(Request $request)
+    {
+        $user = Auth::user();
+
+        $this->validate($request, [
+            'current_password' => ['required', function ($attribute, $value, $fail) use ($user) {
+                if (!\Hash::check($value, $user->password)) {
+                    return $fail(__('auth.current_password_incorrect'));
+                }
+            },],
+            'password' => 'required|confirmed|min:6|different:current_password',
+        ], [
+            'different' => 'Mật khẩu mới phải khác mật khẩu cũ'
+        ],
+            ['password' => 'mật khẩu mới']
+        );
+
+        $user->password = $request->get('password');
+        $user->save();
+        Auth::logout();
+
+        return redirect('/login');
+    }
+
     public function workTime()
     {
         return view('end_user.user.work_time');

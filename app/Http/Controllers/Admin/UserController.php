@@ -103,4 +103,31 @@ class UserController extends AdminBaseController
 
         return $model->paginate($perPage);
     }
+
+    public function resetPassword(Request $request)
+    {
+        $isAll = $request->get('is_all', false);
+        if ($isAll) {
+            $users = User::all();
+        } else {
+            $this->validate($request, [
+                'user_ids' => 'required',
+            ]);
+            $user_ids = $request->get('user_ids');
+            if (!is_array($user_ids)) {
+                $user_ids = [$user_ids];
+            }
+            $users = User::whereIn('id', $user_ids)->get();
+        }
+        if ($users->isNotEmpty()) {
+            foreach ($users as $user) {
+                $user->password = $user->staff_code;
+                $user->save();
+            }
+            flash()->success('Reset mật khẩu thành công');
+        } else {
+            flash()->error('Không tìm thấy nhân viên');
+        }
+        return redirect(route('admin::users.index'));
+    }
 }

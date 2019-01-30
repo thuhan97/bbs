@@ -12,30 +12,30 @@
     <title>@yield('page-title') @hasSection('page-subtitle') | @yield('page-subtitle') @endif</title>
 
     <!-- Bootstrap 3.3.7 -->
-    <link rel="stylesheet" href="{{ cnd_asset('/bootstrap/css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ cdn_asset('/bootstrap/css/bootstrap.min.css') }}">
     <!-- Font Awesome -->
-    <link rel="stylesheet" href="{{ cnd_asset('/font-awesome/css/font-awesome.min.css') }}">
+    <link rel="stylesheet" href="{{ cdn_asset('/font-awesome/css/font-awesome.min.css') }}">
     <!-- Ionicons -->
     <link rel="stylesheet" href="http://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
 
     <!-- Plugins -->
     <!-- iCheck for checkboxes and radio inputs -->
-    <link href="{{ cnd_asset('/adminlte/plugins/iCheck/all.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{ cdn_asset('/adminlte/plugins/iCheck/all.css') }}" rel="stylesheet" type="text/css">
     <!-- Select2 -->
-    <link href="{{ cnd_asset('/adminlte/plugins/select2/css/select2.min.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{ cdn_asset('/adminlte/plugins/select2/css/select2.min.css') }}" rel="stylesheet" type="text/css">
     <!-- datetimepicker -->
-    <link href="{{ cnd_asset('/bootstrap-datepicker/css/bootstrap-datepicker.min.css') }}">
-    <link href="{{ cnd_asset('/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css') }}"
+    <link href="{{ cdn_asset('/bootstrap-datepicker/css/bootstrap-datepicker.min.css') }}">
+    <link href="{{ cdn_asset('/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css') }}"
           rel="stylesheet" type="text/css">
     <!-- END - Plugins -->
 
     <!-- Theme CSS -->
-    <link rel="stylesheet" href="{{ cnd_asset('/adminlte/css/AdminLTE.min.css') }}">
+    <link rel="stylesheet" href="{{ cdn_asset('/adminlte/css/AdminLTE.min.css') }}">
     <!-- AdminLTE Skin. -->
     <link rel="stylesheet" href="{{ cnd_    ('/adminlte/css/skins/' . config('adminlte.theme') . '.min.css') }}">
 
     <!-- Custom CSS -->
-    <link href="{{ cnd_asset('/css/backend.css?version=' . config('adminlte.version')) }}" rel="stylesheet">
+    <link href="{{ cdn_asset('/css/backend.css?version=' . config('adminlte.version')) }}" rel="stylesheet">
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -104,33 +104,33 @@
 <!-- ./wrapper -->
 <input type="file" id="file_editor_upload" class="hidden">
 <!-- jQuery 3 -->
-<script src="{{ cnd_asset('/js/jquery.min.js') }}"></script>
+<script src="{{ cdn_asset('/js/jquery.min.js') }}"></script>
 <!-- Bootstrap 3.3.7 -->
-<script src="{{ cnd_asset('/bootstrap/js/bootstrap.min.js') }}"></script>
+<script src="{{ cdn_asset('/bootstrap/js/bootstrap.min.js') }}"></script>
 <!-- SlimScroll -->
-<script src="{{ cnd_asset('/adminlte/plugins/jquery-slimscroll/jquery.slimscroll.min.js') }}"></script>
+<script src="{{ cdn_asset('/adminlte/plugins/jquery-slimscroll/jquery.slimscroll.min.js') }}"></script>
 <!-- FastClick -->
-<script src="{{ cnd_asset('/adminlte/plugins/fastclick/fastclick.js') }}"></script>
+<script src="{{ cdn_asset('/adminlte/plugins/fastclick/fastclick.js') }}"></script>
 
 <!-- Plugins -->
 <!-- iCheck for checkboxes and radio inputs -->
-<script src="{{ cnd_asset('/adminlte/plugins/iCheck/icheck.min.js') }}" type="text/javascript"></script>
+<script src="{{ cdn_asset('/adminlte/plugins/iCheck/icheck.min.js') }}" type="text/javascript"></script>
 <!-- Select2 -->
-<script src="{{ cnd_asset('/adminlte/plugins/select2/js/select2.min.js') }}" type="text/javascript"></script>
+<script src="{{ cdn_asset('/adminlte/plugins/select2/js/select2.min.js') }}" type="text/javascript"></script>
 <!-- Moment Js-->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
 <!-- DatetimePicker Js-->
-<script src="{{ cnd_asset('/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js') }}"></script>
-<script src="{{ cnd_asset('/bootstrap-datepicker/js/bootstrap-datepicker.min.js') }}"></script>
+<script src="{{ cdn_asset('/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js') }}"></script>
+<script src="{{ cdn_asset('/bootstrap-datepicker/js/bootstrap-datepicker.min.js') }}"></script>
 <!-- END - Plugins -->
 
 <!-- AdminLTE App -->
-<script src="{{ cnd_asset('/adminlte/js/adminlte.min.js') }}"></script>
+<script src="{{ cdn_asset('/adminlte/js/adminlte.min.js') }}"></script>
 <!-- Custom Js -->
-<script src="{{ cnd_asset('/js/backend.js?version=' . config('adminlte.version')) }}"></script>
-<script src="{{cnd_asset('/js/tinymce/tinymce.min.js')}}"></script>
+<script src="{{ cdn_asset('/js/backend.js?version=' . config('adminlte.version')) }}"></script>
+<script src="{{cdn_asset('/js/tinymce/tinymce.min.js')}}"></script>
 <script src="/vendor/laravel-filemanager/js/lfm.js"></script>
-<script src="{{cnd_asset('/js/admin.js')}}"></script>
+<script src="{{cdn_asset('/js/admin.js')}}"></script>
 <script type="text/javascript">
     (function ($) {
         if (document.head.querySelector('meta[name="csrf-token"]')) {

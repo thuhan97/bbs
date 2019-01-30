@@ -54,19 +54,34 @@ class UserController extends Controller
 
     public function dayOffApprove(DayOffRequest $request)
     {
+
+
         // Checking authorize for action
         $isApproval = Auth::user()->jobtitle_id >= \App\Models\Report::MIN_APPROVE_JOBTITLE;
 
         // If user is able to do approve then
-        $request->merge(['year' => date('Y')]);
-        $search = $criterias['search'] ?? '';
-        // get all request
-        $totalRequest = $this->userDayOff->findList($request, [], ['*'], $search, $perPage)->toArray();
-		// get only approved request
-        $request->merge(['approve'=> 1]);
-        $approvedRequest = $this->userDayOff->findList($request, [], ['*'], $search, $perPage)->toArray();
+	    $searchView = $request->get('search') ?? '';
+	    $approval_view = $request->get('approve') == null ? null : (int) $request->get('approve');
+	    $atPage_view = $request->get('page') == null ? null : (int) $request->get('page');
+	    $perPage_view = $request->get('per_page') == null ? null : (int) $request->get('per_page');
 
-        return view('end_user.user.day_off_approval', compact('isApproval', 'totalRequest', 'approvedRequest'));
+	    $request_view = $this->userDayOff->findList($request, [], ['*'], $searchView, $perPage);
+	    $request_view_array = $request_view->toArray();
+
+	    $request->merge(['year' => date('Y')]);
+	    $request->merge(['approve'=> null]);
+	    $request->merge(['search'=> '']);
+	    $search = '';
+	    // get all request
+	    $totalRequest = $this->userDayOff->findList($request, [], ['*'], $search, $perPage)->toArray();
+	    // get only approved request
+	    $request->merge(['approve'=> 1]);
+	    $approvedRequest = $this->userDayOff->findList($request, [], ['*'], $search, $perPage)->toArray();
+
+        return view('end_user.user.day_off_approval', compact(
+        	'isApproval', 'totalRequest', 'approvedRequest', 'approval_view', 'atPage_view', 'perPage_view',
+	        'request_view', 'request_view_array', 'searchView'
+        ));
     }
 
     public function contact(Request $request)

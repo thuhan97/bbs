@@ -55,11 +55,7 @@
                 <td>{{ $record->introduction }}</td>
                 <td>{{ $record->author_name }}</td>
                 <td class="text-right">{{ $record->created_at->format(DATE_FORMAT) }}</td>
-                @if ($record->has_notify == 1)
-                    <td><span class="label label-info">Yes</span></td>
-                @else
-                    <td><span class="label label-warning">No</span></td>
-                @endif
+                <td><span class="label label-success">{{$record->notify_date}}</span></td>
                 @if ($record->status == 1)
                     <td><span class="label label-info">Yes</span></td>
                 @else

@@ -11,6 +11,10 @@
     width: 45%;
 }
 
+.no-border {
+    border: none;
+}
+
 #nav_bar_avatar {
     padding: 0;
 }

@@ -145,6 +145,8 @@ return [
         'name' => 'họ và tên',
         'email' => 'email',
         'password' => 'mật khẩu',
+        'current_password' => 'mật khẩu hiện tại',
+        'password_confirmation' => 'Xác nhận mật khẩu',
         'birthday' => 'ngày sinh',
         'phone' => 'số điện thoại',
         'event_end_date' => 'Ngày kết thúc',

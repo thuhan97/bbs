@@ -26,13 +26,13 @@ class UserController extends Controller
         $user=Auth::user();
         return view('end_user.user.profile',compact('user'));
     }
-    public function saveProfile(Request $request){
+    public function saveProfile(ProfileRequest $request){
         
             $data = $request->only('address','current_address','gmail','gitlab','chatwork','skills','in_future','hobby','foreign_laguage');
             if ($request->hasFile('avatar')) {
                 $avatar = request()->file('avatar');
                 $avatarName = $avatar->getClientOriginalName();
-                $destinationPath = public_path('/dist/img/');
+                $destinationPath = public_path('/uploads/');
                 $data['avatar']=$avatarName;
                 $avatar->move($destinationPath, $avatarName);    
             }

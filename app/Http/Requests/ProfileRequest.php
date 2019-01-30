@@ -29,6 +29,7 @@ class ProfileRequest extends FormRequest
             'current_address' => 'required',
             'school'=>'required',
             'gmail'=>'email',
+            'avatar'=>'mimes:jpeg,jpg,png,gif|max:10000'
 
         ];
     }

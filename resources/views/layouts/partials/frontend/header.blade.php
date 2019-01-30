@@ -41,7 +41,7 @@
                 <ul class="navbar-nav nav-flex-icons">
                     <li class="nav-item dropdown">
                         <a class="nav-link waves-effect waves-light" id="nav_bar_avatar">
-                            <img src="{{(Auth::user()->avatar==URL_IMAGE_NO_IMAGE?URL_IMAGE_NO_IMAGE :asset('dist/img/'.$user->avatar))}}" onerror="this.src='{{URL_IMAGE_NO_IMAGE}}'"
+                            <img src="{{(Auth::user()->avatar==URL_IMAGE_NO_IMAGE?URL_IMAGE_NO_IMAGE :asset('uploads/'.Auth::user()->avatar))}}" onerror="this.src='{{URL_IMAGE_NO_IMAGE}}'"
                                  class="rounded-circle z-depth-0" alt="avatar image">
                         </a>
                     </li>

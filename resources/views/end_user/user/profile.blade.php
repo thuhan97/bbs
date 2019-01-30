@@ -47,7 +47,7 @@
                 <div class="md-form">
         			<div class="file-field float-right">
                         <div class=" mb-4 ">
-                          <img src="{{($user->avatar== URL_IMAGE_NO_IMAGE)? URL_IMAGE_NO_IMAGE: asset('dist/img/'.$user->avatar)}}" id="output" 
+                          <img src="{{($user->avatar== URL_IMAGE_NO_IMAGE)? URL_IMAGE_NO_IMAGE: asset('uploads/'.$user->avatar)}}" id="output" 
                             alt="example placeholder avatar" width="200px" height="200px">
                         </div>
                         <div class="d-flex justify-content-center">
@@ -55,6 +55,9 @@
                             <span class="changeImage">Đổi ảnh</span>
                             <input type="file" name="avatar" onchange="loadFile(event)">
                           </div>
+
+                        </div>
+                                }
                         </div>
                       </div>
                     </div>

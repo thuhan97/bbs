@@ -19,7 +19,7 @@ class HomeController extends Controller
             ->take(5)
             ->get();
 
-        $event = Event::select('id', 'name', 'place', 'event_date', 'introduction', 'image_url')
+        $event = Event::select('id', 'name', 'place', 'event_date', 'event_end_date', 'introduction', 'image_url')
             ->where('status', ACTIVE_STATUS)
             ->orderBy('id', 'desc')
             ->first();

@@ -44,6 +44,8 @@ define('ACTIVE_STATUS', 1);
 define('MORE_LANG', [
 //    'zh',
 ]);
+define('MIN_APPROVE_JOB', 2);
+
 define('REGION_CODE_BY_LANG', [
     'ja' => 'JP',
     'en' => 'US',
@@ -65,11 +67,22 @@ define('CONTRACT_TYPES_NAME', [
 ]);
 
 
-define('MIN_APPROVE_JOB', 2);
-
 define('JOB_TITLES', [
     0 => 'Chuyên viên',
     1 => 'Team leader',
     2 => 'Manager',
     3 => 'Giám đốc',
+]);
+
+define('POSITIONS', [
+    0 => 'Chuyên viên',
+    1 => 'Kỹ sư cầu nối',
+    2 => 'Manager',
+    3 => 'Giám đốc',
+]);
+
+define('SEXS', [
+    '' => 'Không xác định',
+    1 => 'Nữ',
+    0 => 'Nam',
 ]);

@@ -221,6 +221,7 @@
     background: #e5edff;
 }
 
+/*work_time*/
 .fixed-action-btn {
     position: fixed;
     z-index: 998;
@@ -268,6 +269,68 @@
 .statistic>div>span{
     padding: 10px 15px;
 }
+
+/*Day_off CSS*/
+.red-circle {
+    display: block;
+    height: 1.5rem;
+    width: 1.5rem;
+    background: tomato;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    border-radius: 50%;
+}
+
+.green-circle {
+    display: block;
+    height: 1.5rem;
+    width: 1.5rem;
+    background: limegreen;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    border-radius: 50%;
+}
+
+.green-red-circle {
+    display: block;
+    height: 1.5rem;
+    width: 1.5rem;
+    background: transparent;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    border-radius: 50%;
+    position: relative;
+    overflow: hidden;
+}
+
+.green-red-circle::before {
+    content: '';
+    display: block;
+    width: .75rem;
+    height: 1.5rem;
+    position: absolute;
+    left: 0;
+    top: 0;
+    background: tomato;
+}
+
+.green-red-circle::after {
+    content: '';
+    display: block;
+    width: .75rem;
+    height: 1.5rem;
+    position: absolute;
+    right: 0;
+    top: 0;
+    background: limegreen;
+}
+
 @media (min-width: 1200px) {
     .navbar,
     .page-footer,

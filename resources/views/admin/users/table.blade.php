@@ -22,6 +22,9 @@
         <th>Số điện thoại
             {!! __admin_sortable('phone') !!}
         </th>
+        <th>Chức vụ
+            {!! __admin_sortable('jobtitle_id') !!}
+        </th>
         <th>Loại hợp đồng
             {!! __admin_sortable('contract_type') !!}
         </th>
@@ -54,7 +57,8 @@
                 <td>{{ $record->birthday }}</td>
                 <td>{{ $record->email }}</td>
                 <td>{{ $record->phone }}</td>
-                <td>{{ isset(CONTRACT_TYPES_NAME[$record->contract_type]) ? CONTRACT_TYPES_NAME[$record->contract_type] : '' }}</td>
+                <td>{{ JOB_TITLES[$record->jobtitle_id] ?? '' }}</td>
+                <td>{{ CONTRACT_TYPES_NAME[$record->contract_type] ?? '' }}</td>
                 <td class="">{{ $record->created_at }}</td>
 
                 <!-- we will also add show, edit, and delete buttons -->

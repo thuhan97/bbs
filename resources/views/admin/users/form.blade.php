@@ -19,10 +19,11 @@ $defaultStaffCode = "J" . str_pad((\App\Models\User::max('id') + 1), 3, '0', STR
                         @endif
                     </div>
                 </div>
-                <div class="col-md-6"></div>
-
+                <div class="col-md-3">
+                    <label for="staff_code">Giới tinh</label>
+                    {{ Form::select('sex', SEXS, $record->sex, ['class'=>'form-control']) }}
+                </div>
             </div>
-
             <!-- /.form-group -->
         </div>
 
@@ -157,6 +158,7 @@ $defaultStaffCode = "J" . str_pad((\App\Models\User::max('id') + 1), 3, '0', STR
             <!-- /.form-group -->
         </div>
         <div class="col-md-12">
+
         </div>
         <!-- /.col-md-12 -->
 
@@ -203,6 +205,33 @@ $defaultStaffCode = "J" . str_pad((\App\Models\User::max('id') + 1), 3, '0', STR
             </div>
         </div>
 
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group margin-b-5 margin-t-5{{ $errors->has('jobtitle_id') ? ' has-error' : '' }}">
+                <label for="jobtitle_id">Chức danh</label>
+                {{ Form::select('jobtitle_id', JOB_TITLES, $record->jobtitle_id ?? 0, ['class'=>'form-control']) }}
+
+                @if ($errors->has('jobtitle_id'))
+                    <span class="help-block">
+                    <strong>{{ $errors->first('jobtitle_id') }}</strong>
+                </span>
+                @endif
+            </div>
+            <!-- /.form-group -->
+        </div>
+        <div class="col-md-6">
+            <div class="form-group margin-b-5 margin-t-5{{ $errors->has('position_id') ? ' has-error' : '' }}">
+                <label for="position_id">Chức vụ</label>
+                {{ Form::select('position_id', POSITIONS, $record->position_id ?? 0, ['class'=>'form-control']) }}
+
+                @if ($errors->has('position_id'))
+                    <span class="help-block">
+                    <strong>{{ $errors->first('position_id') }}</strong>
+                </span>
+                @endif
+            </div>
+        </div>
     </div>
     <div class="row">
         <div class="col-md-6">

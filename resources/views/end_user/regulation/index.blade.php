@@ -16,14 +16,13 @@
         </div>
     </form>
     @if($regulations->isNotEmpty())
-        <p>{{__l('total_record', ['number' => $regulations->count()])}}</p>
-        <ul class="list-group list-group-flush">
-            @foreach($regulations as $regulation)
-                <li class="list-group-item">
-                    <a href="{{route('regulation_detail', ['id' => $regulation->id])}}">{{$regulation->name}}</a>
+        <ol class="list-group list-group-flush">
+            @foreach($regulations as $idx => $regulation)
+                <li class="list-group-item no-border">
+                    {{$idx + 1}}. <a href="{{route('regulation_detail', ['id' => $regulation->id])}}">{{$regulation->name}}</a>
                 </li>
             @endforeach
-        </ul>
+        </ol>
     @else
         <h2>{{__l('list_empty', ['name'=>'thông báo'])}}</h2>
     @endif

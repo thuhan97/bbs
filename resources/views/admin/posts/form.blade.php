@@ -47,6 +47,29 @@
             </div>
             <!-- /.form-group -->
         </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group margin-b-5 margin-t-5">
+                <label for="notify_date">Hẹn gửi thông báo</label>
+                <div class="input-group date">
+                    <div class="input-group-addon">
+                        <i class="fa fa-calendar"></i>
+                    </div>
+                    <input type="text" class="form-control pull-right datepicker" autocomplete="off"
+                           name="notify_date"
+                           value="{{ old('notify_date', $record->notify_date) }}" id="notify_date">
+                </div>
+                @if ($errors->has('notify_date'))
+                    <span class="help-block">
+                    <strong>{{ $errors->first('notify_date') }}</strong>
+                </span>
+                @endif
+            </div>
+            <!-- /.form-group -->
+        </div>
+    </div>
+    <div class="row">
         <!-- /.col-md-12 -->
         <div class="col-xs-12">
             <div class="form-group margin-b-5 margin-t-5">
@@ -128,6 +151,7 @@
         $(function () {
             $("#txtTag").tagsinput('items');
             myFilemanager($('#lfm'), 'image');
+            myDateTimePicker($("#notify_date"));
             myEditor($("#content"));
         })
     </script>

@@ -1,4 +1,4 @@
-<?php
+    <?php
 
 /*
 |--------------------------------------------------------------------------
@@ -102,6 +102,7 @@ Route::group([
 
     Route::get('/ca-nhan', 'UserController@index')->name('personal');
     Route::get('/thiet-lap-ca-nhan', 'UserController@profile')->name('profile');
+    Route::post('/thiet-lap-ca-nhan', 'UserController@saveProfile')->name('save_profile');
     Route::get('/danh-ba', 'UserController@contact')->name('contact');
     Route::get('/doi-mat-khau', 'UserController@changePassword')->name('changePassword');
     Route::get('/thoi-gian-lam-viec', 'UserController@workTime')->name('work_time');

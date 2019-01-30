@@ -1,9 +1,11 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use Auth;
 use App\Services\Contracts\IUserService;
 use Illuminate\Http\Request;
+use App\Http\Requests\ProfileRequest;
+use App\Models\User;
 
 class UserController extends Controller
 {
@@ -21,9 +23,29 @@ class UserController extends Controller
 
     public function profile()
     {
-        return view('end_user.user.profile');
+        $user=Auth::user();
+        return view('end_user.user.profile',compact('user'));
     }
-
+    public function saveProfile(Request $request){
+        
+            $data = $request->only('address','current_address','gmail','gitlab','chatwork','skills','in_future','hobby','foreign_laguage');
+            if ($request->hasFile('avatar')) {
+                $avatar = request()->file('avatar');
+                $avatarName = $avatar->getClientOriginalName();
+                $destinationPath = public_path('/dist/img/');
+                $data['avatar']=$avatarName;
+                $avatar->move($destinationPath, $avatarName);    
+            }
+            
+            $user = User::updateOrCreate([
+                'id' => Auth::id(),
+            ], $data); 
+            
+            return redirect(route('profile'))->with('success','Thiết lập hồ sơ thành công!'); 
+      
+    }
+    
+    
     public function changePassword()
     {
         return view('end_user.user.change_password');

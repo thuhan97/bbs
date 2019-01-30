@@ -34,6 +34,7 @@ class User extends Authenticatable implements JWTSubject
         'email',
         'phone',
         'password',
+        'gender',
         'remember_token',
         'avatar',
         'id_card',
@@ -46,6 +47,13 @@ class User extends Authenticatable implements JWTSubject
         'end_date',
         'contract_type',
         'status',
+        'gmail',
+        'gitlab',
+        'chatwork',
+        'skills',
+        'in_future',
+        'hobby',
+        'foreign_language'
     ];
 
     /**

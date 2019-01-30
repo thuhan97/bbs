@@ -57,16 +57,7 @@
                             <i>Beta version</i>
                         </p>
                         <p class="mb-4">
-                            <br/>
-                            Là phần mềm được phát triển riêng để đáp ứng nhu cầu cho nội bộ công ty. Đem đến giải pháp
-                            quản lý nhân
-                            sự nhằm tiết kiệm tối đa chi phí quản lý. <br/>
-                            Bên cạnh đó còn là nơi đào tạo kỹ thuật, mài dũa ký năng làm việc cho các em sinh viên,
-                            nhân viên thử việc. <br/>
-                            <b>
-                                <br/>
-                                Rất mong sự phản hồi, góp ý tích cực của bạn để sản phẩm ngày một hoàn thiện!
-                            </b>
+                            {!! $config->description !!}
                         </p>
                     </div>
                     <!-- Content -->

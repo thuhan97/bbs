@@ -21,6 +21,7 @@ class Config extends Model
     protected $fillable = [
         'name',
         'acronym_name',
+        'description',
         'work_days',
         'morning_start_work_at',
         'morning_end_work_at',

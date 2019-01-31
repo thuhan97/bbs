@@ -32,6 +32,7 @@
     <!-- Theme CSS -->
     <link rel="stylesheet" href="{{ asset('/adminlte/css/AdminLTE.min.css') }}">
     <!-- AdminLTE Skin. -->
+
     <link rel="stylesheet" href="{{ asset('/adminlte/css/skins/' . config('adminlte.theme') . '.min.css') }}">
 
     <!-- Custom CSS -->

@@ -31,6 +31,7 @@ class EventSeed extends Seeder
                 'content' => $faker->paragraph(),
                 'view_count' => $view,
                 'event_date' => $faker->dateTimeBetween($createAt),
+                'event_end_date'=>$createAt,
                 'status' => random_int(0, 1),
             ];
             $entities[] = $entity;

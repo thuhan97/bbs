@@ -38,6 +38,8 @@ define('LANG_VN', 'vi');
 define('EXPIRE_POTATO_DEFAULT', 6);
 
 define('URL_IMAGE_NO_IMAGE', '/dist/img/no-avatar.png');
+define('UPLOAD_PATH', '/uploads');
+define('URL_IMAGE_AVATAR', UPLOAD_PATH . '/avatar/');
 
 define('ACTIVE_STATUS', 1);
 

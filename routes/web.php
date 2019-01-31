@@ -1,4 +1,4 @@
-    <?php
+<?php
 
 /*
 |--------------------------------------------------------------------------
@@ -13,7 +13,7 @@
 
 use Illuminate\Support\Facades\Route;
 
-Route::group(['prefix' => 'file-manager', 'middleware' => ['admin'], 'as' => 'unisharp.lfm.'], function () {
+Route::group(['prefix' => 'file-manager', 'as' => 'unisharp.lfm.'], function () {
     $namespace = '\\UniSharp\\LaravelFilemanager\\Controllers\\';
     // display main layout
     Route::get('/', [
@@ -111,6 +111,7 @@ Route::group([
     Route::get('/thoi-gian-lam-viec', 'UserController@workTime')->name('work_time');
     Route::get('/ngay-nghi', 'UserController@dayOff')->name('day_off');
     Route::get('/phe-duyet-ngay-nghi', 'UserController@dayOffApprove')->name('day_off_approval');
+    Route::post('/phe-duyet-ngay-nghi/approve-api', 'UserController@dayOffApprove_AcceptAPI')->name('day_off_approval_approveAPI');
 
     Route::get('/noi-quy-quy-dinh', 'RegulationController@index')->name('regulation');
     Route::get('/noi-quy-quy-dinh/{id}', 'RegulationController@detail')->where(['id' => '\d+'])->name('regulation_detail');

@@ -173,7 +173,7 @@ $defaultStaffCode = "J" . str_pad((\App\Models\User::max('id') + 1), 3, '0', STR
                     <div class="input-group-addon">
                         <i class="fa fa-calendar"></i>
                     </div>
-                    <input type="text" class="form-control pull-right datepicker"
+                    <input type="text" autocomplete="false" class="form-control pull-right datepicker"
                            name="start_date"
                            value="{{ old('start_date', $record->start_date) }}" id="start_date">
                 </div>

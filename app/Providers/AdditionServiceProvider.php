@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Services\Contracts\IDayOffService;
 use App\Services\Contracts\IEventService;
+use App\Services\Contracts\IFeedbackService;
 use App\Services\Contracts\IPostService;
 use App\Services\Contracts\IRegulationService;
 use App\Services\Contracts\IReportService;
@@ -14,6 +15,7 @@ use App\Services\Contracts\IWorkTimeService;
 use App\Services\Contracts\IProjectService;
 use App\Services\DayOffService;
 use App\Services\EventService;
+use App\Services\FeedbackService;
 use App\Services\PostService;
 use App\Services\RegulationService;
 use App\Services\ReportService;
@@ -63,8 +65,13 @@ class AdditionServiceProvider extends ServiceProvider
         $this->app->bind(IWorkTimeService::class, function () {
             return app()->make(WorkTimeService::class);
         });
+<<<<<<< HEAD
         $this->app->bind(IProjectService::class, function () {
             return app()->make(ProjectService::class);
+=======
+        $this->app->bind(IFeedbackService::class, function () {
+            return app()->make(FeedbackService::class);
+>>>>>>> 1ec7295da90b7d9a568af2072d025a02126c6d03
         });
     }
 
@@ -85,7 +92,11 @@ class AdditionServiceProvider extends ServiceProvider
             IUserTeamService::class,
             IDayOffService::class,
             IWorkTimeService::class,
+<<<<<<< HEAD
             IProjectService::class,
+=======
+            IFeedbackService::class,
+>>>>>>> 1ec7295da90b7d9a568af2072d025a02126c6d03
         ];
     }
 }

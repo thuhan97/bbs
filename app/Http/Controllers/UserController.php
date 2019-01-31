@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\DayOffRequest;
+use App\Models\DayOff;
 use App\Services\Contracts\IDayOffService;
 use App\Services\Contracts\IUserService;
 use Illuminate\Http\Request;
@@ -104,11 +105,61 @@ class UserController extends Controller
         $isApproval = Auth::user()->jobtitle_id >= \App\Models\Report::MIN_APPROVE_JOBTITLE;
 
         // If user is able to do approve then
-        $request->merge(['year' => date('Y')]);
-        $search = $criterias['search'] ?? '';
-        $totalRecord = $this->userDayOff->findList($request, [], ['*'], $search, $perPage)->toArray();
+	    $searchView = $request->get('search') ?? '';
+	    $approval_view = $request->get('approve');
+	    $atPage_view = $request->get('page');
+	    $perPage_view = $request->get('per_page');
 
-        return view('end_user.user.day_off_approval', compact('isApproval', 'totalRecord'));
+	    $request_view = $this->userDayOff->findList($request, [], ['*'], $searchView, $perPage);
+	    $request_view_array = $request_view->toArray();
+
+	    $request->merge(['year' => date('Y')]);
+	    $request->merge(['approve'=> null]);
+	    $request->merge(['search'=> '']);
+	    $search = '';
+	    // get all request
+	    $totalRequest = $this->userDayOff->findList($request, [], ['*'], $search, $perPage)->toArray();
+	    // get only approved request
+	    $request->merge(['approve'=> 1]);
+	    $approvedRequest = $this->userDayOff->findList($request, [], ['*'], $search, $perPage)->toArray();
+
+        return view('end_user.user.day_off_approval', compact(
+        	'isApproval', 'totalRequest', 'approvedRequest', 'approval_view', 'atPage_view', 'perPage_view',
+	        'request_view', 'request_view_array', 'searchView'
+        ));
+    }
+
+    public function dayOffApprove_AcceptAPI(Request $request)
+    {
+
+	    $response = [
+		    'success' => false,
+		    'message' => 'Cập nhật trạng thái cho đơn thất bại. Vui lòng thử lại.'
+	    ];
+
+	    // Checking authorize for action
+//	    $isApproval = Auth::user()->jobtitle_id >= \App\Models\Report::MIN_APPROVE_JOBTITLE;
+//
+//	    if (!$isApproval || !$request->ajax()){
+//	    	return response([
+//	    		'success' => false
+//		    ]);
+//    }
+	    $arrRequest = $request->all();
+	    $recievingObject = json_decode(json_encode($arrRequest));
+
+	    $targetRecordResponse = false;
+//	    $targetRecordResponse = $this->userDayOff->updateStatusDayOff($recievingObject->id, Auth::id(), 'test');
+
+	    if ($targetRecordResponse){
+			$response['message'] = 'Cập nhật thành công.';
+			$response['success'] = true;
+	    }else{
+		    $response['message'] = 'Cập nhật thất bại. Đơn xin không tồn tại hoặc có lỗi xảy ra với server';
+		    $response['success'] = false;
+	    }
+
+	    return response($response);
     }
 
     public function contact(Request $request)

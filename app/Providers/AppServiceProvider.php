@@ -16,8 +16,13 @@ class AppServiceProvider extends ServiceProvider
     {
         //
 //        \Schema::defaultStringLength(191);
+<<<<<<< HEAD
         $config = Config::firstOrNew(['id' => 1]);
         view()->share('config', $config);
+=======
+         $config = Config::firstOrNew(['id' => 1]);
+         view()->share('config', $config);
+>>>>>>> 1ec7295da90b7d9a568af2072d025a02126c6d03
     }
 
     /**

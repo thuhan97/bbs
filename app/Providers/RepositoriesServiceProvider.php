@@ -66,13 +66,10 @@ class RepositoriesServiceProvider extends ServiceProvider
     public function register()
     {
         ##AUTO_INSERT_BIND##
-<<<<<<< HEAD
 		$this->app->bind(IProjectRepository::class, function () {
 			return new ProjectRepository(new Project());
-=======
 		$this->app->bind(IFeedbackRepository::class, function () {
 			return new FeedbackRepository(new Feedback());
->>>>>>> 1ec7295da90b7d9a568af2072d025a02126c6d03
 		});
         $this->app->bind(IOverTimeRepository::class, function () {
             return new OverTimeRepository(new OverTime());

@@ -26,17 +26,14 @@ Route::group([
 
 	##AUTO_INSERT_ROUTE##
 
-<<<<<<< HEAD
 		//project
 		Route::resource('project', 'ProjectController');
 		
 
     //OverTime
     Route::resource('over_times', 'OverTimeController');
-=======
 	//feedback
 	Route::resource('feedback', 'FeedbackController');
->>>>>>> 1ec7295da90b7d9a568af2072d025a02126c6d03
 
 
 	//OverTime

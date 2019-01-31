@@ -335,28 +335,17 @@
         display: none;
     }
 }
-<<<<<<< HEAD
 /* profile end_user */
 .profile{
-=======
-
-.profile {
->>>>>>> 1ec7295da90b7d9a568af2072d025a02126c6d03
     background: #f6f6f6;
     margin-bottom: 50px;
     padding-bottom: 50px;
     box-sizing: border-box;
 }
-<<<<<<< HEAD
-.title-profile{
-    margin:30px 0;
-    padding-top: 15px;
-=======
 
 .title-profile {
     margin: 30px 0;
     padding: 10px;
->>>>>>> 1ec7295da90b7d9a568af2072d025a02126c6d03
 }
 
 .index-profile {

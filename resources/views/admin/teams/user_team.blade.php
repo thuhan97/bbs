@@ -76,13 +76,13 @@ $_printLink = false;
                             </div>
 
                             @php
-                                $members = $record->userteam;
+                                $members = $record->users;
                             @endphp
                             <div class="col-xs-5">
-                                <option value="{{$record->user->id}}" disabled>{{$record->user->name}} (Trưởng nhóm)</option>
+                                <option value="{{$record->leader->id}}" disabled>{{$record->leader->name}} (Trưởng nhóm)</option>
                                 <select name="to[]" id="undo_redo_to" class="form-control" size="13" multiple="multiple">
                                 @foreach($members as $member)
-                                        @if($member->user->id !== $record->user->id)
+                                        @if($member->user->id !== $record->leader->id)
                                             <option value="{{$member->user->id}}">{{$member->user->name}}</option>
                                         @endif
                                     @endforeach

@@ -81,6 +81,7 @@ Route::group([
 
     Route::post('teams/deletes', ['as' => 'teams.deletes', 'uses' => 'TeamController@deletes']);
     Route::get('teams/manage-member/{id}', ['uses' => 'TeamController@manageMember']);
+    Route::put('teams/{id}', ['uses' => 'TeamController@updateTmp'])->name('teame.update123');
     Route::resource('teams', 'TeamController');
 
 });

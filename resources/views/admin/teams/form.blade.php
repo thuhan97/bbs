@@ -37,13 +37,7 @@
 
                     <div class="form-group margin-b-5 margin-t-5{{ $errors->has('leader_id') ? ' has-error' : '' }}">
                         <label for="leader_id">Trưởng nhóm *</label>
-                        @if(isset($record->leader_id))
-                            {{ Form::select('leader_id',$record->user->where('jobtitle_id',2)->pluck('name','id') , $record->leader_id ?? '', ['class' => 'form-control']) }}
-
-                        @else
-                            {{ Form::select('leader_id',$record->getMemberNotInTeam()->pluck('name','id'),$record->leader_id ?? '', ['class' => 'form-control']) }}
-
-                        @endif
+                            {{ Form::select('leader_id',$record->getMemberNotInTeam($record->leader_id ?? '')->pluck('name','id') , $record->leader_id ?? '', ['class' => 'form-control']) }}
 
                         @if ($errors->has('leader_id'))
                             <span class="help-block">

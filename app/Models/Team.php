@@ -67,12 +67,12 @@ class Team extends Model
 
 
 
-    public function user()
+    public function leader()
     {
         return $this->hasOne('App\Models\User', 'id','leader_id');
     }
 
-    public function userteam(){
+    public function users(){
         return $this->hasMany('App\Models\UserTeam','team_id','id');
     }
 
@@ -84,7 +84,7 @@ class Team extends Model
 
 
     public function getAllMember($id){
-        $members = $this->userteam()->where('team_id',$id)->get();
+        $members = $this->users()->where('team_id',$id)->get();
         $membersWithName = [];
         foreach ($members as $member){
             $member->name = $this->user()->where('id',$member->user_id)->first()->name;
@@ -104,6 +104,18 @@ class Team extends Model
         $users = '';
         $users = User::whereNotIn('id', $member)
             ->where('jobtitle_id',2)
+            ->orwhere('id',$id)
+
+            ->get();
+        return $users;
+    }
+
+    public function getMember($id = null)
+    {
+        $memberModel = new UserTeam;
+        $member = $memberModel->getMemberIdAttribute();
+        $users = '';
+        $users = User::whereNotIn('id', $member)
             ->orwhere('id',$id)
 
             ->get();

@@ -34,7 +34,7 @@ class TeamController extends AdminBaseController
     protected $resourceModel = Team::class;
 
 
-    protected $resourceSearchExtend = 'admin.teams._partials.search_form';
+//    protected $resourceSearchExtend = 'admin.teams._search_extend';
 
     /**
      * @var  string
@@ -86,10 +86,8 @@ class TeamController extends AdminBaseController
     public function manageMember($id){
         $team = new Team;
         $record = $this->repository->findOne($id);
-        $member_not_in_team = $team->getMemberNotInTeam($record->leader_id);
-        $data = array (
-            'record' => $record
-        );
+        $member_not_in_team = $team->getMember($record->leader_id);
+
         return view($this->getResourceManageMemberPath(), $this->filterShowViewData($record, [
             'record' => $record,
             'member_not_in_team' => $member_not_in_team,
@@ -100,28 +98,16 @@ class TeamController extends AdminBaseController
 //
     }
 
-    public function update(Request $request, $id)
+    public function updateTmp(Request $request, $id)
     {
         $record = $this->repository->findOne($id);
         UserTeam::where('user_id',$record->leader_id)
                       ->where('team_id',$id)
                       ->delete();
-        $this->authorize('update', $record);
-
-        $valuesToSave = $this->getValuesToSave($request, $record);
-        $request->merge($valuesToSave);
-        $this->resourceValidate($request, 'update', $record);
-
-        if ($this->repository->update($record, $this->alterValuesToSave($request, $valuesToSave))) {
-            flash()->success('Cập nhật thành công.');
-
-            return $this->getRedirectAfterSave($record);
-        } else {
-            flash()->info('Cập nhật thất bại.');
-        }
-
-        return $this->redirectBackTo(route($this->getResourceRoutesAlias() . '.index'));
+        return $this->update($request, $id);
     }
+
+
 
     public function saveUserTeam(Request $request){
         $record = $this->repository->findOne($request->id);

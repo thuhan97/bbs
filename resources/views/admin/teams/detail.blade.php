@@ -16,7 +16,7 @@
 
         <div class="col-md-12">
                     <div class="form-group margin-b-5 margin-t-5">
-                        <label for="leader_id">Trưởng nhóm:</label> {{ $record->user->name }}
+                        <label for="leader_id">Trưởng nhóm:</label> {{ $record->leader->name }}
                     </div>
                     <!-- /.form-group -->
 
@@ -49,7 +49,7 @@
             <div class="row">
                 <div class="col-md-6">
                     <div class="form-group margin-b-5 margin-t-5">
-                        <label for="description">Miêu tả:</label> {{ old('description', $record->description)}}
+                        <label for="description">Miêu tả:</label> {{ old('description', strip_tags($record->description))}}
                     </div>
                     <!-- /.form-group -->
                 </div>
@@ -101,7 +101,7 @@
             <tbody>
             @php
                 $i = 1;
-                $members = $record->userteam;
+                $members = $record->users;
             @endphp
             @foreach ($members as $member)
 

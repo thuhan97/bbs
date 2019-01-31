@@ -133,7 +133,7 @@ trait ResourceController
      * @throws \Illuminate\Validation\ValidationException
      */
     public function update(Request $request, $id)
-    {dd('ahihi');
+    {
         $record = $this->repository->findOne($id);
 
         $this->authorize('update', $record);
@@ -141,11 +141,12 @@ trait ResourceController
         $valuesToSave = $this->getValuesToSave($request, $record);
         $request->merge($valuesToSave);
         $this->resourceValidate($request, 'update', $record);
-
         if ($this->repository->update($record, $this->alterValuesToSave($request, $valuesToSave))) {
+
             flash()->success('Cập nhật thành công.');
 
             return $this->getRedirectAfterSave($record, $request);
+
         } else {
             flash()->info('Cập nhật thất bại.');
         }

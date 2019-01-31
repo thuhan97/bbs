@@ -36,7 +36,7 @@
 
         <div class="container-fluid col-12 row" style="position: relative;">
             <div class="col-sm-3 col-xs-6 position-relative">
-                <a href="{{$defaultURL . $atPageString . $perPageString}}" class="card bg-warning">
+                <a href="{{$defaultURL . $atPageString . $perPageString}}" class="card bg-primary">
                     <div class="card-body">
                         <h1 class="white-text font-weight-light">{{$totalRequest['total']}}</h1>
                         <p class="card-subtitle text-white-50">Đơn xin nghỉ</p>
@@ -46,7 +46,7 @@
                 </a>
             </div>
             <div class="col-sm-3 col-xs-6  position-relative">
-                <a href="{{$defaultURL . $atPageString . $perPageString .'&approve=0'}}" class="card bg-primary">
+                <a href="{{$defaultURL . $atPageString . $perPageString .'&approve=0'}}" class="card bg-danger">
                     <div class="card-body">
                         <h1 class="white-text font-weight-light">{{$totalRequest['total'] - $approvedRequest['total']}}</h1>
                         <p class="card-subtitle text-white-50">Đơn xin nghỉ</p>

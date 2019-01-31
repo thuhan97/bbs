@@ -220,7 +220,7 @@
                                 <p id="dayoff_approval"></p>
                                 <br>
                                 <h4 class="text-bold important">Ý kiến</h4>
-                                <p id="dayoff_comment"></p>
+                                <p id="dayoff_comment" contentEditable="true"></p>
                             </div>
                         </div>
                         <div class="modal-footer">
@@ -460,6 +460,8 @@
 
             let btnDetailApprove = document.getElementById('detailApproveBtn');
 
+            const defaultComment = "<Nhập nội dung tại đây>";
+
             function clearData() {
                 header.innerText = '';
                 title.innerText = '';
@@ -494,6 +496,9 @@
 
             function assignClickEvent() {
                 let btnRow = $('#' + clickBtnID);
+                if (comment.innerText !== defaultComment) {
+                    obj.approve_comment = comment.innerText;
+                }
                 if (!!btnRow) {
                     let sendingData = JSON.stringify(obj);
                     let xhttp = new XMLHttpRequest();
@@ -517,7 +522,15 @@
                 reason.innerText = detailInfo.reason;
                 approveDate.innerText = approvedChecker(!!detailInfo.approver_at, detailInfo.approver_at);
                 approval.innerText = approvedChecker(detailInfo.status === 1, !!detailInfo.approval ? detailInfo.approval.name : null);
-                comment.innerText = approvedChecker(!!detailInfo.approve_comment, detailInfo.approve_comment, 'không có');
+                if (detailInfo.status == 1) {
+                    comment.innerText = approvedChecker(!!detailInfo.approve_comment, detailInfo.approve_comment, 'không có');
+                    comment.setAttribute('contentEditable', 'false');
+                }else {
+                    comment.innerText = defaultComment;
+                    comment.style.padding = '0.5rem';
+                    comment.style.background = 'whitesmoke';
+                    comment.setAttribute('contentEditable', 'true');
+                }
 
                 if (!!btnDetailApprove) {
                     if (detailInfo.status == 1) {

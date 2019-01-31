@@ -88,3 +88,6 @@ define('SEXS', [
     1 => 'Nữ',
     0 => 'Nam',
 ]);
+
+define('NOT_AUTHENTICATED', 'Tài khoản không hợp lệ');
+define('NOT_AUTHORIZED', 'Tài khoản không đủ thẩm quyền');

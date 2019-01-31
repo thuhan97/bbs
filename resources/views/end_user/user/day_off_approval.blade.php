@@ -34,9 +34,9 @@
 
         @endphp
 
-        <div class="container-fluid col-12 row"  style="position: relative;">
+        <div class="container-fluid col-12 row" style="position: relative;">
             <div class="col-sm-3 col-xs-6 position-relative">
-                <a href="{{$defaultURL . $atPageString . $perPageString}}" class="card bg-warning">
+                <a href="{{$defaultURL . $atPageString . $perPageString}}" class="card bg-primary">
                     <div class="card-body">
                         <h1 class="white-text font-weight-light">{{$totalRequest['total']}}</h1>
                         <p class="card-subtitle text-white-50">Đơn xin nghỉ</p>
@@ -46,7 +46,7 @@
                 </a>
             </div>
             <div class="col-sm-3 col-xs-6  position-relative">
-                <a href="{{$defaultURL . $atPageString . $perPageString .'&approve=0'}}" class="card bg-primary">
+                <a href="{{$defaultURL . $atPageString . $perPageString .'&approve=0'}}" class="card bg-danger">
                     <div class="card-body">
                         <h1 class="white-text font-weight-light">{{$totalRequest['total'] - $approvedRequest['total']}}</h1>
                         <p class="card-subtitle text-white-50">Đơn xin nghỉ</p>
@@ -118,7 +118,8 @@
                     <th class="text-center">Tới ngày</th>
                     <th class="text-center">Tính nghỉ</th>
                     <th class="text-center">Tiêu đề</th>
-                    <th style="width: 250px" class="text-center">Chi tiết</th>
+                    <th class="text-center">Chi tiết</th>
+                    <th style="width: 160px" class="text-center">Phê duyệt</th>
                 </tr>
                 </thead>
                 <!--Table head-->
@@ -154,12 +155,8 @@
                             {{$record->title}}
                         </td>
                         <td class="text-center p-0">
-                            @if($record->status !== 1)
-                                <button class="btn btn-primary btn-sm"
-                                        onclick="clickApprove({{$record}}, 'rowApprove'+{{$loop->index+1}} , 'spinner-section-'+{{$loop->index+1}}, {{$approval_view}})"><i
-                                            class="fas fa-check"></i></button>
-                            @endif
-                            <button class="btn btn-blue-grey btn-sm">
+                            <button class="btn btn-blue-grey btn-sm"
+                                    onclick="clickShowDetail('{{route('day_off_approval_one',['id'=>$record->id])}}', 'spinner-section-{{$loop->index+1}}', 'approveBtn{{$loop->index+1}}')">
                                 <i class="fas fa-ellipsis-h"></i>
                             </button>
                             <div id="spinner-section-{{$loop->index+1}}"
@@ -170,12 +167,76 @@
                                 </div>
                             </div>
                         </td>
+                        <td class="text-center p-0">
+                            @if($record->status !== 1)
+                                <button class="btn btn-primary btn-sm" id="approveBtn{{$loop->index+1}}"
+                                        onclick="clickApprove('{{$record}}', 'rowApprove{{$loop->index+1}}', 'spinner-section-{{$loop->index+1}}', {{$approval_view}})">
+                                    <i class="fas fa-check"></i></button>
+                            @else
+                                Bạn đã phê duyệt
+                            @endif
+                        </td>
                     </tr>
                 @endforeach
                 </tbody>
                 <!--Table body-->
             </table>
             <!--Table-->
+            <div class="modal fade right" id="detailApproval" tabindex="-1" role="dialog"
+                 aria-labelledby="detail Approval dialog" aria-hidden="true" data-backdrop='false'>
+                <div class="modal-dialog modal-full-height modal-right" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title d-flex flex-row" id="dayoff_heading"></h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="text-left">
+                                <h4 class="text-bold">Nhân viên:</h4>
+                                <p>
+                                    <strong id="dayoff_user"></strong>
+                                </p>
+                                <h4 class="text-bold">Lý do:</h4>
+                                <p>
+                                    <strong id="dayoff_title"></strong>
+                                </p>
+                                <br>
+                                <h4 class="text-bold">Ngày nghỉ:</h4>
+                                <p>
+                                    <strong id="dayoff_duration"></strong>
+                                </p>
+                                <br>
+                                <h4 class="text-bold">Thời gian được tính:</h4>
+                                <p>
+                                    <strong id="dayoff_total"></strong>
+                                </p>
+                            </div>
+                            <hr>
+                            <div class="text-left">
+                                <h4 class="text-bold">Chi tiết lý do:</h4>
+                                <p id="dayoff_reason"></p>
+                                <br>
+                                <h4 class="text-bold">Ngày duyệt:</h4>
+                                <p id="dayoff_approveDate"></p>
+                                <br>
+                                <h4 class="text-bold">Người duyệt:</h4>
+                                <p id="dayoff_approval"></p>
+                                <br>
+                                <h4 class="text-bold important">Ý kiến</h4>
+                                <p id="dayoff_comment" contentEditable="true"></p>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                                Đóng
+                            </button>
+                            <button type="button" class="btn btn-primary" id="detailApproveBtn">Phê duyệt</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
             @if($request_view_array['last_page'] > 1)
                 {{--Pagination--}}
                 <div class="container-fluid d-flex flex-center">
@@ -288,80 +349,212 @@
                     </nav>
                 </div>
             @endif
-            <script>
-                function clickApprove(dataApprove = null, rowID, idSpinner, approvalStatus) {
-                    if (!!!dataApprove || approvalStatus === 1 || (approvalStatus !== null && approvalStatus !== 2)) {
-                        return;
+
+        </div>
+    @endif
+
+@endsection
+
+@push('extend-js')
+    <script>
+        function clickApprove(dataApprove = null, rowID, idSpinner, approvalStatus) {
+            if (!!!dataApprove || approvalStatus == 1 || (approvalStatus != null && approvalStatus != 2)) {
+                return;
+            }
+
+            startSpinner(idSpinner);
+
+            let sendingData = JSON.stringify(dataApprove);
+            let xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function () {
+                if (this.readyState == 4 && this.status == 200) {
+                    resolveResponse(this.response, rowID, idSpinner, approvalStatus);
+                }
+            };
+            requestPerform(xhttp, "post", '{{route('day_off_approval_approveAPI')}}', sendingData);
+        }
+
+        function requestPerform(xhttp, type, url, sendingData) {
+            xhttp.open(type, url, true);
+            xhttp.setRequestHeader("Content-type", "application/json");
+            xhttp.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+            xhttp.setRequestHeader("X-CSRF-TOKEN", $('meta[name="csrf-token"]').attr('content'));
+            xhttp.send(sendingData);
+        }
+
+        function resolveResponse(res, rowID, spinnerID, approvalStatus) {
+            let convertStatus = false;
+            let obj = null;
+            try {
+                obj = JSON.parse(res);
+                if (obj.hasOwnProperty('success') && obj.hasOwnProperty('message')) {
+                    convertStatus = true;
+                }
+            } catch (e) {
+                convertStatus = false;
+            }
+            if (convertStatus) {
+                let rmRow = document.getElementById(rowID);
+                if (approvalStatus == 0) {
+                    location.reload(true);
+                } else if (approvalStatus == null) {
+                    let statusIndicator = rmRow.getElementsByClassName('red-circle m-auto')[0];
+                    if (!!statusIndicator) {
+                        statusIndicator.className = 'green-circle m-auto';
                     }
+                    let btnApprove = rmRow.getElementsByClassName('btn btn-primary btn-sm')[0];
+                    if (!!btnApprove) {
+                        btnApprove.parentElement.removeChild(btnApprove);
+                    }
+                }
+            }
+            finishSpinner(spinnerID);
+        }
 
-                    startSpinner(idSpinner);
+        function startSpinner(spinnerID) {
+            let sectionAdding = document.getElementById(spinnerID);
+            if (!!!sectionAdding) {
+                return;
+            }
+            sectionAdding.style.display = 'flex';
+        }
 
-                    let sendingData = JSON.stringify(dataApprove);
+        function finishSpinner(spinnerID) {
+            let sectionAdding = document.getElementById(spinnerID);
+            if (!!!sectionAdding) {
+                return;
+            }
+            sectionAdding.style.display = 'none';
+        }
+
+
+        function clickShowDetail(url, spinnerID, clickBtnID) {
+            startSpinner(spinnerID);
+            let xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function () {
+                if (this.readyState == 4 && this.status == 200) {
+                    showDetailResponse(this.response, clickBtnID);
+                    finishSpinner(spinnerID);
+                }
+            };
+            requestPerform(xhttp, 'post', url, null);
+        }
+
+        function showDetailResponse(respond, clickBtnID) {
+            let obj = null;
+            try {
+                obj = JSON.parse(respond);
+            } catch (e) {
+                obj = null;
+            }
+            if (obj != null) {
+                preparePreviewDataModal(obj, clickBtnID);
+            }
+        }
+
+        function preparePreviewDataModal(obj, clickBtnID) {
+            let header = document.getElementById('dayoff_heading');
+            let userName = document.getElementById('dayoff_user');
+            let title = document.getElementById('dayoff_title');
+            let duration = document.getElementById('dayoff_duration');
+            let totalOff = document.getElementById('dayoff_total');
+            let reason = document.getElementById('dayoff_reason');
+            let approveDate = document.getElementById('dayoff_approveDate');
+            let approval = document.getElementById('dayoff_approval');
+            let comment = document.getElementById('dayoff_comment');
+
+            let btnDetailApprove = document.getElementById('detailApproveBtn');
+
+            const defaultComment = "<Nhập nội dung tại đây>";
+
+            function clearData() {
+                header.innerText = '';
+                title.innerText = '';
+                duration.innerText = '';
+                totalOff.innerText = '';
+                approveDate.innerText = '';
+                reason.innerText = '';
+                approval.innerText = '';
+                comment.innerText = '';
+            }
+
+            function circleIndicate(isResolved = false) {
+                let circle = document.createElement('span');
+                if (isResolved) {
+                    circle.className = 'green-circle ml-2';
+                } else {
+                    circle.className = 'red-circle ml-2';
+                }
+                return circle;
+            }
+
+            function dateFormat(startAt, endAt) {
+                return startAt + '<br> <small>tới</small> <br>' + endAt;
+            }
+
+            function approvedChecker(isApproved = false, approveMessage = 'Đã phê duyệt', notApproveMessage = 'Chưa phê duyệt') {
+                if (isApproved) {
+                    return approveMessage;
+                }
+                return notApproveMessage;
+            }
+
+            function assignClickEvent() {
+                let btnRow = $('#' + clickBtnID);
+                if (comment.innerText !== defaultComment) {
+                    obj.approve_comment = comment.innerText;
+                }
+                if (!!btnRow) {
+                    let sendingData = JSON.stringify(obj);
                     let xhttp = new XMLHttpRequest();
                     xhttp.onreadystatechange = function () {
                         if (this.readyState == 4 && this.status == 200) {
-                            resolveResponse(this.response, rowID, idSpinner, approvalStatus);
+                            location.reload();
                         }
                     };
-                    xhttp.open("POST", "{{route('day_off_approval_approveAPI')}}", true);
+                    requestPerform(xhttp, "post", '{{route('day_off_approval_approveAPI')}}', sendingData);
+                }
+            }
 
-                    xhttp.setRequestHeader("Content-type", "application/json");
-                    xhttp.setRequestHeader("X-CSRF-TOKEN", $('meta[name="csrf-token"]').attr('content'));
-                    xhttp.send(sendingData);
+            function dayoffDetail(detailInfo) {
+                clearData();
+                header.innerHTML = detailInfo.start_at;
+                header.appendChild(circleIndicate(detailInfo.status === 1));
+                userName.innerText = detailInfo.user.name;
+                title.innerText = detailInfo.title;
+                duration.innerHTML = dateFormat(detailInfo.start_at, detailInfo.end_at);
+                totalOff.innerText = detailInfo.number_off + ' ngày';
+                reason.innerText = detailInfo.reason;
+                approveDate.innerText = approvedChecker(!!detailInfo.approver_at, detailInfo.approver_at);
+                approval.innerText = approvedChecker(detailInfo.status === 1, !!detailInfo.approval ? detailInfo.approval.name : null);
+                if (detailInfo.status == 1) {
+                    comment.innerText = approvedChecker(!!detailInfo.approve_comment, detailInfo.approve_comment, 'không có');
+                    comment.setAttribute('contentEditable', 'false');
+                }else {
+                    comment.innerText = defaultComment;
+                    comment.style.padding = '0.5rem';
+                    comment.style.background = 'whitesmoke';
+                    comment.setAttribute('contentEditable', 'true');
                 }
 
-                function resolveResponse(res, rowID, spinnerID, approvalStatus) {
-                    let convertStatus = false;
-                    let obj = null;
-                    try {
-                        obj = JSON.parse(res);
-                        if (obj.hasOwnProperty('success') && obj.hasOwnProperty('message')) {
-                            convertStatus = true;
-                        }
-                    } catch (e) {
-                        convertStatus = false;
+                if (!!btnDetailApprove) {
+                    if (detailInfo.status == 1) {
+                        btnDetailApprove.style.display = 'none';
+                        btnDetailApprove.removeEventListener('click', assignClickEvent);
+                    } else {
+                        btnDetailApprove.style.display = 'inline-block';
+                        btnDetailApprove.addEventListener('click', assignClickEvent)
                     }
-                    if (convertStatus) {
-                        // received correct form data.
-                        console.log(obj);
-                        let rmRow = document.getElementById(rowID);
-                        if (approvalStatus === 2){
-                            location.reload(true);
-                        }else if (approvalStatus === null) {
-
-                        }
-                        if (!!rmRow) {
-                            rmRow.parentElement.removeChild(rmRow);
-                        }
-                    }
-                    finishSpinner(spinnerID);
                 }
+            }
 
-                function startSpinner(spinnerID) {
-                    let sectionAdding = document.getElementById(spinnerID);
-                    if (!!!sectionAdding) {
-                        return;
-                    }
-                    // let containerSpinner = document.createElement('div');
-                    // containerSpinner.id = 'loading-' + spinnerID;
-                    // containerSpinner.className = 'spinner-border text-primary';
-                    // containerSpinner.setAttribute('role', 'status');
-                    // let spinnerInner = document.createElement('span');
-                    // spinnerInner.className = 'sr-only';
-                    // spinnerInner.innerText = 'Loading...';
-                    // containerSpinner.appendChild(spinnerInner);
-                    // sectionAdding.appendChild(containerSpinner);
-                    sectionAdding.style.display = 'flex';
-                }
+            console.log(obj);
+            dayoffDetail(obj);
 
-                function finishSpinner(spinnerID) {
-                    let sectionAdding = document.getElementById(spinnerID);
-                    if (!!!sectionAdding) {
-                        return;
-                    }
-                    sectionAdding.style.display = 'none';
-                }
-            </script>
-        </div>
-    @endif
-@endsection
+            let detailModal = $('#detailApproval');
+            //turn modal on
+            if (!!detailModal)
+                detailModal.modal('show');
+        }
+    </script>
+@endpush

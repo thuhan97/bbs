@@ -13,6 +13,7 @@ use App\Repositories\Contracts\IDayOffRepository;
 use App\Services\Contracts\IDayOffService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class DayOffService extends AbstractService implements IDayOffService
 {
@@ -29,6 +30,7 @@ class DayOffService extends AbstractService implements IDayOffService
 	}
 
 	/**
+	 * Query a list of day off
 	 * @param Request $request
 	 * @param array $moreConditions
 	 * @param array $fields
@@ -101,5 +103,14 @@ class DayOffService extends AbstractService implements IDayOffService
 		}else{
 			return false;
 		}
+	}
+
+	public function getRecordOf($idRecord){
+		if (!Auth::check()){
+			return null;
+		}
+
+		$recordFound = $this->model->find($idRecord);
+		return $recordFound;
 	}
 }

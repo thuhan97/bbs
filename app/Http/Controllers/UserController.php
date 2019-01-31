@@ -6,6 +6,7 @@ use App\Http\Requests\DayOffRequest;
 use App\Models\DayOff;
 use App\Services\Contracts\IDayOffService;
 use App\Services\Contracts\IUserService;
+use App\Transformers\DayOffTransformer;
 use Illuminate\Http\Request;
 use App\Http\Requests\ProfileRequest;
 use Illuminate\Support\Facades\Auth;
@@ -129,6 +130,20 @@ class UserController extends Controller
         ));
     }
 
+    public function dayOffApprove_get(Request $request, $id){
+//	    return $request;
+	    dd(!$request->ajax() );
+    	if (!$request->ajax() || !Auth::check() || $id === null){
+    		return null;
+	    }
+
+		$responseObject = $this->userDayOff->getRecordOf($id);
+    	if ($responseObject == null) return null;
+    	$transformer = new DayOffTransformer();
+
+    	return $transformer->transform($responseObject);
+    }
+
     public function dayOffApprove_AcceptAPI(Request $request)
     {
 
@@ -158,7 +173,6 @@ class UserController extends Controller
 		    $response['message'] = 'Cập nhật thất bại. Đơn xin không tồn tại hoặc có lỗi xảy ra với server';
 		    $response['success'] = false;
 	    }
-
 	    return response($response);
     }
 

@@ -159,7 +159,7 @@
                                         onclick="clickApprove({{$record}}, 'rowApprove'+{{$loop->index+1}} , 'spinner-section-'+{{$loop->index+1}}, {{$approval_view}})"><i
                                             class="fas fa-check"></i></button>
                             @endif
-                            <button class="btn btn-blue-grey btn-sm">
+                            <button class="btn btn-blue-grey btn-sm" onclick="clickShowDetail('{{route('day_off_approval_one',['id'=>$record->id])}}')">
                                 <i class="fas fa-ellipsis-h"></i>
                             </button>
                             <div id="spinner-section-{{$loop->index+1}}"
@@ -290,7 +290,8 @@
             @endif
             <script>
                 function clickApprove(dataApprove = null, rowID, idSpinner, approvalStatus) {
-                    if (!!!dataApprove || approvalStatus === 1 || (approvalStatus !== null && approvalStatus !== 2)) {
+                    console.log(approvalStatus);
+                    if (!!!dataApprove || approvalStatus == 1 || (approvalStatus != null && approvalStatus != 2)) {
                         return;
                     }
 
@@ -322,16 +323,18 @@
                         convertStatus = false;
                     }
                     if (convertStatus) {
-                        // received correct form data.
-                        console.log(obj);
                         let rmRow = document.getElementById(rowID);
-                        if (approvalStatus === 2){
+                        if (approvalStatus == 0){
                             location.reload(true);
-                        }else if (approvalStatus === null) {
-
-                        }
-                        if (!!rmRow) {
-                            rmRow.parentElement.removeChild(rmRow);
+                        }else if (approvalStatus == null) {
+                            let statusIndicator = rmRow.getElementsByClassName('red-circle m-auto')[0];
+                            if (!!statusIndicator) {
+                                statusIndicator.className = 'green-circle m-auto';
+                            }
+                            let btnApprove = rmRow.getElementsByClassName('btn btn-primary btn-sm')[0];
+                            if (!!btnApprove) {
+                                btnApprove.parentElement.removeChild(btnApprove);
+                            }
                         }
                     }
                     finishSpinner(spinnerID);
@@ -342,15 +345,6 @@
                     if (!!!sectionAdding) {
                         return;
                     }
-                    // let containerSpinner = document.createElement('div');
-                    // containerSpinner.id = 'loading-' + spinnerID;
-                    // containerSpinner.className = 'spinner-border text-primary';
-                    // containerSpinner.setAttribute('role', 'status');
-                    // let spinnerInner = document.createElement('span');
-                    // spinnerInner.className = 'sr-only';
-                    // spinnerInner.innerText = 'Loading...';
-                    // containerSpinner.appendChild(spinnerInner);
-                    // sectionAdding.appendChild(containerSpinner);
                     sectionAdding.style.display = 'flex';
                 }
 
@@ -360,6 +354,22 @@
                         return;
                     }
                     sectionAdding.style.display = 'none';
+                }
+
+
+                function clickShowDetail(url) {
+                    let xhttp = new XMLHttpRequest();
+                    xhttp.onreadystatechange = function () {
+                        if (this.readyState == 4 && this.status == 200) {
+                            // resolveResponse(this.response, rowID, idSpinner, approvalStatus);
+                            console.log(this.response);
+                        }
+                    };
+                    xhttp.open("post",url, true);
+
+                    xhttp.setRequestHeader("Content-type", "application/json");
+                    xhttp.setRequestHeader("X-CSRF-TOKEN", $('meta[name="csrf-token"]').attr('content'));
+                    xhttp.send();
                 }
             </script>
         </div>

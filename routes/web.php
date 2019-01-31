@@ -125,5 +125,7 @@ Route::group([
     Route::get('/report', 'ReportController@getReport')->name('getReport');
     Route::post('/tao-bao-cao', 'ReportController@saveReport')->name('save_report');
     Route::get('/bao-cao/{id}', 'ReportController@detail')->where(['id' => '\d+'])->name('report_detail');
+    Route::get('/du-an','ProjectController@index')->name('project');
+    Route::get('/du-an/{id}', 'ProjectController@detail')->where(['id' => '\d+'])->name('project_detail');
 
 });

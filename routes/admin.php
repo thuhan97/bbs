@@ -26,6 +26,10 @@ Route::group([
 
     ##AUTO_INSERT_ROUTE##
 
+		//project
+		Route::resource('project', 'ProjectController');
+		
+
     //OverTime
     Route::resource('over_times', 'OverTimeController');
 

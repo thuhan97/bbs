@@ -11,6 +11,7 @@ use App\Services\Contracts\ITeamService;
 use App\Services\Contracts\IUserService;
 use App\Services\Contracts\IUserTeamService;
 use App\Services\Contracts\IWorkTimeService;
+use App\Services\Contracts\IProjectService;
 use App\Services\DayOffService;
 use App\Services\EventService;
 use App\Services\PostService;
@@ -19,6 +20,7 @@ use App\Services\ReportService;
 use App\Services\TeamService;
 use App\Services\UserService;
 use App\Services\WorkTimeService;
+use App\Services\ProjectService;
 use Illuminate\Support\ServiceProvider;
 
 class AdditionServiceProvider extends ServiceProvider
@@ -61,6 +63,9 @@ class AdditionServiceProvider extends ServiceProvider
         $this->app->bind(IWorkTimeService::class, function () {
             return app()->make(WorkTimeService::class);
         });
+        $this->app->bind(IProjectService::class, function () {
+            return app()->make(ProjectService::class);
+        });
     }
 
     /**
@@ -80,6 +85,7 @@ class AdditionServiceProvider extends ServiceProvider
             IUserTeamService::class,
             IDayOffService::class,
             IWorkTimeService::class,
+            IProjectService::class,
         ];
     }
 }

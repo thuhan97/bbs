@@ -36,7 +36,7 @@
                     </tr>
                      <tr>
                         <td>Giới tính:</td>
-                        <td>{!!($user->gender==0)? "Nam":"Nữ" !!}</td>
+                        <td>{!!($user->sex==0)? "Nam":"Nữ" !!}</td>
                     </tr>
                      <tr>
                         <td>Điện thoại:</td>

@@ -63,46 +63,38 @@ class UserController extends Controller
     public function workTime(Request $request)
     {
         $late = $early = $ot = 0;
-//        echo "<pre>"; print_r(Auth::user()->id);die;
         $month = $request->input('month');
         $type = $request->input('type');
+        $type_late = array(1, 3, 5);
+        $type_early = array(2, 3);
+        $type_ot = array(4, 5);
         $t = array();
+
         if($type == 'di_muon'){
-            $t = array(1, 3, 5);
+            $t = $type_late;
         }elseif ($type == 've_som'){
-            $t = array(2, 3);
+            $t = $type_early;
         }elseif ($type == 'ot'){
-            $t = array(4, 5);
+            $t = $type_ot;
         }
+
         $month = isset($month) ? $month : date('m');
-//        $list_work_times = WorkTime::where('user_id', Auth::user()->id)->whereMonth('work_day', $month);
+        $list_work_times = collect(WorkTime::where('user_id', Auth::user()->id)->whereMonth('work_day', $month)->get());
         if(!empty($t)){
-            $list_work_times = WorkTime::where('user_id', Auth::user()->id)->whereIn('type', $t)->whereMonth('work_day', $month)->get();
-//            print_r($type);die;
+            $list_work_times = $list_work_times->whereIn('type', $t);
             if($type == 'di_muon'){
-                $late = count($list_work_times);
+                $late = $list_work_times->count();
             }elseif ($type == 've_som'){
-                $early = count($list_work_times);
+                $early = $list_work_times->count();
             }elseif ($type == 'ot'){
-                $ot = count($list_work_times);
+                $ot = $list_work_times->count();
             }
         }else{
-            $list_work_times = WorkTime::where('user_id', Auth::user()->id)->whereMonth('work_day', $month)->get();
-            foreach ($list_work_times as $work_time){
-                if($work_time['type'] == 1 || $work_time['type'] == 5 || $work_time['type'] == 3){
-                    $late++;
-                }
-                if($work_time['type'] == 2 || $work_time['type'] == 3){
-                    $early++;
-                }
-                if($work_time['type'] == 4 || $work_time['type'] == 5){
-                    $ot++;
-                }
-            }
+            $late = $list_work_times->whereIn('type', $type_late)->count();
+            $early = $list_work_times->whereIn('type', $type_early)->count();
+            $ot = $list_work_times->whereIn('type', $type_ot)->count();
         }
-//        echo "<pre>";print_r($list_work_times);die;
 
-//        echo "<pre>"; print_r($list_work_times);die;
         return view('end_user.user.work_time', compact('list_work_times', 'late', 'early', 'ot'));
     }
 

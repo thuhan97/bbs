@@ -40,7 +40,7 @@
             </div>
         </div>
         <div class="col-sm-3 col-xs-6">
-            <div class="card bg-danger">
+            <div class="card bg-danger cursor-effect">
                 <div class="card-body">
                     <h1 class="white-text font-weight-light">Thêm</h1>
                     <p class="card-subtitle text-white-50">&nbsp</p>
@@ -54,7 +54,17 @@
     </div>
     <hr>
     <div class="container-fluid col-12 flex-row-reverse d-flex">
-        <button class="btn btn-primary dropdown-toggle mr-4" type="button" data-toggle="dropdown" aria-haspopup="true"
+
+		<?php
+		$user = \Illuminate\Support\Facades\Auth::user();
+		?>
+        @if($user->jobtitle_id >= \App\Models\Report::MIN_APPROVE_JOBTITLE)
+            <a href="{{route('day_off_approval')}}" class="btn btn-primary mr-4" type="button">
+                {{__l('day_off_approval')}}
+            </a>
+        @endif
+
+        <button class="btn btn-secondary dropdown-toggle mr-4" type="button" data-toggle="dropdown" aria-haspopup="true"
                 aria-expanded="false">
             Hiển thị
         </button>

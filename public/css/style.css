@@ -298,6 +298,11 @@
     animation: spinner-border .75s linear infinite;
 }
 
+.cursor-effect{
+    cursor: pointer;
+    user-select: none;
+}
+
 @keyframes spinner-border {
     0% {
         transform: rotate(0deg);

@@ -34,6 +34,7 @@ class Post extends Model
         'dislike_count',
         'share_count',
         'status',
+        'notify_date',
     ];
 
 

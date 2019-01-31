@@ -11,17 +11,17 @@
     <title>{{ config('app.name', 'BBS') }}</title>
 
     <!-- Styles -->
-    <link href="{{ asset('mdb/css/bootstrap.min.css') }}" rel="stylesheet">
-    {{--<link href="{{ asset('mdb/css/mdb.min.css') }}" rel="stylesheet">--}}
-    <link href="{{ asset('css/complied.css') }}" rel="stylesheet">
+    <link href="{{ cdn_asset('mdb/css/bootstrap.min.css') }}" rel="stylesheet">
+    {{--<link href="{{ cdn_asset('mdb/css/mdb.min.css') }}" rel="stylesheet">--}}
+    <link href="{{ cdn_asset('css/complied.css') }}" rel="stylesheet">
 
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css"
           integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
-    <link href="{{ asset('css/style.css') }}" rel="stylesheet">
+    <link href="{{ cdn_asset('css/style.css') }}" rel="stylesheet">
 
-    <script type="text/javascript" src="{{ asset('mdb/js/jquery-3.3.1.min.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('mdb/js/popper.min.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('mdb/js/bootstrap.min.js') }}"></script>
+    <script type="text/javascript" src="{{ cdn_asset('mdb/js/jquery-3.3.1.min.js') }}"></script>
+    <script type="text/javascript" src="{{ cdn_asset('mdb/js/popper.min.js') }}"></script>
+    <script type="text/javascript" src="{{ cdn_asset('mdb/js/bootstrap.min.js') }}"></script>
 
     @stack('extend-css')
 </head>
@@ -40,9 +40,9 @@
 </main>
 
 <!-- Scripts -->
-<script type="text/javascript" src="{{ asset('mdb/js/mdb.min.js') }}"></script>
+<script type="text/javascript" src="{{ cdn_asset('mdb/js/mdb.min.js') }}"></script>
 
-<script type="text/javascript" src="{{ asset('js/main.js') }}"></script>
+<script type="text/javascript" src="{{ cdn_asset('js/main.js') }}"></script>
 @stack('extend-js')
 @stack('eu-dayoff')
 </body>

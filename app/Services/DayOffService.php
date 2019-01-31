@@ -97,11 +97,7 @@ class DayOffService extends AbstractService implements IDayOffService
 			$record->approve_comment = $comment;
 			$record->status = DayOff::APPROVED_STATUS;
 			$record->approver_at = Carbon::now();
-			if ($record->update()){
-				return true;
-			}else{
-				return false;
-			}
+			return $record->update() != null;
 		}else{
 			return false;
 		}

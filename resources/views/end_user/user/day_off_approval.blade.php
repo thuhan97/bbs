@@ -71,7 +71,7 @@
         <div class="container-fluid row">
             <div class="col-sm-6 col-xs-12 row">
                 <h3 class="align-self-center mb-0">
-                    @if($approval_view !== 1 && $approval_view !== 0)
+                    @if($approval_view != 1 && $approval_view != 0)
                         Tất cả các đơn
                     @elseif($approval_view == 1)
                         Các đơn đã giải quyết
@@ -290,7 +290,7 @@
             @endif
             <script>
                 function clickApprove(dataApprove = null, rowID, idSpinner, approvalStatus) {
-                    if (!!!dataApprove || approvalStatus === 1) {
+                    if (!!!dataApprove || approvalStatus === 1 || (approvalStatus !== null && approvalStatus !== 2)) {
                         return;
                     }
 
@@ -326,6 +326,8 @@
                         console.log(obj);
                         let rmRow = document.getElementById(rowID);
                         if (approvalStatus === 2){
+                            location.reload(true);
+                        }else if (approvalStatus === null) {
 
                         }
                         if (!!rmRow) {

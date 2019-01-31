@@ -106,9 +106,9 @@ class UserController extends Controller
 
         // If user is able to do approve then
 	    $searchView = $request->get('search') ?? '';
-	    $approval_view = $request->get('approve') == null ? null : (int) $request->get('approve');
-	    $atPage_view = $request->get('page') == null ? null : (int) $request->get('page');
-	    $perPage_view = $request->get('per_page') == null ? null : (int) $request->get('per_page');
+	    $approval_view = $request->get('approve');
+	    $atPage_view = $request->get('page');
+	    $perPage_view = $request->get('per_page');
 
 	    $request_view = $this->userDayOff->findList($request, [], ['*'], $searchView, $perPage);
 	    $request_view_array = $request_view->toArray();

@@ -21,7 +21,8 @@ class HomeController extends Controller
 
         $event = Event::select('id', 'name', 'place', 'event_date', 'event_end_date', 'introduction', 'image_url')
             ->where('status', ACTIVE_STATUS)
-            ->orderBy('id', 'desc')
+            ->whereDate('event_date', '>=', date(DATE_FORMAT))
+            ->orderBy('event_date')
             ->first();
 
         return view('end_user.home', compact('posts', 'event'));

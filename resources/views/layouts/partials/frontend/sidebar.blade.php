@@ -5,6 +5,10 @@
         <a href="/" class="logo-wrapper waves-effect">
             <img src="http://jvb-corp.com/img/logo.png" class="img-fluid" alt="">
         </a>
+
+        <p><strong class="text-uppercase text-primary">
+                {{$config->name}}
+            </strong></p>
     </div>
     <div class="list-group list-group-flush" style="margin: 0 -15px">
         <a href="/"

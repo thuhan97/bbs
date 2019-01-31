@@ -22,7 +22,6 @@
     <script type="text/javascript" src="{{ cdn_asset('mdb/js/jquery-3.3.1.min.js') }}"></script>
     <script type="text/javascript" src="{{ cdn_asset('mdb/js/popper.min.js') }}"></script>
     <script type="text/javascript" src="{{ cdn_asset('mdb/js/bootstrap.min.js') }}"></script>
-
     @stack('extend-css')
 </head>
 <body>
@@ -43,8 +42,7 @@
 <script type="text/javascript" src="{{ cdn_asset('js/mdb.min.js') }}"></script>
 {{--<script type="text/javascript" src="{{ asset('js/mdb.min.js') }}"></script>--}}
 <script type="text/javascript" src="{{ cdn_asset('js/main.js') }}"></script>
+
 @stack('extend-js')
-@stack('eu-dayoff')
-@stack('eu-dayoff-approval')
 </body>
 </html>

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\DayOffRequest;
 use App\Http\Requests\ProfileRequest;
+use App\Models\DayOff;
 use App\Models\User;
 use App\Services\Contracts\IDayOffService;
 use App\Services\Contracts\IUserService;
@@ -173,6 +174,22 @@ class UserController extends Controller
 			$response['message'] = 'Cập nhật thất bại. Đơn xin không tồn tại hoặc có lỗi xảy ra với server';
 			$response['success'] = false;
 		}
+		return response($response);
+	}
+
+	public function dayOffCreate_API(Request $request){
+		$response =[
+			'success' => false,
+			'message' => NOT_AUTHORIZED
+		];
+		if (!$request->ajax() || !Auth::check())
+		{
+			return response($response);
+		}
+
+		$response['message'] = 'Thành công';
+		$response['success'] = true;
+
 		return response($response);
 	}
 

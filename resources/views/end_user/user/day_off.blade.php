@@ -47,7 +47,7 @@
             </div>
         </div>
         <div class="col-sm-3 col-xs-6">
-            <div class="card bg-danger cursor-effect">
+            <div class="card bg-danger cursor-effect" onclick="openCreateAbsenceForm()">
                 <div class="card-body">
                     <h1 class="white-text font-weight-light">Thêm</h1>
                     <p class="card-subtitle text-white-50">&nbsp</p>
@@ -277,7 +277,7 @@
         @endif
     </div>
 
-    <!-- Modal: modalPoll -->
+    <!-- Modal: View detail absence form -->
     <div class="modal fade right" id="detailAbsence" tabindex="-1"
          role="dialog" aria-labelledby="exampleModalLabel"
          aria-hidden="true" data-backdrop="false">
@@ -340,10 +340,50 @@
             </div>
         </div>
     </div>
-    <!-- Modal: modalPoll -->
+    <!-- Modal: View detail absence form -->
+
+    {{-- Modal: Create absence form--}}
+    <div class="modal fade right" id="createAbsenceForm" style="z-index: 9999;" tabindex="-1" role="dialog" aria-labelledby="Create Absence Form" aria-hidden="true">
+        <div class="modal-dialog modal-side modal-top-right" role="document">
+            <form class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="exampleModalPreviewLabel">Đơn xin nghỉ phép</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p class="h4 mb-4 text-center">Đơn xin nghỉ phép</p>
+
+                    <label for="titleForm">Tiêu đề</label>
+                    <input type="text" id="titleForm" class="form-control mb-3" name="title" placeholder="Tiêu đề đơn xin nghỉ" autocomplete="off">
+
+                    <label for="textareaForm">Nội dung</label>
+                    <textarea id="textareaForm" class="form-control mb-3" name="reason"  placeholder="Lý do nghỉ" maxlength="999"></textarea>
+
+                    <label for="start_atForm">Ngày bắt đầu nghỉ</label>
+                    <input type="text" class="form-control pull-right mb-3" autocomplete="off"
+                           name="start_at"
+                           value="" id="start_atForm">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Save changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    {{-- Modal: Create absence form--}}
 @endsection
 
-@push('eu-dayoff')
+@push('extend-css')
+    <link href="{{ cdn_asset('/bootstrap-datepicker/css/bootstrap-datepicker.min.css') }}" rel="stylesheet">
+    <link href="{{ cdn_asset('/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css') }}" rel="stylesheet">
+@endpush
+
+@push('extend-js')
+    <script src="{{ cdn_asset('/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js') }}"></script>
+    <script src="{{ cdn_asset('/bootstrap-datepicker/js/bootstrap-datepicker.min.js') }}"></script>
     <script>
         let header = document.getElementById('dayoff_heading');
         let title = document.getElementById('dayoff_title');
@@ -363,30 +403,6 @@
             reason.innerText = '';
             approval.innerText = '';
             comment.innerText = '';
-        }
-
-        function isLoading() {
-            let modal = document.getElementById('detailAbsence');
-
-            let innerSpinner = document.createElement('span');
-            innerSpinner.innerText = 'loading...';
-            innerSpinner.className = 'sr-only';
-            let containerSpinner = document.createElement('div');
-            containerSpinner.className = 'spinner-border text-primary';
-            containerSpinner.id = 'dayoffModel_loading';
-            containerSpinner.setAttribute('role', 'status');
-            containerSpinner.appendChild(innerSpinner);
-
-            modal.appendChild(containerSpinner);
-        }
-
-        function doneLoading() {
-            let loadingIndicate = $('#dayoffModel_loading');
-            loadingIndicate.fadeOut('fast', removeLoading)
-        }
-
-        function removeLoading() {
-            $('#dayoffModel_loading').remove();
         }
 
         function circleIndicate(isResolved = false) {
@@ -421,6 +437,13 @@
             approveDate.innerText = approvedChecker(!!detailInfo.approver_at, detailInfo.approver_at);
             approval.innerText = approvedChecker(detailInfo.status === 1, detailInfo.approval.name);
             comment.innerText = approvedChecker(!!detailInfo.approve_comment, detailInfo.approve_comment, 'không có');
+        }
+
+        function openCreateAbsenceForm() {
+            let modalCreate = $('#createAbsenceForm');
+            if (!!!modalCreate) return;
+            modalCreate.modal('show');
+            $('#start_atForm').datetimepicker();
         }
     </script>
 @endpush

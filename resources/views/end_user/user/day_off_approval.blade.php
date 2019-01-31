@@ -355,7 +355,7 @@
 
 @endsection
 
-@push('eu-dayoff-approval')
+@push('extend-js')
     <script>
         function clickApprove(dataApprove = null, rowID, idSpinner, approvalStatus) {
             if (!!!dataApprove || approvalStatus == 1 || (approvalStatus != null && approvalStatus != 2)) {

@@ -33,10 +33,4 @@ class RemainDayoff extends Model
 	{
 		return $this->belongsTo(User::class);
 	}
-
-	public static function findOrCreate($id)
-	{
-		$obj = static::find($id);
-		return $obj ?: new static;
-	}
 }

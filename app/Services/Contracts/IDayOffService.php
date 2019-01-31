@@ -28,4 +28,6 @@ interface IDayOffService extends IBaseService
      * @return array
      */
     public function getDayOffUser($userId);
+
+    public function updateStatusDayOff($recordID, $approvalID, $comment);
 }

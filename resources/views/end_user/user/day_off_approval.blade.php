@@ -67,6 +67,7 @@
             </div>
         </div>
         <hr>
+        <br>
         <div class="container-fluid row">
             <div class="col-sm-6 col-xs-12 row">
                 <h3 class="align-self-center mb-0">
@@ -109,13 +110,13 @@
                 <!--Table head-->
                 <thead>
                 <tr>
-                    <th>#</th>
-                    <th>Nhân viên</th>
-                    <th>Trạng thái</th>
-                    <th>Từ ngày</th>
-                    <th>Tới ngày</th>
-                    <th>Tính nghỉ</th>
-                    <th>Tiêu đề</th>
+                    <th class="text-center">#</th>
+                    <th class="text-center">Nhân viên</th>
+                    <th class="text-center">Trạng thái</th>
+                    <th class="text-center">Từ ngày</th>
+                    <th class="text-center">Tới ngày</th>
+                    <th class="text-center">Tính nghỉ</th>
+                    <th class="text-center">Tiêu đề</th>
                     <th style="width: 250px" class="text-center">Chi tiết</th>
                 </tr>
                 </thead>
@@ -124,36 +125,34 @@
                 <tbody>
                 @foreach($request_view as $record)
                     <tr>
-                        <th scope="row">
+                        <th scope="row" class="text-center">
                             {{$loop->index + 1}}
                         </th>
-                        <td>
+                        <td class="text-center" style="width: 210px; white-space: nowrap; overflow: hidden;-ms-text-overflow: ellipsis;text-overflow: ellipsis;">
                             {{$record->user->name}}
                         </td>
-                        <td>
+                        <td class="text-center">
                             @if ($record->status == 1)
-                                <div class="green-circle"></div>
+                                <div class="green-circle m-auto"></div>
                             @else
-                                <div class="red-circle"></div>
+                                <div class="red-circle m-auto"></div>
                             @endif
                         </td>
-                        <td>
+                        <td class="text-center">
                             {{$record->start_at}}
                         </td>
-                        <td>
+                        <td class="text-center">
                             {{$record->end_at}}
                         </td>
-                        <td>
+                        <td class="text-center">
                             {{$record->number_off == null ? 'Chưa rõ' : $record->number_off}} ngày
                         </td>
-                        <td>
+                        <td class="text-center" style="width: 200px; white-space: nowrap; overflow: hidden;-ms-text-overflow: ellipsis;text-overflow: ellipsis;">
                             {{$record->title}}
                         </td>
-                        <td class="text-center">
+                        <td class="text-center p-0">
                             @if($record->status !== 1)
-                                <button class="btn btn-primary btn-sm">
-                                    <i class="fas fa-check"></i>
-                                </button>
+                                <button class="btn btn-primary btn-sm" onclick="clickApprove({{$record}})"><i class="fas fa-check"></i></button>
                             @endif
                             <button class="btn btn-blue-grey btn-sm">
                                 <i class="fas fa-ellipsis-h"></i>
@@ -277,6 +276,31 @@
                     </nav>
                 </div>
             @endif
+            <script>
+                function clickApprove(dataApprove = null) {
+                    if (!!!dataApprove) {
+                        return;
+                    }
+
+                    let sendingData = JSON.stringify(dataApprove);
+                    let xhttp = new XMLHttpRequest();
+                    xhttp.onreadystatechange = function() {
+                        if (this.readyState == 4 && this.status == 200) {
+                            resolveResponse(this.response);
+                        }
+                    };
+                    xhttp.open("POST", "{{route('day_off_approval_approveAPI')}}", true);
+
+                    xhttp.setRequestHeader("Content-type", "application/json");
+                    xhttp.setRequestHeader("X-CSRF-TOKEN", $('meta[name="csrf-token"]').attr('content'));
+                    xhttp.send(sendingData);
+                }
+
+                function resolveResponse(res) {
+                    // let obj = JSON.parse(res);
+                    console.log(res);
+                }
+            </script>
         </div>
     @endif
 @endsection

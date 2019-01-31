@@ -3,10 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\DayOffRequest;
+use App\Models\DayOff;
 use App\Services\Contracts\IDayOffService;
 use App\Services\Contracts\IUserService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use function PHPSTORM_META\type;
 
 class UserController extends Controller
 {
@@ -54,8 +56,6 @@ class UserController extends Controller
 
     public function dayOffApprove(DayOffRequest $request)
     {
-
-
         // Checking authorize for action
         $isApproval = Auth::user()->jobtitle_id >= \App\Models\Report::MIN_APPROVE_JOBTITLE;
 
@@ -82,6 +82,22 @@ class UserController extends Controller
         	'isApproval', 'totalRequest', 'approvedRequest', 'approval_view', 'atPage_view', 'perPage_view',
 	        'request_view', 'request_view_array', 'searchView'
         ));
+    }
+
+    public function dayOffApprove_AcceptAPI(Request $request){
+	    // Checking authorize for action
+//	    $isApproval = Auth::user()->jobtitle_id >= \App\Models\Report::MIN_APPROVE_JOBTITLE;
+//
+//	    if (!$isApproval || !$request->ajax())
+//	    	return response([
+//	    		'success' => false
+//		    ]);
+	    $arrRequest = $request->all();
+	    $recievingObject = json_decode(json_encode($arrRequest));
+
+	    $targetRecordResponse = $this->userDayOff->updateStatusDayOff($recievingObject->id, Auth::id(), 'test');
+
+	    return $targetRecordResponse;
     }
 
     public function contact(Request $request)

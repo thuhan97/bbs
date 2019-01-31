@@ -102,7 +102,14 @@ $m = isset($m[1]) ? $m[1] : 0;
         var id = 0;
         function exec_submit(i) {
             var f = document.forms[i];
-            f.month.value = getParam('month');
+            if(getParam('month') == null){
+                console.log('ok');
+                var d = new Date();
+                var m = d.getMonth();
+                f.month.value = m+1;
+            }else {
+                f.month.value = getParam('month');
+            }
             f.action = "/thoi-gian-lam-viec";
             f.submit();
         }

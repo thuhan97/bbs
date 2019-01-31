@@ -22,6 +22,11 @@
             <i class="fa fa-user"></i> <span>Nhóm</span>
         </a>
     </li>
+    <li class="{{ \App\Utils::checkRoute(['admin::projects.index', 'admin::projects.create', 'admin::projects.edit']) ? 'active': '' }}">
+        <a href="{{ route('admin::projects.index') }}">
+            <i class="fa fa-user"></i> <span>Dự án</span>
+        </a>
+    </li>
     <li class="{{ \App\Utils::checkRoute(['admin::events.index', 'admin::events.create', 'admin::events.edit']) ? 'active': '' }}">
         <a href="{{ route('admin::events.index') }}">
             <i class="fa fa-calendar"></i> <span>Sự kiện</span>

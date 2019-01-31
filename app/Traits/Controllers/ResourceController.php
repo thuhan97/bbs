@@ -88,8 +88,9 @@ trait ResourceController
      */
     public function show($id)
     {
+dd($this->repository);
         $record = $this->repository->findOne($id);
-
+dd($record);
         $this->authorize('update', $record);
 
         return view($this->getResourceShowPath(), $this->filterShowViewData($record, [

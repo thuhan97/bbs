@@ -8,6 +8,7 @@ use App\Models\DayOff;
 use App\Models\Event;
 use App\Models\OverTime;
 use App\Models\Post;
+use App\Models\Project;
 use App\Models\Regulation;
 use App\Models\Report;
 use App\Models\Team;
@@ -26,6 +27,7 @@ use App\Repositories\Contracts\IPostRepository;
 use App\Repositories\Contracts\IRegulationRepository;
 use App\Repositories\Contracts\IReportRepository;
 use App\Repositories\Contracts\ITeamRepository;
+use App\Repositories\Contracts\IProjectRepository;
 use App\Repositories\Contracts\IUserRepository;
 use App\Repositories\Contracts\IUserTeamRepository;
 use App\Repositories\Contracts\IWorkTimeDetailRepository;
@@ -37,6 +39,7 @@ use App\Repositories\PostRepository;
 use App\Repositories\RegulationRepository;
 use App\Repositories\ReportRepository;
 use App\Repositories\TeamRepository;
+use App\Repositories\ProjectRepository;
 use App\Repositories\UserRepository;
 use App\Repositories\UserTeamRepository;
 use App\Repositories\WorkTimeDetailRepository;
@@ -103,6 +106,9 @@ class RepositoriesServiceProvider extends ServiceProvider
         $this->app->bind(IUserTeamRepository::class, function () {
             return new UserTeamRepository(new UserTeam());
         });
+        $this->app->bind(IProjectRepository::class, function () {
+            return new ProjectRepository(new Project());
+        });
     }
 
     public function provides()
@@ -121,6 +127,7 @@ class RepositoriesServiceProvider extends ServiceProvider
             IWorkTimeRepository::class,
             ITeamRepository::class,
             IUserTeamRepository::class,
+            IProjectRepository::class,
         ];
     }
 }

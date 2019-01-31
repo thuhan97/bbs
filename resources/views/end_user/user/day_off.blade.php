@@ -54,16 +54,6 @@
     </div>
     <hr>
     <div class="container-fluid col-12 flex-row-reverse d-flex">
-
-		<?php
-		$user = \Illuminate\Support\Facades\Auth::user();
-		?>
-        @if($user->jobtitle_id >= \App\Models\Report::MIN_APPROVE_JOBTITLE)
-            <a href="{{route('day_off_approval')}}" class="btn btn-primary mr-4" type="button">
-                {{__l('day_off_approval')}}
-            </a>
-        @endif
-
         <button class="btn btn-secondary dropdown-toggle mr-4" type="button" data-toggle="dropdown" aria-haspopup="true"
                 aria-expanded="false">
             Hiển thị
@@ -93,6 +83,20 @@
                 </span>
             </a>
         </div>
+
+	    <?php
+	    $user = \Illuminate\Support\Facades\Auth::user();
+	    ?>
+        @if($user->jobtitle_id >= \App\Models\Report::MIN_APPROVE_JOBTITLE)
+            <div class="row d-flex flex-row pr-4 mr-4" style="border-right: 2px solid whitesmoke">
+                <div class="d-flex flex-center pl-2 mr-2 ml-2">
+                    Quản lý:
+                </div>
+                <a href="{{route('day_off_approval')}}" class="btn btn-primary" type="button">
+                    {{__l('day_off_approval')}}
+                </a>
+            </div>
+        @endif
     </div>
 
     <div class="container-fluid col-12">

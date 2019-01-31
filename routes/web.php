@@ -1,4 +1,4 @@
-    <?php
+<?php
 
 /*
 |--------------------------------------------------------------------------
@@ -13,7 +13,7 @@
 
 use Illuminate\Support\Facades\Route;
 
-Route::group(['prefix' => 'file-manager', 'middleware' => ['admin'], 'as' => 'unisharp.lfm.'], function () {
+Route::group(['prefix' => 'file-manager', 'as' => 'unisharp.lfm.'], function () {
     $namespace = '\\UniSharp\\LaravelFilemanager\\Controllers\\';
     // display main layout
     Route::get('/', [

@@ -11,10 +11,16 @@
 <form method="post" action="{{route('save_profile')}}" enctype="multipart/form-data">
     @csrf
     <!-- <i class="fas fa-camera-retro"></i> fa-camera-retro -->
-    <button class="btn btn-primary float-right save " disabled="true" type="submit"><i class="fas fa-save mr-1"></i> Lưu</button>
+    <div class=" container " style="width: 70%;">
+    <div class="row float-right">
+    <button class="btn btn-primary float-right save  hidden " type="submit"><i class="fa fa-save mr-1"></i> Lưu</button>
+    <button class="btn btn-default float-right   btn-close hidden " ><i class="fa fa-times mr-1"></i>Đóng</button>
+    <button class="btn btn-danger float-right   btn-edit-profile " ><i class="fa fa-edit mr-1"></i> Sửa</button>
+    </div>
+    </div>
     <div class="clearfix"></div>
     <div class="container profile" style="width: 70%;">
-        <h1 class="text-center title-profile bold">Hồ sơ cá nhân</h1>
+        <h4 class="text-left title-profile bold">Hồ sơ cá nhân</h4>
 
     	<div class="row">
     		<div class="col-md-6 float-left">
@@ -73,7 +79,7 @@
                     <label for="inputEmail3MD" class="col-sm-3 col-form-label">Địa chỉ thường trú</label>
                     <div class="col-sm-9">
                       <div class="md-form mt-0">
-                        <input type="text" name="address" class="form-control enable" id="inputEmail3MD" value="{{$user->address}}" disabled="true" required>
+                        <input type="text" name="address" class="form-control " id="inputEmail3MD" value="{{$user->address}}" disabled="true" > 
                       </div>
                     </div>
                   </div>
@@ -83,7 +89,7 @@
                     <div class="col-sm-9">
                       <div class="md-form mt-0">
                         <input type="text" name="current_address" class="form-control enable" id="inputEmail3MD" value="{{$user->current_address}}" disabled="true" required>
-                        <i class="fas fa-pencil-alt float-right" ></i>
+                        <i class="fas fa-pencil-alt float-right" ><span class="float-left required hidden">(*)</span></i>
                       </div>
                     </div>
                   </div>
@@ -113,7 +119,7 @@
                  <div class="md-form ">
     <!-- Material input -->
                      <input type="text" name="school" class="form-control enable" id="inputEmail3MD" value="{{$user->school}}" disabled="true" required>
-                     <i class="fas fa-pencil-alt float-right"></i>
+                     <i class="fas fa-pencil-alt float-right"><span class="float-left required hidden">(*)</span></i>
                 </div>
                     
             </div>
@@ -192,21 +198,32 @@
                 </div>
             </div>
         </div>
+        <p> <span class="required">Ghi chú: (*) là trường bắt buộc.</span></p>
     </div>
+    <div class="clearfix"></div>
+    <div class="container  " style="width:70%;">
+    <div class="row float-right">
+    <button class="btn btn-primary float-right save  hidden " type="submit"><i class="fa fa-save mr-1"></i> Lưu</button>
+    <button class="btn btn-default float-right   btn-close hidden " ><i class="fa fa-times mr-1"></i> Đóng</button>
+    <button class="btn btn-danger float-right   btn-edit-profile " ><i class="fa fa-edit mr-1"></i> Sửa</button>
+</div>
+</div>
 </form>
-    <div class="fixed-action-btn btn-edit-profile">
-        <a href="" class="btn-floating btn-lg red waves-effect waves-light text-white " title="Sửa hồ sơ cá nhân">
-            <i class="fas fa-pencil-alt"></i>
-        </a>
-    </div>
+
+    
     <script type="text/javascript">
         $(".btn-edit-profile").click(function(event){
             event.preventDefault();
             $(".enable").prop( "disabled", false );
-             $(".save").prop( "disabled", false );
             $(".md-form .fas").css("display","block");
             $(".hidden").css("display","block");
+            $(".btn-edit-profile").css("display","none")
             
+        });
+        $('.btn-close').click(function(event){
+            event.preventDefault();
+            //console.log(123)
+            location.reload();
         });
         
             var loadFile = function(event) {

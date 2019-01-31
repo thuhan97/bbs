@@ -305,14 +305,16 @@
         display: none;
     }
 }
+/* profile end_user */
 .profile{
     background: #f6f6f6;
     margin-bottom: 50px;
     padding-bottom: 50px;
+    box-sizing: border-box;
 }
 .title-profile{
     margin:30px 0;
-    padding: 10px;
+    padding-top: 15px;
 }
 .index-profile{
     color:#000;
@@ -351,6 +353,11 @@
 .hidden{
     display: none;
 }
+.required{
+    color:red;
+    margin-right: 35px;
+}
+
 
 
 

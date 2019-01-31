@@ -129,20 +129,37 @@ class UserController extends Controller
         ));
     }
 
-    public function dayOffApprove_AcceptAPI(Request $request){
+    public function dayOffApprove_AcceptAPI(Request $request)
+    {
+
+	    $response = [
+		    'success' => false,
+		    'message' => 'Cập nhật trạng thái cho đơn thất bại. Vui lòng thử lại.'
+	    ];
+
 	    // Checking authorize for action
 //	    $isApproval = Auth::user()->jobtitle_id >= \App\Models\Report::MIN_APPROVE_JOBTITLE;
 //
-//	    if (!$isApproval || !$request->ajax())
+//	    if (!$isApproval || !$request->ajax()){
 //	    	return response([
 //	    		'success' => false
 //		    ]);
+//    }
 	    $arrRequest = $request->all();
 	    $recievingObject = json_decode(json_encode($arrRequest));
 
-	    $targetRecordResponse = $this->userDayOff->updateStatusDayOff($recievingObject->id, Auth::id(), 'test');
+	    $targetRecordResponse = false;
+//	    $targetRecordResponse = $this->userDayOff->updateStatusDayOff($recievingObject->id, Auth::id(), 'test');
 
-	    return $targetRecordResponse;
+	    if ($targetRecordResponse){
+			$response['message'] = 'Cập nhật thành công.';
+			$response['success'] = true;
+	    }else{
+		    $response['message'] = 'Cập nhật thất bại. Đơn xin không tồn tại hoặc có lỗi xảy ra với server';
+		    $response['success'] = false;
+	    }
+
+	    return response($response);
     }
 
     public function contact(Request $request)

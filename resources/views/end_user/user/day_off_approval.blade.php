@@ -34,7 +34,7 @@
 
         @endphp
 
-        <div class="container-fluid col-12 row">
+        <div class="container-fluid col-12 row"  style="position: relative;">
             <div class="col-sm-3 col-xs-6 position-relative">
                 <a href="{{$defaultURL . $atPageString . $perPageString}}" class="card bg-warning">
                     <div class="card-body">
@@ -81,25 +81,26 @@
                 </h3>
                 <small class="ml-4 align-self-center text-muted">Nhấn ô bên trên để lọc</small>
             </div>
-            <form class="col-sm-6 col-xs-6" method="get" action="{{$defaultURL . $atPageString . $perPageString . $approvalString}}">
-                    <div class="input-group col-12">
-                        <input type="text" class="form-control" placeholder="Tìm tên nhân viên"
-                               value="{{!!$searchView ? $searchView : ''}}"
-                               name="search"
-                               aria-label="Tìm kiếm nhân viên"
-                               aria-describedby="btnSearch">
-                        <div class="input-group-append">
-                            <button class="btn btn-md btn-default m-0 py-2 z-depth-0 waves-effect" type="submit"
-                                    id="btnSearch">
-                                Tìm
-                            </button>
-                        </div>
+            <form class="col-sm-6 col-xs-6" method="get"
+                  action="{{$defaultURL . $atPageString . $perPageString . $approvalString}}">
+                <div class="input-group col-12">
+                    <input type="text" class="form-control" placeholder="Tìm tên nhân viên"
+                           value="{{!!$searchView ? $searchView : ''}}"
+                           name="search"
+                           aria-label="Tìm kiếm nhân viên"
+                           aria-describedby="btnSearch">
+                    <div class="input-group-append">
+                        <button class="btn btn-md btn-default m-0 py-2 z-depth-0 waves-effect" type="submit"
+                                id="btnSearch">
+                            Tìm
+                        </button>
                     </div>
+                </div>
                 <input type="hidden" name="per_page" value="{{$perPage_view}}">
                 <input type="hidden" name="page" value="{{$atPage_view}}">
                 @if($approvalString !== '')
                     <input type="hidden" name="approve" value="{{$approval_view}}">
-                    @endif
+                @endif
                 @csrf
             </form>
         </div>
@@ -124,11 +125,12 @@
                 <!--Table body-->
                 <tbody>
                 @foreach($request_view as $record)
-                    <tr>
+                    <tr id="rowApprove{{$loop->index+1}}">
                         <th scope="row" class="text-center">
                             {{$loop->index + 1}}
                         </th>
-                        <td class="text-center" style="width: 210px; white-space: nowrap; overflow: hidden;-ms-text-overflow: ellipsis;text-overflow: ellipsis;">
+                        <td class="text-center"
+                            style="width: 210px; white-space: nowrap; overflow: hidden;-ms-text-overflow: ellipsis;text-overflow: ellipsis;">
                             {{$record->user->name}}
                         </td>
                         <td class="text-center">
@@ -147,16 +149,26 @@
                         <td class="text-center">
                             {{$record->number_off == null ? 'Chưa rõ' : $record->number_off}} ngày
                         </td>
-                        <td class="text-center" style="width: 200px; white-space: nowrap; overflow: hidden;-ms-text-overflow: ellipsis;text-overflow: ellipsis;">
+                        <td class="text-center"
+                            style="width: 200px; white-space: nowrap; overflow: hidden;-ms-text-overflow: ellipsis;text-overflow: ellipsis;">
                             {{$record->title}}
                         </td>
                         <td class="text-center p-0">
                             @if($record->status !== 1)
-                                <button class="btn btn-primary btn-sm" onclick="clickApprove({{$record}})"><i class="fas fa-check"></i></button>
+                                <button class="btn btn-primary btn-sm"
+                                        onclick="clickApprove({{$record}}, 'rowApprove'+{{$loop->index+1}} , 'spinner-section-'+{{$loop->index+1}}, {{$approval_view}})"><i
+                                            class="fas fa-check"></i></button>
                             @endif
                             <button class="btn btn-blue-grey btn-sm">
                                 <i class="fas fa-ellipsis-h"></i>
                             </button>
+                            <div id="spinner-section-{{$loop->index+1}}"
+                                 style="position: absolute;top: 0; left: 0; width: 100%; height: 100%; z-index: 9999;
+                                 display: none; justify-content: center; align-items: center; background: rgba(0,0,0,0.08);">
+                                <div class="spinner-border text-primary" role="status">
+                                    <span class="sr-only">Loading...</span>
+                                </div>
+                            </div>
                         </td>
                     </tr>
                 @endforeach
@@ -277,16 +289,18 @@
                 </div>
             @endif
             <script>
-                function clickApprove(dataApprove = null) {
-                    if (!!!dataApprove) {
+                function clickApprove(dataApprove = null, rowID, idSpinner, approvalStatus) {
+                    if (!!!dataApprove || approvalStatus === 1) {
                         return;
                     }
 
+                    startSpinner(idSpinner);
+
                     let sendingData = JSON.stringify(dataApprove);
                     let xhttp = new XMLHttpRequest();
-                    xhttp.onreadystatechange = function() {
+                    xhttp.onreadystatechange = function () {
                         if (this.readyState == 4 && this.status == 200) {
-                            resolveResponse(this.response);
+                            resolveResponse(this.response, rowID, idSpinner, approvalStatus);
                         }
                     };
                     xhttp.open("POST", "{{route('day_off_approval_approveAPI')}}", true);
@@ -296,9 +310,54 @@
                     xhttp.send(sendingData);
                 }
 
-                function resolveResponse(res) {
-                    // let obj = JSON.parse(res);
-                    console.log(res);
+                function resolveResponse(res, rowID, spinnerID, approvalStatus) {
+                    let convertStatus = false;
+                    let obj = null;
+                    try {
+                        obj = JSON.parse(res);
+                        if (obj.hasOwnProperty('success') && obj.hasOwnProperty('message')) {
+                            convertStatus = true;
+                        }
+                    } catch (e) {
+                        convertStatus = false;
+                    }
+                    if (convertStatus) {
+                        // received correct form data.
+                        console.log(obj);
+                        let rmRow = document.getElementById(rowID);
+                        if (approvalStatus === 2){
+
+                        }
+                        if (!!rmRow) {
+                            rmRow.parentElement.removeChild(rmRow);
+                        }
+                    }
+                    finishSpinner(spinnerID);
+                }
+
+                function startSpinner(spinnerID) {
+                    let sectionAdding = document.getElementById(spinnerID);
+                    if (!!!sectionAdding) {
+                        return;
+                    }
+                    // let containerSpinner = document.createElement('div');
+                    // containerSpinner.id = 'loading-' + spinnerID;
+                    // containerSpinner.className = 'spinner-border text-primary';
+                    // containerSpinner.setAttribute('role', 'status');
+                    // let spinnerInner = document.createElement('span');
+                    // spinnerInner.className = 'sr-only';
+                    // spinnerInner.innerText = 'Loading...';
+                    // containerSpinner.appendChild(spinnerInner);
+                    // sectionAdding.appendChild(containerSpinner);
+                    sectionAdding.style.display = 'flex';
+                }
+
+                function finishSpinner(spinnerID) {
+                    let sectionAdding = document.getElementById(spinnerID);
+                    if (!!!sectionAdding) {
+                        return;
+                    }
+                    sectionAdding.style.display = 'none';
                 }
             </script>
         </div>

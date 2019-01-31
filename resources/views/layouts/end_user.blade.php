@@ -45,5 +45,6 @@
 <script type="text/javascript" src="{{ cdn_asset('js/main.js') }}"></script>
 @stack('extend-js')
 @stack('eu-dayoff')
+@stack('eu-dayoff-approval')
 </body>
 </html>

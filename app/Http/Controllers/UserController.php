@@ -131,8 +131,6 @@ class UserController extends Controller
     }
 
     public function dayOffApprove_get(Request $request, $id){
-//	    return $request;
-	    dd(!$request->ajax() );
     	if (!$request->ajax() || !Auth::check() || $id === null){
     		return null;
 	    }

@@ -110,7 +110,7 @@ class DayOffService extends AbstractService implements IDayOffService
 			return null;
 		}
 
-		$recordFound = $this->model->find($idRecord);
+		$recordFound = $this->model->with('user')->find($idRecord);
 		return $recordFound;
 	}
 }

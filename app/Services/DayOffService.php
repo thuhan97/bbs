@@ -8,6 +8,7 @@
 namespace App\Services;
 
 use App\Models\DayOff;
+use App\Models\RemainDayoff;
 use App\Models\User;
 use App\Repositories\Contracts\IDayOffRepository;
 use App\Services\Contracts\IDayOffService;
@@ -82,8 +83,16 @@ class DayOffService extends AbstractService implements IDayOffService
 	public function getDayOffUser($userId)
 	{
 		$model = $this->model->where('user_id', $userId)->where('status', DayOff::APPROVED_STATUS);
+		$remainDay = RemainDayoff::firstOrCreate(['user_id'=>$userId]);
+
 		$thisYear = (int)date('Y');
-		return [$model->whereYear('start_at', $thisYear)->sum('number_off'), $model->whereYear('start_at', $thisYear - 1)->sum('number_off')];
+		return [
+			'total' => $remainDay->previous_year + $remainDay->current_year,
+			'total_previous' => $remainDay->previous_year,
+			'total_current' => $remainDay->current_year,
+		 	'remain_current' => $remainDay->current_year - $model->whereYear('start_at', $thisYear)->sum('number_off'),
+			'remain_previous' => $remainDay->previous_year - $model->whereYear('start_at', $thisYear - 1)->sum('number_off')
+		];
 	}
 
 	public function updateStatusDayOff($recordID, $approvalID, $comment){

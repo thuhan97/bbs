@@ -13,7 +13,9 @@
         <div class="col-sm-3 col-xs-6">
             <div class="card bg-primary">
                 <div class="card-body">
-                    <h1 class="white-text font-weight-light">{{DAY_OFF_TOTAL*2 - $availableDayLeft[1] - $availableDayLeft[0]}}</h1>
+                    <h1 class="white-text font-weight-light">
+                        {{$availableDayLeft['remain_current'] + $availableDayLeft['remain_previous']}}
+                    </h1>
                     <p class="card-subtitle text-white-50">ngày khả dụng</p>
                     <p class="card-title text-uppercase font-weight-bold card-text white-text">Tính từ năm trước</p>
                 </div>
@@ -22,17 +24,22 @@
         <div class="col-sm-3 col-xs-6">
             <div class="card bg-success">
                 <div class="card-body">
-                    <h1 class="white-text font-weight-light">{{DAY_OFF_TOTAL - $availableDayLeft[0]}}</h1>
+                    <h1 class="white-text font-weight-light">
+                        {{$availableDayLeft['remain_current']}}
+                    </h1>
                     <p class="card-subtitle text-white-50">nghỉ luôn đi</p>
-                    <p class="card-title text-uppercase font-weight-bold card-text white-text">Cuối năm
-                        reset</p>
+                    <p class="card-title text-uppercase font-weight-bold card-text white-text">
+                        Cuối năm reset
+                    </p>
                 </div>
             </div>
         </div>
         <div class="col-sm-3 col-xs-6">
             <div class="card bg-warning">
                 <div class="card-body">
-                    <h1 class="white-text font-weight-light">{{$availableDayLeft[0]}}</h1>
+                    <h1 class="white-text font-weight-light">
+                        {{$availableDayLeft['total_current'] - $availableDayLeft['remain_current']}}
+                    </h1>
                     <p class="card-subtitle text-white-50">ngày đã nghỉ</p>
                     <p class="card-title text-uppercase font-weight-bold card-text white-text">Trong
                         năm {{date('Y')}}</p>
@@ -56,37 +63,50 @@
     <div class="container-fluid col-12 flex-row-reverse d-flex">
         <button class="btn btn-secondary dropdown-toggle mr-4" type="button" data-toggle="dropdown" aria-haspopup="true"
                 aria-expanded="false">
-            Hiển thị
+            @if($defaultApprove !== 1 && $defaultApprove !== 0)
+                Hiển thị: Tất cả
+            @elseif($defaultApprove == 0)
+                Hiển thị: Chưa duyệt
+            @else
+                Hiển thị: Đã duyệt
+            @endif
         </button>
 
         <div class="dropdown-menu">
-            <a class="dropdown-item {{$defaultApprove !== 1 && $defaultApprove !== 0 ? 'active' : ''}}"
-               href="{{url()->current().'?page=1&per_page='.$defaultPerPage}}">
+            @if(!($defaultApprove !== 1 && $defaultApprove !== 0))
+                <a class="dropdown-item"
+                   href="{{url()->current().'?page=1&per_page='.$defaultPerPage}}">
                 <span class="d-flex">
                     <span class="green-red-circle mr-2"></span>
                     <span class="content">Tất cả</span>
                 </span>
-            </a>
-            <div class="dropdown-divider"></div>
-            <a class="dropdown-item {{$defaultApprove === 0 ? 'active' : ''}}"
-               href="{{url()->current().'?page=1&per_page='.$defaultPerPage.'&approve=0'}}">
+                </a>
+            @endif
+
+            @if($defaultApprove !== 0)
+                <a class="dropdown-item"
+                   href="{{url()->current().'?page=1&per_page='.$defaultPerPage.'&approve=0'}}">
                 <span class="d-flex">
                     <span class="red-circle mr-2"></span>
                     <span class="content">Chưa duyệt</span>
                 </span>
-            </a>
-            <a class="dropdown-item {{$defaultApprove === 1 ? 'active' : ''}}"
-               href="{{url()->current().'?page=1&per_page='.$defaultPerPage.'&approve=1'}}">
+                </a>
+            @endif
+
+            @if($defaultApprove !== 1)
+                <a class="dropdown-item"
+                   href="{{url()->current().'?page=1&per_page='.$defaultPerPage.'&approve=1'}}">
                 <span class="d-flex">
                     <span class="green-circle mr-2"></span>
                     <span class="content">Đã duyệt</span>
                 </span>
-            </a>
+                </a>
+            @endif
         </div>
 
-	    <?php
-	    $user = \Illuminate\Support\Facades\Auth::user();
-	    ?>
+		<?php
+		$user = \Illuminate\Support\Facades\Auth::user();
+		?>
         @if($user->jobtitle_id >= \App\Models\Report::MIN_APPROVE_JOBTITLE)
             <div class="row d-flex flex-row pr-4 mr-4" style="border-right: 2px solid whitesmoke">
                 <div class="d-flex flex-center pl-2 mr-2 ml-2">

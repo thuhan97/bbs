@@ -118,7 +118,8 @@
                     <th class="text-center">Tới ngày</th>
                     <th class="text-center">Tính nghỉ</th>
                     <th class="text-center">Tiêu đề</th>
-                    <th style="width: 250px" class="text-center">Chi tiết</th>
+                    <th class="text-center">Chi tiết</th>
+                    <th style="width: 160px" class="text-center">Phê duyệt</th>
                 </tr>
                 </thead>
                 <!--Table head-->
@@ -154,11 +155,6 @@
                             {{$record->title}}
                         </td>
                         <td class="text-center p-0">
-                            @if($record->status !== 1)
-                                <button class="btn btn-primary btn-sm" id="approveBtn{{$loop->index+1}}"
-                                        onclick="clickApprove('{{$record}}', 'rowApprove{{$loop->index+1}}', 'spinner-section-{{$loop->index+1}}', {{$approval_view}})">
-                                    <i class="fas fa-check"></i></button>
-                            @endif
                             <button class="btn btn-blue-grey btn-sm"
                                     onclick="clickShowDetail('{{route('day_off_approval_one',['id'=>$record->id])}}', 'spinner-section-{{$loop->index+1}}', 'approveBtn{{$loop->index+1}}')">
                                 <i class="fas fa-ellipsis-h"></i>
@@ -170,6 +166,15 @@
                                     <span class="sr-only">Loading...</span>
                                 </div>
                             </div>
+                        </td>
+                        <td class="text-center p-0">
+                            @if($record->status !== 1)
+                                <button class="btn btn-primary btn-sm" id="approveBtn{{$loop->index+1}}"
+                                        onclick="clickApprove('{{$record}}', 'rowApprove{{$loop->index+1}}', 'spinner-section-{{$loop->index+1}}', {{$approval_view}})">
+                                    <i class="fas fa-check"></i></button>
+                            @else
+                                Bạn đã phê duyệt
+                            @endif
                         </td>
                     </tr>
                 @endforeach

@@ -54,21 +54,27 @@
         			<div class="file-field float-right">
                         <div class=" mb-4 ">
                           <img src="{{$user->avatar}}" id="output" 
-                            alt="example placeholder avatar" width="200px" height="200px">
+                            alt="example placeholder avatar" width="200px" height="200px" class="float-right">
                         </div>
+                        <div class="clearfix"></div>
                         <div class="d-flex justify-content-center">
-                          <div class="btn btn-mdb-color btn-rounded float-left hidden">
+                          <div class="btn btn-mdb-color btn-rounded text-center hidden">
                             <span class="changeImage">Đổi ảnh</span>
                             <input type="file" name="avatar" onchange="loadFile(event)">
+                           
                           </div>
-
+                          </div>
+                          @if ($errors->has('avatar'))
+                       
+                       <p class="red-text" >{{ $errors->first('avatar') }}</p>
+                       
+                       @endif 
                         </div>
-                                
-                        
-                      </div>
-                    </div>
-    		    </div>
-
+                      </div> 
+                      
+                    
+                   
+                </div>   
     	    </div>
         <div class="clearfix"></div>
         <div class="row" style="margin-top: 20px;">

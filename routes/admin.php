@@ -18,65 +18,69 @@ $this->post('login', 'Auth\LoginController@login');
 $this->any('logout', 'Auth\LoginController@logout')->name('admin.logout');
 
 Route::group([
-    'middleware' => ['admin'],
-    'as' => 'admin::'
+	'middleware' => ['admin'],
+	'as' => 'admin::'
 ], function () {
 
-    Route::get('/', ['as' => 'index', 'uses' => 'MasterController@index']);
+	Route::get('/', ['as' => 'index', 'uses' => 'MasterController@index']);
 
-    ##AUTO_INSERT_ROUTE##
+	##AUTO_INSERT_ROUTE##
 
-    //OverTime
-    Route::resource('over_times', 'OverTimeController');
+	//feedback
+	Route::resource('feedback', 'FeedbackController');
 
-    //WorkTimeDetail
-    Route::resource('work_time_details', 'WorkTimeDetailController');
 
-    //WorkTime
-    Route::post('work_times/deletes', ['as' => 'work_times.deletes', 'uses' => 'WorkTimeController@deletes']);
-    Route::get('work_times/download-template', ['as' => 'work_times.download_template', 'uses' => 'WorkTimeController@downloadTemplate']);
-    Route::get('work_times/import', ['as' => 'work_times.import', 'uses' => 'WorkTimeController@import']);
-    Route::post('work_times/import', ['as' => 'work_times.importData', 'uses' => 'WorkTimeController@importData']);
-    Route::get('work_times/user/{id}', ['as' => 'work_times.user', 'uses' => 'WorkTimeController@byUser'])->where(['id' => '\d+']);
-    Route::resource('work_times', 'WorkTimeController');
+	//OverTime
+	Route::resource('over_times', 'OverTimeController');
 
-    //DayOff
-    Route::post('day_offs/deletes', ['as' => 'day_offs.deletes', 'uses' => 'DayOffController@deletes']);
-    Route::get('day_offs/user/{id}', ['as' => 'day_offs.user', 'uses' => 'DayOffController@byUser'])->where(['id' => '\d+']);
-    Route::resource('day_offs', 'DayOffController');
+	//WorkTimeDetail
+	Route::resource('work_time_details', 'WorkTimeDetailController');
 
-    //report
-    Route::resource('report', 'ReportController');
+	//WorkTime
+	Route::post('work_times/deletes', ['as' => 'work_times.deletes', 'uses' => 'WorkTimeController@deletes']);
+	Route::get('work_times/download-template', ['as' => 'work_times.download_template', 'uses' => 'WorkTimeController@downloadTemplate']);
+	Route::get('work_times/import', ['as' => 'work_times.import', 'uses' => 'WorkTimeController@import']);
+	Route::post('work_times/import', ['as' => 'work_times.importData', 'uses' => 'WorkTimeController@importData']);
+	Route::get('work_times/user/{id}', ['as' => 'work_times.user', 'uses' => 'WorkTimeController@byUser'])->where(['id' => '\d+']);
+	Route::resource('work_times', 'WorkTimeController');
 
-    //config
-    Route::get('configs', 'ConfigController@index')->name('configs.index');
-    Route::post('configs', 'ConfigController@store')->name('configs.store');
+	//DayOff
+	Route::post('day_offs/deletes', ['as' => 'day_offs.deletes', 'uses' => 'DayOffController@deletes']);
+	Route::get('day_offs/user/{id}', ['as' => 'day_offs.user', 'uses' => 'DayOffController@byUser'])->where(['id' => '\d+']);
+	Route::resource('day_offs', 'DayOffController');
 
-    //post
-    Route::post('posts/deletes', ['as' => 'posts.deletes', 'uses' => 'PostController@deletes']);
-    Route::resource('posts', 'PostController');
+	//report
+	Route::resource('report', 'ReportController');
 
-    //event
-    Route::post('events/deletes', ['as' => 'events.deletes', 'uses' => 'EventController@deletes']);
-    Route::resource('events', 'EventController');
+	//config
+	Route::get('configs', 'ConfigController@index')->name('configs.index');
+	Route::post('configs', 'ConfigController@store')->name('configs.store');
 
-    //regulation
-    Route::post('regulations/deletes', ['as' => 'regulations.deletes', 'uses' => 'RegulationController@deletes']);
-    Route::resource('regulations', 'RegulationController');
+	//post
+	Route::post('posts/deletes', ['as' => 'posts.deletes', 'uses' => 'PostController@deletes']);
+	Route::resource('posts', 'PostController');
 
-    //admin
-    Route::resource('admins', 'AdminController');
+	//event
+	Route::post('events/deletes', ['as' => 'events.deletes', 'uses' => 'EventController@deletes']);
+	Route::resource('events', 'EventController');
 
-    //users
-    Route::get('users/import/{setId}', ['as' => 'users.import', 'uses' => 'UserController@import']);
-    Route::get('users/download-template', ['as' => 'users.download-template', 'uses' => 'UserController@downloadTemplate']);
-    Route::post('users/import', ['uses' => 'UserController@importData']);
-    Route::post('users/deletes', ['as' => 'users.deletes', 'uses' => 'UserController@deletes']);
-    Route::get('users/reset-password', 'UserController@resetPassword');
-    Route::resource('users', 'UserController');
+	//regulation
+	Route::post('regulations/deletes', ['as' => 'regulations.deletes', 'uses' => 'RegulationController@deletes']);
+	Route::resource('regulations', 'RegulationController');
 
-    Route::post('teams/deletes', ['as' => 'teams.deletes', 'uses' => 'TeamController@deletes']);
-    Route::get('teams/manage-member/{id}', ['uses' => 'TeamController@manageMember']);
-    Route::resource('teams', 'TeamController');
+	//admin
+	Route::resource('admins', 'AdminController');
+
+	//users
+	Route::get('users/import/{setId}', ['as' => 'users.import', 'uses' => 'UserController@import']);
+	Route::get('users/download-template', ['as' => 'users.download-template', 'uses' => 'UserController@downloadTemplate']);
+	Route::post('users/import', ['uses' => 'UserController@importData']);
+	Route::post('users/deletes', ['as' => 'users.deletes', 'uses' => 'UserController@deletes']);
+	Route::get('users/reset-password', 'UserController@resetPassword');
+	Route::resource('users', 'UserController');
+
+	Route::post('teams/deletes', ['as' => 'teams.deletes', 'uses' => 'TeamController@deletes']);
+	Route::get('teams/manage-member/{id}', ['uses' => 'TeamController@manageMember']);
+	Route::resource('teams', 'TeamController');
 
 });

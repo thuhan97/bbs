@@ -8,8 +8,10 @@
 namespace App\Services;
 
 use App\Models\DayOff;
+use App\Models\User;
 use App\Repositories\Contracts\IDayOffRepository;
 use App\Services\Contracts\IDayOffService;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class DayOffService extends AbstractService implements IDayOffService
@@ -80,5 +82,24 @@ class DayOffService extends AbstractService implements IDayOffService
 		$model = $this->model->where('user_id', $userId)->where('status', DayOff::APPROVED_STATUS);
 		$thisYear = (int)date('Y');
 		return [$model->whereYear('start_at', $thisYear)->sum('number_off'), $model->whereYear('start_at', $thisYear - 1)->sum('number_off')];
+	}
+
+	public function updateStatusDayOff($recordID, $approvalID, $comment){
+		$approval = User::find($approvalID);
+		if ($approval == null || $approval->id == null || $approval->jobtitle_id < \App\Models\Report::MIN_APPROVE_JOBTITLE){
+			return false;
+		}
+		$record = $this->model
+			->where('id',$recordID)
+			->where('status', DayOff::NOTAPPROVED_STATUS)->first();
+		if ($record !== null && $record->id !== null) {
+			$record->approver_id = $approval->id;
+			$record->approve_comment = $comment;
+			$record->status = DayOff::APPROVED_STATUS;
+			$record->approver_at = Carbon::now();
+			return $record->update() != null;
+		}else{
+			return false;
+		}
 	}
 }

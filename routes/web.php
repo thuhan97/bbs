@@ -13,7 +13,7 @@
 
 use Illuminate\Support\Facades\Route;
 
-Route::group(['prefix' => 'file-manager', 'middleware' => ['admin'], 'as' => 'unisharp.lfm.'], function () {
+Route::group(['prefix' => 'file-manager', 'as' => 'unisharp.lfm.'], function () {
     $namespace = '\\UniSharp\\LaravelFilemanager\\Controllers\\';
     // display main layout
     Route::get('/', [
@@ -104,12 +104,15 @@ Route::group([
 
     Route::get('/ca-nhan', 'UserController@index')->name('personal');
     Route::get('/thiet-lap-ca-nhan', 'UserController@profile')->name('profile');
+    Route::post('/thiet-lap-ca-nhan', 'UserController@saveProfile')->name('save_profile');
     Route::get('/danh-ba', 'UserController@contact')->name('contact');
     Route::get('/doi-mat-khau', 'UserController@changePassword')->name('changePassword');
     Route::post('/doi-mat-khau', 'UserController@updatePassword')->name('update_password');
     Route::get('/thoi-gian-lam-viec', 'UserController@workTime')->name('work_time');
     Route::get('/ngay-nghi', 'UserController@dayOff')->name('day_off');
     Route::get('/phe-duyet-ngay-nghi', 'UserController@dayOffApprove')->name('day_off_approval');
+    Route::post('/phe-duyet-ngay-nghi/approve-api', 'UserController@dayOffApprove_AcceptAPI')->name('day_off_approval_approveAPI');
+    Route::post('/phe-duyet-ngay-nghi/one/{id}', 'UserController@dayOffApprove_get')->name('day_off_approval_one');
 
     Route::get('/noi-quy-quy-dinh', 'RegulationController@index')->name('regulation');
     Route::get('/noi-quy-quy-dinh/{id}', 'RegulationController@detail')->where(['id' => '\d+'])->name('regulation_detail');
@@ -124,5 +127,7 @@ Route::group([
     Route::get('/report', 'ReportController@getReport')->name('getReport');
     Route::post('/tao-bao-cao', 'ReportController@saveReport')->name('save_report');
     Route::get('/bao-cao/{id}', 'ReportController@detail')->where(['id' => '\d+'])->name('report_detail');
+    Route::get('/du-an','ProjectController@index')->name('project');
+    Route::get('/du-an/{id}', 'ProjectController@detail')->where(['id' => '\d+'])->name('project_detail');
 
 });

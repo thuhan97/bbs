@@ -38,6 +38,8 @@ define('LANG_VN', 'vi');
 define('EXPIRE_POTATO_DEFAULT', 6);
 
 define('URL_IMAGE_NO_IMAGE', '/dist/img/no-avatar.png');
+define('UPLOAD_PATH', '/uploads');
+define('URL_IMAGE_AVATAR', UPLOAD_PATH . '/avatar/');
 
 define('ACTIVE_STATUS', 1);
 
@@ -86,4 +88,22 @@ define('SEXS', [
     1 => 'Nữ',
     0 => 'Nam',
 ]);
+
+define('STATUS_PROJECT', [
+    0=> 'Đang chờ',
+    1=> 'Đang làm' ,
+    2=> 'Kết thúc' ,
+]);
+define('COLOR_STATUS_PROJECT', [
+    0=> 'color:red',
+    1=> 'color:orange' ,
+    2=> 'color:green' ,
+]);
+define('PROJECT_TYPE', [
+    0 =>  'ODC',
+    1 => 'Trọn gói' ,
+]);
+
+define('NOT_AUTHENTICATED', 'Tài khoản không hợp lệ');
+define('NOT_AUTHORIZED', 'Tài khoản không đủ thẩm quyền');
 

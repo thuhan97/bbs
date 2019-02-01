@@ -1,9 +1,8 @@
 <?php
 
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
 
-class EventSeed extends Seeder
+class ProjectsTableSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -24,22 +23,21 @@ class EventSeed extends Seeder
                 'created_at' => $createAt,
                 'updated_at' => $createAt,
                 'name' => $name,
-                'slug_name' => str_slug($name),
                 'image_url' => $faker->imageUrl(),
-                'place' => $faker->address,
-                'introduction' => $faker->paragraph(),
-                'content' => $faker->paragraph(),
-                'view_count' => $view,
-                'event_date' => $faker->dateTimeBetween($createAt),
-                'event_end_date'=>$createAt,
+                'customer' => $faker->name(),
+                'description' => $faker->paragraph(),
+                'scale' => $view,
+                'amount_of_time' => $view,
+                'start_date' => $faker->dateTimeBetween($createAt),
+                'end_date'=>$createAt,
                 'status' => random_int(0, 1),
             ];
             $entities[] = $entity;
             if (($i + 1) % 200 === 0) {
-                DB::table('events')->insert($entities);
+                DB::table('projects')->insert($entities);
                 $entities = [];
             }
         }
-        DB::table('events')->insert($entities);
+        DB::table('projects')->insert($entities);
     }
 }

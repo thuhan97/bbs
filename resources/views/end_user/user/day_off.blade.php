@@ -13,7 +13,9 @@
         <div class="col-sm-3 col-xs-6">
             <div class="card bg-primary">
                 <div class="card-body">
-                    <h1 class="white-text font-weight-light">{{DAY_OFF_TOTAL*2 - $availableDayLeft[1] - $availableDayLeft[0]}}</h1>
+                    <h1 class="white-text font-weight-light">
+                        {{$availableDayLeft['remain_current'] + $availableDayLeft['remain_previous']}}
+                    </h1>
                     <p class="card-subtitle text-white-50">ngày khả dụng</p>
                     <p class="card-title text-uppercase font-weight-bold card-text white-text">Tính từ năm trước</p>
                 </div>
@@ -22,17 +24,22 @@
         <div class="col-sm-3 col-xs-6">
             <div class="card bg-success">
                 <div class="card-body">
-                    <h1 class="white-text font-weight-light">{{DAY_OFF_TOTAL - $availableDayLeft[0]}}</h1>
+                    <h1 class="white-text font-weight-light">
+                        {{$availableDayLeft['remain_current']}}
+                    </h1>
                     <p class="card-subtitle text-white-50">nghỉ luôn đi</p>
-                    <p class="card-title text-uppercase font-weight-bold card-text white-text">Cuối năm
-                        reset</p>
+                    <p class="card-title text-uppercase font-weight-bold card-text white-text">
+                        Cuối năm reset
+                    </p>
                 </div>
             </div>
         </div>
         <div class="col-sm-3 col-xs-6">
             <div class="card bg-warning">
                 <div class="card-body">
-                    <h1 class="white-text font-weight-light">{{$availableDayLeft[0]}}</h1>
+                    <h1 class="white-text font-weight-light">
+                        {{$availableDayLeft['total_current'] - $availableDayLeft['remain_current']}}
+                    </h1>
                     <p class="card-subtitle text-white-50">ngày đã nghỉ</p>
                     <p class="card-title text-uppercase font-weight-bold card-text white-text">Trong
                         năm {{date('Y')}}</p>
@@ -40,7 +47,7 @@
             </div>
         </div>
         <div class="col-sm-3 col-xs-6">
-            <div class="card bg-danger">
+            <div class="card bg-danger cursor-effect" onclick="openCreateAbsenceForm()">
                 <div class="card-body">
                     <h1 class="white-text font-weight-light">Thêm</h1>
                     <p class="card-subtitle text-white-50">&nbsp</p>
@@ -54,35 +61,62 @@
     </div>
     <hr>
     <div class="container-fluid col-12 flex-row-reverse d-flex">
-        <button class="btn btn-primary dropdown-toggle mr-4" type="button" data-toggle="dropdown" aria-haspopup="true"
+        <button class="btn btn-secondary dropdown-toggle mr-4" type="button" data-toggle="dropdown" aria-haspopup="true"
                 aria-expanded="false">
-            Hiển thị
+            @if($defaultApprove !== 1 && $defaultApprove !== 0)
+                Hiển thị: Tất cả
+            @elseif($defaultApprove == 0)
+                Hiển thị: Chưa duyệt
+            @else
+                Hiển thị: Đã duyệt
+            @endif
         </button>
 
         <div class="dropdown-menu">
-            <a class="dropdown-item {{$defaultApprove !== 1 && $defaultApprove !== 0 ? 'active' : ''}}"
-               href="{{url()->current().'?page=1&per_page='.$defaultPerPage}}">
+            @if(!($defaultApprove !== 1 && $defaultApprove !== 0))
+                <a class="dropdown-item"
+                   href="{{url()->current().'?page=1&per_page='.$defaultPerPage}}">
                 <span class="d-flex">
                     <span class="green-red-circle mr-2"></span>
                     <span class="content">Tất cả</span>
                 </span>
-            </a>
-            <div class="dropdown-divider"></div>
-            <a class="dropdown-item {{$defaultApprove === 0 ? 'active' : ''}}"
-               href="{{url()->current().'?page=1&per_page='.$defaultPerPage.'&approve=0'}}">
+                </a>
+            @endif
+
+            @if($defaultApprove !== 0)
+                <a class="dropdown-item"
+                   href="{{url()->current().'?page=1&per_page='.$defaultPerPage.'&approve=0'}}">
                 <span class="d-flex">
                     <span class="red-circle mr-2"></span>
                     <span class="content">Chưa duyệt</span>
                 </span>
-            </a>
-            <a class="dropdown-item {{$defaultApprove === 1 ? 'active' : ''}}"
-               href="{{url()->current().'?page=1&per_page='.$defaultPerPage.'&approve=1'}}">
+                </a>
+            @endif
+
+            @if($defaultApprove !== 1)
+                <a class="dropdown-item"
+                   href="{{url()->current().'?page=1&per_page='.$defaultPerPage.'&approve=1'}}">
                 <span class="d-flex">
                     <span class="green-circle mr-2"></span>
                     <span class="content">Đã duyệt</span>
                 </span>
-            </a>
+                </a>
+            @endif
         </div>
+
+		<?php
+		$user = \Illuminate\Support\Facades\Auth::user();
+		?>
+        @if($user->jobtitle_id >= \App\Models\Report::MIN_APPROVE_JOBTITLE)
+            <div class="row d-flex flex-row pr-4 mr-4" style="border-right: 2px solid whitesmoke">
+                <div class="d-flex flex-center pl-2 mr-2 ml-2">
+                    Quản lý:
+                </div>
+                <a href="{{route('day_off_approval')}}" class="btn btn-primary" type="button">
+                    {{__l('day_off_approval')}}
+                </a>
+            </div>
+        @endif
     </div>
 
     <div class="container-fluid col-12">
@@ -243,7 +277,7 @@
         @endif
     </div>
 
-    <!-- Modal: modalPoll -->
+    <!-- Modal: View detail absence form -->
     <div class="modal fade right" id="detailAbsence" tabindex="-1"
          role="dialog" aria-labelledby="exampleModalLabel"
          aria-hidden="true" data-backdrop="false">
@@ -306,10 +340,50 @@
             </div>
         </div>
     </div>
-    <!-- Modal: modalPoll -->
+    <!-- Modal: View detail absence form -->
+
+    {{-- Modal: Create absence form--}}
+    <div class="modal fade right" id="createAbsenceForm" style="z-index: 9999;" tabindex="-1" role="dialog" aria-labelledby="Create Absence Form" aria-hidden="true">
+        <div class="modal-dialog modal-side modal-top-right" role="document">
+            <form class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="exampleModalPreviewLabel">Đơn xin nghỉ phép</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p class="h4 mb-4 text-center">Đơn xin nghỉ phép</p>
+
+                    <label for="titleForm">Tiêu đề</label>
+                    <input type="text" id="titleForm" class="form-control mb-3" name="title" placeholder="Tiêu đề đơn xin nghỉ" autocomplete="off">
+
+                    <label for="textareaForm">Nội dung</label>
+                    <textarea id="textareaForm" class="form-control mb-3" name="reason"  placeholder="Lý do nghỉ" maxlength="999"></textarea>
+
+                    <label for="start_atForm">Ngày bắt đầu nghỉ</label>
+                    <input type="text" class="form-control pull-right mb-3" autocomplete="off"
+                           name="start_at"
+                           value="" id="start_atForm">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Save changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    {{-- Modal: Create absence form--}}
 @endsection
 
-@push('eu-dayoff')
+@push('extend-css')
+    <link href="{{ cdn_asset('/bootstrap-datepicker/css/bootstrap-datepicker.min.css') }}" rel="stylesheet">
+    <link href="{{ cdn_asset('/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css') }}" rel="stylesheet">
+@endpush
+
+@push('extend-js')
+    <script src="{{ cdn_asset('/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js') }}"></script>
+    <script src="{{ cdn_asset('/bootstrap-datepicker/js/bootstrap-datepicker.min.js') }}"></script>
     <script>
         let header = document.getElementById('dayoff_heading');
         let title = document.getElementById('dayoff_title');
@@ -329,30 +403,6 @@
             reason.innerText = '';
             approval.innerText = '';
             comment.innerText = '';
-        }
-
-        function isLoading() {
-            let modal = document.getElementById('detailAbsence');
-
-            let innerSpinner = document.createElement('span');
-            innerSpinner.innerText = 'loading...';
-            innerSpinner.className = 'sr-only';
-            let containerSpinner = document.createElement('div');
-            containerSpinner.className = 'spinner-border text-primary';
-            containerSpinner.id = 'dayoffModel_loading';
-            containerSpinner.setAttribute('role', 'status');
-            containerSpinner.appendChild(innerSpinner);
-
-            modal.appendChild(containerSpinner);
-        }
-
-        function doneLoading() {
-            let loadingIndicate = $('#dayoffModel_loading');
-            loadingIndicate.fadeOut('fast', removeLoading)
-        }
-
-        function removeLoading() {
-            $('#dayoffModel_loading').remove();
         }
 
         function circleIndicate(isResolved = false) {
@@ -387,6 +437,13 @@
             approveDate.innerText = approvedChecker(!!detailInfo.approver_at, detailInfo.approver_at);
             approval.innerText = approvedChecker(detailInfo.status === 1, detailInfo.approval.name);
             comment.innerText = approvedChecker(!!detailInfo.approve_comment, detailInfo.approve_comment, 'không có');
+        }
+
+        function openCreateAbsenceForm() {
+            let modalCreate = $('#createAbsenceForm');
+            if (!!!modalCreate) return;
+            modalCreate.modal('show');
+            $('#start_atForm').datetimepicker();
         }
     </script>
 @endpush

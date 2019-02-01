@@ -29,31 +29,29 @@ class UserController extends Controller
 	}
 
 	public function profile()
-	{
-		$user = Auth::user();
-		return view('end_user.user.profile', compact('user'));
-	}
-
-	public function saveProfile(ProfileRequest $request)
-	{
-
-		$data = $request->only('address', 'current_address', 'gmail', 'gitlab', 'chatwork', 'skills', 'in_future', 'hobby', 'foreign_laguage');
-		if ($request->hasFile('avatar')) {
-			$avatar = request()->file('avatar');
-			$avatarName = $avatar->getClientOriginalName();
-			$destinationPath = public_path(URL_IMAGE_AVATAR);
-			$data['avatar'] = URL_IMAGE_AVATAR . $avatarName;
-			$avatar->move($destinationPath, $avatarName);
-		}
-
-		$user = User::updateOrCreate([
-			'id' => Auth::id(),
-		], $data);
-
-		return redirect(route('profile'))->with('success', 'Thiết lập hồ sơ thành công!');
-
-	}
-
+    {
+        $user=Auth::user();
+        return view('end_user.user.profile',compact('user'));
+    }
+    
+    public function saveProfile(ProfileRequest $request){
+        
+            $data = $request->only('address','current_address','gmail','gitlab','chatwork','skills','in_future','hobby','foreign_laguage');
+            if ($request->hasFile('avatar')) {
+                $avatar = request()->file('avatar');
+                $avatarName = $avatar->getClientOriginalName();
+                $destinationPath = public_path(URL_IMAGE_AVATAR);
+                $data['avatar']=URL_IMAGE_AVATAR.$avatarName;
+                $avatar->move($destinationPath, $avatarName);    
+            }
+            
+            $user = User::updateOrCreate([
+                'id' => Auth::id(),
+            ], $data); 
+            
+            return redirect(route('profile'))->with('success','Thiết lập hồ sơ thành công!'); 
+      
+    }
 
 	public function changePassword()
 	{

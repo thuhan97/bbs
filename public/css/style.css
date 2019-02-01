@@ -345,6 +345,7 @@
     background: #f6f6f6;
     margin-bottom: 50px;
     padding-bottom: 50px;
+    box-sizing: border-box;
 }
 
 .title-profile {
@@ -396,6 +397,11 @@
 .hidden {
     display: none;
 }
+.required{
+    color:red;
+    margin-right: 35px;
+}
+
 
 
 

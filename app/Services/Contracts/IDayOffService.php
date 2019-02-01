@@ -37,11 +37,4 @@ interface IDayOffService extends IBaseService
 	 * @return boolean Indicate whether the action is performed or not
 	 */
     public function updateStatusDayOff($recordID, $approvalID, $comment);
-
-	/**
-	 * find a record of day off by ID.
-	 * @param $recordID int|string id of the day off record
-	 * @return mixed day off record
-	 */
-    public function getRecordOf($recordID);
 }

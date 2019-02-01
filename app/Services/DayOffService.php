@@ -122,4 +122,23 @@ class DayOffService extends AbstractService implements IDayOffService
 		$recordFound = $this->model->with('user')->find($idRecord);
 		return $recordFound;
 	}
+
+	public function updateStatusDayOff($recordID, $approvalID, $comment){
+		$approval = User::find($approvalID);
+		if ($approval == null || $approval->id == null || $approval->jobtitle_id < \App\Models\Report::MIN_APPROVE_JOBTITLE){
+			return false;
+		}
+		$record = $this->model
+			->where('id',$recordID)
+			->where('status', DayOff::NOTAPPROVED_STATUS)->first();
+		if ($record !== null && $record->id !== null) {
+			$record->approver_id = $approval->id;
+			$record->approve_comment = $comment;
+			$record->status = DayOff::APPROVED_STATUS;
+			$record->approver_at = Carbon::now();
+			return $record->update() != null;
+		}else{
+			return false;
+		}
+	}
 }

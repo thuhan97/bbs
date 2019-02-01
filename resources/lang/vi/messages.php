@@ -23,6 +23,7 @@ return [
     'Report' => 'Báo cáo tuần',
     'Report_create' => 'Tạo báo cáo tuần',
     'Home' => 'Trang chủ',
+    'Project'=>'Dự án',
     'change_password' => 'Đổi mật khẩu',
     'personal_brief' => 'Hồ sơ cá nhân',
     'regulation' => 'Nội quy/Quy Định',

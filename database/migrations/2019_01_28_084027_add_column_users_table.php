@@ -14,7 +14,7 @@ class AddColumnUsersTable extends Migration
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->tinyInteger('gender');
+            $table->tinyInteger('sex');
         });
     }
 
@@ -27,7 +27,7 @@ class AddColumnUsersTable extends Migration
     {
         Schema::table('users', function (Blueprint $table) {
             
-            $table->dropColumn('gender');
+            $table->dropColumn('sex');
         
         });
     }

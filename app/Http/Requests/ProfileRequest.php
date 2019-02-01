@@ -25,7 +25,6 @@ class ProfileRequest extends FormRequest
     public function rules()
     {
         return [
-            'address' => 'required',
             'current_address' => 'required',
             'school'=>'required',
             'gmail'=>'email',
@@ -37,7 +36,7 @@ class ProfileRequest extends FormRequest
     public function attributes()
     {
         return [
-            'address' => 'Địa chỉ',
+           
             'current_address' => 'Địa chỉ hiện tại',
             'school'=>'Học vấn',
             'gmail'=>'Gmail',

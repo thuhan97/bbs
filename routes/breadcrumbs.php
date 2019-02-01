@@ -66,7 +66,16 @@ Breadcrumbs::register('report_create', function ($breadcrumbs) {
     $breadcrumbs->parent('report');
     $breadcrumbs->push(__l('Report_create'), route('create_report'));
 });
+//Home > Project
+Breadcrumbs::register('project', function ($breadcrumbs) {
+    $breadcrumbs->parent('home');
+    $breadcrumbs->push(__l('Project'), route('project'));
+});
+Breadcrumbs::register('project_detail', function ($breadcrumbs, $project) {
+    $breadcrumbs->parent('project');
+    $breadcrumbs->push($project->name, route('project_detail', ['id' => $project->id]));
 
+});
 // Dashboard > Profile
 Breadcrumbs::register('_personal', function ($breadcrumbs) {
     $breadcrumbs->parent('personal');

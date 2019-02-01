@@ -12,6 +12,8 @@ use App\Transformers\UserTransformer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
+use App\Models\WorkTime;
+
 class UserController extends Controller
 {
 	private $userService;
@@ -83,12 +85,43 @@ class UserController extends Controller
         return redirect('/login');
     }
 
-	public function workTime()
-	{
-		return view('end_user.user.work_time');
-	}
+    public function workTime(Request $request)
+    {
+        $late = $early = $ot = 0;
+        $month = $request->input('month');
+        $type = $request->input('type');
+        $type_late = array(1, 3, 5);
+        $type_early = array(2, 3);
+        $type_ot = array(4, 5);
+        $t = array();
 
+        if($type == 'di_muon'){
+            $t = $type_late;
+        }elseif ($type == 've_som'){
+            $t = $type_early;
+        }elseif ($type == 'ot'){
+            $t = $type_ot;
+        }
 
+        $month = isset($month) ? $month : date('m');
+        $list_work_times = collect(WorkTime::where('user_id', Auth::user()->id)->whereMonth('work_day', $month)->get());
+        if(!empty($t)){
+            $list_work_times = $list_work_times->whereIn('type', $t);
+            if($type == 'di_muon'){
+                $late = $list_work_times->count();
+            }elseif ($type == 've_som'){
+                $early = $list_work_times->count();
+            }elseif ($type == 'ot'){
+                $ot = $list_work_times->count();
+            }
+        }else{
+            $late = $list_work_times->whereIn('type', $type_late)->count();
+            $early = $list_work_times->whereIn('type', $type_early)->count();
+            $ot = $list_work_times->whereIn('type', $type_ot)->count();
+        }
+
+        return view('end_user.user.work_time', compact('list_work_times', 'late', 'early', 'ot'));
+    }
 
 	//
 	//

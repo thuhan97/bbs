@@ -6,9 +6,7 @@
     @if(!$isApproval)
         <h2>Bạn không có quyền truy cập chức năng này</h2>
     @else
-
         @php
-
             $atPageString = "?page=";
             $perPageString = "&per_page=";
             $approvalString = "&approve=";
@@ -377,9 +375,9 @@
                         // received correct form data.
                         console.log(obj);
                         let rmRow = document.getElementById(rowID);
-                        if (approvalStatus === 2){
+                        if (approvalStatus === 2) {
                             location.reload(true);
-                        }else if (approvalStatus === null) {
+                        } else if (approvalStatus === null) {
 
                         }
                         if (!!rmRow) {

@@ -5,36 +5,34 @@ namespace App\Http\Controllers;
 use App\Http\Requests\DayOffRequest;
 use App\Http\Requests\ProfileRequest;
 use App\Models\User;
+use App\Models\WorkTime;
 use App\Services\Contracts\IDayOffService;
 use App\Services\Contracts\IUserService;
 use App\Transformers\DayOffTransformer;
-use App\Transformers\UserTransformer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-use App\Models\WorkTime;
-
 class UserController extends Controller
 {
-	private $userService;
-	private $userDayOff;
+    private $userService;
+    private $userDayOff;
 
-	public function __construct(IUserService $userService, IDayOffService $userDayOff)
-	{
-		$this->userService = $userService;
-		$this->userDayOff = $userDayOff;
-	}
+    public function __construct(IUserService $userService, IDayOffService $userDayOff)
+    {
+        $this->userService = $userService;
+        $this->userDayOff = $userDayOff;
+    }
 
-	public function index()
-	{
-		return view('end_user.user.index');
-	}
+    public function index()
+    {
+        return view('end_user.user.index');
+    }
 
-	public function profile()
-	{
-		$user = Auth::user();
-		return view('end_user.user.profile', compact('user'));
-	}
+    public function profile()
+    {
+        $user = Auth::user();
+        return view('end_user.user.profile', compact('user'));
+    }
 
     public function saveProfile(ProfileRequest $request)
     {
@@ -88,33 +86,32 @@ class UserController extends Controller
     public function workTime(Request $request)
     {
         $late = $early = $ot = 0;
-        $month = $request->input('month');
+        $month = $request->input('month') ?? date('m');
         $type = $request->input('type');
         $type_late = array(1, 3, 5);
         $type_early = array(2, 3);
         $type_ot = array(4, 5);
         $t = array();
 
-        if($type == 'di_muon'){
+        if ($type == 'di_muon') {
             $t = $type_late;
-        }elseif ($type == 've_som'){
+        } elseif ($type == 've_som') {
             $t = $type_early;
-        }elseif ($type == 'ot'){
+        } elseif ($type == 'ot') {
             $t = $type_ot;
         }
 
-        $month = isset($month) ? $month : date('m');
-        $list_work_times = collect(WorkTime::where('user_id', Auth::user()->id)->whereMonth('work_day', $month)->get());
-        if(!empty($t)){
+        $list_work_times = WorkTime::where('user_id', Auth::user()->id)->whereMonth('work_day', (int)$month - 1)->get();
+        if (!empty($t)) {
             $list_work_times = $list_work_times->whereIn('type', $t);
-            if($type == 'di_muon'){
+            if ($type == 'di_muon') {
                 $late = $list_work_times->count();
-            }elseif ($type == 've_som'){
+            } elseif ($type == 've_som') {
                 $early = $list_work_times->count();
-            }elseif ($type == 'ot'){
+            } elseif ($type == 'ot') {
                 $ot = $list_work_times->count();
             }
-        }else{
+        } else {
             $late = $list_work_times->whereIn('type', $type_late)->count();
             $early = $list_work_times->whereIn('type', $type_early)->count();
             $ot = $list_work_times->whereIn('type', $type_ot)->count();
@@ -123,156 +120,156 @@ class UserController extends Controller
         return view('end_user.user.work_time', compact('list_work_times', 'late', 'early', 'ot'));
     }
 
-	//
-	//
-	//  DAY OFF SECTION
-	//
-	//
+    //
+    //
+    //  DAY OFF SECTION
+    //
+    //
 
-	public function dayOff(DayOffRequest $request)
-	{
-		$conditions = ['user_id' => Auth::id()];
-		$listDate = $this->userDayOff->findList($request, $conditions);
+    public function dayOff(DayOffRequest $request)
+    {
+        $conditions = ['user_id' => Auth::id()];
+        $listDate = $this->userDayOff->findList($request, $conditions);
 
-		$paginateData = $listDate->toArray();
-		$recordPerPage = $request->get('per_page');
-		$approve = $request->get('approve');
+        $paginateData = $listDate->toArray();
+        $recordPerPage = $request->get('per_page');
+        $approve = $request->get('approve');
 
-		$availableDayLeft = $this->userDayOff->getDayOffUser(Auth::id());
-		return view('end_user.user.day_off', compact('listDate', 'paginateData', 'availableDayLeft', 'recordPerPage', 'approve'));
-	}
+        $availableDayLeft = $this->userDayOff->getDayOffUser(Auth::id());
+        return view('end_user.user.day_off', compact('listDate', 'paginateData', 'availableDayLeft', 'recordPerPage', 'approve'));
+    }
 
-	public function dayOffCreate_API(DayOffRequest $request)
-	{
-		$response = [
-			'success' => false,
-			'message' => NOT_AUTHORIZED
-		];
-		if (!$request->ajax() || !Auth::check()) {
-			return response($response);
-		}
+    public function dayOffCreate_API(DayOffRequest $request)
+    {
+        $response = [
+            'success' => false,
+            'message' => NOT_AUTHORIZED
+        ];
+        if (!$request->ajax() || !Auth::check()) {
+            return response($response);
+        }
 
-		$indicate = $this->userDayOff->create(
-			Auth::id(), $request->input('title'),
-			$request->input('reason'),
-			$request->input('start_at'),
-			$request->input('end_at'),
-			$request->input('approver_id')
-		);
+        $indicate = $this->userDayOff->create(
+            Auth::id(), $request->input('title'),
+            $request->input('reason'),
+            $request->input('start_at'),
+            $request->input('end_at'),
+            $request->input('approver_id')
+        );
 
 
-		$response['message'] = !!$indicate['record'] ? "Gửi thành công!" : $indicate['message'];
-		$response['success'] = $indicate['status'];
-		$response['record'] = $indicate['record'];
+        $response['message'] = !!$indicate['record'] ? "Gửi thành công!" : $indicate['message'];
+        $response['success'] = $indicate['status'];
+        $response['record'] = $indicate['record'];
 
-		return response($response);
-	}
+        return response($response);
+    }
 
-	public function dayOffListApprovalAPI(Request $request)
-	{
-		$response = [
-			'success' => false,
-			'message' => NOT_AUTHORIZED
-		];
-		if (!$request->ajax() || !Auth::check()) {
-			return response($response);
-		}
+    public function dayOffListApprovalAPI(Request $request)
+    {
+        $response = [
+            'success' => false,
+            'message' => NOT_AUTHORIZED
+        ];
+        if (!$request->ajax() || !Auth::check()) {
+            return response($response);
+        }
+        $user = Auth::user();
+        $dataResponse = $this->userDayOff->listApprovals((int)$user->jobtitle_id + 1);
 
-		$dataResponse = $this->userDayOff->listApprovals();
+        return response([
+            'success' => true,
+            'message' => "Danh Sách người phê duyệt",
+            'data' => $dataResponse->toArray()
+        ]);
+    }
 
-		return response([
-			'success' => true,
-			'message' => "Danh Sách người phê duyệt",
-			'data' => $dataResponse->toArray()
-		]);
-	}
+    public function dayOffApprove(DayOffRequest $request)
+    {
+        // Checking authorize for action
+        $isApproval = Auth::user()->jobtitle_id >= \App\Models\Report::MIN_APPROVE_JOBTITLE;
 
-	public function dayOffApprove(DayOffRequest $request)
-	{
-		// Checking authorize for action
-		$isApproval = Auth::user()->jobtitle_id >= \App\Models\Report::MIN_APPROVE_JOBTITLE;
+        // If user is able to do approve then
+        $searchView = $request->get('search') ?? '';
+        $approval_view = $request->get('approve');
+        $atPage_view = $request->get('page');
+        $perPage_view = $request->get('per_page');
 
-		// If user is able to do approve then
-		$searchView = $request->get('search') ?? '';
-		$approval_view = $request->get('approve');
-		$atPage_view = $request->get('page');
-		$perPage_view = $request->get('per_page');
+        $request_view = $this->userDayOff->findList($request, ['approver_id' => Auth::id()], ['*'], $searchView, $perPage);
+        $request_view_array = $request_view->toArray();
 
-		$request_view = $this->userDayOff->findList($request, ['approver_id' => Auth::id()], ['*'], $searchView, $perPage);
-		$request_view_array = $request_view->toArray();
+        $request->merge(['year' => date('Y')]);
+        $request->merge(['approve' => null]);
+        $request->merge(['search' => '']);
+        $search = '';
+        // get all request
+        $totalRequest = $this->userDayOff->findList($request, ['approver_id' => Auth::id()], ['*'], $search, $perPage)->toArray();
+        // get only approved request
+        $request->merge(['approve' => 1]);
+        $approvedRequest = $this->userDayOff->findList($request, ['approver_id' => Auth::id()], ['*'], $search, $perPage)->toArray();
 
-		$request->merge(['year' => date('Y')]);
-		$request->merge(['approve' => null]);
-		$request->merge(['search' => '']);
-		$search = '';
-		// get all request
-		$totalRequest = $this->userDayOff->findList($request, ['approver_id' => Auth::id()], ['*'], $search, $perPage)->toArray();
-		// get only approved request
-		$request->merge(['approve' => 1]);
-		$approvedRequest = $this->userDayOff->findList($request, ['approver_id' => Auth::id()], ['*'], $search, $perPage)->toArray();
+        return view('end_user.user.day_off_approval', compact(
+            'isApproval', 'totalRequest', 'approvedRequest', 'approval_view', 'atPage_view', 'perPage_view',
+            'request_view', 'request_view_array', 'searchView'
+        ));
+    }
 
-		return view('end_user.user.day_off_approval', compact(
-			'isApproval', 'totalRequest', 'approvedRequest', 'approval_view', 'atPage_view', 'perPage_view',
-			'request_view', 'request_view_array', 'searchView'
-		));
-	}
+    public function dayOffApprove_get(Request $request, $id)
+    {
+        if (!$request->ajax() || !Auth::check() || $id === null) {
+            return null;
+        }
 
-	public function dayOffApprove_get(Request $request, $id)
-	{
-		if (!$request->ajax() || !Auth::check() || $id === null) {
-			return null;
-		}
+        $responseObject = $this->userDayOff->getRecordOf($id);
+        if ($responseObject == null) return null;
+        $transformer = new DayOffTransformer();
 
-		$responseObject = $this->userDayOff->getRecordOf($id);
-		if ($responseObject == null) return null;
-		$transformer = new DayOffTransformer();
+        return $transformer->transform($responseObject);
+    }
 
-		return $transformer->transform($responseObject);
-	}
-
-	public function dayOffApprove_AcceptAPI(Request $request)
-	{
-		$response = [
-			'success' => false,
-			'message' => NOT_AUTHORIZED
-		];
+    public function dayOffApprove_AcceptAPI(Request $request)
+    {
+        $response = [
+            'success' => false,
+            'message' => NOT_AUTHORIZED
+        ];
 
 //	     Checking authorize for action
-		$isApproval = Auth::user()->jobtitle_id >= \App\Models\Report::MIN_APPROVE_JOBTITLE;
+        $isApproval = Auth::user()->jobtitle_id >= \App\Models\Report::MIN_APPROVE_JOBTITLE;
 
-		if (!$isApproval || !$request->ajax()) {
-			return response($response);
-		}
+        if (!$isApproval || !$request->ajax()) {
+            return response($response);
+        }
 
-		$arrRequest = $request->all();
-		$recievingObject = (object)$arrRequest;
+        $arrRequest = $request->all();
+        $recievingObject = (object)$arrRequest;
 //		return 	$recievingObject;
 
-		$targetRecordResponse = $this->userDayOff->updateStatusDayOff(
-			$recievingObject->id, Auth::id(), $recievingObject->approve_comment,
-			$recievingObject->number_off
-		);
+        $targetRecordResponse = $this->userDayOff->updateStatusDayOff(
+            $recievingObject->id, Auth::id(), $recievingObject->approve_comment,
+            $recievingObject->number_off
+        );
 
-		if ($targetRecordResponse) {
-			$response['message'] = 'Cập nhật thành công.';
-			$response['success'] = true;
-		} else {
-			$response['message'] = 'Cập nhật thất bại. Đơn xin không tồn tại hoặc có lỗi xảy ra với server';
-			$response['success'] = false;
-		}
-		return response($response);
-	}
+        if ($targetRecordResponse) {
+            $response['message'] = 'Cập nhật thành công.';
+            $response['success'] = true;
+        } else {
+            $response['message'] = 'Cập nhật thất bại. Đơn xin không tồn tại hoặc có lỗi xảy ra với server';
+            $response['success'] = false;
+        }
+        return response($response);
+    }
 
-	//
-	//
-	//  CONTACT
-	//
-	//
+    //
+    //
+    //  CONTACT
+    //
+    //
 
-	public function contact(Request $request)
-	{
-		$users = $this->userService->getContact($request, $perPage, $search);
-		return view('end_user.user.contact', compact('users', 'search', 'perPage'));
-	}
+    public function contact(Request $request)
+    {
+        $users = $this->userService->getContact($request, $perPage, $search);
+        return view('end_user.user.contact', compact('users', 'search', 'perPage'));
+    }
 
 }

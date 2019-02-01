@@ -104,9 +104,9 @@
             @endif
         </div>
 
-		<?php
-		$user = \Illuminate\Support\Facades\Auth::user();
-		?>
+        <?php
+        $user = \Illuminate\Support\Facades\Auth::user();
+        ?>
         @if($user->jobtitle_id >= \App\Models\Report::MIN_APPROVE_JOBTITLE)
             <div class="row d-flex flex-row pr-4 mr-4" style="border-right: 2px solid whitesmoke">
                 <div class="d-flex flex-center pl-2 mr-2 ml-2">
@@ -259,8 +259,6 @@
                                 </a>
                             </li>
                         @endif
-
-
                         <li class="page-item {{$paginateData['current_page'] === $paginateData['last_page'] ? 'disabled': ''}}">
                             <a href="{{$paginateData['next_page_url'].'&per_page='. $defaultPerPage. $paginationApprove}}"
                                class="page-link">
@@ -359,23 +357,23 @@
                     <div id="statusCreateForm" class="text-center">
                     </div>
                     <div id="contentCreateForm">
-                        <label for="titleForm">Tiêu đề</label>
+                        <label for="titleForm">Tiêu đề *</label>
                         <input type="text" required id="titleForm" class="form-control mb-3" name="title"
-                               placeholder="Tiêu đề đơn xin nghỉ" autocomplete="off">
+                               placeholder="Tiêu đề đơn xin nghỉ" autocomplete="off" value="Xin nghỉ phép">
 
-                        <label for="textareaForm">Nội dung</label>
+                        <label for="textareaForm">Nội dung *</label>
                         <textarea id="textareaForm" required class="form-control mb-3" name="reason"
                                   placeholder="Lý do nghỉ" maxlength="999"></textarea>
 
-                        <label for="start_atForm">Ngày bắt đầu nghỉ</label>
+                        <label for="start_atForm">Ngày bắt đầu nghỉ *</label>
                         <input type="text" class="form-control pull-right mb-3" autocomplete="off"
                                name="start_at" required value="" id="start_atForm">
 
-                        <label for="end_atForm">Tới ngày</label>
+                        <label for="end_atForm">Tới ngày *</label>
                         <input type="text" required class="form-control pull-right mb-3" autocomplete="off"
                                name="end_at" value="" id="end_atForm">
 
-                        <label for="approvals_selector">Người phụ trách</label>
+                        <label for="approvals_selector">Người duyệt *</label>
                         <select class="form-control mb-3 browser-default" id="approvals_selector">
 
                         </select>
@@ -595,12 +593,12 @@
                     showElement.show('fast')
             }
         }
-        
+
         function buildApprovalsSelector(responseObject) {
             let arrApprovals = null;
             try {
                 arrApprovals = JSON.parse(responseObject);
-            }catch (e) {
+            } catch (e) {
                 arrApprovals = null;
             }
 
@@ -632,7 +630,7 @@
                 }
             }
         }
-        
+
         function getApprovalSelected() {
             let selector = document.getElementById('approvals_selector');
             return selector.options[selector.selectedIndex].value;
@@ -645,7 +643,7 @@
                     buildApprovalsSelector(this.response);
                 }
             };
-            requestPerform(xhttp,'get', '{{route('day_off_listApprovalAPI')}}', null)
+            requestPerform(xhttp, 'get', '{{route('day_off_listApprovalAPI')}}', null)
         }
 
         // GLOBAL

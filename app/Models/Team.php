@@ -78,7 +78,7 @@ class Team extends Model
         $memberModel = new UserTeam;
         $member = $memberModel->getMemberIdAttribute();
         $users = User::whereNotIn('id', $member)
-            ->where('jobtitle_id', 1)//Leader
+            ->where('jobtitle_id', TEAMLEADER_ROLE)//Leader
             ->orwhere('id', $id)
             ->get();
         return $users;

@@ -88,6 +88,7 @@ define('SEXS', [
     1 => 'Nữ',
     0 => 'Nam',
 ]);
+
 define('STATUS_PROJECT', [
     0=> 'Đang chờ',
     1=> 'Đang làm' ,
@@ -99,8 +100,10 @@ define('COLOR_STATUS_PROJECT', [
     2=> 'color:green' ,
 ]);
 define('PROJECT_TYPE', [
-   0 =>  'ODC',
+    0 =>  'ODC',
     1 => 'Trọn gói' ,
 ]);
 
+define('NOT_AUTHENTICATED', 'Tài khoản không hợp lệ');
+define('NOT_AUTHORIZED', 'Tài khoản không đủ thẩm quyền');
 

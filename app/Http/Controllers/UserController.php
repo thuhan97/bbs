@@ -3,35 +3,37 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\DayOffRequest;
+use App\Http\Requests\ProfileRequest;
 use App\Models\DayOff;
+use App\Models\User;
 use App\Services\Contracts\IDayOffService;
 use App\Services\Contracts\IUserService;
+use App\Transformers\DayOffTransformer;
 use Illuminate\Http\Request;
-use App\Http\Requests\ProfileRequest;
 use Illuminate\Support\Facades\Auth;
-use App\Models\User;
 
 class UserController extends Controller
 {
-    private $userService;
-    private $userDayOff;
+	private $userService;
+	private $userDayOff;
 
-    public function __construct(IUserService $userService, IDayOffService $userDayOff)
-    {
-        $this->userService = $userService;
-        $this->userDayOff = $userDayOff;
-    }
+	public function __construct(IUserService $userService, IDayOffService $userDayOff)
+	{
+		$this->userService = $userService;
+		$this->userDayOff = $userDayOff;
+	}
 
-    public function index()
-    {
-        return view('end_user.user.index');
-    }
+	public function index()
+	{
+		return view('end_user.user.index');
+	}
 
-    public function profile()
+	public function profile()
     {
         $user=Auth::user();
         return view('end_user.user.profile',compact('user'));
     }
+    
     public function saveProfile(ProfileRequest $request){
         
             $data = $request->only('address','current_address','gmail','gitlab','chatwork','skills','in_future','hobby','foreign_laguage');
@@ -50,122 +52,149 @@ class UserController extends Controller
             return redirect(route('profile'))->with('success','Thiết lập hồ sơ thành công!'); 
       
     }
-    
-    
-    public function changePassword()
-    {
-        return view('end_user.user.change_password');
-    }
 
-    public function updatePassword(Request $request)
-    {
-        $user = Auth::user();
+	public function changePassword()
+	{
+		return view('end_user.user.change_password');
+	}
 
-        $this->validate($request, [
-            'current_password' => ['required', function ($attribute, $value, $fail) use ($user) {
-                if (!\Hash::check($value, $user->password)) {
-                    return $fail(__('auth.current_password_incorrect'));
-                }
-            },],
-            'password' => 'required|confirmed|min:6|different:current_password',
-        ], [
-            'different' => 'Mật khẩu mới phải khác mật khẩu cũ'
-        ],
-            ['password' => 'mật khẩu mới']
-        );
+	public function updatePassword(Request $request)
+	{
+		$user = Auth::user();
 
-        $user->password = $request->get('password');
-        $user->save();
-        Auth::logout();
+		$this->validate($request, [
+			'current_password' => ['required', function ($attribute, $value, $fail) use ($user) {
+				if (!\Hash::check($value, $user->password)) {
+					return $fail(__('auth.current_password_incorrect'));
+				}
+			},],
+			'password' => 'required|confirmed|min:6|different:current_password',
+		], [
+			'different' => 'Mật khẩu mới phải khác mật khẩu cũ'
+		],
+			['password' => 'mật khẩu mới']
+		);
 
-        return redirect('/login');
-    }
+		$user->password = $request->get('password');
+		$user->save();
+		Auth::logout();
 
-    public function workTime()
-    {
-        return view('end_user.user.work_time');
-    }
+		return redirect('/login');
+	}
 
-    public function dayOff(DayOffRequest $request)
-    {
-        $conditions = ['user_id' => Auth::id()];
-        $listDate = $this->userDayOff->findList($request, $conditions);
+	public function workTime()
+	{
+		return view('end_user.user.work_time');
+	}
 
-        $paginateData = $listDate->toArray();
-        $recordPerPage = $request->get('per_page');
-        $approve = $request->get('approve');
+	public function dayOff(DayOffRequest $request)
+	{
+		$conditions = ['user_id' => Auth::id()];
+		$listDate = $this->userDayOff->findList($request, $conditions);
 
-        $availableDayLeft = $this->userDayOff->getDayOffUser(Auth::id());
-        return view('end_user.user.day_off', compact('listDate', 'paginateData', 'availableDayLeft', 'recordPerPage', 'approve'));
-    }
+		$paginateData = $listDate->toArray();
+		$recordPerPage = $request->get('per_page');
+		$approve = $request->get('approve');
 
-    public function dayOffApprove(DayOffRequest $request)
-    {
-        // Checking authorize for action
-        $isApproval = Auth::user()->jobtitle_id >= \App\Models\Report::MIN_APPROVE_JOBTITLE;
+		$availableDayLeft = $this->userDayOff->getDayOffUser(Auth::id());
+		return view('end_user.user.day_off', compact('listDate', 'paginateData', 'availableDayLeft', 'recordPerPage', 'approve'));
+	}
 
-        // If user is able to do approve then
-	    $searchView = $request->get('search') ?? '';
-	    $approval_view = $request->get('approve');
-	    $atPage_view = $request->get('page');
-	    $perPage_view = $request->get('per_page');
+	public function dayOffApprove(DayOffRequest $request)
+	{
+		// Checking authorize for action
+		$isApproval = Auth::user()->jobtitle_id >= \App\Models\Report::MIN_APPROVE_JOBTITLE;
 
-	    $request_view = $this->userDayOff->findList($request, [], ['*'], $searchView, $perPage);
-	    $request_view_array = $request_view->toArray();
+		// If user is able to do approve then
+		$searchView = $request->get('search') ?? '';
+		$approval_view = $request->get('approve');
+		$atPage_view = $request->get('page');
+		$perPage_view = $request->get('per_page');
 
-	    $request->merge(['year' => date('Y')]);
-	    $request->merge(['approve'=> null]);
-	    $request->merge(['search'=> '']);
-	    $search = '';
-	    // get all request
-	    $totalRequest = $this->userDayOff->findList($request, [], ['*'], $search, $perPage)->toArray();
-	    // get only approved request
-	    $request->merge(['approve'=> 1]);
-	    $approvedRequest = $this->userDayOff->findList($request, [], ['*'], $search, $perPage)->toArray();
+		$request_view = $this->userDayOff->findList($request, [], ['*'], $searchView, $perPage);
+		$request_view_array = $request_view->toArray();
 
-        return view('end_user.user.day_off_approval', compact(
-        	'isApproval', 'totalRequest', 'approvedRequest', 'approval_view', 'atPage_view', 'perPage_view',
-	        'request_view', 'request_view_array', 'searchView'
-        ));
-    }
+		$request->merge(['year' => date('Y')]);
+		$request->merge(['approve' => null]);
+		$request->merge(['search' => '']);
+		$search = '';
+		// get all request
+		$totalRequest = $this->userDayOff->findList($request, [], ['*'], $search, $perPage)->toArray();
+		// get only approved request
+		$request->merge(['approve' => 1]);
+		$approvedRequest = $this->userDayOff->findList($request, [], ['*'], $search, $perPage)->toArray();
 
-    public function dayOffApprove_AcceptAPI(Request $request)
-    {
+		return view('end_user.user.day_off_approval', compact(
+			'isApproval', 'totalRequest', 'approvedRequest', 'approval_view', 'atPage_view', 'perPage_view',
+			'request_view', 'request_view_array', 'searchView'
+		));
+	}
 
-	    $response = [
-		    'success' => false,
-		    'message' => 'Cập nhật trạng thái cho đơn thất bại. Vui lòng thử lại.'
-	    ];
+	public function dayOffApprove_get(Request $request, $id)
+	{
+		if (!$request->ajax() || !Auth::check() || $id === null) {
+			return null;
+		}
 
-	    // Checking authorize for action
-//	    $isApproval = Auth::user()->jobtitle_id >= \App\Models\Report::MIN_APPROVE_JOBTITLE;
-//
-//	    if (!$isApproval || !$request->ajax()){
-//	    	return response([
-//	    		'success' => false
-//		    ]);
-//    }
-	    $arrRequest = $request->all();
-	    $recievingObject = json_decode(json_encode($arrRequest));
+		$responseObject = $this->userDayOff->getRecordOf($id);
+		if ($responseObject == null) return null;
+		$transformer = new DayOffTransformer();
 
-	    $targetRecordResponse = false;
-//	    $targetRecordResponse = $this->userDayOff->updateStatusDayOff($recievingObject->id, Auth::id(), 'test');
+		return $transformer->transform($responseObject);
+	}
 
-	    if ($targetRecordResponse){
+	public function dayOffApprove_AcceptAPI(Request $request)
+	{
+
+		$response = [
+			'success' => false,
+			'message' => 'Cập nhật trạng thái cho đơn thất bại. Vui lòng thử lại.'
+		];
+
+//	     Checking authorize for action
+		$isApproval = Auth::user()->jobtitle_id >= \App\Models\Report::MIN_APPROVE_JOBTITLE;
+
+		if (!$isApproval || !$request->ajax()) {
+			return response([
+				'success' => false
+			]);
+		}
+
+		$arrRequest = $request->all();
+		$recievingObject = json_decode(json_encode($arrRequest));
+
+		$targetRecordResponse = $this->userDayOff->updateStatusDayOff($recievingObject->id, Auth::id(), $recievingObject->approve_comment);
+
+		if ($targetRecordResponse) {
 			$response['message'] = 'Cập nhật thành công.';
 			$response['success'] = true;
-	    }else{
-		    $response['message'] = 'Cập nhật thất bại. Đơn xin không tồn tại hoặc có lỗi xảy ra với server';
-		    $response['success'] = false;
-	    }
+		} else {
+			$response['message'] = 'Cập nhật thất bại. Đơn xin không tồn tại hoặc có lỗi xảy ra với server';
+			$response['success'] = false;
+		}
+		return response($response);
+	}
 
-	    return response($response);
-    }
+	public function dayOffCreate_API(Request $request){
+		$response =[
+			'success' => false,
+			'message' => NOT_AUTHORIZED
+		];
+		if (!$request->ajax() || !Auth::check())
+		{
+			return response($response);
+		}
 
-    public function contact(Request $request)
-    {
-        $users = $this->userService->getContact($request, $perPage, $search);
-        return view('end_user.user.contact', compact('users', 'search', 'perPage'));
-    }
+		$response['message'] = 'Thành công';
+		$response['success'] = true;
+
+		return response($response);
+	}
+
+	public function contact(Request $request)
+	{
+		$users = $this->userService->getContact($request, $perPage, $search);
+		return view('end_user.user.contact', compact('users', 'search', 'perPage'));
+	}
 
 }

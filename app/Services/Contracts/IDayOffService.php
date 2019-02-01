@@ -30,6 +30,7 @@ interface IDayOffService extends IBaseService
     public function getDayOffUser($userId);
 
 	/**
+	 * Update the status (from not approved to approved) of a user)
 	 * @param $recordID int record's id
 	 * @param $approvalID int approval's id
 	 * @param $comment string approval's comment on the absence request

@@ -141,11 +141,12 @@ trait ResourceController
         $valuesToSave = $this->getValuesToSave($request, $record);
         $request->merge($valuesToSave);
         $this->resourceValidate($request, 'update', $record);
-
         if ($this->repository->update($record, $this->alterValuesToSave($request, $valuesToSave))) {
+
             flash()->success('Cập nhật thành công.');
 
             return $this->getRedirectAfterSave($record, $request);
+
         } else {
             flash()->info('Cập nhật thất bại.');
         }

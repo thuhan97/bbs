@@ -57,4 +57,5 @@ class AdminBaseController extends Controller
     {
         return 'admin._resources.show';
     }
+
 }

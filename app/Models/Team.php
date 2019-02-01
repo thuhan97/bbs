@@ -76,24 +76,6 @@ class Team extends Model
         return $this->hasMany('App\Models\UserTeam','team_id','id');
     }
 
-
-    /**
-     * @param $id
-     * @return array
-     */
-
-
-    public function getAllMember($id){
-        $members = $this->users()->where('team_id',$id)->get();
-        $membersWithName = [];
-        foreach ($members as $member){
-            $member->name = $this->user()->where('id',$member->user_id)->first()->name;
-            $membersWithName[] = $member;
-        }
-        return $membersWithName;
-    }
-
-
     /**
      * @return mixed
      */

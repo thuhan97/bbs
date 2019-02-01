@@ -92,7 +92,7 @@ class Team extends Model
         return $users;
     }
 
-    public function getMember($id = null)
+    public function getMembers($id = null)
     {
         $memberModel = new UserTeam;
         $member = $memberModel->getMemberIdAttribute();

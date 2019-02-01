@@ -58,8 +58,4 @@ class AdminBaseController extends Controller
         return 'admin._resources.show';
     }
 
-    public function getResourceManageMemberPath()
-    {
-        return 'admin.teams.user_team';
-    }
 }

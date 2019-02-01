@@ -75,9 +75,14 @@ class DayOffService extends AbstractService implements IDayOffService
 		return $model->paginate($perPage);
 	}
 
+	public function listApprovals(){
+		$containerRecord = new User();
+		$listApproval = $containerRecord->approverUsers();
+		return $listApproval->get();
+	}
+
 	/**
 	 * @param $userId
-	 *
 	 * @return array
 	 */
 	public function getDayOffUser($userId)
@@ -95,7 +100,7 @@ class DayOffService extends AbstractService implements IDayOffService
 		];
 	}
 
-	public function updateStatusDayOff($recordID, $approvalID, $comment){
+	public function updateStatusDayOff($recordID, $approvalID, $comment, $approve = DayOff::APPROVED_STATUS,$number_off = 0.5){
 		$approval = User::find($approvalID);
 		if ($approval == null || $approval->id == null || $approval->jobtitle_id < \App\Models\Report::MIN_APPROVE_JOBTITLE){
 			return false;
@@ -108,6 +113,7 @@ class DayOffService extends AbstractService implements IDayOffService
 			$record->approve_comment = $comment;
 			$record->status = DayOff::APPROVED_STATUS;
 			$record->approver_at = Carbon::now();
+			$record->number_off = $number_off;
 			return $record->update() != null;
 		}else{
 			return false;
@@ -123,19 +129,34 @@ class DayOffService extends AbstractService implements IDayOffService
 		return $recordFound;
 	}
 
-	public function create($idUser, $title, $reason, $start_at, $end_at){
+	public function create($idUser, $title, $reason, $start_at, $end_at, $approvalID){
 		$rec = new DayOff([
 			'user_id' => $idUser,
 			'title' =>$title,
 			"reason" => $reason,
 			"start_at" => $start_at,
 			"end_at" => $end_at,
-			"status" => 0
+			"status" => 0,
+			"approver_id"=>$approvalID
 			]);
+
+		$existed = DayOff::where('status', DayOff::APPROVED_STATUS)
+			->where("start_at", "<=", $start_at)
+			->where("end_at", ">=", $end_at)->first();
+
+		if ($existed!== null && $existed->id !== null){
+			return [
+				"status" => false,
+				"record" =>  null,
+				"message" => "Đã tồn tại"
+			];
+		}
+
 		$result = $rec->save();
 		return [
 			"status" => $result,
-			"record" =>  $result ? $rec : null
+			"record" =>  $result ? $rec : null,
+			"message" => "Tạo đơn thất bại"
 		];
 	}
 }

@@ -4,11 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\DayOffRequest;
 use App\Http\Requests\ProfileRequest;
-use App\Models\DayOff;
 use App\Models\User;
 use App\Services\Contracts\IDayOffService;
 use App\Services\Contracts\IUserService;
 use App\Transformers\DayOffTransformer;
+use App\Transformers\UserTransformer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -54,7 +54,6 @@ class UserController extends Controller
 
 	}
 
-
 	public function changePassword()
 	{
 		return view('end_user.user.change_password');
@@ -89,6 +88,14 @@ class UserController extends Controller
 		return view('end_user.user.work_time');
 	}
 
+
+
+	//
+	//
+	//  DAY OFF SECTION
+	//
+	//
+
 	public function dayOff(DayOffRequest $request)
 	{
 		$conditions = ['user_id' => Auth::id()];
@@ -102,6 +109,51 @@ class UserController extends Controller
 		return view('end_user.user.day_off', compact('listDate', 'paginateData', 'availableDayLeft', 'recordPerPage', 'approve'));
 	}
 
+	public function dayOffCreate_API(DayOffRequest $request)
+	{
+		$response = [
+			'success' => false,
+			'message' => NOT_AUTHORIZED
+		];
+		if (!$request->ajax() || !Auth::check()) {
+			return response($response);
+		}
+
+		$indicate = $this->userDayOff->create(
+			Auth::id(), $request->input('title'),
+			$request->input('reason'),
+			$request->input('start_at'),
+			$request->input('end_at'),
+			$request->input('approver_id')
+		);
+
+
+		$response['message'] = !!$indicate['record'] ? "Gửi thành công!" : $indicate['message'];
+		$response['success'] = $indicate['status'];
+		$response['record'] = $indicate['record'];
+
+		return response($response);
+	}
+
+	public function dayOffListApprovalAPI(Request $request)
+	{
+		$response = [
+			'success' => false,
+			'message' => NOT_AUTHORIZED
+		];
+		if (!$request->ajax() || !Auth::check()) {
+			return response($response);
+		}
+
+		$dataResponse = $this->userDayOff->listApprovals();
+
+		return response([
+			'success' => true,
+			'message' => "Danh Sách người phê duyệt",
+			'data' => $dataResponse->toArray()
+		]);
+	}
+
 	public function dayOffApprove(DayOffRequest $request)
 	{
 		// Checking authorize for action
@@ -113,7 +165,7 @@ class UserController extends Controller
 		$atPage_view = $request->get('page');
 		$perPage_view = $request->get('per_page');
 
-		$request_view = $this->userDayOff->findList($request, [], ['*'], $searchView, $perPage);
+		$request_view = $this->userDayOff->findList($request, ['approver_id' => Auth::id()], ['*'], $searchView, $perPage);
 		$request_view_array = $request_view->toArray();
 
 		$request->merge(['year' => date('Y')]);
@@ -121,10 +173,10 @@ class UserController extends Controller
 		$request->merge(['search' => '']);
 		$search = '';
 		// get all request
-		$totalRequest = $this->userDayOff->findList($request, [], ['*'], $search, $perPage)->toArray();
+		$totalRequest = $this->userDayOff->findList($request, ['approver_id' => Auth::id()], ['*'], $search, $perPage)->toArray();
 		// get only approved request
 		$request->merge(['approve' => 1]);
-		$approvedRequest = $this->userDayOff->findList($request, [], ['*'], $search, $perPage)->toArray();
+		$approvedRequest = $this->userDayOff->findList($request, ['approver_id' => Auth::id()], ['*'], $search, $perPage)->toArray();
 
 		return view('end_user.user.day_off_approval', compact(
 			'isApproval', 'totalRequest', 'approvedRequest', 'approval_view', 'atPage_view', 'perPage_view',
@@ -147,7 +199,6 @@ class UserController extends Controller
 
 	public function dayOffApprove_AcceptAPI(Request $request)
 	{
-
 		$response = [
 			'success' => false,
 			'message' => NOT_AUTHORIZED
@@ -161,9 +212,13 @@ class UserController extends Controller
 		}
 
 		$arrRequest = $request->all();
-		$recievingObject = json_decode(json_encode($arrRequest));
+		$recievingObject = (object)$arrRequest;
+//		return 	$recievingObject;
 
-		$targetRecordResponse = $this->userDayOff->updateStatusDayOff($recievingObject->id, Auth::id(), $recievingObject->approve_comment);
+		$targetRecordResponse = $this->userDayOff->updateStatusDayOff(
+			$recievingObject->id, Auth::id(), $recievingObject->approve_comment,
+			$recievingObject->number_off
+		);
 
 		if ($targetRecordResponse) {
 			$response['message'] = 'Cập nhật thành công.';
@@ -175,30 +230,11 @@ class UserController extends Controller
 		return response($response);
 	}
 
-	public function dayOffCreate_API(DayOffRequest $request){
-		$response =[
-			'success' => false,
-			'message' => NOT_AUTHORIZED
-		];
-		if (!$request->ajax() || !Auth::check())
-		{
-			return response($response);
-		}
-
-		$indicate = $this->userDayOff->create(
-			Auth::id(), $request->input('title'),
-			$request->get('reason'),
-			$request->get('start_at'),
-			$request->get('end_at')
-		);
-
-
-		$response['message'] = !!$indicate['record'] ? "Gửi thành công!" : "Tạo đơn thất bại";
-		$response['success'] = $indicate['status'];
-		$response['record'] = $indicate['record'];
-
-		return response($response);
-	}
+	//
+	//
+	//  CONTACT
+	//
+	//
 
 	public function contact(Request $request)
 	{

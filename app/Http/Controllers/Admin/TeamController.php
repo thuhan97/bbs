@@ -2,17 +2,11 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Models\UserTeam;
-use App\Repositories\TeamRepository;
-use App\Services\Contracts\IUserTeamService;
-use App\Services\TeamService;
-use App\Traits\Controllers\ResourceController;
-use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
 use App\Models\Team;
+use App\Models\UserTeam;
 use App\Repositories\Contracts\ITeamRepository;
-use App\Repositories\Contracts\IUserTeamRepository;
-use Illuminate\Support\Facades\DB;
+use App\Services\TeamService;
+use Illuminate\Http\Request;
 
 class TeamController extends AdminBaseController
 {
@@ -88,7 +82,8 @@ class TeamController extends AdminBaseController
         ];
     }
 
-    public function manageMember($id){
+    public function manageMember($id)
+    {
         $team = new Team;
         $record = $this->repository->findOne($id);
         $member_not_in_team = $team->getMembers($record->leader_id);
@@ -106,21 +101,20 @@ class TeamController extends AdminBaseController
     public function updateTmp(Request $request, $id)
     {
         $record = $this->repository->findOne($id);
-        UserTeam::where('user_id',$record->leader_id)
-                      ->where('team_id',$id)
-                      ->delete();
+        UserTeam::where('user_id', $record->leader_id)
+            ->where('team_id', $id)
+            ->delete();
         return $this->update($request, $id);
     }
 
-
-
-    public function saveUserTeam(Request $request){
+    public function saveUserTeam(Request $request)
+    {
         $record = $this->repository->findOne($request->id);
-        UserTeam::where('team_id',$request->id)
-            ->where('user_id','<>',$record->leader_id)
+        UserTeam::where('team_id', $request->id)
+            ->where('user_id', '<>', $record->leader_id)
             ->delete();
         $users_id_add = $request->to;
-        foreach ($users_id_add as $user_id){
+        foreach ($users_id_add as $user_id) {
             $user_team = new UserTeam;
             $user_team->team_id = $request->id;
             $user_team->user_id = $user_id;

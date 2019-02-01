@@ -50,7 +50,12 @@ class TeamController extends AdminBaseController
         $this->teamService = $teamService;
         parent::__construct();
     }
-//
+
+    public function getResourceManageMemberPath()
+    {
+        return 'admin.teams.user_team';
+    }
+
     public function resourceStoreValidationData()
     {
         return [

@@ -91,7 +91,7 @@ class TeamController extends AdminBaseController
     public function manageMember($id){
         $team = new Team;
         $record = $this->repository->findOne($id);
-        $member_not_in_team = $team->getMember($record->leader_id);
+        $member_not_in_team = $team->getMembers($record->leader_id);
 
         return view($this->getResourceManageMemberPath(), $this->filterShowViewData($record, [
             'record' => $record,

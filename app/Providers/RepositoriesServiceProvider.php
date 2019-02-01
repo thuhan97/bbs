@@ -24,10 +24,10 @@ use App\Repositories\Contracts\IDayOffRepository;
 use App\Repositories\Contracts\IEventRepository;
 use App\Repositories\Contracts\IOverTimeRepository;
 use App\Repositories\Contracts\IPostRepository;
+use App\Repositories\Contracts\IProjectRepository;
 use App\Repositories\Contracts\IRegulationRepository;
 use App\Repositories\Contracts\IReportRepository;
 use App\Repositories\Contracts\ITeamRepository;
-use App\Repositories\Contracts\IProjectRepository;
 use App\Repositories\Contracts\IUserRepository;
 use App\Repositories\Contracts\IUserTeamRepository;
 use App\Repositories\Contracts\IWorkTimeDetailRepository;
@@ -36,10 +36,10 @@ use App\Repositories\DayOffRepository;
 use App\Repositories\EventRepository;
 use App\Repositories\OverTimeRepository;
 use App\Repositories\PostRepository;
+use App\Repositories\ProjectRepository;
 use App\Repositories\RegulationRepository;
 use App\Repositories\ReportRepository;
 use App\Repositories\TeamRepository;
-use App\Repositories\ProjectRepository;
 use App\Repositories\UserRepository;
 use App\Repositories\UserTeamRepository;
 use App\Repositories\WorkTimeDetailRepository;
@@ -127,7 +127,7 @@ class RepositoriesServiceProvider extends ServiceProvider
             IWorkTimeRepository::class,
             ITeamRepository::class,
             IUserTeamRepository::class,
-            IProjectRepository::class,
+            IProjectRepository::class
         ];
     }
 }

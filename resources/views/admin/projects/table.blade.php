@@ -22,6 +22,7 @@
         <tbody>
         @php
             $i = 1;
+
         @endphp
         @foreach ($records as $record)
             <?php
@@ -40,12 +41,12 @@
                     <a href="{{ $showLink }}">{{ $record->name }}</a>
                 </td>
                 <td>{{ $record->customer}}</td>
-                <td>{{ $record->project_type}}</td>
+                <td>{{ isset(PROJECT_TYPE[$record->project_type]) ? PROJECT_TYPE[$record->project_type] : ''}}</td>
                 <td>{{ $record->scale}}</td>
                 <td>{{ $record->amount_of_time}}</td>
                 <td>{{ $record->technicala}}</td>
                 <td>{{ $record->tools}}</td>
-                <td>{{ $record->leader_id}}</td>
+                <td>{{ isset($record->leader->name) ? $record->leader->name : ''}}</td>
                 <td>{{ $record->start_date}}</td>
                 <td>{{ $record->end_date }}</td>
 

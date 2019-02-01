@@ -66,4 +66,11 @@ class Project extends Model
 //            ->select('teams.*')
 //            ->join('users', 'teams.leader_id', '=', 'users.id');
     }
+
+    public function leader()
+    {
+        return $this->hasOne('App\Models\User', 'id','leader_id');
+    }
+
+
 }

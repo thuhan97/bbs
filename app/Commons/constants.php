@@ -88,3 +88,8 @@ define('SEXS', [
     1 => 'Nữ',
     0 => 'Nam',
 ]);
+
+define('PROJECT_TYPE', [
+    1 => 'Trọn gói',
+    0 => 'ODC',
+]);

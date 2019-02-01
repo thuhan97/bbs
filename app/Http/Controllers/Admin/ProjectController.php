@@ -10,11 +10,8 @@ namespace App\Http\Controllers\Admin;
 
 
 use App\Models\Project;
-use App\Repositories\Contracts\ITeamRepository;
 use Illuminate\Http\Request;
-use App\Repositories\ProjectRepository;
-    use App\Repositories\Contracts\IProjectRepository;
-use App\Repositories\Contracts\IUserRepository;
+use App\Repositories\Contracts\IProjectRepository;
 class ProjectController extends AdminBaseController
 {
     /**
@@ -52,34 +49,34 @@ class ProjectController extends AdminBaseController
 //
     public function resourceStoreValidationData()
     {
-//        return [
-//            'rules' => [
-//                'name' => 'required|max:255',
+        return [
+            'rules' => [
+                'name' => 'required|max:255',
 //                'leader_id' => 'required',
-//            ],
-//            'messages' => [],
-//            'attributes' => [
-//                'name' => 'tên nhóm',
+            ],
+            'messages' => [],
+            'attributes' => [
+                'name' => 'tên dự án',
 //                'leader_id' => 'trưởng nhóm',
-//            ],
-//            'advanced' => [],
-//        ];
+            ],
+            'advanced' => [],
+        ];
     }
 
     public function resourceUpdateValidationData($record)
     {
-//        return [
-//            'rules' => [
-//                'name' => 'required|max:255',
+        return [
+            'rules' => [
+                'name' => 'required|max:255',
 //                'leader_id' => 'required',
-//            ],
-//            'messages' => [],
-//            'attributes' => [
-//                'name' => 'tên nhóm',
+            ],
+            'messages' => [],
+            'attributes' => [
+                'name' => 'tên dự án',
 //                'leader_id' => 'trưởng nhóm',
-//            ],
-//            'advanced' => [],
-//        ];
+            ],
+            'advanced' => [],
+        ];
     }
 
 

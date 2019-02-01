@@ -47,11 +47,8 @@ class DayOffService extends AbstractService implements IDayOffService
 		$search = $criterias['search'] ?? '';
 
 		$isApprove = $criterias['approve'] ?? null;
-		$isApprove = $isApprove !== null ? (int) $isApprove : null;
-		if ($isApprove === 1) { //approved
-			$moreConditions['day_offs.status'] = DayOff::APPROVED_STATUS;
-		} else if ($isApprove === 0) { // not approved
-			$moreConditions['day_offs.status'] = DayOff::NOTAPPROVED_STATUS;
+		if ($isApprove == DayOff::APPROVED_STATUS || $isApprove == DayOff::NOTAPPROVED_STATUS) {
+			$moreConditions['day_offs.status'] = $isApprove;
 		}
 
 		$model = $this->model
@@ -121,25 +118,11 @@ class DayOffService extends AbstractService implements IDayOffService
 	}
 
 	public function getRecordOf($idRecord){
-		if (!Auth::check()){
-			return null;
-		}
-
 		$recordFound = $this->model->with('user')->find($idRecord);
 		return $recordFound;
 	}
 
 	public function create($idUser, $title, $reason, $start_at, $end_at, $approvalID){
-		$rec = new DayOff([
-			'user_id' => $idUser,
-			'title' =>$title,
-			"reason" => $reason,
-			"start_at" => $start_at,
-			"end_at" => $end_at,
-			"status" => 0,
-			"approver_id"=>$approvalID
-			]);
-
 		$existed = DayOff::where('status', DayOff::APPROVED_STATUS)
 			->where("start_at", "<=", $start_at)
 			->where("end_at", ">=", $end_at)->first();
@@ -151,6 +134,16 @@ class DayOffService extends AbstractService implements IDayOffService
 				"message" => "Đã tồn tại"
 			];
 		}
+
+		$rec = new DayOff([
+			'user_id' => $idUser,
+			'title' =>$title,
+			"reason" => $reason,
+			"start_at" => $start_at,
+			"end_at" => $end_at,
+			"status" => 0,
+			"approver_id"=>$approvalID
+			]);
 
 		$result = $rec->save();
 		return [

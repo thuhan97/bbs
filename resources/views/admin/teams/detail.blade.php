@@ -15,14 +15,10 @@
         </div>
 
         <div class="col-md-12">
-            <div class="row">
-                <div class="col-md-6">
                     <div class="form-group margin-b-5 margin-t-5">
-                        <label for="leader_id">Trưởng nhóm:</label> {{ $record->leader_name }}
+                        <label for="leader_id">Trưởng nhóm:</label> {{ $record->leader->name }}
                     </div>
                     <!-- /.form-group -->
-                </div>
-            </div>
 
 
         </div>
@@ -31,18 +27,6 @@
                 <div class="col-md-6">
                     <div class="form-group margin-b-5 margin-t-5">
                         <label for="leader_id">Biểu ngữ:</label> {{ old('banner', $record->banner)}}
-                    </div>
-                    <!-- /.form-group -->
-                </div>
-            </div>
-
-
-        </div>
-        <div class="col-md-12">
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="form-group margin-b-5 margin-t-5">
-                        <label for="leader_id">Miêu tả:</label> {{ old('description', $record->description)}}
                     </div>
                     <!-- /.form-group -->
                 </div>
@@ -60,6 +44,18 @@
                     <!-- /.form-group -->
                 </div>
             </div>
+        </div>
+        <div class="col-md-12">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group margin-b-5 margin-t-5">
+                        <label for="description">Miêu tả:</label> {{ old('description', strip_tags($record->description))}}
+                    </div>
+                    <!-- /.form-group -->
+                </div>
+            </div>
+
+
         </div>
         <div class="col-md-12">
             <div class="row">
@@ -83,7 +79,7 @@
                 </div>
                 <div class="col-md-6">
                     <div class="form-group margin-b-5 margin-t-5">
-                        <a href="#" class="btn btn-sm btn-primary pull-right">
+                        <a href="{{ URL::asset('/admin/teams/manage-member/'.$record->id) }}" class="btn btn-sm btn-primary pull-right">
                             <i class="fa fa-plus"></i> <span>Quản lý thành viên</span>
                         </a>
                     </div>
@@ -105,14 +101,14 @@
             <tbody>
             @php
                 $i = 1;
-
+                $members = $record->users;
             @endphp
             @foreach ($members as $member)
 
                 <tr>
                     <td class="text-center">{{ $i++ }}</td>
                     <td class="table-text">
-                        {{ $member->name }}
+                        {{ $member->user->name }}
                     </td>
                     <td class="table-text">
                         {{ $member->created_at }}

@@ -340,7 +340,80 @@
                     </nav>
                 </div>
             @endif
+            <script>
+                function clickApprove(dataApprove = null, rowID, idSpinner, approvalStatus) {
+                    if (!!!dataApprove || approvalStatus === 1 || (approvalStatus !== null && approvalStatus !== 2)) {
+                        return;
+                    }
 
+                    startSpinner(idSpinner);
+
+                    let sendingData = JSON.stringify(dataApprove);
+                    let xhttp = new XMLHttpRequest();
+                    xhttp.onreadystatechange = function () {
+                        if (this.readyState == 4 && this.status == 200) {
+                            resolveResponse(this.response, rowID, idSpinner, approvalStatus);
+                        }
+                    };
+                    xhttp.open("POST", "{{route('day_off_approval_approveAPI')}}", true);
+
+                    xhttp.setRequestHeader("Content-type", "application/json");
+                    xhttp.setRequestHeader("X-CSRF-TOKEN", $('meta[name="csrf-token"]').attr('content'));
+                    xhttp.send(sendingData);
+                }
+
+                function resolveResponse(res, rowID, spinnerID, approvalStatus) {
+                    let convertStatus = false;
+                    let obj = null;
+                    try {
+                        obj = JSON.parse(res);
+                        if (obj.hasOwnProperty('success') && obj.hasOwnProperty('message')) {
+                            convertStatus = true;
+                        }
+                    } catch (e) {
+                        convertStatus = false;
+                    }
+                    if (convertStatus) {
+                        // received correct form data.
+                        console.log(obj);
+                        let rmRow = document.getElementById(rowID);
+                        if (approvalStatus === 2){
+                            location.reload(true);
+                        }else if (approvalStatus === null) {
+
+                        }
+                        if (!!rmRow) {
+                            rmRow.parentElement.removeChild(rmRow);
+                        }
+                    }
+                    finishSpinner(spinnerID);
+                }
+
+                function startSpinner(spinnerID) {
+                    let sectionAdding = document.getElementById(spinnerID);
+                    if (!!!sectionAdding) {
+                        return;
+                    }
+                    // let containerSpinner = document.createElement('div');
+                    // containerSpinner.id = 'loading-' + spinnerID;
+                    // containerSpinner.className = 'spinner-border text-primary';
+                    // containerSpinner.setAttribute('role', 'status');
+                    // let spinnerInner = document.createElement('span');
+                    // spinnerInner.className = 'sr-only';
+                    // spinnerInner.innerText = 'Loading...';
+                    // containerSpinner.appendChild(spinnerInner);
+                    // sectionAdding.appendChild(containerSpinner);
+                    sectionAdding.style.display = 'flex';
+                }
+
+                function finishSpinner(spinnerID) {
+                    let sectionAdding = document.getElementById(spinnerID);
+                    if (!!!sectionAdding) {
+                        return;
+                    }
+                    sectionAdding.style.display = 'none';
+                }
+            </script>
         </div>
     @endif
 

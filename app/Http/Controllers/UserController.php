@@ -34,54 +34,54 @@ class UserController extends Controller
 		return view('end_user.user.profile', compact('user'));
 	}
 
-	public function saveProfile(ProfileRequest $request)
-	{
+    public function saveProfile(ProfileRequest $request)
+    {
+        $data = $request->only('address', 'current_address', 'gmail', 'gitlab', 'chatwork', 'skills', 'in_future', 'hobby', 'foreign_laguage', 'school');
 
-		$data = $request->only('address', 'current_address', 'gmail', 'gitlab', 'chatwork', 'skills', 'in_future', 'hobby', 'foreign_laguage');
-		if ($request->hasFile('avatar')) {
-			$avatar = request()->file('avatar');
-			$avatarName = $avatar->getClientOriginalName();
-			$destinationPath = public_path(URL_IMAGE_AVATAR);
-			$data['avatar'] = URL_IMAGE_AVATAR . $avatarName;
-			$avatar->move($destinationPath, $avatarName);
-		}
+        if ($request->hasFile('avatar')) {
+            $avatar = request()->file('avatar');
+            $avatarName = $avatar->getClientOriginalName();
+            $destinationPath = public_path(URL_IMAGE_AVATAR);
+            $data['avatar'] = URL_IMAGE_AVATAR . $avatarName;
+            $avatar->move($destinationPath, $avatarName);
+        }
 
-		$user = User::updateOrCreate([
-			'id' => Auth::id(),
-		], $data);
+        $user = User::updateOrCreate([
+            'id' => Auth::id(),
+        ], $data);
 
-		return redirect(route('profile'))->with('success', 'Thiết lập hồ sơ thành công!');
+        return redirect(route('profile'))->with('success', 'Thiết lập hồ sơ thành công!');
 
-	}
+    }
 
-	public function changePassword()
-	{
-		return view('end_user.user.change_password');
-	}
+    public function changePassword()
+    {
+        return view('end_user.user.change_password');
+    }
 
-	public function updatePassword(Request $request)
-	{
-		$user = Auth::user();
+    public function updatePassword(Request $request)
+    {
+        $user = Auth::user();
 
-		$this->validate($request, [
-			'current_password' => ['required', function ($attribute, $value, $fail) use ($user) {
-				if (!\Hash::check($value, $user->password)) {
-					return $fail(__('auth.current_password_incorrect'));
-				}
-			},],
-			'password' => 'required|confirmed|min:6|different:current_password',
-		], [
-			'different' => 'Mật khẩu mới phải khác mật khẩu cũ'
-		],
-			['password' => 'mật khẩu mới']
-		);
+        $this->validate($request, [
+            'current_password' => ['required', function ($attribute, $value, $fail) use ($user) {
+                if (!\Hash::check($value, $user->password)) {
+                    return $fail(__('auth.current_password_incorrect'));
+                }
+            },],
+            'password' => 'required|confirmed|min:6|different:current_password',
+        ], [
+            'different' => 'Mật khẩu mới phải khác mật khẩu cũ'
+        ],
+            ['password' => 'mật khẩu mới']
+        );
 
-		$user->password = $request->get('password');
-		$user->save();
-		Auth::logout();
+        $user->password = $request->get('password');
+        $user->save();
+        Auth::logout();
 
-		return redirect('/login');
-	}
+        return redirect('/login');
+    }
 
 	public function workTime()
 	{

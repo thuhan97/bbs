@@ -68,13 +68,13 @@ define('CONTRACT_TYPES_NAME', [
     3 => 'Thực tập',
 ]);
 
-
 define('JOB_TITLES', [
     0 => 'Chuyên viên',
     1 => 'Team leader',
     2 => 'Manager',
     3 => 'Giám đốc',
 ]);
+
 
 define('POSITIONS', [
     0 => 'Chuyên viên',
@@ -89,5 +89,21 @@ define('SEXS', [
     0 => 'Nam',
 ]);
 
+define('STATUS_PROJECT', [
+    0=> 'Đang chờ',
+    1=> 'Đang làm' ,
+    2=> 'Kết thúc' ,
+]);
+define('COLOR_STATUS_PROJECT', [
+    0=> 'color:red',
+    1=> 'color:orange' ,
+    2=> 'color:green' ,
+]);
+define('PROJECT_TYPE', [
+    0 =>  'ODC',
+    1 => 'Trọn gói' ,
+]);
+
 define('NOT_AUTHENTICATED', 'Tài khoản không hợp lệ');
 define('NOT_AUTHORIZED', 'Tài khoản không đủ thẩm quyền');
+

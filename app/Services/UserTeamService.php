@@ -25,13 +25,5 @@ class UserTeamService extends AbstractService implements IUserTeamService
         $this->userTeamRepository = $userTeamRepository;
     }
 
-    public function getUsersAttribute(){dd('12324');
-        return $this->userRepository->where('id',  $this->userTeamRepository->attributes['leader_id'])->first()->name;
-    }
-
-    public function getMemberTeamAttribute($id){
-        return $this->userTeamRepository->getModel()->where('team_id',  $id)->get();
-    }
-
 
 }

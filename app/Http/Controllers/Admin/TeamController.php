@@ -4,9 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Models\UserTeam;
 use App\Repositories\TeamRepository;
-use App\Services\Contracts\ITeamService;
 use App\Services\Contracts\IUserTeamService;
-use App\Services\DetailTeamService;
 use App\Services\TeamService;
 use App\Traits\Controllers\ResourceController;
 use Illuminate\Http\Request;
@@ -36,7 +34,7 @@ class TeamController extends AdminBaseController
     protected $resourceModel = Team::class;
 
 
-    protected $resourceSearchExtend = 'admin.teams._partials.search_form';
+//    protected $resourceSearchExtend = 'admin.teams._search_extend';
 
     /**
      * @var  string
@@ -45,18 +43,19 @@ class TeamController extends AdminBaseController
 
     public function __construct(
         ITeamRepository $repository,
-        DetailTeamService $detailTeamService,
         TeamService $teamService
-//        IUserTeamService $userTeamService
     )
     {
         $this->repository = $repository;
         $this->teamService = $teamService;
-        $this->detailTeamService = $detailTeamService;
-//        $this->userTeamService = $userTeamService;
         parent::__construct();
     }
-//
+
+    public function getResourceManageMemberPath()
+    {
+        return 'admin.teams.user_team';
+    }
+
     public function resourceStoreValidationData()
     {
         return [
@@ -89,56 +88,45 @@ class TeamController extends AdminBaseController
         ];
     }
 
-    public function manageMember(){
+    public function manageMember($id){
         $team = new Team;
-        $member_other = $team->getMemberNotInTeam();
-//        dd($member_other);
-        $data = array (
-            'members_other'=>$member_other,
-        );
+        $record = $this->repository->findOne($id);
+        $member_not_in_team = $team->getMembers($record->leader_id);
+
+        return view($this->getResourceManageMemberPath(), $this->filterShowViewData($record, [
+            'record' => $record,
+            'member_not_in_team' => $member_not_in_team,
+            'resourceAlias' => $this->getResourceAlias(),
+            'resourceRoutesAlias' => $this->getResourceRoutesAlias(),
+            'resourceTitle' => $this->getResourceTitle(),
+        ]));
 //
-        return view('admin.teams.user_team')->with($data);
     }
 
-
-    public function show($id)
+    public function updateTmp(Request $request, $id)
     {
         $record = $this->repository->findOne($id);
-
-        $this->authorize('update', $record);
-        $record->leader_name = $this->teamService->getUsersAttribute($record->leader_id);
-        $members = $this->teamService->getAllMember($id);
-        return view($this->getResourceShowPath(), $this->filterShowViewData($record, [
-            'record' => $record,
-            'members' => $members,
-            'resourceAlias' => $this->getResourceAlias(),
-            'resourceRoutesAlias' => $this->getResourceRoutesAlias(),
-            'resourceTitle' => $this->getResourceTitle(),
-        ]));
+        UserTeam::where('user_id',$record->leader_id)
+                      ->where('team_id',$id)
+                      ->delete();
+        return $this->update($request, $id);
     }
 
-    public function index(Request $request)
-    {
-        $this->authorize('viewList', $this->getResourceModel());
 
-        $perPage = (int)$request->input('per_page', '');
-        $perPage = (is_numeric($perPage) && $perPage > 0 && $perPage <= 100) ? $perPage : DEFAULT_PAGE_SIZE;
-        $search = $request->input('search', '');
 
-        $records = $this->getSearchRecords($request, $perPage, $search);
-
-        $records->appends($request->except('page'));
-        foreach ($records as $record){
-            $record->leader_name = $this->teamService->getUsersAttribute($record->leader_id);
+    public function saveUserTeam(Request $request){
+        $record = $this->repository->findOne($request->id);
+        UserTeam::where('team_id',$request->id)
+            ->where('user_id','<>',$record->leader_id)
+            ->delete();
+        $users_id_add = $request->to;
+        foreach ($users_id_add as $user_id){
+            $user_team = new UserTeam;
+            $user_team->team_id = $request->id;
+            $user_team->user_id = $user_id;
+            $user_team->save();
         }
-        return view($this->getResourceIndexPath(), $this->filterSearchViewData($request, [
-            'records' => $records,
-            'search' => $search,
-            'resourceAlias' => $this->getResourceAlias(),
-            'resourceRoutesAlias' => $this->getResourceRoutesAlias(),
-            'resourceTitle' => $this->getResourceTitle(),
-            'perPage' => $perPage,
-        ]));
+        return redirect()->action('Admin\TeamController@manageMember', ['id' => $request->id]);
     }
 
 }

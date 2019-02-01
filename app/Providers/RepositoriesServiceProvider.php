@@ -44,6 +44,9 @@ use App\Repositories\WorkTimeRepository;
 use Illuminate\Support\ServiceProvider;
 
 ##AUTO_INSERT_USE##
+use App\Repositories\Contracts\IProjectRepository;
+use App\Repositories\ProjectRepository;
+use App\Models\Project;
 use App\Repositories\Contracts\IFeedbackRepository;
 use App\Repositories\FeedbackRepository;
 use App\Models\Feedback;
@@ -60,6 +63,9 @@ class RepositoriesServiceProvider extends ServiceProvider
     public function register()
     {
         ##AUTO_INSERT_BIND##
+		$this->app->bind(IProjectRepository::class, function () {
+			return new ProjectRepository(new Project());
+		});
 		$this->app->bind(IFeedbackRepository::class, function () {
 			return new FeedbackRepository(new Feedback());
 		});
@@ -109,6 +115,7 @@ class RepositoriesServiceProvider extends ServiceProvider
     {
         return [
             ##AUTO_INSERT_NAME##
+			IProjectRepository::class,
 			IFeedbackRepository::class,
             IReportRepository::class,
             IRegulationRepository::class,

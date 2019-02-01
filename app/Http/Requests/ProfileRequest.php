@@ -25,11 +25,10 @@ class ProfileRequest extends FormRequest
     public function rules()
     {
         return [
-            'address' => 'required',
             'current_address' => 'required',
-            'school'=>'required',
-            'gmail'=>'email',
-            'avatar'=>'mimes:jpeg,jpg,png,gif|max:10000'
+            'school' => 'required',
+            'gmail' => 'nullable|email',
+            'avatar' => 'mimes:jpeg,jpg,png,gif|max:10000'
 
         ];
     }
@@ -37,10 +36,10 @@ class ProfileRequest extends FormRequest
     public function attributes()
     {
         return [
-            'address' => 'Địa chỉ',
+
             'current_address' => 'Địa chỉ hiện tại',
-            'school'=>'Học vấn',
-            'gmail'=>'Gmail',
+            'school' => 'Học vấn',
+            'gmail' => 'Gmail',
         ];
     }
 }

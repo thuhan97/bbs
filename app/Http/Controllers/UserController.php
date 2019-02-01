@@ -8,6 +8,7 @@ use App\Models\User;
 use App\Services\Contracts\IDayOffService;
 use App\Services\Contracts\IUserService;
 use App\Transformers\DayOffTransformer;
+use App\Transformers\UserTransformer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -15,25 +16,25 @@ use App\Models\WorkTime;
 
 class UserController extends Controller
 {
-    private $userService;
-    private $userDayOff;
+	private $userService;
+	private $userDayOff;
 
-    public function __construct(IUserService $userService, IDayOffService $userDayOff)
-    {
-        $this->userService = $userService;
-        $this->userDayOff = $userDayOff;
-    }
+	public function __construct(IUserService $userService, IDayOffService $userDayOff)
+	{
+		$this->userService = $userService;
+		$this->userDayOff = $userDayOff;
+	}
 
-    public function index()
-    {
-        return view('end_user.user.index');
-    }
+	public function index()
+	{
+		return view('end_user.user.index');
+	}
 
-    public function profile()
-    {
-        $user = Auth::user();
-        return view('end_user.user.profile', compact('user'));
-    }
+	public function profile()
+	{
+		$user = Auth::user();
+		return view('end_user.user.profile', compact('user'));
+	}
 
     public function saveProfile(ProfileRequest $request)
     {
@@ -122,114 +123,156 @@ class UserController extends Controller
         return view('end_user.user.work_time', compact('list_work_times', 'late', 'early', 'ot'));
     }
 
-    public function dayOff(DayOffRequest $request)
-    {
-        $conditions = ['user_id' => Auth::id()];
-        $listDate = $this->userDayOff->findList($request, $conditions);
+	//
+	//
+	//  DAY OFF SECTION
+	//
+	//
 
-        $paginateData = $listDate->toArray();
-        $recordPerPage = $request->get('per_page');
-        $approve = $request->get('approve');
+	public function dayOff(DayOffRequest $request)
+	{
+		$conditions = ['user_id' => Auth::id()];
+		$listDate = $this->userDayOff->findList($request, $conditions);
 
-        $availableDayLeft = $this->userDayOff->getDayOffUser(Auth::id());
-        return view('end_user.user.day_off', compact('listDate', 'paginateData', 'availableDayLeft', 'recordPerPage', 'approve'));
-    }
+		$paginateData = $listDate->toArray();
+		$recordPerPage = $request->get('per_page');
+		$approve = $request->get('approve');
 
-    public function dayOffApprove(DayOffRequest $request)
-    {
-        // Checking authorize for action
-        $isApproval = Auth::user()->jobtitle_id >= \App\Models\Report::MIN_APPROVE_JOBTITLE;
+		$availableDayLeft = $this->userDayOff->getDayOffUser(Auth::id());
+		return view('end_user.user.day_off', compact('listDate', 'paginateData', 'availableDayLeft', 'recordPerPage', 'approve'));
+	}
 
-        // If user is able to do approve then
-        $searchView = $request->get('search') ?? '';
-        $approval_view = $request->get('approve');
-        $atPage_view = $request->get('page');
-        $perPage_view = $request->get('per_page');
+	public function dayOffCreate_API(DayOffRequest $request)
+	{
+		$response = [
+			'success' => false,
+			'message' => NOT_AUTHORIZED
+		];
+		if (!$request->ajax() || !Auth::check()) {
+			return response($response);
+		}
 
-        $request_view = $this->userDayOff->findList($request, [], ['*'], $searchView, $perPage);
-        $request_view_array = $request_view->toArray();
+		$indicate = $this->userDayOff->create(
+			Auth::id(), $request->input('title'),
+			$request->input('reason'),
+			$request->input('start_at'),
+			$request->input('end_at'),
+			$request->input('approver_id')
+		);
 
-        $request->merge(['year' => date('Y')]);
-        $request->merge(['approve' => null]);
-        $request->merge(['search' => '']);
-        $search = '';
-        // get all request
-        $totalRequest = $this->userDayOff->findList($request, [], ['*'], $search, $perPage)->toArray();
-        // get only approved request
-        $request->merge(['approve' => 1]);
-        $approvedRequest = $this->userDayOff->findList($request, [], ['*'], $search, $perPage)->toArray();
 
-        return view('end_user.user.day_off_approval', compact(
-            'isApproval', 'totalRequest', 'approvedRequest', 'approval_view', 'atPage_view', 'perPage_view',
-            'request_view', 'request_view_array', 'searchView'
-        ));
-    }
+		$response['message'] = !!$indicate['record'] ? "Gửi thành công!" : $indicate['message'];
+		$response['success'] = $indicate['status'];
+		$response['record'] = $indicate['record'];
 
-    public function dayOffApprove_get(Request $request, $id)
-    {
-        if (!$request->ajax() || !Auth::check() || $id === null) {
-            return null;
-        }
+		return response($response);
+	}
 
-        $responseObject = $this->userDayOff->getRecordOf($id);
-        if ($responseObject == null) return null;
-        $transformer = new DayOffTransformer();
+	public function dayOffListApprovalAPI(Request $request)
+	{
+		$response = [
+			'success' => false,
+			'message' => NOT_AUTHORIZED
+		];
+		if (!$request->ajax() || !Auth::check()) {
+			return response($response);
+		}
 
-        return $transformer->transform($responseObject);
-    }
+		$dataResponse = $this->userDayOff->listApprovals();
 
-    public function dayOffApprove_AcceptAPI(Request $request)
-    {
+		return response([
+			'success' => true,
+			'message' => "Danh Sách người phê duyệt",
+			'data' => $dataResponse->toArray()
+		]);
+	}
 
-        $response = [
-            'success' => false,
-            'message' => 'Cập nhật trạng thái cho đơn thất bại. Vui lòng thử lại.'
-        ];
+	public function dayOffApprove(DayOffRequest $request)
+	{
+		// Checking authorize for action
+		$isApproval = Auth::user()->jobtitle_id >= \App\Models\Report::MIN_APPROVE_JOBTITLE;
+
+		// If user is able to do approve then
+		$searchView = $request->get('search') ?? '';
+		$approval_view = $request->get('approve');
+		$atPage_view = $request->get('page');
+		$perPage_view = $request->get('per_page');
+
+		$request_view = $this->userDayOff->findList($request, ['approver_id' => Auth::id()], ['*'], $searchView, $perPage);
+		$request_view_array = $request_view->toArray();
+
+		$request->merge(['year' => date('Y')]);
+		$request->merge(['approve' => null]);
+		$request->merge(['search' => '']);
+		$search = '';
+		// get all request
+		$totalRequest = $this->userDayOff->findList($request, ['approver_id' => Auth::id()], ['*'], $search, $perPage)->toArray();
+		// get only approved request
+		$request->merge(['approve' => 1]);
+		$approvedRequest = $this->userDayOff->findList($request, ['approver_id' => Auth::id()], ['*'], $search, $perPage)->toArray();
+
+		return view('end_user.user.day_off_approval', compact(
+			'isApproval', 'totalRequest', 'approvedRequest', 'approval_view', 'atPage_view', 'perPage_view',
+			'request_view', 'request_view_array', 'searchView'
+		));
+	}
+
+	public function dayOffApprove_get(Request $request, $id)
+	{
+		if (!$request->ajax() || !Auth::check() || $id === null) {
+			return null;
+		}
+
+		$responseObject = $this->userDayOff->getRecordOf($id);
+		if ($responseObject == null) return null;
+		$transformer = new DayOffTransformer();
+
+		return $transformer->transform($responseObject);
+	}
+
+	public function dayOffApprove_AcceptAPI(Request $request)
+	{
+		$response = [
+			'success' => false,
+			'message' => NOT_AUTHORIZED
+		];
 
 //	     Checking authorize for action
-        $isApproval = Auth::user()->jobtitle_id >= \App\Models\Report::MIN_APPROVE_JOBTITLE;
+		$isApproval = Auth::user()->jobtitle_id >= \App\Models\Report::MIN_APPROVE_JOBTITLE;
 
-        if (!$isApproval || !$request->ajax()) {
-            return response([
-                'success' => false
-            ]);
-        }
+		if (!$isApproval || !$request->ajax()) {
+			return response($response);
+		}
 
-        $arrRequest = $request->all();
-        $recievingObject = json_decode(json_encode($arrRequest));
+		$arrRequest = $request->all();
+		$recievingObject = (object)$arrRequest;
+//		return 	$recievingObject;
 
-        $targetRecordResponse = $this->userDayOff->updateStatusDayOff($recievingObject->id, Auth::id(), $recievingObject->approve_comment);
+		$targetRecordResponse = $this->userDayOff->updateStatusDayOff(
+			$recievingObject->id, Auth::id(), $recievingObject->approve_comment,
+			$recievingObject->number_off
+		);
 
-        if ($targetRecordResponse) {
-            $response['message'] = 'Cập nhật thành công.';
-            $response['success'] = true;
-        } else {
-            $response['message'] = 'Cập nhật thất bại. Đơn xin không tồn tại hoặc có lỗi xảy ra với server';
-            $response['success'] = false;
-        }
-        return response($response);
-    }
+		if ($targetRecordResponse) {
+			$response['message'] = 'Cập nhật thành công.';
+			$response['success'] = true;
+		} else {
+			$response['message'] = 'Cập nhật thất bại. Đơn xin không tồn tại hoặc có lỗi xảy ra với server';
+			$response['success'] = false;
+		}
+		return response($response);
+	}
 
-    public function dayOffCreate_API(Request $request)
-    {
-        $response = [
-            'success' => false,
-            'message' => NOT_AUTHORIZED
-        ];
-        if (!$request->ajax() || !Auth::check()) {
-            return response($response);
-        }
+	//
+	//
+	//  CONTACT
+	//
+	//
 
-        $response['message'] = 'Thành công';
-        $response['success'] = true;
-
-        return response($response);
-    }
-
-    public function contact(Request $request)
-    {
-        $users = $this->userService->getContact($request, $perPage, $search);
-        return view('end_user.user.contact', compact('users', 'search', 'perPage'));
-    }
+	public function contact(Request $request)
+	{
+		$users = $this->userService->getContact($request, $perPage, $search);
+		return view('end_user.user.contact', compact('users', 'search', 'perPage'));
+	}
 
 }

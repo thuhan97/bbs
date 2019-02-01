@@ -118,8 +118,7 @@
                     <th class="text-center">Tới ngày</th>
                     <th class="text-center">Tính nghỉ</th>
                     <th class="text-center">Tiêu đề</th>
-                    <th class="text-center">Chi tiết</th>
-                    <th style="width: 160px" class="text-center">Phê duyệt</th>
+                    <th class="text-center">Thao tác</th>
                 </tr>
                 </thead>
                 <!--Table head-->
@@ -148,7 +147,7 @@
                             {{$record->end_at}}
                         </td>
                         <td class="text-center">
-                            {{$record->number_off == null ? 'Chưa rõ' : $record->number_off}} ngày
+                            {{!!!$record->number_off ? 'Chưa rõ' : $record->number_off}} ngày
                         </td>
                         <td class="text-center"
                             style="width: 200px; white-space: nowrap; overflow: hidden;-ms-text-overflow: ellipsis;text-overflow: ellipsis;">
@@ -166,15 +165,6 @@
                                     <span class="sr-only">Loading...</span>
                                 </div>
                             </div>
-                        </td>
-                        <td class="text-center p-0">
-                            @if($record->status !== 1)
-                                <button class="btn btn-primary btn-sm" id="approveBtn{{$loop->index+1}}"
-                                        onclick="clickApprove('{{$record}}', 'rowApprove{{$loop->index+1}}', 'spinner-section-{{$loop->index+1}}', {{$approval_view}})">
-                                    <i class="fas fa-check"></i></button>
-                            @else
-                                Bạn đã phê duyệt
-                            @endif
                         </td>
                     </tr>
                 @endforeach
@@ -209,9 +199,7 @@
                                 </p>
                                 <br>
                                 <h4 class="text-bold">Thời gian được tính:</h4>
-                                <p>
-                                    <strong id="dayoff_total"></strong>
-                                </p>
+                                <p id="dayoff_total"></p>
                             </div>
                             <hr>
                             <div class="text-left">
@@ -226,6 +214,9 @@
                                 <br>
                                 <h4 class="text-bold important">Ý kiến</h4>
                                 <p id="dayoff_comment" contentEditable="true"></p>
+                            </div>
+                            <div class="card bg-danger text-white" id="ErrorMessaging">
+
                             </div>
                         </div>
                         <div class="modal-footer">
@@ -430,58 +421,12 @@
 
 @push('extend-js')
     <script>
-        function clickApprove(dataApprove = null, rowID, idSpinner, approvalStatus) {
-            if (!!!dataApprove || approvalStatus == 1 || (approvalStatus != null && approvalStatus != 2)) {
-                return;
-            }
-
-            startSpinner(idSpinner);
-
-            let sendingData = JSON.stringify(dataApprove);
-            let xhttp = new XMLHttpRequest();
-            xhttp.onreadystatechange = function () {
-                if (this.readyState == 4 && this.status == 200) {
-                    resolveResponse(this.response, rowID, idSpinner, approvalStatus);
-                }
-            };
-            requestPerform(xhttp, "post", '{{route('day_off_approval_approveAPI')}}', sendingData);
-        }
-
         function requestPerform(xhttp, type, url, sendingData) {
             xhttp.open(type, url, true);
             xhttp.setRequestHeader("Content-type", "application/json");
             xhttp.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
             xhttp.setRequestHeader("X-CSRF-TOKEN", $('meta[name="csrf-token"]').attr('content'));
             xhttp.send(sendingData);
-        }
-
-        function resolveResponse(res, rowID, spinnerID, approvalStatus) {
-            let convertStatus = false;
-            let obj = null;
-            try {
-                obj = JSON.parse(res);
-                if (obj.hasOwnProperty('success') && obj.hasOwnProperty('message')) {
-                    convertStatus = true;
-                }
-            } catch (e) {
-                convertStatus = false;
-            }
-            if (convertStatus) {
-                let rmRow = document.getElementById(rowID);
-                if (approvalStatus == 0) {
-                    location.reload(true);
-                } else if (approvalStatus == null) {
-                    let statusIndicator = rmRow.getElementsByClassName('red-circle m-auto')[0];
-                    if (!!statusIndicator) {
-                        statusIndicator.className = 'green-circle m-auto';
-                    }
-                    let btnApprove = rmRow.getElementsByClassName('btn btn-primary btn-sm')[0];
-                    if (!!btnApprove) {
-                        btnApprove.parentElement.removeChild(btnApprove);
-                    }
-                }
-            }
-            finishSpinner(spinnerID);
         }
 
         function startSpinner(spinnerID) {
@@ -499,7 +444,6 @@
             }
             sectionAdding.style.display = 'none';
         }
-
 
         function clickShowDetail(url, spinnerID, clickBtnID) {
             startSpinner(spinnerID);
@@ -549,6 +493,7 @@
                 reason.innerText = '';
                 approval.innerText = '';
                 comment.innerText = '';
+                errorOff();
             }
 
             function circleIndicate(isResolved = false) {
@@ -572,11 +517,32 @@
                 return notApproveMessage;
             }
 
+            function errorAlert() {
+                let errorBox = document.getElementById('ErrorMessaging');
+                if (!!!errorBox) return;
+                errorBox.innerHTML = "<div class='card-body'>Thông tin nhập không hợp lệ!</div>";
+            }
+
+            function errorOff() {
+                let errorBox = document.getElementById('ErrorMessaging');
+                if (!!!errorBox) return;
+                errorBox.innerHTML = "";
+            }
+
             function assignClickEvent() {
+
+                let numberOff = parseFloat(totalOff.innerText.trim());
+                if (isNaN(numberOff) || numberOff < 0.5 || comment.innerText.length < 3) {
+                    errorAlert();
+                    return;
+                }
+
                 let btnRow = $('#' + clickBtnID);
                 if (comment.innerText !== defaultComment) {
                     obj.approve_comment = comment.innerText;
                 }
+                obj.number_off = numberOff;
+
                 if (!!btnRow) {
                     let sendingData = JSON.stringify(obj);
                     let xhttp = new XMLHttpRequest();
@@ -596,18 +562,23 @@
                 userName.innerText = detailInfo.user.name;
                 title.innerText = detailInfo.title;
                 duration.innerHTML = dateFormat(detailInfo.start_at, detailInfo.end_at);
-                totalOff.innerText = detailInfo.number_off + ' ngày';
                 reason.innerText = detailInfo.reason;
                 approveDate.innerText = approvedChecker(!!detailInfo.approver_at, detailInfo.approver_at);
                 approval.innerText = approvedChecker(detailInfo.status === 1, !!detailInfo.approval ? detailInfo.approval.name : null);
                 if (detailInfo.status == 1) {
                     comment.innerText = approvedChecker(!!detailInfo.approve_comment, detailInfo.approve_comment, 'không có');
                     comment.setAttribute('contentEditable', 'false');
-                }else {
+                    totalOff.innerText = !!detailInfo.number_off ? detailInfo.number_off + ' ngày' : "Lỗi!";
+                } else {
                     comment.innerText = defaultComment;
                     comment.style.padding = '0.5rem';
                     comment.style.background = 'whitesmoke';
                     comment.setAttribute('contentEditable', 'true');
+
+                    totalOff.innerText = "< Nhập ngày tại đây. VD: 0.5 >";
+                    totalOff.style.padding = '0.5rem';
+                    totalOff.style.background = 'whitesmoke';
+                    totalOff.setAttribute('contentEditable', 'true');
                 }
 
                 if (!!btnDetailApprove) {
@@ -621,7 +592,6 @@
                 }
             }
 
-            console.log(obj);
             dayoffDetail(obj);
 
             let detailModal = $('#detailApproval');

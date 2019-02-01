@@ -150,16 +150,14 @@ class UserController extends Controller
 
 		$response = [
 			'success' => false,
-			'message' => 'Cập nhật trạng thái cho đơn thất bại. Vui lòng thử lại.'
+			'message' => NOT_AUTHORIZED
 		];
 
 //	     Checking authorize for action
 		$isApproval = Auth::user()->jobtitle_id >= \App\Models\Report::MIN_APPROVE_JOBTITLE;
 
 		if (!$isApproval || !$request->ajax()) {
-			return response([
-				'success' => false
-			]);
+			return response($response);
 		}
 
 		$arrRequest = $request->all();
@@ -177,7 +175,7 @@ class UserController extends Controller
 		return response($response);
 	}
 
-	public function dayOffCreate_API(Request $request){
+	public function dayOffCreate_API(DayOffRequest $request){
 		$response =[
 			'success' => false,
 			'message' => NOT_AUTHORIZED
@@ -187,8 +185,17 @@ class UserController extends Controller
 			return response($response);
 		}
 
-		$response['message'] = 'Thành công';
-		$response['success'] = true;
+		$indicate = $this->userDayOff->create(
+			Auth::id(), $request->input('title'),
+			$request->get('reason'),
+			$request->get('start_at'),
+			$request->get('end_at')
+		);
+
+
+		$response['message'] = !!$indicate['record'] ? "Gửi thành công!" : "Tạo đơn thất bại";
+		$response['success'] = $indicate['status'];
+		$response['record'] = $indicate['record'];
 
 		return response($response);
 	}

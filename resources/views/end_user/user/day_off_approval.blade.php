@@ -148,7 +148,7 @@
                             {{$record->end_at}}
                         </td>
                         <td class="text-center">
-                            {{$record->number_off == null ? 'Chưa rõ' : $record->number_off}} ngày
+                            {{!!!$record->number_off ? 'Chưa rõ' : $record->number_off}} ngày
                         </td>
                         <td class="text-center"
                             style="width: 200px; white-space: nowrap; overflow: hidden;-ms-text-overflow: ellipsis;text-overflow: ellipsis;">
@@ -523,7 +523,7 @@
                 userName.innerText = detailInfo.user.name;
                 title.innerText = detailInfo.title;
                 duration.innerHTML = dateFormat(detailInfo.start_at, detailInfo.end_at);
-                totalOff.innerText = detailInfo.number_off + ' ngày';
+                totalOff.innerText = !!detailInfo.number_off ? detailInfo.number_off + ' ngày' : "Chưa phê duyệt";
                 reason.innerText = detailInfo.reason;
                 approveDate.innerText = approvedChecker(!!detailInfo.approver_at, detailInfo.approver_at);
                 approval.innerText = approvedChecker(detailInfo.status === 1, !!detailInfo.approval ? detailInfo.approval.name : null);

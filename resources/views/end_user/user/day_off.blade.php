@@ -140,7 +140,7 @@
                         <td>{{$absence->start_at}}</td>
                         <td>{{$absence->end_at}}</td>
                         <td>{{$absence->title}}</td>
-                        <td>{{$absence->number_off}} ngày</td>
+                        <td>{{!!!$absence->number_off ? 'Chưa rõ' : $absence->number_off}} ngày</td>
                         <td>
                             @if ($absence->status == 1)
                                 <div class="green-circle"></div>
@@ -343,34 +343,42 @@
     <!-- Modal: View detail absence form -->
 
     {{-- Modal: Create absence form--}}
-    <div class="modal fade right" id="createAbsenceForm" style="z-index: 9999;" tabindex="-1" role="dialog" aria-labelledby="Create Absence Form" aria-hidden="true">
+    <div class="modal fade right" id="createAbsenceForm" style="z-index: 9999;" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="Create Absence Form" aria-hidden="true">
         <div class="modal-dialog modal-side modal-top-right" role="document">
-            <form class="modal-content">
+            <div class="modal-content">
                 <div class="modal-header">
                     <h4 class="modal-title" id="exampleModalPreviewLabel">Đơn xin nghỉ phép</h4>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
                 </div>
                 <div class="modal-body">
-                    <p class="h4 mb-4 text-center">Đơn xin nghỉ phép</p>
+                    <div id="createAbsenceIndicator" class="text-center">
+                        <div class="spinner-border text-primary" role="status">
+                            <span class="sr-only">Loading...</span>
+                        </div>
+                    </div>
+                    <div id="statusCreateForm" class="text-center">
+                    </div>
+                    <div id="contentCreateForm">
+                        <label for="titleForm">Tiêu đề</label>
+                        <input type="text" required id="titleForm" class="form-control mb-3" name="title" placeholder="Tiêu đề đơn xin nghỉ" autocomplete="off">
 
-                    <label for="titleForm">Tiêu đề</label>
-                    <input type="text" id="titleForm" class="form-control mb-3" name="title" placeholder="Tiêu đề đơn xin nghỉ" autocomplete="off">
+                        <label for="textareaForm">Nội dung</label>
+                        <textarea id="textareaForm" required class="form-control mb-3" name="reason"  placeholder="Lý do nghỉ" maxlength="999"></textarea>
 
-                    <label for="textareaForm">Nội dung</label>
-                    <textarea id="textareaForm" class="form-control mb-3" name="reason"  placeholder="Lý do nghỉ" maxlength="999"></textarea>
+                        <label for="start_atForm">Ngày bắt đầu nghỉ</label>
+                        <input type="text" class="form-control pull-right mb-3" autocomplete="off"
+                               name="start_at" required value="" id="start_atForm">
 
-                    <label for="start_atForm">Ngày bắt đầu nghỉ</label>
-                    <input type="text" class="form-control pull-right mb-3" autocomplete="off"
-                           name="start_at"
-                           value="" id="start_atForm">
+                        <label for="end_atForm">Tới ngày</label>
+                        <input type="text" required class="form-control pull-right mb-3" autocomplete="off"
+                               name="end_at" value="" id="end_atForm">
+                    </div>
+
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Save changes</button>
+                <div id="createAbsenceBtn" class="modal-footer">
+                    <button type="button" class="btn btn-secondary" onclick="closeAbsenceForm()">Hủy</button>
+                    <button type="button" class="btn btn-primary" onclick="sendAbsenceForm()">Gửi đơn</button>
                 </div>
-            </form>
+            </div>
         </div>
     </div>
     {{-- Modal: Create absence form--}}
@@ -379,6 +387,15 @@
 @push('extend-css')
     <link href="{{ cdn_asset('/bootstrap-datepicker/css/bootstrap-datepicker.min.css') }}" rel="stylesheet">
     <link href="{{ cdn_asset('/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css') }}" rel="stylesheet">
+    <style>
+        #textareaForm{
+            height: 150px;
+        }
+
+        label{
+            user-select: none;
+        }
+    </style>
 @endpush
 
 @push('extend-js')
@@ -432,7 +449,7 @@
             header.appendChild(circleIndicate(detailInfo.status === 1));
             title.innerText = detailInfo.title;
             duration.innerHTML = dateFormat(detailInfo.start_at, detailInfo.end_at);
-            totalOff.innerText = detailInfo.number_off + ' ngày';
+            totalOff.innerText = !!detailInfo.number_off ? detailInfo.number_off + ' ngày' : "Chưa phê duyệt";
             reason.innerText = detailInfo.reason;
             approveDate.innerText = approvedChecker(!!detailInfo.approver_at, detailInfo.approver_at);
             approval.innerText = approvedChecker(detailInfo.status === 1, detailInfo.approval.name);
@@ -441,9 +458,108 @@
 
         function openCreateAbsenceForm() {
             let modalCreate = $('#createAbsenceForm');
+            $("#createAbsenceIndicator").hide();
+            $("#contentCreateForm").show();
+            $("#createAbsenceBtn").show();
+            $("#statusCreateForm").html('');
             if (!!!modalCreate) return;
             modalCreate.modal('show');
             $('#start_atForm').datetimepicker();
+            $('#end_atForm').datetimepicker();
+        }
+
+        let titleForm = $('#titleForm');
+        let textareaForm = $('#textareaForm');
+        let start_atForm = $('#start_atForm');
+        let end_atForm = $('#end_atForm');
+        let absenceForm = $('#createAbsenceForm');
+
+        function sendAbsenceForm(){
+            indicatorCreateForm($("#contentCreateForm"), $("#createAbsenceIndicator"));
+            $("#createAbsenceBtn").hide();
+            let sendingData = {
+                title: !!titleForm ? titleForm.val() : null,
+                reason: !!textareaForm ? titleForm.val() : null,
+                start_at: !!start_atForm ? start_atForm.val() : null,
+                end_at: !!end_atForm ? end_atForm.val() : null
+            };
+            let xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function () {
+                console.log(this.status);
+                if (this.readyState == 4 && this.status == 200) {
+                    let obj = null;
+                    try {
+                        obj = JSON.parse(this.response);
+                    }catch (e) {
+                        obj = null;
+                    }
+                    if (!!!obj || (obj.hasOwnProperty('success') && !obj.success)) {
+                        $("#createAbsenceIndicator").hide();
+                        $("#statusCreateForm").html(
+                            "<h3 class='text-danger mb-1'>Thất bại, vui lòng thử lại sau.</h3></br><button type='button' onclick='closeAbsenceForm()' class='btn btn-secondary'>Đóng</button>"
+                        )
+                    }
+                    if (obj.success){
+                        $("#createAbsenceIndicator").hide();
+                        $("#statusCreateForm").html(
+                            "<h3 class='text-success mb-1'>Thành công</h3></br><button type='button' onclick='closeAbsenceForm(true)' class='btn btn-success'>Đóng</button>"
+                        )
+
+                    }
+                    console.log(obj);
+                }
+                
+                if (this.readyState == 4 && this.status == 422) {
+                    $("#createAbsenceIndicator").hide();
+                    $("#statusCreateForm").html(
+                        "<h3 class='text-warning mb-1'>Thông tin không hợp lệ!<br>Vui lòng thử lại!</h3></br><button type='button' onclick='closeAbsenceForm()' class='btn btn-warning'>Đóng</button>"
+                    )
+                }
+            };
+            requestPerform(xhttp, "post", '{{route('day_off_createAPI')}}', JSON.stringify(sendingData));
+        }
+
+        function clearAbsenceForm() {
+            if (!!titleForm) {
+                titleForm.val('')
+            }
+            if (!!textareaForm) {
+                textareaForm.val('')
+            }
+            if (!!start_atForm) {
+                start_atForm.val('')
+            }
+            if (!!end_atForm) {
+                end_atForm.val('')
+            }
+        }
+
+        function requestPerform(xhttp, type, url, sendingData) {
+            xhttp.open(type, url, true);
+            xhttp.setRequestHeader("Content-type", "application/json");
+            xhttp.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+            xhttp.setRequestHeader("X-CSRF-TOKEN", $('meta[name="csrf-token"]').attr('content'));
+            xhttp.send(sendingData);
+        }
+
+        function closeAbsenceForm(reload = false) {
+            clearAbsenceForm();
+            if (!!absenceForm) absenceForm.modal('hide');
+            if (reload) {
+                location.reload(true);
+            }
+        }
+
+        function indicatorCreateForm(hideElement, showElement) {
+            if (!!hideElement) {
+                hideElement.hide('fast', function () {
+                    if (!!showElement)
+                        showElement.show('fast')
+                });
+            }else {
+                if (!!showElement)
+                    showElement.show('fast')
+            }
         }
     </script>
 @endpush

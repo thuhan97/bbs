@@ -122,4 +122,20 @@ class DayOffService extends AbstractService implements IDayOffService
 		$recordFound = $this->model->with('user')->find($idRecord);
 		return $recordFound;
 	}
+
+	public function create($idUser, $title, $reason, $start_at, $end_at){
+		$rec = new DayOff([
+			'user_id' => $idUser,
+			'title' =>$title,
+			"reason" => $reason,
+			"start_at" => $start_at,
+			"end_at" => $end_at,
+			"status" => 0
+			]);
+		$result = $rec->save();
+		return [
+			"status" => $result,
+			"record" =>  $result ? $rec : null
+		];
+	}
 }

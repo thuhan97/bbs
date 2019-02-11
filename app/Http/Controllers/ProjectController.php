@@ -2,11 +2,9 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
-use App\Models\Project;
-use App\Repositories\Contracts\IProjectRepository;
-use App\Traits\Controllers\ResourceController;
-use App\Services\Contracts\IProjectService;
 
+use App\Services\Contracts\IProjectService;
+use Illuminate\Http\Request;
 /**
  * ProjectController
  * Author: jvb
@@ -14,44 +12,21 @@ use App\Services\Contracts\IProjectService;
 */
 class ProjectController extends Controller
 {
-    use ResourceController;
-
-    /**
-     * @var  string
-    */
-    protected $resourceAlias = 'admin.projects';
-
-    /**
-     * @var  string
-    */
-    protected $resourceRoutesAlias = 'admin::projects';
-
-    /**
-     * Fully qualified class name
-     *
-     * @var  string
-    */
-    protected $resourceModel = Project::class;
-
-    /**
-     * @var  string
-    */
-    protected $resourceTitle = 'Project';
-    
-
+    private $service;
     /**
      * Controller construct
     */
-    public function __construct(IProjectRepository $repository, IProjectService $service)
+    public function __construct( IProjectService $service)
     {
-        $this->repository = $repository;
+        
         $this->service = $service;
     }
 
-    public function index(){
-        $projects= Project::all();
-        $count=count($projects);
-        return view('end_user.project.index',compact('projects','count'));
+    public function index(Request $request){
+        
+        $projects = $this->service->search($request, $perPage, $search);
+
+        return view('end_user.project.index', compact('projects', 'search', 'perPage'));
     }
     public function detail($id){
         $project = $this->service->detail($id);

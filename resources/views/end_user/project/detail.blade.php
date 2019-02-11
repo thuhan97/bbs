@@ -25,15 +25,15 @@
                 </tr>
                 <tr>
                    <td class="font-weight-bold">Quy mô</td>
-                   <td>{{$project->scale}}</td>
+                   <td>{{$project->scale}} man/month</td>
                 </tr>
                 <tr>
                    <td class="font-weight-bold">Thời gian</td>
-                   <td>{{$project->amount_of_time}}</td>
+                   <td>{{$project->amount_of_time}} months</td>
                 </tr>
                 <tr>
                    <td class="font-weight-bold">Leader dự án</td>
-                   <td>{{$project->lead_id}}</td>
+                   <td>{{$project->user->name}}</td>
                 </tr>
                 <tr>
                    <td class="font-weight-bold">Ngày bắt đầu</td>
@@ -48,15 +48,15 @@
             </div>
             <div class=" border border-light rounded mb-0 px-4">
                 <div class="mt-4">
-                    <h5>Kỹ thuật</h5>
+                    <h5 class="text-info">Kỹ thuật</h5>
                     <p>{{$project->technicals}}</p>
                 </div>
                 <div class="mt-4">
-                    <h5>Công cụ sử dụng</h5>
+                    <h5 class="text-info">Công cụ sử dụng</h5>
                     <p>{{$project->tools}}</p>
                 </div>
                 <div class="mt-4">
-                    <h5>Mô tả</h5>
+                    <h5 class="text-info">Mô tả</h5>
                     <p>{{$project->description}}</p>
                 </div>
             </div>

@@ -54,22 +54,36 @@ class Project extends Model
      */
     public function scopeSearch($query, $searchTerm)
     {
-        return $query->where(function ($query) use ($searchTerm) {
-            $query->orWhere('name', 'LIKE', '%' . $searchTerm . '%');
-            $query->orWhere('customer', 'LIKE', '%' . $searchTerm . '%');
-            $query->orWhere('project_type', 'LIKE', '%' . $searchTerm . '%');
-            $query->orWhere('scale', 'LIKE', '%' . $searchTerm . '%');
-            $query->orWhere('technicala', 'LIKE', '%' . $searchTerm . '%');
-            $query->orWhere('tools', 'LIKE', '%' . $searchTerm . '%');
-            $query->orWhere('description', 'LIKE', '%' . $searchTerm . '%');
-        });
-//            ->select('teams.*')
-//            ->join('users', 'teams.leader_id', '=', 'users.id');
+         return $query->where(function ($query) use ($searchTerm) {
+             $query->orWhere('projects.name', 'LIKE', '%' . $searchTerm . '%');
+             $query->orWhere('users.name', 'LIKE', '%' . $searchTerm . '%');
+             $query->orWhere('customer', 'LIKE', '%' . $searchTerm . '%');
+             $query->orWhere('scale', 'LIKE', '%' . $searchTerm . '%');
+             $query->orWhere('technicala', 'LIKE', '%' . $searchTerm . '%');
+             $query->orWhere('tools', 'LIKE', '%' . $searchTerm . '%');
+             $query->orWhere('description', 'LIKE', '%' . $searchTerm . '%');
+         })
+         ->select('projects.*')
+             ->join('users', 'projects.leader_id', '=', 'users.id');
     }
 
     public function leader()
     {
         return $this->hasOne('App\Models\User', 'id','leader_id');
+    }
+
+    /**
+     * @param null $id
+     * @return mixed
+     */
+    public function getLeadersProject($id = null){
+        $memberModel = new UserTeam;
+        $member = $memberModel->getMemberIdAttribute();
+        $users = User::whereNotIn('id', $member)
+            ->where('jobtitle_id', TEAMLEADER_ROLE)//Leader
+            ->orwhere('id', $id)
+            ->get();
+        return $users;
     }
 
 

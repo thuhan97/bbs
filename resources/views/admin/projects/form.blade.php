@@ -21,23 +21,13 @@
 
             <!-- /.form-group -->
         </div>
-        <div class="input-group">
-            <span class="input-group-btn">
-                <span class="btn btn-default btn-file">
-                    <div class="input file"><label for="imgInp">Thumbnail</label><input type="file" name="thumbnail" id="imgInp" class="col-xs-offset-2"></div>                                </span>
-            </span>
-            <input type="text" class="form-control" readonly="" style="height: 39px;">
-        </div>
-        <span id="errorThumbnail" style="color: red"></span>
-        <img id='img-upload' src="{{ URL::asset('/adminlte/img/projects_img/'.$record->image_url) }}"/>
         <div class="col-md-12">
             <div class="row">
                 <div class="col-md-6">
                     <div class="form-group margin-b-5 margin-t-5{{ $errors->has('name') ? ' has-error' : '' }}">
-                        <label for="name">Tên dự án *</label>
-                        <input type="text" class="form-control" name="name" placeholder="Tên dự án"
-                               value="{{ old('name', $record->name) }}" required>
-
+                       <label for="imgInp">Thumbnail</label><input type="file" name="image_url" id="imgInp" class="col-xs-offset-2" value="{{ old('image_url', $record->image_url) }}"></div>
+                        <span id="errorThumbnail" style="color: red"></span>
+                        <img id='img-upload' src="{{ URL::asset('/adminlte/img/projects_img/'.$record->image_url) }}" style="height: 330px;width: 100%" />
                         @if ($errors->has('name'))
                             <span class="help-block">
                     <strong>{{ $errors->first('name') }}</strong>
@@ -168,13 +158,29 @@
                 <div class="col-md-6">
                     <div class="form-group margin-b-5 margin-t-5{{ $errors->has('leader_id') ? ' has-error' : '' }}">
                         <label for="leader_id">Leader dự án</label>
-                        <input id="leader_id" class="form-control" name="leader_id" rows="5"
-                               placeholder="Leader dự án" value="{{ old('leader_id', $record->leader_id) }}">
+                        {{ Form::select('leader_id', $record->getLeadersProject($record->leader_id ?? '')->pluck('name','id') , $record->leader_id ?? '', ['class' => 'form-control']) }}
 
                         @if ($errors->has('leader_id'))
                             <span class="help-block">
                     <strong>{{ $errors->first('leader_id') }}</strong>
                 </span>
+                        @endif
+                    </div>
+                    <!-- /.form-group -->
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group margin-b-5 margin-t-5{{ $errors->has('status') ? ' has-error' : '' }}">
+                        <label for="status">Trạng thái</label>
+                        {{ Form::select('status', STATUS_PROJECT, $record->status ?? 0, ['class'=>'form-control']) }}
+
+                        @if ($errors->has('status'))
+                            <span class="help-block">
+                        <strong>{{ $errors->first('status') }}</strong>
+                    </span>
                         @endif
                     </div>
                     <!-- /.form-group -->
@@ -237,5 +243,20 @@
             myDateTimePicker($("#start_date"));
             myDateTimePicker($("#end_date"));
         })
+         function readURL(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+
+            reader.onload = function (e) {
+                $('#img-upload').attr('src', e.target.result);
+            }
+
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+
+    $("#imgInp").change(function () {
+        readURL(this);
+    });
     </script>
 @endpush

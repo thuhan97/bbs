@@ -40,6 +40,7 @@ define('EXPIRE_POTATO_DEFAULT', 6);
 define('URL_IMAGE_NO_IMAGE', '/dist/img/no-avatar.png');
 define('UPLOAD_PATH', '/uploads');
 define('URL_IMAGE_AVATAR', UPLOAD_PATH . '/avatar/');
+define('URL_IMAGE_PROJECT','adminlte/img/projects_img/');
 
 define('ACTIVE_STATUS', 1);
 
@@ -68,6 +69,9 @@ define('CONTRACT_TYPES_NAME', [
     3 => 'Thực tập',
 ]);
 
+define('TEAMLEADER_ROLE', 1);
+define('MANAGER_ROLE', 2);
+define('MASTER_ROLE', 3);
 
 define('JOB_TITLES', [
     0 => 'Chuyên viên',
@@ -89,7 +93,21 @@ define('SEXS', [
     0 => 'Nam',
 ]);
 
-define('PROJECT_TYPE', [
-    1 => 'Trọn gói',
-    0 => 'ODC',
+define('STATUS_PROJECT', [
+    0 => 'Đang chờ',
+    1 => 'Đang làm',
+    2 => 'Kết thúc',
 ]);
+define('COLOR_STATUS_PROJECT', [
+    0 => 'color:red',
+    1 => 'color:orange',
+    2 => 'color:green',
+]);
+define('PROJECT_TYPE', [
+    0 => 'ODC',
+    1 => 'Trọn gói',
+]);
+
+define('NOT_AUTHENTICATED', 'Tài khoản không hợp lệ');
+define('NOT_AUTHORIZED', 'Tài khoản không đủ thẩm quyền');
+

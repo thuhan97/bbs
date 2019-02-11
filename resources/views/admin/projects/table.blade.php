@@ -10,13 +10,10 @@
         </th>
         <th>Khách hàng</th>
         <th>Loại dự án ODC/Trọn gói</th>
-        <th>Quy mô dự án man/monh</th>
-        <th>Thời gian</th>
-        <th>Kỹ thuật</th>
-        <th>Công cụ sử dụng</th>
         <th>Leader dự án</th>
         <th>Ngày bắt đầu</th>
         <th>Ngày kết thúc</th>
+        <th>Trạng thái</th>
         <th style="width: 120px;">Chức năng</th>
         </thead>
         <tbody>
@@ -42,13 +39,10 @@
                 </td>
                 <td>{{ $record->customer}}</td>
                 <td>{{ isset(PROJECT_TYPE[$record->project_type]) ? PROJECT_TYPE[$record->project_type] : ''}}</td>
-                <td>{{ $record->scale}}</td>
-                <td>{{ $record->amount_of_time}}</td>
-                <td>{{ $record->technicala}}</td>
-                <td>{{ $record->tools}}</td>
                 <td>{{ isset($record->leader->name) ? $record->leader->name : ''}}</td>
                 <td>{{ $record->start_date}}</td>
                 <td>{{ $record->end_date }}</td>
+                <td>{{ isset(STATUS_PROJECT[$record->status]) ? STATUS_PROJECT[$record->status] : ''}}</td>
 
                 <td>
                     <div class="btn-group">

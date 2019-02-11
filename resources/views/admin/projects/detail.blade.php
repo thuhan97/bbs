@@ -125,6 +125,15 @@
                 </div>
             </div>
         </div>
+        <div class="col-md-12">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group margin-b-5 margin-t-5">
+                        <label for="status">Trạng thái:</label> {{ old('status', STATUS_PROJECT[$record->status]) }}
+                    </div>
+                </div>
+            </div>
+        </div>
         <!-- /.col-md-12 -->
 
     </div>

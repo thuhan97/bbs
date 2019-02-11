@@ -84,7 +84,7 @@
             <div class="row">
                 <div class="col-md-6">
                     <div class="form-group margin-b-5 margin-t-5">
-                        <label for="technicala">Kỹ thuật:</label> {{ old('technicala', $record->technicala) }}
+                        <label for="technicala">Kỹ thuật:</label> {{ old('technicala', strip_tags($record->technicala)) }}
                     </div>
                 </div>
             </div>
@@ -93,7 +93,7 @@
             <div class="row">
                 <div class="col-md-6">
                     <div class="form-group margin-b-5 margin-t-5">
-                        <label for="tools">Công cụ sử dụng:</label> {{ old('tools', $record->tools) }}
+                        <label for="tools">Công cụ sử dụng:</label> {{ old('tools', strip_tags($record->tools)) }}
                     </div>
                 </div>
             </div>

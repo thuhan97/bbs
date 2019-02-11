@@ -34,7 +34,7 @@ $_storeLink = route($resourceRoutesAlias.'.store');
             <!-- Edit Form -->
             <div class="box box-info" id="wrap-edit-box">
 
-                <form class="form" role="form" method="POST" action="{{ $_storeLink }}" {!! $_formFiles === true ? 'enctype="multipart/form-data"' : '' !!}>
+                <form class="form" role="form" method="POST" action="{{ $_storeLink }}" enctype="multipart/form-data" {!! $_formFiles === true ? 'enctype="multipart/form-data"' : '' !!}>
                     {{ csrf_field() }}
 
                     <div class="box-header with-border">

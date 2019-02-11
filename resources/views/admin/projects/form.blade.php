@@ -1,3 +1,4 @@
+{{--{{dd($record)}}--}}
 <div class="col-md-9">
     <div class="row">
         <div class="col-md-12">
@@ -122,8 +123,8 @@
                 <div class="col-md-6">
                     <div class="form-group margin-b-5 margin-t-5{{ $errors->has('technicala') ? ' has-error' : '' }}">
                         <label for="technicala">Kỹ thuật</label>
-                        <input id="technicala" class="form-control" name="amount_of_time" rows="5"
-                               placeholder="Kỹ thuật" value="{{ old('technicala', $record->technicala) }}">
+                        <textarea id="technicala" class="form-control" name="technicala" rows="5"
+                                  placeholder="Kỹ thuật" >{{ old('technicala', $record->technicala) }}</textarea>
 
                         @if ($errors->has('technicala'))
                             <span class="help-block">
@@ -140,8 +141,8 @@
                 <div class="col-md-6">
                     <div class="form-group margin-b-5 margin-t-5{{ $errors->has('tools') ? ' has-error' : '' }}">
                         <label for="tools">Công cụ sử dụng</label>
-                        <input id="tools" class="form-control" name="tools" rows="5"
-                               placeholder="Công cụ sử dụng" value="{{ old('tools', $record->tools) }}">
+                        <textarea id="tools" class="form-control" name="tools" rows="5"
+                                  placeholder="Công cụ sử dụng" >{{ old('tools', $record->tools) }}</textarea>
 
                         @if ($errors->has('tools'))
                             <span class="help-block">
@@ -239,7 +240,8 @@
 @push('footer-scripts')
     <script>
         $(function () {
-            myEditor($("#description"));
+            myEditor($("#technicala"));
+            myEditor($("#tools"));
             myDateTimePicker($("#start_date"));
             myDateTimePicker($("#end_date"));
         })

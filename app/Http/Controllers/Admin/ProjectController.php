@@ -92,22 +92,15 @@ class ProjectController extends AdminBaseController
         $record = $this->repository->findOne($id);
         $filename = '';
         if ($request->hasFile('image_url')) {
-            $image = request()->file('image_url');
-
-            if( ! File::exists(URL_IMAGE_PROJECT)) {
-                $org_img = File::makeDirectory(public_path(URL_IMAGE_PROJECT), 0777, true);
-            }
-            $filename = rand(1111,9999).time().'.'.$image->getClientOriginalExtension();
-            $destinationPath = public_path(URL_IMAGE_PROJECT);
-            //$request->merge(['images'=>$filename]);
-            $image->move($destinationPath, $filename);
+            //delete old file
+            File::delete(URL_IMAGE_PROJECT . $record->image_url);
         }
         /*dd($request->merge());*/
         $this->authorize('update', $record);
 
         $valuesToSave = $this->getValuesToSave($request, $record);
         if ($request->hasFile('image_url')){
-            $valuesToSave['image_url'] = $filename;
+            $valuesToSave['image_url'] = $this->saveImageUrl($request);
         } else {
             $valuesToSave['image_url'] = $record->image_url;
         }
@@ -127,20 +120,10 @@ class ProjectController extends AdminBaseController
     public function store(Request $request)
     {
         $this->authorize('create', $this->getResourceModel());
-        if ($request->hasFile('image_url')) {
-            $image = request()->file('image_url');
 
-            if( ! File::exists(URL_IMAGE_PROJECT)) {
-                $org_img = File::makeDirectory(public_path(URL_IMAGE_PROJECT), 0777, true);
-            }
-            $filename = rand(1111,9999).time().'.'.$image->getClientOriginalExtension();
-            $destinationPath = public_path(URL_IMAGE_PROJECT);
-            //$request->merge(['images'=>$filename]);
-            $image->move($destinationPath, $filename);
-        }
         $valuesToSave = $this->getValuesToSave($request);
         if ($request->hasFile('image_url')){
-            $valuesToSave['image_url'] = $filename;
+            $valuesToSave['image_url'] = $this->saveImageUrl($request);
         }
         $request->merge($valuesToSave);
         $this->resourceValidate($request, 'store');
@@ -154,6 +137,18 @@ class ProjectController extends AdminBaseController
         }
 
         return $this->redirectBackTo(route($this->getResourceRoutesAlias() . '.index'));
+    }
+
+    public function saveImageUrl(Request $request){
+        $image = request()->file('image_url');
+
+        if( ! File::exists(URL_IMAGE_PROJECT)) {
+            $org_img = File::makeDirectory(public_path(URL_IMAGE_PROJECT), 0777, true);
+        }
+        $filename = rand(1111,9999).time().'.'.$image->getClientOriginalExtension();
+        $destinationPath = public_path(URL_IMAGE_PROJECT);
+        $image->move($destinationPath, $filename);
+        return $filename;
     }
 
 

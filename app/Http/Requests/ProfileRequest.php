@@ -26,9 +26,9 @@ class ProfileRequest extends FormRequest
     {
         return [
             'current_address' => 'required',
-            'school'=>'required',
-            'gmail'=>'email',
-            'avatar'=>'mimes:jpeg,jpg,png,gif|max:10000'
+            'school' => 'required',
+            'gmail' => 'nullable|email',
+            'avatar' => 'mimes:jpeg,jpg,png,gif|max:10000'
 
         ];
     }
@@ -36,10 +36,10 @@ class ProfileRequest extends FormRequest
     public function attributes()
     {
         return [
-           
+
             'current_address' => 'Địa chỉ hiện tại',
-            'school'=>'Học vấn',
-            'gmail'=>'Gmail',
+            'school' => 'Học vấn',
+            'gmail' => 'Gmail',
         ];
     }
 }

@@ -12,7 +12,7 @@
 }
 
 #wrap {
-    padding-top: 70px;
+    /*padding-top: 30px;*/
 }
 
 #home h1 {
@@ -23,4 +23,12 @@
 #support,
 #download {
     padding-top: 40px;
+}
+
+#undo_redo_to {
+    height: 212px;
+}
+
+.col-xs-5 {
+    padding-bottom: 4%;
 }

@@ -152,17 +152,6 @@
                     <div class="form-group margin-b-5 margin-t-5{{ $errors->has('technicala') ? ' has-error' : '' }}">
                         <label for="technicala">Kỹ thuật</label>
                         <textarea id="technicala" class="form-control" name="technicala" rows="5"
-                                  placeholder="Kỹ thuật" >{{ old('technicala', $record->technicala) }}</textarea>
-
-                        @if ($errors->has('technicala'))
-                            <span class="help-block">
-                                <strong>{{ $errors->first('technicala') }}</strong>
-                            </span>
-                        @endif
-                    </div>
-                    <div class="form-group margin-b-5 margin-t-5{{ $errors->has('technicala') ? ' has-error' : '' }}">
-                        <label for="technicala">Kỹ thuật</label>
-                        <textarea id="technicala" class="form-control" name="technicala" rows="5"
                                   placeholder="Kỹ thuật" >{{--{{ old('technicala', $record->technicala) }}--}}{!! $record->technicala !!}</textarea>
 
                         @if ($errors->has('technicala'))
@@ -174,17 +163,6 @@
                     <!-- /.form-group -->
                 </div>
                 <div class="col-md-4">
-                    <div class="form-group margin-b-5 margin-t-5{{ $errors->has('description') ? ' has-error' : '' }}">
-                        <label for="description">Miêu tả</label>
-                        <textarea id="description" class="form-control" name="description" rows="5"
-                                  placeholder="Miêu tả" >{{ old('description', $record->description) }}</textarea>
-
-                        @if ($errors->has('description'))
-                            <span class="help-block">
-                                <strong>{{ $errors->first('description') }}</strong>
-                            </span>
-                        @endif
-                    </div>
                     <div class="form-group margin-b-5 margin-t-5{{ $errors->has('tools') ? ' has-error' : '' }}">
                         <label for="tools">Công cụ sử dụng</label>
                         <textarea id="tools" class="form-control" name="tools" rows="5"

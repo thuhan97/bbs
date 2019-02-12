@@ -110,8 +110,11 @@ Route::group([
     Route::post('/doi-mat-khau', 'UserController@updatePassword')->name('update_password');
     Route::get('/thoi-gian-lam-viec', 'UserController@workTime')->name('work_time');
     Route::get('/ngay-nghi', 'UserController@dayOff')->name('day_off');
+    Route::post('/ngay-nghi/create-api', 'UserController@dayOffCreate_API')->name('day_off_createAPI');
+    Route::get('/ngay-nghi/list-approval-api', 'UserController@dayOffListApprovalAPI')->name('day_off_listApprovalAPI');
     Route::get('/phe-duyet-ngay-nghi', 'UserController@dayOffApprove')->name('day_off_approval');
     Route::post('/phe-duyet-ngay-nghi/approve-api', 'UserController@dayOffApprove_AcceptAPI')->name('day_off_approval_approveAPI');
+    Route::post('/phe-duyet-ngay-nghi/one/{id}', 'UserController@dayOffApprove_get')->name('day_off_approval_one');
 
     Route::get('/noi-quy-quy-dinh', 'RegulationController@index')->name('regulation');
     Route::get('/noi-quy-quy-dinh/{id}', 'RegulationController@detail')->where(['id' => '\d+'])->name('regulation_detail');
@@ -126,5 +129,7 @@ Route::group([
     Route::get('/report', 'ReportController@getReport')->name('getReport');
     Route::post('/tao-bao-cao', 'ReportController@saveReport')->name('save_report');
     Route::get('/bao-cao/{id}', 'ReportController@detail')->where(['id' => '\d+'])->name('report_detail');
+    Route::get('/du-an','ProjectController@index')->name('project');
+    Route::get('/du-an/{id}', 'ProjectController@detail')->where(['id' => '\d+'])->name('project_detail');
 
 });

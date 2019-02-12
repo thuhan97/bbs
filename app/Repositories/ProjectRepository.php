@@ -5,16 +5,16 @@ use App\Models\Project;
 use App\Repositories\Contracts\IProjectRepository;
 
 /**
- * UserRepository class
- * Author: nhung
- * Date: 2019/01/18 10:34
+ * Author: jvb
+ * Date: 2019/01/31 05:00
  */
 class ProjectRepository extends AbstractRepository implements IProjectRepository
 {
     /**
-     * UserModel
+     * ProjectModel
      *
      * @var  string
      */
     protected $modelName = Project::class;
+
 }

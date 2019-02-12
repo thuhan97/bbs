@@ -225,6 +225,55 @@
     background: #e5edff;
 }
 
+/*work_time*/
+.fixed-action-btn {
+    position: fixed;
+    z-index: 998;
+    right: 35px;
+    bottom: 35px;
+    margin-bottom: 0;
+    padding-top: 15px;
+}
+
+.table tbody tr.select {
+    background: #e5edff;
+}
+
+.w-22{
+    width: 23% !important;
+}
+
+.select-month{
+    margin-bottom: 24px;
+}
+
+.list-work-time th{
+    font-weight: bold;
+    font-size: 14px;
+    padding: 10px;
+}
+
+.list-work-time td{
+    padding: 10px;
+}
+
+.statistic{
+    margin: 0;
+    margin-bottom: 24px;
+    border-bottom: 1px solid #ccc;
+    border-top: 1px solid #ccc;
+    padding: 10px;
+}
+
+.statistic>div{
+    margin-right: 10px;
+    border-radius: 5px;
+}
+
+.statistic>div>span{
+    padding: 10px 15px;
+}
+
 /*Day_off CSS*/
 .red-circle {
     display: block;
@@ -298,6 +347,11 @@
     animation: spinner-border .75s linear infinite;
 }
 
+.cursor-effect {
+    cursor: pointer;
+    user-select: none;
+}
+
 @keyframes spinner-border {
     0% {
         transform: rotate(0deg);
@@ -338,13 +392,13 @@
 
 .profile {
     background: #f6f6f6;
-    margin-bottom: 50px;
+    margin-bottom: 15px;
     padding-bottom: 50px;
+    box-sizing: border-box;
 }
 
 .title-profile {
-    margin: 30px 0;
-    padding: 10px;
+    margin: 15px 0;
 }
 
 .index-profile {
@@ -391,6 +445,12 @@
 .hidden {
     display: none;
 }
+
+.required {
+    color: red;
+    margin-right: 35px;
+}
+
 
 
 

@@ -80,6 +80,7 @@ define('JOB_TITLES', [
     3 => 'Giám đốc',
 ]);
 
+
 define('POSITIONS', [
     0 => 'Chuyên viên',
     1 => 'Kỹ sư cầu nối',

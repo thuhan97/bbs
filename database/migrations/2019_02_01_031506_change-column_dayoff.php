@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddColumnUsersTable extends Migration
+class ChangeColumnDayoff extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,9 @@ class AddColumnUsersTable extends Migration
      */
     public function up()
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->tinyInteger('sex');
-        });
+	    Schema::table('day_offs', function (Blueprint $table) {
+		    $table->decimal('number_off',2,1)->nullable()->change();
+	    });
     }
 
     /**
@@ -25,10 +25,6 @@ class AddColumnUsersTable extends Migration
      */
     public function down()
     {
-        Schema::table('users', function (Blueprint $table) {
-            
-            $table->dropColumn('sex');
-        
-        });
+        //
     }
 }

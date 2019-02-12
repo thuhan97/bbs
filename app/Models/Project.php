@@ -1,8 +1,12 @@
 <?php
+/**
+* ProjectModel class
+* Author: jvb
+* Date: 2019/01/31 05:00
+*/
 
 namespace App\Models;
-
-use Illuminate\Database\Eloquent\Model;
+//use Illuminate\Database\Eloquent\Model;
 use App\Traits\Eloquent\OrderableTrait;
 use App\Traits\Eloquent\SearchLikeTrait;
 use App\Traits\Models\FillableFields;
@@ -85,6 +89,5 @@ class Project extends Model
             ->get();
         return $users;
     }
-
 
 }

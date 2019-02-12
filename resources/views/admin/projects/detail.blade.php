@@ -81,9 +81,6 @@
                         <label for="technicala">Kỹ thuật:</label> {!! $record->technicala !!}
                         {{--                        <label for="description">Miêu tả:</label> {!! $record->description !!}--}}
                     </div>
-                    <div class="form-group margin-b-5 margin-t-5">
-                        <label for="technicala">Kỹ thuật:</label> {!! $record->technicala !!}
-                    </div>
                 </div>
                 <div class="col-md-4">
                     <div class="form-group margin-b-5 margin-t-5">

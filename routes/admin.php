@@ -26,9 +26,14 @@ Route::group([
 
 	##AUTO_INSERT_ROUTE##
 
+	//project
+	Route::resource('project', 'ProjectController');
+		
+    //OverTime
+    Route::resource('over_times', 'OverTimeController');
+
 	//feedback
 	Route::resource('feedback', 'FeedbackController');
-
 
 	//OverTime
 	Route::resource('over_times', 'OverTimeController');
@@ -74,16 +79,19 @@ Route::group([
 	Route::resource('projects', 'ProjectController');
     Route::post('projects/deletes', ['as' => 'projects.deletes', 'uses' => 'ProjectController@deletes']);
 
-    //users
-    Route::get('users/import/{setId}', ['as' => 'users.import', 'uses' => 'UserController@import']);
-    Route::get('users/download-template', ['as' => 'users.download-template', 'uses' => 'UserController@downloadTemplate']);
-    Route::post('users/import', ['uses' => 'UserController@importData']);
-    Route::post('users/deletes', ['as' => 'users.deletes', 'uses' => 'UserController@deletes']);
-    Route::get('users/reset-password', 'UserController@resetPassword');
-    Route::resource('users', 'UserController');
-
-    Route::post('teams/deletes', ['as' => 'teams.deletes', 'uses' => 'TeamController@deletes']);
+	//users
+	Route::get('users/import/{setId}', ['as' => 'users.import', 'uses' => 'UserController@import']);
+	Route::get('users/download-template', ['as' => 'users.download-template', 'uses' => 'UserController@downloadTemplate']);
+	Route::post('users/import', ['uses' => 'UserController@importData']);
+	Route::post('users/deletes', ['as' => 'users.deletes', 'uses' => 'UserController@deletes']);
+	Route::get('users/reset-password', 'UserController@resetPassword');
+	Route::resource('users', 'UserController');
+	
+    Route::post('teams/save-member', [ 'uses' => 'TeamController@saveUserTeam']);
     Route::get('teams/manage-member/{id}', ['uses' => 'TeamController@manageMember']);
-    Route::resource('teams', 'TeamController');
+    Route::put('teams/{id}', ['uses' => 'TeamController@updateTmp'])->name('teame.update123');
+	Route::post('teams/deletes', ['as' => 'teams.deletes', 'uses' => 'TeamController@deletes']);
+	Route::resource('teams', 'TeamController');
+
 
 });

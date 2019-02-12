@@ -54,14 +54,14 @@ class ProjectController extends AdminBaseController
                 'name' => 'required|max:255',
                 'customer' => 'required|max:255',
                 'scale' => 'numeric',
-//                'leader_id' => 'required',
+                'start_date' => 'required',
             ],
             'messages' => [],
             'attributes' => [
                 'name' => 'tên dự án',
                 'customer' => 'khách hàng',
                 'scale' => 'quy mô dự án',
-//                'leader_id' => 'trưởng nhóm',
+                'start_date' => 'ngày bắt đầu',
             ],
             'advanced' => [],
         ];
@@ -74,14 +74,12 @@ class ProjectController extends AdminBaseController
                 'name' => 'required|max:255',
                 'customer' => 'required|max:255',
                 'start_date' => 'required',
-                'end_date' => 'required',
             ],
             'messages' => [],
             'attributes' => [
                 'name' => 'tên dự án',
                 'customer' => 'khách hàng',
                 'start_date' => 'ngày bắt đầu',
-                'end_date' => 'ngày kết thúc',
             ],
             'advanced' => [],
         ];

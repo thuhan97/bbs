@@ -22,7 +22,7 @@
             <i class="fa fa-user"></i> <span>Nhóm</span>
         </a>
     </li>
-    <li class="{{ \App\Utils::checkRoute(['admin::projects.index', 'admin::projects.create', 'admin::projects.edit']) ? 'active': '' }}">
+    <li class="{{ \App\Utils::checkRoute(['admin::projects.index', 'admin::projects.create', 'admin::projects.edit', 'admin::projects.show']) ? 'active': '' }}">
         <a href="{{ route('admin::projects.index') }}">
             <i class="fa fa-user"></i> <span>Dự án</span>
         </a>

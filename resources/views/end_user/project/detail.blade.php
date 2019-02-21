@@ -33,7 +33,7 @@
                 </tr>
                 <tr>
                    <td class="font-weight-bold">Leader dự án</td>
-                   <td>{{$project->user->name}}</td>
+                   <td>{{$project->leader->name}}</td>
                 </tr>
                 <tr>
                    <td class="font-weight-bold">Ngày bắt đầu</td>

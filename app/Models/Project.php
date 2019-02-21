@@ -51,7 +51,7 @@ class Project extends Model
              $query->orWhere('customer', 'LIKE', '%' . $searchTerm . '%');
          });
     }
-    public function user(){
+    public function leader(){
         return $this->hasOne('App\User', 'id','leader_id');
     }
     

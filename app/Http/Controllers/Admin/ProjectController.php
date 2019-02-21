@@ -8,10 +8,10 @@
 
 namespace App\Http\Controllers\Admin;
 
-use File;
 use App\Models\Project;
-use Illuminate\Http\Request;
 use App\Repositories\Contracts\IProjectRepository;
+use File;
+
 class ProjectController extends AdminBaseController
 {
     /**
@@ -29,14 +29,9 @@ class ProjectController extends AdminBaseController
      */
     protected $resourceModel = Project::class;
 
-
-//    protected $resourceSearchExtend = 'admin.projects._search_extend';
-
     /**
      * @var  string
      */
-
-
     protected $resourceTitle = 'Dự án';
 
     public function __construct(
@@ -46,34 +41,27 @@ class ProjectController extends AdminBaseController
         $this->repository = $repository;
         parent::__construct();
     }
+
 //
     public function resourceStoreValidationData()
     {
-        return [
-            'rules' => [
-                'name' => 'required|max:255',
-                'customer' => 'required|max:255',
-                'scale' => 'numeric',
-                'start_date' => 'required',
-            ],
-            'messages' => [],
-            'attributes' => [
-                'name' => 'tên dự án',
-                'customer' => 'khách hàng',
-                'scale' => 'quy mô dự án',
-                'start_date' => 'ngày bắt đầu',
-            ],
-            'advanced' => [],
-        ];
+        return $this->validationData();
     }
 
     public function resourceUpdateValidationData($record)
     {
+        return $this->validationData();
+    }
+
+    public function validationData()
+    {
         return [
             'rules' => [
                 'name' => 'required|max:255',
                 'customer' => 'required|max:255',
-                'start_date' => 'required',
+                'scale' => 'nullable|numeric',
+                'start_date' => 'nullable|date',
+                'end_date' => 'nullable|date',
             ],
             'messages' => [],
             'attributes' => [
@@ -84,73 +72,4 @@ class ProjectController extends AdminBaseController
             'advanced' => [],
         ];
     }
-
-    public function update(Request $request, $id)
-    {
-        $record = $this->repository->findOne($id);
-        $filename = '';
-        if ($request->hasFile('image_url')) {
-            //delete old file
-            File::delete(URL_IMAGE_PROJECT . $record->image_url);
-        }
-        /*dd($request->merge());*/
-        $this->authorize('update', $record);
-
-        $valuesToSave = $this->getValuesToSave($request, $record);
-        if ($request->hasFile('image_url')){
-            $valuesToSave['image_url'] = $this->saveImageUrl($request);
-        } else {
-            $valuesToSave['image_url'] = $record->image_url;
-        }
-        $request->merge($valuesToSave);
-        $this->resourceValidate($request, 'update', $record);
-        if ($this->repository->update($record, $this->alterValuesToSave($request, $valuesToSave))) {
-            flash()->success('Cập nhật thành công.');
-
-            return $this->getRedirectAfterSave($record, $request);
-        } else {
-            flash()->info('Cập nhật thất bại.');
-        }
-
-        return $this->redirectBackTo(route($this->getResourceRoutesAlias() . '.index'));
-    }
-
-    public function store(Request $request)
-    {
-        $this->authorize('create', $this->getResourceModel());
-
-        $valuesToSave = $this->getValuesToSave($request);
-        if ($request->hasFile('image_url')){
-            $valuesToSave['image_url'] = $this->saveImageUrl($request);
-        }
-        $request->merge($valuesToSave);
-        $this->resourceValidate($request, 'store');
-
-        if ($record = $this->repository->save($this->alterValuesToSave($request, $valuesToSave))) {
-            flash()->success('Thêm mới thành công.');
-
-            return $this->getRedirectAfterSave($record, $request);
-        } else {
-            flash()->info('Thêm mới thất bại.');
-        }
-
-        return $this->redirectBackTo(route($this->getResourceRoutesAlias() . '.index'));
-    }
-
-    public function saveImageUrl(Request $request){
-        $image = request()->file('image_url');
-
-        if( ! File::exists(URL_IMAGE_PROJECT)) {
-            $org_img = File::makeDirectory(public_path(URL_IMAGE_PROJECT), 0777, true);
-        }
-        $filename = rand(1111,9999).time().'.'.$image->getClientOriginalExtension();
-        $destinationPath = public_path(URL_IMAGE_PROJECT);
-        $image->move($destinationPath, $filename);
-        return $filename;
-    }
-
-
-
-
-
 }

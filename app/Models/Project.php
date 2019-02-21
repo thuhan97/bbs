@@ -1,17 +1,19 @@
 <?php
 /**
-* ProjectModel class
-* Author: jvb
-* Date: 2019/01/31 05:00
-*/
+ * ProjectModel class
+ * Author: jvb
+ * Date: 2019/01/31 05:00
+ */
 
 namespace App\Models;
+
 //use Illuminate\Database\Eloquent\Model;
 use App\Traits\Eloquent\OrderableTrait;
 use App\Traits\Eloquent\SearchLikeTrait;
 use App\Traits\Models\FillableFields;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Notifications\Notifiable;
+
 class Project extends Model
 {
     use Notifiable, SoftDeletes, FillableFields, OrderableTrait, SearchLikeTrait;
@@ -20,7 +22,7 @@ class Project extends Model
     const IS_ACTIVE = 1;
     const LEVEL_DEFAULT = 1;
 
-	public $autoCreator = true;
+    public $autoCreator = true;
 
     protected $table = 'projects';
 
@@ -67,36 +69,33 @@ class Project extends Model
      */
     public function scopeSearch($query, $searchTerm)
     {
-         return $query->where(function ($query) use ($searchTerm) {
-             $query->orWhere('projects.name', 'LIKE', '%' . $searchTerm . '%');
-             $query->orWhere('users.name', 'LIKE', '%' . $searchTerm . '%');
-             $query->orWhere('customer', 'LIKE', '%' . $searchTerm . '%');
-             $query->orWhere('scale', 'LIKE', '%' . $searchTerm . '%');
-             $query->orWhere('technicala', 'LIKE', '%' . $searchTerm . '%');
-             $query->orWhere('tools', 'LIKE', '%' . $searchTerm . '%');
-             $query->orWhere('description', 'LIKE', '%' . $searchTerm . '%');
-         })
-         ->select('projects.*')
-             ->join('users', 'projects.leader_id', '=', 'users.id');
+        return $query->where(function ($query) use ($searchTerm) {
+            $query->orWhere('projects.name', 'LIKE', '%' . $searchTerm . '%');
+            $query->orWhere('users.name', 'LIKE', '%' . $searchTerm . '%');
+            $query->orWhere('customer', 'LIKE', '%' . $searchTerm . '%');
+            $query->orWhere('scale', 'LIKE', '%' . $searchTerm . '%');
+            $query->orWhere('technicala', 'LIKE', '%' . $searchTerm . '%');
+            $query->orWhere('tools', 'LIKE', '%' . $searchTerm . '%');
+            $query->orWhere('description', 'LIKE', '%' . $searchTerm . '%');
+        })
+            ->select('projects.*')
+            ->join('users', 'projects.leader_id', '=', 'users.id');
     }
 
     public function leader()
     {
-        return $this->hasOne('App\Models\User', 'id','leader_id');
+        return $this->hasOne('App\Models\User', 'id', 'leader_id');
     }
 
     /**
-     * @param null $id
      * @return mixed
      */
-    public function getLeadersProject($id = null){
-        $memberModel = new UserTeam;
-        $member = $memberModel->getMemberIdAttribute();
-        $users = User::whereNotIn('id', $member)
-            ->where('jobtitle_id', TEAMLEADER_ROLE)//Leader
-            ->orwhere('id', $id)
-            ->get();
-        return $users;
+    public function getLeadersProject()
+    {
+        return User::where('jobtitle_id', TEAMLEADER_ROLE)//Leader
+        ->orWhere('jobtitle_id', MANAGER_ROLE)//Leader
+            ->orderBy('jobtitle_id')
+        ->get();
     }
 
 }

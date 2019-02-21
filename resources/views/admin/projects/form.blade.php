@@ -1,13 +1,12 @@
-<div class="col-md-12">
+<div class="col-md-10">
     <div class="row">
-        <div class="col-md-12">
+        <div class="col-md-8">
             <div class="row">
                 <div class="col-md-6">
                     <div class="form-group margin-b-5 margin-t-5{{ $errors->has('name') ? ' has-error' : '' }}">
                         <label for="name">Tên dự án *</label>
                         <input type="text" class="form-control" name="name" placeholder="Tên dự án"
                                value="{{ old('name', $record->name) }}" required>
-
                         @if ($errors->has('name'))
                             <span class="help-block">
                     <strong>{{ $errors->first('name') }}</strong>
@@ -30,24 +29,11 @@
                 </div>
 
             </div>
-
             <!-- /.form-group -->
         </div>
-        <div class="col-md-12">
+        <div class="col-md-8">
             <div class="row">
-                <div class="col-md-6">
-                    <div class="form-group margin-b-5 margin-t-5{{ $errors->has('name') ? ' has-error' : '' }}">
-                       <label for="imgInp">Thumbnail</label><input type="file" name="image_url" id="imgInp" class="col-xs-offset-2" value="{{ old('image_url', $record->image_url) }}">
-                        <span id="errorThumbnail" style="color: red"></span>
-                        <img id='img-upload' src="{{ URL::asset('/adminlte/img/projects_img/'.$record->image_url) }}" style="height: 335px;width: 100%" />
-                        @if ($errors->has('name'))
-                            <span class="help-block">
-                                <strong>{{ $errors->first('name') }}</strong>
-                            </span>
-                        @endif
-                    </div>
-                </div>
-                <div class="col-md-6">
+                <div class="col-md-3">
                     <div class="form-group margin-b-5 margin-t-5{{ $errors->has('project_type') ? ' has-error' : '' }}">
                         <label for="project_type">Loại dự án</label>
                         {{ Form::select('project_type', PROJECT_TYPE, $record->project_type ?? 0, ['class'=>'form-control']) }}
@@ -58,6 +44,21 @@
                             </span>
                         @endif
                     </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group margin-b-5 margin-t-5{{ $errors->has('status') ? ' has-error' : '' }}">
+                        <label for="status">Trạng thái</label>
+                        {{ Form::select('status', STATUS_PROJECT, $record->status ?? 0, ['class'=>'form-control']) }}
+
+                        @if ($errors->has('status'))
+                            <span class="help-block">
+                                <strong>{{ $errors->first('status') }}</strong>
+                            </span>
+                        @endif
+                    </div>
+
+                </div>
+                <div class="col-md-3">
                     <div class="form-group margin-b-5 margin-t-5{{ $errors->has('scale') ? ' has-error' : '' }}">
                         <label for="scale">Quy mô dự án (người/tháng)</label>
                         <input type="text" class="form-control" name="scale" placeholder="Quy mô dự án"
@@ -69,6 +70,10 @@
                             </span>
                         @endif
                     </div>
+
+                </div>
+                <div class="col-md-3">
+
                     <div class="form-group margin-b-5 margin-t-5{{ $errors->has('amount_of_time') ? ' has-error' : '' }}">
                         <label for="amount_of_time">Thời gian (tháng)</label>
                         <input id="amount_of_time" class="form-control" name="amount_of_time" rows="5"
@@ -80,9 +85,14 @@
                             </span>
                         @endif
                     </div>
+                </div>
+
+            </div>
+            <div class="row">
+                <div class="col-md-3">
                     <div class="form-group margin-b-5 margin-t-5{{ $errors->has('leader_id') ? ' has-error' : '' }}">
                         <label for="leader_id">Leader dự án</label>
-                        {{ Form::select('leader_id', $record->getLeadersProject($record->leader_id ?? '')->pluck('name','id') , $record->leader_id ?? '', ['class' => 'form-control']) }}
+                        {{ Form::select('leader_id', $record->getLeadersProject()->pluck('name','id') , $record->leader_id ?? '', ['class' => 'form-control']) }}
 
                         @if ($errors->has('leader_id'))
                             <span class="help-block">
@@ -90,100 +100,42 @@
                             </span>
                         @endif
                     </div>
-                    <div class="form-group margin-b-5 margin-t-5{{ $errors->has('status') ? ' has-error' : '' }}">
-                        <label for="status">Trạng thái</label>
-                        {{ Form::select('status', STATUS_PROJECT, $record->status ?? 0, ['class'=>'form-control']) }}
-
-                        @if ($errors->has('status'))
-                            <span class="help-block">
-                                <strong>{{ $errors->first('status') }}</strong>
-                            </span>
-                        @endif
-                    </div>
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-group margin-b-5 margin-t-5{{ $errors->has('start_date') ? ' has-error' : '' }}">
-                                <label for="start_date">Ngày bắt đầu *</label>
-                                <div class="input-group date">
-                                    <div class="input-group-addon">
-                                        <i class="fa fa-calendar"></i>
-                                    </div>
-                                    <input type="text" class="form-control pull-right" autocomplete="off"
-                                           name="start_date"
-                                           value="{{ old('start_date', $record->start_date) }}" id="start_date">
-                                </div>
-                                @if ($errors->has('start_date'))
-                                    <span class="help-block">
-                                <strong>{{ $errors->first('start_date') }}</strong>
-                            </span>
-                                @endif
-                            </div>
-                            <!-- /.form-group -->
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group margin-b-5 margin-t-5{{ $errors->has('end_date') ? ' has-error' : '' }}">
-                                <label for="end_date">Ngày kết thúc </label>
-                                <div class="input-group date">
-                                    <div class="input-group-addon">
-                                        <i class="fa fa-calendar"></i>
-                                    </div>
-                                    <input type="text" class="form-control pull-right" autocomplete="off"
-                                           name="end_date"
-                                           value="{{ old('end_date', $record->end_date) }}" id="end_date">
-                                </div>
-                                @if ($errors->has('end_date'))
-                                    <span class="help-block">
-                                <strong>{{ $errors->first('end_date') }}</strong>
-                            </span>
-                                @endif
-                            </div>
-                        </div>
-                    </div>
                 </div>
-
-            </div>
-
-            <!-- /.form-group -->
-        </div>
-
-        <div class="col-md-12">
-            <div class="row">
-                <div class="col-md-4">
-                    <div class="form-group margin-b-5 margin-t-5{{ $errors->has('technicala') ? ' has-error' : '' }}">
-                        <label for="technicala">Kỹ thuật</label>
-                        <textarea id="technicala" class="form-control" name="technicala" rows="5"
-                                  placeholder="Kỹ thuật" >{{--{{ old('technicala', $record->technicala) }}--}}{!! $record->technicala !!}</textarea>
-
-                        @if ($errors->has('technicala'))
+                <div class="col-md-3">
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group margin-b-5 margin-t-5{{ $errors->has('start_date') ? ' has-error' : '' }}">
+                        <label for="start_date">Ngày bắt đầu</label>
+                        <div class="input-group date">
+                            <div class="input-group-addon">
+                                <i class="fa fa-calendar"></i>
+                            </div>
+                            <input type="text" class="form-control pull-right" autocomplete="off"
+                                   name="start_date"
+                                   value="{{ old('start_date', $record->start_date) }}" id="start_date">
+                        </div>
+                        @if ($errors->has('start_date'))
                             <span class="help-block">
-                                <strong>{{ $errors->first('technicala') }}</strong>
+                                <strong>{{ $errors->first('start_date') }}</strong>
                             </span>
                         @endif
                     </div>
                     <!-- /.form-group -->
                 </div>
-                <div class="col-md-4">
-                    <div class="form-group margin-b-5 margin-t-5{{ $errors->has('tools') ? ' has-error' : '' }}">
-                        <label for="tools">Công cụ sử dụng</label>
-                        <textarea id="tools" class="form-control" name="tools" rows="5"
-                                  placeholder="Công cụ sử dụng" >{{ old('tools', $record->tools) }}</textarea>
-
-                        @if ($errors->has('tools'))
+                <div class="col-md-3">
+                    <div class="form-group margin-b-5 margin-t-5{{ $errors->has('end_date') ? ' has-error' : '' }}">
+                        <label for="end_date">Ngày kết thúc </label>
+                        <div class="input-group date">
+                            <div class="input-group-addon">
+                                <i class="fa fa-calendar"></i>
+                            </div>
+                            <input type="text" class="form-control pull-right" autocomplete="off"
+                                   name="end_date"
+                                   value="{{ old('end_date', $record->end_date) }}" id="end_date">
+                        </div>
+                        @if ($errors->has('end_date'))
                             <span class="help-block">
-                                <strong>{{ $errors->first('tools') }}</strong>
-                            </span>
-                        @endif
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="form-group margin-b-5 margin-t-5{{ $errors->has('description') ? ' has-error' : '' }}">
-                        <label for="description">Miêu tả</label>
-                        <textarea id="description" class="form-control" name="description" rows="5"
-                                  placeholder="Miêu tả" >{{ old('description', $record->description) }}</textarea>
-
-                        @if ($errors->has('description'))
-                            <span class="help-block">
-                                <strong>{{ $errors->first('description') }}</strong>
+                                <strong>{{ $errors->first('end_date') }}</strong>
                             </span>
                         @endif
                     </div>
@@ -192,31 +144,84 @@
         </div>
 
     </div>
+    <div class="row">
+        <!-- /.form-group -->
+        <div class="col-md-8">
+            <div class="form-group margin-b-5 margin-t-5{{ $errors->has('image_url') ? ' has-error' : '' }}">
+                <label for="image_url">Ảnh dự án</label>
+                <div class="input-group">
+                    <input id="image_url" class="form-control" type="text" name="image_url"
+                           value="{{ old('image_url', $record->image_url) }}">
+                    <span class="input-group-btn">
+                     <a id="lfm" data-input="image_url" data-preview="thumbnail" class="btn btn-primary">
+                       <i class="fa fa-picture-o"></i> Choose
+                     </a>
+                   </span>
+                </div>
+                @if ($errors->has('image_url'))
+                    <span class="help-block">
+                    <strong>{{ $errors->first('image_url') }}</strong>
+                </span>
+                @endif
+            </div>
+        </div>
+        <div class="col-md-4">
+            <img id="thumbnail" style="margin-top:15px;max-height:100px;" src="{{$record->image_url}}">
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4">
+            <div class="form-group margin-b-5 margin-t-5{{ $errors->has('technicala') ? ' has-error' : '' }}">
+                <label for="technicala">Kỹ thuật</label>
+                <textarea id="technicala" class="form-control" name="technicala" rows="5"
+                          placeholder="Kỹ thuật">{{--{{ old('technicala', $record->technicala) }}--}}{!! $record->technicala !!}</textarea>
+
+                @if ($errors->has('technicala'))
+                    <span class="help-block">
+                                <strong>{{ $errors->first('technicala') }}</strong>
+                            </span>
+                @endif
+            </div>
+            <!-- /.form-group -->
+        </div>
+        <div class="col-md-4">
+            <div class="form-group margin-b-5 margin-t-5{{ $errors->has('tools') ? ' has-error' : '' }}">
+                <label for="tools">Công cụ sử dụng</label>
+                <textarea id="tools" class="form-control" name="tools" rows="5"
+                          placeholder="Công cụ sử dụng">{{ old('tools', $record->tools) }}</textarea>
+
+                @if ($errors->has('tools'))
+                    <span class="help-block">
+                                <strong>{{ $errors->first('tools') }}</strong>
+                            </span>
+                @endif
+            </div>
+        </div>
+
+    </div>
+    <div class="row">
+        <div class="col-md-8">
+            <div class="form-group margin-b-5 margin-t-5{{ $errors->has('description') ? ' has-error' : '' }}">
+                <label for="description">Miêu tả</label>
+                <textarea id="description" class="form-control" name="description" rows="5"
+                          placeholder="Miêu tả">{{ old('description', $record->description) }}</textarea>
+
+                @if ($errors->has('description'))
+                    <span class="help-block">
+                                <strong>{{ $errors->first('description') }}</strong>
+                            </span>
+                @endif
+            </div>
+        </div>
+    </div>
 </div>
 
 @push('footer-scripts')
     <script>
         $(function () {
-            myEditor($("#technicala"));
-            myEditor($("#tools"));
+            myFilemanager($('#lfm'), 'image');
             myEditor($("#description"));
-            myDatePicker($("#start_date"));
-            myDatePicker($("#end_date"));
-        })
-         function readURL(input) {
-        if (input.files && input.files[0]) {
-            var reader = new FileReader();
-
-            reader.onload = function (e) {
-                $('#img-upload').attr('src', e.target.result);
-            }
-
-            reader.readAsDataURL(input.files[0]);
-        }
-    }
-
-    $("#imgInp").change(function () {
-        readURL(this);
-    });
+            myDatePicker($("#start_date, #end_date"));
+        });
     </script>
 @endpush

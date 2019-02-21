@@ -64,8 +64,8 @@ class RepositoriesServiceProvider extends ServiceProvider
     {
         ##AUTO_INSERT_BIND##
 		$this->app->bind(IProjectRepository::class, function () {
-			return new ProjectRepository(new Project());
-		});
+            return new ProjectRepository(new Project());
+        });
 		$this->app->bind(IFeedbackRepository::class, function () {
 			return new FeedbackRepository(new Feedback());
 		});

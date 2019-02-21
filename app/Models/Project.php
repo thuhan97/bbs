@@ -20,6 +20,8 @@ class Project extends Model
     const IS_ACTIVE = 1;
     const LEVEL_DEFAULT = 1;
 
+	public $autoCreator = true;
+
     protected $table = 'projects';
 
     protected $fillable = [
@@ -47,6 +49,13 @@ class Project extends Model
         'created_at', 'updated_at', 'deleted_at',
     ];
 
+    public function getTagArrsAttribute()
+    {
+        if (!empty($this->attributes['tags'])) {
+            return explode(',', $this->attributes['tags']);
+        }
+        return [];
+    }
 
     /**
      * Search for course title or subject name

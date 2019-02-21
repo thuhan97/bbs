@@ -65,11 +65,9 @@ class AdditionServiceProvider extends ServiceProvider
         $this->app->bind(IWorkTimeService::class, function () {
             return app()->make(WorkTimeService::class);
         });
-
         $this->app->bind(IProjectService::class, function () {
             return app()->make(ProjectService::class);
         });
-        
         $this->app->bind(IFeedbackService::class, function () {
             return app()->make(FeedbackService::class);
         });

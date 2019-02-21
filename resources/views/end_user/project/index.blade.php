@@ -3,17 +3,16 @@
     {!! Breadcrumbs::render('project') !!}
 @endsection
 @section('content')
-    <!-- Search form -->
-     <!-- Search form -->
-     <form class="mb-4">
+   <!-- Search form -->
+   <form class="mb-4">
         <div class="md-form active-cyan-2 mb-3">
-            <input name="search"  id="search" class="form-control" type="text"
-                    aria-label="Search">
-            <input type="hidden" name="page_size" >
+            <input name="search" value="{{old('search', $search)}}" class="form-control" type="text"
+                   placeholder="{{__l('Search')}}" aria-label="Search">
+            <input type="hidden" name="page_size" value="{{$perPage}}">
         </div>
     </form>
-    
-        <p>Có {{$count}} dự án</p>
+        @if($projects->isNotEmpty()) 
+        <p>{{__l('total_record', ['number' => $projects->total()])}}</p>
         <table id="contactTbl" class="table table-striped">
             <colgroup>
                 <col style=>
@@ -52,7 +51,7 @@
                    
                     <td>{{$row->customer}}</td>
                     <td>{{PROJECT_TYPE[$row->project_type]}}</td>
-                    <td>{{$row->leader_id}}</td>
+                    <td>{{$row->leader->name}}</td>
                     <td class="text-center">
                     {{$row->start_date}}
                     </td>
@@ -66,10 +65,16 @@
            @endforeach
             </tbody>
         </table>
+        @if ($projects->lastPage() > 1)
+            @include('common.paginate_eu', ['records' => $projects])
+        @endif
+        @else
+        <h2>{{__l('list_empty', ['name'=>'dự án'])}}</h2>
+        @endif
 <script>
-$( "#search" ).keyup(function() {
-  alert( "Handler for .keyup() called." );
-});
+// $( "#search" ).keyup(function() {
+//   alert( "Handler for .keyup() called." );
+// });
 </script>
    
 @endsection

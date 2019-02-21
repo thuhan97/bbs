@@ -8,7 +8,8 @@ $defaultStaffCode = "J" . str_pad((\App\Models\User::max('id') + 1), 3, '0', STR
             <div class="row">
                 <div class="col-md-6">
                     <div class="form-group margin-b-5 margin-t-5">
-                        <label for="staff_code">Mã nhân viên:</label> {{ old('staff_code', $record->staff_code ?? $defaultStaffCode ) }}
+                        <label for="staff_code">Mã nhân
+                            viên:</label> {{ old('staff_code', $record->staff_code ?? $defaultStaffCode ) }}
                     </div>
                 </div>
                 <div class="col-md-6"></div>
@@ -103,7 +104,8 @@ $defaultStaffCode = "J" . str_pad((\App\Models\User::max('id') + 1), 3, '0', STR
     <div class="row">
         <div class="col-md-6">
             <div class="form-group margin-b-5 margin-t-5">
-                <label for="current_address">Loại hợp đồng:</label> {{ isset(CONTRACT_TYPES_NAME[$record->contract_type]) ? CONTRACT_TYPES_NAME[$record->contract_type] : '' }}
+                <label for="current_address">Loại hợp
+                    đồng:</label> {{ isset(CONTRACT_TYPES_NAME[$record->contract_type]) ? CONTRACT_TYPES_NAME[$record->contract_type] : '' }}
             </div>
             <!-- /.form-group -->
         </div>
@@ -119,7 +121,7 @@ $defaultStaffCode = "J" . str_pad((\App\Models\User::max('id') + 1), 3, '0', STR
     </div>
 
     <hr/>
-<a href="{{route('admin::day_offs.user', $record->id)}}" class="btn btn-info">Xem ngày nghỉ phép nhân viên</a>
+    <a href="{{route('admin::day_offs.user', $record->id)}}" class="btn btn-info">Xem ngày nghỉ phép nhân viên</a>
     <!-- /.form-group -->
 </div>
 <!-- /.col-md-5 -->

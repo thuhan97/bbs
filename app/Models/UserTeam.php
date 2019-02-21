@@ -52,14 +52,13 @@ class UserTeam extends Model
 
     public function user()
     {
-        return $this->hasOne('App\Models\User', 'id','user_id');
+        return $this->hasOne('App\Models\User', 'id', 'user_id');
     }
     /**
      * @param $id
      *
      * @return mixed
      */
-
 
 
     /**

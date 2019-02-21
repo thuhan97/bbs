@@ -3,12 +3,12 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Services\Contracts\IUserService;
-use App\Traits\RESTActions;
-use App\Traits\ParseRequestSearch;
-use Illuminate\Http\Request;
 use App\Repositories\Contracts\IUserRepository;
+use App\Services\Contracts\IUserService;
+use App\Traits\ParseRequestSearch;
+use App\Traits\RESTActions;
 use App\Transformers\UserTransformer;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 /**

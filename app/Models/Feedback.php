@@ -14,34 +14,34 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Feedback extends Model
 {
-	use SoftDeletes, FillableFields, OrderableTrait, SearchLikeTrait;
+    use SoftDeletes, FillableFields, OrderableTrait, SearchLikeTrait;
 
-	const FEEDBACK_TYPE = [
-		'absence' => 0,
-		'attendance' => 1
-	];
+    const FEEDBACK_TYPE = [
+        'absence' => 0,
+        'attendance' => 1
+    ];
 
-	const FEEDBACK_STATUS = [
-		'pending' => 0,
-		'accept' => 1,
-		'decline' => 2
-	];
+    const FEEDBACK_STATUS = [
+        'pending' => 0,
+        'accept' => 1,
+        'decline' => 2
+    ];
 
-	protected $table = 'feedbacks';
+    protected $table = 'feedbacks';
 
-	protected $primaryKey = 'id';
+    protected $primaryKey = 'id';
 
-	protected $fillable = [
-		'user_id',
-		'type',
-		'content',
-		'status',
-		'resolver_id',
-		'resolver_comment',
-		'resolver_at',
-		'created_at',
-		'updated_at',
-	];
+    protected $fillable = [
+        'user_id',
+        'type',
+        'content',
+        'status',
+        'resolver_id',
+        'resolver_comment',
+        'resolver_at',
+        'created_at',
+        'updated_at',
+    ];
 
 
 }

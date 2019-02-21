@@ -59,29 +59,38 @@ $_printLink = false;
                         <div class="row">
                             <div class="col-xs-5">
                                 <select name="from[]" id="undo_redo" class="form-control" size="13" multiple="multiple">
-                                @foreach($member_not_in_team as $member)
-                                <option value="{{$member->id}}">{{$member->name}}</option>
-                                @endforeach
+                                    @foreach($member_not_in_team as $member)
+                                        <option value="{{$member->id}}">{{$member->name}}</option>
+                                    @endforeach
                                 </select>
 
                             </div>
 
                             <div class="col-xs-2">
-                                <button type="button" id="undo_redo_undo" class="btn btn-primary btn-block">undo</button>
-                                <button type="button" id="undo_redo_rightAll" class="btn btn-default btn-block"><i class="glyphicon glyphicon-forward"></i></button>
-                                <button type="button" id="undo_redo_rightSelected" class="btn btn-default btn-block"><i class="glyphicon glyphicon-chevron-right"></i></button>
-                                <button type="button" id="undo_redo_leftSelected" class="btn btn-default btn-block"><i class="glyphicon glyphicon-chevron-left"></i></button>
-                                <button type="button" id="undo_redo_leftAll" class="btn btn-default btn-block"><i class="glyphicon glyphicon-backward"></i></button>
-                                <button type="button" id="undo_redo_redo" class="btn btn-warning btn-block">redo</button>
+                                <button type="button" id="undo_redo_undo" class="btn btn-primary btn-block">undo
+                                </button>
+                                <button type="button" id="undo_redo_rightAll" class="btn btn-default btn-block"><i
+                                            class="glyphicon glyphicon-forward"></i></button>
+                                <button type="button" id="undo_redo_rightSelected" class="btn btn-default btn-block"><i
+                                            class="glyphicon glyphicon-chevron-right"></i></button>
+                                <button type="button" id="undo_redo_leftSelected" class="btn btn-default btn-block"><i
+                                            class="glyphicon glyphicon-chevron-left"></i></button>
+                                <button type="button" id="undo_redo_leftAll" class="btn btn-default btn-block"><i
+                                            class="glyphicon glyphicon-backward"></i></button>
+                                <button type="button" id="undo_redo_redo" class="btn btn-warning btn-block">redo
+                                </button>
                             </div>
 
                             @php
                                 $members = $record->users;
                             @endphp
                             <div class="col-xs-5">
-                                <option value="{{$record->leader->id}}" disabled>{{$record->leader->name}} (Trưởng nhóm)</option>
-                                <select name="to[]" id="undo_redo_to" class="form-control" size="13" multiple="multiple">
-                                @foreach($members as $member)
+                                <option value="{{$record->leader->id}}" disabled>{{$record->leader->name}} (Trưởng
+                                    nhóm)
+                                </option>
+                                <select name="to[]" id="undo_redo_to" class="form-control" size="13"
+                                        multiple="multiple">
+                                    @foreach($members as $member)
                                         @if($member->user->id !== $record->leader->id)
                                             <option value="{{$member->user->id}}">{{$member->user->name}}</option>
                                         @endif
@@ -91,7 +100,7 @@ $_printLink = false;
                         </div>
                         <div class="text-center margin-bottom margin-t-5">
                             <a href="#" class="btn btn-sm btn-default margin-r-5 margin-l-5" onclick="history.go(-1)">
-                            <i class="fa fa-caret-left"></i> <span>Quay lại</span>
+                                <i class="fa fa-caret-left"></i> <span>Quay lại</span>
                             </a>
                             <button type="submit" class="btn btn-sm btn-info margin-r-5 margin-l-5">
                                 <i class="fa fa-save"></i> <span>Lưu</span>

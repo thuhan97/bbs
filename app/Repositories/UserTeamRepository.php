@@ -10,7 +10,6 @@ namespace App\Repositories;
 
 
 use App\Models\UserTeam;
-
 use App\Repositories\Contracts\IUserTeamRepository;
 
 class UserTeamRepository extends AbstractRepository implements IUserTeamRepository

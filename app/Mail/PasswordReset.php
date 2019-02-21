@@ -2,9 +2,9 @@
 
 namespace App\Mail;
 
+use App\Models\Member;
 use Illuminate\Bus\Queueable;
 use Illuminate\Queue\SerializesModels;
-use App\Models\Member;
 
 class PasswordReset extends BaseMailer
 {

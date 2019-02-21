@@ -36,7 +36,8 @@ $_printLink = false;
             <div class="box box-info" id="wrap-edit-box">
 
                 <form class="form" role="form" method="POST"
-                      action="{{ $_updateLink }}" enctype="multipart/form-data"{{ $_formFiles === true ? 'enctype="multipart/form-data"' : ''}}>
+                      action="{{ $_updateLink }}"
+                      enctype="multipart/form-data"{{ $_formFiles === true ? 'enctype="multipart/form-data"' : ''}}>
                     {{ csrf_field() }}
                     {{ method_field('PUT') }}
 
@@ -45,7 +46,7 @@ $_printLink = false;
 
                         <div class="box-tools">
                             {{--<a href="#" class="btn btn-sm btn-default margin-r-5 margin-l-5" onclick="history.go(-1)">--}}
-                                {{--<i class="fa fa-caret-left"></i> <span>Back</span>--}}
+                            {{--<i class="fa fa-caret-left"></i> <span>Back</span>--}}
                             {{--</a>--}}
                             <a href="{{ $_listLink }}" class="btn btn-sm btn-primary margin-r-5 margin-l-5">
                                 <i class="fa fa-search"></i> <span>Danh sách</span>

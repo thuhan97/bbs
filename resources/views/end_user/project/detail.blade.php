@@ -7,7 +7,8 @@
         <h5 class="card-header h5">{{$project->name}}</h5>
         <div class="card-body">
             <div class="text-uppercase">
-                <i class="fas fa-circle  " style="{{COLOR_STATUS_PROJECT[$project->status]}}"> {{STATUS_PROJECT[$project->status]}}</i>
+                <i class="fas fa-circle  "
+                   style="{{COLOR_STATUS_PROJECT[$project->status]}}"> {{STATUS_PROJECT[$project->status]}}</i>
             </div>
             <div class="row mt-4">
                 <div class="col-md-4">
@@ -15,34 +16,34 @@
                 </div>
                 <div class="col-md-8">
                     <table class="table table-bordered table-striped">
-                <tr>
-                   <td width="30%" class="font-weight-bold">Khách hàng</td>
-                   <td>{{$project->customer}}</td>
-                </tr>
-                <tr>
-                   <td class="font-weight-bold">Loại dự án</td>
-                   <td>{{PROJECT_TYPE[$project->project_type]}}</td>
-                </tr>
-                <tr>
-                   <td class="font-weight-bold">Quy mô</td>
-                   <td>{{$project->scale}} man/month</td>
-                </tr>
-                <tr>
-                   <td class="font-weight-bold">Thời gian</td>
-                   <td>{{$project->amount_of_time}} months</td>
-                </tr>
-                <tr>
-                   <td class="font-weight-bold">Leader dự án</td>
-                   <td>{{$project->leader->name}}</td>
-                </tr>
-                <tr>
-                   <td class="font-weight-bold">Ngày bắt đầu</td>
-                   <td>{{$project->start_date}}</td>
-                </tr>
-                <tr>
-                   <td class="font-weight-bold">Ngày kết thúc</td>
-                   <td>{{$project->end_date}}</td>
-                </tr>
+                        <tr>
+                            <td width="30%" class="font-weight-bold">Khách hàng</td>
+                            <td>{{$project->customer}}</td>
+                        </tr>
+                        <tr>
+                            <td class="font-weight-bold">Loại dự án</td>
+                            <td>{{PROJECT_TYPE[$project->project_type]}}</td>
+                        </tr>
+                        <tr>
+                            <td class="font-weight-bold">Quy mô</td>
+                            <td>{{$project->scale}} man/month</td>
+                        </tr>
+                        <tr>
+                            <td class="font-weight-bold">Thời gian</td>
+                            <td>{{$project->amount_of_time}} months</td>
+                        </tr>
+                        <tr>
+                            <td class="font-weight-bold">Leader dự án</td>
+                            <td>{{$project->leader->name}}</td>
+                        </tr>
+                        <tr>
+                            <td class="font-weight-bold">Ngày bắt đầu</td>
+                            <td>{{$project->start_date}}</td>
+                        </tr>
+                        <tr>
+                            <td class="font-weight-bold">Ngày kết thúc</td>
+                            <td>{{$project->end_date}}</td>
+                        </tr>
                     </table>
                 </div>
             </div>
@@ -62,5 +63,5 @@
             </div>
         </div>
     </div>
-    
+
 @endsection

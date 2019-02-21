@@ -10,8 +10,8 @@ use App\Models\{{$Module}};
 */
 class {{$Module}}Transformer extends Fractal\TransformerAbstract
 {
-    public function transform({{$Module}} $item)
-	{
-		return $item->toArray();
-	}
+public function transform({{$Module}} $item)
+{
+return $item->toArray();
+}
 }

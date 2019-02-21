@@ -5,9 +5,9 @@
         <div class="row mt-5">
             <div class="col-md-3"></div>
             <div class="col-md-6">
-                <br />
-                <br />
-                <br />
+                <br/>
+                <br/>
+                <br/>
                 <div class="card">
                     <h5 class="card-header info-color white-text text-center py-4">Đặt lại mật khẩu</h5>
 

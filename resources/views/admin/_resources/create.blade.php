@@ -5,9 +5,9 @@
 $_pageTitle = (isset($addVarsForView['_pageTitle']) && !empty($addVarsForView['_pageTitle']) ? $addVarsForView['_pageTitle'] : ucwords($resourceTitle));
 $_pageSubtitle = (isset($addVarsForView['_pageSubtitle']) && !empty($addVarsForView['_pageSubtitle']) ? $addVarsForView['_pageSubtitle'] : "Thêm " . str_singular($_pageTitle));
 $_formFiles = isset($addVarsForView['formFiles']) ? $addVarsForView['formFiles'] : false;
-$_listLink = route($resourceRoutesAlias.'.index');
-$_createLink = route($resourceRoutesAlias.'.create');
-$_storeLink = route($resourceRoutesAlias.'.store');
+$_listLink = route($resourceRoutesAlias . '.index');
+$_createLink = route($resourceRoutesAlias . '.create');
+$_storeLink = route($resourceRoutesAlias . '.store');
 ?>
 
 {{-- Breadcrumbs --}}
@@ -34,7 +34,8 @@ $_storeLink = route($resourceRoutesAlias.'.store');
             <!-- Edit Form -->
             <div class="box box-info" id="wrap-edit-box">
 
-                <form class="form" role="form" method="POST" action="{{ $_storeLink }}" enctype="multipart/form-data" {!! $_formFiles === true ? 'enctype="multipart/form-data"' : '' !!}>
+                <form class="form" role="form" method="POST" action="{{ $_storeLink }}"
+                      enctype="multipart/form-data" {!! $_formFiles === true ? 'enctype="multipart/form-data"' : '' !!}>
                     {{ csrf_field() }}
 
                     <div class="box-header with-border">
@@ -91,5 +92,5 @@ $_storeLink = route($resourceRoutesAlias.'.store');
 
 {{-- Footer Extras to be Included --}}
 @section('footer-extras')
-    
+
 @endsection

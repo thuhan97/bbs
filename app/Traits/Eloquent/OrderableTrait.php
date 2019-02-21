@@ -14,6 +14,7 @@ trait OrderableTrait
 
     /**
      * @param $query
+     *
      * @return mixed
      */
     public function scopeCreatedToday($query)
@@ -23,10 +24,11 @@ trait OrderableTrait
     }
 
     /**
-     * @param $query
-     * @param $from
-     * @param $to
+     * @param        $query
+     * @param        $from
+     * @param        $to
      * @param string $format
+     *
      * @return mixed
      */
     public function scopeCreatedRange($query, $from, $to, $format = null)

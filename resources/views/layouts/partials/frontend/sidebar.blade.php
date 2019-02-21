@@ -23,7 +23,8 @@
            class="list-group-item list-group-item-action waves-effect {{ \App\Utils::checkRoute(['contact']) ? 'active': '' }}">
             <i class="fas fa-address-book mr-3"></i>{{__l('contact')}}</a>
 
-        <a href="{{route('project')}}" class="list-group-item list-group-item-action waves-effect {{ \App\Utils::checkRoute(['project', 'project_detail']) ? 'active': '' }}">
+        <a href="{{route('project')}}"
+           class="list-group-item list-group-item-action waves-effect {{ \App\Utils::checkRoute(['project', 'project_detail']) ? 'active': '' }}">
             <i class="fas fa-industry mr-3"></i>
             {{__l('Project')}}</a>
 

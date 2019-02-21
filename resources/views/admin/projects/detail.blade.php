@@ -1,4 +1,3 @@
-
 <div class="col-md-12">
     <div class="row">
         <div class="col-md-12">
@@ -24,11 +23,12 @@
                     <div class="form-group margin-b-5 margin-t-5">
                         <label for="image_url">Thumbnail:</label>
                         <div id="slideshow_full">
-                         @if ($record->image_url != '')
+                            @if ($record->image_url != '')
 
-                            <img src="{{ URL::asset(URL_IMAGE_PROJECT.$record->image_url) }}" style="height: 300px;width: 100%;">
+                                <img src="{{ URL::asset(URL_IMAGE_PROJECT.$record->image_url) }}"
+                                     style="height: 300px;width: 100%;">
 
-                         @endif
+                            @endif
 
                         </div>
                     </div>
@@ -36,7 +36,8 @@
                 </div>
                 <div class="col-md-6">
                     <div class="form-group margin-b-5 margin-t-5">
-                        <label for="project_type">Loại dự án:</label> {{ old('project_type', PROJECT_TYPE[$record->project_type])}}
+                        <label for="project_type">Loại dự
+                            án:</label> {{ old('project_type', PROJECT_TYPE[$record->project_type])}}
                     </div>
                     <br>
                     <div class="form-group margin-b-5 margin-t-5">
@@ -44,7 +45,8 @@
                     </div>
                     <br>
                     <div class="form-group margin-b-5 margin-t-5">
-                        <label for="amount_of_time">Thời gian:</label> {{ old('amount_of_time', $record->amount_of_time) }} (tháng)
+                        <label for="amount_of_time">Thời
+                            gian:</label> {{ old('amount_of_time', $record->amount_of_time) }} (tháng)
                     </div>
                     <br>
                     <div class="form-group margin-b-5 margin-t-5">
@@ -58,7 +60,8 @@
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group margin-b-5 margin-t-5">
-                                <label for="start_date">Ngày bắt đầu:</label> {{ old('start_date', $record->start_date) }}
+                                <label for="start_date">Ngày bắt
+                                    đầu:</label> {{ old('start_date', $record->start_date) }}
                             </div>
                         </div>
                         <div class="col-md-6">
@@ -90,7 +93,7 @@
                 <div class="col-md-4">
                     <div class="form-group margin-b-5 margin-t-5">
                         <label for="description">Miêu tả:</label> {!! $record->description !!}
-{{--                        <label for="description">Miêu tả:</label> {!! $record->description !!}--}}
+                        {{--                        <label for="description">Miêu tả:</label> {!! $record->description !!}--}}
                     </div>
                 </div>
             </div>

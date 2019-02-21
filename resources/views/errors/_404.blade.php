@@ -4,6 +4,6 @@
     <style>
 
     </style>
-404
+    404
 
 @endsection

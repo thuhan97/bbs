@@ -103,8 +103,8 @@ Breadcrumbs::register('day_off', function ($breadcrumbs) {
 });
 // Dashboard > day_off_approval
 Breadcrumbs::register('day_off_approval', function ($breadcrumbs) {
-	$breadcrumbs->parent('personal');
-	$breadcrumbs->push(__l('day_off_approval'), route('day_off_approval'));
+    $breadcrumbs->parent('personal');
+    $breadcrumbs->push(__l('day_off_approval'), route('day_off_approval'));
 });
 
 // Admin
@@ -154,7 +154,7 @@ foreach ($resources as $resource => $data) {
         $breadcrumbs->parent($resource);
         $breadcrumbs->push('Chi tiết', route($resource . '.show', $id));
     });
-    Breadcrumbs::register($resource .'.deletes', function ($breadcrumbs,  $id) use ($resource) {
+    Breadcrumbs::register($resource . '.deletes', function ($breadcrumbs, $id) use ($resource) {
         $breadcrumbs->parent($resource);
         $breadcrumbs->push('Xóa', route($resource . '.deletes', $id));
     });

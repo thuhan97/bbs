@@ -6,23 +6,23 @@ use App\Services\Contracts\IDayOffService;
 use App\Services\Contracts\IEventService;
 use App\Services\Contracts\IFeedbackService;
 use App\Services\Contracts\IPostService;
+use App\Services\Contracts\IProjectService;
 use App\Services\Contracts\IRegulationService;
 use App\Services\Contracts\IReportService;
 use App\Services\Contracts\ITeamService;
 use App\Services\Contracts\IUserService;
 use App\Services\Contracts\IUserTeamService;
 use App\Services\Contracts\IWorkTimeService;
-use App\Services\Contracts\IProjectService;
 use App\Services\DayOffService;
 use App\Services\EventService;
 use App\Services\FeedbackService;
 use App\Services\PostService;
+use App\Services\ProjectService;
 use App\Services\RegulationService;
 use App\Services\ReportService;
 use App\Services\TeamService;
 use App\Services\UserService;
 use App\Services\WorkTimeService;
-use App\Services\ProjectService;
 use Illuminate\Support\ServiceProvider;
 
 class AdditionServiceProvider extends ServiceProvider

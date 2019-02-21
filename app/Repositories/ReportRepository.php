@@ -1,20 +1,21 @@
-<?php 
+<?php
+
 namespace App\Repositories;
 
 use App\Models\Report;
 use App\Repositories\Contracts\IReportRepository;
 
 /**
-* ReportRepository class
-* Author: jvb
-* Date: 2019/01/21 03:42
-*/
+ * ReportRepository class
+ * Author: jvb
+ * Date: 2019/01/21 03:42
+ */
 class ReportRepository extends AbstractRepository implements IReportRepository
 {
-     /**
+    /**
      * ReportModel
      *
      * @var  string
      */
-	  protected $modelName = Report::class;
+    protected $modelName = Report::class;
 }

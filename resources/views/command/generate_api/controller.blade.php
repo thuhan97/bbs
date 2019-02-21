@@ -14,19 +14,19 @@ use App\Transformers\{{$Module}}Transformer;
 */
 class {{$Module}}Controller extends Controller
 {
-    use RESTActions;
-    use ParseRequestSearch;
+use RESTActions;
+use ParseRequestSearch;
 
-    public function __construct(I{{$Module}}Repository $repository, {{$Module}}Transformer $transformer)
-    {
-        $this->repository = $repository;
-        $this->transformer = $transformer;
-    }
+public function __construct(I{{$Module}}Repository $repository, {{$Module}}Transformer $transformer)
+{
+$this->repository = $repository;
+$this->transformer = $transformer;
+}
 
-    public function index(Request $request)
-    {
-        $criteria = $this->parseRequest($request);
-        $collections = $this->repository->findBy($criteria);
-        return $this->respondTransformer($collections);
-    }
+public function index(Request $request)
+{
+$criteria = $this->parseRequest($request);
+$collections = $this->repository->findBy($criteria);
+return $this->respondTransformer($collections);
+}
 }

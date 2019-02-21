@@ -40,7 +40,7 @@ define('EXPIRE_POTATO_DEFAULT', 6);
 define('URL_IMAGE_NO_IMAGE', '/dist/img/no-avatar.png');
 define('UPLOAD_PATH', '/uploads');
 define('URL_IMAGE_AVATAR', UPLOAD_PATH . '/avatar/');
-define('URL_IMAGE_PROJECT','adminlte/img/projects_img/');
+define('URL_IMAGE_PROJECT', 'adminlte/img/projects_img/');
 
 define('ACTIVE_STATUS', 1);
 

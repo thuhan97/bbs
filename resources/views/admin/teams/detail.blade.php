@@ -1,4 +1,3 @@
-
 <div class="col-md-5">
     <div class="row">
         <div class="col-md-12">
@@ -15,10 +14,10 @@
         </div>
 
         <div class="col-md-12">
-                    <div class="form-group margin-b-5 margin-t-5">
-                        <label for="leader_id">Trưởng nhóm:</label> {{ $record->leader->name }}
-                    </div>
-                    <!-- /.form-group -->
+            <div class="form-group margin-b-5 margin-t-5">
+                <label for="leader_id">Trưởng nhóm:</label> {{ $record->leader->name }}
+            </div>
+            <!-- /.form-group -->
 
 
         </div>
@@ -49,7 +48,8 @@
             <div class="row">
                 <div class="col-md-6">
                     <div class="form-group margin-b-5 margin-t-5">
-                        <label for="description">Miêu tả:</label> {{ old('description', strip_tags($record->description))}}
+                        <label for="description">Miêu
+                            tả:</label> {{ old('description', strip_tags($record->description))}}
                     </div>
                     <!-- /.form-group -->
                 </div>
@@ -74,12 +74,13 @@
             <div class="row">
                 <div class="col-md-6">
                     <div class="form-group margin-b-5 margin-t-5">
-                        <label >Danh sách thành viên</label>
+                        <label>Danh sách thành viên</label>
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group margin-b-5 margin-t-5">
-                        <a href="{{ URL::asset('/admin/teams/manage-member/'.$record->id) }}" class="btn btn-sm btn-primary pull-right">
+                        <a href="{{ URL::asset('/admin/teams/manage-member/'.$record->id) }}"
+                           class="btn btn-sm btn-primary pull-right">
                             <i class="fa fa-plus"></i> <span>Quản lý thành viên</span>
                         </a>
                     </div>

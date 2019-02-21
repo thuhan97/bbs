@@ -94,8 +94,8 @@ class Project extends Model
     {
         return User::where('jobtitle_id', TEAMLEADER_ROLE)//Leader
         ->orWhere('jobtitle_id', MANAGER_ROLE)//Leader
-            ->orderBy('jobtitle_id')
-        ->get();
+        ->orderBy('jobtitle_id')
+            ->get();
     }
 
 }

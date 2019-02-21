@@ -123,6 +123,7 @@ $resources = [
     'teams' => 'Quản lý nhóm',
     'day_offs' => 'Quản lý nghỉ phép',
     'work_times' => 'Quản lý làm việc',
+    'projects' => 'Quản lý dự án',
 ];
 foreach ($resources as $resource => $data) {
     $parent = 'admin';

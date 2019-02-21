@@ -8,6 +8,7 @@ use App\Models\DayOff;
 use App\Models\Event;
 use App\Models\OverTime;
 use App\Models\Post;
+use App\Models\Project;
 use App\Models\Regulation;
 use App\Models\Report;
 use App\Models\Team;
@@ -23,6 +24,7 @@ use App\Repositories\Contracts\IDayOffRepository;
 use App\Repositories\Contracts\IEventRepository;
 use App\Repositories\Contracts\IOverTimeRepository;
 use App\Repositories\Contracts\IPostRepository;
+use App\Repositories\Contracts\IProjectRepository;
 use App\Repositories\Contracts\IRegulationRepository;
 use App\Repositories\Contracts\IReportRepository;
 use App\Repositories\Contracts\ITeamRepository;
@@ -34,6 +36,7 @@ use App\Repositories\DayOffRepository;
 use App\Repositories\EventRepository;
 use App\Repositories\OverTimeRepository;
 use App\Repositories\PostRepository;
+use App\Repositories\ProjectRepository;
 use App\Repositories\RegulationRepository;
 use App\Repositories\ReportRepository;
 use App\Repositories\TeamRepository;
@@ -44,9 +47,6 @@ use App\Repositories\WorkTimeRepository;
 use Illuminate\Support\ServiceProvider;
 
 ##AUTO_INSERT_USE##
-use App\Repositories\Contracts\IProjectRepository;
-use App\Repositories\ProjectRepository;
-use App\Models\Project;
 use App\Repositories\Contracts\IFeedbackRepository;
 use App\Repositories\FeedbackRepository;
 use App\Models\Feedback;
@@ -109,6 +109,9 @@ class RepositoriesServiceProvider extends ServiceProvider
         $this->app->bind(IUserTeamRepository::class, function () {
             return new UserTeamRepository(new UserTeam());
         });
+        $this->app->bind(IProjectRepository::class, function () {
+            return new ProjectRepository(new Project());
+        });
     }
 
     public function provides()
@@ -128,6 +131,7 @@ class RepositoriesServiceProvider extends ServiceProvider
             IWorkTimeRepository::class,
             ITeamRepository::class,
             IUserTeamRepository::class,
+            IProjectRepository::class
         ];
     }
 }

@@ -11,6 +11,8 @@ class XSSProtected
         'content',
         'detail',
         'description',
+        'tools',
+        'technicala',
         'html_',
     ];
 

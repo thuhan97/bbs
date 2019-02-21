@@ -76,6 +76,9 @@ Route::group([
 	//admin
 	Route::resource('admins', 'AdminController');
 
+	Route::resource('projects', 'ProjectController');
+    Route::post('projects/deletes', ['as' => 'projects.deletes', 'uses' => 'ProjectController@deletes']);
+
 	//users
 	Route::get('users/import/{setId}', ['as' => 'users.import', 'uses' => 'UserController@import']);
 	Route::get('users/download-template', ['as' => 'users.download-template', 'uses' => 'UserController@downloadTemplate']);
@@ -85,11 +88,9 @@ Route::group([
 	Route::resource('users', 'UserController');
 	
     Route::post('teams/save-member', [ 'uses' => 'TeamController@saveUserTeam']);
-    Route::post('teams/deletes', ['as' => 'teams.deletes', 'uses' => 'TeamController@deletes']);
     Route::get('teams/manage-member/{id}', ['uses' => 'TeamController@manageMember']);
     Route::put('teams/{id}', ['uses' => 'TeamController@updateTmp'])->name('teame.update123');
 	Route::post('teams/deletes', ['as' => 'teams.deletes', 'uses' => 'TeamController@deletes']);
-	Route::get('teams/manage-member/{id}', ['uses' => 'TeamController@manageMember']);
 	Route::resource('teams', 'TeamController');
 
 

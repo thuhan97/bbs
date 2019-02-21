@@ -1,31 +1,54 @@
-<?php 
+<?php
 /**
-* ProjectModel class
-* Author: jvb
-* Date: 2019/01/31 05:00
-*/
+ * ProjectModel class
+ * Author: jvb
+ * Date: 2019/01/31 05:00
+ */
 
 namespace App\Models;
+
+//use Illuminate\Database\Eloquent\Model;
 use App\Traits\Eloquent\OrderableTrait;
 use App\Traits\Eloquent\SearchLikeTrait;
 use App\Traits\Models\FillableFields;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Notifications\Notifiable;
+
 class Project extends Model
 {
-	public $autoCreator = true;
     use Notifiable, SoftDeletes, FillableFields, OrderableTrait, SearchLikeTrait;
 
-    protected $table = 'projects';
-    
+    const UN_ACTIVE = 0;
+    const IS_ACTIVE = 1;
+    const LEVEL_DEFAULT = 1;
 
-	protected $primaryKey = 'id';
+    public $autoCreator = true;
+
+    protected $table = 'projects';
 
     protected $fillable = [
-        
-            ];
+        'name',
+        'customer',
+        'project_type',
+        'scale',
+        'amount_of_time',
+        'technicala',
+        'tools',
+        'leader_id',
+        'description',
+        'start_date',
+        'end_date',
+        'image_url',
+        'status',
+    ];
+
+    /**
+     * The attributes that should be hidden for arrays.
+     *
+     * @var array
+     */
     protected $hidden = [
-       'create_at','updated_at', 'deleted_at',
+        'created_at', 'updated_at', 'deleted_at',
     ];
 
     public function getTagArrsAttribute()
@@ -46,13 +69,33 @@ class Project extends Model
      */
     public function scopeSearch($query, $searchTerm)
     {
-         return $query->where(function ($query) use ($searchTerm) {
-             $query->orWhere('projects.name', 'LIKE', '%' . $searchTerm . '%');
-             $query->orWhere('customer', 'LIKE', '%' . $searchTerm . '%');
-         });
+        return $query->where(function ($query) use ($searchTerm) {
+            $query->orWhere('projects.name', 'LIKE', '%' . $searchTerm . '%');
+            $query->orWhere('users.name', 'LIKE', '%' . $searchTerm . '%');
+            $query->orWhere('customer', 'LIKE', '%' . $searchTerm . '%');
+            $query->orWhere('scale', 'LIKE', '%' . $searchTerm . '%');
+            $query->orWhere('technicala', 'LIKE', '%' . $searchTerm . '%');
+            $query->orWhere('tools', 'LIKE', '%' . $searchTerm . '%');
+            $query->orWhere('description', 'LIKE', '%' . $searchTerm . '%');
+        })
+            ->select('projects.*')
+            ->join('users', 'projects.leader_id', '=', 'users.id');
     }
-    public function leader(){
-        return $this->hasOne('App\User', 'id','leader_id');
+
+    public function leader()
+    {
+        return $this->hasOne('App\Models\User', 'id', 'leader_id');
     }
-    
+
+    /**
+     * @return mixed
+     */
+    public function getLeadersProject()
+    {
+        return User::where('jobtitle_id', TEAMLEADER_ROLE)//Leader
+        ->orWhere('jobtitle_id', MANAGER_ROLE)//Leader
+            ->orderBy('jobtitle_id')
+        ->get();
+    }
+
 }

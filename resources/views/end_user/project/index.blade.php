@@ -51,7 +51,7 @@
                    
                     <td>{{$row->customer}}</td>
                     <td>{{PROJECT_TYPE[$row->project_type]}}</td>
-                    <td>{{$row->user->name}}</td>
+                    <td>{{$row->leader->name}}</td>
                     <td class="text-center">
                     {{$row->start_date}}
                     </td>

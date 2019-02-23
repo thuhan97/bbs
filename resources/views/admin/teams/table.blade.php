@@ -4,14 +4,14 @@
         <th style="width: 10px;">
             <button type="button" class="btn btn-default btn-sm checkbox-toggle"><i class="fa fa-square-o"></i></button>
         </th>
-        <th>STT</th>
+        <th style="width: 15px">Màu</th>
+        <th style="width: 120px">Ảnh đại diện</th>
         <th>Tên nhóm
             {!! __admin_sortable('name') !!}
         </th>
         <th>Trưởng nhóm</th>
-        <th>Biểu ngữ</th>
         <th>Khẩu ngữ</th>
-        <th>Ngày tạo</th>
+        <th style="width: 120px;">Ngày tạo</th>
         <th style="width: 120px;">Chức năng</th>
         </thead>
         <tbody>
@@ -28,20 +28,22 @@
             ?>
             <tr>
                 <td><input type="checkbox" name="ids[]" value="{{ $record->id }}" class="square-blue chkDelete"></td>
+                <td style="background: {{$record->color}}">
+                </td>
                 <td>
-                    {{ $i++ }}
+                    <img src="{{lfm_thumbnail($record->banner)}}" width="100">
                 </td>
                 <td class="table-text">
                     <a href="{{ $showLink }}">{{ $record->name }}</a>
                 </td>
                 <td>{{ $record->leader->name}}</td>
-                <td>{{ $record->banner }}</td>
                 <td>{{ $record->slogan }}</td>
                 <td class="">{{ $record->created_at }}</td>
 
                 <!-- we will also add show, edit, and delete buttons -->
                 <td>
                     <div class="btn-group">
+                        <a href="{{ $showLink }}" class="btn btn-info btn-sm"><i class="fa fa-eye"></i></a>
                         <a href="{{ $editLink }}" class="btn btn-info btn-sm"><i class="fa fa-edit"></i></a>
                         <a href="#" class="btn btn-danger btn-sm btnOpenerModalConfirmModelDelete"
                            data-form-id="{{ $formId }}"><i class="fa fa-trash-o"></i></a>

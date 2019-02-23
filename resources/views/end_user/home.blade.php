@@ -46,7 +46,7 @@
                     <div class="card-body">
                         <ul class="list-unstyled">
                             @foreach($posts as $post)
-                                <li class="media">
+                                <li class="media mb-3">
                                     <img class="d-flex mr-3"
                                          src="{{lfm_thumbnail($post->image_url)}}"
                                          alt="{{$post->name}}" width="60">

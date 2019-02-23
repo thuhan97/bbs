@@ -9,7 +9,6 @@
             {!! __admin_sortable('name') !!}
         </th>
         <th>Khách hàng</th>
-        <th>Loại dự án ODC/Trọn gói</th>
         <th>Leader dự án</th>
         <th>Ngày bắt đầu</th>
         <th>Ngày kết thúc</th>
@@ -38,14 +37,18 @@
                     <a href="{{ $showLink }}">{{ $record->name }}</a>
                 </td>
                 <td>{{ $record->customer}}</td>
-                <td>{{ isset(PROJECT_TYPE[$record->project_type]) ? PROJECT_TYPE[$record->project_type] : ''}}</td>
                 <td>{{ isset($record->leader->name) ? $record->leader->name : ''}}</td>
                 <td>{{ $record->start_date}}</td>
                 <td>{{ $record->end_date }}</td>
-                <td>{{ isset(STATUS_PROJECT[$record->status]) ? STATUS_PROJECT[$record->status] : ''}}</td>
+                <td>
+                    <span style="{{COLOR_STATUS_PROJECT[$record->status] ?? ''}}">
+                    {{ STATUS_PROJECT[$record->status] ?? 'Vừa tạo'}}
+                </span>
+                </td>
 
                 <td>
                     <div class="btn-group">
+                        <a href="{{ $showLink }}" class="btn btn-info btn-sm"><i class="fa fa-eye"></i></a>
                         <a href="{{ $editLink }}" class="btn btn-info btn-sm"><i class="fa fa-edit"></i></a>
                         <a href="#" class="btn btn-danger btn-sm btnOpenerModalConfirmModelDelete"
                            data-form-id="{{ $formId }}"><i class="fa fa-trash-o"></i></a>

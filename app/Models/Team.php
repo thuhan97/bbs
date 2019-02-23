@@ -24,6 +24,7 @@ class Team extends Model
     protected $fillable = [
         'name',
         'leader_id',
+        'color',
         'banner',
         'description',
         'slogan',
@@ -68,6 +69,11 @@ class Team extends Model
     public function users()
     {
         return $this->hasMany('App\Models\UserTeam', 'team_id', 'id');
+    }
+
+    public function members()
+    {
+        return $this->hasManyThrough(User::class, UserTeam::class, 'team_id', 'id', 'id', 'user_id');
     }
 
     /**

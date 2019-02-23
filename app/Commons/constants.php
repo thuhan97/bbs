@@ -95,12 +95,13 @@ define('SEXS', [
 ]);
 
 define('STATUS_PROJECT', [
-    0 => 'Đang chờ',
-    1 => 'Đang làm',
-    2 => 'Kết thúc',
+    0 => 'Chưa bắt đầu',
+    1 => 'Đang phát triển',
+    2 => 'Đã kết thúc',
 ]);
+
 define('COLOR_STATUS_PROJECT', [
-    0 => 'color:red',
+    0 => 'color:blue',
     1 => 'color:orange',
     2 => 'color:green',
 ]);

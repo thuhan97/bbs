@@ -20,10 +20,10 @@ class CreateProjectsTable extends Migration
             $table->tinyInteger('project_type')->default(0)->comment('0:ODC; 1: Trọn gói ');
             $table->integer('scale')->nullable()->comment('man/month');
             $table->string('amount_of_time')->nullable()->comment('month');
-            $table->string('technicala')->nullable();
+            $table->string('technical')->nullable();
             $table->string('tools')->nullable();
             $table->unsignedInteger('leader_id')->nullable();
-            $table->string('description',500)->nullable();
+            $table->text('description')->nullable();
             $table->date('start_date')->nullable()->comment('Ngày bắt đầu ');
             $table->date('end_date')->nullable()->comment('Ngày kết thúc');
             $table->string('image_url')->nullable(); 

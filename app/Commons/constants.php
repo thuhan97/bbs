@@ -69,17 +69,18 @@ define('CONTRACT_TYPES_NAME', [
     3 => 'Thực tập',
 ]);
 
+define('HEAD_DEPARTMENT_ROLE', -1);
 define('TEAMLEADER_ROLE', 1);
 define('MANAGER_ROLE', 2);
 define('MASTER_ROLE', 3);
 
 define('JOB_TITLES', [
+    -1 => 'Trưởng phòng',
     0 => 'Chuyên viên',
     1 => 'Team leader',
     2 => 'Manager',
     3 => 'Giám đốc',
 ]);
-
 
 define('POSITIONS', [
     0 => 'Chuyên viên',

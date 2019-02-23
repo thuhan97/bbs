@@ -3,7 +3,7 @@ $postCount = \App\Models\Post::count();
 $projectCount = \App\Models\Project::count();
 $userCount = \App\Models\User::count();
 $regulationCount = \App\Models\Regulation::count();
-
+$teams = \App\Models\Team::select('id', 'name', 'color')->withCount('members')->get();
 ?>
 
 @extends('layouts.admin.master')
@@ -282,12 +282,11 @@ $regulationCount = \App\Models\Regulation::count();
                         <!-- /.col -->
                         <div class="col-md-4">
                             <ul class="chart-legend clearfix">
-                                <li><i class="fa fa-circle-o text-red"></i> Biệt đội bình tĩnh</li>
-                                <li><i class="fa fa-circle-o text-green"></i> Apple</li>
-                                <li><i class="fa fa-circle-o text-yellow"></i> Banana</li>
-                                <li><i class="fa fa-circle-o text-aqua"></i> Warrior</li>
-                                <li><i class="fa fa-circle-o text-light-blue"></i> Badboy</li>
-                                <li><i class="fa fa-circle-o text-gray"></i> HCNS</li>
+                                @foreach($teams as $team)
+                                    <li>
+                                        <i class="fa fa-circle-o" style="color: {{$team->color}}"></i> {{$team->name}}
+                                    </li>
+                                @endforeach
                             </ul>
                         </div>
                         <!-- /.col -->
@@ -354,6 +353,19 @@ $regulationCount = \App\Models\Regulation::count();
 @endsection
 
 @push('footer-scripts')
+    <script>
+        window.PieData = [
+                @foreach($teams as $team)
+            {
+                value: '{{$team->members_count}}',
+                color: '{{$team->color}}',
+                highlight: '{{$team->color}}',
+                label: '{{$team->name}}'
+            },
+            @endforeach
+        ];
+
+    </script>
     <script src="{{cdn_asset('/js/libs/chart.js')}}"></script>
     <script src="{{cdn_asset('/js/admin/dashboard.js')}}"></script>
 @endpush

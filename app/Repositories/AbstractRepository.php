@@ -131,7 +131,6 @@ abstract class AbstractRepository implements IBaseRepository
                         $queryBuilder->where($key, $operator, $value);
                     }
                 }
-
             } else {
                 //check if $value has filter by ParseRequestSearch
                 if ($key === 'search') {

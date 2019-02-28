@@ -43,6 +43,7 @@ define('URL_IMAGE_AVATAR', UPLOAD_PATH . '/avatar/');
 define('URL_IMAGE_PROJECT', 'adminlte/img/projects_img/');
 
 define('ACTIVE_STATUS', 1);
+define('ACTIVE_NOTIFY', 1);
 
 define('MORE_LANG', [
 //    'zh',

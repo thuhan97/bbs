@@ -29,7 +29,11 @@ class Event extends Model
         'introduction',
         'content',
         'view_count',
+        'has_notify',
+        'notify_date',
+        'is_sent',
         'place',
+        'deadline_at',
         'status',
     ];
 

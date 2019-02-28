@@ -79,4 +79,7 @@ Route::group([
     Route::get('teams/manage-member/{id}', ['uses' => 'TeamController@manageMember']);
     Route::resource('teams', 'TeamController');
 
+    //register work time
+    Route::post('work_time_register/deletes', ['as' => 'work_time_register.deletes', 'uses' => 'WorkRegisterController@deletes']);
+    Route::resource('work_time_register', 'WorkRegisterController');
 });

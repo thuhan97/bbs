@@ -114,6 +114,7 @@ $resources = [
     'teams' => 'Quản lý nhóm',
     'day_offs' => 'Quản lý nghỉ phép',
     'work_times' => 'Quản lý làm việc',
+    'work_time_register' => 'Đăng ký thời gian làm việc'
 ];
 foreach ($resources as $resource => $data) {
     $parent = 'admin';

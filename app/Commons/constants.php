@@ -86,3 +86,35 @@ define('SEXS', [
     1 => 'Nữ',
     0 => 'Nam',
 ]);
+
+define('WORK_TIME_QUICK_SELECT', [
+    0 => 'Full sáng',
+    1 => 'Full chiều',
+]);
+
+define('WORK_TIME_SELECT', [
+    0 => 'Sáng',
+    1 => 'Chiều',
+    2 => 'Không làm',
+    3 => 'Cả ngày'
+]);
+
+define('PART_OF_THE_DAY', [
+    'mon',
+    'tue',
+    'wed',
+    'thu',
+    'fri',
+    'sat',
+]);
+
+define('WORK_PATH', [
+    0 => [
+        'start_at' => '8:00:00',
+        'end_at' => '12:00:00'
+    ],
+    1 => [
+        'start_at' => '13:30:00',
+        'end_at' => '17:30:00'
+    ]
+]);

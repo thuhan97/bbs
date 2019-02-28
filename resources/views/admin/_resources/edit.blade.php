@@ -2,11 +2,18 @@
 @extends('layouts.admin.master')
 
 <?php
+        // check record exist
+if (!$record) {
+    $record = collect($record);
+    $record->id = request()->route(request()->route()->parameterNames[0]);
+    $record->isNull = true;
+}
 $_pageTitle = (isset($addVarsForView['_pageTitle']) && !empty($addVarsForView['_pageTitle']) ? $addVarsForView['_pageTitle'] : ucwords($resourceTitle));
 $_pageSubtitle = (isset($addVarsForView['_pageSubtitle']) && !empty($addVarsForView['_pageSubtitle']) ? $addVarsForView['_pageSubtitle'] : "Sửa thông tin " . str_singular($_pageTitle));
 $_formFiles = isset($addVarsForView['formFiles']) ? $addVarsForView['formFiles'] : false;
 $_listLink = route($resourceRoutesAlias . '.index');
 $_createLink = route($resourceRoutesAlias . '.create');
+
 $_updateLink = route($resourceRoutesAlias . '.update', $record->id);
 $_printLink = false;
 ?>
@@ -41,11 +48,15 @@ $_printLink = false;
                     {{ method_field('PUT') }}
 
                     <div class="box-header with-border">
-                        <h3 class="box-title">Sửa thông tin: {{ $record->getRecordTitle() }}</h3>
+                        @if(!$record->isNull)
+                            <h3 class="box-title">Sửa thông tin: {{ $record->getRecordTitle() }}</h3>
+                        @else
+                            <h3 class="box-title">{{ $addVarsForView['edit_title'] }}: {{ $addVarsForView['edit_target'] }}</h3>
+                        @endif
 
                         <div class="box-tools">
                             {{--<a href="#" class="btn btn-sm btn-default margin-r-5 margin-l-5" onclick="history.go(-1)">--}}
-                                {{--<i class="fa fa-caret-left"></i> <span>Back</span>--}}
+                            {{--<i class="fa fa-caret-left"></i> <span>Back</span>--}}
                             {{--</a>--}}
                             <a href="{{ $_listLink }}" class="btn btn-sm btn-primary margin-r-5 margin-l-5">
                                 <i class="fa fa-search"></i> <span>Danh sách</span>

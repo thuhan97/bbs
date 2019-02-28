@@ -15,6 +15,7 @@ use App\Models\User;
 use App\Models\UserTeam;
 use App\Models\WorkTime;
 use App\Models\WorkTimeDetail;
+use App\Models\WorkTimeRegister;
 use App\Repositories\AdminRepository;
 use App\Repositories\ConfigRepository;
 use App\Repositories\Contracts\IAdminRepository;
@@ -29,6 +30,7 @@ use App\Repositories\Contracts\ITeamRepository;
 use App\Repositories\Contracts\IUserRepository;
 use App\Repositories\Contracts\IUserTeamRepository;
 use App\Repositories\Contracts\IWorkTimeDetailRepository;
+use App\Repositories\Contracts\IWorkTimeRegisterRepository;
 use App\Repositories\Contracts\IWorkTimeRepository;
 use App\Repositories\DayOffRepository;
 use App\Repositories\EventRepository;
@@ -40,6 +42,7 @@ use App\Repositories\TeamRepository;
 use App\Repositories\UserRepository;
 use App\Repositories\UserTeamRepository;
 use App\Repositories\WorkTimeDetailRepository;
+use App\Repositories\WorkTimeRegisterRepository;
 use App\Repositories\WorkTimeRepository;
 use Illuminate\Support\ServiceProvider;
 
@@ -97,6 +100,9 @@ class RepositoriesServiceProvider extends ServiceProvider
         $this->app->bind(IUserTeamRepository::class, function () {
             return new UserTeamRepository(new UserTeam());
         });
+        $this->app->bind(IWorkTimeRegisterRepository::class, function () {
+            return new WorkTimeRegisterRepository(new WorkTimeRegister());
+        });
     }
 
     public function provides()
@@ -114,6 +120,7 @@ class RepositoriesServiceProvider extends ServiceProvider
             IWorkTimeRepository::class,
             ITeamRepository::class,
             IUserTeamRepository::class,
+            IWorkTimeRegisterRepository::class
         ];
     }
 }

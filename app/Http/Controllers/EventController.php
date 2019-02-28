@@ -86,4 +86,16 @@ class EventController extends Controller
         }
         abort(404);
     }
+
+
+    /**
+     * @param Request $request
+     *
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function JoinEvent(Request $request)
+    {
+
+    }
+
 }

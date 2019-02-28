@@ -53,7 +53,9 @@
     <div class="row">
         <div class="col-md-12">
             <div class="row">
-                <div class="col-md-4">
+
+
+                <div class="col-md-3">
                     <div class="form-group margin-b-5 margin-t-5{{ $errors->has('event_date') ? ' has-error' : '' }}">
                         <label for="event_date">Ngày bắt đầu *</label>
                         <div class="input-group date">
@@ -71,7 +73,7 @@
                         @endif
                     </div>
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-3">
                     <div class="form-group margin-b-5 margin-t-5{{ $errors->has('event_end_date') ? ' has-error' : '' }}">
                         <label for="event_end_date">Ngày kết thúc</label>
                         <div class="input-group date">
@@ -89,8 +91,8 @@
                         @endif
                     </div>
                 </div>
-                {{--{{ dd($record) }}--}}
-                <div class="col-md-4">
+
+                <div class="col-md-3">
                     <div class="form-group margin-b-5 margin-t-5{{ $errors->has('notify_date') ? ' has-error' : '' }}">
                         <label for="notify_date">Ngày gửi thông báo *</label>
                         <div class="input-group date">
@@ -104,6 +106,25 @@
                         @if ($errors->has('notify_date'))
                             <span class="help-block">
                                 <strong>{{ $errors->first('notify_date') }}</strong>
+                            </span>
+                        @endif
+                    </div>
+                </div>
+
+                <div class="col-md-3">
+                    <div class="form-group margin-b-5 margin-t-5{{ $errors->has('deadline_at') ? ' has-error' : '' }}">
+                        <label for="deadline_at">Ngày hết hạn đăng kí *</label>
+                        <div class="input-group date">
+                            <div class="input-group-addon">
+                                <i class="fa fa-calendar"></i>
+                            </div>
+                            <input type="text" class="form-control pull-right datepicker" autocomplete="off"
+                                   name="deadline_at"
+                                   value="{{ old('deadline_at', $record->deadline_at) }}" id="deadline_at">
+                        </div>
+                        @if ($errors->has('deadline_at'))
+                            <span class="help-block">
+                                <strong>{{ $errors->first('deadline_at') }}</strong>
                             </span>
                         @endif
                     </div>
@@ -184,7 +205,7 @@
         $(function () {
             myFilemanager($('#lfm'), 'image');
             myEditor($("#content"));
-            myDatePicker($("#event_date, #event_end_date, #notify_date"));
+            myDatePicker($("#event_date, #event_end_date, #notify_date, #deadline_at"));
         })
     </script>
 @endpush

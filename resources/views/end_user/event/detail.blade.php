@@ -23,14 +23,42 @@
             <!-- Text -->
             <p class="card-text py-2">{!! $event->content !!}</p>
             <!-- Button -->
-            <hr/>
             <div class="text-center">
                 <p>
                     <b>{{$event->place}}</b>, {{ $event->event_date }}
                 </p>
             </div>
-        </div>
+            <hr/>
 
-    </div>
+            <div class="card-body mb-3">
+                <div class="card-body mb-3">
+                    <form class="border border-light p-5" method="POST" action="{{ route('Join_event') }}">
+                        <p class="h4 mb-4 text-center">Đăng kí sự kiện</p>
+                        <div class="d-flex justify-content-between joinEvent">
+                        @csrf
+                        <!-- Group of material radios - option 1 -->
+                            <div class="form-check">
+                                <input type="radio" class="form-check-input" id="materialGroupExample1"
+                                       name="groupOfMaterialRadios">
+                                <label class="form-check-label" for="materialGroupExample1">Tham gia</label>
+                            </div>
+
+                            <!-- Group of material radios - option 2 -->
+                            <div class="form-check">
+                                <input type="radio" class="form-check-input" id="materialGroupExample2"
+                                       name="groupOfMaterialRadios">
+                                <label class="form-check-label" for="materialGroupExample2">Không tham </label>
+                            </div>
+                        </div>
+                        <br>
+                        <label for="exampleFormControlTextarea3">Ý kiến cá nhân:</label>
+                        <textarea class="form-control" id="exampleFormControlTextarea3" rows="7"></textarea>
+                        <button class="btn btn-info btn-block my-4" type="submit">Gửi phản hồi</button>
+                    </form>
+                </div>
+            </div>
+
+
+        </div>
 
 @endsection

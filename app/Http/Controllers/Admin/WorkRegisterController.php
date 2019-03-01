@@ -8,6 +8,7 @@ use App\Repositories\Contracts\IUserRepository;
 use App\Repositories\Contracts\IWorkTimeRegisterRepository;
 use App\Services\Contracts\IWorkTimeRegisterService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
 
 class WorkRegisterController extends AdminBaseController
 {
@@ -97,14 +98,45 @@ class WorkRegisterController extends AdminBaseController
 
     public function edit($id)
     {
-        $record = $this->repository->findOne($id);
+        $record = [];
+        $oldValue = [];
+        $payload = $this->repository->findIn('user_id', [$id]);
+        $payload->each(function ($item) use (&$oldValue) {
+            $oldValue[] = $item->only('start_at', 'end_at');
+        });
+
+        foreach ($oldValue as $key => $item) {
+            if ($item == WORK_PATH[3]) {
+                $oldValue['type_2'][PART_OF_THE_DAY[$key]] = 3;
+            } elseif ($item['start_at'] == WORK_PATH[0]['start_at'] && $item['end_at'] == WORK_PATH[0]['end_at']) {
+                $oldValue['type_2'][PART_OF_THE_DAY[$key]] = 0;
+            } elseif ($item['start_at'] == '00:00:00' || $item['end_at'] == '00:00:00') {
+                $oldValue['type_2'][PART_OF_THE_DAY[$key]] = 2;
+            } elseif ($item['start_at'] == WORK_PATH[1]['start_at'] && $item['end_at'] == WORK_PATH[1]['end_at']) {
+                $oldValue['type_2'][PART_OF_THE_DAY[$key]] = 1;
+            } else {
+                $oldValue['type_2'][PART_OF_THE_DAY[$key]] = 0;
+            }
+
+            $oldValue['type_3'][PART_OF_THE_DAY[$key]] = $item;
+        }
+
+        if ($oldValue[0]['start_at'] == WORK_PATH[0]) {
+            $oldValue['type_1'] = 0;
+        } else {
+            $oldValue['type_1'] = 1;
+        }
+
+        Session::flash('currentId', $payload->first()->select_type);
 
         $this->authorize('update', $record);
         $addVarsForView['edit_title'] = $this->editTitle;
-        $addVarsForView['target_user'] = $this->service->findOneUser($id);
-        $addVarsForView['edit_target'] = $addVarsForView['target_user']->name;
+        $addVarsForView['edit_target'] = $this->service->findOneUser($id)->name;
+        $oldValue = collect($oldValue)->except(0, 1, 2, 3, 4, 5)->toArray();
 
         return view($this->getResourceEditPath(), $this->filterEditViewData($record, [
+            'payload' => $payload,
+            'oldValue' => $oldValue,
             'record' => $record,
             'resourceAlias' => $this->getResourceAlias(),
             'resourceRoutesAlias' => $this->getResourceRoutesAlias(),
@@ -115,6 +147,7 @@ class WorkRegisterController extends AdminBaseController
 
     public function update(Request $request, $id)
     {
+        $request->session()->flash('currentId', $request->select_type);
         $record = $this->repository->findOne($id);
 
         $this->authorize('update', $record);
@@ -124,7 +157,7 @@ class WorkRegisterController extends AdminBaseController
         $payload = $this->requestAnalyze($request);
 
         foreach ($payload as $key => &$value) {
-            if(is_numeric($key)){
+            if (is_numeric($key)) {
                 $value['select_type'] = $request->select_type;
                 $value['user_id'] = $id;
                 $value['day'] = intval($key) + 2;
@@ -146,8 +179,8 @@ class WorkRegisterController extends AdminBaseController
     {
         $validateOptions = [
             'rules' => [
-                'select_type' => 'required|numeric|digits_between:0,2',
-                'quick_part' => 'nullable|digits_between:0,3',
+                'select_type' => 'required|numeric|between:0,2',
+                'quick_part' => 'nullable|between:0,3',
             ],
             'messages' => [],
             'attributes' => [],
@@ -155,9 +188,9 @@ class WorkRegisterController extends AdminBaseController
         ];
 
         foreach (PART_OF_THE_DAY as $item) {
-            $validateOptions['rules'][$item . '_path'] = 'nullable|numeric|digits_between:0,3';
-            $validateOptions['rules'][$item . '_start'] = 'nullable|alpha_num|max:5';
-            $validateOptions['rules'][$item . '_end'] = 'nullable|alpha_num|max:5';
+            $validateOptions['rules'][$item . '_part'] = 'nullable|numeric|between:0,3';
+            $validateOptions['rules'][$item . '_start'] = 'nullable|max:8';
+            $validateOptions['rules'][$item . '_end'] = 'nullable|max:8';
         }
 
         return $validateOptions;

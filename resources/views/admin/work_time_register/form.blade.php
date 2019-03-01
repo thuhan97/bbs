@@ -1,8 +1,5 @@
 <?php
-$defaultStaffCode = "J" . str_pad((\App\Models\User::max('id') + 1), 3, '0', STR_PAD_LEFT);
-$userId = $record->id;
-$record = \App\Models\User::whereId($record->id)->first();
-$workTimePayload = \App\Models\WorkTimeRegister::where('user_id', $record->id)->get();
+$currentId = intval(session('currentId'));
 ?>
 
 <div class="col-md-12">
@@ -30,132 +27,52 @@ $workTimePayload = \App\Models\WorkTimeRegister::where('user_id', $record->id)->
             <div class="row">
                 <div class="col-md-3">
                     <label for="staff_code">Chọn nhanh</label>
-                    {{ Form::select('quick_part', WORK_TIME_QUICK_SELECT, ['class'=>'form-control']) }}
+                    {{ Form::select('quick_part', WORK_TIME_QUICK_SELECT, $oldValue['type_1'], ['class'=>'form-control']) }}
                 </div>
             </div>
         </div>
         <div class="col-md-12 select_type_1">
             <div class="row">
-                <div class="col-md-2">
-                    <label for="staff_code">Thứ 2</label>
-                    {{ Form::select('mon_part', WORK_TIME_SELECT, ['class'=>'form-control']) }}
-                </div>
-                <div class="col-md-2">
-                    <label for="staff_code">Thứ 3</label>
-                    {{ Form::select('tue_part', WORK_TIME_SELECT, ['class'=>'form-control']) }}
-                </div>
-                <div class="col-md-2">
-                    <label for="staff_code">Thứ 4</label>
-                    {{ Form::select('wed_part', WORK_TIME_SELECT, ['class'=>'form-control']) }}
-                </div>
-                <div class="col-md-2">
-                    <label for="staff_code">Thứ 5</label>
-                    {{ Form::select('thu_part', WORK_TIME_SELECT, ['class'=>'form-control']) }}
-                </div>
-                <div class="col-md-2">
-                    <label for="staff_code">Thứ 6</label>
-                    {{ Form::select('fri_part', WORK_TIME_SELECT, ['class'=>'form-control']) }}
-                </div>
-                <div class="col-md-2">
-                    <label for="staff_code">Thứ 7</label>
-                    {{ Form::select('sat_part', WORK_TIME_SELECT, ['class'=>'form-control']) }}
-                </div>
+                @foreach(PART_OF_THE_DAY as $key => $value)
+                    <div class="col-md-2 margin-t-5{{ $errors->has($value . '_part') ? ' has-error' : '' }}">
+                        <label for="staff_code">Thứ {{$key + 2}}</label>
+                        {{ Form::select($value . '_part', WORK_TIME_SELECT, $oldValue['type_2'][$value], ['class'=>'form-control']) }}
+                        @if ($errors->has($value . '_part'))
+                            <span class="help-block">
+                            <strong>{{ $errors->first($value . '_part') }}</strong>
+                        </span>
+                        @endif
+                    </div>
+                @endforeach
             </div>
         </div>
         <div class="col-md-12 select_type_2">
             <div class="row">
                 <div class="bfh-timepicker">
                 </div>
-                <div class="col-md-2">
-                    <label for="staff_code">Thứ 2</label>
-                    <div class="bootstrap-timepicker">
-                        <div class="input-group">
-                            <input type="text" class="form-control timepicker" name="mon_start"
-                                   placeholder="Thời gian bắt đầu"
-                                   value="">
-                            <div class="input-group-addon">
-                                <i class="fa fa-clock-o"></i>
+                @foreach(PART_OF_THE_DAY as $key => $item)
+                    <div class="col-md-2 margin-t-5{{ $errors->has($item . '_start') || $errors->has($item .'_end') ? ' has-error' : '' }}">
+                        <label for="staff_code">Thứ {{ $key+2 }}</label>
+                        <div class="bootstrap-timepicker">
+                            <div class="input-group">
+                                <input type="text" class="form-control timepicker" name="{{$item}}_start"
+                                       placeholder="Thời gian bắt đầu"
+                                       value="{{ $oldValue['type_3'][$item]['start_at'] }}">
+                                <div class="input-group-addon">
+                                    <i class="fa fa-clock-o"></i>
+                                </div>
                             </div>
                         </div>
+                        <input type="text" class="form-control" id="{{$item}}_end" name="{{$item}}_end"
+                               placeholder="Thời gian kết thúc"
+                               value="{{ $oldValue['type_3'][$item]['end_at'] }}" readonly="">
+                        @if ($errors->has($item . '_start') || $errors->has($item . '_end'))
+                            <span class="help-block">
+                            <strong>{{ $errors->first($item . '_start') ? $errors->first($item . '_start') : $errors->first($item . '_end') }}</strong>
+                        </span>
+                        @endif
                     </div>
-                    <input type="text" class="form-control" name="mon_end" placeholder="Thời gian kết thúc"
-                           value="" readonly="">
-                </div>
-                <div class="col-md-2">
-                    <label for="staff_code">Thứ 3</label>
-                    <div class="bootstrap-timepicker">
-                        <div class="input-group">
-                            <input type="text" class="form-control timepicker" name="tue_start"
-                                   placeholder="Thời gian bắt đầu"
-                                   value="">
-                            <div class="input-group-addon">
-                                <i class="fa fa-clock-o"></i>
-                            </div>
-                        </div>
-                    </div>
-                    <input type="text" class="form-control" name="tue_end" placeholder="Thời gian kết thúc"
-                           value="" readonly="">
-                </div>
-                <div class="col-md-2">
-                    <label for="staff_code">Thứ 4</label>
-                    <div class="bootstrap-timepicker">
-                        <div class="input-group">
-                            <input type="text" class="form-control timepicker" name="wed_start"
-                                   placeholder="Thời gian bắt đầu"
-                                   value="">
-                            <div class="input-group-addon">
-                                <i class="fa fa-clock-o"></i>
-                            </div>
-                        </div>
-                    </div>
-                    <input type="text" class="form-control" name="wed_end" placeholder="Thời gian kết thúc"
-                           value="" readonly="">
-                </div>
-                <div class="col-md-2">
-                    <label for="staff_code">Thứ 5</label>
-                    <div class="bootstrap-timepicker">
-                        <div class="input-group">
-                            <input type="text" class="form-control timepicker" name="thu_start"
-                                   placeholder="Thời gian bắt đầu"
-                                   value="">
-                            <div class="input-group-addon">
-                                <i class="fa fa-clock-o"></i>
-                            </div>
-                        </div>
-                    </div>
-                    <input type="text" class="form-control" name="thu_end" placeholder="Thời gian kết thúc"
-                           value="" readonly="">
-                </div>
-                <div class="col-md-2">
-                    <label for="staff_code">Thứ 6</label>
-                    <div class="bootstrap-timepicker">
-                        <div class="input-group">
-                            <input type="text" class="form-control timepicker" name="fri_start"
-                                   placeholder="Thời gian bắt đầu"
-                                   value="">
-                            <div class="input-group-addon">
-                                <i class="fa fa-clock-o"></i>
-                            </div>
-                        </div>
-                    </div>
-                    <input type="text" class="form-control" name="fri_end" placeholder="Thời gian kết thúc"
-                           value="" readonly="">
-                </div>
-                <div class="col-md-2">
-                    <label for="staff_code">Thứ 7</label>
-                    <div class="bootstrap-timepicker">
-                        <div class="input-group">
-                            <input type="text" class="form-control timepicker" name="sat_start"
-                                   placeholder="Thời gian bắt đầu"
-                                   value="">
-                            <div class="input-group-addon">
-                                <i class="fa fa-clock-o"></i>
-                            </div>
-                        </div>
-                    </div>
-                    <input type="text" class="form-control" name="sat_end" placeholder="Thời gian kết thúc"
-                           value="" readonly="">
-                </div>
+                @endforeach
             </div>
         </div>
     </div>
@@ -175,8 +92,26 @@ $workTimePayload = \App\Models\WorkTimeRegister::where('user_id', $record->id)->
             })
         }
 
-        $('#radio_select_type_0').attr('checked', 'checked')
-        toggleClass(0)
+        var timeEndCalculate = (e) => {
+            let hour = e.time.hours
+            let minute = e.time.minutes
+
+            hour += 5
+            minute += 30
+            if (minute >= 60) {
+                minute = minute - 60
+                hour += 1
+            }
+            if (hour >= 12 && hour <= 13) {
+                return '{{ WORK_PATH[0]['end_at'] }}'
+            }
+
+                minute = minute == 0 ? '00' : minute
+            return hour + ':' + minute + ':00'
+        }
+
+        $('#radio_select_type_{{ $currentId }}').attr('checked', 'checked')
+        toggleClass({{ $currentId }})
         $(document).ready(function () {
             $('.select_type').click(function () {
                 let selectTypeVal = $(this).find('input').val()
@@ -185,11 +120,34 @@ $workTimePayload = \App\Models\WorkTimeRegister::where('user_id', $record->id)->
         })
 
         $(function () {
-            //Timepicker
             $('.timepicker').timepicker({
                 showInputs: true,
                 showMeridian: false,
+                defaultTime: null,
+                showSeconds: true,
             })
+
+            $('.timepicker').timepicker().on('changeTime.timepicker', function (e) {
+                let str = $(this).attr('name')
+                let selector = str.replace('start', 'end')
+                let endTimeSelector = $('#' + selector)
+
+                if (e.time.hours < 8) {
+                    $(this).val('{{ $config['morning_start_work_at'] }}')
+                    endTimeSelector.val('{{ WORK_PATH[0]['end_at'] }}')
+                    return
+                } else if (e.time.hours >= 13) {
+                    $(this).val('{{ $config['afternoon_start_work_at'] }}');
+                    endTimeSelector.val('{{ $config['afternoon_end_work_at'] }}')
+                    return
+                } else if (e.time.hours <= 13 && e.time.hours >= 12) {
+                    $(this).val('{{ $config['afternoon_start_work_at'] }}');
+                    endTimeSelector.val('{{ $config['afternoon_end_work_at'] }}')
+                    return
+                }
+
+                endTimeSelector.val(timeEndCalculate(e));
+            });
         })
     </script>
 @endpush

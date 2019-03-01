@@ -110,11 +110,19 @@ define('PART_OF_THE_DAY', [
 
 define('WORK_PATH', [
     0 => [
-        'start_at' => '8:00:00',
+        'start_at' => '08:00:00',
         'end_at' => '12:00:00'
     ],
     1 => [
         'start_at' => '13:30:00',
+        'end_at' => '17:30:00'
+    ],
+    2 => [
+        'start_at' => 0,
+        'end_at' => 0
+    ],
+    3 => [
+        'start_at' => '08:00:00',
         'end_at' => '17:30:00'
     ]
 ]);

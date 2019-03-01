@@ -33,32 +33,32 @@
             <div class="card-body mb-3">
                 <div class="card-body mb-3">
                     <form class="border border-light p-5" method="POST" action="{{ route('Join_event') }}">
-                        <p class="h4 mb-4 text-center">Đăng kí sự kiện</p>
+                        <p class="h4 mb-4 text-center">Phản hồi</p>
                         <div class="d-flex justify-content-between joinEvent">
-                        @csrf
-                        <!-- Group of material radios - option 1 -->
+                            @csrf
+                            <input type="hidden" name="event_id" value="{{ $event->id }}">
+                            <input type="hidden" name="deadline_at" value="{{ $event->deadline_at }}">
+                            <!-- Group of material radios - option 1 -->
                             <div class="form-check">
                                 <input type="radio" class="form-check-input" id="materialGroupExample1"
-                                       name="groupOfMaterialRadios">
+                                       name="status" value="1" checked>
                                 <label class="form-check-label" for="materialGroupExample1">Tham gia</label>
                             </div>
 
                             <!-- Group of material radios - option 2 -->
                             <div class="form-check">
                                 <input type="radio" class="form-check-input" id="materialGroupExample2"
-                                       name="groupOfMaterialRadios">
+                                       name="status" value="0">
                                 <label class="form-check-label" for="materialGroupExample2">Không tham </label>
                             </div>
                         </div>
                         <br>
                         <label for="exampleFormControlTextarea3">Ý kiến cá nhân:</label>
-                        <textarea class="form-control" id="exampleFormControlTextarea3" rows="7"></textarea>
+                        <textarea class="form-control" id="exampleFormControlTextarea3" rows="7"
+                                  name="content"></textarea>
                         <button class="btn btn-info btn-block my-4" type="submit">Gửi phản hồi</button>
                     </form>
                 </div>
             </div>
-
-
         </div>
-
 @endsection

@@ -50,6 +50,9 @@ use App\Repositories\WorkTimeRepository;
 use Illuminate\Support\ServiceProvider;
 
 ##AUTO_INSERT_USE##
+use App\Repositories\Contracts\IEventAttendanceListRepository;
+use App\Repositories\EventAttendanceListRepository;
+use App\Models\EventAttendanceList;
 
 class RepositoriesServiceProvider extends ServiceProvider
 {
@@ -63,6 +66,9 @@ class RepositoriesServiceProvider extends ServiceProvider
     public function register()
     {
         ##AUTO_INSERT_BIND##
+        $this->app->bind(IEventAttendanceListRepository::class, function () {
+            return new EventAttendanceListRepository(new EventAttendanceList());
+        });
         $this->app->bind(IProjectRepository::class, function () {
             return new ProjectRepository(new Project());
         });
@@ -118,6 +124,7 @@ class RepositoriesServiceProvider extends ServiceProvider
     {
         return [
             ##AUTO_INSERT_NAME##
+            EventAttendanceListRepository::class,
             IProjectRepository::class,
             IFeedbackRepository::class,
             IReportRepository::class,

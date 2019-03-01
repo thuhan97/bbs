@@ -80,22 +80,10 @@ class EventController extends Controller
     public function detail($id)
     {
         $event = $this->eventService->detail($id);
-
+        $userJoinEvent = $this->eventAttendanceListRepository->getUserJoing($data['user_id'], $data['event_id']);
         if ($event) {
             return view('end_user.event.detail', compact('event'));
         }
         abort(404);
     }
-
-
-    /**
-     * @param Request $request
-     *
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
-     */
-    public function JoinEvent(Request $request)
-    {
-
-    }
-
 }

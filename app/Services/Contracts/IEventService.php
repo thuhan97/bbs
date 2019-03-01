@@ -16,7 +16,7 @@ interface IEventService extends IBaseService
     /**
      * @param Request $request
      * @param integer $perPage
-     * @param string  $search
+     * @param string $search
      *
      * @return collection
      */
@@ -35,4 +35,7 @@ interface IEventService extends IBaseService
      * @return Event
      */
     public function detail($id);
+
+
+
 }

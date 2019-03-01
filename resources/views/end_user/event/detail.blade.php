@@ -18,7 +18,13 @@
         <div class="card-body mb-3">
 
             <!-- Title -->
-            <h3 class="card-title h3 my-4 text-center"><strong>{{$event->name}}</strong></h3>
+            <h3 class="card-title h3 my-4 text-center"><strong>{{$event->name}}</strong>
+                @if($event->event_end_date < date('Y-m-d H:i:s'))
+                    <h4 class="card-title h3 my-4 text-center text-danger"><strong>Đã kết thúc</strong>
+                    </h4>
+                @endif
+
+            </h3>
             <h5 class="card-title h6 my-4 text-center"><b>{!! $event->introduction!!}</b></h5>
             <!-- Text -->
             <p class="card-text py-2">{!! $event->content !!}</p>
@@ -30,35 +36,95 @@
             </div>
             <hr/>
 
-            <div class="card-body mb-3">
-                <div class="card-body mb-3">
-                    <form class="border border-light p-5" method="POST" action="{{ route('Join_event') }}">
-                        <p class="h4 mb-4 text-center">Phản hồi</p>
-                        <div class="d-flex justify-content-between joinEvent">
-                            @csrf
-                            <input type="hidden" name="event_id" value="{{ $event->id }}">
-                            <input type="hidden" name="deadline_at" value="{{ $event->deadline_at }}">
-                            <!-- Group of material radios - option 1 -->
-                            <div class="form-check">
-                                <input type="radio" class="form-check-input" id="materialGroupExample1"
-                                       name="status" value="1" checked>
-                                <label class="form-check-label" for="materialGroupExample1">Tham gia</label>
-                            </div>
-
-                            <!-- Group of material radios - option 2 -->
-                            <div class="form-check">
-                                <input type="radio" class="form-check-input" id="materialGroupExample2"
-                                       name="status" value="0">
-                                <label class="form-check-label" for="materialGroupExample2">Không tham </label>
-                            </div>
+            @if($event->deadline_at > date('Y-m-d H:i:s'))
+                <form class="border border-light p-5" method="POST" action="{{ route('Join_event') }}">
+                    <p class="h4 mb-4 text-center">Phản hồi</p>
+                    <div class="d-flex justify-content-between joinEvent">
+                        @csrf
+                        <input type="hidden" name="event_id" value="{{ $event->id }}">
+                        <input type="hidden" name="deadline_at" value="{{ $event->deadline_at }}">
+                        <!-- Group of material radios - option 1 -->
+                        <div class="form-check">
+                            <input type="radio" class="form-check-input" id="materialGroupExample1"
+                                   name="status" value="1" checked>
+                            <label class="form-check-label" for="materialGroupExample1">Tham gia</label>
                         </div>
-                        <br>
-                        <label for="exampleFormControlTextarea3">Ý kiến cá nhân:</label>
-                        <textarea class="form-control" id="exampleFormControlTextarea3" rows="7"
-                                  name="content"></textarea>
-                        <button class="btn btn-info btn-block my-4" type="submit">Gửi phản hồi</button>
-                    </form>
-                </div>
-            </div>
+
+                        <!-- Group of material radios - option 2 -->
+                        <div class="form-check">
+                            <input type="radio" class="form-check-input" id="materialGroupExample2"
+                                   name="status" value="0">
+                            <label class="form-check-label" for="materialGroupExample2">Không tham </label>
+                        </div>
+                    </div>
+                    <br>
+                    <label for="exampleFormControlTextarea3">Ý kiến cá nhân:</label>
+                    <textarea class="form-control" id="exampleFormControlTextarea3" rows="7"
+                              name="content"></textarea>
+                    <button class="btn btn-info btn-block my-4" type="submit">Gửi phản hồi</button>
+                </form>
+            @else
+                <h3 class="card-title h3 my-4 text-center text-danger"><strong>Đã hết thời hạn gửi phản hồi</strong>
+                </h3>
+            @endif
+
+            <h5 class="card-title h6 my-4"><b>Danh sách nhân viên gửi phản hồi :</b></h5>
+
+            <table id="dtBasicExample" class="table table-striped table-bordered" cellspacing="0" width="100%">
+                <thead>
+                <tr>
+                    <th class="th-sm">Tên nhân viên
+                    </th>
+                    <th class="th-sm">Mã nhân viên
+                    </th>
+                    <th class="th-sm">Trạng thái
+                    </th>
+                    <th class="th-sm">Ý kiến cá nhân
+                    </th>
+                    <th class="th-sm">Ngày đăng kí
+                    </th>
+                </tr>
+                </thead>
+                <tbody>
+                @if (count($listUserJoinEvent) > 0)
+                    @foreach ($listUserJoinEvent as $listUserJoinEventValue)
+                        <tr>
+                            <td>{{ $listUserJoinEventValue->name }}</td>
+                            <td>{{ $listUserJoinEventValue->staff_code }}</td>
+                            <td>{{ $listUserJoinEventValue->status == 1 ? STATUS_JOIN_EVENT[1] : STATUS_JOIN_EVENT[0] }}</td>
+                            <td>{{ $listUserJoinEventValue->content}}</td>
+                            <td>{{ $listUserJoinEventValue->created_at }}</td>
+                        </tr>
+                    @endforeach
+                @endif
+
+                </tbody>
+                <tfoot>
+                <tr>
+                    <th>Tên nhân viên
+                    </th>
+                    <th>Mã nhân viên
+                    </th>
+                    <th>Trạng thái
+                    </th>
+                    <th class="th-sm">Ý kiến cá nhân
+                    </th>
+                    <th>Ngày đăng kí
+                    </th>
+                </tr>
+                </tfoot>
+            </table>
+
+
         </div>
+    </div>
+    @push('extend-js')
+        <script>
+            $(document).ready(function () {
+                $('#dtBasicExample').DataTable();
+                $('.dataTables_length').addClass('bs-select');
+            });
+        </script>
+    @endpush
 @endsection
+

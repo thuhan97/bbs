@@ -102,4 +102,18 @@ class Event extends Model
             ->orWhere('introduction', 'like', '%' . $searchTerm . '%')
             ->orWhere('content', 'like', '%' . $searchTerm . '%');
     }
+
+    /**
+     * @content has One user
+     * @author  : Hunglt
+     * @Date    : 2018/09/28
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\hasMany
+     */
+    public function eventAttendanceList()
+    {
+        return $this->hasMany(EventAttendanceList::class, 'event_id', 'id');
+    }
+
+
 }

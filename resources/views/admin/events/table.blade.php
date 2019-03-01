@@ -10,7 +10,7 @@
             <col style="width: 70px">
             <col style="width: 70px">
         </colgroup>
-        <thead>
+        <thead class="eventTable">
         <th style="width: 10px;">
             <button type="button" class="btn btn-default btn-sm checkbox-toggle"><i class="fa fa-square-o"></i></button>
         </th>
@@ -56,6 +56,7 @@
             <!-- we will also add show, edit, and delete buttons -->
                 <td>
                     <div class="btn-group">
+                        <a href="" class="btn btn-info btn-sm"><i class="fa fa-info"></i></a>
                         <a href="{{ $editLink }}" class="btn btn-info btn-sm"><i class="fa fa-edit"></i></a>
                         <a href="#" class="btn btn-danger btn-sm btnOpenerModalConfirmModelDelete"
                            data-form-id="{{ $formId }}"><i class="fa fa-trash-o"></i></a>

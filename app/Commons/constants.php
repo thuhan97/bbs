@@ -110,6 +110,12 @@ define('PROJECT_TYPE', [
     1 => 'Trọn gói',
 ]);
 
+
+define('STATUS_JOIN_EVENT', [
+    0 => 'Không tham gia',
+    1 => 'Tham gia',
+]);
+
 define('NOT_AUTHENTICATED', 'Tài khoản không hợp lệ');
 define('NOT_AUTHORIZED', 'Tài khoản không đủ thẩm quyền');
 

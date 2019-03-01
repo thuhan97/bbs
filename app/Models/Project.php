@@ -32,7 +32,7 @@ class Project extends Model
         'project_type',
         'scale',
         'amount_of_time',
-        'technicala',
+        'technical',
         'tools',
         'leader_id',
         'description',
@@ -74,7 +74,7 @@ class Project extends Model
             $query->orWhere('users.name', 'LIKE', '%' . $searchTerm . '%');
             $query->orWhere('customer', 'LIKE', '%' . $searchTerm . '%');
             $query->orWhere('scale', 'LIKE', '%' . $searchTerm . '%');
-            $query->orWhere('technicala', 'LIKE', '%' . $searchTerm . '%');
+            $query->orWhere('technical', 'LIKE', '%' . $searchTerm . '%');
             $query->orWhere('tools', 'LIKE', '%' . $searchTerm . '%');
             $query->orWhere('description', 'LIKE', '%' . $searchTerm . '%');
         })

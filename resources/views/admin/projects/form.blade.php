@@ -61,7 +61,7 @@
                 <div class="col-md-3">
                     <div class="form-group margin-b-5 margin-t-5{{ $errors->has('scale') ? ' has-error' : '' }}">
                         <label for="scale">Quy mô dự án (người/tháng)</label>
-                        <input type="text" class="form-control" name="scale" placeholder="Quy mô dự án"
+                        <input type="number" class="form-control" name="scale" placeholder="Quy mô dự án"
                                value="{{ old('scale', $record->scale) }}">
 
                         @if ($errors->has('scale'))
@@ -76,7 +76,7 @@
 
                     <div class="form-group margin-b-5 margin-t-5{{ $errors->has('amount_of_time') ? ' has-error' : '' }}">
                         <label for="amount_of_time">Thời gian (tháng)</label>
-                        <input id="amount_of_time" class="form-control" name="amount_of_time" rows="5"
+                        <input id="amount_of_time" class="form-control" name="amount_of_time" type="number"
                                placeholder="Thời gian" value="{{ old('amount_of_time', $record->amount_of_time) }}">
 
                         @if ($errors->has('amount_of_time'))
@@ -171,14 +171,14 @@
     </div>
     <div class="row">
         <div class="col-md-4">
-            <div class="form-group margin-b-5 margin-t-5{{ $errors->has('technicala') ? ' has-error' : '' }}">
-                <label for="technicala">Kỹ thuật</label>
-                <textarea id="technicala" class="form-control" name="technicala" rows="5"
-                          placeholder="Kỹ thuật">{{--{{ old('technicala', $record->technicala) }}--}}{!! $record->technicala !!}</textarea>
+            <div class="form-group margin-b-5 margin-t-5{{ $errors->has('technical') ? ' has-error' : '' }}">
+                <label for="technical">Kỹ thuật</label>
+                <textarea id="technical" class="form-control" name="technical" rows="5"
+                          placeholder="Kỹ thuật">{{--{{ old('technical', $record->technical) }}--}}{!! $record->technical !!}</textarea>
 
-                @if ($errors->has('technicala'))
+                @if ($errors->has('technical'))
                     <span class="help-block">
-                                <strong>{{ $errors->first('technicala') }}</strong>
+                                <strong>{{ $errors->first('technical') }}</strong>
                             </span>
                 @endif
             </div>
@@ -202,7 +202,7 @@
     <div class="row">
         <div class="col-md-8">
             <div class="form-group margin-b-5 margin-t-5{{ $errors->has('description') ? ' has-error' : '' }}">
-                <label for="description">Miêu tả</label>
+                <label for="description">Mô tả</label>
                 <textarea id="description" class="form-control" name="description" rows="5"
                           placeholder="Miêu tả">{{ old('description', $record->description) }}</textarea>
 

@@ -24,6 +24,7 @@ class Team extends Model
     protected $fillable = [
         'name',
         'leader_id',
+        'color',
         'banner',
         'description',
         'slogan',
@@ -70,6 +71,11 @@ class Team extends Model
         return $this->hasMany('App\Models\UserTeam', 'team_id', 'id');
     }
 
+    public function members()
+    {
+        return $this->hasManyThrough(User::class, UserTeam::class, 'team_id', 'id', 'id', 'user_id');
+    }
+
     /**
      * @return mixed
      */
@@ -78,8 +84,8 @@ class Team extends Model
         $memberModel = new UserTeam;
         $member = $memberModel->getMemberIdAttribute();
         $users = User::whereNotIn('id', $member)
-            ->where('jobtitle_id', TEAMLEADER_ROLE)//Leader
-            ->orwhere('id', $id)
+            ->whereIn('jobtitle_id', [TEAMLEADER_ROLE, MANAGER_ROLE, HEAD_DEPARTMENT_ROLE])//Leader
+            ->orWhere('id', $id)
             ->get();
         return $users;
     }

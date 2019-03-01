@@ -4,8 +4,6 @@ namespace App\Exceptions;
 
 use App\Traits\RESTActions;
 use Exception;
-use Google_Exception;
-use Google_Service_Exception;
 use HttpException;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Database\QueryException;
@@ -82,12 +80,7 @@ class Handler extends ExceptionHandler
                 $message = config('app.env') != 'production' ? $exception->getMessage() : '';
                 return $this->respondAuthFail($message);
             }
-            if ($exception instanceof Google_Service_Exception) {
-                return $this->respondFail('Google_Service_Exception: ' . $exception->getMessage());
-            }
-            if ($exception instanceof Google_Exception) {
-                return $this->respondFail('Google_Exception: ' . $exception->getMessage());
-            }
+
             if (config('app.env') != 'production') {
                 if ($exception instanceof QueryException) {
                     return $this->respondFail('Error DB: ' . $exception->getMessage() . $exception->getTraceAsString());
@@ -119,7 +112,9 @@ class Handler extends ExceptionHandler
         if ($request->expectsJson()) {
             return response()->json(['error' => 'Unauthenticated.'], 401);
         }
-
+        if (str_contains($request->path(), 'admin')) {
+            return redirect()->guest('admin/login');
+        }
         return redirect()->guest('login');
     }
 }

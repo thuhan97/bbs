@@ -12,15 +12,15 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class {{$Module}} extends Model
 {
-    use SoftDeletes, FillableFields, OrderableTrait, SearchLikeTrait;
+use SoftDeletes, FillableFields, OrderableTrait, SearchLikeTrait;
 
-	protected $table = '{{$table}}';
+protected $table = '{{$table}}';
 
-	protected $primaryKey = 'id';
+protected $primaryKey = 'id';
 
-    protected $fillable = [
-        @foreach($list_column as $column)
-            '{{$column}}',
-        @endforeach
-    ];
+protected $fillable = [
+@foreach($list_column as $column)
+    '{{$column}}',
+@endforeach
+];
 }

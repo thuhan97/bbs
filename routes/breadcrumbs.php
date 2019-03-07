@@ -66,7 +66,16 @@ Breadcrumbs::register('report_create', function ($breadcrumbs) {
     $breadcrumbs->parent('report');
     $breadcrumbs->push(__l('Report_create'), route('create_report'));
 });
+//Home > Project
+Breadcrumbs::register('project', function ($breadcrumbs) {
+    $breadcrumbs->parent('home');
+    $breadcrumbs->push(__l('Project'), route('project'));
+});
+Breadcrumbs::register('project_detail', function ($breadcrumbs, $project) {
+    $breadcrumbs->parent('project');
+    $breadcrumbs->push($project->name, route('project_detail', ['id' => $project->id]));
 
+});
 // Dashboard > Profile
 Breadcrumbs::register('_personal', function ($breadcrumbs) {
     $breadcrumbs->parent('personal');
@@ -94,8 +103,8 @@ Breadcrumbs::register('day_off', function ($breadcrumbs) {
 });
 // Dashboard > day_off_approval
 Breadcrumbs::register('day_off_approval', function ($breadcrumbs) {
-	$breadcrumbs->parent('personal');
-	$breadcrumbs->push(__l('day_off_approval'), route('day_off_approval'));
+    $breadcrumbs->parent('personal');
+    $breadcrumbs->push(__l('day_off_approval'), route('day_off_approval'));
 });
 
 // Admin
@@ -115,6 +124,7 @@ $resources = [
     'day_offs' => 'Quản lý nghỉ phép',
     'work_times' => 'Quản lý làm việc',
     'work_time_register' => 'Đăng ký thời gian làm việc'
+    'projects' => 'Quản lý dự án',
 ];
 foreach ($resources as $resource => $data) {
     $parent = 'admin';
@@ -145,7 +155,7 @@ foreach ($resources as $resource => $data) {
         $breadcrumbs->parent($resource);
         $breadcrumbs->push('Chi tiết', route($resource . '.show', $id));
     });
-    Breadcrumbs::register($resource .'.deletes', function ($breadcrumbs,  $id) use ($resource) {
+    Breadcrumbs::register($resource . '.deletes', function ($breadcrumbs, $id) use ($resource) {
         $breadcrumbs->parent($resource);
         $breadcrumbs->push('Xóa', route($resource . '.deletes', $id));
     });

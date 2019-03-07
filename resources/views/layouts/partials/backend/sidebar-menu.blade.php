@@ -17,9 +17,14 @@
             <i class="fa fa-user"></i> <span>Nhân viên</span>
         </a>
     </li>
-    <li class="{{ \App\Utils::checkRoute(['admin::teams.index', 'admin::teams.create', 'admin::teams.edit']) ? 'active': '' }}">
+    <li class="{{ \App\Utils::checkRoute(['admin::teams.index', 'admin::teams.create', 'admin::teams.edit', 'admin::teams.show']) ? 'active': '' }}">
         <a href="{{ route('admin::teams.index') }}">
             <i class="fa fa-user"></i> <span>Nhóm</span>
+        </a>
+    </li>
+    <li class="{{ \App\Utils::checkRoute(['admin::projects.index', 'admin::projects.create', 'admin::projects.edit', 'admin::projects.show']) ? 'active': '' }}">
+        <a href="{{ route('admin::projects.index') }}">
+            <i class="fa fa-user"></i> <span>Dự án</span>
         </a>
     </li>
     <li class="{{ \App\Utils::checkRoute(['admin::events.index', 'admin::events.create', 'admin::events.edit']) ? 'active': '' }}">

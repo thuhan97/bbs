@@ -6,8 +6,10 @@ use App\Models\Admin;
 use App\Models\Config;
 use App\Models\DayOff;
 use App\Models\Event;
+use App\Models\Feedback;
 use App\Models\OverTime;
 use App\Models\Post;
+use App\Models\Project;
 use App\Models\Regulation;
 use App\Models\Report;
 use App\Models\Team;
@@ -22,8 +24,10 @@ use App\Repositories\Contracts\IAdminRepository;
 use App\Repositories\Contracts\IConfigRepository;
 use App\Repositories\Contracts\IDayOffRepository;
 use App\Repositories\Contracts\IEventRepository;
+use App\Repositories\Contracts\IFeedbackRepository;
 use App\Repositories\Contracts\IOverTimeRepository;
 use App\Repositories\Contracts\IPostRepository;
+use App\Repositories\Contracts\IProjectRepository;
 use App\Repositories\Contracts\IRegulationRepository;
 use App\Repositories\Contracts\IReportRepository;
 use App\Repositories\Contracts\ITeamRepository;
@@ -34,8 +38,10 @@ use App\Repositories\Contracts\IWorkTimeRegisterRepository;
 use App\Repositories\Contracts\IWorkTimeRepository;
 use App\Repositories\DayOffRepository;
 use App\Repositories\EventRepository;
+use App\Repositories\FeedbackRepository;
 use App\Repositories\OverTimeRepository;
 use App\Repositories\PostRepository;
+use App\Repositories\ProjectRepository;
 use App\Repositories\RegulationRepository;
 use App\Repositories\ReportRepository;
 use App\Repositories\TeamRepository;
@@ -60,6 +66,12 @@ class RepositoriesServiceProvider extends ServiceProvider
     public function register()
     {
         ##AUTO_INSERT_BIND##
+        $this->app->bind(IProjectRepository::class, function () {
+            return new ProjectRepository(new Project());
+        });
+        $this->app->bind(IFeedbackRepository::class, function () {
+            return new FeedbackRepository(new Feedback());
+        });
         $this->app->bind(IOverTimeRepository::class, function () {
             return new OverTimeRepository(new OverTime());
         });
@@ -103,12 +115,17 @@ class RepositoriesServiceProvider extends ServiceProvider
         $this->app->bind(IWorkTimeRegisterRepository::class, function () {
             return new WorkTimeRegisterRepository(new WorkTimeRegister());
         });
+        $this->app->bind(IProjectRepository::class, function () {
+            return new ProjectRepository(new Project());
+        });
     }
 
     public function provides()
     {
         return [
             ##AUTO_INSERT_NAME##
+            IProjectRepository::class,
+            IFeedbackRepository::class,
             IReportRepository::class,
             IRegulationRepository::class,
             IConfigRepository::class,
@@ -120,7 +137,8 @@ class RepositoriesServiceProvider extends ServiceProvider
             IWorkTimeRepository::class,
             ITeamRepository::class,
             IUserTeamRepository::class,
-            IWorkTimeRegisterRepository::class
+            IWorkTimeRegisterRepository::class,
+            IProjectRepository::class
         ];
     }
 }

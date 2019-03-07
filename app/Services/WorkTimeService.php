@@ -1,9 +1,9 @@
-<?php 
+<?php
 /**
-* WorkTimeService class
-* Author: jvb
-* Date: 2019/01/22 10:50
-*/
+ * WorkTimeService class
+ * Author: jvb
+ * Date: 2019/01/22 10:50
+ */
 
 namespace App\Services;
 

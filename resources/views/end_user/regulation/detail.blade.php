@@ -20,7 +20,8 @@
                     <ul>
                         @foreach($regulation->regulation_files as $index => $file)
                             <li>
-                                <a href="{{$file->file_path}}" target="_blank"><i class="fas fa-file"></i>  File đính kèm {{$index+1}}</a>
+                                <a href="{{$file->file_path}}" target="_blank"><i class="fas fa-file"></i> File đính
+                                    kèm {{$index+1}}</a>
                             </li>
                         @endforeach
                     </ul>

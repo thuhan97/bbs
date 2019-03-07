@@ -3,8 +3,6 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\Admin;
-use App\Repositories\Contracts\IAdminRepository;
 use App\Traits\Controllers\ResourceController;
 
 /**
@@ -57,4 +55,5 @@ class AdminBaseController extends Controller
     {
         return 'admin._resources.show';
     }
+
 }

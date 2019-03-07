@@ -23,7 +23,7 @@
             <!-- Text -->
             <p class="card-text py-2">{!! $event->content !!}</p>
             <!-- Button -->
-            <hr />
+            <hr/>
             <div class="text-center">
                 <p>
                     <b>{{$event->place}}</b>, {{ $event->event_date }}

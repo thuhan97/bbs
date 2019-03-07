@@ -43,7 +43,8 @@ $_printLink = false;
             <div class="box box-info" id="wrap-edit-box">
 
                 <form class="form" role="form" method="POST"
-                      action="{{ $_updateLink }}" {{ $_formFiles === true ? 'enctype="multipart/form-data"' : ''}}>
+                      action="{{ $_updateLink }}"
+                      enctype="multipart/form-data"{{ $_formFiles === true ? 'enctype="multipart/form-data"' : ''}}>
                     {{ csrf_field() }}
                     {{ method_field('PUT') }}
 

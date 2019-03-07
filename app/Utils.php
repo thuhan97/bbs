@@ -24,6 +24,7 @@ final class Utils
 
     /**
      * @param array|string $routes
+     *
      * @return bool
      */
     public static function checkRoute($routes)
@@ -47,6 +48,7 @@ final class Utils
 
     /**
      * @param int $logoNumber
+     *
      * @return string
      */
     public static function logoPath($logoNumber = 1)
@@ -58,6 +60,7 @@ final class Utils
 
     /**
      * @param int $logoNumber
+     *
      * @return string
      */
     public static function getValidLogoNumber($logoNumber = 1)
@@ -67,11 +70,12 @@ final class Utils
 
     /**
      * @param null $guard
+     *
      * @return string
      */
     public static function getUserRoleLabel($guard = null)
     {
-        if (! Auth::guard($guard)->guest()) {
+        if (!Auth::guard($guard)->guest()) {
             $user = Auth::guard($guard)->user();
             if ($user->isAdmin()) {
                 return 'Administrator';

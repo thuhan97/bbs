@@ -26,6 +26,15 @@ Route::group([
 
     ##AUTO_INSERT_ROUTE##
 
+    //project
+    Route::resource('project', 'ProjectController');
+
+    //OverTime
+    Route::resource('over_times', 'OverTimeController');
+
+    //feedback
+    Route::resource('feedback', 'FeedbackController');
+
     //OverTime
     Route::resource('over_times', 'OverTimeController');
 
@@ -67,6 +76,9 @@ Route::group([
     //admin
     Route::resource('admins', 'AdminController');
 
+    Route::resource('projects', 'ProjectController');
+    Route::post('projects/deletes', ['as' => 'projects.deletes', 'uses' => 'ProjectController@deletes']);
+
     //users
     Route::get('users/import/{setId}', ['as' => 'users.import', 'uses' => 'UserController@import']);
     Route::get('users/download-template', ['as' => 'users.download-template', 'uses' => 'UserController@downloadTemplate']);
@@ -75,11 +87,14 @@ Route::group([
     Route::get('users/reset-password', 'UserController@resetPassword');
     Route::resource('users', 'UserController');
 
-    Route::post('teams/deletes', ['as' => 'teams.deletes', 'uses' => 'TeamController@deletes']);
+    Route::post('teams/save-member', ['uses' => 'TeamController@saveUserTeam']);
     Route::get('teams/manage-member/{id}', ['uses' => 'TeamController@manageMember']);
+    Route::put('teams/{id}', ['uses' => 'TeamController@updateTmp'])->name('teame.update123');
+    Route::post('teams/deletes', ['as' => 'teams.deletes', 'uses' => 'TeamController@deletes']);
     Route::resource('teams', 'TeamController');
 
     //register work time
     Route::post('work_time_register/deletes', ['as' => 'work_time_register.deletes', 'uses' => 'WorkRegisterController@deletes']);
     Route::resource('work_time_register', 'WorkRegisterController');
+
 });

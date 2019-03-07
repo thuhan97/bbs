@@ -9,6 +9,7 @@
 namespace App\Services\Contracts;
 
 
-interface ITeamService extends IBaseService {
+interface ITeamService extends IBaseService
+{
 
 }

@@ -38,6 +38,9 @@ define('LANG_VN', 'vi');
 define('EXPIRE_POTATO_DEFAULT', 6);
 
 define('URL_IMAGE_NO_IMAGE', '/dist/img/no-avatar.png');
+define('UPLOAD_PATH', '/uploads');
+define('URL_IMAGE_AVATAR', UPLOAD_PATH . '/avatar/');
+define('URL_IMAGE_PROJECT', 'adminlte/img/projects_img/');
 
 define('ACTIVE_STATUS', 1);
 
@@ -66,8 +69,13 @@ define('CONTRACT_TYPES_NAME', [
     3 => 'Thực tập',
 ]);
 
+define('HEAD_DEPARTMENT_ROLE', -1);
+define('TEAMLEADER_ROLE', 1);
+define('MANAGER_ROLE', 2);
+define('MASTER_ROLE', 3);
 
 define('JOB_TITLES', [
+    -1 => 'Trưởng phòng',
     0 => 'Chuyên viên',
     1 => 'Team leader',
     2 => 'Manager',
@@ -126,3 +134,23 @@ define('WORK_PATH', [
         'end_at' => '17:30:00'
     ]
 ]);
+
+define('STATUS_PROJECT', [
+    0 => 'Chưa bắt đầu',
+    1 => 'Đang phát triển',
+    2 => 'Đã kết thúc',
+]);
+
+define('COLOR_STATUS_PROJECT', [
+    0 => 'color:blue',
+    1 => 'color:orange',
+    2 => 'color:green',
+]);
+define('PROJECT_TYPE', [
+    0 => 'ODC',
+    1 => 'Trọn gói',
+]);
+
+define('NOT_AUTHENTICATED', 'Tài khoản không hợp lệ');
+define('NOT_AUTHORIZED', 'Tài khoản không đủ thẩm quyền');
+

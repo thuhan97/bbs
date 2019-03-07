@@ -6,7 +6,8 @@
         <div class="user-panel">
             <div class="pull-left image">
                 <a href="#">
-                    <img src="{{ AuthAdmin::user()->getLogoPath() }}" class="img-circle" alt="{{ AuthAdmin::user()->name }}">
+                    <img src="{{ AuthAdmin::user()->getLogoPath() }}" class="img-circle"
+                         alt="{{ AuthAdmin::user()->name }}">
                 </a>
             </div>
             <div class="pull-left info">

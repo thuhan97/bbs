@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Repositories\Contracts;
 
 /**
@@ -6,6 +7,7 @@ namespace App\Repositories\Contracts;
  * Author: nhung
  * Date: 2018/01/18 10:34
  */
-interface ITeamRepository extends IBaseRepository {
+interface ITeamRepository extends IBaseRepository
+{
 
 }

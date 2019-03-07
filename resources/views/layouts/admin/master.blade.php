@@ -35,6 +35,7 @@
     <!-- Theme CSS -->
     <link rel="stylesheet" href="{{ cdn_asset('/adminlte/css/AdminLTE.min.css') }}">
     <!-- AdminLTE Skin. -->
+
     <link rel="stylesheet" href="{{ cdn_asset('/adminlte/css/skins/' . config('adminlte.theme') . '.min.css') }}">
 
     <!-- Custom CSS -->
@@ -148,7 +149,24 @@
         }
     })(jQuery);
 </script>
+<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css"/>
+<link href="{{ cdn_asset('/adminlte/css/multiselect.css') }}" rel="stylesheet" type="text/css">
 
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/prettify/r298/prettify.min.js"></script>
+<script type="text/javascript" src="{{ cdn_asset('/adminlte/js/multiselect.min.js') }}"></script>
+
+<script>
+
+</script>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        // make code pretty
+        window.prettyPrint && prettyPrint();
+
+        $('#undo_redo').multiselect();
+    });
+</script>
 @yield('footer-extras')
 
 @stack('footer-scripts')

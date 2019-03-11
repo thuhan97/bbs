@@ -3,11 +3,11 @@
 namespace App\Services\Contracts;
 
 /**
- * IEventAttendanceListService contract
+ * IEventAttendanceService contract
  * Author: jvb
- * Date: 2019/02/28 07:38
+ * Date: 2019/03/11 09:35
  */
-interface IEventAttendanceListService extends IBaseService
+interface IEventAttendanceService extends IBaseService
 {
     /**
      * @param int $id
@@ -15,4 +15,5 @@ interface IEventAttendanceListService extends IBaseService
      * @return Event
      */
     public function getListUserJoinEvent($id);
+
 }

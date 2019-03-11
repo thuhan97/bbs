@@ -122,7 +122,7 @@ Route::group([
     Route::get('/events', 'EventController@getCalendar')->name('getCalendar');
     Route::get('/danh-sach-su-kien', 'EventController@index')->name('event_list');
     Route::get('/su-kien/{id}', 'EventController@detail')->where(['id' => '\d+'])->name('event_detail');
-    Route::post('/dang-ki-su-kien', 'EventAttendanceListController@JoinEvent')->name('Join_event');
+    Route::post('/dang-ki-su-kien', 'EventAttendanceController@JoinEvent')->name('Join_event');
     Route::get('/thong-bao', 'PostController@index')->name('post');
     Route::get('/thong-bao/{id}', 'PostController@detail')->where(['id' => '\d+'])->name('post_detail');
     Route::get('/bao-cao', 'ReportController@index')->name('report');

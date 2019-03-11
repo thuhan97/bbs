@@ -2,7 +2,7 @@
 /**
  * EventAttendanceListModel class
  * Author: jvb
- * Date: 2019/02/28 07:38
+ * Date: 2019/03/11 09:35
  */
 
 namespace App\Models;
@@ -12,11 +12,11 @@ use App\Traits\Eloquent\SearchLikeTrait;
 use App\Traits\Models\FillableFields;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class EventAttendanceList extends Model
+class EventAttendance extends Model
 {
     use SoftDeletes, FillableFields, OrderableTrait, SearchLikeTrait;
 
-    protected $table = 'event_attendance_list';
+    protected $table = 'event_attendance';
 
     protected $primaryKey = 'id';
 
@@ -30,10 +30,4 @@ class EventAttendanceList extends Model
         'content',
         'status',
     ];
-
-    const STATUS_JOIN = [
-        '1' => 'join',
-        '0' => 'no_join',
-    ];
-
 }

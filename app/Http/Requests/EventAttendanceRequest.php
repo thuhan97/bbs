@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class EventAttendanceListRequest extends FormRequest
+class EventAttendanceRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,7 +24,6 @@ class EventAttendanceListRequest extends FormRequest
     public function rules()
     {
         return [
-            'user_id' => 'required',
             'event_id' => 'required',
             'status' => 'required',
         ];
@@ -34,7 +33,6 @@ class EventAttendanceListRequest extends FormRequest
     public function messages()
     {
         return [
-            'user_id.required' => 'Người dùng không tồn tại',
             'event_id.required' => 'Sự kiện không tồn tại。',
             'status.required' => 'Trái thái không được để trống',
         ];

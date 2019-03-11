@@ -4,8 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\EventCalendarRequest;
 use App\Services\Contracts\IEventService;
-use App\Repositories\Contracts\IEventAttendanceListRepository;
-use App\Services\Contracts\IEventAttendanceListService;
+use App\Repositories\Contracts\IEventAttendanceRepository;
+use App\Services\Contracts\IEventAttendanceService;
 use App\Traits\RESTActions;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -16,29 +16,29 @@ class EventController extends Controller
 
     /**
      * @var IEventService
-     * @var IEventAttendanceListService
-     * @var IEventAttendanceListRepository
+     * @var IEventAttendanceService
+     * @var IEventAttendanceRepository
      */
-    private $eventAttendanceListRepository;
+    private $eventAttendanceRepository;
     private $eventService;
-    private $eventAttendanceListService;
+    private $eventAttendanceService;
 
     /**
      * EventController constructor.
      *
      * @param IEventService $eventService
-     * @param IEventAttendanceListService $eventAttendanceListService
-     * @param IEventAttendanceListRepository $eventAttendanceListRepository
+     * @param IEventAttendanceService $eventAttendanceService
+     * @param IEventAttendanceRepository $eventAttendanceRepository
      */
     public function __construct(
         IEventService $eventService,
-        IEventAttendanceListRepository $eventAttendanceListRepository,
-        IEventAttendanceListService $eventAttendanceListService
+        IEventAttendanceRepository $eventAttendanceRepository,
+        IEventAttendanceService $eventAttendanceService
     )
     {
         $this->eventService = $eventService;
-        $this->eventAttendanceListRepository = $eventAttendanceListRepository;
-        $this->eventAttendanceListService = $eventAttendanceListService;
+        $this->eventAttendanceRepository = $eventAttendanceRepository;
+        $this->eventAttendanceService = $eventAttendanceService;
     }
 
     /**
@@ -99,9 +99,8 @@ class EventController extends Controller
     {
         $event = $this->eventService->detail($id);
         if ($event != null) {
-            $userJoinEvent = $this->eventAttendanceListRepository->getUserJoing(Auth::user()->id, $event->id);
-            $listUserJoinEvent = $this->eventAttendanceListService->getListUserJoinEvent($event->id);
-//            dd($listUserJoinEvent);
+            $userJoinEvent = $this->eventAttendanceRepository->getUserJoing(Auth::user()->id, $event->id);
+            $listUserJoinEvent = $this->eventAttendanceService->getListUserJoinEvent($event->id);
             return view('end_user.event.detail', compact('event', 'userJoinEvent', 'listUserJoinEvent'));
         }
         abort(404);

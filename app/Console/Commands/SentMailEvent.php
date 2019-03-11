@@ -7,7 +7,7 @@ use Illuminate\Console\Command;
 use App\Events\EventSentMail;
 use App\Repositories\Contracts\IEventRepository;
 
-class SentMaileEvent extends Command
+class SentMailEvent extends Command
 {
     /**
      * The name and signature of the console command.
@@ -47,9 +47,8 @@ class SentMaileEvent extends Command
             foreach ($event as $key => $eventValue) {
                 if ($eventValue != null) {
                     event(new EventSentMail($eventValue));
-                    $eventUpdate = $this->eventRepository->findOne($eventValue->id);
-                    $eventUpdate->is_sent = 1;
-                    $eventUpdate->save();
+                    $eventValue->is_sent = Event::IS_SENT;
+                    $eventValue->save();
                 }
             }
         }

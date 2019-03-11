@@ -8,7 +8,6 @@ use Illuminate\Queue\SerializesModels;
 
 class EventSendMail extends BaseMailer
 {
-    const MAIL_SUBJECT = 'Hội thi chim';
     const BODY_TEMPLATE = 'emails.event.notify_event';
 
     use Queueable, SerializesModels;

@@ -16,6 +16,8 @@ class Event extends Model
 {
     use SoftDeletes, FillableFields, OrderableTrait, SearchLikeTrait;
 
+    const IS_SENT = 1;
+
     protected $table = 'events';
 
     public $autoCreator = true;

@@ -2,16 +2,16 @@
 namespace App\Transformers;
 
 use League\Fractal;
-use App\Models\EventAttendanceList;
+use App\Models\EventAttendance;
 
 /**
 * EventAttendanceListTransformer class
 * Author: jvb
-* Date: 2019/02/28 07:38
+* Date: 2019/03/11 09:35
 */
-class EventAttendanceListTransformer extends Fractal\TransformerAbstract
+class EventAttendanceTransformer extends Fractal\TransformerAbstract
 {
-public function transform(EventAttendanceList $item)
+public function transform(EventAttendance $item)
 {
 return $item->toArray();
 }

@@ -3,11 +3,11 @@
 namespace App\Repositories\Contracts;
 
 /**
- * EventAttendanceListRepository contract.
+ * EventAttendanceRepository contract.
  * Author: jvb
- * Date: 2019/02/28 07:38
+ * Date: 2019/03/11 09:35
  */
-interface IEventAttendanceListRepository extends IBaseRepository
+interface IEventAttendanceRepository extends IBaseRepository
 {
     /**
      * Get User Joing

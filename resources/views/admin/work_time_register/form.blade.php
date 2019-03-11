@@ -1,5 +1,6 @@
 <?php
 $currentId = intval(session('currentId'));
+dd($addVarsForView);
 ?>
 
 <div class="col-md-12">

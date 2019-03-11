@@ -12,6 +12,20 @@ use Illuminate\Support\Facades\Session;
 
 class WorkRegisterController extends AdminBaseController
 {
+    const SELECT_TYPE = [
+        'QUICK_SELECT_TYPE' => [
+            'value' => 0,
+            'name' => 'type_1'
+        ],
+        'DETAIL_SELECT_TYPE' => [
+            'value' => 1,
+            'name' => 'type_2'
+        ],
+        'DETAIL_TIME_SELECT_TYPE' => [
+            'value' => 2,
+            'name' => 'type_3'
+        ],
+    ];
     protected $editTitle = 'Sửa thời gian làm việc';
     protected $subTitle = 'Danh sách nhân viên không làm full time';
     private $ableToRegister = [1, 2, 3];
@@ -107,24 +121,24 @@ class WorkRegisterController extends AdminBaseController
 
         foreach ($oldValue as $key => $item) {
             if ($item == WORK_PATH[3]) {
-                $oldValue['type_2'][PART_OF_THE_DAY[$key]] = 3;
+                $oldValue[self::SELECT_TYPE['DETAIL_SELECT_TYPE']['name']][PART_OF_THE_DAY[$key]] = 3;
             } elseif ($item['start_at'] == WORK_PATH[0]['start_at'] && $item['end_at'] == WORK_PATH[0]['end_at']) {
-                $oldValue['type_2'][PART_OF_THE_DAY[$key]] = 0;
+                $oldValue[self::SELECT_TYPE['DETAIL_SELECT_TYPE']['name']][PART_OF_THE_DAY[$key]] = 0;
             } elseif ($item['start_at'] == '00:00:00' || $item['end_at'] == '00:00:00') {
-                $oldValue['type_2'][PART_OF_THE_DAY[$key]] = 2;
+                $oldValue[self::SELECT_TYPE['DETAIL_SELECT_TYPE']['name']][PART_OF_THE_DAY[$key]] = 2;
             } elseif ($item['start_at'] == WORK_PATH[1]['start_at'] && $item['end_at'] == WORK_PATH[1]['end_at']) {
-                $oldValue['type_2'][PART_OF_THE_DAY[$key]] = 1;
+                $oldValue[self::SELECT_TYPE['DETAIL_SELECT_TYPE']['name']][PART_OF_THE_DAY[$key]] = 1;
             } else {
-                $oldValue['type_2'][PART_OF_THE_DAY[$key]] = 0;
+                $oldValue[self::SELECT_TYPE['DETAIL_SELECT_TYPE']['name']][PART_OF_THE_DAY[$key]] = 0;
             }
 
-            $oldValue['type_3'][PART_OF_THE_DAY[$key]] = $item;
+            $oldValue[self::SELECT_TYPE['DETAIL_TIME_SELECT_TYPE']['name']][PART_OF_THE_DAY[$key]] = $item;
         }
 
         if ($oldValue[0]['start_at'] == WORK_PATH[0]) {
-            $oldValue['type_1'] = 0;
+            $oldValue[self::SELECT_TYPE['QUICK_SELECT_TYPE']['name']] = 0;
         } else {
-            $oldValue['type_1'] = 1;
+            $oldValue[self::SELECT_TYPE['QUICK_SELECT_TYPE']['name']] = 1;
         }
 
         Session::flash('currentId', $payload->first()->select_type);
@@ -199,11 +213,11 @@ class WorkRegisterController extends AdminBaseController
     private function requestAnalyze(Request $request)
     {
         $payload = [];
-        if ($request->select_type == 0) {
+        if ($request->select_type == self::SELECT_TYPE['QUICK_SELECT_TYPE']['value']) {
             for ($i = 0; $i <= 5; $i++) {
                 $payload[] = WORK_PATH[$request->quick_part];
             }
-        } elseif ($request->select_type == 1) {
+        } elseif ($request->select_type == self::SELECT_TYPE['DETAIL_SELECT_TYPE']['value']) {
             foreach ($request->all($this->keys) as $item) {
                 $payload[] = WORK_PATH[$item];
             }

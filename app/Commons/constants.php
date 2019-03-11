@@ -1,5 +1,7 @@
 <?php
 
+$configs = \App\Models\Config::first();
+
 define('ADMIN_GUARD', 'admin');
 define('API_GUARD', 'api');
 
@@ -101,10 +103,10 @@ define('WORK_TIME_QUICK_SELECT', [
 ]);
 
 define('WORK_TIME_SELECT', [
-    0 => 'Sáng',
-    1 => 'Chiều',
-    2 => 'Không làm',
-    3 => 'Cả ngày'
+    0 => 'Cả ngày',
+    1 => 'Sáng',
+    2 => 'Chiều',
+    3 => 'Không làm'
 ]);
 
 define('PART_OF_THE_DAY', [
@@ -118,20 +120,20 @@ define('PART_OF_THE_DAY', [
 
 define('WORK_PATH', [
     0 => [
-        'start_at' => '08:00:00',
-        'end_at' => '12:00:00'
+        'start_at' => $configs['morning_start_work_at'],
+        'end_at' => $configs['morning_end_work_at']
     ],
     1 => [
-        'start_at' => '13:30:00',
-        'end_at' => '17:30:00'
+        'start_at' => $configs['afternoon_start_work_at'],
+        'end_at' => $configs['afternoon_end_work_at']
     ],
     2 => [
         'start_at' => 0,
         'end_at' => 0
     ],
     3 => [
-        'start_at' => '08:00:00',
-        'end_at' => '17:30:00'
+        'start_at' => $configs['morning_start_work_at'],
+        'end_at' => $configs['afternoon_end_work_at']
     ]
 ]);
 
@@ -153,4 +155,5 @@ define('PROJECT_TYPE', [
 
 define('NOT_AUTHENTICATED', 'Tài khoản không hợp lệ');
 define('NOT_AUTHORIZED', 'Tài khoản không đủ thẩm quyền');
+
 

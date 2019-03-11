@@ -7,13 +7,10 @@
 
 namespace App\Services;
 
-use App\Models\WorkTime;
 use App\Models\WorkTimeRegister;
 use App\Repositories\Contracts\IUserRepository;
 use App\Repositories\Contracts\IWorkTimeRegisterRepository;
 use App\Services\Contracts\IWorkTimeRegisterService;
-use function foo\func;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 

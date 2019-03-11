@@ -137,8 +137,7 @@ class RepositoriesServiceProvider extends ServiceProvider
             ITeamRepository::class,
             IUserTeamRepository::class,
             IWorkTimeRegisterRepository::class,
-            IProjectRepository::class,
-            IWorkTimeRegisterRepository::class
+            IProjectRepository::class
         ];
     }
 }

@@ -123,7 +123,6 @@ class RepositoriesServiceProvider extends ServiceProvider
     public function provides()
     {
         return [
-            ##AUTO_INSERT_NAME##
             IProjectRepository::class,
             IFeedbackRepository::class,
             IReportRepository::class,
@@ -138,7 +137,8 @@ class RepositoriesServiceProvider extends ServiceProvider
             ITeamRepository::class,
             IUserTeamRepository::class,
             IWorkTimeRegisterRepository::class,
-            IProjectRepository::class
+            IProjectRepository::class,
+            IWorkTimeRegisterRepository::class
         ];
     }
 }

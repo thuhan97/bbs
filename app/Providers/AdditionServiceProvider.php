@@ -23,9 +23,9 @@ use App\Services\ReportService;
 use App\Services\TeamService;
 use App\Services\UserService;
 use App\Services\WorkTimeService;
-use Illuminate\Support\ServiceProvider;
 use App\Services\WorkTimeRegisterService;
 use App\Services\Contracts\IWorkTimeRegisterService;
+use Illuminate\Support\ServiceProvider;
 
 class AdditionServiceProvider extends ServiceProvider
 {

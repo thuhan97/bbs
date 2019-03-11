@@ -27,6 +27,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-
+        $this->app->singleton('settings', function () {
+            return Config::all();
+        });
     }
 }

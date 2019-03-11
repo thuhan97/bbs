@@ -1,6 +1,5 @@
 <?php
 $currentId = intval(session('currentId'));
-dd($addVarsForView);
 ?>
 
 <div class="col-md-12">
@@ -28,7 +27,7 @@ dd($addVarsForView);
             <div class="row">
                 <div class="col-md-3">
                     <label for="staff_code">Chọn nhanh</label>
-                    {{ Form::select('quick_part', WORK_TIME_QUICK_SELECT, $oldValue['type_1'], ['class'=>'form-control']) }}
+                    {{ Form::select('quick_part', WORK_TIME_QUICK_SELECT, $addVarsForView['old_value']['type_1'], ['class'=>'form-control']) }}
                 </div>
             </div>
         </div>
@@ -37,7 +36,7 @@ dd($addVarsForView);
                 @foreach(PART_OF_THE_DAY as $key => $value)
                     <div class="col-md-2 margin-t-5{{ $errors->has($value . '_part') ? ' has-error' : '' }}">
                         <label for="staff_code">Thứ {{$key + 2}}</label>
-                        {{ Form::select($value . '_part', WORK_TIME_SELECT, $oldValue['type_2'][$value], ['class'=>'form-control']) }}
+                        {{ Form::select($value . '_part', WORK_TIME_SELECT, $addVarsForView['old_value']['type_2'][$value], ['class'=>'form-control']) }}
                         @if ($errors->has($value . '_part'))
                             <span class="help-block">
                             <strong>{{ $errors->first($value . '_part') }}</strong>
@@ -58,7 +57,7 @@ dd($addVarsForView);
                             <div class="input-group">
                                 <input type="text" class="form-control timepicker" name="{{$item}}_start"
                                        placeholder="Thời gian bắt đầu"
-                                       value="{{ $oldValue['type_3'][$item]['start_at'] }}">
+                                       value="{{ $addVarsForView['old_value']['type_3'][$item]['start_at'] }}">
                                 <div class="input-group-addon">
                                     <i class="fa fa-clock-o"></i>
                                 </div>
@@ -66,7 +65,7 @@ dd($addVarsForView);
                         </div>
                         <input type="text" class="form-control" id="{{$item}}_end" name="{{$item}}_end"
                                placeholder="Thời gian kết thúc"
-                               value="{{ $oldValue['type_3'][$item]['end_at'] }}" readonly="">
+                               value="{{ $addVarsForView['old_value']['type_3'][$item]['end_at'] }}" readonly="">
                         @if ($errors->has($item . '_start') || $errors->has($item . '_end'))
                             <span class="help-block">
                             <strong>{{ $errors->first($item . '_start') ? $errors->first($item . '_start') : $errors->first($item . '_end') }}</strong>
@@ -104,7 +103,7 @@ dd($addVarsForView);
                 hour += 1
             }
             if (hour >= 12 && hour <= 13) {
-                return '{{ WORK_PATH[0]['end_at'] }}'
+                return '{{ $config['morning_start_end_at'] }}'
             }
 
                 minute = minute == 0 ? '00' : minute
@@ -135,7 +134,7 @@ dd($addVarsForView);
 
                 if (e.time.hours < 8) {
                     $(this).val('{{ $config['morning_start_work_at'] }}')
-                    endTimeSelector.val('{{ WORK_PATH[0]['end_at'] }}')
+                    endTimeSelector.val('{{ $config['morning_start_end_at'] }}')
                     return
                 } else if (e.time.hours >= 13) {
                     $(this).val('{{ $config['afternoon_start_work_at'] }}');

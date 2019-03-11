@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Session;
 
 class WorkRegisterController extends AdminBaseController
 {
+    protected $WORK_PATH;
     const SELECT_TYPE = [
         'QUICK_SELECT_TYPE' => [
             'value' => 0,
@@ -60,6 +61,26 @@ class WorkRegisterController extends AdminBaseController
      */
     public function __construct(IWorkTimeRegisterRepository $repository, IWorkTimeRegisterService $service, IUserRepository $userRepository)
     {
+        $settings = app('settings')->first();
+        $this->WORK_PATH = [
+            0 => [
+                'start_at' => $settings['morning_start_work_at'],
+                'end_at' => $settings['morning_end_work_at']
+            ],
+            1 => [
+                'start_at' => $settings['afternoon_start_work_at'],
+                'end_at' => $settings['afternoon_end_work_at']
+            ],
+            2 => [
+                'start_at' => 0,
+                'end_at' => 0
+            ],
+            3 => [
+                'start_at' => $settings['morning_start_work_at'],
+                'end_at' => $settings['afternoon_end_work_at']
+            ]
+        ];
+
         $this->service = $service;
         $this->repository = $repository;
         parent::__construct();
@@ -112,21 +133,36 @@ class WorkRegisterController extends AdminBaseController
 
     public function edit($id)
     {
-        $record = [];
+        $record = WorkTimeRegister::where('user_id', $id)->first();
+
+        $this->authorize('update', $record);
+
+        return view($this->getResourceEditPath(), $this->filterEditViewData($record, [
+            'record' => $record,
+            'resourceAlias' => $this->getResourceAlias(),
+            'resourceRoutesAlias' => $this->getResourceRoutesAlias(),
+            'resourceTitle' => $this->getResourceTitle(),
+            'addVarsForView' => $this->addVarsEditViewData(['id' => $id]),
+        ]));
+    }
+
+    public function addVarsEditViewData($data = [])
+    {
         $oldValue = [];
-        $payload = $this->repository->findIn('user_id', [$id]);
+        $payload = $this->repository->findIn('user_id', [$data['id']]);
         $payload->each(function ($item) use (&$oldValue) {
             $oldValue[] = $item->only('start_at', 'end_at');
         });
 
+        // minimize this later
         foreach ($oldValue as $key => $item) {
-            if ($item == WORK_PATH[3]) {
+            if ($item == $this->WORK_PATH[3]) {
                 $oldValue[self::SELECT_TYPE['DETAIL_SELECT_TYPE']['name']][PART_OF_THE_DAY[$key]] = 3;
-            } elseif ($item['start_at'] == WORK_PATH[0]['start_at'] && $item['end_at'] == WORK_PATH[0]['end_at']) {
+            } elseif ($item['start_at'] == $this->WORK_PATH[0]['start_at'] && $item['end_at'] == $this->WORK_PATH[0]['end_at']) {
                 $oldValue[self::SELECT_TYPE['DETAIL_SELECT_TYPE']['name']][PART_OF_THE_DAY[$key]] = 0;
             } elseif ($item['start_at'] == '00:00:00' || $item['end_at'] == '00:00:00') {
                 $oldValue[self::SELECT_TYPE['DETAIL_SELECT_TYPE']['name']][PART_OF_THE_DAY[$key]] = 2;
-            } elseif ($item['start_at'] == WORK_PATH[1]['start_at'] && $item['end_at'] == WORK_PATH[1]['end_at']) {
+            } elseif ($item['start_at'] == $this->WORK_PATH[1]['start_at'] && $item['end_at'] == $this->WORK_PATH[1]['end_at']) {
                 $oldValue[self::SELECT_TYPE['DETAIL_SELECT_TYPE']['name']][PART_OF_THE_DAY[$key]] = 1;
             } else {
                 $oldValue[self::SELECT_TYPE['DETAIL_SELECT_TYPE']['name']][PART_OF_THE_DAY[$key]] = 0;
@@ -135,28 +171,20 @@ class WorkRegisterController extends AdminBaseController
             $oldValue[self::SELECT_TYPE['DETAIL_TIME_SELECT_TYPE']['name']][PART_OF_THE_DAY[$key]] = $item;
         }
 
-        if ($oldValue[0]['start_at'] == WORK_PATH[0]) {
+        if ($oldValue[0]['start_at'] == $this->WORK_PATH[0]) {
             $oldValue[self::SELECT_TYPE['QUICK_SELECT_TYPE']['name']] = 0;
         } else {
             $oldValue[self::SELECT_TYPE['QUICK_SELECT_TYPE']['name']] = 1;
         }
+        // ---
 
         Session::flash('currentId', $payload->first()->select_type);
-
-        $this->authorize('update', $record);
         $addVarsForView['edit_title'] = $this->editTitle;
-        $addVarsForView['edit_target'] = $this->service->findOneUser($id)->name;
-        $oldValue = collect($oldValue)->except(0, 1, 2, 3, 4, 5)->toArray();
+        $addVarsForView['edit_target'] = $this->service->findOneUser($data['id'])->name;
+        $addVarsForView['old_value'] = collect($oldValue)->except(0, 1, 2, 3, 4, 5)->toArray();
+        $addVarsForView['payload'] = $payload;
 
-        return view($this->getResourceEditPath(), $this->filterEditViewData($record, [
-            'payload' => $payload,
-            'oldValue' => $oldValue,
-            'record' => $record,
-            'resourceAlias' => $this->getResourceAlias(),
-            'resourceRoutesAlias' => $this->getResourceRoutesAlias(),
-            'resourceTitle' => $this->getResourceTitle(),
-            'addVarsForView' => $addVarsForView,
-        ]));
+        return $addVarsForView;
     }
 
     public function update(Request $request, $id)
@@ -165,20 +193,10 @@ class WorkRegisterController extends AdminBaseController
         $record = $this->repository->findOne($id);
 
         $this->authorize('update', $record);
-        $valuesToSave = $this->getValuesToSave($request, $record);
-        $request->merge($valuesToSave);
         $this->resourceValidate($request, 'update', $record);
-        $payload = $this->requestAnalyze($request);
+        $valuesToSave = $this->getValuesToSave($request, $id);
 
-        foreach ($payload as $key => &$value) {
-            if (is_numeric($key)) {
-                $value['select_type'] = $request->select_type;
-                $value['user_id'] = $id;
-                $value['day'] = intval($key) + 2;
-            }
-        }
-
-        if ($this->service->update($id, $payload)) {
+        if ($this->service->update($id, $valuesToSave)) {
             flash()->success('Cập nhật thành công.');
 
             return $this->getRedirectAfterSave($record, $request);
@@ -187,6 +205,20 @@ class WorkRegisterController extends AdminBaseController
         }
 
         return $this->redirectBackTo(route($this->getResourceRoutesAlias() . '.index'));
+    }
+
+    public function getValuesToSave(Request $request, $record = null)
+    {
+        $valuesToSave = $this->requestAnalyze($request);
+        foreach ($valuesToSave as $key => &$value) {
+            if (is_numeric($key)) {
+                $value['select_type'] = $request->select_type;
+                $value['user_id'] = $record;
+                $value['day'] = intval($key) + 2;
+            }
+        }
+
+        return $valuesToSave;
     }
 
     public function resourceUpdateValidationData($record)
@@ -215,11 +247,11 @@ class WorkRegisterController extends AdminBaseController
         $payload = [];
         if ($request->select_type == self::SELECT_TYPE['QUICK_SELECT_TYPE']['value']) {
             for ($i = 0; $i <= 5; $i++) {
-                $payload[] = WORK_PATH[$request->quick_part];
+                $payload[] = $this->WORK_PATH[$request->quick_part];
             }
         } elseif ($request->select_type == self::SELECT_TYPE['DETAIL_SELECT_TYPE']['value']) {
             foreach ($request->all($this->keys) as $item) {
-                $payload[] = WORK_PATH[$item];
+                $payload[] = $this->WORK_PATH[$item];
             }
         } else {
             foreach (PART_OF_THE_DAY as $key => $item) {

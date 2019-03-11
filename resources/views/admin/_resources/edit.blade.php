@@ -2,7 +2,7 @@
 @extends('layouts.admin.master')
 
 <?php
-        // check record exist
+// check record exist
 //if (!$record) {
 //    $record = collect($record);
 //    $record->id = request()->route(request()->route()->parameterNames[0]);
@@ -22,7 +22,6 @@ $_printLink = false;
 @section('breadcrumbs')
     {!! Breadcrumbs::render($resourceRoutesAlias.'.edit', $record->id) !!}
 @endsection
-
 {{-- Page Title --}}
 @section('page-title', $_pageTitle)
 
@@ -49,11 +48,7 @@ $_printLink = false;
                     {{ method_field('PUT') }}
 
                     <div class="box-header with-border">
-                        {{--@if(!$record->isNull)--}}
-                            <h3 class="box-title">Sửa thông tin: {{ $record->getRecordTitle() }}</h3>
-                        {{--@else--}}
-                            {{--<h3 class="box-title">{{ $addVarsForView['edit_title'] }}: {{ $addVarsForView['edit_target'] }}</h3>--}}
-                        {{--@endif--}}
+                        <h3 class="box-title">Sửa thông tin: {{ $record->getRecordTitle() }}</h3>
 
                         <div class="box-tools">
                             {{--<a href="#" class="btn btn-sm btn-default margin-r-5 margin-l-5" onclick="history.go(-1)">--}}

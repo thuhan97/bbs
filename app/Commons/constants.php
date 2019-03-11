@@ -1,7 +1,5 @@
 <?php
 
-$configs = \App\Models\Config::first();
-
 define('ADMIN_GUARD', 'admin');
 define('API_GUARD', 'api');
 
@@ -116,25 +114,6 @@ define('PART_OF_THE_DAY', [
     'thu',
     'fri',
     'sat',
-]);
-
-define('WORK_PATH', [
-    0 => [
-        'start_at' => $configs['morning_start_work_at'],
-        'end_at' => $configs['morning_end_work_at']
-    ],
-    1 => [
-        'start_at' => $configs['afternoon_start_work_at'],
-        'end_at' => $configs['afternoon_end_work_at']
-    ],
-    2 => [
-        'start_at' => 0,
-        'end_at' => 0
-    ],
-    3 => [
-        'start_at' => $configs['morning_start_work_at'],
-        'end_at' => $configs['afternoon_end_work_at']
-    ]
 ]);
 
 define('STATUS_PROJECT', [

@@ -28,4 +28,10 @@ class WorkTimeRegister extends Model
         return $query->where('user_id', 'like', '%' . $searchTerm . '%')
             ->orwhere('day', 'like', '%' . $searchTerm . '%');
     }
+
+    public function getRecordTitle()
+    {
+        $name = User::whereId($this->user_id)->first();
+        return $name->name ?? $name->id;
+    }
 }

@@ -255,6 +255,46 @@ trait ResourceHelper
     }
 
     /**
+     * @param array $data
+     *
+     * @return array
+     */
+    public function addVarsSearchViewData($data = [])
+    {
+        return $data;
+    }
+
+    /**
+     * @param array $data
+     *
+     * @return array
+     */
+    public function addVarsCreateViewData($data = [])
+    {
+        return $data;
+    }
+
+    /**
+     * @param array $data
+     *
+     * @return array
+     */
+    public function addVarsShowViewData($data = [])
+    {
+        return $data;
+    }
+
+    /**
+     * @param array $data
+     *
+     * @return array
+     */
+    public function addVarsEditViewData($data = [])
+    {
+        return $data;
+    }
+
+    /**
      * @param       $callbackUrl
      * @param int   $status
      * @param array $headers

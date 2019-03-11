@@ -30,6 +30,7 @@ trait ResourceController
             'resourceTitle' => $this->getResourceTitle(),
             'perPage' => $perPage,
             'resourceSearchExtend' => $this->resourceSearchExtend,
+            'addVarsForView' => $this->addVarsSearchViewData()
         ]));
     }
 
@@ -48,6 +49,7 @@ trait ResourceController
             'resourceAlias' => $this->getResourceAlias(),
             'resourceRoutesAlias' => $this->getResourceRoutesAlias(),
             'resourceTitle' => $this->getResourceTitle(),
+            'addVarsForView' => $this->addVarsCreateViewData()
         ]));
     }
 
@@ -97,6 +99,7 @@ trait ResourceController
             'resourceAlias' => $this->getResourceAlias(),
             'resourceRoutesAlias' => $this->getResourceRoutesAlias(),
             'resourceTitle' => $this->getResourceTitle(),
+            'addVarsForView' => $this->addVarsShowViewData()
         ]));
     }
 
@@ -119,6 +122,7 @@ trait ResourceController
             'resourceAlias' => $this->getResourceAlias(),
             'resourceRoutesAlias' => $this->getResourceRoutesAlias(),
             'resourceTitle' => $this->getResourceTitle(),
+            'addVarsForView' => $this->addVarsEditViewData()
         ]));
     }
 

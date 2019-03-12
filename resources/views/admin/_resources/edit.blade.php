@@ -2,12 +2,7 @@
 @extends('layouts.admin.master')
 
 <?php
-// check record exist
-//if (!$record) {
-//    $record = collect($record);
-//    $record->id = request()->route(request()->route()->parameterNames[0]);
-//    $record->isNull = true;
-//}
+
 $_pageTitle = (isset($addVarsForView['_pageTitle']) && !empty($addVarsForView['_pageTitle']) ? $addVarsForView['_pageTitle'] : ucwords($resourceTitle));
 $_pageSubtitle = (isset($addVarsForView['_pageSubtitle']) && !empty($addVarsForView['_pageSubtitle']) ? $addVarsForView['_pageSubtitle'] : "Sửa thông tin " . str_singular($_pageTitle));
 $_formFiles = isset($addVarsForView['formFiles']) ? $addVarsForView['formFiles'] : false;

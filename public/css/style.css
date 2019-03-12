@@ -239,25 +239,25 @@
     background: #e5edff;
 }
 
-.w-22{
+.w-22 {
     width: 23% !important;
 }
 
-.select-month{
+.select-month {
     margin-bottom: 24px;
 }
 
-.list-work-time th{
+.list-work-time th {
     font-weight: bold;
     font-size: 14px;
     padding: 10px;
 }
 
-.list-work-time td{
+.list-work-time td {
     padding: 10px;
 }
 
-.statistic{
+.statistic {
     margin: 0;
     margin-bottom: 24px;
     border-bottom: 1px solid #ccc;
@@ -265,12 +265,12 @@
     padding: 10px;
 }
 
-.statistic>div{
+.statistic > div {
     margin-right: 10px;
     border-radius: 5px;
 }
 
-.statistic>div>span{
+.statistic > div > span {
     padding: 10px 15px;
 }
 
@@ -451,6 +451,7 @@
     margin-right: 35px;
 }
 
-
-
+.joinEvent {
+    justify-content: center !important;
+}
 

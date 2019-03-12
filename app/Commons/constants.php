@@ -43,6 +43,7 @@ define('URL_IMAGE_AVATAR', UPLOAD_PATH . '/avatar/');
 define('URL_IMAGE_PROJECT', 'adminlte/img/projects_img/');
 
 define('ACTIVE_STATUS', 1);
+define('ACTIVE_NOTIFY', 1);
 
 define('MORE_LANG', [
 //    'zh',
@@ -109,6 +110,12 @@ define('COLOR_STATUS_PROJECT', [
 define('PROJECT_TYPE', [
     0 => 'ODC',
     1 => 'Trọn gói',
+]);
+
+
+define('STATUS_JOIN_EVENT', [
+    0 => 'Không tham gia',
+    1 => 'Tham gia',
 ]);
 
 define('NOT_AUTHENTICATED', 'Tài khoản không hợp lệ');

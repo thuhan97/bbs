@@ -37,7 +37,7 @@
             <hr/>
 
             @if($event->deadline_at > date('Y-m-d H:i:s'))
-                <form class="border border-light p-5" method="POST" action="{{ route('Join_event') }}">
+                <form class="border border-light p-5" method="POST" action="{{ route('join_event') }}">
                     <p class="h4 mb-4 text-center">Phản hồi</p>
                     <div class="d-flex justify-content-between joinEvent">
                         @csrf

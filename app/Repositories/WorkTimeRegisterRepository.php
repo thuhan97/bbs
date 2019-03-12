@@ -17,6 +17,6 @@ class WorkTimeRegisterRepository extends AbstractRepository implements IWorkTime
 
     public function getMemberName($id)
     {
-        return $this->getModel()->where('id', $id)->first()->name;
+        return $this->getModel()->where('id', $id)->first()->name ?? '';
     }
 }

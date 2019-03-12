@@ -26,6 +26,14 @@ Route::group([
 
     ##AUTO_INSERT_ROUTE##
 
+    //event_attendance
+    Route::resource('event_attendance', 'EventAttendanceController');
+
+
+    //event_attendance
+    Route::resource('event_attendance', 'EventAttendanceController');
+
+
     //project
     Route::resource('project', 'ProjectController');
 

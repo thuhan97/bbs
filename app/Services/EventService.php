@@ -18,7 +18,7 @@ class EventService extends AbstractService implements IEventService
     /**
      * PostService constructor.
      *
-     * @param \App\Models\Event                            $model
+     * @param \App\Models\Event $model
      * @param \App\Repositories\Contracts\IEventRepository $repository
      */
     public function __construct(Event $model, IEventRepository $repository)
@@ -30,7 +30,7 @@ class EventService extends AbstractService implements IEventService
     /**
      * @param Request $request
      * @param integer $perPage
-     * @param string  $search
+     * @param string $search
      *
      * @return collection
      */

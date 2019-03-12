@@ -4,8 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\EventCalendarRequest;
 use App\Services\Contracts\IEventService;
+use App\Repositories\Contracts\IEventAttendanceRepository;
+use App\Services\Contracts\IEventAttendanceService;
 use App\Traits\RESTActions;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class EventController extends Controller
 {
@@ -13,17 +16,29 @@ class EventController extends Controller
 
     /**
      * @var IEventService
+     * @var IEventAttendanceService
+     * @var IEventAttendanceRepository
      */
+    private $eventAttendanceRepository;
     private $eventService;
+    private $eventAttendanceService;
 
     /**
      * EventController constructor.
      *
      * @param IEventService $eventService
+     * @param IEventAttendanceService $eventAttendanceService
+     * @param IEventAttendanceRepository $eventAttendanceRepository
      */
-    public function __construct(IEventService $eventService)
+    public function __construct(
+        IEventService $eventService,
+        IEventAttendanceRepository $eventAttendanceRepository,
+        IEventAttendanceService $eventAttendanceService
+    )
     {
         $this->eventService = $eventService;
+        $this->eventAttendanceRepository = $eventAttendanceRepository;
+        $this->eventAttendanceService = $eventAttendanceService;
     }
 
     /**
@@ -31,7 +46,8 @@ class EventController extends Controller
      *
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function index(Request $request)
+    public
+    function index(Request $request)
     {
         $events = $this->eventService->search($request, $perPage, $search);
 
@@ -43,7 +59,8 @@ class EventController extends Controller
      *
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function calendar(Request $request)
+    public
+    function calendar(Request $request)
     {
         return view('end_user.event.calendar');
     }
@@ -53,7 +70,8 @@ class EventController extends Controller
      *
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function getCalendar(EventCalendarRequest $request)
+    public
+    function getCalendar(EventCalendarRequest $request)
     {
         $results = [];
         $events = $this->eventService->search_calendar($request);
@@ -80,9 +98,10 @@ class EventController extends Controller
     public function detail($id)
     {
         $event = $this->eventService->detail($id);
-
-        if ($event) {
-            return view('end_user.event.detail', compact('event'));
+        if ($event != null) {
+            $userJoinEvent = $this->eventAttendanceRepository->getUserJoing(Auth::user()->id, $event->id);
+            $listUserJoinEvent = $this->eventAttendanceService->getListUserJoinEvent($event->id);
+            return view('end_user.event.detail', compact('event', 'userJoinEvent', 'listUserJoinEvent'));
         }
         abort(404);
     }

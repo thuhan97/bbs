@@ -9,5 +9,10 @@ namespace App\Repositories\Contracts;
  */
 interface IEventRepository extends IBaseRepository
 {
-
+    /**
+     * find Event Date Push Notification
+     * @author  Hunglt
+     * @return object
+     */
+    public function findEventDatePushNotification();
 }

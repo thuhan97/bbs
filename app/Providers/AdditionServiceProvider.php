@@ -13,6 +13,7 @@ use App\Services\Contracts\ITeamService;
 use App\Services\Contracts\IUserService;
 use App\Services\Contracts\IUserTeamService;
 use App\Services\Contracts\IWorkTimeService;
+use App\Services\Contracts\IEventAttendanceService;
 use App\Services\DayOffService;
 use App\Services\EventService;
 use App\Services\FeedbackService;
@@ -25,6 +26,7 @@ use App\Services\UserService;
 use App\Services\WorkTimeService;
 use App\Services\WorkTimeRegisterService;
 use App\Services\Contracts\IWorkTimeRegisterService;
+use App\Services\EventAttendanceService;
 use Illuminate\Support\ServiceProvider;
 
 class AdditionServiceProvider extends ServiceProvider
@@ -67,6 +69,9 @@ class AdditionServiceProvider extends ServiceProvider
         $this->app->bind(IWorkTimeService::class, function () {
             return app()->make(WorkTimeService::class);
         });
+        $this->app->bind(IEventAttendanceService::class, function () {
+            return app()->make(EventAttendanceService::class);
+        });
         $this->app->bind(IProjectService::class, function () {
             return app()->make(ProjectService::class);
         });
@@ -95,6 +100,7 @@ class AdditionServiceProvider extends ServiceProvider
             IUserTeamService::class,
             IDayOffService::class,
             IWorkTimeService::class,
+            IEventAttendanceService::class,
             IProjectService::class,
             IFeedbackService::class,
             IWorkTimeRegisterService::class

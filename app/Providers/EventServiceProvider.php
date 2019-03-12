@@ -18,6 +18,9 @@ class EventServiceProvider extends ServiceProvider
         'App\Events\SearchEvent' => [
             'App\Listeners\WriteSearchLog',
         ],
+        'App\Events\EventSentMail' => [
+            'App\Listeners\EventSendMail',
+        ],
     ];
 
     /**

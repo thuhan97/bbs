@@ -16,6 +16,8 @@ class Event extends Model
 {
     use SoftDeletes, FillableFields, OrderableTrait, SearchLikeTrait;
 
+    const IS_SENT = 1;
+
     protected $table = 'events';
 
     public $autoCreator = true;
@@ -29,7 +31,11 @@ class Event extends Model
         'introduction',
         'content',
         'view_count',
+        'has_notify',
+        'notify_date',
+        'is_sent',
         'place',
+        'deadline_at',
         'status',
     ];
 
@@ -98,4 +104,18 @@ class Event extends Model
             ->orWhere('introduction', 'like', '%' . $searchTerm . '%')
             ->orWhere('content', 'like', '%' . $searchTerm . '%');
     }
+
+    /**
+     * @content has One user
+     * @author  : Hunglt
+     * @Date    : 2018/09/28
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\hasMany
+     */
+    public function eventAttendanceList()
+    {
+        return $this->hasMany(EventAttendanceList::class, 'event_id', 'id');
+    }
+
+
 }

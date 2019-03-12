@@ -134,6 +134,23 @@ class WorkRegisterController extends AdminBaseController
     public function edit($id)
     {
         $record = WorkTimeRegister::where('user_id', $id)->first();
+        if (empty($record)) {
+            $createDefaultArray = [];
+            for ($i = 2; $i <= 7; $i++) {
+                $createDefaultArray[] = [
+                    'start_at' => $this->WORK_PATH[0]['start_at'],
+                    'end_at' => $this->WORK_PATH[0]['end_at'],
+                    'user_id' => $id,
+                    'select_type' => self::SELECT_TYPE['DETAIL_TIME_SELECT_TYPE']['value'],
+                    'day' => $i
+                ];
+            }
+            if (WorkTimeRegister::insert($createDefaultArray)) {
+                $record = WorkTimeRegister::where('user_id', $id)->first();
+            } else {
+                abort(404);
+            }
+        }
 
         $this->authorize('update', $record);
 
@@ -150,6 +167,7 @@ class WorkRegisterController extends AdminBaseController
     {
         $oldValue = [];
         $payload = $this->repository->findIn('user_id', [$data['id']]);
+
         $payload->each(function ($item) use (&$oldValue) {
             $oldValue[] = $item->only('start_at', 'end_at');
         });

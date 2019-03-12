@@ -96,6 +96,27 @@ define('SEXS', [
     0 => 'Nam',
 ]);
 
+define('WORK_TIME_QUICK_SELECT', [
+    0 => 'Full sáng',
+    1 => 'Full chiều',
+]);
+
+define('WORK_TIME_SELECT', [
+    0 => 'Cả ngày',
+    1 => 'Sáng',
+    2 => 'Chiều',
+    3 => 'Không làm'
+]);
+
+define('PART_OF_THE_DAY', [
+    'mon',
+    'tue',
+    'wed',
+    'thu',
+    'fri',
+    'sat',
+]);
+
 define('STATUS_PROJECT', [
     0 => 'Chưa bắt đầu',
     1 => 'Đang phát triển',
@@ -120,4 +141,5 @@ define('STATUS_JOIN_EVENT', [
 
 define('NOT_AUTHENTICATED', 'Tài khoản không hợp lệ');
 define('NOT_AUTHORIZED', 'Tài khoản không đủ thẩm quyền');
+
 

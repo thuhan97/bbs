@@ -17,7 +17,6 @@ if (count($records) > 0) {
     $tableCounter = $tableCounter > 0 ? $tableCounter : 0;
 }
 ?>
-
 {{-- Breadcrumbs --}}
 @section('breadcrumbs')
     {!! Breadcrumbs::render($resourceRoutesAlias) !!}

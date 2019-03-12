@@ -101,5 +101,8 @@ Route::group([
     Route::post('teams/deletes', ['as' => 'teams.deletes', 'uses' => 'TeamController@deletes']);
     Route::resource('teams', 'TeamController');
 
+    //register work time
+    Route::post('work_time_register/deletes', ['as' => 'work_time_register.deletes', 'uses' => 'WorkRegisterController@deletes']);
+    Route::resource('work_time_register', 'WorkRegisterController');
 
 });

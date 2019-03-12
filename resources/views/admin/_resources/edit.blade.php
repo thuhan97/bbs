@@ -2,11 +2,13 @@
 @extends('layouts.admin.master')
 
 <?php
+
 $_pageTitle = (isset($addVarsForView['_pageTitle']) && !empty($addVarsForView['_pageTitle']) ? $addVarsForView['_pageTitle'] : ucwords($resourceTitle));
 $_pageSubtitle = (isset($addVarsForView['_pageSubtitle']) && !empty($addVarsForView['_pageSubtitle']) ? $addVarsForView['_pageSubtitle'] : "Sửa thông tin " . str_singular($_pageTitle));
 $_formFiles = isset($addVarsForView['formFiles']) ? $addVarsForView['formFiles'] : false;
 $_listLink = route($resourceRoutesAlias . '.index');
 $_createLink = route($resourceRoutesAlias . '.create');
+
 $_updateLink = route($resourceRoutesAlias . '.update', $record->id);
 $_printLink = false;
 ?>
@@ -15,7 +17,6 @@ $_printLink = false;
 @section('breadcrumbs')
     {!! Breadcrumbs::render($resourceRoutesAlias.'.edit', $record->id) !!}
 @endsection
-
 {{-- Page Title --}}
 @section('page-title', $_pageTitle)
 

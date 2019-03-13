@@ -2,6 +2,7 @@
 
 namespace App\Traits\Controllers;
 
+use App\Models\DeviceUser;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Http\Request;
 
@@ -19,7 +20,6 @@ trait ResourceController
     public function index(Request $request)
     {
         $this->authorize('viewList', $this->getResourceModel());
-
         $records = $this->searchRecords($request, $perPage, $search);
 
         return view($this->getResourceIndexPath(), $this->filterSearchViewData($request, [
@@ -93,13 +93,18 @@ trait ResourceController
         $record = $this->repository->findOne($id);
 
         $this->authorize('update', $record);
+        $allocateUsers = null;
+        if (isset($this->resourceAllocate)) {
+            $allocateUsers = $this->deviceUserService->getRecordByDeviceId($record->id);
+        }
 
         return view($this->getResourceShowPath(), $this->filterShowViewData($record, [
             'record' => $record,
             'resourceAlias' => $this->getResourceAlias(),
             'resourceRoutesAlias' => $this->getResourceRoutesAlias(),
             'resourceTitle' => $this->getResourceTitle(),
-            'addVarsForView' => $this->addVarsShowViewData()
+            'addVarsForView' => $this->addVarsShowViewData(),
+            'allocateUsers' => $allocateUsers
         ]));
     }
 

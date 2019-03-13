@@ -18,4 +18,5 @@ Route::group([
     Route::get('/events', 'EventController@index')->name('api_events');
     Route::get('/events/calendar', 'EventController@calendar')->name('api_events_calendar');
 
+    Route::post('/deviceusers/get-devices', 'DeviceUserController@getDevices')->name('deviceusers.getDevices');
 });

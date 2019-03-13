@@ -4,36 +4,33 @@
         <th style="width: 10px;">
             <button type="button" class="btn btn-default btn-sm checkbox-toggle"><i class="fa fa-square-o"></i></button>
         </th>
-        <th class="no-wap">
-            Mã nhân viên
-            {!! __admin_sortable('staff_code') !!}
+        <th style="width: 10%;" class="no-wap">
+            Nhân viên
+            {!! __admin_sortable('userName') !!}
         </th>
-        <th>
-            Họ và tên
-            {!! __admin_sortable('name') !!}
+        <th style="width: 12%;">
+            Tên thiết bị
+            {!! __admin_sortable('devicesName') !!}
         </th>
-        <th>Ngày sinh
-            {!! __admin_sortable('birthday') !!}
+        <th style="width: 9%;">Mã thiết bị
+            {!! __admin_sortable('code') !!}
         </th>
 
-        <th>Email
-            {!! __admin_sortable('email') !!}
+        <th style="width: 9%;">Ngày cấp
+            {!! __admin_sortable('allocate_date') !!}
         </th>
-        <th>Số điện thoại
-            {!! __admin_sortable('phone') !!}
+        <th style="width: 9%;">Ngày trả
+            {!! __admin_sortable('return_date') !!}
         </th>
-        <th>Chức vụ
-            {!! __admin_sortable('jobtitle_id') !!}
-        </th>
-        <th>Loại hợp đồng
-            {!! __admin_sortable('contract_type') !!}
-        </th>
-        <th>Ngày tạo
-            {!! __admin_sortable('created_at') !!}
+        <th>Ghi chú
+            {!! __admin_sortable('note') !!}
         </th>
         <th style="width: 120px;">Chức năng</th>
         </thead>
         <tbody>
+        <?php
+        $tableCounter = 0;
+        ?>
         @foreach ($records as $record)
             <?php
             $tableCounter++;
@@ -44,27 +41,15 @@
             ?>
             <tr>
                 <td><input type="checkbox" name="ids[]" value="{{ $record->id }}" class="square-blue chkDelete"></td>
-                <td>
-                    @can('update', $record)
-                        <a href="{{ $editLink }}">{{ $record->staff_code }}</a>
-                    @else
-                        {{ $record->staff_code }}
-                    @endcan
-                </td>
-                <td class="table-text">
-                    <a href="{{ $showLink }}">{{ $record->name }}</a>
-                </td>
-                <td>{{ $record->birthday }}</td>
-                <td>{{ $record->email }}</td>
-                <td>{{ $record->phone }}</td>
-                <td>{{ JOB_TITLES[$record->jobtitle_id] ?? '' }}</td>
-                <td>{{ CONTRACT_TYPES_NAME[$record->contract_type] ?? '' }}</td>
-                <td class="">{{ $record->created_at }}</td>
+                <td>{{ $record->userName }}</td>
+                <td>{{ $record->devicesName }}</td>
+                <td>{{ $record->code }}</td>
+                <td>{{ $record->allocate_date | date(DATE_FORMAT) }}</td>
+                <td>{{ $record->return_date ?  $record->return_date | date(DATE_FORMAT) : ''}}</td>
 
-                <!-- we will also add show, edit, and delete buttons -->
+                <td>{{ $record->note }}</td>
                 <td>
                     <div class="btn-group">
-                        <a href="{{ $showLink }}" class="btn btn-info btn-sm"><i class="fa fa-eye"></i></a>
                         <a href="{{ $editLink }}" class="btn btn-info btn-sm"><i class="fa fa-edit"></i></a>
                         <a href="#" class="btn btn-danger btn-sm btnOpenerModalConfirmModelDelete"
                            data-form-id="{{ $formId }}"><i class="fa fa-trash-o"></i></a>
@@ -83,9 +68,3 @@
         </tbody>
     </table>
 </div>
-@push('footer-scripts')
-    <script>
-        $(function () {
-        })
-    </script>
-@endpush

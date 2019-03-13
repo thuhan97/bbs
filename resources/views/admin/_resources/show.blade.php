@@ -84,5 +84,5 @@ $_printLink = false;
 
 {{-- Footer Extras to be Included --}}
 @section('footer-extras')
-
+    @include('admin._resources._list-footer-extras', ['sortByParams' => []])
 @endsection

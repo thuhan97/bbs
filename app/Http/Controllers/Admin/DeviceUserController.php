@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Device;
 use App\Models\DeviceUser;
+use App\Repositories\Contracts\IDeviceRepository;
 use App\Repositories\Contracts\IDeviceUserRepository;
 use App\Repositories\Contracts\IUserRepository;
 use App\Services\Contracts\IDeviceService;
@@ -46,10 +47,11 @@ class DeviceUserController extends AdminBaseController
     /**
      * Controller construct
      */
-    public function __construct(IDeviceUserRepository $repository, IDeviceUserService $service)
+    public function __construct(IDeviceUserRepository $repository, IDeviceUserService $service, IDeviceRepository $deviceRepository)
     {
         $this->repository = $repository;
         $this->service = $service;
+        $this->deviceRepository = $deviceRepository;
         parent::__construct();
     }
 
@@ -152,5 +154,40 @@ class DeviceUserController extends AdminBaseController
             'users' => $users,
             'devices' => $devices,
         ]));
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param \Illuminate\Http\Request $request
+     *
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Http\Response|\Illuminate\Routing\Redirector
+     * @throws \Illuminate\Auth\Access\AuthorizationException
+     * @throws \Illuminate\Validation\ValidationException
+     */
+    public function store(Request $request)
+    {
+
+        $this->authorize('create', $this->getResourceModel());
+        $devicesId = $request->get('devices_id');
+        $device = $this->deviceRepository->findOne($devicesId);
+        \DB::beginTransaction();
+        $dataUpdate = [
+            'month_of_use' => (int) $device['month_of_use'] + 1,
+        ];
+        $this->deviceRepository->update($device, $dataUpdate);
+        $valuesToSave = $this->getValuesToSave($request);
+        $request->merge($valuesToSave);
+        $this->resourceValidate($request, 'store');
+
+        if ($record = $this->repository->save($this->alterValuesToSave($request, $valuesToSave))) {
+            flash()->success('Thêm mới thành công.');
+            \DB::commit();
+            return $this->getRedirectAfterSave($record, $request);
+        } else {
+            flash()->info('Thêm mới thất bại.');
+        }
+
+        return $this->redirectBackTo(route($this->getResourceRoutesAlias() . '.index'));
     }
 }

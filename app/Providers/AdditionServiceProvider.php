@@ -2,7 +2,11 @@
 
 namespace App\Providers;
 
+use App\Services\ActionDeviceService;
+use App\Services\Contracts\IActionDeviceService;
 use App\Services\Contracts\IDayOffService;
+use App\Services\Contracts\IDeviceService;
+use App\Services\Contracts\IDeviceUserService;
 use App\Services\Contracts\IEventService;
 use App\Services\Contracts\IFeedbackService;
 use App\Services\Contracts\IPostService;
@@ -14,6 +18,8 @@ use App\Services\Contracts\IUserService;
 use App\Services\Contracts\IUserTeamService;
 use App\Services\Contracts\IWorkTimeService;
 use App\Services\DayOffService;
+use App\Services\DeviceService;
+use App\Services\DeviceUserService;
 use App\Services\EventService;
 use App\Services\FeedbackService;
 use App\Services\PostService;
@@ -71,6 +77,15 @@ class AdditionServiceProvider extends ServiceProvider
         $this->app->bind(IFeedbackService::class, function () {
             return app()->make(FeedbackService::class);
         });
+        $this->app->bind(IActionDeviceService::class, function () {
+            return app()->make(ActionDeviceService::class);
+        });
+        $this->app->bind(IDeviceService::class, function () {
+            return app()->make(DeviceService::class);
+        });
+        $this->app->bind(IDeviceUserService::class, function () {
+            return app()->make(DeviceUserService::class);
+        });
     }
 
     /**
@@ -92,6 +107,9 @@ class AdditionServiceProvider extends ServiceProvider
             IWorkTimeService::class,
             IProjectService::class,
             IFeedbackService::class,
+            IActionDeviceService::class,
+            IDeviceService::class,
+            IDeviceUserService::class
         ];
     }
 }

@@ -50,6 +50,15 @@ use App\Repositories\WorkTimeRepository;
 use Illuminate\Support\ServiceProvider;
 
 ##AUTO_INSERT_USE##
+use App\Repositories\Contracts\IDeviceUserRepository;
+use App\Repositories\DeviceUserRepository;
+use App\Models\DeviceUser;
+use App\Repositories\Contracts\IActionDeviceRepository;
+use App\Repositories\ActionDeviceRepository;
+use App\Models\ActionDevice;
+use App\Repositories\Contracts\IDeviceRepository;
+use App\Repositories\DeviceRepository;
+use App\Models\Device;
 
 class RepositoriesServiceProvider extends ServiceProvider
 {
@@ -63,6 +72,15 @@ class RepositoriesServiceProvider extends ServiceProvider
     public function register()
     {
         ##AUTO_INSERT_BIND##
+		$this->app->bind(IDeviceUserRepository::class, function () {
+			return new DeviceUserRepository(new DeviceUser());
+		});
+		$this->app->bind(IActionDeviceRepository::class, function () {
+			return new ActionDeviceRepository(new ActionDevice());
+		});
+		$this->app->bind(IDeviceRepository::class, function () {
+			return new DeviceRepository(new Device());
+		});
         $this->app->bind(IProjectRepository::class, function () {
             return new ProjectRepository(new Project());
         });
@@ -118,6 +136,9 @@ class RepositoriesServiceProvider extends ServiceProvider
     {
         return [
             ##AUTO_INSERT_NAME##
+            IDeviceUserRepository::class,
+            IActionDeviceRepository::class,
+            IDeviceRepository::class,
             IProjectRepository::class,
             IFeedbackRepository::class,
             IReportRepository::class,

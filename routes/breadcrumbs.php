@@ -124,6 +124,8 @@ $resources = [
     'day_offs' => 'Quản lý nghỉ phép',
     'work_times' => 'Quản lý làm việc',
     'projects' => 'Quản lý dự án',
+    'devices' => 'Quản lý thiết bị',
+    'deviceusers' => 'Quản lý thiết bị'
 ];
 foreach ($resources as $resource => $data) {
     $parent = 'admin';

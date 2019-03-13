@@ -12,9 +12,15 @@ $_mutipleDeleteLink = route($resourceRoutesAlias . '.deletes');
 $tableCounter = 0;
 $total = 0;
 if (count($records) > 0) {
-    $total = $records->total();
-    $tableCounter = ($records->currentPage() - 1) * $records->perPage();
-    $tableCounter = $tableCounter > 0 ? $tableCounter : 0;
+    if ($records[0]->total) {
+        foreach ($records as $record) {
+            $total += $record->total;
+        }
+    } else {
+        $total = $records->total();
+        $tableCounter = ($records->currentPage() - 1) * $records->perPage();
+        $tableCounter = $tableCounter > 0 ? $tableCounter : 0;
+    }
 }
 ?>
 

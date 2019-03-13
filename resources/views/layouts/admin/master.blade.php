@@ -27,6 +27,9 @@
     <link href="{{ cdn_asset('/bootstrap-datepicker/css/bootstrap-datepicker.min.css') }}">
     <link href="{{ cdn_asset('/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css') }}"
           rel="stylesheet" type="text/css">
+    <!-- timepicker -->
+    <link href="{{ cdn_asset('/bootstrap-datetimepicker/css/bootstrap-timepicker.min.css') }}"
+          rel="stylesheet" type="text/css">
     <!-- END - Plugins -->
 
     <!-- Theme CSS -->
@@ -124,7 +127,8 @@
 <script src="{{ cdn_asset('/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js') }}"></script>
 <script src="{{ cdn_asset('/bootstrap-datepicker/js/bootstrap-datepicker.min.js') }}"></script>
 <!-- END - Plugins -->
-
+<!-- Timepicker -->
+<script src="{{ cdn_asset('/bootstrap-datetimepicker/js/bootstrap-timepicker.min.js') }}"></script>
 <!-- AdminLTE App -->
 <script src="{{ cdn_asset('/adminlte/js/adminlte.min.js') }}"></script>
 <!-- Custom Js -->

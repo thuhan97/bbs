@@ -39,6 +39,12 @@ Route::group([
     //Device
     Route::post('devices/deletes', ['as' => 'devices.deletes', 'uses' => 'DeviceController@deletes']);
     Route::resource('devices', 'DeviceController');
+    //event_attendance
+    Route::resource('event_attendance', 'EventAttendanceController');
+
+
+    //event_attendance
+    Route::resource('event_attendance', 'EventAttendanceController');
 
 
     //project
@@ -108,5 +114,8 @@ Route::group([
     Route::post('teams/deletes', ['as' => 'teams.deletes', 'uses' => 'TeamController@deletes']);
     Route::resource('teams', 'TeamController');
 
+    //register work time
+    Route::post('work_time_register/deletes', ['as' => 'work_time_register.deletes', 'uses' => 'WorkRegisterController@deletes']);
+    Route::resource('work_time_register', 'WorkRegisterController');
 
 });

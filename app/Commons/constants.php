@@ -43,6 +43,7 @@ define('URL_IMAGE_AVATAR', UPLOAD_PATH . '/avatar/');
 define('URL_IMAGE_PROJECT', 'adminlte/img/projects_img/');
 
 define('ACTIVE_STATUS', 1);
+define('ACTIVE_NOTIFY', 1);
 
 define('MORE_LANG', [
 //    'zh',
@@ -95,6 +96,27 @@ define('SEXS', [
     0 => 'Nam',
 ]);
 
+define('WORK_TIME_QUICK_SELECT', [
+    0 => 'Full sáng',
+    1 => 'Full chiều',
+]);
+
+define('WORK_TIME_SELECT', [
+    0 => 'Cả ngày',
+    1 => 'Sáng',
+    2 => 'Chiều',
+    3 => 'Không làm'
+]);
+
+define('PART_OF_THE_DAY', [
+    'mon',
+    'tue',
+    'wed',
+    'thu',
+    'fri',
+    'sat',
+]);
+
 define('STATUS_PROJECT', [
     0 => 'Chưa bắt đầu',
     1 => 'Đang phát triển',
@@ -111,6 +133,12 @@ define('PROJECT_TYPE', [
     1 => 'Trọn gói',
 ]);
 
+
+define('STATUS_JOIN_EVENT', [
+    0 => 'Không tham gia',
+    1 => 'Tham gia',
+]);
+
 define('NOT_AUTHENTICATED', 'Tài khoản không hợp lệ');
 define('NOT_AUTHORIZED', 'Tài khoản không đủ thẩm quyền');
 
@@ -123,3 +151,4 @@ define('TYPES_DEVICE', [
     5 => 'Máy tính bảng',
     6 => 'Khác'
 ]);
+

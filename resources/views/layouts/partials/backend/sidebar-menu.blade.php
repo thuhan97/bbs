@@ -51,17 +51,24 @@
     'admin::work_times.create',
     'admin::work_times.import',
     'admin::work_times.edit',
+    'admin::work_time_register.index',
+    'admin::work_time_register.create',
+    'admin::work_time_register.import',
+    'admin::work_time_register.edit',
     ]) ? 'active': '' }}">
-        <a href="#"><i class="fa fa-calendar"></i> <span>Thời gian làm việc</span>
+        <a href="#">
+            <i class="fa fa-calendar"></i>
+            <span>Thời gian làm việc</span>
             <span class="pull-right-container">
-    <i class="fa fa-angle-left pull-right"></i>
-    </span>
+                <i class="fa fa-angle-left pull-right"></i>
+            </span>
         </a>
         <ul class="treeview-menu">
             <li><a href="{{ route('admin::day_offs.index') }}"><i class="fa fa-circle"></i> Nghỉ phép</a></li>
             <li><a href="{{ route('admin::work_times.index') }}"><i class="fa fa-circle"></i> Thời gian làm việc</a>
             </li>
             <li><a href="{{ route('admin::over_times.index') }}"><i class="fa fa-circle"></i> Làm thêm</a></li>
+            <li><a href="{{ route('admin::work_time_register.index') }}"><i class="fa fa-circle"></i>Đăng ký thời gian làm việc</a></li>
         </ul>
     </li>
     <li class="{{ \App\Utils::checkRoute(['admin::devices.index', 'admin::devices.create', 'admin::devices.edit']) ? 'active': '' }}">

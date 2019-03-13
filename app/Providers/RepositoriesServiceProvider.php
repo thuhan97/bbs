@@ -17,6 +17,7 @@ use App\Models\User;
 use App\Models\UserTeam;
 use App\Models\WorkTime;
 use App\Models\WorkTimeDetail;
+use App\Models\WorkTimeRegister;
 use App\Repositories\AdminRepository;
 use App\Repositories\ConfigRepository;
 use App\Repositories\Contracts\IAdminRepository;
@@ -33,6 +34,7 @@ use App\Repositories\Contracts\ITeamRepository;
 use App\Repositories\Contracts\IUserRepository;
 use App\Repositories\Contracts\IUserTeamRepository;
 use App\Repositories\Contracts\IWorkTimeDetailRepository;
+use App\Repositories\Contracts\IWorkTimeRegisterRepository;
 use App\Repositories\Contracts\IWorkTimeRepository;
 use App\Repositories\DayOffRepository;
 use App\Repositories\EventRepository;
@@ -46,6 +48,7 @@ use App\Repositories\TeamRepository;
 use App\Repositories\UserRepository;
 use App\Repositories\UserTeamRepository;
 use App\Repositories\WorkTimeDetailRepository;
+use App\Repositories\WorkTimeRegisterRepository;
 use App\Repositories\WorkTimeRepository;
 use Illuminate\Support\ServiceProvider;
 
@@ -59,6 +62,9 @@ use App\Models\ActionDevice;
 use App\Repositories\Contracts\IDeviceRepository;
 use App\Repositories\DeviceRepository;
 use App\Models\Device;
+use App\Repositories\Contracts\IEventAttendanceRepository;
+use App\Repositories\EventAttendanceRepository;
+use App\Models\EventAttendance;
 
 class RepositoriesServiceProvider extends ServiceProvider
 {
@@ -81,6 +87,12 @@ class RepositoriesServiceProvider extends ServiceProvider
 		$this->app->bind(IDeviceRepository::class, function () {
 			return new DeviceRepository(new Device());
 		});
+        $this->app->bind(IEventAttendanceRepository::class, function () {
+            return new EventAttendanceRepository(new EventAttendance());
+        });
+        $this->app->bind(IEventAttendanceRepository::class, function () {
+            return new EventAttendanceRepository(new EventAttendance());
+        });
         $this->app->bind(IProjectRepository::class, function () {
             return new ProjectRepository(new Project());
         });
@@ -127,6 +139,9 @@ class RepositoriesServiceProvider extends ServiceProvider
         $this->app->bind(IUserTeamRepository::class, function () {
             return new UserTeamRepository(new UserTeam());
         });
+        $this->app->bind(IWorkTimeRegisterRepository::class, function () {
+            return new WorkTimeRegisterRepository(new WorkTimeRegister());
+        });
         $this->app->bind(IProjectRepository::class, function () {
             return new ProjectRepository(new Project());
         });
@@ -139,6 +154,7 @@ class RepositoriesServiceProvider extends ServiceProvider
             IDeviceUserRepository::class,
             IActionDeviceRepository::class,
             IDeviceRepository::class,
+            IEventAttendanceRepository::class,
             IProjectRepository::class,
             IFeedbackRepository::class,
             IReportRepository::class,
@@ -152,6 +168,7 @@ class RepositoriesServiceProvider extends ServiceProvider
             IWorkTimeRepository::class,
             ITeamRepository::class,
             IUserTeamRepository::class,
+            IWorkTimeRegisterRepository::class,
             IProjectRepository::class
         ];
     }

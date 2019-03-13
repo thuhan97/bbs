@@ -23,7 +23,6 @@ if (count($records) > 0) {
     }
 }
 ?>
-
 {{-- Breadcrumbs --}}
 @section('breadcrumbs')
     {!! Breadcrumbs::render($resourceRoutesAlias) !!}

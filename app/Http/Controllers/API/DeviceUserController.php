@@ -45,7 +45,7 @@ class DeviceUserController extends Controller
             'types_device_id' => 'required'
         ]);
         if ($request->get('types_device_id')) {
-            $devices = Device::all('id', 'name', 'types_device_id');
+            $devices = Device::where('final', '>', 0)->select('id', 'name', 'types_device_id')->get();
         } else {
             $devices = $this->deviceService->getDevicesByType($request->get('types_device_id'));
         }

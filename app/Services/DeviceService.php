@@ -13,6 +13,8 @@ use App\Services\Contracts\IDeviceService;
 class DeviceService extends AbstractService implements IDeviceService
 {
     public function getDevicesByType($type) {
-        return Device::where('types_device_id', $type)->select('id', 'name', 'types_device_id')->get();
+        return Device::where('types_device_id', $type)
+                    ->where('final', '>', 0)
+                    ->select('id', 'name', 'types_device_id')->get();
     }
 }

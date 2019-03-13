@@ -321,3 +321,8 @@
 .mr-2 {
     margin-right: 2rem;
 }
+
+a.disabled {
+    pointer-events: none;
+    cursor: default;
+}

@@ -57,7 +57,11 @@
 @if($allocateUsers)
     <div class="col-md-12">
         <h3 style="float:left;">Danh sách cấp thiết bị</h3>
-        <a href="{{ route('admin::deviceusers.allocate', $record->id) }}"><button type="button" class="btn btn-primary" style="float:right; margin: 10px;">Cấp phát</button></a>
+        @if($record->final > 0)
+            <a href="{{ route('admin::deviceusers.allocate', $record->id) }}" ><button type="button" class="btn btn-primary" style="float:right; margin: 10px;">Cấp phát</button></a>
+        @else
+            <a href="{{ route('admin::deviceusers.allocate', $record->id) }}" class="disabled"><button type="button" class="btn btn-primary" style="float:right; margin: 10px;">Cấp phát</button></a>
+        @endif
     </div>
     <div class="col-md-12">
         <div class="table-responsive list-records">

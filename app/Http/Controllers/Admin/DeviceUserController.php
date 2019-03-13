@@ -172,20 +172,23 @@ class DeviceUserController extends AdminBaseController
         $devicesId = $request->get('devices_id');
         $device = $this->deviceRepository->findOne($devicesId);
         \DB::beginTransaction();
-        $dataUpdate = [
-            'month_of_use' => (int) $device['month_of_use'] + 1,
-        ];
-        $this->deviceRepository->update($device, $dataUpdate);
-        $valuesToSave = $this->getValuesToSave($request);
-        $request->merge($valuesToSave);
-        $this->resourceValidate($request, 'store');
+        if ($device->final > 0) {
+            $dataUpdate = [
+                'month_of_use' => (int) $device['month_of_use'] + 1,
+                'final' => (int) $device['final'] - 1
+            ];
+            $this->deviceRepository->update($device, $dataUpdate);
+            $valuesToSave = $this->getValuesToSave($request);
+            $request->merge($valuesToSave);
+            $this->resourceValidate($request, 'store');
 
-        if ($record = $this->repository->save($this->alterValuesToSave($request, $valuesToSave))) {
-            flash()->success('Thêm mới thành công.');
-            \DB::commit();
-            return $this->getRedirectAfterSave($record, $request);
-        } else {
-            flash()->info('Thêm mới thất bại.');
+            if ($record = $this->repository->save($this->alterValuesToSave($request, $valuesToSave))) {
+                flash()->success('Thêm mới thành công.');
+                \DB::commit();
+                return $this->getRedirectAfterSave($record, $request);
+            } else {
+                flash()->info('Thêm mới thất bại.');
+            }
         }
 
         return $this->redirectBackTo(route($this->getResourceRoutesAlias() . '.index'));

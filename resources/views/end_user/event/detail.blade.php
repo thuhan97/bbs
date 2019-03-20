@@ -99,23 +99,7 @@
                 @endif
 
                 </tbody>
-                <tfoot>
-                <tr>
-                    <th>Tên nhân viên
-                    </th>
-                    <th>Mã nhân viên
-                    </th>
-                    <th>Trạng thái
-                    </th>
-                    <th class="th-sm">Ý kiến cá nhân
-                    </th>
-                    <th>Ngày đăng kí
-                    </th>
-                </tr>
-                </tfoot>
             </table>
-
-
         </div>
     </div>
     @push('extend-js')

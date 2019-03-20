@@ -26,6 +26,19 @@ Route::group([
 
     ##AUTO_INSERT_ROUTE##
 
+		//DeviceUser
+    Route::get('devices/{id}/allocate', ['as' => 'deviceusers.allocate', 'uses' => 'DeviceUserController@allocate']);
+    Route::post('deviceusers/deletes', ['as' => 'deviceusers.deletes', 'uses' => 'DeviceUserController@deletes']);
+    Route::resource('deviceusers', 'DeviceUserController');
+		
+
+    //ActionDevice
+//    Route::resource('ActionDevice', 'ActionDeviceController');
+
+
+    //Device
+    Route::post('devices/deletes', ['as' => 'devices.deletes', 'uses' => 'DeviceController@deletes']);
+    Route::resource('devices', 'DeviceController');
     //event_attendance
     Route::resource('event_attendance', 'EventAttendanceController');
 

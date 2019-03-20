@@ -142,4 +142,13 @@ define('STATUS_JOIN_EVENT', [
 define('NOT_AUTHENTICATED', 'Tài khoản không hợp lệ');
 define('NOT_AUTHORIZED', 'Tài khoản không đủ thẩm quyền');
 
+define('TYPES_DEVICE', [
+    0 => 'Case',
+    1 => 'Màn hình',
+    2 => 'Chuột',
+    3 => 'Bàn phím',
+    4 => 'Điện thoại',
+    5 => 'Máy tính bảng',
+    6 => 'Khác'
+]);
 

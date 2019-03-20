@@ -244,6 +244,7 @@ return [
         'Entrust' => Zizaco\Entrust\EntrustFacade::class,
         'Socialite' => Laravel\Socialite\Facades\Socialite::class,
         'ImageFacade' => App\Facades\ImageFacade::class,
+        'Input' => Illuminate\Support\Facades\Input::class,
 
     ],
 

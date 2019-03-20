@@ -125,6 +125,8 @@ $resources = [
     'work_times' => 'Quản lý làm việc',
     'work_time_register' => 'Đăng ký thời gian làm việc',
     'projects' => 'Quản lý dự án',
+    'devices' => 'Quản lý thiết bị',
+    'deviceusers' => 'Quản lý thiết bị'
 ];
 foreach ($resources as $resource => $data) {
     $parent = 'admin';

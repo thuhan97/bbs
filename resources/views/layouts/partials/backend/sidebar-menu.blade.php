@@ -71,4 +71,14 @@
             <li><a href="{{ route('admin::work_time_register.index') }}"><i class="fa fa-circle"></i>Đăng ký thời gian làm việc</a></li>
         </ul>
     </li>
+    <li class="{{ \App\Utils::checkRoute(['admin::devices.index', 'admin::devices.create', 'admin::devices.edit']) ? 'active': '' }}">
+        <a href="{{ route('admin::devices.index') }}">
+            <i class="fa fa-share-alt"></i> <span>Quản lý thiết bị</span>
+        </a>
+    </li>
+    <li class="{{ \App\Utils::checkRoute(['admin::deviceusers.index', 'admin::deviceusers.create', 'admin::deviceusers.edit']) ? 'active': '' }}">
+        <a href="{{ route('admin::deviceusers.index') }}">
+            <i class="fa fa-share-alt"></i> <span>Cấp thiết bị</span>
+        </a>
+    </li>
 </ul>

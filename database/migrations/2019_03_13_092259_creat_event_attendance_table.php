@@ -16,7 +16,6 @@ class CreatEventAttendanceTable extends Migration
         Schema::create('event_attendance', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('user_id');
-            $table->integer('user_id');
             $table->longText('content')->nullable();
             $table->tinyInteger('status');
             $table->softDeletes();

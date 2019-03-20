@@ -27,7 +27,7 @@
                                 @if($event->event_end_date) đến {{$event->event_end_date}} @endif
                             </div>
 
-                            <p class="mt-3">{!! $event->introduction !!}</p>
+                            <p class="mt-3">{!! nl2br($event->introduction)  !!}</p>
 
                             <hr>
 

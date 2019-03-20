@@ -25,7 +25,7 @@
                 @endif
 
             </h3>
-            <h5 class="card-title h6 my-4 text-center"><b>{!! $event->introduction!!}</b></h5>
+            <h5 class="card-title h6 my-4 text-center"><b>{!! nl2br($event->introduction) !!}</b></h5>
             <!-- Text -->
             <p class="card-text py-2">{!! $event->content !!}</p>
             <!-- Button -->

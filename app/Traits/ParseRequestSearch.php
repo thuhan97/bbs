@@ -14,7 +14,8 @@ trait ParseRequestSearch
 {
     /**
      * @param Request $request
-     * @param array $field_operator Eg: ['name'=>'like']
+     * @param array   $field_operator Eg: ['name'=>'like']
+     *
      * @return array
      */
     private function parseRequest(Request $request, $field_operator = [])

@@ -10,10 +10,10 @@ use App\Repositories\Contracts\I{{$Module}}Repository;
 */
 class {{$Module}}Repository extends AbstractRepository implements I{{$Module}}Repository
 {
-     /**
-     * {{$Module}}Model
-     *
-     * @var string
-     */
-	  protected $modelName = {{$Module}}::class;
+/**
+* {{$Module}}Model
+*
+* @var string
+*/
+protected $modelName = {{$Module}}::class;
 }

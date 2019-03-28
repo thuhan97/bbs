@@ -9,24 +9,24 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class {{$Module}} extends Model
 {
-    use SoftDeletes;
+use SoftDeletes;
 
-	protected $table = '{{$table}}';
+protected $table = '{{$table}}';
 
-	protected $primaryKey = 'id';
+protected $primaryKey = 'id';
 
-    protected $fillable = [
-    @foreach($list_column as $column)
-        '{{$column}}',
-    @endforeach
-    ];
+protected $fillable = [
+@foreach($list_column as $column)
+    '{{$column}}',
+@endforeach
+];
 
-    /**
-    * The attributes that should be hidden for arrays.
-    *
-    * @var array
-    */
-    protected $hidden = [
-        'created_at', 'updated_at', 'deleted_at',
-    ];
+/**
+* The attributes that should be hidden for arrays.
+*
+* @var array
+*/
+protected $hidden = [
+'created_at', 'updated_at', 'deleted_at',
+];
 }

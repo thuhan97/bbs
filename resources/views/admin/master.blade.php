@@ -1,9 +1,9 @@
 <?php
 $postCount = \App\Models\Post::count();
-$eventCount = \App\Models\Event::count();
+$projectCount = \App\Models\Project::count();
 $userCount = \App\Models\User::count();
 $regulationCount = \App\Models\Regulation::count();
-
+$teams = \App\Models\Team::select('id', 'name', 'color')->withCount('members')->get();
 ?>
 
 @extends('layouts.admin.master')
@@ -23,7 +23,7 @@ $regulationCount = \App\Models\Regulation::count();
                     <p>Nhân viên</p>
                 </div>
                 <div class="icon">
-                    <i class="ion ion-person"></i>
+                    <i class="fa fa-users"></i>
                 </div>
                 <a href="/admin/users" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
             </div>
@@ -37,7 +37,7 @@ $regulationCount = \App\Models\Regulation::count();
                     <p>Thông báo</p>
                 </div>
                 <div class="icon">
-                    <i class="fa fa-globe"></i>
+                    <i class="fa fa-bell"></i>
                 </div>
                 <a href="/admin/topics" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
             </div>
@@ -47,12 +47,12 @@ $regulationCount = \App\Models\Regulation::count();
             <!-- small box -->
             <div class="small-box bg-green">
                 <div class="inner">
-                    <h3>{{ number_collapse($eventCount) }}</h3>
+                    <h3>{{ number_collapse($projectCount) }}</h3>
 
-                    <p>Sự kiện</p>
+                    <p>Dự án</p>
                 </div>
                 <div class="icon">
-                    <i class="ion ion-image"></i>
+                    <i class="fa fa-anchor"></i>
                 </div>
                 <a href="/admin/questions" class="small-box-footer">More info <i
                             class="fa fa-arrow-circle-right"></i></a>
@@ -69,7 +69,7 @@ $regulationCount = \App\Models\Regulation::count();
                     <p>Nội quy/quy định</p>
                 </div>
                 <div class="icon">
-                    <i class="ion ion-hammer"></i>
+                    <i class="fa fa-quote-right"></i>
                 </div>
                 <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
             </div>
@@ -219,7 +219,7 @@ $regulationCount = \App\Models\Regulation::count();
             <!-- USERS LIST -->
             <div class="box box-danger">
                 <div class="box-header with-border">
-                    <h3 class="box-title">Nhân viên mới</h3>
+                    <h3 class="box-title">Nhân viên thử việc</h3>
 
                     <div class="box-tools pull-right">
                         <span class="label label-danger">{{$probationStaffs->count()}} nhân viên</span>
@@ -232,17 +232,21 @@ $regulationCount = \App\Models\Regulation::count();
                 </div>
                 <!-- /.box-header -->
                 <div class="box-body no-padding">
-                    <ul class="users-list clearfix">
-                        @foreach($probationStaffs as $probationStaff)
-                            <li>
-                                <img src="{{$probationStaff->avatar}}" onerror="this.src='{{URL_IMAGE_NO_IMAGE}}'"
-                                     alt="{{$probationStaff->name}}">
-                                <a class="users-list-name" href="#">{{$probationStaff->name}}</a>
-                                <span class="users-list-date">{{$probationStaff->probation_at}}</span>
-                            </li>
-                        @endforeach
-                    </ul>
-                    <!-- /.users-list -->
+                    @if($probationStaffs->isNotEmpty())
+                        <ul class="users-list clearfix">
+                            @foreach($probationStaffs as $probationStaff)
+                                <li>
+                                    <img src="{{$probationStaff->avatar}}" onerror="this.src='{{URL_IMAGE_NO_IMAGE}}'"
+                                         alt="{{$probationStaff->name}}">
+                                    <a class="users-list-name" href="#">{{$probationStaff->name}}</a>
+                                    <span class="users-list-date">{{$probationStaff->probation_at}}</span>
+                                </li>
+                            @endforeach
+                        </ul>
+                    @else
+                        <h4 class="col-md-12">Không có nhân viên thử việc</h4>
+                @endif
+                <!-- /.users-list -->
                 </div>
                 <!-- /.box-body -->
                 <div class="box-footer text-center">
@@ -278,12 +282,11 @@ $regulationCount = \App\Models\Regulation::count();
                         <!-- /.col -->
                         <div class="col-md-4">
                             <ul class="chart-legend clearfix">
-                                <li><i class="fa fa-circle-o text-red"></i> Biệt đội bình tĩnh</li>
-                                <li><i class="fa fa-circle-o text-green"></i> Apple</li>
-                                <li><i class="fa fa-circle-o text-yellow"></i> Banana</li>
-                                <li><i class="fa fa-circle-o text-aqua"></i> Warrior</li>
-                                <li><i class="fa fa-circle-o text-light-blue"></i> Badboy</li>
-                                <li><i class="fa fa-circle-o text-gray"></i> HCNS</li>
+                                @foreach($teams as $team)
+                                    <li>
+                                        <i class="fa fa-circle-o" style="color: {{$team->color}}"></i> {{$team->name}}
+                                    </li>
+                                @endforeach
                             </ul>
                         </div>
                         <!-- /.col -->
@@ -293,10 +296,13 @@ $regulationCount = \App\Models\Regulation::count();
                 <!-- /.box-body -->
                 <div class="box-footer no-padding">
                     <ul class="nav nav-pills nav-stacked">
-                        <li><a href="#">Chính thức <span class="pull-right"> 50</span></a></li>
-                        <li><a href="#">Thử việc <span class="pull-right"> 5</span></a></li>
-                        <li><a href="#">Partime <span class="pull-right"> 2</span></a></li>
-                        <li><a href="#">Thực tập <span class="pull-right"> 4</span></a></li>
+                        @foreach(CONTRACT_TYPES_NAME as $type => $typeName)
+                            <li>
+                                <a href="#">{{$typeName}}
+                                    <span class="pull-right"> {{\App\Models\User::where('contract_type', $type)->count()}}</span>
+                                </a>
+                            </li>
+                        @endforeach
                     </ul>
                 </div>
                 <!-- /.footer -->
@@ -347,6 +353,19 @@ $regulationCount = \App\Models\Regulation::count();
 @endsection
 
 @push('footer-scripts')
+    <script>
+        window.PieData = [
+                @foreach($teams as $team)
+            {
+                value: '{{$team->members_count}}',
+                color: '{{$team->color}}',
+                highlight: '{{$team->color}}',
+                label: '{{$team->name}}'
+            },
+            @endforeach
+        ];
+
+    </script>
     <script src="{{cdn_asset('/js/libs/chart.js')}}"></script>
     <script src="{{cdn_asset('/js/admin/dashboard.js')}}"></script>
 @endpush

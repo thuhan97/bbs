@@ -66,8 +66,8 @@ class DayOff extends Model
         return $this->belongsTo(User::class);//->where('status', ACTIVE_STATUS);
     }
 
-	public function approval()
-	{
-		return $this->hasOne(User::class,'id','approver_id');
-	}
+    public function approval()
+    {
+        return $this->hasOne(User::class, 'id', 'approver_id');
+    }
 }

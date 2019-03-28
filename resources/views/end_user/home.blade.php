@@ -12,7 +12,7 @@
                     <div class="card mb-4 wow fadeIn" style="visibility: visible; animation-name: fadeIn;">
                         <!--Card content-->
                         <div class="card-body text-center">
-                            <p class="h5 mb-4 text-gray">Sự kiện mới nhất</p>
+                            <p class="h5 mb-4 text-gray">Sự kiện sắp diễn ra</p>
                             <h5 class="my-4">
                                 <strong class="text-success">
                                     {{ $event->name }}
@@ -27,7 +27,7 @@
                                 @if($event->event_end_date) đến {{$event->event_end_date}} @endif
                             </div>
 
-                            <p class="mt-3">{!! $event->introduction !!}</p>
+                            <p class="mt-3">{!! nl2br($event->introduction)  !!}</p>
 
                             <hr>
 
@@ -38,7 +38,32 @@
 
                     </div>
             @endif
-            <!--/.Card-->
+
+            <!--Card-->
+                <div class="card mb-4 wow fadeIn">
+                    <div class="card-header">Thông báo mới</div>
+                    <!--Card content-->
+                    <div class="card-body">
+                        <ul class="list-unstyled">
+                            @foreach($posts as $post)
+                                <li class="media mb-3">
+                                    <img class="d-flex mr-3"
+                                         src="{{lfm_thumbnail($post->image_url)}}"
+                                         alt="{{$post->name}}" width="60">
+                                    <div class="media-body">
+                                        <a href="{{route('post_detail', ['id' => $post->id])}}">
+                                            <h5 class="mt-0 mb-1 font-weight-bold">{{$post->name}}</h5>
+                                        </a>
+                                        {{str_limit(strip_tags(nl2br($post->introduction) )) }}
+                                    </div>
+                                </li>
+                            @endforeach
+                        </ul>
+
+                    </div>
+
+                </div>
+                <!--/.Card-->
             </div>
             <!--Grid column-->
 
@@ -64,30 +89,7 @@
                 </div>
                 <!--Card: Jumbotron-->
 
-                <!--Card-->
-                <div class="card mb-4 wow fadeIn">
-                    <div class="card-header">Thông báo mới</div>
-                    <!--Card content-->
-                    <div class="card-body">
-                        <ul class="list-unstyled">
-                            @foreach($posts as $post)
-                                <li class="media">
-                                    <img class="d-flex mr-3"
-                                         src="{{lfm_thumbnail($post->image_url)}}"
-                                         alt="{{$post->name}}" width="60">
-                                    <div class="media-body">
-                                        <a href="{{route('post_detail', ['id' => $post->id])}}">
-                                            <h5 class="mt-0 mb-1 font-weight-bold">{{$post->name}}</h5>
-                                        </a>
-                                        {{str_limit(strip_tags(nl2br($post->introduction) )) }}
-                                    </div>
-                                </li>
-                            @endforeach
-                        </ul>
 
-                    </div>
-
-                </div>
                 <!--/.Card-->
                 <!--Featured Image-->
                 <div class="card mb-4 wow fadeIn">

@@ -2,9 +2,7 @@
 
 namespace App\Observers;
 
-use App\Facades\DateTimeFacade;
 use App\Models\DayOff;
-use Carbon\Carbon;
 
 class DayOffObserver
 {

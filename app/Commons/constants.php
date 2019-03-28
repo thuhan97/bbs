@@ -38,8 +38,12 @@ define('LANG_VN', 'vi');
 define('EXPIRE_POTATO_DEFAULT', 6);
 
 define('URL_IMAGE_NO_IMAGE', '/dist/img/no-avatar.png');
+define('UPLOAD_PATH', '/uploads');
+define('URL_IMAGE_AVATAR', UPLOAD_PATH . '/avatar/');
+define('URL_IMAGE_PROJECT', 'adminlte/img/projects_img/');
 
 define('ACTIVE_STATUS', 1);
+define('ACTIVE_NOTIFY', 1);
 
 define('MORE_LANG', [
 //    'zh',
@@ -66,8 +70,13 @@ define('CONTRACT_TYPES_NAME', [
     3 => 'Thực tập',
 ]);
 
+define('HEAD_DEPARTMENT_ROLE', -1);
+define('TEAMLEADER_ROLE', 1);
+define('MANAGER_ROLE', 2);
+define('MASTER_ROLE', 3);
 
 define('JOB_TITLES', [
+    -1 => 'Trưởng phòng',
     0 => 'Chuyên viên',
     1 => 'Team leader',
     2 => 'Manager',
@@ -86,3 +95,60 @@ define('SEXS', [
     1 => 'Nữ',
     0 => 'Nam',
 ]);
+
+define('WORK_TIME_QUICK_SELECT', [
+    0 => 'Full sáng',
+    1 => 'Full chiều',
+]);
+
+define('WORK_TIME_SELECT', [
+    0 => 'Cả ngày',
+    1 => 'Sáng',
+    2 => 'Chiều',
+    3 => 'Không làm'
+]);
+
+define('PART_OF_THE_DAY', [
+    'mon',
+    'tue',
+    'wed',
+    'thu',
+    'fri',
+    'sat',
+]);
+
+define('STATUS_PROJECT', [
+    0 => 'Chưa bắt đầu',
+    1 => 'Đang phát triển',
+    2 => 'Đã kết thúc',
+]);
+
+define('COLOR_STATUS_PROJECT', [
+    0 => 'color:blue',
+    1 => 'color:orange',
+    2 => 'color:green',
+]);
+define('PROJECT_TYPE', [
+    0 => 'ODC',
+    1 => 'Trọn gói',
+]);
+
+
+define('STATUS_JOIN_EVENT', [
+    0 => 'Không tham gia',
+    1 => 'Tham gia',
+]);
+
+define('NOT_AUTHENTICATED', 'Tài khoản không hợp lệ');
+define('NOT_AUTHORIZED', 'Tài khoản không đủ thẩm quyền');
+
+define('TYPES_DEVICE', [
+    0 => 'Case',
+    1 => 'Màn hình',
+    2 => 'Chuột',
+    3 => 'Bàn phím',
+    4 => 'Điện thoại',
+    5 => 'Máy tính bảng',
+    6 => 'Khác'
+]);
+

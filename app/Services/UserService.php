@@ -21,18 +21,18 @@ use Illuminate\Support\Collection;
 class UserService extends AbstractService implements IUserService
 {
 
-	/**
-	 * UserService constructor.
-	 *
-	 * @param \App\Models\User $model
-	 * @param \App\Repositories\Contracts\IUserRepository $repository
-	 * @param IUserTeamRepository $userTeamRepository
-	 */
-    public function __construct(User $model, IUserRepository $repository,IUserTeamRepository $userTeamRepository)
+    /**
+     * UserService constructor.
+     *
+     * @param \App\Models\User                            $model
+     * @param \App\Repositories\Contracts\IUserRepository $repository
+     * @param IUserTeamRepository                         $userTeamRepository
+     */
+    public function __construct(User $model, IUserRepository $repository, IUserTeamRepository $userTeamRepository)
     {
         $this->model = $model;
         $this->repository = $repository;
-        $this->userTeamRepository= $userTeamRepository;
+        $this->userTeamRepository = $userTeamRepository;
     }
 
     /**
@@ -87,20 +87,8 @@ class UserService extends AbstractService implements IUserService
 
     /**
      * @param $id
+     *
      * @return mixed
      */
-    public function getMemberName($id){
-        return $this->model->where('id',  $id)->first()->name;
-    }
 
-    public function getMemberNotInTeam($id = null){
-        $memberModel = new UserTeam;
-        $member = $this->userTeamRepository->getMemberIdAttribute();
-//        dd($member);
-        $users = '';
-        $users = User::whereNotIn('id', $member)
-            ->orwhere('id',$id)
-            ->get();
-        return $users;
-    }
 }

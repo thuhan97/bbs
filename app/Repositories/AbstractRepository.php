@@ -77,9 +77,11 @@ abstract class AbstractRepository implements IBaseRepository
     public function findBy(array $searchCriteria = [], array $fields = ['*'], $all = false)
     {
         $limit = !empty($searchCriteria['page_size']) ? (int)$searchCriteria['page_size'] : DEFAULT_PAGE_SIZE; // it's needed for pagination
+
         $queryBuilder = $this->model->where(function ($query) use ($searchCriteria) {
             $this->applySearchCriteriaInQueryBuilder($query, $searchCriteria);
         })->select($fields);
+
         //order by
 
         $default_order_field = $this->model->getKeyName();
@@ -131,7 +133,6 @@ abstract class AbstractRepository implements IBaseRepository
                         $queryBuilder->where($key, $operator, $value);
                     }
                 }
-
             } else {
                 //check if $value has filter by ParseRequestSearch
                 if ($key === 'search') {

@@ -2,6 +2,7 @@
 
 namespace App\Traits\Controllers;
 
+use App\Models\DeviceUser;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Http\Request;
 
@@ -19,7 +20,6 @@ trait ResourceController
     public function index(Request $request)
     {
         $this->authorize('viewList', $this->getResourceModel());
-
         $records = $this->searchRecords($request, $perPage, $search);
 
         return view($this->getResourceIndexPath(), $this->filterSearchViewData($request, [
@@ -30,6 +30,7 @@ trait ResourceController
             'resourceTitle' => $this->getResourceTitle(),
             'perPage' => $perPage,
             'resourceSearchExtend' => $this->resourceSearchExtend,
+            'addVarsForView' => $this->addVarsSearchViewData()
         ]));
     }
 
@@ -48,6 +49,7 @@ trait ResourceController
             'resourceAlias' => $this->getResourceAlias(),
             'resourceRoutesAlias' => $this->getResourceRoutesAlias(),
             'resourceTitle' => $this->getResourceTitle(),
+            'addVarsForView' => $this->addVarsCreateViewData()
         ]));
     }
 
@@ -91,12 +93,18 @@ trait ResourceController
         $record = $this->repository->findOne($id);
 
         $this->authorize('update', $record);
+        $allocateUsers = null;
+        if (isset($this->resourceAllocate)) {
+            $allocateUsers = $this->deviceUserService->getRecordByDeviceId($record->id);
+        }
 
         return view($this->getResourceShowPath(), $this->filterShowViewData($record, [
             'record' => $record,
             'resourceAlias' => $this->getResourceAlias(),
             'resourceRoutesAlias' => $this->getResourceRoutesAlias(),
             'resourceTitle' => $this->getResourceTitle(),
+            'addVarsForView' => $this->addVarsShowViewData(),
+            'allocateUsers' => $allocateUsers
         ]));
     }
 
@@ -119,6 +127,7 @@ trait ResourceController
             'resourceAlias' => $this->getResourceAlias(),
             'resourceRoutesAlias' => $this->getResourceRoutesAlias(),
             'resourceTitle' => $this->getResourceTitle(),
+            'addVarsForView' => $this->addVarsEditViewData()
         ]));
     }
 
@@ -141,11 +150,12 @@ trait ResourceController
         $valuesToSave = $this->getValuesToSave($request, $record);
         $request->merge($valuesToSave);
         $this->resourceValidate($request, 'update', $record);
-
         if ($this->repository->update($record, $this->alterValuesToSave($request, $valuesToSave))) {
+
             flash()->success('Cập nhật thành công.');
 
             return $this->getRedirectAfterSave($record, $request);
+
         } else {
             flash()->info('Cập nhật thất bại.');
         }

@@ -15,7 +15,7 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         //
-//        \Schema::defaultStringLength(191);
+        \Schema::defaultStringLength(191);
         $config = Config::firstOrNew(['id' => 1]);
         view()->share('config', $config);
     }
@@ -27,6 +27,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-
+        $this->app->singleton('settings', function () {
+            return Config::all();
+        });
     }
 }

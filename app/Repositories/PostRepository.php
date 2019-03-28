@@ -1,20 +1,21 @@
-<?php 
+<?php
+
 namespace App\Repositories;
 
 use App\Models\Post;
 use App\Repositories\Contracts\IPostRepository;
 
 /**
-* PostRepository class
-* Author: jvb
-* Date: 2018/11/11 13:59
-*/
+ * PostRepository class
+ * Author: jvb
+ * Date: 2018/11/11 13:59
+ */
 class PostRepository extends AbstractRepository implements IPostRepository
 {
-     /**
+    /**
      * PostModel
      *
      * @var  string
      */
-	  protected $modelName = Post::class;
+    protected $modelName = Post::class;
 }

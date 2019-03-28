@@ -225,6 +225,55 @@
     background: #e5edff;
 }
 
+/*work_time*/
+.fixed-action-btn {
+    position: fixed;
+    z-index: 998;
+    right: 35px;
+    bottom: 35px;
+    margin-bottom: 0;
+    padding-top: 15px;
+}
+
+.table tbody tr.select {
+    background: #e5edff;
+}
+
+.w-22 {
+    width: 23% !important;
+}
+
+.select-month {
+    margin-bottom: 24px;
+}
+
+.list-work-time th {
+    font-weight: bold;
+    font-size: 14px;
+    padding: 10px;
+}
+
+.list-work-time td {
+    padding: 10px;
+}
+
+.statistic {
+    margin: 0;
+    margin-bottom: 24px;
+    border-bottom: 1px solid #ccc;
+    border-top: 1px solid #ccc;
+    padding: 10px;
+}
+
+.statistic > div {
+    margin-right: 10px;
+    border-radius: 5px;
+}
+
+.statistic > div > span {
+    padding: 10px 15px;
+}
+
 /*Day_off CSS*/
 .red-circle {
     display: block;
@@ -286,6 +335,41 @@
     background: limegreen;
 }
 
+.spinner-border {
+    display: inline-block;
+    width: 2rem;
+    height: 2rem;
+    vertical-align: text-bottom;
+    border: .25em solid currentColor;
+    border-right-color: transparent;
+    border-radius: 50%;
+    -webkit-animation: spinner-border .75s linear infinite;
+    animation: spinner-border .75s linear infinite;
+}
+
+.cursor-effect {
+    cursor: pointer;
+    user-select: none;
+}
+
+@keyframes spinner-border {
+    0% {
+        transform: rotate(0deg);
+    }
+    25% {
+        transform: rotate(90deg);
+    }
+    50% {
+        transform: rotate(180deg);
+    }
+    75% {
+        transform: rotate(270deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
 @media (min-width: 1200px) {
     .navbar,
     .page-footer,
@@ -305,3 +389,69 @@
         display: none;
     }
 }
+
+.profile {
+    background: #f6f6f6;
+    margin-bottom: 15px;
+    padding-bottom: 50px;
+    box-sizing: border-box;
+}
+
+.title-profile {
+    margin: 15px 0;
+}
+
+.index-profile {
+    color: #000;
+    font-weight: bold;
+    height: 40px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #333;
+    font-size: 24px;
+}
+
+.bold {
+    font-weight: bold;
+}
+
+.name-profile {
+    font-size: 28px;
+    color: #0e2452;
+}
+
+.position-profile {
+    font-size: 24px;
+    color: #333;
+}
+
+.form-group {
+    height: 30px;
+}
+
+.md-form {
+    position: relative;
+}
+
+.md-form > .fas {
+    position: absolute;
+    top: 10%;
+    right: 10px;
+}
+
+.md-form > .fas {
+    display: none;
+}
+
+.hidden {
+    display: none;
+}
+
+.required {
+    color: red;
+    margin-right: 35px;
+}
+
+.joinEvent {
+    justify-content: center !important;
+}
+

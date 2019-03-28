@@ -18,89 +18,89 @@ use Tymon\JWTAuth\Contracts\JWTSubject;
 
 class User extends Authenticatable implements JWTSubject
 {
-	use Notifiable, SoftDeletes, FillableFields, OrderableTrait, SearchLikeTrait;
+    use Notifiable, SoftDeletes, FillableFields, OrderableTrait, SearchLikeTrait;
 
-	protected $table = 'users';
+    protected $table = 'users';
 
-	protected $primaryKey = 'id';
+    protected $primaryKey = 'id';
 
-	protected $fillable = [
-		'id_code',
-		'invite_code',
-		'name',
-		'email',
-		'password',
-		'remember_token',
-		'avatar',
-		'rank',
-		'level_id',
-		'prefer_topic_ids',
-		'max_point',
-		'test_total_time',
-	];
+    protected $fillable = [
+        'id_code',
+        'invite_code',
+        'name',
+        'email',
+        'password',
+        'remember_token',
+        'avatar',
+        'rank',
+        'level_id',
+        'prefer_topic_ids',
+        'max_point',
+        'test_total_time',
+    ];
 
-	/**
-	 * The attributes that should be hidden for arrays.
-	 *
-	 * @var array
-	 */
-	protected $hidden = [
-		'password', 'remember_token', 'created_at', 'updated_at', 'deleted_at',
-	];
+    /**
+     * The attributes that should be hidden for arrays.
+     *
+     * @var array
+     */
+    protected $hidden = [
+        'password', 'remember_token', 'created_at', 'updated_at', 'deleted_at',
+    ];
 
-	/**
-	 * Sends the password reset notification.
-	 *
-	 * @param  string $token
-	 *
-	 * @return void
-	 */
-	public function sendPasswordResetNotification($token)
-	{
-		$when = now()->addSeconds(30);
-		$this->notify((new UserResetPassword($token, $this->email))->delay($when));
-	}
+    /**
+     * Sends the password reset notification.
+     *
+     * @param  string $token
+     *
+     * @return void
+     */
+    public function sendPasswordResetNotification($token)
+    {
+        $when = now()->addSeconds(30);
+        $this->notify((new UserResetPassword($token, $this->email))->delay($when));
+    }
 
-	/**
-	 * Encrypt password
-	 *
-	 * @param $value
-	 *
-	 * @author  jvb
-	 */
-	public function setPasswordAttribute($value)
-	{
-		$this->attributes['password'] = bcrypt($value);
-	}
+    /**
+     * Encrypt password
+     *
+     * @param $value
+     *
+     * @author  jvb
+     */
+    public function setPasswordAttribute($value)
+    {
+        $this->attributes['password'] = bcrypt($value);
+    }
 
-	/**
-	 * @return mixed
-	 */
-	public function getJWTIdentifier()
-	{
-		return $this->getKey();
-	}
+    /**
+     * @return mixed
+     */
+    public function getJWTIdentifier()
+    {
+        return $this->getKey();
+    }
 
-	/**
-	 * @return array
-	 */
-	public function getJWTCustomClaims()
-	{
-		return [];
-	}
+    /**
+     * @return array
+     */
+    public function getJWTCustomClaims()
+    {
+        return [];
+    }
 
-	/**
-	 * Search for course title or subject name
-	 *
-	 * @param $query
-	 * @param $searchTerm
-	 *
-	 * @return mixed
-	 */
-	public function scopeSearch($query, $searchTerm)
-	{
-		return $query->where('name', 'like', '%' . $searchTerm . '%')
-			->orWhere('email', 'like', '%' . $searchTerm . '%')
-			->orderBy('name');
-	}
+    /**
+     * Search for course title or subject name
+     *
+     * @param $query
+     * @param $searchTerm
+     *
+     * @return mixed
+     */
+    public function scopeSearch($query, $searchTerm)
+    {
+        return $query->where('name', 'like', '%' . $searchTerm . '%')
+            ->orWhere('email', 'like', '%' . $searchTerm . '%')
+            ->orderBy('name');
+    }
 }

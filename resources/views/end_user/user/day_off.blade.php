@@ -13,7 +13,9 @@
         <div class="col-sm-3 col-xs-6">
             <div class="card bg-primary">
                 <div class="card-body">
-                    <h1 class="white-text font-weight-light">{{DAY_OFF_TOTAL*2 - $availableDayLeft[1] - $availableDayLeft[0]}}</h1>
+                    <h1 class="white-text font-weight-light">
+                        {{$availableDayLeft['remain_current'] + $availableDayLeft['remain_previous']}}
+                    </h1>
                     <p class="card-subtitle text-white-50">ngày khả dụng</p>
                     <p class="card-title text-uppercase font-weight-bold card-text white-text">Tính từ năm trước</p>
                 </div>
@@ -22,17 +24,22 @@
         <div class="col-sm-3 col-xs-6">
             <div class="card bg-success">
                 <div class="card-body">
-                    <h1 class="white-text font-weight-light">{{DAY_OFF_TOTAL - $availableDayLeft[0]}}</h1>
+                    <h1 class="white-text font-weight-light">
+                        {{$availableDayLeft['remain_current']}}
+                    </h1>
                     <p class="card-subtitle text-white-50">nghỉ luôn đi</p>
-                    <p class="card-title text-uppercase font-weight-bold card-text white-text">Cuối năm
-                        reset</p>
+                    <p class="card-title text-uppercase font-weight-bold card-text white-text">
+                        Cuối năm reset
+                    </p>
                 </div>
             </div>
         </div>
         <div class="col-sm-3 col-xs-6">
             <div class="card bg-warning">
                 <div class="card-body">
-                    <h1 class="white-text font-weight-light">{{$availableDayLeft[0]}}</h1>
+                    <h1 class="white-text font-weight-light">
+                        {{$availableDayLeft['total_current'] - $availableDayLeft['remain_current']}}
+                    </h1>
                     <p class="card-subtitle text-white-50">ngày đã nghỉ</p>
                     <p class="card-title text-uppercase font-weight-bold card-text white-text">Trong
                         năm {{date('Y')}}</p>
@@ -40,7 +47,7 @@
             </div>
         </div>
         <div class="col-sm-3 col-xs-6">
-            <div class="card bg-danger">
+            <div class="card bg-danger cursor-effect" onclick="openCreateAbsenceForm()">
                 <div class="card-body">
                     <h1 class="white-text font-weight-light">Thêm</h1>
                     <p class="card-subtitle text-white-50">&nbsp</p>
@@ -54,35 +61,62 @@
     </div>
     <hr>
     <div class="container-fluid col-12 flex-row-reverse d-flex">
-        <button class="btn btn-primary dropdown-toggle mr-4" type="button" data-toggle="dropdown" aria-haspopup="true"
+        <button class="btn btn-secondary dropdown-toggle mr-4" type="button" data-toggle="dropdown" aria-haspopup="true"
                 aria-expanded="false">
-            Hiển thị
+            @if($defaultApprove !== 1 && $defaultApprove !== 0)
+                Hiển thị: Tất cả
+            @elseif($defaultApprove == 0)
+                Hiển thị: Chưa duyệt
+            @else
+                Hiển thị: Đã duyệt
+            @endif
         </button>
 
         <div class="dropdown-menu">
-            <a class="dropdown-item {{$defaultApprove !== 1 && $defaultApprove !== 0 ? 'active' : ''}}"
-               href="{{url()->current().'?page=1&per_page='.$defaultPerPage}}">
+            @if(!($defaultApprove !== 1 && $defaultApprove !== 0))
+                <a class="dropdown-item"
+                   href="{{url()->current().'?page=1&per_page='.$defaultPerPage}}">
                 <span class="d-flex">
                     <span class="green-red-circle mr-2"></span>
                     <span class="content">Tất cả</span>
                 </span>
-            </a>
-            <div class="dropdown-divider"></div>
-            <a class="dropdown-item {{$defaultApprove === 0 ? 'active' : ''}}"
-               href="{{url()->current().'?page=1&per_page='.$defaultPerPage.'&approve=0'}}">
+                </a>
+            @endif
+
+            @if($defaultApprove !== 0)
+                <a class="dropdown-item"
+                   href="{{url()->current().'?page=1&per_page='.$defaultPerPage.'&approve=0'}}">
                 <span class="d-flex">
                     <span class="red-circle mr-2"></span>
                     <span class="content">Chưa duyệt</span>
                 </span>
-            </a>
-            <a class="dropdown-item {{$defaultApprove === 1 ? 'active' : ''}}"
-               href="{{url()->current().'?page=1&per_page='.$defaultPerPage.'&approve=1'}}">
+                </a>
+            @endif
+
+            @if($defaultApprove !== 1)
+                <a class="dropdown-item"
+                   href="{{url()->current().'?page=1&per_page='.$defaultPerPage.'&approve=1'}}">
                 <span class="d-flex">
                     <span class="green-circle mr-2"></span>
                     <span class="content">Đã duyệt</span>
                 </span>
-            </a>
+                </a>
+            @endif
         </div>
+
+        <?php
+        $user = \Illuminate\Support\Facades\Auth::user();
+        ?>
+        @if($user->jobtitle_id >= \App\Models\Report::MIN_APPROVE_JOBTITLE)
+            <div class="row d-flex flex-row pr-4 mr-4" style="border-right: 2px solid whitesmoke">
+                <div class="d-flex flex-center pl-2 mr-2 ml-2">
+                    Quản lý:
+                </div>
+                <a href="{{route('day_off_approval')}}" class="btn btn-primary" type="button">
+                    {{__l('day_off_approval')}}
+                </a>
+            </div>
+        @endif
     </div>
 
     <div class="container-fluid col-12">
@@ -106,7 +140,7 @@
                         <td>{{$absence->start_at}}</td>
                         <td>{{$absence->end_at}}</td>
                         <td>{{$absence->title}}</td>
-                        <td>{{$absence->number_off}} ngày</td>
+                        <td>{{!!!$absence->number_off ? 'Chưa rõ' : $absence->number_off}} ngày</td>
                         <td>
                             @if ($absence->status == 1)
                                 <div class="green-circle"></div>
@@ -116,7 +150,7 @@
                         </td>
                         <td>
                             <button type="button" class="btn btn-indigo btn-sm m-0" data-toggle="modal"
-                                    onclick="dayoffDetail({{$absence}})"
+                                    onclick="openDetailDialog({{$absence}})"
                                     data-target="#detailAbsence">Chi tiết
                             </button>
                         </td>
@@ -225,8 +259,6 @@
                                 </a>
                             </li>
                         @endif
-
-
                         <li class="page-item {{$paginateData['current_page'] === $paginateData['last_page'] ? 'disabled': ''}}">
                             <a href="{{$paginateData['next_page_url'].'&per_page='. $defaultPerPage. $paginationApprove}}"
                                class="page-link">
@@ -243,7 +275,7 @@
         @endif
     </div>
 
-    <!-- Modal: modalPoll -->
+    <!-- Modal: View detail absence form -->
     <div class="modal fade right" id="detailAbsence" tabindex="-1"
          role="dialog" aria-labelledby="exampleModalLabel"
          aria-hidden="true" data-backdrop="false">
@@ -306,11 +338,95 @@
             </div>
         </div>
     </div>
-    <!-- Modal: modalPoll -->
+    <!-- Modal: View detail absence form -->
+
+    {{-- Modal: Create absence form--}}
+    <div class="modal fade right" id="createAbsenceForm" style="z-index: 9999;" data-backdrop="static"
+         data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="Create Absence Form" aria-hidden="true">
+        <div class="modal-dialog modal-side modal-top-right" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="exampleModalPreviewLabel">Đơn xin nghỉ phép</h4>
+                </div>
+                <div class="modal-body">
+                    <div id="createAbsenceIndicator" class="text-center">
+                        <div class="spinner-border text-primary" role="status">
+                            <span class="sr-only">Loading...</span>
+                        </div>
+                    </div>
+                    <div id="statusCreateForm" class="text-center">
+                    </div>
+                    <div id="contentCreateForm">
+                        <label for="titleForm">Tiêu đề *</label>
+                        <input type="text" required id="titleForm" class="form-control mb-3" name="title"
+                               placeholder="Tiêu đề đơn xin nghỉ" autocomplete="off" value="Xin nghỉ phép">
+
+                        <label for="textareaForm">Nội dung *</label>
+                        <textarea id="textareaForm" required class="form-control mb-3" name="reason"
+                                  placeholder="Lý do nghỉ" maxlength="999"></textarea>
+
+                        <label for="start_atForm">Ngày bắt đầu nghỉ *</label>
+                        <input type="text" class="form-control pull-right mb-3" autocomplete="off"
+                               name="start_at" required value="" id="start_atForm">
+
+                        <label for="end_atForm">Tới ngày *</label>
+                        <input type="text" required class="form-control pull-right mb-3" autocomplete="off"
+                               name="end_at" value="" id="end_atForm">
+
+                        <label for="approvals_selector">Người duyệt *</label>
+                        <select class="form-control mb-3 browser-default" id="approvals_selector">
+
+                        </select>
+
+                        <div class="card bg-danger text-white" id="ErrorMessaging">
+
+                        </div>
+                    </div>
+
+                </div>
+                <div id="createAbsenceBtn" class="modal-footer">
+                    <button type="button" class="btn btn-secondary" onclick="closeAbsenceForm()">Hủy</button>
+                    <button type="button" class="btn btn-primary" onclick="sendAbsenceForm()">Gửi đơn</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    {{-- Modal: Create absence form--}}
 @endsection
 
-@push('eu-dayoff')
+@push('extend-css')
+    <link href="{{ cdn_asset('/bootstrap-datepicker/css/bootstrap-datepicker.min.css') }}" rel="stylesheet">
+    <link href="{{ cdn_asset('/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css') }}" rel="stylesheet">
+    <style>
+        #textareaForm {
+            height: 150px;
+        }
+
+        label {
+            user-select: none;
+        }
+    </style>
+@endpush
+
+@push('extend-js')
+    <script src="{{ cdn_asset('/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js') }}"></script>
+    <script src="{{ cdn_asset('/bootstrap-datepicker/js/bootstrap-datepicker.min.js') }}"></script>
     <script>
+        function errorOff() {
+            let errorBox = document.getElementById('ErrorMessaging');
+            if (!!!errorBox) return;
+
+            errorBox.innerHTML = "";
+        }
+
+        function errorAlert() {
+            let errorBox = document.getElementById('ErrorMessaging');
+            if (!!!errorBox) return;
+
+            errorBox.innerHTML = "<div class='card-body'>Thông tin nhập không hợp lệ!</div>";
+        }
+
+        // Detail dialog
         let header = document.getElementById('dayoff_heading');
         let title = document.getElementById('dayoff_title');
         let duration = document.getElementById('dayoff_duration');
@@ -320,7 +436,7 @@
         let approval = document.getElementById('dayoff_approval');
         let comment = document.getElementById('dayoff_comment');
 
-        function clearData() {
+        function clearDetailDialogs() {
             header.innerText = '';
             title.innerText = '';
             duration.innerText = '';
@@ -329,30 +445,32 @@
             reason.innerText = '';
             approval.innerText = '';
             comment.innerText = '';
+
+            errorOff();
         }
 
-        function isLoading() {
-            let modal = document.getElementById('detailAbsence');
-
-            let innerSpinner = document.createElement('span');
-            innerSpinner.innerText = 'loading...';
-            innerSpinner.className = 'sr-only';
-            let containerSpinner = document.createElement('div');
-            containerSpinner.className = 'spinner-border text-primary';
-            containerSpinner.id = 'dayoffModel_loading';
-            containerSpinner.setAttribute('role', 'status');
-            containerSpinner.appendChild(innerSpinner);
-
-            modal.appendChild(containerSpinner);
+        function openDetailDialog(detailInfo) {
+            clearDetailDialogs();
+            header.innerHTML = detailInfo.start_at;
+            header.appendChild(circleIndicate(detailInfo.status === 1));
+            title.innerText = detailInfo.title;
+            duration.innerHTML = dateFormat(detailInfo.start_at, detailInfo.end_at);
+            totalOff.innerText = !!detailInfo.number_off ? detailInfo.number_off + ' ngày' : "Chưa phê duyệt";
+            reason.innerText = detailInfo.reason;
+            approveDate.innerText = approvedChecker(!!detailInfo.approver_at, detailInfo.approver_at);
+            approval.innerText = detailInfo.approval.name;
+            comment.innerText = approvedChecker(!!detailInfo.approve_comment, detailInfo.approve_comment, 'không có');
         }
 
-        function doneLoading() {
-            let loadingIndicate = $('#dayoffModel_loading');
-            loadingIndicate.fadeOut('fast', removeLoading)
+        function approvedChecker(isApproved = false, approveMessage = 'Đã phê duyệt', notApproveMessage = 'Chưa phê duyệt') {
+            if (isApproved) {
+                return approveMessage;
+            }
+            return notApproveMessage;
         }
 
-        function removeLoading() {
-            $('#dayoffModel_loading').remove();
+        function dateFormat(startAt, endAt) {
+            return startAt + '<br> <small>tới</small> <br>' + endAt;
         }
 
         function circleIndicate(isResolved = false) {
@@ -365,28 +483,176 @@
             return circle;
         }
 
-        function dateFormat(startAt, endAt) {
-            return startAt + '<br> <small>tới</small> <br>' + endAt;
+        // Create dialog
+        let titleForm = $('#titleForm');
+        let textareaForm = $('#textareaForm');
+        let start_atForm = $('#start_atForm');
+        let end_atForm = $('#end_atForm');
+        let absenceForm = $('#createAbsenceForm');
+
+        function openCreateAbsenceForm() {
+            let modalCreate = $('#createAbsenceForm');
+            $("#createAbsenceIndicator").hide();
+            $("#contentCreateForm").show();
+            $("#createAbsenceBtn").show();
+            $("#statusCreateForm").html('');
+            if (!!!modalCreate) return;
+            modalCreate.modal('show');
+            $('#start_atForm').datetimepicker();
+            $('#end_atForm').datetimepicker();
+            loadApprovals();
         }
 
-        function approvedChecker(isApproved = false, approveMessage = 'Đã phê duyệt', notApproveMessage = 'Chưa phê duyệt') {
-            if (isApproved) {
-                return approveMessage;
+        function sendAbsenceForm() {
+            let approvalID = getApprovalSelected();
+            if (titleForm.val().length < 3 || textareaForm.val().length < 3
+                || start_atForm.val().length < 1 || end_atForm.val().length < 1) {
+                errorAlert();
+                return;
             }
-            return notApproveMessage;
+
+            indicatorCreateForm($("#contentCreateForm"), $("#createAbsenceIndicator"));
+            $("#createAbsenceBtn").hide();
+            let sendingData = {
+                title: !!titleForm ? titleForm.val() : null,
+                reason: !!textareaForm ? textareaForm.val() : null,
+                start_at: !!start_atForm ? start_atForm.val() : null,
+                end_at: !!end_atForm ? end_atForm.val() : null,
+                approver_id: approvalID
+            };
+
+            let xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function () {
+                console.log(this.status);
+                if (this.readyState === 4 && this.status === 200) {
+                    let obj = null;
+                    try {
+                        obj = JSON.parse(this.response);
+                    } catch (e) {
+                        obj = null;
+                    }
+                    if (!!!obj || (obj.hasOwnProperty('success') && !obj.success)) {
+                        $("#createAbsenceIndicator").hide();
+                        $("#statusCreateForm").html(
+                            "<h3 class='text-danger mb-1'>" + obj.message + "</h3></br><button type='button' onclick='closeAbsenceForm()' class='btn btn-secondary'>Đóng</button>"
+                        )
+                    }
+                    if (obj.success) {
+                        $("#createAbsenceIndicator").hide();
+                        $("#statusCreateForm").html(
+                            "<h3 class='text-success mb-1'>Thành công</h3></br><button type='button' onclick='closeAbsenceForm(true)' class='btn btn-success'>Đóng</button>"
+                        )
+
+                    }
+                    console.log(obj);
+                }
+
+                if (this.readyState == 4 && this.status == 422) {
+                    $("#createAbsenceIndicator").hide();
+                    $("#statusCreateForm").html(
+                        "<h3 class='text-warning mb-1'>Thông tin không hợp lệ!<br>Vui lòng thử lại!</h3></br><button type='button' onclick='closeAbsenceForm()' class='btn btn-warning'>Đóng</button>"
+                    )
+                }
+            };
+            requestPerform(xhttp, "post", '{{route('day_off_createAPI')}}', JSON.stringify(sendingData));
         }
 
-        function dayoffDetail(detailInfo) {
-            clearData();
-            header.innerHTML = detailInfo.start_at;
-            header.appendChild(circleIndicate(detailInfo.status === 1));
-            title.innerText = detailInfo.title;
-            duration.innerHTML = dateFormat(detailInfo.start_at, detailInfo.end_at);
-            totalOff.innerText = detailInfo.number_off + ' ngày';
-            reason.innerText = detailInfo.reason;
-            approveDate.innerText = approvedChecker(!!detailInfo.approver_at, detailInfo.approver_at);
-            approval.innerText = approvedChecker(detailInfo.status === 1, detailInfo.approval.name);
-            comment.innerText = approvedChecker(!!detailInfo.approve_comment, detailInfo.approve_comment, 'không có');
+        function clearAbsenceForm() {
+            if (!!titleForm) {
+                titleForm.val('')
+            }
+            if (!!textareaForm) {
+                textareaForm.val('')
+            }
+            if (!!start_atForm) {
+                start_atForm.val('')
+            }
+            if (!!end_atForm) {
+                end_atForm.val('')
+            }
+
+            errorOff();
+        }
+
+        function closeAbsenceForm(reload = false) {
+            clearAbsenceForm();
+            if (!!absenceForm) absenceForm.modal('hide');
+            if (reload) {
+                location.reload(true);
+            }
+        }
+
+        function indicatorCreateForm(hideElement, showElement) {
+            if (!!hideElement) {
+                hideElement.hide('fast', function () {
+                    if (!!showElement)
+                        showElement.show('fast')
+                });
+            } else {
+                if (!!showElement)
+                    showElement.show('fast')
+            }
+        }
+
+        function buildApprovalsSelector(responseObject) {
+            let arrApprovals = null;
+            try {
+                arrApprovals = JSON.parse(responseObject);
+            } catch (e) {
+                arrApprovals = null;
+            }
+
+            if (!!!arrApprovals) {
+                return;
+            }
+
+            function blockOption(user) {
+                if (!user.hasOwnProperty('id') || !user.hasOwnProperty('name')) {
+                    return null;
+                }
+
+                let optionBlock = document.createElement('option');
+                optionBlock.setAttribute('value', user.id);
+                optionBlock.innerText = user.name;
+                return optionBlock;
+            }
+
+            if (arrApprovals.hasOwnProperty('data') && Array.isArray(arrApprovals.data)) {
+                let selector = document.getElementById('approvals_selector');
+                if (!!selector) {
+                    selector.innerHTML = '';
+                    arrApprovals.data.forEach(user => {
+                        let node = blockOption(user);
+                        if (!!node) {
+                            selector.appendChild(node);
+                        }
+                    });
+                }
+            }
+        }
+
+        function getApprovalSelected() {
+            let selector = document.getElementById('approvals_selector');
+            return selector.options[selector.selectedIndex].value;
+        }
+
+        function loadApprovals() {
+            let xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function () {
+                if (this.readyState === 4 && this.status === 200) {
+                    buildApprovalsSelector(this.response);
+                }
+            };
+            requestPerform(xhttp, 'get', '{{route('day_off_listApprovalAPI')}}', null)
+        }
+
+        // GLOBAL
+        function requestPerform(xhttp, type, url, sendingData) {
+            xhttp.open(type, url, true);
+            xhttp.setRequestHeader("Content-type", "application/json");
+            xhttp.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+            xhttp.setRequestHeader("X-CSRF-TOKEN", $('meta[name="csrf-token"]').attr('content'));
+            xhttp.send(sendingData);
         }
     </script>
 @endpush

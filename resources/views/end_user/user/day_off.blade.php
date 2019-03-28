@@ -46,7 +46,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-sm-3 col-xs-6">
+        <div class="col-sm-3 col-xs-6" data-toggle="modal" data-target="#modal-form">
             <div class="card bg-danger cursor-effect" onclick="openCreateAbsenceForm()">
                 <div class="card-body">
                     <h1 class="white-text font-weight-light">Thêm</h1>
@@ -339,59 +339,67 @@
         </div>
     </div>
     <!-- Modal: View detail absence form -->
-
-    {{-- Modal: Create absence form--}}
-    <div class="modal fade right" id="createAbsenceForm" style="z-index: 9999;" data-backdrop="static"
-         data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="Create Absence Form" aria-hidden="true">
-        <div class="modal-dialog modal-side modal-top-right" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h4 class="modal-title" id="exampleModalPreviewLabel">Đơn xin nghỉ phép</h4>
+    <div class="modal fade" id="modal-form" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content" id="bg-img" style="background-image: url({{ asset('img/font/xin_nghi.png') }})">
+                <div class="modal-header text-center border-bottom-0 p-3">
+                    <h4 class="modal-title w-100 font-weight-bold pt-2">ĐƠN XIN NGHỈ</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span class="btn-close-icon" aria-hidden="true">&times;</span>
+                    </button>
                 </div>
-                <div class="modal-body">
-                    <div id="createAbsenceIndicator" class="text-center">
-                        <div class="spinner-border text-primary" role="status">
-                            <span class="sr-only">Loading...</span>
-                        </div>
-                    </div>
-                    <div id="statusCreateForm" class="text-center">
-                    </div>
-                    <div id="contentCreateForm">
-                        <label for="titleForm">Tiêu đề *</label>
-                        <input type="text" required id="titleForm" class="form-control mb-3" name="title"
-                               placeholder="Tiêu đề đơn xin nghỉ" autocomplete="off" value="Xin nghỉ phép">
-
-                        <label for="textareaForm">Nội dung *</label>
-                        <textarea id="textareaForm" required class="form-control mb-3" name="reason"
-                                  placeholder="Lý do nghỉ" maxlength="999"></textarea>
-
-                        <label for="start_atForm">Ngày bắt đầu nghỉ *</label>
-                        <input type="text" class="form-control pull-right mb-3" autocomplete="off"
-                               name="start_at" required value="" id="start_atForm">
-
-                        <label for="end_atForm">Tới ngày *</label>
-                        <input type="text" required class="form-control pull-right mb-3" autocomplete="off"
-                               name="end_at" value="" id="end_atForm">
-
-                        <label for="approvals_selector">Người duyệt *</label>
-                        <select class="form-control mb-3 browser-default" id="approvals_selector">
-
+                <div class="modal-body mx-3 mt-0 pb-0">
+                    <div class="mb-3">
+                        <!-- Default input -->
+                        <label class="ml-3 text-w-400" for="exampleForm2">Mục đích xin nghỉ*</label>
+                        <select class="mt-1 mr-1 browser-default custom-select md-form select-item" name="month">
+                            <option  value="1">Lý do cá nhân</option>
+                            <option  value="2">Nghỉ đám cưới</option>
+                            <option  value="3">Nghỉ đám hiếu</option>
                         </select>
+                    </div>
 
-                        <div class="card bg-danger text-white" id="ErrorMessaging">
-
+                    <div class="mb-3">
+                        <label class="ml-3 text-w-400" for="exampleFormControlTextarea5">Nội dung</label>
+                        <textarea class="form-control select-item" id="exampleFormControlTextarea5" rows="3" placeholder="lý do xin nghỉ..."></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <div class="row">
+                            <div class="form-group col-6 ">
+                                <label class="ml-3 text-w-400" for="inputCity">Ngày bắt đầu nghỉ*</label>
+                                <input type="text" class="form-control select-item" id="start_date" >
+                            </div>
+                            <!-- Default input -->
+                            <div class="form-group col-6">
+                                <label class="ml-3 text-w-400" for="inputZip">Tới ngày*</label>
+                                <input type="text" class="form-control select-item" id="start_end" >
+                            </div>
                         </div>
+                    </div>
+                    <div>
+                        <label class="ml-3 mt-4 text-w-400" for="exampleForm2">Người duyệt*</label>
+                        <select class="my-1 mr-1 browser-default custom-select md-form select-item" name="month">
+                            <option  value="1">Vũ Văn Hải</option>
+                        </select>
                     </div>
 
                 </div>
-                <div id="createAbsenceBtn" class="modal-footer">
-                    <button type="button" class="btn btn-secondary" onclick="closeAbsenceForm()">Hủy</button>
-                    <button type="button" class="btn btn-primary" onclick="sendAbsenceForm()">Gửi đơn</button>
+                <div class="pt-3 pb-4 d-flex justify-content-center border-top-0 rounded mb-0">
+                    <button class="btn btn-primary">GỬI ĐƠN</button>
                 </div>
             </div>
         </div>
     </div>
     {{-- Modal: Create absence form--}}
+
+    <script>
+        $(document).ready(function () {
+            $.fn.datepicker.defaults.language = 'en';
+            $('#start_date').datepicker({});
+            $('#start_end').datepicker({});
+        });
+    </script>
 @endsection
 
 @push('extend-css')

@@ -455,3 +455,21 @@
     justify-content: center !important;
 }
 
+/*Nguyễn Thanh Tùng*/
+.btn-close-icon{
+    display: block ;
+    background: #DDDDDD;
+    border-radius: 30px;
+    width: 26px;
+    height: 27px;
+}
+.text-w-400{
+    font-weight: 400;
+}
+.select-item{
+    opacity: 0.7;
+}
+#bg-img{
+    background-size: cover;
+    background-position: center;
+}

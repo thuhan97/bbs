@@ -50,15 +50,15 @@
             <div class=" border border-light rounded mb-0 px-4">
                 <div class="mt-4">
                     <h5 class="text-info">Kỹ thuật</h5>
-                    <p>{{$project->technicals}}</p>
+                    <p>  {!! nl2br(e($project->technical)) !!}</p>
                 </div>
                 <div class="mt-4">
                     <h5 class="text-info">Công cụ sử dụng</h5>
-                    <p>{{$project->tools}}</p>
+                    <span id="font-top-subtitle"> {!! nl2br(e($project->tools)) !!} </span>
                 </div>
                 <div class="mt-4">
                     <h5 class="text-info">Mô tả</h5>
-                    <p>{{$project->description}}</p>
+                    <p> {!! $project->description !!}</p>
                 </div>
             </div>
         </div>

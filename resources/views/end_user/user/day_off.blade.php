@@ -373,7 +373,7 @@
                             <!-- Default input -->
                             <div class="form-group col-6">
                                 <label class="ml-3 text-w-400" for="inputZip">Tới ngày*</label>
-                                <input type="text" class="form-control select-item" id="start_end" >
+                                <input type="text" class="form-control select-item" id="end_date" >
                             </div>
                         </div>
                     </div>
@@ -397,7 +397,9 @@
         $(document).ready(function () {
             $.fn.datepicker.defaults.language = 'en';
             $('#start_date').datepicker({});
-            $('#start_end').datepicker({});
+            $('#end_date').datepicker({
+                endDate:$('#start_date').val()
+            });
         });
     </script>
 @endsection

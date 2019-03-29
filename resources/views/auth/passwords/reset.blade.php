@@ -53,7 +53,7 @@
                                     @endif
                                 </div>
                             </div>
-                            <div class="form-group form-group d-flex justify-content-center my-5 pt-3">
+                            <div class="form-group d-flex justify-content-center my-5 pt-3">
                                 <div class="">
                                     <button type="submit" class="btn btn-primary">
                                         Reset mật khẩu

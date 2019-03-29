@@ -45,7 +45,5 @@
 {{--<script type="text/javascript" src="{{ asset('js/mdb.min.js') }}"></script>--}}
 <script type="text/javascript" src="{{ cdn_asset('js/main.js') }}"></script>
 @stack('extend-js')
-<script type="text/javascript" src="{{ cdn_asset('js/bootstrap-datepicker.js') }}"></script>
-<script type="text/javascript" src="{{ cdn_asset('js/bootstrap-datepicker.en.js') }}"></script>
 </body>
 </html>

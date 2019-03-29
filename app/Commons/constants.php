@@ -151,4 +151,12 @@ define('TYPES_DEVICE', [
     5 => 'Máy tính bảng',
     6 => 'Khác'
 ]);
+define('VACATION', [
+    1 => 'Lý do cá nhân',
+    2 => 'Nghỉ đám cưới',
+    3 => 'Nghỉ đám hiếu',
+]);
+define('APPROVED', [
+    1 => 'Vũ Văn Hải',
+]);
 

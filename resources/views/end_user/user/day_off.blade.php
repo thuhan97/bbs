@@ -354,9 +354,9 @@
                         <!-- Default input -->
                         <label class="ml-3 text-w-400" for="exampleForm2">Mục đích xin nghỉ*</label>
                         <select class="mt-1 mr-1 browser-default custom-select md-form select-item" name="month">
-                            <option  value="1">Lý do cá nhân</option>
-                            <option  value="2">Nghỉ đám cưới</option>
-                            <option  value="3">Nghỉ đám hiếu</option>
+                            @foreach(VACATION as $key => $content)
+                            <option  value="{{ $key }}">{{ $content }}</option>
+                           @endforeach
                         </select>
                     </div>
 
@@ -380,7 +380,9 @@
                     <div>
                         <label class="ml-3 mt-4 text-w-400" for="exampleForm2">Người duyệt*</label>
                         <select class="my-1 mr-1 browser-default custom-select md-form select-item" name="month">
-                            <option  value="1">Vũ Văn Hải</option>
+                            @foreach(APPROVED as $key => $approved)
+                                <option  value="{{ $key }}">{{ $approved }}</option>
+                            @endforeach
                         </select>
                     </div>
 

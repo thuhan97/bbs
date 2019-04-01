@@ -8,6 +8,13 @@
                 <br/>
                 <br/>
                 <br/>
+                @if(Session::has('notification_change_pass'))
+                    <div class="d-flex justify-content-center">
+                        <div class="alert alert-success">
+                            {{ Session::get('notification_change_pass')}}
+                        </div>
+                    </div>
+                @endif
                 <!-- Material form login -->
                 <div class="card">
 

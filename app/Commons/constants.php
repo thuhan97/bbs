@@ -156,7 +156,5 @@ define('VACATION', [
     2 => 'Nghỉ đám cưới',
     3 => 'Nghỉ đám hiếu',
 ]);
-define('APPROVED', [
-    1 => 'Vũ Văn Hải',
-]);
+
 

@@ -380,9 +380,7 @@
                     <div>
                         <label class="ml-3 mt-4 text-w-400" for="exampleForm2">Người duyệt*</label>
                         <select class="my-1 mr-1 browser-default custom-select md-form select-item" name="month">
-                            @foreach(APPROVED as $key => $approved)
-                                <option  value="{{ $key }}">{{ $approved }}</option>
-                            @endforeach
+                            <option  value="1">Vũ An Hải</option>
                         </select>
                     </div>
 

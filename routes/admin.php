@@ -118,4 +118,9 @@ Route::group([
     Route::post('work_time_register/deletes', ['as' => 'work_time_register.deletes', 'uses' => 'WorkRegisterController@deletes']);
     Route::resource('work_time_register', 'WorkRegisterController');
 
+
+    //rooms
+    Route::post('meetings/deletes', ['as' => 'meetings.deletes', 'uses' => 'MeetingController@deletes']);
+    Route::resource('meetings','MeetingController');
+
 });

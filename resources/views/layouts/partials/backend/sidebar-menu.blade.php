@@ -81,4 +81,9 @@
             <i class="fa fa-share-alt"></i> <span>Cấp thiết bị</span>
         </a>
     </li>
+    <li class="{{ \App\Utils::checkRoute(['admin::meetings.index', 'admin::meetings.create', 'admin::meetings.edit']) ? 'active': '' }}">
+        <a href="{{ route('admin::meetings.index') }}">
+            <i class="fa fa-calendar"></i> <span>Phòng họp</span>
+        </a>
+    </li>
 </ul>

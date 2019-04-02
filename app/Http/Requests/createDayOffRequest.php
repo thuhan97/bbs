@@ -40,8 +40,8 @@ class createDayOffRequest extends FormRequest
     public function messages()
     {
         return [
-            'start_at.after_or_equal' => 'Ngày bắt đầu phải lớn hơn hoặc bằng ngày hiện tại',
-            'end_at.after_or_equal' => 'Ngày kết thúc phải lớn hơn hoặc bằng ngày bắt đầu'
+            'start_at.after_or_equal' => 'Ngày bắt đầu phải lớn hơn hoặc bằng ngày hiện tại.',
+            'end_at.after_or_equal' => 'Ngày kết thúc phải lớn hơn hoặc bằng ngày bắt đầu.'
         ];
     }
     public function attributes()

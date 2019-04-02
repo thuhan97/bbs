@@ -58,7 +58,7 @@
                 </div>
                 <div class="mt-4">
                     <h5 class="text-info">Mô tả</h5>
-                    <p>{{$project->description}}</p>
+                    <p>{!! $project->description !!}</p>
                 </div>
             </div>
         </div>

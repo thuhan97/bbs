@@ -80,7 +80,7 @@ class UserController extends Controller
         $user->save();
         Auth::logout();
 
-        return redirect('/login');
+        return redirect('/login')->with('notification_change_pass',__('messages.notification_change_pass'));
     }
 
     public function workTime(Request $request)

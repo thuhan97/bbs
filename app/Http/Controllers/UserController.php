@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\createDayOffRequest;
+use App\Http\Requests\CreateDayOffRequest;
 use App\Http\Requests\DayOffRequest;
 use App\Http\Requests\ProfileRequest;
 use App\Models\User;
@@ -275,7 +275,7 @@ class UserController extends Controller
         return view('end_user.user.contact', compact('users', 'search', 'perPage'));
     }
 
-    public function dayOffCreate(createDayOffRequest $request)
+    public function dayOffCreate(CreateDayOffRequest $request)
     {
         $indicate = $this->userDayOff->create(
             Auth::id(), $request->input('title'),

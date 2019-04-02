@@ -36,7 +36,13 @@
                 <td class="table-text">
                     <a href="{{ $userLink }}">{{ $record->user->name }}</a>
                 </td>
-                <td>{{ $record->title }}</td>
+                <td>
+                    @foreach(VACATION as $key => $conetnt)
+                        @if($key == $record->title)
+                            {{ $conetnt }}
+                        @endif
+                    @endforeach
+                </td>
                 <td class="text-right">{{ $record->start_at }}</td>
                 <td class="text-right">{{ $record->end_at }}</td>
                 <td class="text-right">{{ $record->created_at }}</td>

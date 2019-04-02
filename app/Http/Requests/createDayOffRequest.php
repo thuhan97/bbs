@@ -47,7 +47,7 @@ class createDayOffRequest extends FormRequest
     public function attributes()
     {
         return [
-            'title' => 'mục đíc',
+            'title' => 'mục đích',
             'reason' => 'nội dung xin nghỉ',
             'start_at' => 'ngày bắt đầu',
             'end_at' => 'ngày kết thúc',

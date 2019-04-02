@@ -39,7 +39,7 @@
     </li>
     <li class="{{ \App\Utils::checkRoute(['admin::regulations.index', 'admin::regulations.create', 'admin::regulations.edit']) ? 'active': '' }}">
         <a href="{{ route('admin::regulations.index') }}">
-            <i class="fa fa-podcast"></i> <span>Nội quy/Quy Định</span>
+            <i class="fa fa-podcast"></i> <span>Nội quy/Quy định</span>
         </a>
     </li>
     <li class="treeview {{ \App\Utils::checkRoute([

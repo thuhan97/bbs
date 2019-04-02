@@ -53,4 +53,5 @@ return [
     'save' => 'Lưu',
     'update' => 'Cập nhật',
     'cancel' => 'Hủy bỏ',
+    'notification_change_pass' => 'Đổi mật khẩu thành công, xin vui lòng đăng nhập lại!',
 ];

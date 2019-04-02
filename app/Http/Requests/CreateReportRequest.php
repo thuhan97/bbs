@@ -25,7 +25,7 @@ class CreateReportRequest extends FormRequest
     public function rules()
     {
         return [
-            'choose_week' => 'required|numeric|min:0|max:1',
+            'choose_week' => 'required|numeric|min:-1|max:1',
             'status' => 'required|numeric|min:0|max:2',
             'to_ids' => 'required',
             'content' => 'required',

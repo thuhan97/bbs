@@ -152,3 +152,5 @@ define('TYPES_DEVICE', [
     6 => 'Khác'
 ]);
 
+define('DAILY_REPORT', 0);
+define('WEEKLY_REPORT', 1);

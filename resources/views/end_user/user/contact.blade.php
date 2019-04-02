@@ -63,7 +63,7 @@
                     </td>
                     <td class="text-center">
                         @if($user->phone)
-                            <span class="btn-showinfo btn btn-info">
+                            <span class="btn-showinfo btn btn-primary">
                                 <i class="fas fas-eyes"></i>
                                 Xem
                             </span>

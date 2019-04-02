@@ -23,6 +23,7 @@ class Report extends Model
     protected $fillable = [
         'id',
         'year',
+        'month',
         'week_num',
         'user_id',
         'to_ids',

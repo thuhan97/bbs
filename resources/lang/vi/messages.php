@@ -20,8 +20,8 @@ return [
     'Profile' => 'Thiết lập cá nhân',
     'Event' => 'Sự kiện',
     'Post' => 'Thông báo',
-    'Report' => 'Báo cáo tuần',
-    'Report_create' => 'Tạo báo cáo tuần',
+    'Report' => 'Báo cáo công việc',
+    'Report_create' => 'Tạo báo cáo',
     'Home' => 'Trang chủ',
     'Project' => 'Dự án',
     'change_password' => 'Đổi mật khẩu',
@@ -53,4 +53,5 @@ return [
     'save' => 'Lưu',
     'update' => 'Cập nhật',
     'cancel' => 'Hủy bỏ',
+    'notification_change_pass' => 'Đổi mật khẩu thành công, xin vui lòng đăng nhập lại!',
 ];

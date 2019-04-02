@@ -24,6 +24,7 @@
     <script type="text/javascript" src="{{ cdn_asset('mdb/js/popper.min.js') }}"></script>
     <script type="text/javascript" src="{{ cdn_asset('mdb/js/bootstrap.min.js') }}"></script>
     <script type="text/javascript" src="{{ cdn_asset('js/addons/datatables.min.js') }}"></script>
+    <script type="text/javascript" src="{{ cdn_asset('js/sweetalert.min.js') }}"></script>
     @stack('extend-css')
 </head>
 <body>

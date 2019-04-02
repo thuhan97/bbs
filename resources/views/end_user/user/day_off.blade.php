@@ -349,56 +349,97 @@
                         <span class="btn-close-icon" aria-hidden="true">&times;</span>
                     </button>
                 </div>
+                <form action="{{ route('day_off_create') }}" method="post">
+                    @csrf
                 <div class="modal-body mx-3 mt-0 pb-0">
                     <div class="mb-3">
                         <!-- Default input -->
                         <label class="ml-3 text-w-400" for="exampleForm2">Mục đích xin nghỉ*</label>
-                        <select class="mt-1 mr-1 browser-default custom-select md-form select-item" name="month">
-                            @foreach(VACATION as $key => $content)
-                            <option  value="{{ $key }}">{{ $content }}</option>
-                           @endforeach
-                        </select>
+                        {{ Form::select('title', VACATION, null, ['class' => 'form-control my-1 mr-1 browser-default custom-select md-form select-item']) }}
+                        @if ($errors->has('title'))
+                            <div class="">
+                                <span class="help-block text-danger">{{ $errors->first('title') }}</span>
+                            </div>
+                        @endif
                     </div>
 
                     <div class="mb-3">
                         <label class="ml-3 text-w-400" for="exampleFormControlTextarea5">Nội dung</label>
-                        <textarea class="form-control select-item" id="exampleFormControlTextarea5" rows="3" placeholder="lý do xin nghỉ..."></textarea>
+                        <textarea class="form-control rounded-0 select-item {{ $errors->has('reason') ? ' has-error' : '' }}" id="exampleFormControlTextarea2" rows="3" placeholder="lý do xin nghỉ..." name="reason">{{ old('reason') }}</textarea>
+                        @if ($errors->has('reason'))
+                            <div class="mt-1">
+                                <span class="help-block text-danger">{{ $errors->first('reason') }}</span>
+                            </div>
+                        @endif
                     </div>
-                    <div class="mb-3">
-                        <div class="row">
+                    <div class="mb-1">
+                        <div class="row mb-4">
                             <div class="form-group col-6 ">
                                 <label class="ml-3 text-w-400" for="inputCity">Ngày bắt đầu nghỉ*</label>
-                                <input type="text" class="form-control select-item" id="start_date" >
+                                <input type="text" class="form-control select-item {{ $errors->has('start_at') ? ' has-error' : '' }}" id="start_date" autocomplete="off" name="start_at" value="{{ old('start_at') }}" readonly="readonly">
                             </div>
                             <!-- Default input -->
                             <div class="form-group col-6">
                                 <label class="ml-3 text-w-400" for="inputZip">Tới ngày*</label>
-                                <input type="text" class="form-control select-item" id="end_date" >
+                                <input type="text" class="form-control select-item {{ $errors->has('end_at') ? ' has-error' : '' }}" id="end_date" autocomplete="off" name="end_at" value="{{ old('end_at') }}" readonly="readonly">
                             </div>
                         </div>
+                            @if ($errors->has('start_at'))
+                                <div>
+                                    <span class="help-block text-danger">{{ $errors->first('start_at') }}</span>
+                                </div>
+                            @endif
+
+                            @if ($errors->has('end_at'))
+                                <div class="mt-1">
+                                    <span class="help-block text-danger">{{ $errors->first('end_at') }}</span>
+                                </div>
+                            @endif
                     </div>
                     <div>
-                        <label class="ml-3 mt-4 text-w-400" for="exampleForm2">Người duyệt*</label>
-                        <select class="my-1 mr-1 browser-default custom-select md-form select-item" name="month">
-                            <option  value="1">Vũ An Hải</option>
-                        </select>
+                        <label class="ml-3 mt-1 text-w-400" for="exampleForm2">Người duyệt*</label>
+                        {{ Form::select('approver_id', $userManager, null, ['class' => 'form-control my-1 mr-1 browser-default custom-select md-form select-item']) }}
+                        @if ($errors->has('approver_id'))
+                            <div class="mt-1 ml-3">
+                                <span class="help-block text-danger">{{ $errors->first('approver_id') }}</span>
+                            </div>
+                        @endif
                     </div>
-
                 </div>
                 <div class="pt-3 pb-4 d-flex justify-content-center border-top-0 rounded mb-0">
                     <button class="btn btn-primary">GỬI ĐƠN</button>
                 </div>
+                </form>
             </div>
         </div>
     </div>
     {{-- Modal: Create absence form--}}
-
-    <script>
+    @if (count($errors) > 0)
+            <script>
+                $(function () {
+                $('#modal-form').modal('show');
+            });
+        </script>
+    @endif
+    @if(session()->has('day_off_success'))
+        <script>
+            swal({
+                title: "Thông báo!",
+                text: "Bạn đã gửi đơn thành công!",
+                icon: "success",
+                button: "Đóng",
+            });
+        </script>
+    @endif
+    <script type="text/javascript">
         $(document).ready(function () {
-            $.fn.datepicker.defaults.language = 'en';
-            $('#start_date').datepicker({});
-            $('#end_date').datepicker({
-                endDate:$('#start_date').val()
+            $('#start_date').datetimepicker({
+                hoursDisabled: '0,1,2,3,4,5,6,7,18,19,20,21,22,23',
+                daysOfWeekDisabled: [0,6]
+            });
+            $('#end_date').datetimepicker({
+                hoursDisabled: '0,1,2,3,4,5,6,7,18,19,20,21,22,23',
+                daysOfWeekDisabled: [0,6]
             });
         });
     </script>

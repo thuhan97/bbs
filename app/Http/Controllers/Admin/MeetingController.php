@@ -45,10 +45,12 @@ class MeetingController extends AdminBaseController
         return [
             'rules' => [
                 'name' => 'required|max:255|unique:meetings',
+                'seats'=> 'numberic'
             ],
             'messages' => [],
             'attributes' => [
                 'name' => 'tên phòng',
+                'seats'=> 'số ghế'
             ],
             'advanced' => [],
         ];
@@ -59,10 +61,12 @@ class MeetingController extends AdminBaseController
         return [
             'rules' => [
                 'name' => 'required|max:255|unique:meetings,id,'.$record->name,
+                'seats'=> 'numberic'
             ],
             'messages' => [],
             'attributes' => [
                 'name' => 'tên phòng',
+                'seats'=> 'số ghế',
             ],
             'advanced' => [],
         ];

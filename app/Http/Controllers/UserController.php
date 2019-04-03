@@ -116,8 +116,18 @@ class UserController extends Controller
             $early = $list_work_times->whereIn('type', $type_early)->count();
             $ot = $list_work_times->whereIn('type', $type_ot)->count();
         }
-
-        return view('end_user.user.work_time', compact('list_work_times', 'late', 'early', 'ot'));
+        $calendarData = [];
+        $list_work_times_calendar = WorkTime::where('user_id', Auth::user()->id)->get();
+        foreach ($list_work_times_calendar->toArray() as $item) {
+            $calendarData[] = [
+                'work_day' => $item['work_day'],
+                'start_at' => $item['start_at'] ? $item['start_at']." - " : '',
+                'end_at' => $item['end_at'] ? $item['end_at'] : '',
+                'type' => $item['type'],
+                'note' => $item['note'],
+            ];
+        }
+        return view('end_user.user.work_time', compact('list_work_times', 'late', 'early', 'ot','list_work_times_calendar','calendarData'));
     }
 
     //

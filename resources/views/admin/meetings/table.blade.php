@@ -8,22 +8,18 @@
             Tên
             {!! __admin_sortable('name') !!}
         </th>
-        <th style="width: 12%;">
-            Diện tích (m2)
-            {!! __admin_sortable('area') !!}
-        </th>
         <th style="width: 10%;">
         	Số ghế
             {!! __admin_sortable('seats') !!}
         </th>
 
-        <th style="width: 20%;">
-        	Trang thiết bị
-            {!! __admin_sortable('equipment') !!}
+        <th style="width: 40%;">
+        	Mô tả
+            {!! __admin_sortable('description') !!}
         </th>
         <th >
         	Khác
-<!--             {!! __admin_sortable('other') !!} -->
+            {!! __admin_sortable('other') !!}
         </th>
         <th style="width: 120px;">Chức năng</th>
         </thead>
@@ -42,9 +38,8 @@
             <tr>
                 <td><input type="checkbox" name="ids[]" value="{{ $record->id }}" class="square-blue chkDelete"></td>
                 <td>{{ $record->name }}</td>
-                <td>{{ $record->area }}</td>
                 <td>{{ $record->seats }}</td>
-                <td>{{ $record->equipment}}</td>
+                <td>{{ $record->description}}</td>
                 <td>{{ $record->other}}</td>
                 <td>
                     <div class="btn-group">

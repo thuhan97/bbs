@@ -44,8 +44,8 @@ class MeetingController extends AdminBaseController
     {
         return [
             'rules' => [
-                'name' => 'required|max:255|unique:meetings',
-                'seats'=> 'numberic'
+                'name' => 'required|max:255|unique:meetings,name,NULL,id,deleted_at,NULL',
+                'seats'=> 'numeric'
             ],
             'messages' => [],
             'attributes' => [
@@ -60,8 +60,8 @@ class MeetingController extends AdminBaseController
     {
         return [
             'rules' => [
-                'name' => 'required|max:255|unique:meetings,id,'.$record->name,
-                'seats'=> 'numberic'
+                'name' => 'required|max:255|unique:meetings,name,'.$record->name.',id,deleted_at,NULL',
+                'seats'=> 'numeric'
             ],
             'messages' => [],
             'attributes' => [

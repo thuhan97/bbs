@@ -15,13 +15,15 @@ class Meeting extends Model
     protected $table='meetings';
     protected $fillable= [
     	'name',
-    	'area',
     	'seats',
-    	'equipment',
+    	'description',
     	'other',
 	];
 	public function scopeSearch($query, $searchTerm)
     {
-        return $query->where('name', 'like', '%' . $searchTerm . '%');
+        return $query->where('name', 'like', '%' . $searchTerm . '%')
+                    ->orWhere('seats', 'like', '%' . $searchTerm . '%')
+                    ->orWhere('description', 'like', '%' . $searchTerm . '%')
+                    ->orWhere('other', 'like', '%' . $searchTerm . '%');
     }
 }

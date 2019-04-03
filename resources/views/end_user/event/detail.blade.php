@@ -25,7 +25,7 @@
                 @endif
 
             </h3>
-            <h5 class="card-title h6 my-4 text-center"><b>{!! $event->introduction!!}</b></h5>
+            <h5 class="card-title h6 my-4 text-center"><b>{!! nl2br($event->introduction) !!}</b></h5>
             <!-- Text -->
             <p class="card-text py-2">{!! $event->content !!}</p>
             <!-- Button -->
@@ -37,7 +37,7 @@
             <hr/>
 
             @if($event->deadline_at > date('Y-m-d H:i:s'))
-                <form class="border border-light p-5" method="POST" action="{{ route('Join_event') }}">
+                <form class="border border-light p-5" method="POST" action="{{ route('join_event') }}">
                     <p class="h4 mb-4 text-center">Phản hồi</p>
                     <div class="d-flex justify-content-between joinEvent">
                         @csrf
@@ -99,23 +99,7 @@
                 @endif
 
                 </tbody>
-                <tfoot>
-                <tr>
-                    <th>Tên nhân viên
-                    </th>
-                    <th>Mã nhân viên
-                    </th>
-                    <th>Trạng thái
-                    </th>
-                    <th class="th-sm">Ý kiến cá nhân
-                    </th>
-                    <th>Ngày đăng kí
-                    </th>
-                </tr>
-                </tfoot>
             </table>
-
-
         </div>
     </div>
     @push('extend-js')

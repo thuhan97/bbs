@@ -39,7 +39,7 @@
     </li>
     <li class="{{ \App\Utils::checkRoute(['admin::regulations.index', 'admin::regulations.create', 'admin::regulations.edit']) ? 'active': '' }}">
         <a href="{{ route('admin::regulations.index') }}">
-            <i class="fa fa-podcast"></i> <span>Nội quy/Quy Định</span>
+            <i class="fa fa-podcast"></i> <span>Nội quy/Quy định</span>
         </a>
     </li>
     <li class="treeview {{ \App\Utils::checkRoute([
@@ -51,17 +51,39 @@
     'admin::work_times.create',
     'admin::work_times.import',
     'admin::work_times.edit',
+    'admin::work_time_register.index',
+    'admin::work_time_register.create',
+    'admin::work_time_register.import',
+    'admin::work_time_register.edit',
     ]) ? 'active': '' }}">
-        <a href="#"><i class="fa fa-calendar"></i> <span>Thời gian làm việc</span>
+        <a href="#">
+            <i class="fa fa-calendar"></i>
+            <span>Thời gian làm việc</span>
             <span class="pull-right-container">
-    <i class="fa fa-angle-left pull-right"></i>
-    </span>
+                <i class="fa fa-angle-left pull-right"></i>
+            </span>
         </a>
         <ul class="treeview-menu">
             <li><a href="{{ route('admin::day_offs.index') }}"><i class="fa fa-circle"></i> Nghỉ phép</a></li>
             <li><a href="{{ route('admin::work_times.index') }}"><i class="fa fa-circle"></i> Thời gian làm việc</a>
             </li>
             <li><a href="{{ route('admin::over_times.index') }}"><i class="fa fa-circle"></i> Làm thêm</a></li>
+            <li><a href="{{ route('admin::work_time_register.index') }}"><i class="fa fa-circle"></i>Đăng ký thời gian làm việc</a></li>
         </ul>
+    </li>
+    <li class="{{ \App\Utils::checkRoute(['admin::devices.index', 'admin::devices.create', 'admin::devices.edit']) ? 'active': '' }}">
+        <a href="{{ route('admin::devices.index') }}">
+            <i class="fa fa-share-alt"></i> <span>Quản lý thiết bị</span>
+        </a>
+    </li>
+    <li class="{{ \App\Utils::checkRoute(['admin::deviceusers.index', 'admin::deviceusers.create', 'admin::deviceusers.edit']) ? 'active': '' }}">
+        <a href="{{ route('admin::deviceusers.index') }}">
+            <i class="fa fa-share-alt"></i> <span>Cấp thiết bị</span>
+        </a>
+    </li>
+    <li class="{{ \App\Utils::checkRoute(['admin::meetings.index', 'admin::meetings.create', 'admin::meetings.edit']) ? 'active': '' }}">
+        <a href="{{ route('admin::meetings.index') }}">
+            <i class="fa fa-calendar"></i> <span>Phòng họp</span>
+        </a>
     </li>
 </ul>

@@ -3,7 +3,7 @@
 
 <?php
 
-$_pageTitle = (isset($addVarsForView['_pageTitle']) && !empty($addVarsForView['_pageTitle']) ? $addVarsForView['_pageTitle'] : ucwords($resourceTitle));
+$_pageTitle = (isset($addVarsForView['_pageTitle']) && !empty($addVarsForView['_pageTitle']) ? $addVarsForView['_pageTitle'] : ($resourceTitle));
 $_pageSubtitle = (isset($addVarsForView['_pageSubtitle']) && !empty($addVarsForView['_pageSubtitle']) ? $addVarsForView['_pageSubtitle'] : 'Danh sách');
 $_listLink = route($resourceRoutesAlias . '.index');
 $_createLink = route($resourceRoutesAlias . '.create');
@@ -12,12 +12,17 @@ $_mutipleDeleteLink = route($resourceRoutesAlias . '.deletes');
 $tableCounter = 0;
 $total = 0;
 if (count($records) > 0) {
-    $total = $records->total();
-    $tableCounter = ($records->currentPage() - 1) * $records->perPage();
-    $tableCounter = $tableCounter > 0 ? $tableCounter : 0;
+    if ($records[0]->total) {
+        foreach ($records as $record) {
+            $total += $record->total;
+        }
+    } else {
+        $total = $records->total();
+        $tableCounter = ($records->currentPage() - 1) * $records->perPage();
+        $tableCounter = $tableCounter > 0 ? $tableCounter : 0;
+    }
 }
 ?>
-
 {{-- Breadcrumbs --}}
 @section('breadcrumbs')
     {!! Breadcrumbs::render($resourceRoutesAlias) !!}

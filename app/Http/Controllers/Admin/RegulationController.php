@@ -34,7 +34,7 @@ class RegulationController extends AdminBaseController
     /**
      * @var  string
      */
-    protected $resourceTitle = 'Quy định, nội quy';
+    protected $resourceTitle = 'Quy định, Nội quy';
 
     /**
      * Controller construct

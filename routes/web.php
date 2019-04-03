@@ -110,7 +110,7 @@ Route::group([
     Route::post('/doi-mat-khau', 'UserController@updatePassword')->name('update_password');
     Route::get('/thoi-gian-lam-viec', 'UserController@workTime')->name('work_time');
     Route::get('/ngay-nghi', 'UserController@dayOff')->name('day_off');
-    Route::post('/ngay-nghi/create-api', 'UserController@dayOffCreate_API')->name('day_off_createAPI');
+   /* Route::post('/ngay-nghi/create-api', 'UserController@dayOffCreate_API')->name('day_off_createAPI');*/
     Route::get('/ngay-nghi/list-approval-api', 'UserController@dayOffListApprovalAPI')->name('day_off_listApprovalAPI');
     Route::get('/phe-duyet-ngay-nghi', 'UserController@dayOffApprove')->name('day_off_approval');
     Route::post('/phe-duyet-ngay-nghi/approve-api', 'UserController@dayOffApprove_AcceptAPI')->name('day_off_approval_approveAPI');
@@ -122,7 +122,7 @@ Route::group([
     Route::get('/events', 'EventController@getCalendar')->name('getCalendar');
     Route::get('/danh-sach-su-kien', 'EventController@index')->name('event_list');
     Route::get('/su-kien/{id}', 'EventController@detail')->where(['id' => '\d+'])->name('event_detail');
-    Route::post('/dang-ki-su-kien', 'EventAttendanceController@JoinEvent')->name('Join_event');
+    Route::post('/dang-ki-su-kien', 'EventAttendanceController@JoinEvent')->name('join_event');
     Route::get('/thong-bao', 'PostController@index')->name('post');
     Route::get('/thong-bao/{id}', 'PostController@detail')->where(['id' => '\d+'])->name('post_detail');
     Route::get('/bao-cao', 'ReportController@index')->name('report');
@@ -132,5 +132,8 @@ Route::group([
     Route::get('/bao-cao/{id}', 'ReportController@detail')->where(['id' => '\d+'])->name('report_detail');
     Route::get('/du-an', 'ProjectController@index')->name('project');
     Route::get('/du-an/{id}', 'ProjectController@detail')->where(['id' => '\d+'])->name('project_detail');
+
+    // create day off
+    Route::post('/ngay-nghi/create', 'UserController@dayOffCreate')->name('day_off_create');
 
 });

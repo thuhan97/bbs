@@ -26,6 +26,19 @@ Route::group([
 
     ##AUTO_INSERT_ROUTE##
 
+		//DeviceUser
+    Route::get('devices/{id}/allocate', ['as' => 'deviceusers.allocate', 'uses' => 'DeviceUserController@allocate']);
+    Route::post('deviceusers/deletes', ['as' => 'deviceusers.deletes', 'uses' => 'DeviceUserController@deletes']);
+    Route::resource('deviceusers', 'DeviceUserController');
+		
+
+    //ActionDevice
+//    Route::resource('ActionDevice', 'ActionDeviceController');
+
+
+    //Device
+    Route::post('devices/deletes', ['as' => 'devices.deletes', 'uses' => 'DeviceController@deletes']);
+    Route::resource('devices', 'DeviceController');
     //event_attendance
     Route::resource('event_attendance', 'EventAttendanceController');
 
@@ -101,5 +114,13 @@ Route::group([
     Route::post('teams/deletes', ['as' => 'teams.deletes', 'uses' => 'TeamController@deletes']);
     Route::resource('teams', 'TeamController');
 
+    //register work time
+    Route::post('work_time_register/deletes', ['as' => 'work_time_register.deletes', 'uses' => 'WorkRegisterController@deletes']);
+    Route::resource('work_time_register', 'WorkRegisterController');
+
+
+    //rooms
+    Route::post('meetings/deletes', ['as' => 'meetings.deletes', 'uses' => 'MeetingController@deletes']);
+    Route::resource('meetings','MeetingController');
 
 });

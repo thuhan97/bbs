@@ -298,6 +298,10 @@
     width: 23% !important;
 }
 
+.w-search-manager {
+    width: 106px !important;
+}
+
 .w-30 {
     width: 30% !important;
 }
@@ -316,4 +320,9 @@
 
 .mr-2 {
     margin-right: 2rem;
+}
+
+a.disabled {
+    pointer-events: none;
+    cursor: default;
 }

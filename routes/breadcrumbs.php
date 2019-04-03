@@ -76,6 +76,11 @@ Breadcrumbs::register('project_detail', function ($breadcrumbs, $project) {
     $breadcrumbs->push($project->name, route('project_detail', ['id' => $project->id]));
 
 });
+//Home > Meeting Room
+Breadcrumbs::register('meetings', function ($breadcrumbs) {
+    $breadcrumbs->parent('home');
+    $breadcrumbs->push(__l('meetings'), route('meetings'));
+});
 // Dashboard > Profile
 Breadcrumbs::register('_personal', function ($breadcrumbs) {
     $breadcrumbs->parent('personal');
@@ -126,7 +131,8 @@ $resources = [
     'work_time_register' => 'Đăng ký thời gian làm việc',
     'projects' => 'Quản lý dự án',
     'devices' => 'Quản lý thiết bị',
-    'deviceusers' => 'Quản lý thiết bị'
+    'deviceusers' => 'Quản lý thiết bị',
+    'meetings'=> 'Phòng họp'
 ];
 foreach ($resources as $resource => $data) {
     $parent = 'admin';

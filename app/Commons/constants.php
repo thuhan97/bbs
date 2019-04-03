@@ -152,3 +152,8 @@ define('TYPES_DEVICE', [
     6 => 'Khác'
 ]);
 
+define('DATE', 'ngày');
+define('MONTH', 'tháng');
+define('WEEK', 'tuần');
+define('COUNT', 'buổi');
+

@@ -112,6 +112,14 @@ Breadcrumbs::register('admin', function ($breadcrumbs) {
     $breadcrumbs->push(__l('admin_page'), route('admin::index'));
 });
 
+// Dashboard > day_off_approval
+Breadcrumbs::register('work_time_statistic', function ($breadcrumbs) {
+    $breadcrumbs->parent('home');
+    $breadcrumbs->push(__l('day_off_approval'), route('admin::work_time_statistic'));
+});
+
+
+
 // Admin / {Resource} / {List|Edit|Create}
 $resources = [
     'admins' => 'Trang quản trị',
@@ -126,7 +134,8 @@ $resources = [
     'work_time_register' => 'Đăng ký thời gian làm việc',
     'projects' => 'Quản lý dự án',
     'devices' => 'Quản lý thiết bị',
-    'deviceusers' => 'Quản lý thiết bị'
+    'deviceusers' => 'Quản lý thiết bị',
+    'work_time_statistic' => 'Thống kê thời gian làm việc'
 ];
 foreach ($resources as $resource => $data) {
     $parent = 'admin';

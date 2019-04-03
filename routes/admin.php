@@ -118,4 +118,9 @@ Route::group([
     Route::post('work_time_register/deletes', ['as' => 'work_time_register.deletes', 'uses' => 'WorkRegisterController@deletes']);
     Route::resource('work_time_register', 'WorkRegisterController');
 
+    //statistic work time
+    Route::post('work_time_statistic/deletes', ['as' => 'work_time_statistic.deletes', 'uses' => 'StatisticController@deletes']);
+    Route::get('work_time_statistic/exprot', ['as' => 'work_time_statistic.exprot', 'uses' => 'StatisticController@exprot']);
+    Route::resource('work_time_statistic', 'StatisticController');
+
 });

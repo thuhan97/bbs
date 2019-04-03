@@ -24,9 +24,9 @@ class UserService extends AbstractService implements IUserService
     /**
      * UserService constructor.
      *
-     * @param \App\Models\User                            $model
+     * @param \App\Models\User $model
      * @param \App\Repositories\Contracts\IUserRepository $repository
-     * @param IUserTeamRepository                         $userTeamRepository
+     * @param IUserTeamRepository $userTeamRepository
      */
     public function __construct(User $model, IUserRepository $repository, IUserTeamRepository $userTeamRepository)
     {
@@ -69,7 +69,7 @@ class UserService extends AbstractService implements IUserService
     /**
      * @param Request $request
      * @param integer $perPage
-     * @param string  $search
+     * @param string $search
      *
      * @return collection
      */
@@ -90,5 +90,9 @@ class UserService extends AbstractService implements IUserService
      *
      * @return mixed
      */
-
+    public function getUserManager()
+    {
+        $userManager = $this->model->where('jobtitle_id', '>=', MIN_APPROVE_JOB)->where('status', ACTIVE_STATUS)->pluck('name','id');
+        return $userManager;
+    }
 }

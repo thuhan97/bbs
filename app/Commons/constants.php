@@ -151,6 +151,17 @@ define('TYPES_DEVICE', [
     5 => 'Máy tính bảng',
     6 => 'Khác'
 ]);
+define('VACATION', [
+    1 => 'Lý do cá nhân',
+    2 => 'Nghỉ đám cưới',
+    3 => 'Nghỉ đám hiếu',
+]);
+
 
 define('DAILY_REPORT', 0);
 define('WEEKLY_REPORT', 1);
+define('VACATION', [
+    1 => 'Lý do cá nhân',
+    2 => 'Nghỉ đám cưới',
+    3 => 'Nghỉ đám hiếu',
+]);

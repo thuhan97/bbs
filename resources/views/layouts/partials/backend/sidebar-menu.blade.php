@@ -39,7 +39,7 @@
     </li>
     <li class="{{ \App\Utils::checkRoute(['admin::regulations.index', 'admin::regulations.create', 'admin::regulations.edit']) ? 'active': '' }}">
         <a href="{{ route('admin::regulations.index') }}">
-            <i class="fa fa-podcast"></i> <span>Nội quy/Quy Định</span>
+            <i class="fa fa-podcast"></i> <span>Nội quy/Quy định</span>
         </a>
     </li>
     <li class="treeview {{ \App\Utils::checkRoute([
@@ -79,6 +79,11 @@
     <li class="{{ \App\Utils::checkRoute(['admin::deviceusers.index', 'admin::deviceusers.create', 'admin::deviceusers.edit']) ? 'active': '' }}">
         <a href="{{ route('admin::deviceusers.index') }}">
             <i class="fa fa-share-alt"></i> <span>Cấp thiết bị</span>
+        </a>
+    </li>
+    <li class="{{ \App\Utils::checkRoute(['admin::meetings.index', 'admin::meetings.create', 'admin::meetings.edit']) ? 'active': '' }}">
+        <a href="{{ route('admin::meetings.index') }}">
+            <i class="fa fa-calendar"></i> <span>Phòng họp</span>
         </a>
     </li>
 </ul>

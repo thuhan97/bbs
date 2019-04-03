@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CreateDayOffRequest;
 use App\Http\Requests\DayOffRequest;
 use App\Http\Requests\ProfileRequest;
 use App\Models\User;
@@ -9,6 +10,7 @@ use App\Models\WorkTime;
 use App\Services\Contracts\IDayOffService;
 use App\Services\Contracts\IUserService;
 use App\Transformers\DayOffTransformer;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -144,12 +146,13 @@ class UserController extends Controller
         $paginateData = $listDate->toArray();
         $recordPerPage = $request->get('per_page');
         $approve = $request->get('approve');
+        $userManager = $this->userService->getUserManager();
 
         $availableDayLeft = $this->userDayOff->getDayOffUser(Auth::id());
-        return view('end_user.user.day_off', compact('listDate', 'paginateData', 'availableDayLeft', 'recordPerPage', 'approve'));
+        return view('end_user.user.day_off', compact('listDate', 'paginateData', 'availableDayLeft', 'recordPerPage', 'approve', 'userManager'));
     }
 
-    public function dayOffCreate_API(DayOffRequest $request)
+   /* public function dayOffCreate_API(DayOffRequest $request)
     {
         $response = [
             'success' => false,
@@ -173,7 +176,7 @@ class UserController extends Controller
         $response['record'] = $indicate['record'];
 
         return response($response);
-    }
+    }*/
 
     public function dayOffListApprovalAPI(Request $request)
     {
@@ -282,4 +285,16 @@ class UserController extends Controller
         return view('end_user.user.contact', compact('users', 'search', 'perPage'));
     }
 
+    public function dayOffCreate(CreateDayOffRequest $request)
+    {
+        $indicate = $this->userDayOff->create(
+            Auth::id(), $request->input('title'),
+            $request->input('reason'),
+            $request->input('start_at'),
+            $request->input('end_at'),
+            $request->input('approver_id')
+        );
+        return back()->with('day_off_success','');
+
+    }
 }

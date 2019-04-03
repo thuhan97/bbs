@@ -53,6 +53,8 @@ class UserController extends AdminBaseController
                 'birthday' => 'nullable|date|before:' . date('Y-m-d', strtotime('- 15 years')),
                 'phone' => 'nullable|min:10|max:30|unique:users,phone',
                 'id_card' => 'nullable|min:9|max:12|unique:users,id_card',
+                'password'=>'required|same:password_confirmation',
+                'password_confirmation'=>'required'
             ],
             'messages' => [],
             'attributes' => [],
@@ -70,6 +72,7 @@ class UserController extends AdminBaseController
                 'birthday' => 'nullable|date|before:' . date('Y-m-d', strtotime('- 15 years')),
                 'phone' => 'nullable|min:10|max:30|unique:users,phone,' . $record->id,
                 'id_card' => 'nullable|min:9|max:12|unique:users,id_card,' . $record->id,
+                'password'=>'nullable|same:password_confirmation',
             ],
             'messages' => [],
             'attributes' => [],

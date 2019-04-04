@@ -72,7 +72,6 @@
         function exec_submit(i) {
             var f = document.forms[i];
             if (getParam('month') == null) {
-                console.log('ok');
                 var d = new Date();
                 var m = d.getMonth();
                 f.month.value = m + 1;
@@ -97,7 +96,6 @@
 
         $('.complain').click(function () {
             var message = $('.modal-body textarea').val();
-            console.log(id);
             $('#feedback').modal('hide');
         });
 
@@ -107,7 +105,7 @@
          */
         var calendar = {
             mName: ["Tháng 01", "Tháng 02", "Tháng 03", "Tháng 04", "Tháng 05", "Tháng 06", "Tháng 07", "Tháng 08", "Tháng 09", "Tháng 10", "Tháng 11", "Tháng 12"],
-            valMonth: ["00", "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12"],
+            valMonth: ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"],
             getValMonth: ["01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12"],
             data: null,
             sDay: 0,
@@ -152,13 +150,13 @@
                 cTable.id = "calendar";
                 container.innerHTML = "";
                 container.appendChild(cTable);
-
                 var cRow = document.createElement("tr"),
                     cCell = null,
                     days = ["Chủ nhật", "Thứ hai", "Thứ hai", "Thứ ba", "Thứ năm", "Thứ sáu", "Thứ bảy"];
                 for (var d of days) {
                     cCell = document.createElement("td");
                     cCell.innerHTML = d;
+                    // cCell.setAttribute("class","order-day-"+ current_day);
                     cRow.appendChild(cCell);
                 }
                 cRow.classList.add("calendar-header");
@@ -174,7 +172,7 @@
                 var inputMonth = month.options[month.selectedIndex];
                 var valMonth = inputMonth.value;
                 var getValMonth = inputMonth.dataset.type;
-                var lastDateOfLastMonth = valMonth == 0 ? new Date(valYear - 1, 11, 0).getDate() : new Date(valYear, valMonth, 0).getDate();
+                var lastDateOfLastMonth = valMonth == 0 ? new Date(valYear - 1, 12, 0).getDate() : new Date(valYear, valMonth, 0).getDate();
                 var firstDayOfCurrentMonth = new Date(valYear, valMonth, 0).getDay();
                 var dayOfLastMonth = lastDateOfLastMonth - firstDayOfCurrentMonth;
                 var dataCalendar = [
@@ -190,6 +188,19 @@
                 ];
                 for (var i = 0; i < total; i++) {
                     cCell = document.createElement("td");
+
+
+                    var dates = new Date();
+                    var getCurrentMonth = dates.getMonth().toString();
+                    if (valMonth === getCurrentMonth){
+                        var current_day = dates.getDay();
+                        var cells = document.getElementById('calendar').getElementsByTagName('td');
+                        cells[current_day].style.backgroundColor = '#222222';
+                        cells[current_day].style.color = '#f4f4f4';
+                    }
+
+
+
                     if (squares[i] == "last") {
                         cCell.classList.add("blank");
                         cCell.innerHTML += "<div class='dayNumber'>" + dayOfLastMonth++ + "</div>";
@@ -221,7 +232,6 @@
                 }
             },
         };
-
         window.addEventListener("load", function () {
             var now = new Date(),
                 nowMth = now.getMonth(),
@@ -251,5 +261,9 @@
             }
             calendar.list();
         });
+
+        window.onload = function () {
+
+        }
     </script>
 @endsection

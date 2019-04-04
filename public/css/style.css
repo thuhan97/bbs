@@ -531,7 +531,7 @@ table.calendarTable td {
 #calendar tr td {
     border: 0.5em solid #fff;
     background-color: #eeeeee;
-    padding: 20px 5px;
+    /*padding: 20px 5px;*/
     width: 14.28%;
     vertical-align: top;
     text-align: center;
@@ -551,10 +551,14 @@ tr.calendar-header td {
     background: #eeeeee;
     color: #000000;
     text-align: center;
+    padding: 20px 5px;
 }
 tr.calendar-body td {
     width: 162px;
     height: 109px;
+    padding-top: 30px;
+    cursor: pointer;
+
 }
 
 .evt {

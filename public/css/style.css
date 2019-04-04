@@ -521,10 +521,26 @@
 #dayoff-option-header-2{
     background: #2aea78;
 }
-
+#dayoff-option-header-1{
+    background: #79abff;
+}
 #bg-yellow{
     background: #ffbb33;
 }
-#dayoff-cioin-3{
+.dayoff-cioin-1-2-3{
     left: 29px !important;
+}
+.text-size-header{
+    font-size: 16px !important;
+}
+#btnSearch{
+    background: #f4f4f4 !important; ;
+}
+.search-day-off{
+    border: 1px solid #f4f4f4;
+}
+.color-search{
+    color: #d8d8d8;
+    font-size: 18px;
+
 }

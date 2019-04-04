@@ -34,12 +34,16 @@
             <div class="col-3 position-relative">
                 <div class="row" id="option-calendar">
                     <div class="col-sm-3 p-0 ">
-                        <button class="text-center w-100 calendar-year">sdsdf</button>
+                        <button class="text-center w-100 calendar-year">{{ date('Y') }}</button>
                     </div>
+                    MONTH
                     <div class="col-sm-9 p-0 m-auto">
+                        {{ Form::select('title', VACATION, null, ['class' => 'form-control my-1 mr-1 browser-default custom-select md-form select-item']) }}
+
                         <select class="browser-default custom-select w-100 " id="select-month">
                             <option selected>Open this select menu</option>
-                            <option value="1">One</option>
+                            @for
+                            <option value="1">Thang1</option>
                             <option value="2">Two</option>
                             <option value="3">Three</option>
                         </select>
@@ -49,16 +53,19 @@
         </div>
         <div class="container-fluid col-12 row border-bottom-2 mb-2" style="position: relative;">
             <div class="col-sm-3 col-md-6 col-lg-3 position-relative">
-                <a href="{{$defaultURL . $atPageString . $perPageString}}" class="card bg-primary">
+                <a href="{{$defaultURL . $atPageString . $perPageString .'&approve=1'}}" class="card bg-primary">
                     <div class="card-body row d-flex justify-content-center">
                         <div class="media d-block d-md-flex">
-                            <span class="d-flex rounded-circle avatar z-depth-1-half mb-3 mx-auto"
-                                  style="width: 80px;height: 80px;background: red"></span>
+                            <span id="dayoff-option-header-1"
+                                  class="d-flex rounded-circle avatar z-depth-1-half mb-3 mx-auto dayoff-header">
+                                <i class="fas fa-clipboard-list dayoff-icoin text-primary dayoff-cioin-1-2-3"></i>
+                            </span>
                             <div class="media-body text-center text-md-left ml-md-3 ml-0">
-                                <h1 class="white-text font-weight-light">{{$totalRequest['total']}}</h1>
-                                <p class="card-subtitle text-white-50">Đơn xin nghỉ</p>
-                                <p class="card-title text-uppercase font-weight-bold card-text white-text">Trong
-                                    năm {{date('Y')}}</p>
+                                <h1 class="white-text font-weight-bold">{{$totalRequest['total']}}</h1>
+                                <p class="card-subtitle text-white-50">Tổng đơn xin nghỉ</p>
+                                <p class="card-title text-uppercase font-weight-bold card-text white-text text-size-header">
+                                    TRONG NĂM {{date('Y')}}</p>
+
                             </div>
                         </div>
 
@@ -69,14 +76,16 @@
                 <a href="{{$defaultURL . $atPageString . $perPageString .'&approve=1'}}" class="card bg-success">
                     <div class="card-body row d-flex justify-content-center">
                         <div class="media d-block d-md-flex">
-                            <span id="dayoff-option-header-2" class="d-flex rounded-circle avatar z-depth-1-half mb-3 mx-auto dayoff-header">
-                               <i class="fas fa-clipboard dayoff-icoin text-warning" id="dayoff-cioin-3"></i>
+                            <span id="dayoff-option-header-2"
+                                  class="d-flex rounded-circle avatar z-depth-1-half mb-3 mx-auto dayoff-header">
+                                <i class="fas fa-clipboard-check dayoff-icoin text-success dayoff-cioin-1-2-3"></i>
+
                             </span>
                             <div class="media-body text-center text-md-left ml-md-3 ml-0">
-                                <h1 class="white-text font-weight-light">{{$totalRequest['total']}}</h1>
+                                <h1 class="white-text font-weight-bold">{{$totalRequest['total']}}</h1>
                                 <p class="card-subtitle text-white-50">Đơn xin nghỉ</p>
-                                <p class="card-title text-uppercase font-weight-bold card-text white-text">Trong
-                                    năm {{date('Y')}}</p>
+                                <p class="card-title text-uppercase font-weight-bold card-text white-text text-size-header">
+                                    ĐÃ DUYỆT</p>
 
                             </div>
                         </div>
@@ -88,15 +97,15 @@
                 <a href="{{$defaultURL . $atPageString . $perPageString .'&approve=1'}}" class="card " id="bg-yellow">
                     <div class="card-body row d-flex justify-content-center">
                         <div class="media d-block d-md-flex">
-                            <span id="dayoff-option-header-3" class="d-flex rounded-circle avatar z-depth-1-half mb-3 mx-auto dayoff-header">
-                               <i class="fas fa-clipboard dayoff-icoin text-warning" id="dayoff-cioin-3"></i>
+                            <span id="dayoff-option-header-3"
+                                  class="d-flex rounded-circle avatar z-depth-1-half mb-3 mx-auto dayoff-header">
+                               <i class="fas fa-clipboard dayoff-icoin text-warning dayoff-cioin-1-2-3"></i>
                             </span>
                             <div class="media-body text-center text-md-left ml-md-3 ml-0">
-                                <h1 class="white-text font-weight-light">{{$totalRequest['total']}}</h1>
+                                <h1 class="white-text font-weight-bold">{{$totalRequest['total']}}</h1>
                                 <p class="card-subtitle text-white-50">Đơn xin nghỉ</p>
-                                <p class="card-title text-uppercase font-weight-bold card-text white-text">Trong
-                                    năm {{date('Y')}}</p>
-
+                                <p class="card-title text-uppercase font-weight-bold card-text white-text text-size-header">
+                                    CHỜ DUYỆT</p>
                             </div>
                         </div>
 
@@ -107,16 +116,15 @@
                 <a href="{{$defaultURL . $atPageString . $perPageString .'&approve=1'}}" class="card bg-danger">
                     <div class="card-body row d-flex justify-content-center">
                         <div class="media d-block d-md-flex">
-                            <span id="dayoff-option-header-4" class="d-flex rounded-circle avatar z-depth-1-half mb-3 mx-auto dayoff-header"
-                               >
-<i class="fas fa-times-circle dayoff-icoin text-danger"></i>
+                            <span id="dayoff-option-header-4"
+                                  class="d-flex rounded-circle avatar z-depth-1-half mb-3 mx-auto dayoff-header">
+                                <i class="fas fa-times-circle dayoff-icoin text-danger"></i>
                             </span>
                             <div class="media-body text-center text-md-left ml-md-3 ml-0">
-                                <h1 class="white-text font-weight-light">{{$totalRequest['total']}}</h1>
+                                <h1 class="white-text font-weight-bold">{{$totalRequest['total']}}</h1>
                                 <p class="card-subtitle text-white-50">Đơn xin nghỉ</p>
-                                <p class="card-title text-uppercase font-weight-bold card-text white-text">Trong
-                                    năm {{date('Y')}}</p>
-
+                                <p class="card-title text-uppercase font-weight-bold card-text white-text text-size-header">
+                                    KHÔNG DUYỆT</p>
                             </div>
                         </div>
 
@@ -126,13 +134,13 @@
         </div>
         <br>
         <div class="container-fluid row">
-            <div class="col-sm-6 col-xs-12 row">
-                <div class="col-4">
-                    <select class="browser-default custom-select w-100">
-                        <option selected>Open this select menu</option>
-                        <option value="1">One</option>
-                        <option value="2">Two</option>
-                        <option value="3">Three</option>
+            <div class="col-sm-7 col-xs-12 row">
+                <div class="col-5">
+                    <select class="browser-default custom-select w-100 search-day-off">
+                        <option>Tất cả đơn</option>
+                        <option value="1">Đã duyệt</option>
+                        <option value="2">Chờ duyệt</option>
+                        <option value="3">Không duyệt</option>
                     </select>
                     {{-- <h6 class=" mb-0">
                          @if($approval_view != 1 && $approval_view != 0)
@@ -144,19 +152,19 @@
                          @endif
                      </h6>--}}
                 </div>
-                <div class="col-8 pl-0">
+                <div class="col-7 pl-0">
                     <form method="get"
                           action="{{$defaultURL . $atPageString . $perPageString . $approvalString}}">
                         <div class="input-group col-12">
-                            <input type="text" class="form-control" placeholder="Tìm tên nhân viên"
+                            <input type="text" class="form-control search-day-off" placeholder="Tìm tên nhân viên"
                                    value="{{!!$searchView ? $searchView : ''}}"
                                    name="search"
                                    aria-label="Tìm kiếm nhân viên"
                                    aria-describedby="btnSearch">
                             <div class="input-group-append">
-                                <button class="btn btn-md btn-default m-0 py-2 z-depth-0 waves-effect" type="submit"
+                                <button class="btn btn-md btn-default m-0 py-2 z-depth-0 waves-effect form-control" type="submit"
                                         id="btnSearch">
-                                    Tìm
+                                    <i class="fas fa-search color-search"></i>
                                 </button>
                             </div>
                         </div>

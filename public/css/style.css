@@ -518,7 +518,13 @@
 #dayoff-option-header-3{
     background: #ffda91;
 }
+#dayoff-option-header-2{
+    background: #2aea78;
+}
+
 #bg-yellow{
     background: #ffbb33;
 }
-#dayoff-cioin-3
+#dayoff-cioin-3{
+    left: 29px !important;
+}

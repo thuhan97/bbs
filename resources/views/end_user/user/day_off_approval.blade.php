@@ -59,7 +59,6 @@
                                 <p class="card-subtitle text-white-50">Đơn xin nghỉ</p>
                                 <p class="card-title text-uppercase font-weight-bold card-text white-text">Trong
                                     năm {{date('Y')}}</p>
-
                             </div>
                         </div>
 
@@ -67,11 +66,12 @@
                 </a>
             </div>
             <div class="col-sm-3 col-md-6 col-lg-3 position-relative">
-                <a href="{{$defaultURL . $atPageString . $perPageString .'&approve=0'}}" class="card bg-danger">
+                <a href="{{$defaultURL . $atPageString . $perPageString .'&approve=1'}}" class="card bg-success">
                     <div class="card-body row d-flex justify-content-center">
                         <div class="media d-block d-md-flex">
-                            <span class="d-flex rounded-circle avatar z-depth-1-half mb-3 mx-auto"
-                                  style="width: 80px;height: 80px;background: red"></span>
+                            <span id="dayoff-option-header-2" class="d-flex rounded-circle avatar z-depth-1-half mb-3 mx-auto dayoff-header">
+                               <i class="fas fa-clipboard dayoff-icoin text-warning" id="dayoff-cioin-3"></i>
+                            </span>
                             <div class="media-body text-center text-md-left ml-md-3 ml-0">
                                 <h1 class="white-text font-weight-light">{{$totalRequest['total']}}</h1>
                                 <p class="card-subtitle text-white-50">Đơn xin nghỉ</p>

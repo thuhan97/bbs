@@ -53,7 +53,8 @@ class UserController extends AdminBaseController
                 'birthday' => 'nullable|date|before:' . date('Y-m-d', strtotime('- 15 years')),
                 'phone' => 'nullable|min:10|max:30|unique:users,phone',
                 'id_card' => 'nullable|min:9|max:12|unique:users,id_card',
-                'end_date'=>"after:start_date"
+                'start_date'=>'nullable|date',
+                'end_date'=>"nullable|date|after:start_date"
             ],
             'messages' => ['end_date.after'=>'Ngày nghỉ việc phải là ngày sau ngày vào công ty'],
             'attributes' => [],
@@ -71,7 +72,8 @@ class UserController extends AdminBaseController
                 'birthday' => 'nullable|date|before:' . date('Y-m-d', strtotime('- 15 years')),
                 'phone' => 'nullable|min:10|max:30|unique:users,phone,' . $record->id,
                 'id_card' => 'nullable|min:9|max:12|unique:users,id_card,' . $record->id,
-                'end_date'=>"after:start_date"
+                'start_date'=>'nullable|date',
+                'end_date'=>"nullable|date|after:start_date"
             ],
             'messages' => ['end_date.after'=>'Ngày nghỉ việc phải là ngày sau ngày vào công ty'],
             'attributes' => [],

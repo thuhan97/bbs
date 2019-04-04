@@ -51,11 +51,18 @@ class UserController extends AdminBaseController
                 'email' => 'email|unique:users,email',
                 'staff_code' => 'filled|max:10|unique:users,staff_code',
                 'birthday' => 'nullable|date|before:' . date('Y-m-d', strtotime('- 15 years')),
-                'phone' => 'nullable|min:10|max:30|unique:users,phone',
+                'phone' => 'nullable|min:10|numeric|max:30|unique:users,phone',
                 'id_card' => 'nullable|min:9|max:12|unique:users,id_card',
+                'password'=>'required|same:password_confirmation',
+                'password_confirmation'=>'required',
+                'start_date'=>'nullable|date',
+                'end_date'=>"nullable|date|after:start_date"
             ],
-            'messages' => [],
-            'attributes' => [],
+            'messages' => [
+                'end_date.after'=>'Ngày nghỉ việc phải là ngày sau ngày vào công ty',
+                'numeric'=> ":attribute phải là định dạng số"
+            ],
+            'attributes' => ['phone'=>'Số điện thoại'],
             'advanced' => [],
         ];
     }
@@ -68,15 +75,20 @@ class UserController extends AdminBaseController
                 'email' => 'required|email|unique:users,email,' . $record->id,
                 'staff_code' => 'filled|max:10|unique:users,staff_code,' . $record->id,
                 'birthday' => 'nullable|date|before:' . date('Y-m-d', strtotime('- 15 years')),
-                'phone' => 'nullable|min:10|max:30|unique:users,phone,' . $record->id,
+                'phone' => 'nullable|min:10|numeric|max:30|unique:users,phone,' . $record->id,
                 'id_card' => 'nullable|min:9|max:12|unique:users,id_card,' . $record->id,
+                'password'=>'nullable|same:password_confirmation',
+                'start_date'=>'nullable|date',
+                'end_date'=>"nullable|date|after:start_date"
             ],
-            'messages' => [],
-            'attributes' => [],
+            'messages' => ['numeric'=> ":attribute phải là định dạng số"],
+            'attributes' => [
+                'end_date.after'=>'Ngày nghỉ việc phải là ngày sau ngày vào công ty',
+                'phone'=>'Số điện thoại'
+            ],
             'advanced' => [],
         ];
     }
-
     public function getSearchRecords(Request $request, $perPage = 15, $search = null)
     {
         $model = $this->getResourceModel()::search($search);

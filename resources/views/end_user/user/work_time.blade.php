@@ -118,7 +118,6 @@
                     startDay = new Date(calendar.sYear, calendar.sMth, 1).getDay(),
                     endDay = new Date(calendar.sYear, calendar.sMth, daysInMth).getDay();
 
-                // INIT & LOAD DATA FROM LOCALSTORAGE
                 calendar.data = localStorage.getItem("calendar-" + calendar.sMth + "-" + calendar.sYear);
                 if (calendar.data == null) {
                     localStorage.setItem("calendar-" + calendar.sMth + "-" + calendar.sYear, "{}");
@@ -156,7 +155,6 @@
                 for (var d of days) {
                     cCell = document.createElement("td");
                     cCell.innerHTML = d;
-                    // cCell.setAttribute("class","order-day-"+ current_day);
                     cRow.appendChild(cCell);
                 }
                 cRow.classList.add("calendar-header");
@@ -188,18 +186,14 @@
                 ];
                 for (var i = 0; i < total; i++) {
                     cCell = document.createElement("td");
-
-
                     var dates = new Date();
                     var getCurrentMonth = dates.getMonth().toString();
-                    if (valMonth === getCurrentMonth){
+                    if (valMonth === getCurrentMonth) {
                         var current_day = dates.getDay();
                         var cells = document.getElementById('calendar').getElementsByTagName('td');
                         cells[current_day].style.backgroundColor = '#222222';
                         cells[current_day].style.color = '#f4f4f4';
                     }
-
-
 
                     if (squares[i] == "last") {
                         cCell.classList.add("blank");
@@ -261,9 +255,5 @@
             }
             calendar.list();
         });
-
-        window.onload = function () {
-
-        }
     </script>
 @endsection

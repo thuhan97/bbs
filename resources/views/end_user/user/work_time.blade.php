@@ -177,15 +177,18 @@
                         @foreach($calendarData as $data)
                     [
                         "{{ $data['work_day'] }}",
-                        "{{ $data['start_at'] }}",
+                        "{{  $data['start_at'] }}",
+                        {{--"{{  $data['start_at'] }}",--}}
                         "{{ $data['end_at'] }}",
                         "{{ $data['type'] }}",
                         "{{ $data['note'] }}",
+                        "{{ $data['attendance-time'] }}",
                     ],
                     @endforeach
                 ];
                 for (var i = 0; i < total; i++) {
                     cCell = document.createElement("td");
+                    cCell.classList.add("calendar-td-body");
                     var dates = new Date();
                     var getCurrentMonth = dates.getMonth().toString();
                     if (valMonth === getCurrentMonth) {
@@ -197,10 +200,10 @@
 
                     if (squares[i] == "last") {
                         cCell.classList.add("blank");
-                        cCell.innerHTML += "<div class='dayNumber'>" + dayOfLastMonth++ + "</div>";
+                        cCell.innerHTML += "<div class='dayNumber calendar-td-body'>" + dayOfLastMonth++ + "</div>";
                     } else if (squares[i] == "next") {
                         cCell.classList.add("blank");
-                        cCell.innerHTML = "<div class='dayNumber'>" + daysOfNextMonth++ + "</div>";
+                        cCell.innerHTML = "<div class='dayNumber calendar-td-body'>" + daysOfNextMonth++ + "</div>";
                     } else {
                         var n = squares[i].toString().length;
                         if (n < 2) {
@@ -212,8 +215,8 @@
                         cCell.innerHTML = "<div class='dayNumber'>" + squares[i] + "</div>";
                         dataCalendar.forEach(function (element) {
                             if (element[0] === dataDate) {
-                                cCell.setAttribute("class", "data-type-" + element[3]);
-                                cCell.innerHTML += "<div class='evt'>" + element[1] + element[2] + "</div>";
+                                cCell.setAttribute("class", "calendar-td-body data-type-" + element[3]);
+                                cCell.innerHTML += "<div class='attendance-time'>" + element[1] + element[5] + element[2] + "</div>";
                             }
                         });
                     }

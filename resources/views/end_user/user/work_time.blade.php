@@ -191,7 +191,10 @@
                     cCell.classList.add("calendar-td-body");
                     var dates = new Date();
                     var getCurrentMonth = dates.getMonth().toString();
-                    if (valMonth === getCurrentMonth) {
+                    var getCurrentYear = dates.getFullYear().toString();
+                    var selectMonthYear =valYear  + "-" + valMonth;
+                    var currentMonthYear =getCurrentYear + "-" + getCurrentMonth;
+                    if (selectMonthYear === currentMonthYear) {
                         var current_day = dates.getDay();
                         var cells = document.getElementById('calendar').getElementsByTagName('td');
                         cells[current_day].style.backgroundColor = '#222222';

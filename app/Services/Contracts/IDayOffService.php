@@ -69,4 +69,8 @@ interface IDayOffService extends IBaseService
      * @return mixed Collection contain all the approval
      */
     public function listApprovals($minJobTitle = 1);
+    /**
+     * @return mixed Collection
+     */
+    public function showList();
 }

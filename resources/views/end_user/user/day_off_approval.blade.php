@@ -1,6 +1,5 @@
 @extends('layouts.end_user')
 @section('breadcrumbs')
-    {!! Breadcrumbs::render('day_off_approval') !!}
 @endsection
 @section('content')
     @if(!$isApproval)
@@ -31,76 +30,146 @@
             }
 
         @endphp
-
-        <div class="container-fluid col-12 row" style="position: relative;">
-            <div class="col-sm-3 col-xs-6 position-relative">
+        <div class="row mb-5 ml-3">
+            <div class="col-3 position-relative">
+                <div class="row" id="option-calendar">
+                    <div class="col-sm-3 p-0 ">
+                        <button class="text-center w-100 calendar-year">sdsdf</button>
+                    </div>
+                    <div class="col-sm-9 p-0 m-auto">
+                        <select class="browser-default custom-select w-100 " id="select-month">
+                            <option selected>Open this select menu</option>
+                            <option value="1">One</option>
+                            <option value="2">Two</option>
+                            <option value="3">Three</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="container-fluid col-12 row border-bottom-2 mb-2" style="position: relative;">
+            <div class="col-sm-3 col-md-6 col-lg-3 position-relative">
                 <a href="{{$defaultURL . $atPageString . $perPageString}}" class="card bg-primary">
-                    <div class="card-body">
-                        <h1 class="white-text font-weight-light">{{$totalRequest['total']}}</h1>
-                        <p class="card-subtitle text-white-50">Đơn xin nghỉ</p>
-                        <p class="card-title text-uppercase font-weight-bold card-text white-text">Trong
-                            năm {{date('Y')}}</p>
+                    <div class="card-body row d-flex justify-content-center">
+                        <div class="media d-block d-md-flex">
+                            <span class="d-flex rounded-circle avatar z-depth-1-half mb-3 mx-auto"
+                                  style="width: 80px;height: 80px;background: red"></span>
+                            <div class="media-body text-center text-md-left ml-md-3 ml-0">
+                                <h1 class="white-text font-weight-light">{{$totalRequest['total']}}</h1>
+                                <p class="card-subtitle text-white-50">Đơn xin nghỉ</p>
+                                <p class="card-title text-uppercase font-weight-bold card-text white-text">Trong
+                                    năm {{date('Y')}}</p>
+
+                            </div>
+                        </div>
+
                     </div>
                 </a>
             </div>
-            <div class="col-sm-3 col-xs-6  position-relative">
+            <div class="col-sm-3 col-md-6 col-lg-3 position-relative">
                 <a href="{{$defaultURL . $atPageString . $perPageString .'&approve=0'}}" class="card bg-danger">
-                    <div class="card-body">
-                        <h1 class="white-text font-weight-light">{{$totalRequest['total'] - $approvedRequest['total']}}</h1>
-                        <p class="card-subtitle text-white-50">Đơn xin nghỉ</p>
-                        <p class="card-title text-uppercase font-weight-bold card-text white-text">Chờ duyệt</p>
+                    <div class="card-body row d-flex justify-content-center">
+                        <div class="media d-block d-md-flex">
+                            <span class="d-flex rounded-circle avatar z-depth-1-half mb-3 mx-auto"
+                                  style="width: 80px;height: 80px;background: red"></span>
+                            <div class="media-body text-center text-md-left ml-md-3 ml-0">
+                                <h1 class="white-text font-weight-light">{{$totalRequest['total']}}</h1>
+                                <p class="card-subtitle text-white-50">Đơn xin nghỉ</p>
+                                <p class="card-title text-uppercase font-weight-bold card-text white-text">Trong
+                                    năm {{date('Y')}}</p>
+
+                            </div>
+                        </div>
+
                     </div>
                 </a>
             </div>
-            <div class="col-sm-3 col-xs-6 position-relative">
-                <a href="{{$defaultURL . $atPageString . $perPageString .'&approve=1'}}" class="card bg-success">
-                    <div class="card-body">
-                        <h1 class="white-text font-weight-light">{{$approvedRequest['total']}}</h1>
-                        <p class="card-subtitle text-white-50">Đơn xin nghỉ</p>
-                        <p class="card-title text-uppercase font-weight-bold card-text white-text">
-                            Đã giải quyết
-                        </p>
+            <div class="col-sm-3 col-md-6 col-lg-3 position-relative">
+                <a href="{{$defaultURL . $atPageString . $perPageString .'&approve=1'}}" class="card " id="bg-yellow">
+                    <div class="card-body row d-flex justify-content-center">
+                        <div class="media d-block d-md-flex">
+                            <span id="dayoff-option-header-3" class="d-flex rounded-circle avatar z-depth-1-half mb-3 mx-auto dayoff-header">
+                               <i class="fas fa-clipboard dayoff-icoin text-warning" id="dayoff-cioin-3"></i>
+                            </span>
+                            <div class="media-body text-center text-md-left ml-md-3 ml-0">
+                                <h1 class="white-text font-weight-light">{{$totalRequest['total']}}</h1>
+                                <p class="card-subtitle text-white-50">Đơn xin nghỉ</p>
+                                <p class="card-title text-uppercase font-weight-bold card-text white-text">Trong
+                                    năm {{date('Y')}}</p>
+
+                            </div>
+                        </div>
+
+                    </div>
+                </a>
+            </div>
+            <div class="col-sm-3 col-md-6 col-lg-3 position-relative">
+                <a href="{{$defaultURL . $atPageString . $perPageString .'&approve=1'}}" class="card bg-danger">
+                    <div class="card-body row d-flex justify-content-center">
+                        <div class="media d-block d-md-flex">
+                            <span id="dayoff-option-header-4" class="d-flex rounded-circle avatar z-depth-1-half mb-3 mx-auto dayoff-header"
+                               >
+<i class="fas fa-times-circle dayoff-icoin text-danger"></i>
+                            </span>
+                            <div class="media-body text-center text-md-left ml-md-3 ml-0">
+                                <h1 class="white-text font-weight-light">{{$totalRequest['total']}}</h1>
+                                <p class="card-subtitle text-white-50">Đơn xin nghỉ</p>
+                                <p class="card-title text-uppercase font-weight-bold card-text white-text">Trong
+                                    năm {{date('Y')}}</p>
+
+                            </div>
+                        </div>
+
                     </div>
                 </a>
             </div>
         </div>
-        <hr>
         <br>
         <div class="container-fluid row">
             <div class="col-sm-6 col-xs-12 row">
-                <h3 class="align-self-center mb-0">
-                    @if($approval_view != 1 && $approval_view != 0)
-                        Tất cả các đơn
-                    @elseif($approval_view == 1)
-                        Các đơn đã giải quyết
-                    @elseif($approval_view == 0)
-                        Các đơn chờ giải quyết
-                    @endif
-                </h3>
-                <small class="ml-4 align-self-center text-muted">Nhấn ô bên trên để lọc</small>
-            </div>
-            <form class="col-sm-6 col-xs-6" method="get"
-                  action="{{$defaultURL . $atPageString . $perPageString . $approvalString}}">
-                <div class="input-group col-12">
-                    <input type="text" class="form-control" placeholder="Tìm tên nhân viên"
-                           value="{{!!$searchView ? $searchView : ''}}"
-                           name="search"
-                           aria-label="Tìm kiếm nhân viên"
-                           aria-describedby="btnSearch">
-                    <div class="input-group-append">
-                        <button class="btn btn-md btn-default m-0 py-2 z-depth-0 waves-effect" type="submit"
-                                id="btnSearch">
-                            Tìm
-                        </button>
-                    </div>
+                <div class="col-4">
+                    <select class="browser-default custom-select w-100">
+                        <option selected>Open this select menu</option>
+                        <option value="1">One</option>
+                        <option value="2">Two</option>
+                        <option value="3">Three</option>
+                    </select>
+                    {{-- <h6 class=" mb-0">
+                         @if($approval_view != 1 && $approval_view != 0)
+                             Tất cả các đơn
+                         @elseif($approval_view == 1)
+                             Các đơn đã giải quyết
+                         @elseif($approval_view == 0)
+                             Các đơn chờ giải quyết
+                         @endif
+                     </h6>--}}
                 </div>
-                <input type="hidden" name="per_page" value="{{$perPage_view}}">
-                <input type="hidden" name="page" value="{{$atPage_view}}">
-                @if($approvalString !== '')
-                    <input type="hidden" name="approve" value="{{$approval_view}}">
-                @endif
-                @csrf
-            </form>
+                <div class="col-8 pl-0">
+                    <form method="get"
+                          action="{{$defaultURL . $atPageString . $perPageString . $approvalString}}">
+                        <div class="input-group col-12">
+                            <input type="text" class="form-control" placeholder="Tìm tên nhân viên"
+                                   value="{{!!$searchView ? $searchView : ''}}"
+                                   name="search"
+                                   aria-label="Tìm kiếm nhân viên"
+                                   aria-describedby="btnSearch">
+                            <div class="input-group-append">
+                                <button class="btn btn-md btn-default m-0 py-2 z-depth-0 waves-effect" type="submit"
+                                        id="btnSearch">
+                                    Tìm
+                                </button>
+                            </div>
+                        </div>
+                        <input type="hidden" name="per_page" value="{{$perPage_view}}">
+                        <input type="hidden" name="page" value="{{$atPage_view}}">
+                        @if($approvalString !== '')
+                            <input type="hidden" name="approve" value="{{$approval_view}}">
+                        @endif
+                        @csrf
+                    </form>
+                </div>
+
+            </div>
         </div>
         <br>
         <div class="container-fluid d-flex flex-column">
@@ -122,7 +191,7 @@
                 <!--Table head-->
                 <!--Table body-->
                 <tbody>
-                @foreach($request_view as $record)
+                @foreach($dataDayOff as $record)
                     <tr id="rowApprove{{$loop->index+1}}">
                         <th scope="row" class="text-center">
                             {{$loop->index + 1}}
@@ -149,7 +218,11 @@
                         </td>
                         <td class="text-center"
                             style="width: 200px; white-space: nowrap; overflow: hidden;-ms-text-overflow: ellipsis;text-overflow: ellipsis;">
-                            {{$record->title}}
+                            @foreach(VACATION as $key => $value)
+                                @if($key == $record->title)
+                                    {{ $value }}
+                                @endif
+                            @endforeach
                         </td>
                         <td class="text-center p-0">
                             <button class="btn btn-blue-grey btn-sm"

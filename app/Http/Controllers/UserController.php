@@ -200,7 +200,7 @@ class UserController extends Controller
 
         $request_view = $this->userDayOff->findList($request, ['approver_id' => Auth::id()], ['*'], $searchView, $perPage);
         $request_view_array = $request_view->toArray();
-
+        $dataDayOff=$this->userDayOff->showList();
         $request->merge(['year' => date('Y')]);
         $request->merge(['approve' => null]);
         $request->merge(['search' => '']);
@@ -213,7 +213,7 @@ class UserController extends Controller
 
         return view('end_user.user.day_off_approval', compact(
             'isApproval', 'totalRequest', 'approvedRequest', 'approval_view', 'atPage_view', 'perPage_view',
-            'request_view', 'request_view_array', 'searchView'
+            'request_view', 'request_view_array', 'searchView','dataDayOff'
         ));
     }
 

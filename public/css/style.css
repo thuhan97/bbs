@@ -450,32 +450,75 @@
 .joinEvent {
     justify-content: center !important;
 }
+
 /*Nguyễn Thanh Tùng*/
-.btn-close-icon{
-    display: block ;
+.btn-close-icon {
+    display: block;
     background: #DDDDDD;
     border-radius: 30px;
     width: 26px;
     height: 27px;
 }
-.text-w-400{
+
+.text-w-400 {
     font-weight: 400;
 }
-.select-item{
+
+.select-item {
     opacity: 0.7;
 }
-#bg-img{
+
+#bg-img {
     background-size: cover;
     background-position: center;
 }
-.modal-center{
+
+.modal-center {
     display: flex;
     flex-direction: column;
     justify-content: center;
     overflow-y: auto;
     min-height: calc(100vh - 60px);
 }
+
 .text-black {
     color: black;
 }
 
+.calendar-year {
+    height: 50px;
+    background: #f4f4f4;
+    border: none;
+}
+
+#option-calendar {
+    background: #f4f4f4;
+}
+
+#select-month {
+    height: 48px !important;
+    border: 2px solid #f4f4f4;
+}
+
+.dayoff-header {
+    width: 80px;
+    height: 80px;
+    position: relative;
+}
+.dayoff-icoin{
+    font-size: 33px;
+    position: absolute;
+    left: 24px;
+    top: 23px;
+    margin: 0 auto;
+}
+#dayoff-option-header-4{
+    background: #ff848f;
+}
+#dayoff-option-header-3{
+    background: #ffda91;
+}
+#bg-yellow{
+    background: #ffbb33;
+}
+#dayoff-cioin-3

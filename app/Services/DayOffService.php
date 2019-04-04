@@ -14,6 +14,7 @@ use App\Repositories\Contracts\IDayOffRepository;
 use App\Services\Contracts\IDayOffService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class DayOffService extends AbstractService implements IDayOffService
 {
@@ -157,5 +158,9 @@ class DayOffService extends AbstractService implements IDayOffService
             "record" => $result ? $rec : null,
             "message" => "Tạo đơn thất bại"
         ];
+    }
+    public function showList(){
+        return $this->model->where('approver_id',Auth::id())->orderBy('status',ASC )->get();
+
     }
 }

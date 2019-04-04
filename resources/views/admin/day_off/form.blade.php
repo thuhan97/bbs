@@ -4,7 +4,7 @@
         <div class="col-md-12">
             <div class="form-group margin-b-5 margin-t-5{{ $errors->has('user_id') ? ' has-error' : '' }}">
                 <label for="user_id">Chọn nhân viên *</label>
-                {{ Form::select('user_id', ['' => 'Chọn nhân viên'] +  $request_users, $record->user_id ?? $user_id, ['class'=>'select2 form-control']) }}
+                {{ Form::select('user_id', ['' => 'Chọn nhân viên'] +  $request_users, $record->user_id ?? $user_id, $record->user_id ? ['disabled' => 'disabled','class'=>'select2 form-control'] : ['class'=>'select2 form-control']) }}
                 @if ($errors->has('user_id'))
                     <span class="help-block">
                     <strong>{{ $errors->first('user_id') }}</strong>

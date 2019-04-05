@@ -151,12 +151,12 @@ define('TYPES_DEVICE', [
     5 => 'Máy tính bảng',
     6 => 'Khác'
 ]);
+
 define('VACATION', [
     1 => 'Lý do cá nhân',
     2 => 'Nghỉ đám cưới',
     3 => 'Nghỉ đám hiếu',
 ]);
-
 
 define('DAILY_REPORT', 0);
 define('WEEKLY_REPORT', 1);
@@ -174,25 +174,22 @@ define('MONTH', [
     '10' => 'Tháng 10',
     '11' => 'Tháng 11',
     '12' => 'Tháng 12',
-
-
 ]);
 define('SHOW_DAY_OFFF', [
     '3'=>'Tất cả đơn',
     0 => 'Chờ Duyệt',
     1=> 'Đã duyệt',
     2=> 'Không duyệt',
-
 ]);
+
 define('STATUS_DAY_OFF', [
     'abide' => 0,
     'active'=> 1,
     'noActive'=>2
-
 ]);
+
 define('ALL_DAY_OFF',3);
 define('PAGINATE_DAY_OFF',20);
 
-
-
+define('XLS_TYPE', '.xls');
 

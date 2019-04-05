@@ -1,9 +1,6 @@
 <div class="col-md-7">
     <h3>Dành cho nhân viên xin nghỉ phép</h3>
     <div class="row">
-        @if($record == null)
-            @dd('dffdf')
-            @endif
         <div class="col-md-12">
             <div class="form-group margin-b-5 margin-t-5{{ $errors->has('user_id') ? ' has-error' : '' }}">
                 <label for="user_id">Chọn nhân viên *</label>

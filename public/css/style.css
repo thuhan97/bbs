@@ -11,6 +11,10 @@
     width: 45%;
 }
 
+.w-74 {
+    width: 74%;
+}
+
 .no-border {
     border: none;
 }
@@ -484,7 +488,6 @@
 .text-black {
     color: black;
 }
-
 .calendar-year {
     height: 50px;
     background: #f4f4f4;
@@ -616,3 +619,105 @@
         margin-left: -74px;
     }
 }
+/*
+        Style work time calendar
+ */
+.table-work-time {
+    display: flex;
+}
+
+.tr-work-time {
+    justify-content: center;
+}
+
+.select-month-calendar {
+    padding-top: 7px;
+}
+
+.chooseMonth, .chooseYear {
+    height: 45px;
+}
+
+table.calendarTable thead th {
+    width: 13%;
+}
+
+#calendar tr td:first-child,
+#calendar tr td:last-child {
+    background: #eeeeee;
+    color: #ff3549;
+}
+
+table.calendarTable td {
+    padding: 35px 0 35px 0;
+    text-align: center;
+    font-size: 1.5em;
+    font-weight: bold;
+}
+
+.time-work {
+    font-size: 12px;
+}
+
+#calendar {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+#calendar tr td {
+    border: 0.5em solid #fff;
+    background-color: #eeeeee;
+    /*padding: 20px 5px;*/
+    width: 14.28%;
+    vertical-align: top;
+    text-align: center;
+
+}
+
+.dayNumber {
+    font-size: 1.4em;
+    font-weight: bold;
+}
+
+td.blank {
+    opacity: 0.4;
+}
+
+tr.calendar-header td {
+    background: #eeeeee;
+    color: #000000;
+    text-align: center;
+    padding: 20px 5px;
+}
+tr.calendar-body td {
+    width: 162px;
+    height: 109px;
+    padding-top: 30px;
+    cursor: pointer;
+
+}
+
+.attendance-time {
+    margin-top: 5px;
+    padding: 5px;
+    font-size: 0.8em;
+    max-height: 5em;
+    overflow: hidden;
+}
+
+.data-type-3 {
+    background-color: #ff3548 !important;
+    color: #ffffff !important;
+}
+.data-type-4 {
+    background-color: #4385f5 !important;
+    color: #ffffff !important;
+}
+.data-type-5 {
+    background-color: #01c851 !important;
+    color: #ffffff !important;
+}
+/*
+            End work time calendar
+ */
+

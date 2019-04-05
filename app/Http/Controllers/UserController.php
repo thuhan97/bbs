@@ -10,6 +10,8 @@ use App\Models\WorkTime;
 use App\Services\Contracts\IDayOffService;
 use App\Services\Contracts\IUserService;
 use App\Transformers\DayOffTransformer;
+use Carbon\Carbon;
+use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -117,8 +119,24 @@ class UserController extends Controller
             $early = $list_work_times->whereIn('type', $type_early)->count();
             $ot = $list_work_times->whereIn('type', $type_ot)->count();
         }
-
-        return view('end_user.user.work_time', compact('list_work_times', 'late', 'early', 'ot'));
+        $calendarData = [];
+        $list_work_times_calendar = WorkTime::where('user_id', Auth::user()->id)->get();
+        foreach ($list_work_times_calendar->toArray() as $item) {
+            $startDay = $item['start_at'] ? new DateTime($item['start_at']) : '';
+            $dataStartDay = $startDay ? $startDay->format('H:i') : '';
+            $endDay = $item['end_at'] ? new DateTime($item['end_at']) : '';
+            $dataEndDay = $endDay ? $endDay->format('H:i') : '';
+            $calendarData[] = [
+                'work_day' => $item['work_day'],
+//                'start_at' => $item['start_at'] ? $item['start_at']." - " : '',
+                'start_at' => $dataStartDay,
+                'end_at' => $dataEndDay,
+                'type' => $item['type'],
+                'note' => $item['note'],
+                'attendance-time'=> $dataStartDay && $dataEndDay ?  " - "  : '' ,
+            ];
+        }
+        return view('end_user.user.work_time', compact('list_work_times', 'late', 'early', 'ot','list_work_times_calendar','calendarData'));
     }
 
     //

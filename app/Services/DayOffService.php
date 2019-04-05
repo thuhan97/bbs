@@ -179,9 +179,9 @@ class DayOffService extends AbstractService implements IDayOffService
             'dateDate'=>$dataDate,
             'data'=>$data,
             'total'=>$data->count(),
-            'totalActive'=>$data->where('status',STATUS_DAYOFFF['active'])->count(),
-            'totalAbide'=>$data->where('status',STATUS_DAYOFFF['abide'])->count(),
-            'totalnoActive'=>$data->where('status',STATUS_DAYOFFF['noActive'])->count(),
+            'totalActive'=>$data->where('status',STATUS_DAY_OFF['active'])->count(),
+            'totalAbide'=>$data->where('status',STATUS_DAY_OFF['abide'])->count(),
+            'totalnoActive'=>$data->where('status',STATUS_DAY_OFF['noActive'])->count(),
 
         ];
     }

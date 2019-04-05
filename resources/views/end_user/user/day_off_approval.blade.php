@@ -38,7 +38,7 @@
             </a>
         </div>
         <div class="col-sm-3 col-md-6 col-lg-3 position-relative ">
-            <a href="{{ route('day_off_show',['status'=>STATUS_DAYOFFF['active']]) }}"
+            <a href="{{ route('day_off_show',['status'=>STATUS_DAY_OFF['active']]) }}"
                class="card bg-success border-radius-2">
                 <div class="card-body mr-lg-2 row d-flex justify-content-center px-0 ml-xxl-2">
                     <div class="media mr-lg-5 d-md-flex">
@@ -60,7 +60,7 @@
             </a>
         </div>
         <div class="col-sm-3 col-md-6 col-lg-3 position-relative">
-            <a href="{{ route('day_off_show',['status'=>STATUS_DAYOFFF['abide']]) }}" class="card border-radius-2"
+            <a href="{{ route('day_off_show',['status'=>STATUS_DAY_OFF['abide']]) }}" class="card border-radius-2"
                id="bg-yellow">
                 <div class="card-body mr-lg-2 row d-flex justify-content-center px-0 ml-xxl-2">
                     <div class="media mr-lg-5  d-md-flex">
@@ -80,7 +80,7 @@
             </a>
         </div>
         <div class="col-sm-3 col-md-6 col-lg-3 position-relative pr-0">
-            <a href="{{ route('day_off_show',['status'=>STATUS_DAYOFFF['noActive']]) }}"
+            <a href="{{ route('day_off_show',['status'=>STATUS_DAY_OFF['noActive']]) }}"
                class="card bg-danger border-radius-2">
                 <div class="card-body mr-lg-3 row d-flex justify-content-center px-0 ml-xxl-1">
                     <div class="media mr-lg-3 d-md-flex">
@@ -104,7 +104,7 @@
     <div class="container-fluid row">
         <div class="col-sm-7 col-xs-12 row">
             <div class="col-5">
-                {{ Form::select('search-day-off', SHOW_DAYOFFF, null, ['class' => 'browser-default custom-select w-100 search-day-off border-radius-1']) }}
+                {{ Form::select('search-day-off', SHOW_DAY_OFFF, null, ['class' => 'browser-default custom-select w-100 search-day-off border-radius-1']) }}
             </div>
             <div class="col-7 pl-0">
                 <div class="input-group col-12">
@@ -172,9 +172,9 @@
                     </td>
 
                     <td class="text-center p-0" style="vertical-align: middle;">
-                        @if($record->status == STATUS_DAYOFFF['abide'])
+                        @if($record->status == STATUS_DAY_OFF['abide'])
                             <i class="fas fa-meh-blank fa-2x text-warning text-center"></i>
-                        @elseif($record->status == STATUS_DAYOFFF['active'])
+                        @elseif($record->status == STATUS_DAY_OFF['active'])
                             <i class="fas fa-grin-stars fa-2x text-success"></i>
                         @else
                             <i class="fas fa-frown fa-2x text-danger"></i>

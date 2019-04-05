@@ -8,21 +8,23 @@
 namespace App\Exports;
 
 use App\Services\Contracts\IEventAttendanceService;
+use Illuminate\Support\Collection;
+use Maatwebsite\Excel\Concerns\FromCollection;
+use Maatwebsite\Excel\Concerns\WithHeadings;
 
-class DowloadExcelEventExport
+
+class DowloadExcelEventExport implements FromCollection, WithHeadings
 {
     public $eventId;
-    public $filename;
 
     /**
      * DiaryListExport constructor.
      *
      * @param string $filename
      */
-    public function __construct($eventId, $filename)
+    public function __construct($eventId)
     {
         $this->eventId = $eventId;
-        $this->filename = $filename;
         $this->eventAttendanceService = app()->make(IEventAttendanceService::class);
     }
 
@@ -33,51 +35,55 @@ class DowloadExcelEventExport
      * @author HungLT
      * @return array
      */
-    public function collection()
+    public function Collection()
     {
         $listUserJoinEvent = $this->eventAttendanceService->getListUserJoinEvent($this->eventId);
-        return $listUserJoinEvent;
+        $results = [];
+        $i = 1;
+        foreach ($listUserJoinEvent as $listUserJoinEventValue) {
+            $item = $this->makeRow($listUserJoinEventValue, $i++);
+            $results[] = $item;
+        }
+        return collect($results);
     }
 
     /**
+     * Function Heading
      *
+     * @create_date: 2018/08/27
+     * @author     : Tiennm
+     * @return array
      */
-    public function exportData()
+    public function headings(): array
     {
-        $listUserJoinEvent = $this->collection();
-        $heighListUserJoinEvent = count($listUserJoinEvent);
-        if ($heighListUserJoinEvent > 0) {
-            $output = '<table class="table" border="1">
-                        <tr>
-                            <th>STT</th> 
-                            <th>Tên thành viên</th>
-                            <th>Mã thành viên</th>
-                            <th>Trạng thái</th>
-                            <th>Ý kiến cá nhân</th>
-                            <th>Ngày đăng kí</th>
-                        </tr>
-            ';
-            $i = 0;
-            foreach ($listUserJoinEvent as $listUserJoinEventValue) {
-                $status = $listUserJoinEventValue->status == 1 ? STATUS_JOIN_EVENT[1] : STATUS_JOIN_EVENT[0];
-                $output .= '
-                     <tr>
-                        <td>' . $i++ . '</td>
-                        <td>' . $listUserJoinEventValue->name . '</td>
-                        <td>' . $listUserJoinEventValue->staff_code . '</td>
-                        <td>' . $status . '</td>
-                        <td>' . $listUserJoinEventValue->content . '</td>
-                        <td>' . $listUserJoinEventValue->created_at . '</td>
-                     </tr>
-                ';
-            }
-            $output .= '</table>';
-            header("Content-type: application/vnd.ms-excel");
-            header("Content-Disposition: attachment; filename=" . $this->filename . ".xls");
-            header("Pragma: no-cache");
-            header("Expires: 0");
-            echo "\xEF\xBB\xBF";
-            echo $output;
-        }
+        return [
+            'STT',
+            'Tên thành viên ',
+            'Mã thành viên ',
+            'Trạng thái',
+            'Ý kiến cá nhân',
+            'Ngày đăng kí'
+        ];
     }
+
+    /**
+     * Function Make Row data
+     *
+     * @create_date: 2018/08/27
+     * @author     : Tiennm
+     * @return array
+     */
+    public function makeRow($listUserJoinEventValue, $i)
+    {
+        $status = $listUserJoinEventValue->status == 1 ? STATUS_JOIN_EVENT[1] : STATUS_JOIN_EVENT[0];
+        return [
+            'stt' => $i++,
+            'name' => $listUserJoinEventValue->name,
+            'staff_code' => $listUserJoinEventValue->staff_code,
+            'status' => $status,
+            'content' => $listUserJoinEventValue->content,
+            'created_at' => $listUserJoinEventValue->created_at,
+        ];
+    }
+
 }

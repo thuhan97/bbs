@@ -9,6 +9,7 @@ use App\Repositories\Contracts\IEventAttendanceRepository;
 use App\Services\Contracts\IEventAttendanceService;
 use Illuminate\Support\Facades\Auth;
 use App\Exports\DowloadExcelEventExport;
+use Maatwebsite\Excel\Facades\Excel;
 
 /**
  * EventController
@@ -116,9 +117,9 @@ class EventController extends AdminBaseController
         $event = $this->repository->findOne($id);
         if (isset($event)) {
             $filename = $event->slug_name . XLS_TYPE;
-            $eventExport = new DowloadExcelEventExport($id, $filename);
-            $eventExport->exportData();
+            return Excel::download(new DowloadExcelEventExport($id), $filename);
         }
+        abort(404);
     }
 
 }

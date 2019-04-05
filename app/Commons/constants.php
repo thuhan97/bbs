@@ -160,4 +160,4 @@ define('VACATION', [
 
 define('DAILY_REPORT', 0);
 define('WEEKLY_REPORT', 1);
-
+define('XLS_TYPE', '.xls');

@@ -32,21 +32,14 @@
         @endphp
         <div class="row mb-5 ml-3">
             <div class="col-3 position-relative">
-                <div class="row" id="option-calendar">
-                    <div class="col-sm-3 p-0 ">
-                        <button class="text-center w-100 calendar-year">{{ date('Y') }}</button>
+                <div class="row" id="option-calendar" style="height: 50px">
+                    <div class="col-3 p-0 m-auto">
+                        <select name="select_year"
+                                class="yearselect browser-default custom-select w-100 border-0 select_year"
+                                style="text-align-last:center;background: #f4f4f4"></select>
                     </div>
-                    MONTH
-                    <div class="col-sm-9 p-0 m-auto">
-                        {{ Form::select('title', VACATION, null, ['class' => 'form-control my-1 mr-1 browser-default custom-select md-form select-item']) }}
-
-                        <select class="browser-default custom-select w-100 " id="select-month">
-                            <option selected>Open this select menu</option>
-                            @for
-                            <option value="1">Thang1</option>
-                            <option value="2">Two</option>
-                            <option value="3">Three</option>
-                        </select>
+                    <div class="col-9 p-0 m-auto pr-2">
+                        {{ Form::select('month', MONTH, date('m'), ['class' => 'browser-default custom-select w-100 month']) }}
                     </div>
                 </div>
             </div>
@@ -61,8 +54,8 @@
                                 <i class="fas fa-clipboard-list dayoff-icoin text-primary dayoff-cioin-1-2-3"></i>
                             </span>
                             <div class="media-body text-center text-md-left ml-md-3 ml-0">
-                                <h1 class="white-text font-weight-bold">{{$totalRequest['total']}}</h1>
-                                <p class="card-subtitle text-white-50">Tổng đơn xin nghỉ</p>
+                                <h1 class="white-text font-weight-bold">{{ $dataDayOff['total'] < 10 ? "0".$dataDayOff['total'] : $dataDayOff['total'] }}</h1>
+                                <p class="card-subtitle text-white-50 text-size-table">Tổng đơn xin nghỉ</p>
                                 <p class="card-title text-uppercase font-weight-bold card-text white-text text-size-header">
                                     TRONG NĂM {{date('Y')}}</p>
 
@@ -82,8 +75,8 @@
 
                             </span>
                             <div class="media-body text-center text-md-left ml-md-3 ml-0">
-                                <h1 class="white-text font-weight-bold">{{$totalRequest['total']}}</h1>
-                                <p class="card-subtitle text-white-50">Đơn xin nghỉ</p>
+                                <h1 class="white-text font-weight-bold">{{ $dataDayOff['totalActive'] < 10 ? "0".$dataDayOff['totalActive'] : $dataDayOff['totalActive'] }}</h1>
+                                <p class="card-subtitle text-white-50 text-size-table">Đơn xin nghỉ</p>
                                 <p class="card-title text-uppercase font-weight-bold card-text white-text text-size-header">
                                     ĐÃ DUYỆT</p>
 
@@ -102,8 +95,8 @@
                                <i class="fas fa-clipboard dayoff-icoin text-warning dayoff-cioin-1-2-3"></i>
                             </span>
                             <div class="media-body text-center text-md-left ml-md-3 ml-0">
-                                <h1 class="white-text font-weight-bold">{{$totalRequest['total']}}</h1>
-                                <p class="card-subtitle text-white-50">Đơn xin nghỉ</p>
+                                <h1 class="white-text font-weight-bold ">{{ $dataDayOff['totalAbide'] < 10 ? "0".$dataDayOff['totalAbide'] : $dataDayOff['totalAbide'] }}</h1>
+                                <p class="card-subtitle text-white-50 text-size-table">Đơn xin nghỉ</p>
                                 <p class="card-title text-uppercase font-weight-bold card-text white-text text-size-header">
                                     CHỜ DUYỆT</p>
                             </div>
@@ -118,11 +111,11 @@
                         <div class="media d-block d-md-flex">
                             <span id="dayoff-option-header-4"
                                   class="d-flex rounded-circle avatar z-depth-1-half mb-3 mx-auto dayoff-header">
-                                <i class="fas fa-times-circle dayoff-icoin text-danger"></i>
+                                <i class="fas fa-times-circle dayoff-icoin text-danger size-table"></i>
                             </span>
                             <div class="media-body text-center text-md-left ml-md-3 ml-0">
-                                <h1 class="white-text font-weight-bold">{{$totalRequest['total']}}</h1>
-                                <p class="card-subtitle text-white-50">Đơn xin nghỉ</p>
+                                <h1 class="white-text font-weight-bold">{{ $dataDayOff['totalnoActive'] < 10 ? "0".$dataDayOff['totalnoActive'] : $dataDayOff['totalnoActive'] }}</h1>
+                                <p class="card-subtitle text-white-50 text-size-table">Đơn xin nghỉ</p>
                                 <p class="card-title text-uppercase font-weight-bold card-text white-text text-size-header">
                                     KHÔNG DUYỆT</p>
                             </div>
@@ -133,15 +126,12 @@
             </div>
         </div>
         <br>
+
         <div class="container-fluid row">
             <div class="col-sm-7 col-xs-12 row">
                 <div class="col-5">
-                    <select class="browser-default custom-select w-100 search-day-off">
-                        <option>Tất cả đơn</option>
-                        <option value="1">Đã duyệt</option>
-                        <option value="2">Chờ duyệt</option>
-                        <option value="3">Không duyệt</option>
-                    </select>
+                    {{ Form::select('search-day-off', SHOW_DAYOFFF, null, ['class' => 'browser-default custom-select w-100 search-day-off']) }}
+
                     {{-- <h6 class=" mb-0">
                          @if($approval_view != 1 && $approval_view != 0)
                              Tất cả các đơn
@@ -162,7 +152,8 @@
                                    aria-label="Tìm kiếm nhân viên"
                                    aria-describedby="btnSearch">
                             <div class="input-group-append">
-                                <button class="btn btn-md btn-default m-0 py-2 z-depth-0 waves-effect form-control" type="submit"
+                                <button class="btn btn-md btn-default m-0 py-2 z-depth-0 waves-effect form-control"
+                                        type="submit"
                                         id="btnSearch">
                                     <i class="fas fa-search color-search"></i>
                                 </button>
@@ -182,68 +173,58 @@
         <br>
         <div class="container-fluid d-flex flex-column">
             <!--Table-->
-            <table id="tablePreview" class="table table-striped table-hover">
+            <table id="tablePreview" class="table ">
                 <!--Table head-->
-                <thead>
+                <thead class="grey lighten-2">
                 <tr>
-                    <th class="text-center">#</th>
+                    <th class="text-center">STT</th>
                     <th class="text-center">Nhân viên</th>
-                    <th class="text-center">Trạng thái</th>
                     <th class="text-center">Từ ngày</th>
                     <th class="text-center">Tới ngày</th>
-                    <th class="text-center">Tính nghỉ</th>
                     <th class="text-center">Tiêu đề</th>
-                    <th class="text-center">Thao tác</th>
+                    <th class="text-center">Ngày nghỉ</th>
+                    <th class="text-center">Phê duyệt</th>
+                    <th class="text-center">Xem thêm</th>
                 </tr>
                 </thead>
                 <!--Table head-->
                 <!--Table body-->
-                <tbody>
-                @foreach($dataDayOff as $record)
+                <tbody id="ajax-show">
+                @foreach($dataDayOff['dateDate'] as $record)
                     <tr id="rowApprove{{$loop->index+1}}">
                         <th scope="row" class="text-center">
                             {{$loop->index + 1}}
                         </th>
-                        <td class="text-center"
-                            style="width: 210px; white-space: nowrap; overflow: hidden;-ms-text-overflow: ellipsis;text-overflow: ellipsis;">
+                        <td class="text-center table-name">
                             {{$record->user->name}}
                         </td>
                         <td class="text-center">
-                            @if ($record->status == 1)
-                                <div class="green-circle m-auto"></div>
-                            @else
-                                <div class="red-circle m-auto"></div>
-                            @endif
+                            {{$record->start_date}}
                         </td>
                         <td class="text-center">
-                            {{$record->start_at}}
+                            {{$record->end_date}}
                         </td>
-                        <td class="text-center">
-                            {{$record->end_at}}
-                        </td>
-                        <td class="text-center">
-                            {{!!!$record->number_off ? 'Chưa rõ' : $record->number_off}} ngày
-                        </td>
-                        <td class="text-center"
-                            style="width: 200px; white-space: nowrap; overflow: hidden;-ms-text-overflow: ellipsis;text-overflow: ellipsis;">
+                        <td class="text-center table-title">
                             @foreach(VACATION as $key => $value)
                                 @if($key == $record->title)
                                     {{ $value }}
                                 @endif
                             @endforeach
                         </td>
-                        <td class="text-center p-0">
-                            <button class="btn btn-blue-grey btn-sm"
-                                    onclick="clickShowDetail('{{route('day_off_approval_one',['id'=>$record->id])}}', 'spinner-section-{{$loop->index+1}}', 'approveBtn{{$loop->index+1}}')">
-                                <i class="fas fa-ellipsis-h"></i>
-                            </button>
-                            <div id="spinner-section-{{$loop->index+1}}"
-                                 style="position: absolute;top: 0; left: 0; width: 100%; height: 100%; z-index: 9999;
-                                 display: none; justify-content: center; align-items: center; background: rgba(0,0,0,0.08);">
-                                <div class="spinner-border text-primary" role="status">
-                                    <span class="sr-only">Loading...</span>
-                                </div>
-                            </div>
+                        <td class="text-center">
+                            {{!!!$record->number_off ? 'Chưa rõ' : $record->number_off}} ngày
+                        </td>
+                        <td class="text-center p-0" style="vertical-align: middle;">
+                            @if($record->status == STATUS_DAYOFFF['abide'])
+                                <i class="fas fa-meh-blank fa-2x text-warning text-center"></i>
+                            @elseif($record->status == STATUS_DAYOFFF['active'])
+                                <i class="fas fa-grin-stars fa-2x text-success"></i>
+                            @else
+                                <i class="fas fa-frown fa-2x text-danger"></i>
+                            @endif
+                        </td>
+                        <td class="text-center">
+                            <a href="">chi tiết>></a>
                         </td>
                     </tr>
                 @endforeach
@@ -419,6 +400,72 @@
                     </nav>
                 </div>
             @endif
+            <script type="text/javascript">
+                $(document).ready(function (e) {
+                    $('.yearselect').yearselect({ order: 'desc'});
+                    $(document).on('change', '.select_year , .month , .search-day-off', function () {
+                        var year=$('.select_year ').val();
+                        var month=$('.month ').val();
+                        var status=$('.search-day-off ').val();
+                        $.ajax
+                        ({
+                            'url': '/phe-duyet-ngay-nghi/search/',
+                            'type': 'get',
+                            'data': {'year': year,'month':month,'status':status},
+                            success: function (data) {
+
+                                var html=teamplate(data);
+                                console.log(html)
+                                $('#ajax-show').html(html);
+                            }
+                        });
+                    })
+
+                });
+
+                function teamplate(data) {
+                    var html = '';
+                    $.each(data.data, function (key, value) {
+                         html +='<tr><th scope="row" class="text-center">';
+                        html +=      key+1;
+                        html +=' </th> <td class="text-center table-name">';
+                        html +=   value['name'];
+                        html +=' </td> <td class="text-center">';
+                        html +=  value['start_date'];
+                        html +='</td> <td class="text-center">';
+                        html +=  value['end_date']
+
+                        html +='</td> <td class="text-center table-title">';
+                        if(value['title'] ==1){
+                            html +='Lý do cá nhân';
+                        }else if(value['title'] ==2){
+                            html +='Nghỉ đám cưới';
+                        }
+                        else{
+                            html +='Nghỉ đám hiếu';
+                        }
+                        html +='</td><td class="text-center">'
+                        if (value['number_off']){
+                            html +=value['number_off']+'ngày';
+                        } else {
+                            html +='chưa rõ';
+                        }
+                        html+='</td> <td class="text-center p-0" style="vertical-align: middle;">';
+                        if(value['status'] ==0){
+                            html +='<i class="fas fa-meh-blank fa-2x text-warning text-center"></i>';
+                        }else if(value['status'] ==1){
+                            html +='<i class="fas fa-grin-stars fa-2x text-success"></i>';
+                        }
+                        else{
+                            html +='<i class="fas fa-frown fa-2x text-danger"></i>';
+                        }
+                        html +='</td> <td class="text-center">';
+                        html +=' <a href="">chi tiết>></a>';
+                        html +='</td> </tr>';
+                    });
+                    return html;
+                }
+            </script>
             <script>
                 function clickApprove(dataApprove = null, rowID, idSpinner, approvalStatus) {
                     if (!!!dataApprove || approvalStatus === 1 || (approvalStatus !== null && approvalStatus !== 2)) {

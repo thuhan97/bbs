@@ -162,18 +162,34 @@ define('DAILY_REPORT', 0);
 define('WEEKLY_REPORT', 1);
 
 define('MONTH', [
-    1 => 'Tháng 1',
-    2 => 'Tháng 2',
-    3 => 'Tháng 3',
-    4 => 'Tháng 4',
-    5 => 'Tháng 5',
-    6 => 'Tháng 6',
-    7 => 'Tháng 7',
-    8 => 'Tháng 8',
-    9 => 'Tháng 9',
-    10 => 'Tháng 10',
-    11 => 'Tháng 11',
-    12 => 'Tháng 12',
+    '01' => 'Tháng 1',
+    '02' => 'Tháng 2',
+    '03' => 'Tháng 3',
+    '04'=> 'Tháng 4',
+    '05' => 'Tháng 5',
+    '06' => 'Tháng 6',
+    '07' => 'Tháng 7',
+    '08' => 'Tháng 8',
+    '09' => 'Tháng 9',
+    '10' => 'Tháng 10',
+    '11' => 'Tháng 11',
+    '12' => 'Tháng 12',
 
 
 ]);
+define('SHOW_DAYOFFF', [
+    '4'=>'Tất cả đơn',
+    0 => 'Chờ Duyệt',
+    1=> 'Đã duyệt',
+    2=> 'Không duyệt',
+
+]);
+define('STATUS_DAYOFFF', [
+    'abide' => 0,
+    'active'=> 1,
+    'noActive'=>3
+
+]);
+
+
+

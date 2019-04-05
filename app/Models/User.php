@@ -165,4 +165,9 @@ class User extends Authenticatable implements JWTSubject
             ->orWhere('email', 'like', '%' . $searchTerm . '%');
     }
 
+    public function dayOfff()
+    {
+        return $this->hasMany(DayOff::class,'user_id','id');
+    }
+
 }

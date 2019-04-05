@@ -15,6 +15,7 @@ use App\Services\Contracts\IDayOffService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class DayOffService extends AbstractService implements IDayOffService
 {
@@ -160,7 +161,38 @@ class DayOffService extends AbstractService implements IDayOffService
         ];
     }
     public function showList(){
-        return $this->model->where('approver_id',Auth::id())->orderBy('status',ASC )->get();
 
+        $data=$this->getdata()->get();
+        $dataDate=$this->getdata()->whereMonth('day_offs.created_at', '=', date('m'))->whereYear('day_offs.created_at', '=', date('Y'))->get();
+        return[
+            'dateDate'=>$dataDate,
+            'data'=>$data,
+            'total'=>$data->count(),
+            'totalActive'=>$data->where('status',STATUS_DAYOFFF['active'])->count(),
+            'totalAbide'=>$data->where('status',STATUS_DAYOFFF['abide'])->count(),
+            'totalnoActive'=>$data->where('status',STATUS_DAYOFFF['noActive'])->count(),
+
+        ];
+    }
+    public function getDataSearch($year, $month, $status)
+    {
+        $data= $this->getdata()->whereMonth('day_offs.created_at', '=', $month)->whereYear('day_offs.created_at', '=', $year);
+        if ($status <= 3){
+            $data= $data->where('day_offs.status',$status);
+        }
+        $data=$data->get();
+
+        return [
+            'data'=>$data,
+        ];
+
+    }
+
+    private function getdata(){
+        return  DayOff::select('day_offs.*',DB::raw('DATE_FORMAT(day_offs.start_at, "%d/%m/%Y (%H:%i)") as start_date'),DB::raw('DATE_FORMAT(day_offs.end_at, "%d/%m/%Y (%H:%i)") as end_date'),'users.name')
+            ->join('users','users.id','=','day_offs.user_id')
+            ->where('day_offs.approver_id',Auth::id())
+            ->where('day_offs.user_id','<>',Auth::id())
+            ->orderBy('day_offs.status',ASC );
     }
 }

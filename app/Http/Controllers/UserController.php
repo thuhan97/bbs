@@ -292,6 +292,9 @@ class UserController extends Controller
 
     public function dayOffSearch(Request $request)
     {
-        return $this->userDayOff->getDataSearch($request->year, $request->month, $request->status);
+        if (isset($request->search)){
+            return $this->userDayOff->getDataSearch($request->year, $request->month, $request->status,$request->search);
+        }
+        return $this->userDayOff->getDataSearch($request->year, $request->month, $request->status,null);
     }
 }

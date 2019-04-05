@@ -174,13 +174,23 @@ class DayOffService extends AbstractService implements IDayOffService
 
         ];
     }
-    public function getDataSearch($year, $month, $status)
+    public function getDataSearch($year, $month, $status,$search=null)
     {
         $data= $this->getdata()->whereMonth('day_offs.created_at', '=', $month)->whereYear('day_offs.created_at', '=', $year);
+        if ($search != null){
+            $data=$data-> where(function ($q) use ($search) {
+                $q->orWhere('day_offs.title', 'like', '%' . $search . '%')
+                    ->orWhere('day_offs.reason', 'like', '%' . $search . '%')
+                    ->orWhere('day_offs.start_at', 'like', '%' . $search . '%')
+                    ->orWhere('day_offs.end_at', 'like', '%' . $search . '%')
+                    ->orWhere('users.name', 'like', '%' . $search . '%')
+                    ->orWhere('day_offs.number_off', 'like', '%' . $search . '%');
+            });
+        }
         if ($status <= 3){
             $data= $data->where('day_offs.status',$status);
         }
-        $data=$data->get();
+        $data=$data->paginate(1);
 
         return [
             'data'=>$data,

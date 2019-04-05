@@ -126,31 +126,16 @@
             </div>
         </div>
         <br>
-
         <div class="container-fluid row">
             <div class="col-sm-7 col-xs-12 row">
                 <div class="col-5">
                     {{ Form::select('search-day-off', SHOW_DAYOFFF, null, ['class' => 'browser-default custom-select w-100 search-day-off']) }}
-
-                    {{-- <h6 class=" mb-0">
-                         @if($approval_view != 1 && $approval_view != 0)
-                             Tất cả các đơn
-                         @elseif($approval_view == 1)
-                             Các đơn đã giải quyết
-                         @elseif($approval_view == 0)
-                             Các đơn chờ giải quyết
-                         @endif
-                     </h6>--}}
                 </div>
                 <div class="col-7 pl-0">
-                    <form method="get"
-                          action="{{$defaultURL . $atPageString . $perPageString . $approvalString}}">
                         <div class="input-group col-12">
                             <input type="text" class="form-control search-day-off" placeholder="Tìm tên nhân viên"
                                    value="{{!!$searchView ? $searchView : ''}}"
-                                   name="search"
-                                   aria-label="Tìm kiếm nhân viên"
-                                   aria-describedby="btnSearch">
+                                   name="search" id="content-search">
                             <div class="input-group-append">
                                 <button class="btn btn-md btn-default m-0 py-2 z-depth-0 waves-effect form-control"
                                         type="submit"
@@ -164,8 +149,6 @@
                         @if($approvalString !== '')
                             <input type="hidden" name="approve" value="{{$approval_view}}">
                         @endif
-                        @csrf
-                    </form>
                 </div>
 
             </div>
@@ -403,7 +386,7 @@
             <script type="text/javascript">
                 $(document).ready(function (e) {
                     $('.yearselect').yearselect({ order: 'desc'});
-                    $(document).on('change', '.select_year , .month , .search-day-off', function () {
+                    $('.select_year , .month , .search-day-off').on('change', function () {
                         var year=$('.select_year ').val();
                         var month=$('.month ').val();
                         var status=$('.search-day-off ').val();
@@ -413,9 +396,24 @@
                             'type': 'get',
                             'data': {'year': year,'month':month,'status':status},
                             success: function (data) {
-
                                 var html=teamplate(data);
-                                console.log(html)
+                                $('#ajax-show').html(html);
+                            }
+                        });
+                    })
+
+                    $( '#btnSearch').on('click', function () {
+                        var search=$('#content-search').val();
+                        var year=$('.select_year ').val();
+                        var month=$('.month ').val();
+                        var status=$('.search-day-off ').val();
+                        $.ajax
+                        ({
+                            'url': '/phe-duyet-ngay-nghi/search/',
+                            'type': 'get',
+                            'data': {'year': year,'month':month,'status':status,'search':search},
+                            success: function (data) {
+                                var html=teamplate(data);
                                 $('#ajax-show').html(html);
                             }
                         });
@@ -425,7 +423,7 @@
 
                 function teamplate(data) {
                     var html = '';
-                    $.each(data.data, function (key, value) {
+                    $.each(data.data.data, function (key, value) {
                          html +='<tr><th scope="row" class="text-center">';
                         html +=      key+1;
                         html +=' </th> <td class="text-center table-name">';

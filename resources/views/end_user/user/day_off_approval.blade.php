@@ -6,9 +6,7 @@
         <div class="col-3 position-relative">
             <div class="row border-radius-1" id="option-calendar" style="height: 50px">
                 <div class="col-3 p-0 m-auto">
-                    <select name="select_year"
-                            class="yearselect browser-default custom-select w-100 border-0 select_year"
-                            style="text-align-last:center;background: #f4f4f4"></select>
+                    {{ Form::select('year', get_years(), date('Y') , ['class'=>'yearselect browser-default custom-select w-100 border-0 select_year']) }}
                 </div>
                 <div class="col-9 p-0 m-auto pr-2 ">
                     {{ Form::select('month', MONTH, date('m'), ['class' => 'browser-default custom-select w-100 month ']) }}
@@ -104,7 +102,7 @@
     <div class="container-fluid row">
         <div class="col-sm-7 col-xs-12 row">
             <div class="col-5">
-                {{ Form::select('search-day-off', SHOW_DAY_OFFF, null, ['class' => 'browser-default custom-select w-100 search-day-off border-radius-1']) }}
+                {{ Form::select('search-day-off', SHOW_DAY_OFFF, ALL_DAY_OFF, ['class' => 'browser-default custom-select w-100 search-day-off border-radius-1']) }}
             </div>
             <div class="col-7 pl-0">
                 <div class="input-group col-12">
@@ -249,7 +247,6 @@
         </div>
         <script type="text/javascript">
             $(document).ready(function (e) {
-                $('.yearselect').yearselect({order: 'desc'});
                 $('.select_year , .month , .search-day-off').on('change', function () {
                     var year = $('.select_year ').val();
                     var month = $('.month ').val();

@@ -176,10 +176,10 @@ define('MONTH', [
     '12' => 'Tháng 12',
 ]);
 define('SHOW_DAY_OFFF', [
-    '3'=>'Tất cả đơn',
     0 => 'Chờ Duyệt',
     1=> 'Đã duyệt',
     2=> 'Không duyệt',
+    3=>'Tất cả đơn'
 ]);
 
 define('STATUS_DAY_OFF', [

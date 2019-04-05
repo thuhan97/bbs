@@ -160,10 +160,21 @@ class DayOffService extends AbstractService implements IDayOffService
             "message" => "Tạo đơn thất bại"
         ];
     }
-    public function showList(){
+    public function showList($status){
 
         $data=$this->getdata()->get();
-        $dataDate=$this->getdata()->whereMonth('day_offs.created_at', '=', date('m'))->whereYear('day_offs.created_at', '=', date('Y'))->get();
+
+        if ($status != null){
+            if ($status < ALL_DAY_OFF){
+                $dataDate=$this->getdata()->where('day_offs.status',$status);
+            }else{
+                $dataDate=$this->getdata();
+            }
+
+        }else{
+            $dataDate=$this->getdata()->whereMonth('day_offs.created_at', '=', date('m'))->whereYear('day_offs.created_at', '=', date('Y'));
+        }
+        $dataDate=$dataDate->paginate(PAGINATE_DAY_OFF);
         return[
             'dateDate'=>$dataDate,
             'data'=>$data,
@@ -174,28 +185,19 @@ class DayOffService extends AbstractService implements IDayOffService
 
         ];
     }
-    public function getDataSearch($year, $month, $status,$search=null)
+    public function getDataSearch($year, $month, $status,$search='')
     {
         $data= $this->getdata()->whereMonth('day_offs.created_at', '=', $month)->whereYear('day_offs.created_at', '=', $year);
-        if ($search != null){
-            $data=$data-> where(function ($q) use ($search) {
-                $q->orWhere('day_offs.title', 'like', '%' . $search . '%')
-                    ->orWhere('day_offs.reason', 'like', '%' . $search . '%')
-                    ->orWhere('day_offs.start_at', 'like', '%' . $search . '%')
-                    ->orWhere('day_offs.end_at', 'like', '%' . $search . '%')
-                    ->orWhere('users.name', 'like', '%' . $search . '%')
-                    ->orWhere('day_offs.number_off', 'like', '%' . $search . '%');
-            });
+        if ($search != null) {
+            $data = $data->Where('users.name', 'like', '%' . $search . '%');
         }
-        if ($status <= 3){
+        if ($status < ALL_DAY_OFF){
             $data= $data->where('day_offs.status',$status);
         }
-        $data=$data->paginate(1);
-
+       $data=$data->paginate(PAGINATE_DAY_OFF);
         return [
             'data'=>$data,
         ];
-
     }
 
     private function getdata(){

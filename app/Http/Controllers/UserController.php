@@ -186,36 +186,11 @@ class UserController extends Controller
         ]);
     }
 
-    public function dayOffApprove(DayOffRequest $request)
+    public function dayOffApprove(DayOffRequest $request,$status=null)
     {
-
-        // Checking authorize for action
-        $isApproval = Auth::user()->jobtitle_id >= \App\Models\Report::MIN_APPROVE_JOBTITLE;
-
-        // If user is able to do approve then
-        $searchView = $request->get('search') ?? '';
-        $approval_view = $request->get('approve');
-        $atPage_view = $request->get('page');
-        $perPage_view = $request->get('per_page');
-
-        $request_view = $this->userDayOff->findList($request, ['approver_id' => Auth::id()], ['*'], $searchView, $perPage);
-        $request_view_array = $request_view->toArray();
-        $dataDayOff = $this->userDayOff->showList();
-
-        $request->merge(['year' => date('Y')]);
-        $request->merge(['approve' => null]);
-        $request->merge(['search' => '']);
-        $search = '';
-        // get all request
-        $totalRequest = $this->userDayOff->findList($request, ['approver_id' => Auth::id()], ['*'], $search, $perPage)->toArray();
-        // get only approved request
-        $request->merge(['approve' => 1]);
-        $approvedRequest = $this->userDayOff->findList($request, ['approver_id' => Auth::id()], ['*'], $search, $perPage)->toArray();
-
-
+        $dataDayOff = $this->userDayOff->showList($status);
         return view('end_user.user.day_off_approval', compact(
-            'isApproval', 'totalRequest', 'approvedRequest', 'approval_view', 'atPage_view', 'perPage_view',
-            'request_view', 'request_view_array', 'searchView', 'dataDayOff'
+             'dataDayOff'
         ));
     }
 
@@ -292,9 +267,18 @@ class UserController extends Controller
 
     public function dayOffSearch(Request $request)
     {
-        if (isset($request->search)){
+        if ($request->search != ''){
             return $this->userDayOff->getDataSearch($request->year, $request->month, $request->status,$request->search);
         }
-        return $this->userDayOff->getDataSearch($request->year, $request->month, $request->status,null);
+        return $this->userDayOff->getDataSearch($request->year, $request->month, $request->status,'');
     }
+    public function dayOffShow($status){
+
+        $dataDayOff = $this->userDayOff->showList($status);
+        return view('end_user.user.day_off_approval', compact(
+            'dataDayOff'
+        ));
+    }
+
+
 }

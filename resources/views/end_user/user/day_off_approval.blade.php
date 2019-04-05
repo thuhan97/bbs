@@ -2,726 +2,359 @@
 @section('breadcrumbs')
 @endsection
 @section('content')
-    @if(!$isApproval)
-        <h2>Bạn không có quyền truy cập chức năng này</h2>
-    @else
-        @php
-            $atPageString = "?page=";
-            $perPageString = "&per_page=";
-            $approvalString = "&approve=";
-            $defaultURL = route("day_off_approval");
-
-            if ($approval_view == null){
-                $approvalString = '';
-            }else{
-                $approvalString .= $approval_view;
-            }
-
-            if ($atPage_view == null){
-                $atPageString .= '1';
-            }else{
-                $atPageString .= $atPage_view;
-            }
-
-            if ($perPage_view == null){
-                $perPageString .= 10;
-            }else{
-                $perPageString .= $perPage_view;
-            }
-
-        @endphp
-        <div class="row mb-5 ml-3">
-            <div class="col-3 position-relative">
-                <div class="row" id="option-calendar" style="height: 50px">
-                    <div class="col-3 p-0 m-auto">
-                        <select name="select_year"
-                                class="yearselect browser-default custom-select w-100 border-0 select_year"
-                                style="text-align-last:center;background: #f4f4f4"></select>
-                    </div>
-                    <div class="col-9 p-0 m-auto pr-2">
-                        {{ Form::select('month', MONTH, date('m'), ['class' => 'browser-default custom-select w-100 month']) }}
-                    </div>
+    <div class="row mb-5 ml-3">
+        <div class="col-3 position-relative">
+            <div class="row border-radius-1" id="option-calendar" style="height: 50px">
+                <div class="col-3 p-0 m-auto">
+                    <select name="select_year"
+                            class="yearselect browser-default custom-select w-100 border-0 select_year"
+                            style="text-align-last:center;background: #f4f4f4"></select>
+                </div>
+                <div class="col-9 p-0 m-auto pr-2 ">
+                    {{ Form::select('month', MONTH, date('m'), ['class' => 'browser-default custom-select w-100 month ']) }}
                 </div>
             </div>
         </div>
-        <div class="container-fluid col-12 row border-bottom-2 mb-2" style="position: relative;">
-            <div class="col-sm-3 col-md-6 col-lg-3 position-relative">
-                <a href="{{$defaultURL . $atPageString . $perPageString .'&approve=1'}}" class="card bg-primary">
-                    <div class="card-body row d-flex justify-content-center">
-                        <div class="media d-block d-md-flex">
+    </div>
+    <div class="container-fluid col-12 row border-bottom-2 mb-2" style="position: relative;">
+        <div class="col-sm-3 col-md-6 col-lg-3 position-relative">
+            <a href="{{ route('day_off_show',['status'=>ALL_DAY_OFF]) }}" class="card bg-primary border-radius-2">
+                <div class="card-body mr-lg-2 row d-flex justify-content-center px-0 ml-xxl-2">
+                    <div class="media mr-xl-1 d-md-flex">
                             <span id="dayoff-option-header-1"
-                                  class="d-flex rounded-circle avatar z-depth-1-half mb-3 mx-auto dayoff-header">
+                                  class="d-flex rounded-circle avatar z-depth-1-half mb-3 mx-auto dayoff-header mt-1">
                                 <i class="fas fa-clipboard-list dayoff-icoin text-primary dayoff-cioin-1-2-3"></i>
                             </span>
-                            <div class="media-body text-center text-md-left ml-md-3 ml-0">
-                                <h1 class="white-text font-weight-bold">{{ $dataDayOff['total'] < 10 ? "0".$dataDayOff['total'] : $dataDayOff['total'] }}</h1>
-                                <p class="card-subtitle text-white-50 text-size-table">Tổng đơn xin nghỉ</p>
-                                <p class="card-title text-uppercase font-weight-bold card-text white-text text-size-header">
-                                    TRONG NĂM {{date('Y')}}</p>
+                        <div class="media-body text-center text-md-left ml-xl-4">
+                            <h1 class="white-text font-weight-bold">{{ $dataDayOff['total'] < 10 ? "0".$dataDayOff['total'] : $dataDayOff['total'] }}</h1>
+                            <p class="card-subtitle text-white-50 text-size-table">Tổng đơn xin nghỉ</p>
+                            <p class="card-title text-uppercase font-weight-bold card-text white-text text-size-header">
+                                TRONG NĂM {{date('Y')}}</p>
 
-                            </div>
                         </div>
-
                     </div>
-                </a>
-            </div>
-            <div class="col-sm-3 col-md-6 col-lg-3 position-relative">
-                <a href="{{$defaultURL . $atPageString . $perPageString .'&approve=1'}}" class="card bg-success">
-                    <div class="card-body row d-flex justify-content-center">
-                        <div class="media d-block d-md-flex">
+
+                </div>
+            </a>
+        </div>
+        <div class="col-sm-3 col-md-6 col-lg-3 position-relative ">
+            <a href="{{ route('day_off_show',['status'=>STATUS_DAYOFFF['active']]) }}"
+               class="card bg-success border-radius-2">
+                <div class="card-body mr-lg-2 row d-flex justify-content-center px-0 ml-xxl-2">
+                    <div class="media mr-lg-5 d-md-flex">
                             <span id="dayoff-option-header-2"
-                                  class="d-flex rounded-circle avatar z-depth-1-half mb-3 mx-auto dayoff-header">
+                                  class="d-flex rounded-circle avatar z-depth-1-half mb-3 mx-auto dayoff-header mt-1">
                                 <i class="fas fa-clipboard-check dayoff-icoin text-success dayoff-cioin-1-2-3"></i>
 
                             </span>
-                            <div class="media-body text-center text-md-left ml-md-3 ml-0">
-                                <h1 class="white-text font-weight-bold">{{ $dataDayOff['totalActive'] < 10 ? "0".$dataDayOff['totalActive'] : $dataDayOff['totalActive'] }}</h1>
-                                <p class="card-subtitle text-white-50 text-size-table">Đơn xin nghỉ</p>
-                                <p class="card-title text-uppercase font-weight-bold card-text white-text text-size-header">
-                                    ĐÃ DUYỆT</p>
+                        <div class="media-body text-center text-md-left ml-xl-4">
+                            <h1 class="white-text font-weight-bold">{{ $dataDayOff['totalActive'] < 10 ? "0".$dataDayOff['totalActive'] : $dataDayOff['totalActive'] }}</h1>
+                            <p class="card-subtitle text-white-50 text-size-table">Đơn xin nghỉ</p>
+                            <p class="card-title text-uppercase font-weight-bold card-text white-text text-size-header">
+                                ĐÃ DUYỆT</p>
 
-                            </div>
                         </div>
-
                     </div>
-                </a>
-            </div>
-            <div class="col-sm-3 col-md-6 col-lg-3 position-relative">
-                <a href="{{$defaultURL . $atPageString . $perPageString .'&approve=1'}}" class="card " id="bg-yellow">
-                    <div class="card-body row d-flex justify-content-center">
-                        <div class="media d-block d-md-flex">
+
+                </div>
+            </a>
+        </div>
+        <div class="col-sm-3 col-md-6 col-lg-3 position-relative">
+            <a href="{{ route('day_off_show',['status'=>STATUS_DAYOFFF['abide']]) }}" class="card border-radius-2"
+               id="bg-yellow">
+                <div class="card-body mr-lg-2 row d-flex justify-content-center px-0 ml-xxl-2">
+                    <div class="media mr-lg-5  d-md-flex">
                             <span id="dayoff-option-header-3"
-                                  class="d-flex rounded-circle avatar z-depth-1-half mb-3 mx-auto dayoff-header">
+                                  class="d-flex rounded-circle avatar z-depth-1-half mb-3 mx-auto dayoff-header mt-1">
                                <i class="fas fa-clipboard dayoff-icoin text-warning dayoff-cioin-1-2-3"></i>
                             </span>
-                            <div class="media-body text-center text-md-left ml-md-3 ml-0">
-                                <h1 class="white-text font-weight-bold ">{{ $dataDayOff['totalAbide'] < 10 ? "0".$dataDayOff['totalAbide'] : $dataDayOff['totalAbide'] }}</h1>
-                                <p class="card-subtitle text-white-50 text-size-table">Đơn xin nghỉ</p>
-                                <p class="card-title text-uppercase font-weight-bold card-text white-text text-size-header">
-                                    CHỜ DUYỆT</p>
-                            </div>
+                        <div class="media-body text-center text-md-left ml-xl-4">
+                            <h1 class="white-text font-weight-bold ">{{ $dataDayOff['totalAbide'] < 10 ? "0".$dataDayOff['totalAbide'] : $dataDayOff['totalAbide'] }}</h1>
+                            <p class="card-subtitle text-white-50 text-size-table">Đơn xin nghỉ</p>
+                            <p class="card-title text-uppercase font-weight-bold card-text white-text text-size-header">
+                                CHỜ DUYỆT</p>
                         </div>
-
                     </div>
-                </a>
-            </div>
-            <div class="col-sm-3 col-md-6 col-lg-3 position-relative">
-                <a href="{{$defaultURL . $atPageString . $perPageString .'&approve=1'}}" class="card bg-danger">
-                    <div class="card-body row d-flex justify-content-center">
-                        <div class="media d-block d-md-flex">
+
+                </div>
+            </a>
+        </div>
+        <div class="col-sm-3 col-md-6 col-lg-3 position-relative pr-0">
+            <a href="{{ route('day_off_show',['status'=>STATUS_DAYOFFF['noActive']]) }}"
+               class="card bg-danger border-radius-2">
+                <div class="card-body mr-lg-3 row d-flex justify-content-center px-0 ml-xxl-1">
+                    <div class="media mr-lg-3 d-md-flex">
                             <span id="dayoff-option-header-4"
-                                  class="d-flex rounded-circle avatar z-depth-1-half mb-3 mx-auto dayoff-header">
+                                  class="d-flex rounded-circle avatar z-depth-1-half mb-3 mx-auto dayoff-header mt-1">
                                 <i class="fas fa-times-circle dayoff-icoin text-danger size-table"></i>
                             </span>
-                            <div class="media-body text-center text-md-left ml-md-3 ml-0">
-                                <h1 class="white-text font-weight-bold">{{ $dataDayOff['totalnoActive'] < 10 ? "0".$dataDayOff['totalnoActive'] : $dataDayOff['totalnoActive'] }}</h1>
-                                <p class="card-subtitle text-white-50 text-size-table">Đơn xin nghỉ</p>
-                                <p class="card-title text-uppercase font-weight-bold card-text white-text text-size-header">
-                                    KHÔNG DUYỆT</p>
-                            </div>
+                        <div class="media-body text-center text-md-left ml-xl-4">
+                            <h1 class="white-text font-weight-bold">{{ $dataDayOff['totalnoActive'] < 10 ? "0".$dataDayOff['totalnoActive'] : $dataDayOff['totalnoActive'] }}</h1>
+                            <p class="card-subtitle text-white-50 text-size-table">Đơn xin nghỉ</p>
+                            <p class="card-title text-uppercase font-weight-bold card-text white-text text-size-header">
+                                KHÔNG DUYỆT</p>
                         </div>
-
                     </div>
-                </a>
-            </div>
-        </div>
-        <br>
-        <div class="container-fluid row">
-            <div class="col-sm-7 col-xs-12 row">
-                <div class="col-5">
-                    {{ Form::select('search-day-off', SHOW_DAYOFFF, null, ['class' => 'browser-default custom-select w-100 search-day-off']) }}
+
                 </div>
-                <div class="col-7 pl-0">
-                        <div class="input-group col-12">
-                            <input type="text" class="form-control search-day-off" placeholder="Tìm tên nhân viên"
-                                   value="{{!!$searchView ? $searchView : ''}}"
-                                   name="search" id="content-search">
-                            <div class="input-group-append">
-                                <button class="btn btn-md btn-default m-0 py-2 z-depth-0 waves-effect form-control"
-                                        type="submit"
-                                        id="btnSearch">
-                                    <i class="fas fa-search color-search"></i>
-                                </button>
-                            </div>
-                        </div>
-                        <input type="hidden" name="per_page" value="{{$perPage_view}}">
-                        <input type="hidden" name="page" value="{{$atPage_view}}">
-                        @if($approvalString !== '')
-                            <input type="hidden" name="approve" value="{{$approval_view}}">
+            </a>
+        </div>
+    </div>
+    <br>
+    <div class="container-fluid row">
+        <div class="col-sm-7 col-xs-12 row">
+            <div class="col-5">
+                {{ Form::select('search-day-off', SHOW_DAYOFFF, null, ['class' => 'browser-default custom-select w-100 search-day-off border-radius-1']) }}
+            </div>
+            <div class="col-7 pl-0">
+                <div class="input-group col-12">
+                    <input type="text" class="form-control search-day-off border-radius-1"
+                           placeholder="Tìm tên nhân viên"
+                           name="search" id="content-search">
+                    <div class="input-group-append">
+                        <button class="btn btn-md btn-default m-0 py-2 z-depth-0 waves-effect form-control border-radius-1"
+                                type="submit"
+                                id="btnSearch">
+                            <i class="fas fa-search color-search"></i>
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+    <br>
+    <div class="container-fluid d-flex flex-column">
+        <!--Table-->
+        <table id="tablePreview" class="table" style="width: 99%">
+            <!--Table head-->
+            <thead class="grey lighten-2">
+            <tr>
+                <th class="text-center">STT</th>
+                <th class="text-center">Nhân viên</th>
+                <th class="text-center">Từ ngày</th>
+                <th class="text-center">Tới ngày</th>
+                <th class="text-center">Tiêu đề</th>
+                <th class="text-center">Ngày nghỉ</th>
+                <th class="text-center">Phê duyệt</th>
+                <th class="text-center">Xem thêm</th>
+            </tr>
+            </thead>
+            <!--Table head-->
+            <!--Table body-->
+            <tbody id="ajax-show">
+            @foreach($dataDayOff['dateDate'] as $keys => $record)
+
+                <tr id="rowApprove{{$loop->index+1}}">
+                    <th scope="row" class="text-center">
+                        {!! ((($dataDayOff['dateDate']->currentPage()*PAGINATE_DAY_OFF)-PAGINATE_DAY_OFF)+1)+$keys !!}
+                    </th>
+
+                    <td class="text-center table-name">
+                        {{$record->user->name}}
+                    </td>
+                    <td class="text-center">
+                        {{$record->start_date}}
+                    </td>
+                    <td class="text-center">
+                        {{$record->end_date}}
+                    </td>
+                    <td class="text-center table-title">
+                        @foreach(VACATION as $key => $value)
+                            @if($key == $record->title)
+                                {{ $value }}
+                            @endif
+                        @endforeach
+                    </td>
+                    <td class="text-center">
+                        {{!!!$record->number_off ? 'Chưa rõ' : $record->number_off}} ngày
+                    </td>
+
+                    <td class="text-center p-0" style="vertical-align: middle;">
+                        @if($record->status == STATUS_DAYOFFF['abide'])
+                            <i class="fas fa-meh-blank fa-2x text-warning text-center"></i>
+                        @elseif($record->status == STATUS_DAYOFFF['active'])
+                            <i class="fas fa-grin-stars fa-2x text-success"></i>
+                        @else
+                            <i class="fas fa-frown fa-2x text-danger"></i>
                         @endif
-                </div>
-
-            </div>
-        </div>
-        <br>
-        <div class="container-fluid d-flex flex-column">
-            <!--Table-->
-            <table id="tablePreview" class="table ">
-                <!--Table head-->
-                <thead class="grey lighten-2">
-                <tr>
-                    <th class="text-center">STT</th>
-                    <th class="text-center">Nhân viên</th>
-                    <th class="text-center">Từ ngày</th>
-                    <th class="text-center">Tới ngày</th>
-                    <th class="text-center">Tiêu đề</th>
-                    <th class="text-center">Ngày nghỉ</th>
-                    <th class="text-center">Phê duyệt</th>
-                    <th class="text-center">Xem thêm</th>
+                    </td>
+                    <td class="text-center">
+                        <a @if($keys ==0) class="text-primary" @endif href="">chi tiết>></a>
+                    </td>
                 </tr>
-                </thead>
-                <!--Table head-->
-                <!--Table body-->
-                <tbody id="ajax-show">
-                @foreach($dataDayOff['dateDate'] as $record)
-                    <tr id="rowApprove{{$loop->index+1}}">
-                        <th scope="row" class="text-center">
-                            {{$loop->index + 1}}
-                        </th>
-                        <td class="text-center table-name">
-                            {{$record->user->name}}
-                        </td>
-                        <td class="text-center">
-                            {{$record->start_date}}
-                        </td>
-                        <td class="text-center">
-                            {{$record->end_date}}
-                        </td>
-                        <td class="text-center table-title">
-                            @foreach(VACATION as $key => $value)
-                                @if($key == $record->title)
-                                    {{ $value }}
-                                @endif
-                            @endforeach
-                        </td>
-                        <td class="text-center">
-                            {{!!!$record->number_off ? 'Chưa rõ' : $record->number_off}} ngày
-                        </td>
-                        <td class="text-center p-0" style="vertical-align: middle;">
-                            @if($record->status == STATUS_DAYOFFF['abide'])
-                                <i class="fas fa-meh-blank fa-2x text-warning text-center"></i>
-                            @elseif($record->status == STATUS_DAYOFFF['active'])
-                                <i class="fas fa-grin-stars fa-2x text-success"></i>
-                            @else
-                                <i class="fas fa-frown fa-2x text-danger"></i>
-                            @endif
-                        </td>
-                        <td class="text-center">
-                            <a href="">chi tiết>></a>
-                        </td>
-                    </tr>
-                @endforeach
-                </tbody>
-                <!--Table body-->
-            </table>
-            <!--Table-->
-            <div class="modal fade right" id="detailApproval" tabindex="-1" role="dialog"
-                 aria-labelledby="detail Approval dialog" aria-hidden="true" data-backdrop='false'>
-                <div class="modal-dialog modal-full-height modal-right" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title d-flex flex-row" id="dayoff_heading"></h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body">
-                            <div class="text-left">
-                                <h4 class="text-bold">Nhân viên:</h4>
-                                <p>
-                                    <strong id="dayoff_user"></strong>
-                                </p>
-                                <h4 class="text-bold">Lý do:</h4>
-                                <p>
-                                    <strong id="dayoff_title"></strong>
-                                </p>
-                                <br>
-                                <h4 class="text-bold">Ngày nghỉ:</h4>
-                                <p>
-                                    <strong id="dayoff_duration"></strong>
-                                </p>
-                                <br>
-                                <h4 class="text-bold">Thời gian được tính:</h4>
-                                <p id="dayoff_total"></p>
-                            </div>
-                            <hr>
-                            <div class="text-left">
-                                <h4 class="text-bold">Chi tiết lý do:</h4>
-                                <p id="dayoff_reason"></p>
-                                <br>
-                                <h4 class="text-bold">Ngày duyệt:</h4>
-                                <p id="dayoff_approveDate"></p>
-                                <br>
-                                <h4 class="text-bold">Người duyệt:</h4>
-                                <p id="dayoff_approval"></p>
-                                <br>
-                                <h4 class="text-bold important">Ý kiến</h4>
-                                <p id="dayoff_comment" contentEditable="true"></p>
-                            </div>
-                            <div class="card bg-danger text-white" id="ErrorMessaging">
+            @endforeach
+            </tbody>
 
-                            </div>
+            <!--Table body-->
+        </table>
+    {{ $dataDayOff['dateDate']->links() }}
+    <!--Table-->
+        <div class="modal fade right" id="detailApproval" tabindex="-1" role="dialog"
+             aria-labelledby="detail Approval dialog" aria-hidden="true" data-backdrop='false'>
+            <div class="modal-dialog modal-full-height modal-right" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title d-flex flex-row" id="dayoff_heading"></h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="text-left">
+                            <h4 class="text-bold">Nhân viên:</h4>
+                            <p>
+                                <strong id="dayoff_user"></strong>
+                            </p>
+                            <h4 class="text-bold">Lý do:</h4>
+                            <p>
+                                <strong id="dayoff_title"></strong>
+                            </p>
+                            <br>
+                            <h4 class="text-bold">Ngày nghỉ:</h4>
+                            <p>
+                                <strong id="dayoff_duration"></strong>
+                            </p>
+                            <br>
+                            <h4 class="text-bold">Thời gian được tính:</h4>
+                            <p id="dayoff_total"></p>
                         </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">
-                                Đóng
-                            </button>
-                            <button type="button" class="btn btn-primary" id="detailApproveBtn">Phê duyệt</button>
+                        <hr>
+                        <div class="text-left">
+                            <h4 class="text-bold">Chi tiết lý do:</h4>
+                            <p id="dayoff_reason"></p>
+                            <br>
+                            <h4 class="text-bold">Ngày duyệt:</h4>
+                            <p id="dayoff_approveDate"></p>
+                            <br>
+                            <h4 class="text-bold">Người duyệt:</h4>
+                            <p id="dayoff_approval"></p>
+                            <br>
+                            <h4 class="text-bold important">Ý kiến</h4>
+                            <p id="dayoff_comment" contentEditable="true"></p>
                         </div>
+                        <div class="card bg-danger text-white" id="ErrorMessaging">
+
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                            Đóng
+                        </button>
+                        <button type="button" class="btn btn-primary" id="detailApproveBtn">Phê duyệt</button>
                     </div>
                 </div>
             </div>
-            @if($request_view_array['last_page'] > 1)
-                {{--Pagination--}}
-                <div class="container-fluid d-flex flex-center">
-                    <nav aria-label="Page navigation">
-                        <ul class="pagination pg-blue">
-                            <li class="page-item {{$request_view_array['current_page'] === 1 ? 'disabled': ''}}">
-                                <a href="{{$request_view_array['first_page_url'].$perPageString. $approvalString}}"
-                                   class="page-link">Trang đầu</a>
-                            </li>
-                            <li class="page-item {{$request_view_array['current_page'] === 1 ? 'disabled': ''}}">
-                                <a href="{{$request_view_array['prev_page_url'].$perPageString. $approvalString}}"
-                                   class="page-link" tabindex="-1">
-                                    <i class="fas fa-chevron-left"></i>
-                                </a>
-                            </li>
+        </div>
+        <script type="text/javascript">
+            $(document).ready(function (e) {
+                $('.yearselect').yearselect({order: 'desc'});
+                $('.select_year , .month , .search-day-off').on('change', function () {
+                    var year = $('.select_year ').val();
+                    var month = $('.month ').val();
+                    var status = $('.search-day-off ').val();
+                    $.ajax
+                    ({
+                        'url': '/phe-duyet-ngay-nghi/search/',
+                        'type': 'get',
+                        'data': {'year': year, 'month': month, 'status': status},
+                        success: function (data) {
+                            $('.pagination').hide();
+                            var html = teamplate(data);
+                            $('#ajax-show').html(html);
+                        }
+                    });
+                })
 
-                            @if ($request_view_array['current_page'] - 4 > 0)
-                                <li class="page-item">
-                                    <a href="{{$defaultURL. '?page='.($request_view_array['current_page'] - 4) . $perPageString . $approvalString}}"
-                                       class="page-link">
-                                        ...
-                                    </a>
-                                </li>
-                            @endif
+                $('#btnSearch').on('click', function () {
+                    var search = $('#content-search').val();
+                    var year = $('.select_year ').val();
+                    var month = $('.month ').val();
+                    var status = $('.search-day-off ').val();
+                    $.ajax
+                    ({
+                        'url': '/phe-duyet-ngay-nghi/search/',
+                        'type': 'get',
+                        'data': {'year': year, 'month': month, 'status': status, 'search': search},
+                        success: function (data) {
+                            $('.pagination').hide();
+                            var html = teamplate(data);
+                            $('#ajax-show').html(html);
+                        }
+                    });
+                })
 
-                            @if ($request_view_array['current_page'] - 3 > 0)
-                                <li class="page-item">
-                                    <a href="{{$defaultURL. '?page='.($request_view_array['current_page'] - 3) . $perPageString . $approvalString}}"
-                                       class="page-link">
-                                        {{$request_view_array['current_page'] - 3}}
-                                    </a>
-                                </li>
-                            @endif
+                $(document).on('click', '#page-dayoyy', function () {
 
-                            @if ($request_view_array['current_page'] - 2 > 0)
-                                <li class="page-item">
-                                    <a href="{{$defaultURL. '?page='.($request_view_array['current_page'] - 2) . $perPageString . $approvalString}}"
-                                       class="page-link">
-                                        {{$request_view_array['current_page'] - 2}}
-                                    </a>
-                                </li>
-                            @endif
-
-                            @if($request_view_array['current_page'] - 1 > 0)
-                                <li class="page-item">
-                                    <a href="{{$defaultURL. '?page='.($request_view_array['current_page'] - 1) . $perPageString . $approvalString}}"
-                                       class="page-link">
-                                        {{$request_view_array['current_page'] - 1}}
-                                    </a>
-                                </li>
-                            @endif
-
-                            <li class="page-item active">
-                                <a class="page-link">
-                                    {{$request_view_array['current_page']}}
-                                    <span class="sr-only">
-                                (current)
-                            </span>
-                                </a>
-                            </li>
-
-                            @if($request_view_array['current_page'] + 1 <= $request_view_array['last_page'])
-                                <li class="page-item">
-                                    <a href="{{$defaultURL. '?page='.($request_view_array['current_page'] + 1) . $perPageString . $approvalString}}"
-                                       class="page-link">
-                                        {{$request_view_array['current_page'] + 1}}
-                                    </a>
-                                </li>
-                            @endif
-
-                            @if($request_view_array['current_page'] + 2 <= $request_view_array['last_page'])
-                                <li class="page-item">
-                                    <a href="{{$defaultURL. '?page='.($request_view_array['current_page'] + 2) . $perPageString . $approvalString}}"
-                                       class="page-link">
-                                        {{$request_view_array['current_page'] + 2}}
-                                    </a>
-                                </li>
-                            @endif
-
-                            @if($request_view_array['current_page'] + 3 <= $request_view_array['last_page'])
-                                <li class="page-item">
-                                    <a href="{{$defaultURL. '?page='.($request_view_array['current_page'] + 3) . $perPageString . $approvalString}}"
-                                       class="page-link">
-                                        {{$request_view_array['current_page'] + 3}}
-                                    </a>
-                                </li>
-                            @endif
-
-                            @if($request_view_array['current_page'] + 4 <= $request_view_array['last_page'])
-                                <li class="page-item">
-                                    <a href="{{$defaultURL. '?page='.($request_view_array['current_page'] + 4) . $perPageString . $approvalString}}"
-                                       class="page-link">
-                                        ...
-                                    </a>
-                                </li>
-                            @endif
-
-
-                            <li class="page-item {{$request_view_array['current_page'] === $request_view_array['last_page'] ? 'disabled': ''}}">
-                                <a href="{{$request_view_array['next_page_url'].$perPageString. $approvalString}}"
-                                   class="page-link">
-                                    <i class="fas fa-chevron-right"></i>
-                                </a>
-                            </li>
-                            <li class="page-item {{$request_view_array['current_page'] === $request_view_array['last_page'] ? 'disabled': ''}}">
-                                <a href="{{$request_view_array['last_page_url'].$perPageString. $approvalString}} "
-                                   class="page-link">Trang cuối</a>
-                            </li>
-                        </ul>
-                    </nav>
-                </div>
-            @endif
-            <script type="text/javascript">
-                $(document).ready(function (e) {
-                    $('.yearselect').yearselect({ order: 'desc'});
-                    $('.select_year , .month , .search-day-off').on('change', function () {
-                        var year=$('.select_year ').val();
-                        var month=$('.month ').val();
-                        var status=$('.search-day-off ').val();
-                        $.ajax
-                        ({
-                            'url': '/phe-duyet-ngay-nghi/search/',
-                            'type': 'get',
-                            'data': {'year': year,'month':month,'status':status},
-                            success: function (data) {
-                                var html=teamplate(data);
-                                $('#ajax-show').html(html);
-                            }
-                        });
-                    })
-
-                    $( '#btnSearch').on('click', function () {
-                        var search=$('#content-search').val();
-                        var year=$('.select_year ').val();
-                        var month=$('.month ').val();
-                        var status=$('.search-day-off ').val();
-                        $.ajax
-                        ({
-                            'url': '/phe-duyet-ngay-nghi/search/',
-                            'type': 'get',
-                            'data': {'year': year,'month':month,'status':status,'search':search},
-                            success: function (data) {
-                                var html=teamplate(data);
-                                $('#ajax-show').html(html);
-                            }
-                        });
-                    })
-
+                    var page = $(this).text();
+                    alert(page)
+                    var search = $('#content-search').val();
+                    var year = $('.select_year ').val();
+                    var month = $('.month ').val();
+                    var status = $('.search-day-off ').val();
+                    $.ajax
+                    ({
+                        'url': '/phe-duyet-ngay-nghi/search?page=' + page,
+                        'type': 'get',
+                        'data': {'year': year, 'month': month, 'status': status, 'search': search},
+                        success: function (data) {
+                            $('.pagination').hide();
+                            var html = teamplate(data);
+                            $('#ajax-show').html(html);
+                        }
+                    });
                 });
 
-                function teamplate(data) {
-                    var html = '';
-                    $.each(data.data.data, function (key, value) {
-                         html +='<tr><th scope="row" class="text-center">';
-                        html +=      key+1;
-                        html +=' </th> <td class="text-center table-name">';
-                        html +=   value['name'];
-                        html +=' </td> <td class="text-center">';
-                        html +=  value['start_date'];
-                        html +='</td> <td class="text-center">';
-                        html +=  value['end_date']
+            });
 
-                        html +='</td> <td class="text-center table-title">';
-                        if(value['title'] ==1){
-                            html +='Lý do cá nhân';
-                        }else if(value['title'] ==2){
-                            html +='Nghỉ đám cưới';
-                        }
-                        else{
-                            html +='Nghỉ đám hiếu';
-                        }
-                        html +='</td><td class="text-center">'
-                        if (value['number_off']){
-                            html +=value['number_off']+'ngày';
-                        } else {
-                            html +='chưa rõ';
-                        }
-                        html+='</td> <td class="text-center p-0" style="vertical-align: middle;">';
-                        if(value['status'] ==0){
-                            html +='<i class="fas fa-meh-blank fa-2x text-warning text-center"></i>';
-                        }else if(value['status'] ==1){
-                            html +='<i class="fas fa-grin-stars fa-2x text-success"></i>';
-                        }
-                        else{
-                            html +='<i class="fas fa-frown fa-2x text-danger"></i>';
-                        }
-                        html +='</td> <td class="text-center">';
-                        html +=' <a href="">chi tiết>></a>';
-                        html +='</td> </tr>';
-                    });
-                    return html;
-                }
-            </script>
-            <script>
-                function clickApprove(dataApprove = null, rowID, idSpinner, approvalStatus) {
-                    if (!!!dataApprove || approvalStatus === 1 || (approvalStatus !== null && approvalStatus !== 2)) {
-                        return;
+            function teamplate(data) {
+                var html = '';
+                $.each(data.data.data, function (key, value) {
+                    console.log(data.data)
+                    html += '<tr><th scope="row" class="text-center">';
+                    html += key + 1;
+                    html += ' </th> <td class="text-center table-name">';
+                    html += value['name'];
+                    html += ' </td> <td class="text-center">';
+                    html += value['start_date'];
+                    html += '</td> <td class="text-center">';
+                    html += value['end_date']
+
+                    html += '</td> <td class="text-center table-title">';
+                    if (value['title'] == 1) {
+                        html += 'Lý do cá nhân';
+                    } else if (value['title'] == 2) {
+                        html += 'Nghỉ đám cưới';
                     }
-
-                    startSpinner(idSpinner);
-
-                    let sendingData = JSON.stringify(dataApprove);
-                    let xhttp = new XMLHttpRequest();
-                    xhttp.onreadystatechange = function () {
-                        if (this.readyState == 4 && this.status == 200) {
-                            resolveResponse(this.response, rowID, idSpinner, approvalStatus);
-                        }
-                    };
-                    xhttp.open("POST", "{{route('day_off_approval_approveAPI')}}", true);
-
-                    xhttp.setRequestHeader("Content-type", "application/json");
-                    xhttp.setRequestHeader("X-CSRF-TOKEN", $('meta[name="csrf-token"]').attr('content'));
-                    xhttp.send(sendingData);
-                }
-
-                function resolveResponse(res, rowID, spinnerID, approvalStatus) {
-                    let convertStatus = false;
-                    let obj = null;
-                    try {
-                        obj = JSON.parse(res);
-                        if (obj.hasOwnProperty('success') && obj.hasOwnProperty('message')) {
-                            convertStatus = true;
-                        }
-                    } catch (e) {
-                        convertStatus = false;
+                    else {
+                        html += 'Nghỉ đám hiếu';
                     }
-                    if (convertStatus) {
-                        // received correct form data.
-                        console.log(obj);
-                        let rmRow = document.getElementById(rowID);
-                        if (approvalStatus === 2) {
-                            location.reload(true);
-                        } else if (approvalStatus === null) {
-
-                        }
-                        if (!!rmRow) {
-                            rmRow.parentElement.removeChild(rmRow);
-                        }
-                    }
-                    finishSpinner(spinnerID);
-                }
-
-                function startSpinner(spinnerID) {
-                    let sectionAdding = document.getElementById(spinnerID);
-                    if (!!!sectionAdding) {
-                        return;
-                    }
-                    // let containerSpinner = document.createElement('div');
-                    // containerSpinner.id = 'loading-' + spinnerID;
-                    // containerSpinner.className = 'spinner-border text-primary';
-                    // containerSpinner.setAttribute('role', 'status');
-                    // let spinnerInner = document.createElement('span');
-                    // spinnerInner.className = 'sr-only';
-                    // spinnerInner.innerText = 'Loading...';
-                    // containerSpinner.appendChild(spinnerInner);
-                    // sectionAdding.appendChild(containerSpinner);
-                    sectionAdding.style.display = 'flex';
-                }
-
-                function finishSpinner(spinnerID) {
-                    let sectionAdding = document.getElementById(spinnerID);
-                    if (!!!sectionAdding) {
-                        return;
-                    }
-                    sectionAdding.style.display = 'none';
-                }
-            </script>
-        </div>
-    @endif
-
-@endsection
-
-@push('extend-js')
-    <script>
-        function requestPerform(xhttp, type, url, sendingData) {
-            xhttp.open(type, url, true);
-            xhttp.setRequestHeader("Content-type", "application/json");
-            xhttp.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
-            xhttp.setRequestHeader("X-CSRF-TOKEN", $('meta[name="csrf-token"]').attr('content'));
-            xhttp.send(sendingData);
-        }
-
-        function startSpinner(spinnerID) {
-            let sectionAdding = document.getElementById(spinnerID);
-            if (!!!sectionAdding) {
-                return;
-            }
-            sectionAdding.style.display = 'flex';
-        }
-
-        function finishSpinner(spinnerID) {
-            let sectionAdding = document.getElementById(spinnerID);
-            if (!!!sectionAdding) {
-                return;
-            }
-            sectionAdding.style.display = 'none';
-        }
-
-        function clickShowDetail(url, spinnerID, clickBtnID) {
-            startSpinner(spinnerID);
-            let xhttp = new XMLHttpRequest();
-            xhttp.onreadystatechange = function () {
-                if (this.readyState == 4 && this.status == 200) {
-                    showDetailResponse(this.response, clickBtnID);
-                    finishSpinner(spinnerID);
-                }
-            };
-            requestPerform(xhttp, 'post', url, null);
-        }
-
-        function showDetailResponse(respond, clickBtnID) {
-            let obj = null;
-            try {
-                obj = JSON.parse(respond);
-            } catch (e) {
-                obj = null;
-            }
-            if (obj != null) {
-                preparePreviewDataModal(obj, clickBtnID);
-            }
-        }
-
-        function preparePreviewDataModal(obj, clickBtnID) {
-            let header = document.getElementById('dayoff_heading');
-            let userName = document.getElementById('dayoff_user');
-            let title = document.getElementById('dayoff_title');
-            let duration = document.getElementById('dayoff_duration');
-            let totalOff = document.getElementById('dayoff_total');
-            let reason = document.getElementById('dayoff_reason');
-            let approveDate = document.getElementById('dayoff_approveDate');
-            let approval = document.getElementById('dayoff_approval');
-            let comment = document.getElementById('dayoff_comment');
-
-            let btnDetailApprove = document.getElementById('detailApproveBtn');
-
-            const defaultComment = "<Nhập nội dung tại đây>";
-
-            function clearData() {
-                header.innerText = '';
-                title.innerText = '';
-                duration.innerText = '';
-                totalOff.innerText = '';
-                approveDate.innerText = '';
-                reason.innerText = '';
-                approval.innerText = '';
-                comment.innerText = '';
-                errorOff();
-            }
-
-            function circleIndicate(isResolved = false) {
-                let circle = document.createElement('span');
-                if (isResolved) {
-                    circle.className = 'green-circle ml-2';
-                } else {
-                    circle.className = 'red-circle ml-2';
-                }
-                return circle;
-            }
-
-            function dateFormat(startAt, endAt) {
-                return startAt + '<br> <small>tới</small> <br>' + endAt;
-            }
-
-            function approvedChecker(isApproved = false, approveMessage = 'Đã phê duyệt', notApproveMessage = 'Chưa phê duyệt') {
-                if (isApproved) {
-                    return approveMessage;
-                }
-                return notApproveMessage;
-            }
-
-            function errorAlert() {
-                let errorBox = document.getElementById('ErrorMessaging');
-                if (!!!errorBox) return;
-                errorBox.innerHTML = "<div class='card-body'>Thông tin nhập không hợp lệ!</div>";
-            }
-
-            function errorOff() {
-                let errorBox = document.getElementById('ErrorMessaging');
-                if (!!!errorBox) return;
-                errorBox.innerHTML = "";
-            }
-
-            function assignClickEvent() {
-
-                let numberOff = parseFloat(totalOff.innerText.trim());
-                if (isNaN(numberOff) || numberOff < 0.5 || comment.innerText.length < 3) {
-                    errorAlert();
-                    return;
-                }
-
-                let btnRow = $('#' + clickBtnID);
-                if (comment.innerText !== defaultComment) {
-                    obj.approve_comment = comment.innerText;
-                }
-                obj.number_off = numberOff;
-
-                if (!!btnRow) {
-                    let sendingData = JSON.stringify(obj);
-                    let xhttp = new XMLHttpRequest();
-                    xhttp.onreadystatechange = function () {
-                        if (this.readyState == 4 && this.status == 200) {
-                            location.reload();
-                        }
-                    };
-                    requestPerform(xhttp, "post", '{{route('day_off_approval_approveAPI')}}', sendingData);
-                }
-            }
-
-            function dayoffDetail(detailInfo) {
-                clearData();
-                header.innerHTML = detailInfo.start_at;
-                header.appendChild(circleIndicate(detailInfo.status === 1));
-                userName.innerText = detailInfo.user.name;
-                title.innerText = detailInfo.title;
-                duration.innerHTML = dateFormat(detailInfo.start_at, detailInfo.end_at);
-                reason.innerText = detailInfo.reason;
-                approveDate.innerText = approvedChecker(!!detailInfo.approver_at, detailInfo.approver_at);
-                approval.innerText = approvedChecker(detailInfo.status === 1, !!detailInfo.approval ? detailInfo.approval.name : null);
-                if (detailInfo.status == 1) {
-                    comment.innerText = approvedChecker(!!detailInfo.approve_comment, detailInfo.approve_comment, 'không có');
-                    comment.setAttribute('contentEditable', 'false');
-                    totalOff.innerText = !!detailInfo.number_off ? detailInfo.number_off + ' ngày' : "Lỗi!";
-                } else {
-                    comment.innerText = defaultComment;
-                    comment.style.padding = '0.5rem';
-                    comment.style.background = 'whitesmoke';
-                    comment.setAttribute('contentEditable', 'true');
-
-                    totalOff.innerText = "< Nhập ngày tại đây. VD: 0.5 >";
-                    totalOff.style.padding = '0.5rem';
-                    totalOff.style.background = 'whitesmoke';
-                    totalOff.setAttribute('contentEditable', 'true');
-                }
-
-                if (!!btnDetailApprove) {
-                    if (detailInfo.status == 1) {
-                        btnDetailApprove.style.display = 'none';
-                        btnDetailApprove.removeEventListener('click', assignClickEvent);
+                    html += '</td><td class="text-center">'
+                    if (value['number_off']) {
+                        html += value['number_off'] + 'ngày';
                     } else {
-                        btnDetailApprove.style.display = 'inline-block';
-                        btnDetailApprove.addEventListener('click', assignClickEvent)
+                        html += 'chưa rõ';
                     }
-                }
+                    html += '</td> <td class="text-center p-0" style="vertical-align: middle;">';
+                    if (value['status'] == 0) {
+                        html += '<i class="fas fa-meh-blank fa-2x text-warning text-center"></i>';
+                    } else if (value['status'] == 1) {
+                        html += '<i class="fas fa-grin-stars fa-2x text-success"></i>';
+                    }
+                    else {
+                        html += '<i class="fas fa-frown fa-2x text-danger"></i>';
+                    }
+                    html += '</td> <td class="text-center">';
+                    html += ' <a ';
+                    if (key == 0) {
+                        html += 'class="text-primary"';
+                    }
+                    html += 'href="">chi tiết>></a>';
+                    html += '</td> </tr>';
+                });
+                return html;
             }
-
-            dayoffDetail(obj);
-
-            let detailModal = $('#detailApproval');
-            //turn modal on
-            if (!!detailModal)
-                detailModal.modal('show');
-        }
-    </script>
-@endpush
+        </script>
+    </div>
+@endsection

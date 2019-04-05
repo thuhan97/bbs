@@ -178,7 +178,7 @@ define('MONTH', [
 
 ]);
 define('SHOW_DAYOFFF', [
-    '4'=>'Tất cả đơn',
+    '3'=>'Tất cả đơn',
     0 => 'Chờ Duyệt',
     1=> 'Đã duyệt',
     2=> 'Không duyệt',
@@ -187,9 +187,12 @@ define('SHOW_DAYOFFF', [
 define('STATUS_DAYOFFF', [
     'abide' => 0,
     'active'=> 1,
-    'noActive'=>3
+    'noActive'=>2
 
 ]);
+define('ALL_DAY_OFF',3);
+define('PAGINATE_DAY_OFF',20);
+
 
 
 

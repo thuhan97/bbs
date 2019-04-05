@@ -112,10 +112,12 @@ Route::group([
     Route::get('/ngay-nghi', 'UserController@dayOff')->name('day_off');
    /* Route::post('/ngay-nghi/create-api', 'UserController@dayOffCreate_API')->name('day_off_createAPI');*/
     Route::get('/ngay-nghi/list-approval-api', 'UserController@dayOffListApprovalAPI')->name('day_off_listApprovalAPI');
-    Route::get('/phe-duyet-ngay-nghi', 'UserController@dayOffApprove')->name('day_off_approval');
+    Route::get('/phe-duyet-ngay-nghi/', 'UserController@dayOffApprove')->name('day_off_approval');
     Route::post('/phe-duyet-ngay-nghi/approve-api', 'UserController@dayOffApprove_AcceptAPI')->name('day_off_approval_approveAPI');
     Route::post('/phe-duyet-ngay-nghi/one/{id}', 'UserController@dayOffApprove_get')->name('day_off_approval_one');
 
+
+    Route::get('/phe-duyet-ngay-nghi/show/{status}', 'UserController@dayOffShow')->name('day_off_show');
     Route::get('/phe-duyet-ngay-nghi/search', 'UserController@dayOffSearch')->name('day_off_search');
 
     Route::get('/noi-quy-quy-dinh', 'RegulationController@index')->name('regulation');

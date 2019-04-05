@@ -72,10 +72,10 @@ interface IDayOffService extends IBaseService
     /**
      * @return mixed Collection
      */
-    public function showList();
+    public function showList($status);
     /**
      * @return mixed Collection
      */
-    public function getDataSearch($year,$month,$status,$search=null);
+    public function getDataSearch($year,$month,$status,$search='');
 
 }

@@ -7,6 +7,7 @@ use App\Http\Requests\DayOffRequest;
 use App\Http\Requests\ProfileRequest;
 use App\Models\User;
 use App\Models\WorkTime;
+use App\Repositories\Contracts\IDayOffRepository;
 use App\Services\Contracts\IDayOffService;
 use App\Services\Contracts\IUserService;
 use App\Transformers\DayOffTransformer;
@@ -19,9 +20,11 @@ class UserController extends Controller
 {
     private $userService;
     private $userDayOff;
+    private $dayOffRepository;
 
-    public function __construct(IUserService $userService, IDayOffService $userDayOff)
+    public function __construct(IUserService $userService, IDayOffService $userDayOff , IDayOffRepository $dayOffRepository)
     {
+        $this->dayOffRepository=$dayOffRepository;
         $this->userService = $userService;
         $this->userDayOff = $userDayOff;
     }
@@ -296,6 +299,9 @@ class UserController extends Controller
         return view('end_user.user.day_off_approval', compact(
             'dataDayOff'
         ));
+    }
+    public function dayOffGetOne($id){
+        return $this->dayOffRepository->findOne($id);
     }
 
 

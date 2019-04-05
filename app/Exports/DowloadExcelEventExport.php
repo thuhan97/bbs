@@ -59,7 +59,7 @@ class DowloadExcelEventExport implements FromCollection, WithHeadings
         return [
             'STT',
             'Tên thành viên ',
-            'Mã thành viên ',
+            'Mã nhân viên',
             'Trạng thái',
             'Ý kiến cá nhân',
             'Ngày đăng kí'

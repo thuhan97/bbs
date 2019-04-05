@@ -58,12 +58,12 @@ class UserController extends AdminBaseController
                 'start_date'=>'nullable|date',
                 'end_date'=>"nullable|date|after:start_date"
             ],
-            'messages' => [
-                'end_date.after'=>'Ngày nghỉ việc phải là ngày sau ngày vào công ty',
-                'digits_between'=>'Số điện thoại nằm trong khoảng từ 10 đến 30 kí tự',
-                'numeric'=> ":attribute phải là định dạng số"
+            'messages' => [],
+            'attributes' => [
+                'phone'=>'số điện thoại',
+                'start_date'=>'ngày vào công ty',
+                'end_date'=>'ngày nghỉ việc'
             ],
-            'attributes' => ['phone'=>'Số điện thoại'],
             'advanced' => [],
         ];
     }
@@ -83,13 +83,12 @@ class UserController extends AdminBaseController
                 'end_date'=>"nullable|date|after:start_date"
             ],
             'messages' => [
-                'numeric'=> ":attribute phải là định dạng số",
-                'end_date.after'=>'Ngày nghỉ việc phải là ngày sau ngày vào công ty',
-                'digits_between'=>'Số điện thoại nằm trong khoảng từ 10 đến 30 kí tự'
+
             ],
             'attributes' => [
-
-                'phone'=>'Số điện thoại'
+                'phone'=>'số điện thoại',
+                'start_date'=>'ngày vào công ty',
+                'end_date'=>'ngày nghỉ việc'
             ],
             'advanced' => [],
         ];

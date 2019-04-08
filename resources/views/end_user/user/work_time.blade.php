@@ -42,30 +42,40 @@
             </div>
         </div>
     </div>
-    <div id="container"></div>
-
 
     <!-- Modal -->
-    <div class="modal fade" id="feedback" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    <div class="modal fade myModal" id="modal-form" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
          aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">ĐƠN KÊU OAN</h5>
+        <div class="modal-dialog modal-center modal-set-center" role="document">
+            <div class="modal-content" id="bg-img" style="background-image: url({{ asset('img/font/xin_nghi.png') }})">
+                <div class="modal-header text-center border-bottom-0 p-3">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
+                        <span class="btn-close-icon" aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <div class="modal-body">
-                    <textarea cols="55" rows="10"></textarea>
+                <div class="d-flex justify-content-center">
+                    <img src="{{ asset('img/font/gio_lam_viec_popup.png') }}" alt="" width="355px" height="260px">
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary complain">Đâm đơn</button>
-                    <button type="button" class="btn btn-primary" data-dismiss="modal">Bỏ qua</button>
-                </div>
+                <br>
+                <form action="{{ route('day_off_create') }}" method="post">
+                    @csrf
+                    <div class="d-flex justify-content-center text-area-reason" id="div-reason">
+                        {{--<textarea class="form-control w-90" name="reason" id="" rows="6"--}}
+                        {{--placeholder="Nội dung bạn muốn gửi..."></textarea>--}}
+                    </div>
+                    <div id="event"></div>
+                    <div class="pt-3 pb-4 d-flex justify-content-center border-top-0 rounded mb-0">
+                        <button class="btn btn-primary btn-send">GỬI ĐƠN</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
+
+    <!-- [EVENT] -->
+    {{--<div id="event"></div>--}}
+    <!-- [CALENDAR] -->
+    <div id="container"></div>
     <script type="text/javascript">
         var id = 0;
 
@@ -103,6 +113,19 @@
         /**
          *          Create calendar
          */
+        var dataCalendar = [
+                @foreach($calendarData as $data)
+            [
+                "{{ $data['work_day'] }}",
+                "{{  $data['start_at'] }}",
+                "{{ $data['end_at'] }}",
+                "{{ $data['type'] }}",
+                "{{ $data['note'] }}",
+                "{{ $data['attendance-time'] }}",
+                "{{ $data['id'] }}",
+            ],
+            @endforeach
+        ];
         var calendar = {
             mName: ["Tháng 01", "Tháng 02", "Tháng 03", "Tháng 04", "Tháng 05", "Tháng 06", "Tháng 07", "Tháng 08", "Tháng 09", "Tháng 10", "Tháng 11", "Tháng 12"],
             valMonth: ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"],
@@ -173,27 +196,26 @@
                 var lastDateOfLastMonth = valMonth == 0 ? new Date(valYear - 1, 12, 0).getDate() : new Date(valYear, valMonth, 0).getDate();
                 var firstDayOfCurrentMonth = new Date(valYear, valMonth, 0).getDay();
                 var dayOfLastMonth = lastDateOfLastMonth - firstDayOfCurrentMonth;
-                var dataCalendar = [
-                        @foreach($calendarData as $data)
-                    [
-                        "{{ $data['work_day'] }}",
-                        "{{  $data['start_at'] }}",
+                        {{--var dataCalendar = [--}}
+                        {{--@foreach($calendarData as $data)--}}
+                        {{--[--}}
+                        {{--"{{ $data['work_day'] }}",--}}
                         {{--"{{  $data['start_at'] }}",--}}
-                        "{{ $data['end_at'] }}",
-                        "{{ $data['type'] }}",
-                        "{{ $data['note'] }}",
-                        "{{ $data['attendance-time'] }}",
-                    ],
-                    @endforeach
-                ];
+                        {{--"{{ $data['end_at'] }}",--}}
+                        {{--"{{ $data['type'] }}",--}}
+                        {{--"{{ $data['note'] }}",--}}
+                        {{--"{{ $data['attendance-time'] }}",--}}
+                        {{--],--}}
+                        {{--@endforeach--}}
+                        {{--];--}}
                 for (var i = 0; i < total; i++) {
                     cCell = document.createElement("td");
                     cCell.classList.add("calendar-td-body");
                     var dates = new Date();
                     var getCurrentMonth = dates.getMonth().toString();
                     var getCurrentYear = dates.getFullYear().toString();
-                    var selectMonthYear =valYear  + "-" + valMonth;
-                    var currentMonthYear =getCurrentYear + "-" + getCurrentMonth;
+                    var selectMonthYear = valYear + "-" + valMonth;
+                    var currentMonthYear = getCurrentYear + "-" + getCurrentMonth;
                     if (selectMonthYear === currentMonthYear) {
                         var current_day = dates.getDay();
                         var cells = document.getElementById('calendar').getElementsByTagName('td');
@@ -201,13 +223,18 @@
                         cells[current_day].style.color = '#f4f4f4';
                     }
 
+
                     if (squares[i] == "last") {
                         cCell.classList.add("blank");
+                        cCell.setAttribute("disabled", "true");
                         cCell.innerHTML += "<div class='dayNumber calendar-td-body'>" + dayOfLastMonth++ + "</div>";
                     } else if (squares[i] == "next") {
                         cCell.classList.add("blank");
                         cCell.innerHTML = "<div class='dayNumber calendar-td-body'>" + daysOfNextMonth++ + "</div>";
                     } else {
+                        cCell.addEventListener("dblclick", function () {
+                            calendar.show(this);
+                        });
                         var n = squares[i].toString().length;
                         if (n < 2) {
                             var daySquares = "0" + squares[i];
@@ -218,8 +245,12 @@
                         cCell.innerHTML = "<div class='dayNumber'>" + squares[i] + "</div>";
                         dataCalendar.forEach(function (element) {
                             if (element[0] === dataDate) {
+                                cCell.classList.add("calendar-body");
                                 cCell.setAttribute("class", "calendar-td-body data-type-" + element[3]);
+                                cCell.setAttribute("data-type", +element[3]);
                                 cCell.innerHTML += "<div class='attendance-time'>" + element[1] + element[5] + element[2] + "</div>";
+                                cCell.innerHTML += "<div class='id-reason-time' style='display: none'>" + element[6] + "</div>";
+                                cCell.innerHTML += "<div class='reason-time' style='display: none'>" + element[4] + "</div>";
                             }
                         });
                     }
@@ -229,6 +260,58 @@
                         cRow = document.createElement("tr");
                         cRow.classList.add("calendar-body");
                     }
+                }
+            },
+
+            show: function (el) {
+                var getCurrentTime = new Date();
+                var currentMY = getCurrentTime.getFullYear() + "-" + getCurrentTime.getMonth();
+                var calendarYM = calendar.sYear + "-" + calendar.sMth;
+                if (currentMY === calendarYM) {
+                    calendar.sDay = el.getElementsByClassName("dayNumber")[0].innerHTML;
+                    var time = calendarYM + "-" + calendar.sDay;
+                    dataCalendar.forEach(function (element) {
+                        var element = document.getElementsByClassName("calendar-td-body");
+                        var idReasonTime = el.getElementsByClassName("id-reason-time")[0];
+                        var reasonTime = el.getElementsByClassName("reason-time")[0];
+                        console.log(idReasonTime != undefined && reasonTime != undefined)
+                        if (idReasonTime != undefined && reasonTime != undefined) {
+                            calendar.sDay = el.getElementsByClassName("dayNumber")[0].innerHTML;
+                            document.getElementById("div-reason").innerHTML =
+                                '<div class="row col-md-12">' +
+                                '<input hidden name="id" value="' + idReasonTime.innerHTML + '">' +
+                                '<div class="row col-md-12 d-flex justify-content-center">' +
+                                '<textarea class="form-control w-90" name="reason" rows="6">' + reasonTime.innerHTML + '</textarea>' +
+                                '</div>' +
+                                '<div class="row col-md-12">' +
+                                '<input hidden name="work_day" value="' + time + '">' +
+                                '</div>' +
+                                '</div>';
+
+                            var container = document.getElementById("event");
+                        } else if (currentMY + "-" + getCurrentTime.getDate() <= time) {
+                            document.getElementById("div-reason").innerHTML =
+                                '<div class="row col-md-12">' +
+                                '<div class="row col-md-12 d-flex justify-content-center">' +
+                                '<textarea class="form-control w-90" name="reason" rows="6">' + 'Next day' + '</textarea>' +
+                                '</div>' +
+                                '<div class="row col-md-12">' +
+                                '<input name="work_day" value="' + time + '">"' +
+                                '</div>' +
+                                '</div>';
+                        } else {
+                            var  calendarMonth = calendar.sMth + 1;
+                            document.getElementById("div-reason").innerHTML =
+                                '<div class="row col-md-12">' +
+                                '<div class="row col-md-12 d-flex justify-content-center">' +
+                                '<input hidden name="work_day" value="' + calendar.sYear + "-" + calendarMonth + "-" + calendar.sDay + '">' +
+                                '<textarea class="form-control w-90" name="reason" rows="6"></textarea>' +
+                                '</div>' +
+                                '</div>';
+                        }
+                        document.getElementById("div-reason").innerHTML
+                    });
+                    $('.myModal').modal('show');
                 }
             },
         };

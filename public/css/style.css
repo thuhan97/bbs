@@ -15,6 +15,10 @@
     width: 74%;
 }
 
+.w-90{
+    width: 90%;
+}
+
 .no-border {
     border: none;
 }
@@ -567,6 +571,14 @@ tr.calendar-body td {
     font-size: 0.8em;
     max-height: 5em;
     overflow: hidden;
+}
+
+.calendar-td-body{
+    user-select: none;
+}
+
+.modal-set-center{
+    margin-left: 43%;
 }
 
 .data-type-3 {

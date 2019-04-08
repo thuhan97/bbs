@@ -109,6 +109,7 @@ Route::group([
     Route::get('/doi-mat-khau', 'UserController@changePassword')->name('changePassword');
     Route::post('/doi-mat-khau', 'UserController@updatePassword')->name('update_password');
     Route::get('/thoi-gian-lam-viec', 'UserController@workTime')->name('work_time');
+    Route::get('/thoi-gian-lam-viec-api', 'UserController@workTimeAPI')->name('work_time_api');
     Route::get('/ngay-nghi', 'UserController@dayOff')->name('day_off');
    /* Route::post('/ngay-nghi/create-api', 'UserController@dayOffCreate_API')->name('day_off_createAPI');*/
     Route::get('/ngay-nghi/list-approval-api', 'UserController@dayOffListApprovalAPI')->name('day_off_listApprovalAPI');

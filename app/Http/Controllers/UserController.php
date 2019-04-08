@@ -83,7 +83,7 @@ class UserController extends Controller
         $user->save();
         Auth::logout();
 
-        return redirect('/login')->with('notification_change_pass',__('messages.notification_change_pass'));
+        return redirect('/login')->with('notification_change_pass', __('messages.notification_change_pass'));
     }
 
     public function workTime(Request $request)
@@ -119,24 +119,59 @@ class UserController extends Controller
             $early = $list_work_times->whereIn('type', $type_early)->count();
             $ot = $list_work_times->whereIn('type', $type_ot)->count();
         }
-        $calendarData = [];
-        $list_work_times_calendar = WorkTime::where('user_id', Auth::user()->id)->get();
-        foreach ($list_work_times_calendar->toArray() as $item) {
-            $startDay = $item['start_at'] ? new DateTime($item['start_at']) : '';
-            $dataStartDay = $startDay ? $startDay->format('H:i') : '';
-            $endDay = $item['end_at'] ? new DateTime($item['end_at']) : '';
-            $dataEndDay = $endDay ? $endDay->format('H:i') : '';
-            $calendarData[] = [
-                'work_day' => $item['work_day'],
-//                'start_at' => $item['start_at'] ? $item['start_at']." - " : '',
-                'start_at' => $dataStartDay,
-                'end_at' => $dataEndDay,
-                'type' => $item['type'],
-                'note' => $item['note'],
-                'attendance-time'=> $dataStartDay && $dataEndDay ?  " - "  : '' ,
-            ];
+
+        if (Auth::user()) {
+            $calendarData = [];
+            $list_work_times_calendar = WorkTime::where('user_id', Auth::user()->id)->get();
+            if ($list_work_times_calendar) {
+                foreach ($list_work_times_calendar->toArray() as $item) {
+                    $startDay = $item['start_at'] ? new DateTime($item['start_at']) : '';
+                    $dataStartDay = $startDay ? $startDay->format('H:i') : '';
+                    $endDay = $item['end_at'] ? new DateTime($item['end_at']) : '';
+                    $dataEndDay = $endDay ? $endDay->format('H:i') : '';
+                    $calendarData[] = [
+                        'work_day' => $item['work_day'],
+                        'start_at' => $dataStartDay,
+                        'end_at' => $dataEndDay,
+                        'type' => $item['type'],
+                        'note' => $item['note'],
+                        'attendance-time' => $dataStartDay && $dataEndDay ? " - " : '',
+                        'id' => $item['id'],
+                    ];
+                }
+            }
         }
-        return view('end_user.user.work_time', compact('list_work_times', 'late', 'early', 'ot','list_work_times_calendar','calendarData'));
+        return view('end_user.user.work_time', compact('list_work_times', 'late', 'early', 'ot', 'list_work_times_calendar', 'calendarData'));
+    }
+
+    public function workTimeAPI()
+    {
+        if (Auth::user()) {
+            $calendarData = [];
+            $list_work_times_calendar = WorkTime::where('user_id', Auth::user()->id)->get();
+            if ($list_work_times_calendar) {
+                foreach ($list_work_times_calendar->toArray() as $item) {
+                    $startDay = $item['start_at'] ? new DateTime($item['start_at']) : '';
+                    $dataStartDay = $startDay ? $startDay->format('H:i') : '';
+                    $endDay = $item['end_at'] ? new DateTime($item['end_at']) : '';
+                    $dataEndDay = $endDay ? $endDay->format('H:i') : '';
+                    $calendarData[] = [
+                        'work_day' => $item['work_day'],
+                        'start_at' => $dataStartDay,
+                        'end_at' => $dataEndDay,
+                        'type' => $item['type'],
+                        'note' => $item['note'],
+                        'attendance-time' => $dataStartDay && $dataEndDay ? " - " : '',
+                        'id' => $item['id'],
+                    ];
+                }
+            }
+            return response([
+                'success'=>true,
+                'message'=>'Lịch',
+                'data'=>$calendarData
+            ]);
+        }
     }
 
     //
@@ -159,31 +194,31 @@ class UserController extends Controller
         return view('end_user.user.day_off', compact('listDate', 'paginateData', 'availableDayLeft', 'recordPerPage', 'approve', 'userManager'));
     }
 
-   /* public function dayOffCreate_API(DayOffRequest $request)
-    {
-        $response = [
-            'success' => false,
-            'message' => NOT_AUTHORIZED
-        ];
-        if (!$request->ajax() || !Auth::check()) {
-            return response($response);
-        }
+    /* public function dayOffCreate_API(DayOffRequest $request)
+     {
+         $response = [
+             'success' => false,
+             'message' => NOT_AUTHORIZED
+         ];
+         if (!$request->ajax() || !Auth::check()) {
+             return response($response);
+         }
 
-        $indicate = $this->userDayOff->create(
-            Auth::id(), $request->input('title'),
-            $request->input('reason'),
-            $request->input('start_at'),
-            $request->input('end_at'),
-            $request->input('approver_id')
-        );
+         $indicate = $this->userDayOff->create(
+             Auth::id(), $request->input('title'),
+             $request->input('reason'),
+             $request->input('start_at'),
+             $request->input('end_at'),
+             $request->input('approver_id')
+         );
 
 
-        $response['message'] = !!$indicate['record'] ? "Gửi thành công!" : $indicate['message'];
-        $response['success'] = $indicate['status'];
-        $response['record'] = $indicate['record'];
+         $response['message'] = !!$indicate['record'] ? "Gửi thành công!" : $indicate['message'];
+         $response['success'] = $indicate['status'];
+         $response['record'] = $indicate['record'];
 
-        return response($response);
-    }*/
+         return response($response);
+     }*/
 
     public function dayOffListApprovalAPI(Request $request)
     {
@@ -292,16 +327,20 @@ class UserController extends Controller
         return view('end_user.user.contact', compact('users', 'search', 'perPage'));
     }
 
-    public function dayOffCreate(CreateDayOffRequest $request)
+    public function dayOffCreate(Request $request)
     {
-        $indicate = $this->userDayOff->create(
-            Auth::id(), $request->input('title'),
-            $request->input('reason'),
-            $request->input('start_at'),
-            $request->input('end_at'),
-            $request->input('approver_id')
-        );
-        return back()->with('day_off_success','');
-
+        $id = $request['id'];
+        $reason = $request['reason'];
+        $idUser = Auth::user()->id;
+        if ($id) {
+            WorkTime::where('id', $id)->update(['note' => $reason]);
+        } else {
+            WorkTime::create([
+                'user_id' => $idUser,
+                'work_day' => $request['work_day'],
+                'note' => $reason
+            ]);
+        }
+        return back()->with('day_off_success', '');
     }
 }

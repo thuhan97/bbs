@@ -22,7 +22,7 @@ class DayOffService extends AbstractService implements IDayOffService
     /**
      * DayOffService constructor.
      *
-     * @param \App\Models\DayOff                            $model
+     * @param \App\Models\DayOff $model
      * @param \App\Repositories\Contracts\IDayOffRepository $repository
      */
     public function __construct(DayOff $model, IDayOffRepository $repository)
@@ -35,10 +35,10 @@ class DayOffService extends AbstractService implements IDayOffService
      * Query a list of day off
      *
      * @param Request $request
-     * @param array   $moreConditions
-     * @param array   $fields
-     * @param string  $search
-     * @param int     $perPage
+     * @param array $moreConditions
+     * @param array $fields
+     * @param string $search
+     * @param int $perPage
      *
      * @return mixed
      */
@@ -97,8 +97,8 @@ class DayOffService extends AbstractService implements IDayOffService
             'total' => $remainDay->previous_year + $remainDay->current_year,
             'total_previous' => $remainDay->previous_year,
             'total_current' => $remainDay->current_year,
-            'remain_current' =>  $model->whereYear('start_at', $thisYear)->sum('number_off'),
-            'remain_previous' =>  $model->whereYear('start_at', $thisYear - 1)->sum('number_off')
+            'remain_current' => $model->whereYear('start_at', $thisYear)->sum('number_off'),
+            'remain_previous' => $model->whereYear('start_at', $thisYear - 1)->sum('number_off')
         ];
     }
 
@@ -160,51 +160,67 @@ class DayOffService extends AbstractService implements IDayOffService
             "message" => "Tạo đơn thất bại"
         ];
     }
-    public function showList($status){
 
-        $data=$this->getdata()->get();
+    public function showList($status)
+    {
 
-        if ($status != null){
-            if ($status < ALL_DAY_OFF){
-                $dataDate=$this->getdata()->where('day_offs.status',$status);
-            }else{
-                $dataDate=$this->getdata();
+        $data = $this->getdata()->get();
+
+        if ($status != null) {
+            if ($status < ALL_DAY_OFF) {
+                $dataDate = $this->getdata()->where('day_offs.status', $status);
+            } else {
+                $dataDate = $this->getdata();
             }
 
-        }else{
-            $dataDate=$this->getdata()->whereMonth('day_offs.created_at', '=', date('m'))->whereYear('day_offs.created_at', '=', date('Y'));
+        } else {
+            $dataDate = $this->getdata()->whereMonth('day_offs.created_at', '=', date('m'))->whereYear('day_offs.created_at', '=', date('Y'));
         }
-        $dataDate=$dataDate->paginate(PAGINATE_DAY_OFF);
-        return[
-            'dateDate'=>$dataDate,
-            'data'=>$data,
-            'total'=>$data->count(),
-            'totalActive'=>$data->where('status',STATUS_DAY_OFF['active'])->count(),
-            'totalAbide'=>$data->where('status',STATUS_DAY_OFF['abide'])->count(),
-            'totalnoActive'=>$data->where('status',STATUS_DAY_OFF['noActive'])->count(),
+        $dataDate = $dataDate->paginate(PAGINATE_DAY_OFF);
+        return [
+            'dateDate' => $dataDate,
+            'data' => $data,
+            'total' => $data->count(),
+            'totalActive' => $data->where('status', STATUS_DAY_OFF['active'])->count(),
+            'totalAbide' => $data->where('status', STATUS_DAY_OFF['abide'])->count(),
+            'totalnoActive' => $data->where('status', STATUS_DAY_OFF['noActive'])->count(),
 
         ];
     }
-    public function getDataSearch($year, $month, $status,$search='')
+
+    public function getDataSearch($year, $month, $status, $search = '')
     {
-        $data= $this->getdata()->whereMonth('day_offs.created_at', '=', $month)->whereYear('day_offs.created_at', '=', $year);
+        $data = $this->getdata()->whereMonth('day_offs.created_at', '=', $month)->whereYear('day_offs.created_at', '=', $year);
         if ($search != null) {
             $data = $data->Where('users.name', 'like', '%' . $search . '%');
         }
-        if ($status < ALL_DAY_OFF){
-            $data= $data->where('day_offs.status',$status);
+        if ($status < ALL_DAY_OFF) {
+            $data = $data->where('day_offs.status', $status);
         }
-       $data=$data->paginate(PAGINATE_DAY_OFF);
+        $data = $data->paginate(PAGINATE_DAY_OFF);
         return [
-            'data'=>$data,
+            'data' => $data,
         ];
     }
 
-    private function getdata(){
-        return  DayOff::select('day_offs.*',DB::raw('DATE_FORMAT(day_offs.start_at, "%d/%m/%Y (%H:%i)") as start_date'),DB::raw('DATE_FORMAT(day_offs.end_at, "%d/%m/%Y (%H:%i)") as end_date'),'users.name')
-            ->join('users','users.id','=','day_offs.user_id')
-            ->where('day_offs.approver_id',Auth::id())
-            ->where('day_offs.user_id','<>',Auth::id())
-            ->orderBy('day_offs.status',ASC );
+    public function getOneData($id)
+    {
+        return $data = $this->getdata(false,$id)->first();
+    }
+
+
+    private function getdata($check = true, $id = null)
+    {
+         $data = DayOff::select('day_offs.*', DB::raw('DATE_FORMAT(day_offs.start_at, "%d/%m/%Y (%H:%i)") as start_date'), DB::raw('DATE_FORMAT(day_offs.end_at, "%d/%m/%Y (%H:%i)") as end_date'), DB::raw('DATE_FORMAT(day_offs.approver_at, "%d/%m/%Y (%H:%i)") as approver_date'), 'users.name')
+            ->join('users', 'users.id', '=', 'day_offs.user_id');
+        if ($check) {
+            $data = $data->where('day_offs.approver_id', Auth::id())
+                ->where('day_offs.user_id', '<>', Auth::id())
+                ->orderBy('day_offs.status', ASC);
+            return $data;
+        } else {
+            $data = $data->where('day_offs.id', $id);
+            return $data;
+        }
     }
 }

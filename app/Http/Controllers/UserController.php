@@ -301,7 +301,8 @@ class UserController extends Controller
         ));
     }
     public function dayOffGetOne($id){
-        return $this->dayOffRepository->findOne($id);
+
+        return $this->userDayOff->getOneData($id);
     }
 
 

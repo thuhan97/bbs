@@ -152,3 +152,5 @@ define('TYPES_DEVICE', [
     6 => 'Khác'
 ]);
 
+define('SHARE_DUCOMMENT', 2);
+

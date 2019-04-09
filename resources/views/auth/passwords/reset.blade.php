@@ -17,7 +17,7 @@
 
                             <input type="hidden" name="token" value="{{ $token }}">
 
-                            <div class="form-group">
+                            <div class="form-group mb-3" >
                                 <label for="email" class="col-md-4 control-label">Email</label>
 
                                 <div class="col-md-12">
@@ -26,7 +26,7 @@
                                 </div>
                             </div>
 
-                            <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
+                            <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }} my-5">
                                 <label for="password" class="col-md-4 control-label">Mật khẩu</label>
 
                                 <div class="col-md-12">
@@ -53,9 +53,8 @@
                                     @endif
                                 </div>
                             </div>
-
-                            <div class="form-group">
-                                <div class="col-md-6 col-md-offset-4">
+                            <div class="form-group d-flex justify-content-center my-5 pt-3">
+                                <div class="">
                                     <button type="submit" class="btn btn-primary">
                                         Reset mật khẩu
                                     </button>

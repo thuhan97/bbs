@@ -19,14 +19,14 @@ use Illuminate\Support\Facades\Auth;
 class UserController extends Controller
 {
     private $userService;
-    private $userDayOff;
+    private $userDayOffService;
     private $dayOffRepository;
 
-    public function __construct(IUserService $userService, IDayOffService $userDayOff , IDayOffRepository $dayOffRepository)
+    public function __construct(IUserService $userService, IDayOffService $userDayOffService , IDayOffRepository $dayOffRepository)
     {
         $this->dayOffRepository=$dayOffRepository;
         $this->userService = $userService;
-        $this->userDayOff = $userDayOff;
+        $this->userDayOffService = $userDayOffService;
     }
 
     public function index()
@@ -151,14 +151,14 @@ class UserController extends Controller
     public function dayOff(DayOffRequest $request)
     {
         $conditions = ['user_id' => Auth::id()];
-        $listDate = $this->userDayOff->findList($request, $conditions);
+        $listDate = $this->userDayOffService->findList($request, $conditions);
 
         $paginateData = $listDate->toArray();
         $recordPerPage = $request->get('per_page');
         $approve = $request->get('approve');
         $userManager = $this->userService->getUserManager();
 
-        $availableDayLeft = $this->userDayOff->getDayOffUser(Auth::id());
+        $availableDayLeft = $this->userDayOffService->getDayOffUser(Auth::id());
         return view('end_user.user.day_off', compact('listDate', 'paginateData', 'availableDayLeft', 'recordPerPage', 'approve', 'userManager'));
     }
 
@@ -172,7 +172,7 @@ class UserController extends Controller
              return response($response);
          }
 
-         $indicate = $this->userDayOff->create(
+         $indicate = $this->userDayOffService->create(
              Auth::id(), $request->input('title'),
              $request->input('reason'),
              $request->input('start_at'),
@@ -198,7 +198,7 @@ class UserController extends Controller
             return response($response);
         }
         $user = Auth::user();
-        $dataResponse = $this->userDayOff->listApprovals((int)$user->jobtitle_id + 1);
+        $dataResponse = $this->userDayOffService->listApprovals((int)$user->jobtitle_id + 1);
 
         return response([
             'success' => true,
@@ -209,7 +209,7 @@ class UserController extends Controller
 
     public function dayOffApprove(DayOffRequest $request,$status=null)
     {
-        $dataDayOff = $this->userDayOff->showList($status);
+        $dataDayOff = $this->userDayOffService->showList($status);
         return view('end_user.user.day_off_approval', compact(
              'dataDayOff'
         ));
@@ -221,7 +221,7 @@ class UserController extends Controller
             return null;
         }
 
-        $responseObject = $this->userDayOff->getRecordOf($id);
+        $responseObject = $this->userDayOffService->getRecordOf($id);
         if ($responseObject == null) return null;
         $transformer = new DayOffTransformer();
 
@@ -246,7 +246,7 @@ class UserController extends Controller
         $recievingObject = (object)$arrRequest;
 //		return 	$recievingObject;
 
-        $targetRecordResponse = $this->userDayOff->updateStatusDayOff(
+        $targetRecordResponse = $this->userDayOffService->updateStatusDayOff(
             $recievingObject->id, Auth::id(), $recievingObject->approve_comment,
             $recievingObject->number_off
         );
@@ -275,7 +275,7 @@ class UserController extends Controller
 
     public function dayOffCreate(CreateDayOffRequest $request)
     {
-        $indicate = $this->userDayOff->create(
+        $indicate = $this->userDayOffService->create(
             Auth::id(), $request->input('title'),
             $request->input('reason'),
             $request->input('start_at'),
@@ -289,20 +289,20 @@ class UserController extends Controller
     public function dayOffSearch(Request $request)
     {
         if ($request->search != ''){
-            return $this->userDayOff->getDataSearch($request->year, $request->month, $request->status,$request->search);
+            return $this->userDayOffService->getDataSearch($request->year, $request->month, $request->status,$request->search);
         }
-        return $this->userDayOff->getDataSearch($request->year, $request->month, $request->status,'');
+        return $this->userDayOffService->getDataSearch($request->year, $request->month, $request->status,'');
     }
     public function dayOffShow($status){
 
-        $dataDayOff = $this->userDayOff->showList($status);
+        $dataDayOff = $this->userDayOffService->showList($status);
         return view('end_user.user.day_off_approval', compact(
             'dataDayOff'
         ));
     }
     public function dayOffGetOne($id){
 
-        return $this->userDayOff->getOneData($id);
+        return $this->userDayOffService->getOneData($id);
     }
 
 

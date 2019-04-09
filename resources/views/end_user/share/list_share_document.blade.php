@@ -15,11 +15,6 @@
         </a>
     </div>
 	<div>
-        @if(session()->has('share'))
-            <div class="alert alert-success">
-                {{ session()->get('share') }}
-            </div>
-        @endif
         <table class="table table-bordered">
             <thead>
             <tr>
@@ -44,27 +39,6 @@
             @foreach($list_document as $document)
             	<?php 
             		$ext = pathinfo($document->file, PATHINFO_EXTENSION);
-            		if($ext == 'pdf') {
-            			$type_file = '<i class="fa fa-file-pdf" aria-hidden="true"></i>';
-            		}elseif ($ext == 'doc') {
-            			$type_file = '<i class="fa fa-file-word" aria-hidden="true"></i>';
-            		}elseif ($ext == 'zip') {
-            			$type_file = '<i class="fa fa-file-archive" aria-hidden="true"></i>';
-            		}elseif ($ext == 'xlsx') {
-            			$type_file = '<i class="fa fa-file-excel" aria-hidden="true"></i>';
-            		}elseif (in_array($ext,array('jpg', 'jpeg', 'gif', 'png'))) {
-            			$type_file = '<i class="far fa-image"></i>';
-            		}elseif ($ext == 'pptx') {
-            			$type_file = '<i class="fa fa-file-powerpoint"></i>';
-            		}elseif (in_array($ext,array('mp4', 'mov'))) {
-            			$type_file = '<i class="fas fa-file-video"></i>';
-            		}elseif ($ext == 'mp3') {
-            			$type_file = '<i class="fas fa-file-audio"></i>';
-            		}elseif (in_array($ext,array('php', 'css', 'js', 'sql'))) {
-            			$type_file = '<i class="far fa-file-code"></i>';
-            		}else{
-            			$type_file = 'Chưa rõ';
-            		}
             	?>
                 <tr>
                     <td>
@@ -76,8 +50,11 @@
                     <td>
                         {{$document->created_at}}
                     </td>
+                    <?php 
+                        $ext = pathinfo($document->file, PATHINFO_EXTENSION);
+                    ?>                    
                     <td class="center">
-                    	<?php echo $type_file; ?>
+                        <i class="<?php echo isset(ICONS_TYPES_FILES[$ext]) ? ICONS_TYPES_FILES[$ext] : ''; ?>" aria-hidden="true"></i>
                     </td>
                     <td class="center">
                     	<a href="/download_file_share/{{$document->id}}" target="_blank">
@@ -105,16 +82,16 @@
                     	</div>
                     </button>
                 </div>
-                <form action="{{ route('add_document') }}" method="post" id="formDucument" enctype="multipart/form-data">
+                <form action="{{ route('add_document') }}" method="post" id="formDocument" enctype="multipart/form-data">
                     @csrf <!-- {{ csrf_field() }} -->
                     <div class="modal-body">
     	                <div id="contentCreateForm">
-    		                <label class="ml-3 text-w-400" for="titleDucoment">Tiêu đề tài liệu *</label>
-    		                <input type="text" required id="titleDucoment" class="form-control mb-3" name="titleDucoment"
+    		                <label class="ml-3 text-w-400" for="titleDocoment">Tiêu đề tài liệu *</label>
+    		                <input type="text" required id="titleDocoment" class="form-control mb-3" name="titleDocoment"
     		                       placeholder="Tiêu liệu bạn muốn chia sẻ " autocomplete="off">
     		                <label class="ml-3 text-w-400" for="titleForm">Upload file và chia sẻ file *</label>
                             <div class="inputDnD">
-                                <input type="file" required name="fileDucoment" class="form-control-file text-primary font-weight-bold" id="inputFile" onchange="readUrl(this)" data-title="NHẤP CHUỘT HOẶC KÉO THẢ FILE VÀO ĐÂY">
+                                <input type="file" required name="fileDocoment" class="form-control-file text-primary font-weight-bold" id="inputFile" onchange="readUrl(this)" data-title="NHẤP CHUỘT HOẶC KÉO THẢ FILE VÀO ĐÂY">
                             </div>
                             <div class="card bg-danger text-white" id="ErrorMessaging"> 
     		            </div>
@@ -183,10 +160,10 @@
 </style>
 <script>
 function sendAbsenceForm() {
-    var name = $("#titleDucoment").val();
+    var name = $("#titleDocoment").val();
     var file = $("#inputFile").val();
     if(name != '' && file != ''){
-        $("#formDucument").submit();
+        $("#formDocument").submit();
     }else{
         let errorBox = document.getElementById('ErrorMessaging');
         errorBox.innerHTML = "<div class='card-body'>Tiêu đề và file không được để trống!</div>";        

@@ -54,4 +54,6 @@ return [
     'save' => 'Lưu',
     'update' => 'Cập nhật',
     'cancel' => 'Hủy bỏ',
+    'share_document_successully' => 'Chia sẻ tài liệu thành công',
+    'share_document_error' => 'Chia sẻ tài liệu thất bại',
 ];

@@ -103,7 +103,7 @@ Breadcrumbs::register('work_time', function ($breadcrumbs) {
 });
 // Dashboard > list_share_document
 Breadcrumbs::register('list_share_document', function ($breadcrumbs) {
-    $breadcrumbs->parent('personal');
+    $breadcrumbs->parent('home');
     $breadcrumbs->push(__l('list_share_document'), route('list_share_document'));
 });
 // Dashboard > day_off

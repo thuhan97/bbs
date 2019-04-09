@@ -159,6 +159,7 @@ define('ICONS_TYPES_FILES', [
     'png' => 'far fa-image',
     'pdf' => 'fa fa-file-pdf',
     'doc' => 'fa fa-file-word',
+    'docx' => 'fa fa-file-word',
     'zip' => 'fa fa-file-archive',
     'xlsx' => 'fa fa-file-excel',
     'xls' => 'fa fa-file-excel',

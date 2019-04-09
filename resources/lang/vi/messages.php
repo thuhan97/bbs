@@ -28,6 +28,7 @@ return [
     'personal_brief' => 'Hồ sơ cá nhân',
     'regulation' => 'Nội quy/Quy Định',
     'work_time' => 'Giờ làm việc',
+    'list_share_document' => 'Chia sẻ tài liệu',
     'contact' => 'Danh bạ',
     'day_off' => 'Ngày phép',
     'day_off_approval' => 'Phê duyệt nghỉ phép',
@@ -53,4 +54,6 @@ return [
     'save' => 'Lưu',
     'update' => 'Cập nhật',
     'cancel' => 'Hủy bỏ',
+    'share_document_successully' => 'Chia sẻ tài liệu thành công',
+    'share_document_error' => 'Chia sẻ tài liệu thất bại',
 ];

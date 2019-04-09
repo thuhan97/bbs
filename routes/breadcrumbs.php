@@ -96,6 +96,11 @@ Breadcrumbs::register('work_time', function ($breadcrumbs) {
     $breadcrumbs->parent('personal');
     $breadcrumbs->push(__l('work_time'), route('work_time'));
 });
+// Dashboard > list_share_document
+Breadcrumbs::register('list_share_document', function ($breadcrumbs) {
+    $breadcrumbs->parent('personal');
+    $breadcrumbs->push(__l('list_share_document'), route('list_share_document'));
+});
 // Dashboard > day_off
 Breadcrumbs::register('day_off', function ($breadcrumbs) {
     $breadcrumbs->parent('personal');

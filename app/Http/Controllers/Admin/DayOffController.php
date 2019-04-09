@@ -89,11 +89,12 @@ class DayOffController extends AdminBaseController
         $user = User::where('id', $id)->first();
         if ($user) {
             $conditions = ['user_id' => $id];
+
             $records = $this->service->findList($request, $conditions, ['*'], $search, $perPage);
             $year = $request->get('year');
             $month = $request->get('month');
-            [$numberThisYear, $numberLastYear] = $this->service->getDayOffUser($id);
-            return view($this->resourceAlias . '.user', compact('user', 'records', 'search', 'perPage', 'year', 'month', 'numberThisYear', 'numberLastYear'));
+           $numberThisYearAndLastYear= $this->service->getDayOffUser($id);
+            return view($this->resourceAlias . '.user', compact('user', 'records', 'search', 'perPage', 'year', 'month', 'numberThisYearAndLastYear'));
         } else {
             flash()->error(__l('user_not_found'));
             return redirect(route('admin::day_offs.index'));

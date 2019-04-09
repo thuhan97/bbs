@@ -34,4 +34,9 @@ interface IUserService extends IBaseService
      * @return collection
      */
     public function getContact(Request $request, &$perPage, &$search);
+    /**
+     *
+     * @return collection
+     */
+    public function getUserManager();
 }

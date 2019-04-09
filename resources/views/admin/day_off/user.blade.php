@@ -53,6 +53,7 @@ $_createLink = route($baseResourceRoutesAlias . '.create', ['user_id' => $user->
         <br/>
         <br/>
         <div class="box-body no-padding">
+
             @if (count($records) > 0)
                 <div class="table-responsive list-records">
                     <table class="table table-hover table-bordered">
@@ -80,9 +81,12 @@ $_createLink = route($baseResourceRoutesAlias . '.create', ['user_id' => $user->
                         </thead>
                         <tbody>
                         @foreach ($records as $record)
+
                             <?php
                             $editLink = route($baseResourceRoutesAlias . '.edit', $record->id);
                             $userLink = route($baseResourceRoutesAlias . '.user', $record->user_id);
+
+
 
                             $deleteLink = route($baseResourceRoutesAlias . '.destroy', $record->id);
                             $formId = 'formDeleteModel_' . $record->id;
@@ -129,20 +133,21 @@ $_createLink = route($baseResourceRoutesAlias . '.create', ['user_id' => $user->
                 <p class="margin-l-5 lead text-green">Không có ngày nghỉ phép.</p>
             @endif
         <!-- /.box-body -->
-            @if (count($records) > 0)
+          @if (count($records) > 0)
                 @include('common.paginate', ['records' => $records])
             @endif
+
             <div class="col-md-3">
                 <div class="box box-success z-depth-1">
                     <div class="box-header with-border">
                         <h3 class="box-title">Thống kê nghỉ phép</h3>
                     </div>
                     <div class="box-body">
-                        Năm {{date('Y')}}: Đã nghỉ nghỉ {{$numberThisYear}}/{{DAY_OFF_TOTAL}} ngày.
+                        Năm {{date('Y')}}: Đã nghỉ nghỉ {{$numberThisYearAndLastYear['remain_current']}}/{{DAY_OFF_TOTAL}} ngày.
                         <br>
-                        Năm {{(int)date('Y') - 1}}: Đã nghỉ {{$numberLastYear}}/{{DAY_OFF_TOTAL}} ngày.
+                        Năm {{(int)date('Y') - 1}}: Đã nghỉ {{$numberThisYearAndLastYear['remain_previous']}}/{{DAY_OFF_TOTAL}} ngày.
                         <hr>
-                        Số ngày nghỉ phép còn lại: {{DAY_OFF_TOTAL*2 - $numberThisYear - $numberLastYear}}
+                        Số ngày nghỉ phép còn lại: {{DAY_OFF_TOTAL*2 - $numberThisYearAndLastYear['remain_current'] - $numberThisYearAndLastYear['remain_previous']}}
                     </div>
                     <!-- /.box-body -->
                 </div>

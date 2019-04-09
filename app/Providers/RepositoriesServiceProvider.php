@@ -18,6 +18,7 @@ use App\Models\UserTeam;
 use App\Models\WorkTime;
 use App\Models\WorkTimeDetail;
 use App\Models\WorkTimeRegister;
+use App\Models\Meeting;
 use App\Repositories\AdminRepository;
 use App\Repositories\ConfigRepository;
 use App\Repositories\Contracts\IAdminRepository;
@@ -50,6 +51,7 @@ use App\Repositories\UserTeamRepository;
 use App\Repositories\WorkTimeDetailRepository;
 use App\Repositories\WorkTimeRegisterRepository;
 use App\Repositories\WorkTimeRepository;
+use App\Repositories\MeetingRepository;
 use Illuminate\Support\ServiceProvider;
 
 ##AUTO_INSERT_USE##
@@ -63,6 +65,7 @@ use App\Repositories\Contracts\IDeviceRepository;
 use App\Repositories\DeviceRepository;
 use App\Models\Device;
 use App\Repositories\Contracts\IEventAttendanceRepository;
+use App\Repositories\Contracts\IMeetingRepository;
 use App\Repositories\EventAttendanceRepository;
 use App\Models\EventAttendance;
 
@@ -145,7 +148,11 @@ class RepositoriesServiceProvider extends ServiceProvider
         $this->app->bind(IProjectRepository::class, function () {
             return new ProjectRepository(new Project());
         });
+         $this->app->bind(IMeetingRepository::class, function () {
+            return new MeetingRepository(new Meeting());
+        });
     }
+
 
     public function provides()
     {
@@ -169,7 +176,8 @@ class RepositoriesServiceProvider extends ServiceProvider
             ITeamRepository::class,
             IUserTeamRepository::class,
             IWorkTimeRegisterRepository::class,
-            IProjectRepository::class
+            IProjectRepository::class,
+            IMeetingRepository::class
         ];
     }
 }

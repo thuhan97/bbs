@@ -720,6 +720,9 @@ tr.calendar-body td {
     background-color: #01c851 !important;
     color: #ffffff !important;
 }
+.text-d-bold{
+    font-weight: bold;
+}
 /*
             End work time calendar
  */

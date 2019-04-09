@@ -178,8 +178,7 @@
                         @endif
                     </td>
                     <td class="text-center">
-                        <span attr="{{ $record->id }}"
-                              class="show-day-off @if($keys ==0)text-primary @endif">chi tiết>></span>
+                        <a class="show-day-off @if($keys ==0)text-primary @endif" href="{{ route('day_off_detail',['id'=>$record->id]) }}">chi tiết >></a>
                     </td>
                 </tr>
             @endforeach
@@ -189,135 +188,171 @@
         </table>
     {{ $dataDayOff['dateDate']->links() }}
     <!--Table-->
-
-
-        <div class="modal fade" id="modal-form" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
-             aria-hidden="true">
-            <div class="modal-dialog modal-center" role="document">
-                <div class="modal-content" id="bg-img"
-                     style="background-image: url({{ asset('img/font/xin_nghi.png') }})">
-                    <div class="modal-header text-center border-bottom-0 p-3">
-                        <h4 class="modal-title w-100 font-weight-bold pt-2">NỘI DUNG ĐƠN</h4>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span class="btn-close-icon" aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body mx-3 mt-0 pb-0">
-                        {{--<div class="mb-2">
-                            <label class="ml-3 mt-1 text-w-400" for="exampleForm2">Người nộp đơn</label>
-                            <input type="text" class="form-control select-item text-left" id="mangnaer" style="text-align: left !important;" autocomplete="off" name="end_at" readonly="readonly">
-                        </div>--}}
-                        <div class="mb-3">
-                            <!-- Default input -->
-                            <label class="ml-3 text-w-400" for="exampleForm2">Lý do:</label>
-                            <input type="text"
-                                   class="form-control select-item text-left" id="title" autocomplete="off"
-                                   name="start_at" readonly="readonly">
-                        </div>
-
-                        <div class="mb-3">
-                            <label class="ml-3 text-w-400" for="exampleFormControlTextarea5">Chi tiết lý do:</label>
-                            <textarea readonly="readonly"
-                                      class="form-control rounded-0 select-item {{ $errors->has('reason') ? ' has-error' : '' }}"
-                                      id="exampleFormControlTextarea2" rows="3" placeholder="lý do xin nghỉ..."
-                                      name="reason">{{ old('reason') }}</textarea>
-                        </div>
-                        <div class="mb-3">
-                            <!-- Default input -->
-                            <label class="ml-3 text-w-400" for="exampleForm2">Ngày nghỉ:</label>
-                            <input type="text"
-                                   class="form-control select-item text-left" id="start_date" autocomplete="off"
-                                   name="start_at" readonly="readonly">
-                        </div>
-
-                        <div class="mb-3">
-                            <!-- Default input -->
-                            <label class="ml-3 text-w-400" for="exampleForm2">Thời gian được tính:</label>
-                            <input type="text"
-                                   class="form-control select-item text-left" id="number_off" autocomplete="off"
-                                   name="start_at" readonly="readonly">
-                        </div>
-                        <div class="mb-3">
-                            <div class="row">
-                                <div class="form-group col-6 m-0">
-                                    <label class="ml-3 text-w-400" for="inputCity">Người duyệt</label>
-                                    <input type="text" class="form-control select-item" id="manager_login"
-                                           autocomplete="off" name="start_at" readonly="readonly">
+        @if(!empty($data))
+                <div class="modal fade" id="modal-form" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+                     aria-hidden="true">
+                    <div class="modal-dialog modal-center" role="document">
+                        <div class="modal-content" id="bg-img"
+                             style="background-image: url({{ asset('img/font/xin_nghi.png') }})">
+                            <div class="modal-header text-center border-bottom-0 p-3">
+                                <h4 class="modal-title w-100 font-weight-bold pt-2">NỘI DUNG ĐƠN</h4>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span class="btn-close-icon" aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body mx-3 mt-0 pb-0">
+                                <div class="mb-3">
+                                    <!-- Default input -->
+                                    <label class="ml-3 text-d-bold" for="exampleForm2">Lý do:</label>
+                                    <div class="ml-3">{{ array_key_exists($data->title,VACATION) ?  VACATION[$data->title] : '' }}</div>
                                 </div>
-                                <!-- Default input -->
-                                <div class="form-group col-6 m-0">
-                                    <label class="ml-3 text-w-400" for="inputZip">Ngày duyệt</label>
-                                    <input type="text" class="form-control select-item" id="approver_at"
-                                           autocomplete="off" name="end_at" readonly="readonly">
+
+                                <div class="mb-3">
+                                    <label class="ml-3 text-d-bold" for="exampleFormControlTextarea5">Chi tiết lý
+                                        do:</label>
+                                    <div class="ml-3">{{ $data->reason}}</div>
                                 </div>
-                                <span id="errors_date" class="text-danger ml-3 "></span>
+                                <div class="mb-3">
+                                    <!-- Default input -->
+                                    <label class="ml-3 text-d-bold" for="exampleForm2">Ngày nghỉ:</label>
+                                    <div class="ml-3">{{ $data->start_date .' - '. $data->end_date}}</div>
+                                </div>
+
+                                <div class="mb-3">
+                                    <!-- Default input -->
+                                    <label class="ml-3 text-d-bold" for="exampleForm2">Thời gian được tính:</label>
+                                    <div class="ml-3">{{$data->number_off }}</div>
+                                </div>
+                                <div class="mb-3">
+                                    <div class="row">
+                                        <div class="form-group col-6 m-0">
+                                            <label class="ml-3 text-d-bold" for="inputCity">Người duyệt</label>
+                                            <div class="ml-3">{{ auth()->user()->name }}</div>
+                                        </div>
+                                        <!-- Default input -->
+                                        <div class="form-group col-6 m-0">
+                                            <label class="ml-3 text-d-bold" for="inputZip">Ngày duyệt</label>
+                                            <div class="ml-3">{{ $data->approver_date }}</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="pt-3 pb-4 d-flex justify-content-center border-top-0 rounded mb-0">
+                                    <a href="{{ route('day_off_approve',['id'=>$data->id]) }}" class="btn btn-primary btn-send">
+                                        @if($data->status == 0)
+                                            DUYỆT ĐƠN
+                                        @elseif($data->status == 1)
+                                            HỦY DUYỆT
+                                        @else
+                                            SỬA ĐƠN
+                                        @endif
+                                    </a>
+                                </div>
                             </div>
                         </div>
-                        <div class="pt-3 pb-4 d-flex justify-content-center border-top-0 rounded mb-0">
-                            <button class="btn btn-primary btn-send">GỬI ĐƠN</button>
+                    </div>
+                </div>
+        @endif
+        @if(!empty($check))
+
+            {{--{{ dd($dayOff) }}--}}
+            <div class="modal fade" id="modal-form-edit" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+                 aria-hidden="true">
+                <div class="modal-dialog modal-center" role="document">
+                    <div class="modal-content" id="bg-img" style="background-image: url({{ asset('img/font/xin_nghi.png') }})">
+                        <div class="modal-header text-center border-bottom-0 p-3">
+                            <h4 class="modal-title w-100 font-weight-bold pt-2">ĐƠN XIN NGHỈ</h4>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span class="btn-close-icon" aria-hidden="true">&times;</span>
+                            </button>
                         </div>
+                        <form action="{{ route('day_off_create') }}" method="post">
+                            @csrf
+                            <div class="modal-body mx-3 mt-0 pb-0">
+                                <div class="mb-3">
+                                    <!-- Default input -->
+                                    <label class="ml-3 text-w-400" for="exampleForm2">Mục đích xin nghỉ*</label>
+                                    {{ Form::select('title', VACATION, $dayOff->title, ['class' => 'form-control my-1 mr-1 browser-default custom-select md-form select-item']) }}
+                                    @if ($errors->has('title'))
+                                        <div class="">
+                                            <span class="help-block text-danger">{{ $errors->first('title') }}</span>
+                                        </div>
+                                    @endif
+                                </div>
+
+                                <div class="mb-3">
+                                    <label class="ml-3 text-w-400" for="exampleFormControlTextarea5">Nội dung</label>
+                                    <textarea
+                                            class="form-control rounded-0 select-item {{ $errors->has('reason') ? ' has-error' : '' }}"
+                                            id="exampleFormControlTextarea2" rows="3" placeholder="lý do xin nghỉ..."
+                                            name="reason">{{ old('reason',$dayOff->reason) }}</textarea>
+                                    @if ($errors->has('reason'))
+                                        <div class="mt-1">
+                                            <span class="help-block text-danger">{{ $errors->first('reason') }}</span>
+                                        </div>
+                                    @endif
+                                </div>
+                                <div class="mb-2">
+                                    <div class="row">
+                                        <div class="form-group col-6 m-0">
+                                            <label class="ml-3 text-w-400" for="inputCity">Ngày bắt đầu nghỉ*</label>
+                                            <input type="text"
+                                                   class="form-control select-item {{ $errors->has('start_at') ? ' has-error' : '' }}"
+                                                   id="start_date" autocomplete="off" name="start_at"
+                                                   value="{{ old('start_at') }}" readonly="readonly">
+                                        </div>
+                                        <!-- Default input -->
+                                        <div class="form-group col-6 m-0">
+                                            <label class="ml-3 text-w-400" for="inputZip">Tới ngày*</label>
+                                            <input type="text"
+                                                   class="form-control select-item {{ $errors->has('end_at') ? ' has-error' : '' }}"
+                                                   id="end_date" autocomplete="off" name="end_at" value="{{ old('end_at',$dayOff->end_at) }}"
+                                                   readonly="readonly">
+                                        </div>
+                                        <span id="errors_date" class="text-danger ml-3 "></span>
+                                    </div>
+                                    @if ($errors->has('start_at'))
+                                        <div>
+                                            <span class="help-block text-danger">{{ $errors->first('start_at') }}</span>
+                                        </div>
+                                    @endif
+                                    @if ($errors->has('end_at'))
+                                        <div class="mt-1">
+                                            <span class="help-block text-danger">{{ $errors->first('end_at') }}</span>
+                                        </div>
+                                    @endif
+                                </div>
+                                <div>
+                                    {{--<label class="ml-3 mt-1 text-w-400" for="exampleForm2">Người duyệt*</label>
+                                    {{ Form::select('approver_id', $userManager, null, ['class' => 'form-control my-1 mr-1 browser-default custom-select md-form select-item']) }}
+                                    @if ($errors->has('approver_id'))
+                                        <div class="mt-1 ml-3">
+                                            <span class="help-block text-danger">{{ $errors->first('approver_id') }}</span>
+                                        </div>
+                                    @endif--}}
+                                </div>
+                            </div>
+                            <div class="pt-3 pb-4 d-flex justify-content-center border-top-0 rounded mb-0">
+                                <button class="btn btn-primary btn-send">GỬI ĐƠN</button>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>
-        </div>
+            <script>
+                $(function () {
+                    $('#modal-form-edit').modal('show');
+                });
+            </script>
 
+            @endif
 
-        <div class="modal fade right" id="detailApproval" tabindex="-1" role="dialog"
-             aria-labelledby="detail Approval dialog" aria-hidden="true" data-backdrop='false'>
-            <div class="modal-dialog modal-full-height modal-right" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title d-flex flex-row" id="dayoff_heading"></h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="text-left">
-                            <h4 class="text-bold">Nhân viên:</h4>
-                            <p>
-                                <strong id="dayoff_user"></strong>
-                            </p>
-                            <h4 class="text-bold">Lý do:</h4>
-                            <p>
-                                <strong id="dayoff_title"></strong>
-                            </p>
-                            <br>
-                            <h4 class="text-bold">Ngày nghỉ:</h4>
-                            <p>
-                                <strong id="dayoff_duration"></strong>
-                            </p>
-                            <br>
-                            <h4 class="text-bold">Thời gian được tính:</h4>
-                            <p id="dayoff_total"></p>
-                        </div>
-                        <hr>
-                        <div class="text-left">
-                            <h4 class="text-bold">Chi tiết lý do:</h4>
-                            <p id="dayoff_reason"></p>
-                            <br>
-                            <h4 class="text-bold">Ngày duyệt:</h4>
-                            <p id="dayoff_approveDate"></p>
-                            <br>
-                            <h4 class="text-bold">Người duyệt:</h4>
-                            <p id="dayoff_approval"></p>
-                            <br>
-                            <h4 class="text-bold important">Ý kiến</h4>
-                            <p id="dayoff_comment" contentEditable="true"></p>
-                        </div>
-                        <div class="card bg-danger text-white" id="ErrorMessaging">
-
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">
-                            Đóng
-                        </button>
-                        <button type="button" class="btn btn-primary" id="detailApproveBtn">Phê duyệt</button>
-                    </div>
-                </div>
-            </div>
-        </div>
+        @if(!empty($data) )
+            <script>
+                $(function () {
+                    $('#modal-form').modal('show');
+                });
+            </script>
+        @endif
         <script type="text/javascript">
             $(document).ready(function (e) {
                 $('.select_year , .month , .search-day-off').on('change', function () {
@@ -354,51 +389,6 @@
                         }
                     });
                 })
-
-                $(document).on('click', '.show-day-off', function () {
-                    var id = $(this).attr('attr');
-                    var name = $(this).parent().prev().prev().prev().prev().prev().prev().text();
-                    var number_off = $(this).parent().prev().prev().text();
-                    $.ajax
-                    ({
-                        'url': '/duyet-ngay-nghi/' + id,
-                        'type': 'get',
-                        success: function (datas) {
-                            var vacation = [];
-                            vacation[1] = 'Lý do cá nhân';
-                            vacation[2] = 'Nghỉ đám cưới';
-                            vacation[3] = 'Nghỉ đám hiếu';
-                            $.each(vacation, function (key, value) {
-                                if (key == datas.title) {
-                                    $('#title').val(value)
-                                }
-                            });
-                            $('#exampleFormControlTextarea2').text(datas.reason);
-                            $('#start_date').val(datas.start_date + ' - ' + datas.end_date);
-                            $('#end_date').val(datas.end_at);
-                            $.each(vacation, function (key, value) {
-                                if (key == datas.title) {
-                                    $('#title').val(value)
-                                }
-                            });
-                            $('#number_off').val(number_off);
-                            $('#mangnaer').val(name);
-                            $('#manager_login').val($('#user-login').attr('attr'));
-                            $('#approver_at').val(datas.approver_date);
-                            if (datas.status == 0) {
-                                $('.btn-send').text('DUYỆT ĐƠN');
-                            } else if (datas.status == 1) {
-                                $('.btn-send').text('HỦY DUYỆT');
-                            } else if (datas.status == 2) {
-                                $('.btn-send').text('DUYỆT ĐƠN');
-                            }
-
-                            $('#modal-form').modal('show');
-
-
-                        }
-                    });
-                });
             });
 
             function teamplate(data) {
@@ -439,12 +429,14 @@
                         html += '<i class="fas fa-frown fa-2x text-danger"></i>';
                     }
                     html += '</td> <td class="text-center">';
-                    html += ' <span class="';
+                    html += ' <a  class="';
                     if (key == 0) {
                         html += 'text-primary';
                     }
                     html += ' show-day-off "attr="' + value['id'] + '"';
-                    html += '>chi tiết>></span>';
+                    html += 'href="'
+                    html += "{{ URL::to('chi-tiet-ngay-nghi/') }}" + "/" + value['id'];
+                    html += '">chi tiết>></a>';
                     html += '</td> </tr>';
                 });
                 return html;

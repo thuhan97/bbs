@@ -118,8 +118,9 @@ Route::group([
 
 
     Route::get('/phe-duyet-ngay-nghi/show/{status}', 'UserController@dayOffShow')->name('day_off_show');
-    Route::get('/duyet-ngay-nghi/{id}', 'UserController@dayOffGetOne')->name('day_off_one');
+    Route::get('/duyet-ngay-nghi/{id}', 'UserController@dayOffApproveOne')->name('day_off_approve');
     Route::get('/phe-duyet-ngay-nghi/search', 'UserController@dayOffSearch')->name('day_off_search');
+    Route::get('/chi-tiet-ngay-nghi/{id?}', 'UserController@dayOffDetail')->name('day_off_detail');
 
     Route::get('/noi-quy-quy-dinh', 'RegulationController@index')->name('regulation');
     Route::get('/noi-quy-quy-dinh/{id}', 'RegulationController@detail')->where(['id' => '\d+'])->name('regulation_detail');

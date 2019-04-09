@@ -163,14 +163,13 @@ class DayOffService extends AbstractService implements IDayOffService
 
     public function showList($status)
     {
-
-        $data = $this->getdata()->get();
+        $data = $this->getdata()->whereYear('day_offs.created_at', '=', date('Y'))->get();
 
         if ($status != null) {
             if ($status < ALL_DAY_OFF) {
-                $dataDate = $this->getdata()->where('day_offs.status', $status);
+                $dataDate = $this->getdata()->where('day_offs.status', $status)->whereYear('day_offs.created_at', '=', date('Y'));
             } else {
-                $dataDate = $this->getdata();
+                $dataDate = $this->getdata()->whereYear('day_offs.created_at', '=', date('Y'));
             }
 
         } else {
@@ -190,6 +189,7 @@ class DayOffService extends AbstractService implements IDayOffService
 
     public function getDataSearch($year, $month, $status, $search = '')
     {
+
         $data = $this->getdata()->whereMonth('day_offs.created_at', '=', $month)->whereYear('day_offs.created_at', '=', $year);
         if ($search != null) {
             $data = $data->Where('users.name', 'like', '%' . $search . '%');

@@ -300,9 +300,31 @@ class UserController extends Controller
             'dataDayOff'
         ));
     }
-    public function dayOffGetOne($id){
 
-        return $this->userDayOffService->getOneData($id);
+    public function dayOffDetail($id){
+        $data= $this->userDayOffService->getOneData($id);
+        $dataDayOff = $this->userDayOffService->showList(null);
+        return view('end_user.user.day_off_approval', compact(
+            'dataDayOff','data'
+        ));
+
+    }
+    public function dayOffApproveOne($id){
+        $dayOff= $this->dayOffRepository->findOne($id);
+        if ($dayOff->status == 3){
+            $check=['yes'];
+        }else{
+            $newStatus= $dayOff->status == 1 ? 3 : 1;
+            $dayOff->status=$newStatus;
+            $dayOff->save();
+            $check=[];
+        }
+
+        $dataDayOff = $this->userDayOffService->showList(null);
+        return view('end_user.user.day_off_approval', compact(
+            'dataDayOff','check','dayOff'
+        ));
+
     }
 
 

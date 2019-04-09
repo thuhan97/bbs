@@ -31,27 +31,18 @@ class ShareController extends Controller
         $pathBase = base_path();
         $newNameFile = '/storage/share' . '/' . time() . '_' . $file->getClientOriginalName();
         if($file->move($pathBase . '/storage/share',$newNameFile)){
-            $path = $newNameFile;
-        }
-        if(isset($path)){
             $share = new Share;
             $share->name = $request->titleDocoment;
-            $share->file = $path;
+            $share->file = $newNameFile;
             $share->creator_id = Auth::user()->id;
             $share->type = SHARE_DUCOMMENT;
-            if($share->save()){
-                $status = true;                
-            }else{
-                $status = false;               
-            }     
-        }else{
-            $status = false;
+            $status = $share->save();
         }
         if($status){
             flash()->success(__l('share_document_successully'));
         }else{
             flash()->error(__l('share_document_error'));
-        }
+        }     
         return redirect()->route('list_share_document');             
     }           
 }

@@ -8,6 +8,7 @@
     {!! Breadcrumbs::render('list_share_document') !!}
 @endsection
 @section('content')
+<link rel="stylesheet" href="{{URL::asset('css/list_share_document.css')}}">
     <div class="createReport fixed-action-btn">
         <a href="#" class="btn-floating btn-lg red waves-effect waves-light text-white"
            title="Chia sẻ" data-target="#feedback" data-toggle="modal">
@@ -75,7 +76,7 @@
          aria-hidden="true">
         <div class="modal-dialog modal-center" role="document">
             <div class="modal-content" id="bg-img" style="background-image: url({{ asset('img/background_share.png') }})">
-                <div class="modal-header text-center border-bottom-0 p-3">
+                <div class="modal-header text-center border-bottom-0 p-3" style="background-image: url({{ asset('img/header-popup-share.png') }})">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     	<div class="background-close-icon">
                         	<span class="btn-close-icon" aria-hidden="true">&times;</span>
@@ -103,84 +104,6 @@
             </div>
         </div>
     </div>
-<style>
-    .modal-header{
-        background-image: url('img/header-popup-share.png');
-        background-repeat: no-repeat;
-        background-size: 100% 100%;
-        height: 250px;
-    }
-	th, .center{
-		text-align: center;
-	}
-	.pagination{
-		margin: 0 auto;
-	}
-	.background-close-icon{
-	    background: rgba(0,0,0,0.3);
-	    border-radius: 50%;
-	    width: 24px;
-	    height: 24px;
-	}
-	.modal-center{
-	    display: flex;
-	    flex-direction: column;
-	    justify-content: center;
-	    overflow-y: auto;
-	    min-height: calc(100vh - 60px);
-	}
-    .inputDnD .form-control-file { 
-      position: relative; 
-      width: 100%; 
-      height: 100%; 
-      min-height: 6em; 
-      outline: none; 
-      visibility: hidden; 
-      cursor: pointer; 
-      background-color: #c61c23; 
-    } 
-    .inputDnD .form-control-file:before { 
-      content: attr(data-title); 
-      position: absolute; 
-      width: 100%; 
-      min-height: 6em; 
-      line-height: 2em; 
-      padding-top: 1.5em; 
-      opacity: 1; 
-      visibility: visible; 
-      text-align: center; 
-      border: 1px solid #ced4da;
-      transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); 
-      overflow: hidden;
-      color: #ced4da;  
-    }
-    #ErrorMessaging{
-        margin: 5px 0px 0px 0px;
-    }     	    	
-</style>
-<script>
-function sendAbsenceForm() {
-    var name = $("#titleDocoment").val();
-    var file = $("#inputFile").val();
-    if(name != '' && file != ''){
-        $("#formDocument").submit();
-    }else{
-        let errorBox = document.getElementById('ErrorMessaging');
-        errorBox.innerHTML = "<div class='card-body'>Tiêu đề và file không được để trống!</div>";        
-    }
-}
-function readUrl(input) { 
-  if (input.files && input.files[0]) { 
-    let reader = new FileReader(); 
-    reader.onload = e => { 
-      let imgData = e.target.result; 
-      let imgName = input.files[0].name; 
-      console.log(imgName);
-      input.setAttribute("data-title", imgName); 
-      console.log(e.target.result); 
-    }; 
-    reader.readAsDataURL(input.files[0]); 
-  }
-}       
-</script>
+<script type="text/javascript" src="{{URL::asset('js/list_share_document.js')}}"></script>    
+
 @endsection

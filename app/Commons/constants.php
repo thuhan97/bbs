@@ -175,3 +175,12 @@ define('ICONS_TYPES_FILES', [
 
 define('SHARE_DUCOMMENT', 2);
 
+define('VACATION', [
+    1 => 'Lý do cá nhân',
+    2 => 'Nghỉ đám cưới',
+    3 => 'Nghỉ đám hiếu',
+]);
+
+define('DAILY_REPORT', 0);
+define('WEEKLY_REPORT', 1);
+define('XLS_TYPE', '.xls');

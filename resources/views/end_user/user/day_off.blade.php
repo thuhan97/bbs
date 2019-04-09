@@ -46,7 +46,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-sm-3 col-xs-6">
+        <div class="col-sm-3 col-xs-6" data-toggle="modal" data-target="#modal-form">
             <div class="card bg-danger cursor-effect" onclick="openCreateAbsenceForm()">
                 <div class="card-body">
                     <h1 class="white-text font-weight-light">Thêm</h1>
@@ -339,59 +339,139 @@
         </div>
     </div>
     <!-- Modal: View detail absence form -->
-
-    {{-- Modal: Create absence form--}}
-    <div class="modal fade right" id="createAbsenceForm" style="z-index: 9999;" data-backdrop="static"
-         data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="Create Absence Form" aria-hidden="true">
-        <div class="modal-dialog modal-side modal-top-right" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h4 class="modal-title" id="exampleModalPreviewLabel">Đơn xin nghỉ phép</h4>
+    <div class="modal fade" id="modal-form" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog modal-center" role="document">
+            <div class="modal-content" id="bg-img" style="background-image: url({{ asset('img/font/xin_nghi.png') }})">
+                <div class="modal-header text-center border-bottom-0 p-3">
+                    <h4 class="modal-title w-100 font-weight-bold pt-2">ĐƠN XIN NGHỈ</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span class="btn-close-icon" aria-hidden="true">&times;</span>
+                    </button>
                 </div>
-                <div class="modal-body">
-                    <div id="createAbsenceIndicator" class="text-center">
-                        <div class="spinner-border text-primary" role="status">
-                            <span class="sr-only">Loading...</span>
+                <form action="{{ route('day_off_create') }}" method="post">
+                    @csrf
+                    <div class="modal-body mx-3 mt-0 pb-0">
+                        <div class="mb-3">
+                            <!-- Default input -->
+                            <label class="ml-3 text-w-400" for="exampleForm2">Mục đích xin nghỉ*</label>
+                            {{ Form::select('title', VACATION, null, ['class' => 'form-control my-1 mr-1 browser-default custom-select md-form select-item']) }}
+                            @if ($errors->has('title'))
+                                <div class="">
+                                    <span class="help-block text-danger">{{ $errors->first('title') }}</span>
+                                </div>
+                            @endif
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="ml-3 text-w-400" for="exampleFormControlTextarea5">Nội dung</label>
+                            <textarea
+                                    class="form-control rounded-0 select-item {{ $errors->has('reason') ? ' has-error' : '' }}"
+                                    id="exampleFormControlTextarea2" rows="3" placeholder="lý do xin nghỉ..."
+                                    name="reason">{{ old('reason') }}</textarea>
+                            @if ($errors->has('reason'))
+                                <div class="mt-1">
+                                    <span class="help-block text-danger">{{ $errors->first('reason') }}</span>
+                                </div>
+                            @endif
+                        </div>
+                        <div class="mb-2">
+                            <div class="row">
+                                <div class="form-group col-6 m-0">
+                                    <label class="ml-3 text-w-400" for="inputCity">Ngày bắt đầu nghỉ*</label>
+                                    <input type="text"
+                                           class="form-control select-item {{ $errors->has('start_at') ? ' has-error' : '' }}"
+                                           id="start_date" autocomplete="off" name="start_at"
+                                           value="{{ old('start_at') }}" readonly="readonly">
+                                </div>
+                                <!-- Default input -->
+                                <div class="form-group col-6 m-0">
+                                    <label class="ml-3 text-w-400" for="inputZip">Tới ngày*</label>
+                                    <input type="text"
+                                           class="form-control select-item {{ $errors->has('end_at') ? ' has-error' : '' }}"
+                                           id="end_date" autocomplete="off" name="end_at" value="{{ old('end_at') }}"
+                                           readonly="readonly">
+                                </div>
+                                <span id="errors_date" class="text-danger ml-3 "></span>
+                            </div>
+                            @if ($errors->has('start_at'))
+                                <div>
+                                    <span class="help-block text-danger">{{ $errors->first('start_at') }}</span>
+                                </div>
+                            @endif
+                            @if ($errors->has('end_at'))
+                                <div class="mt-1">
+                                    <span class="help-block text-danger">{{ $errors->first('end_at') }}</span>
+                                </div>
+                            @endif
+                        </div>
+                        <div>
+                            <label class="ml-3 mt-1 text-w-400" for="exampleForm2">Người duyệt*</label>
+                            {{ Form::select('approver_id', $userManager, null, ['class' => 'form-control my-1 mr-1 browser-default custom-select md-form select-item']) }}
+                            @if ($errors->has('approver_id'))
+                                <div class="mt-1 ml-3">
+                                    <span class="help-block text-danger">{{ $errors->first('approver_id') }}</span>
+                                </div>
+                            @endif
                         </div>
                     </div>
-                    <div id="statusCreateForm" class="text-center">
+                    <div class="pt-3 pb-4 d-flex justify-content-center border-top-0 rounded mb-0">
+                        <button class="btn btn-primary btn-send">GỬI ĐƠN</button>
                     </div>
-                    <div id="contentCreateForm">
-                        <label for="titleForm">Tiêu đề *</label>
-                        <input type="text" required id="titleForm" class="form-control mb-3" name="title"
-                               placeholder="Tiêu đề đơn xin nghỉ" autocomplete="off" value="Xin nghỉ phép">
-
-                        <label for="textareaForm">Nội dung *</label>
-                        <textarea id="textareaForm" required class="form-control mb-3" name="reason"
-                                  placeholder="Lý do nghỉ" maxlength="999"></textarea>
-
-                        <label for="start_atForm">Ngày bắt đầu nghỉ *</label>
-                        <input type="text" class="form-control pull-right mb-3" autocomplete="off"
-                               name="start_at" required value="" id="start_atForm">
-
-                        <label for="end_atForm">Tới ngày *</label>
-                        <input type="text" required class="form-control pull-right mb-3" autocomplete="off"
-                               name="end_at" value="" id="end_atForm">
-
-                        <label for="approvals_selector">Người duyệt *</label>
-                        <select class="form-control mb-3 browser-default" id="approvals_selector">
-
-                        </select>
-
-                        <div class="card bg-danger text-white" id="ErrorMessaging">
-
-                        </div>
-                    </div>
-
-                </div>
-                <div id="createAbsenceBtn" class="modal-footer">
-                    <button type="button" class="btn btn-secondary" onclick="closeAbsenceForm()">Hủy</button>
-                    <button type="button" class="btn btn-primary" onclick="sendAbsenceForm()">Gửi đơn</button>
-                </div>
+                </form>
             </div>
         </div>
     </div>
     {{-- Modal: Create absence form--}}
+    @if (count($errors) > 0)
+        <script>
+            $(function () {
+                $('#modal-form').modal('show');
+            });
+        </script>
+    @endif
+    @if(session()->has('day_off_success'))
+        <script>
+            swal({
+                title: "Thông báo!",
+                text: "Bạn đã gửi đơn thành công!",
+                icon: "success",
+                button: "Đóng",
+            });
+        </script>
+    @endif
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+            $('#start_date').datetimepicker({
+                hoursDisabled: '0,1,2,3,4,5,6,7,18,19,20,21,22,23',
+                daysOfWeekDisabled: [0, 6],
+
+
+        });
+            $('#end_date').datetimepicker({
+                hoursDisabled: '0,1,2,3,4,5,6,7,18,19,20,21,22,23',
+                daysOfWeekDisabled: [0, 6],
+            });
+            $('#end_date,#start_date').on('change',function () {
+                var start=$('#start_date').val();
+                var end=$('#end_date').val();
+                if (start =="" || end==""){
+                    $('#errors_date').text('vui lòng chọn ngày bắt đầu và ngày kết thúc');
+                    return;
+                }
+
+                if (start > end){
+                    $('.btn-send').attr('disabled','disabled');
+                    $('#errors_date').text('Ngày kết thúc phải lớn hơn hoặc bằng ngày bắt đầu.');
+                }else{
+                    $('.btn-send').removeAttr('disabled');
+                    $('#errors_date').text('');
+                }
+            })
+
+        });
+    </script>
 @endsection
 
 @push('extend-css')
@@ -503,59 +583,59 @@
             loadApprovals();
         }
 
-        function sendAbsenceForm() {
-            let approvalID = getApprovalSelected();
-            if (titleForm.val().length < 3 || textareaForm.val().length < 3
-                || start_atForm.val().length < 1 || end_atForm.val().length < 1) {
-                errorAlert();
-                return;
-            }
+        /*  function sendAbsenceForm() {
+              let approvalID = getApprovalSelected();
+              if (titleForm.val().length < 3 || textareaForm.val().length < 3
+                  || start_atForm.val().length < 1 || end_atForm.val().length < 1) {
+                  errorAlert();
+                  return;
+              }
 
-            indicatorCreateForm($("#contentCreateForm"), $("#createAbsenceIndicator"));
-            $("#createAbsenceBtn").hide();
-            let sendingData = {
-                title: !!titleForm ? titleForm.val() : null,
-                reason: !!textareaForm ? textareaForm.val() : null,
-                start_at: !!start_atForm ? start_atForm.val() : null,
-                end_at: !!end_atForm ? end_atForm.val() : null,
-                approver_id: approvalID
-            };
+              indicatorCreateForm($("#contentCreateForm"), $("#createAbsenceIndicator"));
+              $("#createAbsenceBtn").hide();
+              let sendingData = {
+                  title: !!titleForm ? titleForm.val() : null,
+                  reason: !!textareaForm ? textareaForm.val() : null,
+                  start_at: !!start_atForm ? start_atForm.val() : null,
+                  end_at: !!end_atForm ? end_atForm.val() : null,
+                  approver_id: approvalID
+              };
 
-            let xhttp = new XMLHttpRequest();
-            xhttp.onreadystatechange = function () {
-                console.log(this.status);
-                if (this.readyState === 4 && this.status === 200) {
-                    let obj = null;
-                    try {
-                        obj = JSON.parse(this.response);
-                    } catch (e) {
-                        obj = null;
-                    }
-                    if (!!!obj || (obj.hasOwnProperty('success') && !obj.success)) {
-                        $("#createAbsenceIndicator").hide();
-                        $("#statusCreateForm").html(
-                            "<h3 class='text-danger mb-1'>" + obj.message + "</h3></br><button type='button' onclick='closeAbsenceForm()' class='btn btn-secondary'>Đóng</button>"
-                        )
-                    }
-                    if (obj.success) {
-                        $("#createAbsenceIndicator").hide();
-                        $("#statusCreateForm").html(
-                            "<h3 class='text-success mb-1'>Thành công</h3></br><button type='button' onclick='closeAbsenceForm(true)' class='btn btn-success'>Đóng</button>"
-                        )
+              let xhttp = new XMLHttpRequest();
+              xhttp.onreadystatechange = function () {
+                  console.log(this.status);
+                  if (this.readyState === 4 && this.status === 200) {
+                      let obj = null;
+                      try {
+                          obj = JSON.parse(this.response);
+                      } catch (e) {
+                          obj = null;
+                      }
+                      if (!!!obj || (obj.hasOwnProperty('success') && !obj.success)) {
+                          $("#createAbsenceIndicator").hide();
+                          $("#statusCreateForm").html(
+                              "<h3 class='text-danger mb-1'>" + obj.message + "</h3></br><button type='button' onclick='closeAbsenceForm()' class='btn btn-secondary'>Đóng</button>"
+                          )
+                      }
+                      if (obj.success) {
+                          $("#createAbsenceIndicator").hide();
+                          $("#statusCreateForm").html(
+                              "<h3 class='text-success mb-1'>Thành công</h3></br><button type='button' onclick='closeAbsenceForm(true)' class='btn btn-success'>Đóng</button>"
+                          )
 
-                    }
-                    console.log(obj);
-                }
+                      }
+                      console.log(obj);
+                  }
 
-                if (this.readyState == 4 && this.status == 422) {
-                    $("#createAbsenceIndicator").hide();
-                    $("#statusCreateForm").html(
-                        "<h3 class='text-warning mb-1'>Thông tin không hợp lệ!<br>Vui lòng thử lại!</h3></br><button type='button' onclick='closeAbsenceForm()' class='btn btn-warning'>Đóng</button>"
-                    )
-                }
-            };
-            requestPerform(xhttp, "post", '{{route('day_off_createAPI')}}', JSON.stringify(sendingData));
-        }
+                  if (this.readyState == 4 && this.status == 422) {
+                      $("#createAbsenceIndicator").hide();
+                      $("#statusCreateForm").html(
+                          "<h3 class='text-warning mb-1'>Thông tin không hợp lệ!<br>Vui lòng thử lại!</h3></br><button type='button' onclick='closeAbsenceForm()' class='btn btn-warning'>Đóng</button>"
+                      )
+                  }
+              };
+              requestPerform(xhttp, "post", '', JSON.stringify(sendingData));
+          }*/
 
         function clearAbsenceForm() {
             if (!!titleForm) {

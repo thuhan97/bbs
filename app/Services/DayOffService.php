@@ -95,8 +95,8 @@ class DayOffService extends AbstractService implements IDayOffService
             'total' => $remainDay->previous_year + $remainDay->current_year,
             'total_previous' => $remainDay->previous_year,
             'total_current' => $remainDay->current_year,
-            'remain_current' => $remainDay->current_year - $model->whereYear('start_at', $thisYear)->sum('number_off'),
-            'remain_previous' => $remainDay->previous_year - $model->whereYear('start_at', $thisYear - 1)->sum('number_off')
+            'remain_current' =>  $model->whereYear('start_at', $thisYear)->sum('number_off'),
+            'remain_previous' =>  $model->whereYear('start_at', $thisYear - 1)->sum('number_off')
         ];
     }
 

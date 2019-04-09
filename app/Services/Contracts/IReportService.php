@@ -34,4 +34,11 @@ interface IReportService extends IBaseService
      * @return Report
      */
     public function newReportFromTemplate();
+
+    /**
+     * @param int $type
+     *
+     * @return mixed
+     */
+    public function getReportTitle($type);
 }

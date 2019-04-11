@@ -101,8 +101,8 @@ class DayOffService extends AbstractService implements IDayOffService
             'total' => $remainDay->previous_year + $remainDay->current_year,
             'total_previous' => $remainDay->previous_year,
             'total_current' => $remainDay->current_year,
-            'remain_current' => $model->whereYear('created_at', $thisYear)->where('status', DayOff::APPROVED_STATUS)->sum('number_off'),
-            'remain_previous' => $model->whereYear('created_at', $thisYear - 1)->where('status', DayOff::APPROVED_STATUS)->sum('number_off')
+            'remain_current' => $model->whereYear('start_at', $thisYear)->where('status', DayOff::APPROVED_STATUS)->sum('number_off'),
+            'remain_previous' => $model->whereYear('start_at', $thisYear - 1)->where('status', DayOff::APPROVED_STATUS)->sum('number_off')
         ];
     }
 
@@ -167,17 +167,17 @@ class DayOffService extends AbstractService implements IDayOffService
 
     public function showList($status)
     {
-        $data = $this->getdata()->whereYear('day_offs.created_at', '=', date('Y'))->get();
+        $data = $this->getdata()->whereYear('day_offs.start_at', '=', date('Y'))->get();
 
         if ($status != null) {
             if ($status < ALL_DAY_OFF) {
                 $dataDate = $this->getdata()->where('day_offs.status', $status)->whereYear('day_offs.created_at', '=', date('Y'));
             } else {
-                $dataDate = $this->getdata()->whereYear('day_offs.created_at', '=', date('Y'));
+                $dataDate = $this->getdata()->whereYear('day_offs.start_at', '=', date('Y'));
             }
 
         } else {
-            $dataDate = $this->getdata()->whereMonth('day_offs.created_at', '=', date('m'))->whereYear('day_offs.created_at', '=', date('Y'));
+            $dataDate = $this->getdata()->whereMonth('day_offs.start_at', '=', date('m'))->whereYear('day_offs.created_at', '=', date('Y'));
         }
         $dataDate = $dataDate->paginate(PAGINATE_DAY_OFF);
         return [
@@ -196,12 +196,12 @@ class DayOffService extends AbstractService implements IDayOffService
 
         $data = $this->getdata();
         if ($year) {
-            $data = $data->whereYear('day_offs.created_at', '=', $year);
+            $data = $data->whereYear('day_offs.start_at', '=', $year);
         } else {
-            $data = $data->whereYear('day_offs.created_at', '=', date('Y'));
+            $data = $data->whereYear('day_offs.start_at', '=', date('Y'));
         }
         if ($month) {
-            $data = $data->whereMonth('day_offs.created_at', '=', $month);
+            $data = $data->whereMonth('day_offs.start_at', '=', $month);
         }
         if ($search) {
             $data = $data->Where('users.name', 'like', '%' . $search . '%');
@@ -223,10 +223,9 @@ class DayOffService extends AbstractService implements IDayOffService
 
     public function countDayOff()
     {
-        return $this->model::groupBy('user_id')->select('user_id', DB::raw('sum(number_off) as total'))
+        $data=$this->model::groupBy('user_id')->select('user_id', DB::raw('sum(number_off) as total'))
             ->where('user_id', Auth::id())->where('status', 1)
-            ->whereYear('day_offs.created_at', '=', date('Y'))
-            ->first();
+            ->whereYear('day_offs.start_at', '=', date('Y'))->first();
     }
 
     public function searchStatus($status)
@@ -238,8 +237,8 @@ class DayOffService extends AbstractService implements IDayOffService
         if ($status < ALL_DAY_OFF) {
             $data = $data->where('status', $status);
         }
-        $data = $data->whereYear('created_at', '=', date('Y'))
-            ->orderBy('status', 'ASC')->orderBy('created_at', 'DESC')
+        $data = $data->whereYear('start_at', '=', date('Y'))
+            ->orderBy('status', 'ASC')->orderBy('start_at', 'DESC')
             ->paginate(PAGINATE_DAY_OFF);
         return $data;
     }
@@ -254,7 +253,7 @@ class DayOffService extends AbstractService implements IDayOffService
             $data = $data->where('day_offs.approver_id', Auth::id())
                 ->where('day_offs.user_id', '<>', Auth::id())
                 ->orderBy('day_offs.status', ASC)
-                ->orderBy('created_at', 'DESC');
+                ->orderBy('start_at', 'DESC');
             return $data;
         } else {
             $data = $data->where('day_offs.id', $id);

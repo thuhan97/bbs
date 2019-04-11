@@ -19,8 +19,7 @@
         <ol class="list-group list-group-flush">
             @foreach($regulations as $idx => $regulation)
                 <li class="list-group-item no-border p-0 list-reulation">
-                    {{$idx + 1}}. <a class="text-dark"
-                            href="{{route('regulation_detail', ['id' => $regulation->id])}}">{{$regulation->name}}</a>
+                    {{$idx + 1}}. <a class="text-dark" href="{{route('regulation_detail', ['id' => $regulation->id])}}">{{$regulation->name}}</a>
                 </li>
             @endforeach
         </ol>

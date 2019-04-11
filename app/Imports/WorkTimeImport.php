@@ -25,14 +25,20 @@ class WorkTimeImport implements ToCollection, WithValidation
 
     const DEFAULT_END_AT = '17:30';
 
-    public function __construct()
+    public function __construct($startDate, $endDate)
     {
         $this->config = Config::first();
-        $this->users = User::pluck('id', 'staff_code')->toArray();
+        $this->users = User::pluck('id', 'staff_code', 'contract_type')->toArray();
 
+        WorkTime::whereDate('work_day', '>=', $startDate)
+            ->whereDate('work_day', '<=', $endDate)
+            ->delete();
     }
 
-    public function collection($rows)
+    /**
+     * @param Collection $rows
+     */
+    public function collection(Collection $rows)
     {
         $results = [];
         foreach ($rows as $index => $row) {
@@ -91,6 +97,7 @@ class WorkTimeImport implements ToCollection, WithValidation
      */
     private function getWorkTime($date, $startAt, $endAt)
     {
+
 //        if ($endAt == null) $endAt = self::DEFAULT_END_AT;
         $note = [];
         $type = 0;
@@ -135,7 +142,7 @@ class WorkTimeImport implements ToCollection, WithValidation
     private function insertData(&$data)
     {
         if (!empty($data)) {
-            \DB::table('work_times')->insert($data);
+            WorkTime::insertAll($data);
             $data = [];
         }
     }

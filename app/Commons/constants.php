@@ -116,7 +116,14 @@ define('PART_OF_THE_DAY', [
     'fri',
     'sat',
 ]);
-
+define('PART_OF_THE_DAY_NAME', [
+    'mon' => 'Thứ 2',
+    'tue' => 'Thứ 3',
+    'wed' => 'Thứ 4',
+    'thu' => 'Thứ 5',
+    'fri' => 'Thứ 6',
+    'sat' => 'Thứ 7',
+]);
 define('STATUS_PROJECT', [
     0 => 'Chưa bắt đầu',
     1 => 'Đang phát triển',

@@ -255,6 +255,18 @@ if (!function_exists('getStartAndEndDate')) {
         return $ret;
     }
 }
+if (!function_exists('getStartAndEndDateOfMonth')) {
+    function getStartAndEndDateOfMonth($month, $year)
+    {
+        $dto = new DateTime();
+        $dto->setDate($year, $month, 1);;
+
+        return [
+            $dto->format('Y-m-01'),
+            $dto->format('Y-m-t'),
+        ];
+    }
+}
 if (!function_exists('get_years')) {
     /**
      * Encode unicode

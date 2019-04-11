@@ -76,4 +76,9 @@ class LoginController extends Controller
     {
         return 'username';
     }
+
+    protected function authenticated(Request $request, $user)
+    {
+        return redirect('/admin');
+    }
 }

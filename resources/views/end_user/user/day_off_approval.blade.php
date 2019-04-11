@@ -6,7 +6,7 @@
     if (isset($dayOffSearch)) {
         $getDayOff = $dayOffSearch['data'];
     } else {
-        $getDayOff = $dataDayOff['dateDate'];
+        $getDayOff = $dataDayOff['data'];
     }
     if (session()->has('data')) {
         $data = session()->get('data');

@@ -152,6 +152,28 @@ define('TYPES_DEVICE', [
     6 => 'Khác'
 ]);
 
+define('ICONS_TYPES_FILES', [
+    'jpg' => 'far fa-image',
+    'jpeg' => 'far fa-image',
+    'gif' => 'far fa-image',
+    'png' => 'far fa-image',
+    'pdf' => 'fa fa-file-pdf',
+    'doc' => 'fa fa-file-word',
+    'zip' => 'fa fa-file-archive',
+    'xlsx' => 'fa fa-file-excel',
+    'xls' => 'fa fa-file-excel',
+    'pptx' => 'fa fa-file-powerpoint',
+    'mp4' => 'fas fa-file-video',
+    'mov' => 'fas fa-file-video',
+    'mp3' => 'fas fa-file-audio',
+    'php' => 'far fa-file-code',
+    'css' => 'far fa-file-code',
+    'js' => 'far fa-file-code',
+    'sql' => 'far fa-file-code',
+]);
+
+define('SHARE_DUCOMMENT', 2);
+
 define('VACATION', [
     1 => 'Lý do cá nhân',
     2 => 'Nghỉ đám cưới',

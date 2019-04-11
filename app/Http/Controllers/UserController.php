@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\CreateDayOffRequest;
 use App\Http\Requests\DayOffRequest;
 use App\Http\Requests\ProfileRequest;
+use App\Models\DayOff;
 use App\Models\User;
 use App\Models\WorkTime;
 use App\Repositories\Contracts\IDayOffRepository;
@@ -15,6 +16,7 @@ use Carbon\Carbon;
 use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class UserController extends Controller
 {
@@ -148,7 +150,7 @@ class UserController extends Controller
     //
     //
 
-    public function dayOff(DayOffRequest $request)
+    public function dayOff(DayOffRequest $request,$status=null)
     {
         $conditions = ['user_id' => Auth::id()];
         $listDate = $this->userDayOffService->findList($request, $conditions);
@@ -159,34 +161,12 @@ class UserController extends Controller
         $userManager = $this->userService->getUserManager();
 
         $availableDayLeft = $this->userDayOffService->getDayOffUser(Auth::id());
+        if ($status != null){
+            $dayOff=$this->userDayOffService->searchStatus($status);
+            return view('end_user.user.day_off', compact('listDate', 'paginateData', 'availableDayLeft', 'recordPerPage', 'approve', 'userManager','dayOff','status'));
+        }
         return view('end_user.user.day_off', compact('listDate', 'paginateData', 'availableDayLeft', 'recordPerPage', 'approve', 'userManager'));
     }
-
-    /* public function dayOffCreate_API(DayOffRequest $request)
-     {
-         $response = [
-             'success' => false,
-             'message' => NOT_AUTHORIZED
-         ];
-         if (!$request->ajax() || !Auth::check()) {
-             return response($response);
-         }
-
-         $indicate = $this->userDayOffService->create(
-             Auth::id(), $request->input('title'),
-             $request->input('reason'),
-             $request->input('start_at'),
-             $request->input('end_at'),
-             $request->input('approver_id')
-         );
-
-
-         $response['message'] = !!$indicate['record'] ? "Gửi thành công!" : $indicate['message'];
-         $response['success'] = $indicate['status'];
-         $response['record'] = $indicate['record'];
-
-         return response($response);
-     }*/
 
     public function dayOffListApprovalAPI(Request $request)
     {
@@ -275,23 +255,30 @@ class UserController extends Controller
 
     public function dayOffCreate(CreateDayOffRequest $request)
     {
-        $indicate = $this->userDayOffService->create(
-            Auth::id(), $request->input('title'),
-            $request->input('reason'),
-            $request->input('start_at'),
-            $request->input('end_at'),
-            $request->input('approver_id')
-        );
-        return back()->with('day_off_success', '');
-
+        if ($request->day_off_id){
+            $dayOff=DayOff::findOrFail($request->day_off_id);
+            $check='';
+        }else{
+            $dayOff=new DayOff();
+            $check='1';
+        }
+        $dayOff->fill($request->all());
+        $dayOff->save();
+        return back()->with('day_off_success', $check);
     }
 
     public function dayOffSearch(Request $request)
     {
-        if ($request->search != ''){
-            return $this->userDayOffService->getDataSearch($request->year, $request->month, $request->status,$request->search);
-        }
-        return $this->userDayOffService->getDataSearch($request->year, $request->month, $request->status,'');
+        $year=$request->year;
+        $month=$request->month;
+        $status=$request->status;
+        $search=$request->search;
+
+        $dataDayOff = $this->userDayOffService->showList(null);
+        $dayOffSearch= $this->userDayOffService->getDataSearch($year,$month ,$status,$search);
+        return view('end_user.user.day_off_approval', compact(
+            'dataDayOff','dayOffSearch','year','month','status','search'
+        ));
     }
     public function dayOffShow($status){
 
@@ -303,29 +290,50 @@ class UserController extends Controller
 
     public function dayOffDetail($id){
         $data= $this->userDayOffService->getOneData($id);
-        $dataDayOff = $this->userDayOffService->showList(null);
-        return view('end_user.user.day_off_approval', compact(
-            'dataDayOff','data'
-        ));
+        return back()->with(['data'=>$data]);
 
     }
     public function dayOffApproveOne($id){
-        $dayOff= $this->dayOffRepository->findOne($id);
-        if ($dayOff->status == 3){
+        $dayOff= $this->userDayOffService->getOneData($id);
+        if ($dayOff->status == 0){
+            $dayOff->status=2;
+            $dayOff->save();
+            return back()->with('close','');
+        }
+       /* if ($dayOff->status == STATUS_DAY_OFF['noActive']){
             $check=['yes'];
+            $manager=$this->userService->getUserManager();
+            $dataDayOff = $this->userDayOffService->showList(null);
+            return back()->with(['check'=>$check,'dayOff'=>$dayOff,'manager'=>$manager]);
         }else{
-            $newStatus= $dayOff->status == 1 ? 3 : 1;
+            $newStatus= $dayOff->status == STATUS_DAY_OFF['active'] ? STATUS_DAY_OFF['noActive'] : STATUS_DAY_OFF['active'];
             $dayOff->status=$newStatus;
             $dayOff->save();
-            $check=[];
-        }
-
-        $dataDayOff = $this->userDayOffService->showList(null);
-        return view('end_user.user.day_off_approval', compact(
-            'dataDayOff','check','dayOff'
-        ));
-
+            if ($dayOff->status == STATUS_DAY_OFF['active']){
+                return back()->with('active','');
+            }else{
+                return back()->with('close','');
+            }
+        }*/
     }
+    public function editDayOffDetail(Request $request,$id){
 
+        $this->validate($request, [
+            'number_off' => 'required|integer',
+        ]);
+        $dayOff=DayOff::findOrFail($id);
+        $dayOff->status=STATUS_DAY_OFF['active'];
+        $dayOff->approver_at=now();
+        $dayOff->number_off=$request->number_off;
+        $dayOff->save();
+         return back()->with('success',__('messages.edit_day_off_successully'));
+    }
+    public function deleteDayOff(Request $request){
+        $id= $request->day_off_id ?? '';
+        if ($request->day_off_id){
+            DayOff::findOrFail($id)->delete();
+        }
+        return back()->with('delete_day_off','');
+    }
 
 }

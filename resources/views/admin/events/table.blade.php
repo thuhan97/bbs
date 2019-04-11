@@ -58,7 +58,7 @@
                     <div class="btn-group">
                         <a href="{{ route("admin::events.detailEvent",['id'=>$record->id]) }}"
                            class="btn btn-success btn-sm"><i
-                                    class="fa fa-edit"></i></a>
+                                    class="fa fa-eye"></i></a>
                         <a href="{{ $editLink }}" class="btn btn-info btn-sm"><i class="fa fa-edit"></i></a>
                         <a href="#" class="btn btn-danger btn-sm btnOpenerModalConfirmModelDelete"
                            data-form-id="{{ $formId }}"><i class="fa fa-trash-o"></i></a>

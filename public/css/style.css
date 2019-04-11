@@ -723,6 +723,14 @@ tr.calendar-body td {
 .text-d-bold{
     font-weight: bold;
 }
+#number_off-error ,#title-error ,#exampleFormControlTextarea2-error,#approver_id-error{
+    color: red;
+}
+.paginate-center{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+}
 /*
             End work time calendar
  */

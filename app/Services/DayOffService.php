@@ -89,16 +89,20 @@ class DayOffService extends AbstractService implements IDayOffService
      */
     public function getDayOffUser($userId)
     {
-        $model = $this->model->where('user_id', $userId)->where('status', DayOff::APPROVED_STATUS);
+        $model = $this->model->where('user_id', $userId);
         $remainDay = RemainDayoff::firstOrCreate(['user_id' => $userId]);
-
         $thisYear = (int)date('Y');
         return [
+            'data' => $model->whereMonth('start_at', date('m'))->whereYear('start_at', $thisYear)
+                ->select('*', DB::raw('DATE_FORMAT(start_at, "%d/%m/%Y (%H:%i)") as start_date'),
+                    DB::raw('DATE_FORMAT(end_at, "%d/%m/%Y (%H:%i)") as end_date'),
+                    DB::raw('DATE_FORMAT(approver_at, "%d/%m/%Y (%H:%i)") as approver_date'))
+                ->paginate(PAGINATE_DAY_OFF),
             'total' => $remainDay->previous_year + $remainDay->current_year,
             'total_previous' => $remainDay->previous_year,
             'total_current' => $remainDay->current_year,
-            'remain_current' => $model->whereYear('start_at', $thisYear)->sum('number_off'),
-            'remain_previous' => $model->whereYear('start_at', $thisYear - 1)->sum('number_off')
+            'remain_current' => $model->whereYear('created_at', $thisYear)->where('status', DayOff::APPROVED_STATUS)->sum('number_off'),
+            'remain_previous' => $model->whereYear('created_at', $thisYear - 1)->where('status', DayOff::APPROVED_STATUS)->sum('number_off')
         ];
     }
 
@@ -187,12 +191,21 @@ class DayOffService extends AbstractService implements IDayOffService
         ];
     }
 
-    public function getDataSearch($year, $month, $status, $search = '')
+    public function getDataSearch($year, $month, $status, $search = null)
     {
 
-        $data = $this->getdata()->whereMonth('day_offs.created_at', '=', $month)->whereYear('day_offs.created_at', '=', $year);
-        if ($search != null) {
+        $data = $this->getdata();
+        if ($year) {
+            $data = $data->whereYear('day_offs.created_at', '=', $year);
+        } else {
+            $data = $data->whereYear('day_offs.created_at', '=', date('Y'));
+        }
+        if ($month) {
+            $data = $data->whereMonth('day_offs.created_at', '=', $month);
+        }
+        if ($search) {
             $data = $data->Where('users.name', 'like', '%' . $search . '%');
+
         }
         if ($status < ALL_DAY_OFF) {
             $data = $data->where('day_offs.status', $status);
@@ -205,18 +218,43 @@ class DayOffService extends AbstractService implements IDayOffService
 
     public function getOneData($id)
     {
-        return $data = $this->getdata(false,$id)->first();
+        return $data = $this->getdata(false, $id)->first();
     }
 
+    public function countDayOff()
+    {
+        return $this->model::groupBy('user_id')->select('user_id', DB::raw('sum(number_off) as total'))
+            ->where('user_id', Auth::id())->where('status', 1)
+            ->whereYear('day_offs.created_at', '=', date('Y'))
+            ->first();
+    }
+
+    public function searchStatus($status)
+    {
+        $data = DayOff::select('*', DB::raw('DATE_FORMAT(start_at, "%d/%m/%Y (%H:%i)") as start_date'),
+            DB::raw('DATE_FORMAT(end_at, "%d/%m/%Y (%H:%i)") as end_date'),
+            DB::raw('DATE_FORMAT(approver_at, "%d/%m/%Y (%H:%i)") as approver_date'))
+            ->where('user_id', Auth::id());
+        if ($status < ALL_DAY_OFF) {
+            $data = $data->where('status', $status);
+        }
+        $data = $data->whereYear('created_at', '=', date('Y'))
+            ->orderBy('status', 'ASC')->orderBy('created_at', 'DESC')
+            ->paginate(PAGINATE_DAY_OFF);
+        return $data;
+    }
 
     private function getdata($check = true, $id = null)
     {
-         $data = DayOff::select('day_offs.*', DB::raw('DATE_FORMAT(day_offs.start_at, "%d/%m/%Y (%H:%i)") as start_date'), DB::raw('DATE_FORMAT(day_offs.end_at, "%d/%m/%Y (%H:%i)") as end_date'), DB::raw('DATE_FORMAT(day_offs.approver_at, "%d/%m/%Y (%H:%i)") as approver_date'), 'users.name')
+        $data = DayOff::select('day_offs.*', DB::raw('DATE_FORMAT(day_offs.start_at, "%d/%m/%Y (%H:%i)") as start_date'),
+            DB::raw('DATE_FORMAT(day_offs.end_at, "%d/%m/%Y (%H:%i)") as end_date'),
+            DB::raw('DATE_FORMAT(day_offs.approver_at, "%d/%m/%Y (%H:%i)") as approver_date'), 'users.name')
             ->join('users', 'users.id', '=', 'day_offs.user_id');
         if ($check) {
             $data = $data->where('day_offs.approver_id', Auth::id())
                 ->where('day_offs.user_id', '<>', Auth::id())
-                ->orderBy('day_offs.status', ASC);
+                ->orderBy('day_offs.status', ASC)
+                ->orderBy('created_at', 'DESC');
             return $data;
         } else {
             $data = $data->where('day_offs.id', $id);

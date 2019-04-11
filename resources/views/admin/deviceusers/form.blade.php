@@ -1,10 +1,10 @@
-<div class="col-md-12">
+<div class="col-md-7">
     <div class="row">
         <div class="col-md-12">
             <div class="row">
                 <div class="col-md-6">
                     <div class="form-group margin-b-5 margin-t-5{{ $errors->has('types_device_id') ? ' has-error' : '' }}">
-                        <label for="types_device_id">Chủng loại</label>
+                        <label for="types_device_id">Chủng loại *</label>
                         <select class="form-control" id="types_device_id" name="types_device_id">
                             <option value="">Chọn chủng loại</option>
                             @foreach(TYPES_DEVICE as $key => $device)
@@ -61,7 +61,7 @@
                 <div class="col-md-6">
                     <div class="form-group margin-b-5 margin-t-5{{ $errors->has('users_id') ? ' has-error' : '' }}">
                         <label for="users_id">Nhân viên *</label>
-                        <select class="form-control" id="users_id" name="users_id">
+                        <select class="select2 form-control" id="users_id" name="users_id">
                             <option value="">Chọn nhân viên</option>
                             @foreach($users as $user)
                                 @if (Input::old('users_id') == $user->id)
@@ -88,7 +88,7 @@
                     <div class="form-group margin-b-5 margin-t-5{{ $errors->has('code') ? ' has-error' : '' }}">
                         <label for="code">Code</label>
                         <input type="text" class="form-control pull-right datepicker"
-                               name="code"
+                               name="code" disabled="disabled"
                                value="{{ old('code', $record->code) }}" id="code" placeholder="Code" min="0">
                         @if ($errors->has('code'))
                             <span class="help-block">
@@ -149,7 +149,9 @@
         <div class="col-md-12">
             <div class="form-group margin-b-5 margin-t-5{{ $errors->has('note') ? ' has-error' : '' }}">
                 <label for="note">Ghi chú</label>
-                <textarea class="form-control" name="note" placeholder="Ghi chú" id="note" > {{ old('note', $record->note) }}</textarea>
+                <textarea class="form-control" name="note" placeholder="Ghi chú"
+                          rows="5"
+                          id="note"> {{ old('note', $record->note) }}</textarea>
 
                 @if ($errors->has('note'))
                     <span class="help-block">
@@ -207,7 +209,8 @@
                         }
                         $('#devices_id').html(htmlRender);
                     },
-                    error: function (err) {},
+                    error: function (err) {
+                    },
                 })
             })
 

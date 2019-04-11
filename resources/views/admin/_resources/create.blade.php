@@ -2,7 +2,7 @@
 @extends('layouts.admin.master')
 
 <?php
-$_pageTitle = (isset($addVarsForView['_pageTitle']) && !empty($addVarsForView['_pageTitle']) ? $addVarsForView['_pageTitle'] : ucwords($resourceTitle));
+$_pageTitle = (isset($addVarsForView['_pageTitle']) && !empty($addVarsForView['_pageTitle']) ? $addVarsForView['_pageTitle'] : ($resourceTitle));
 $_pageSubtitle = (isset($addVarsForView['_pageSubtitle']) && !empty($addVarsForView['_pageSubtitle']) ? $addVarsForView['_pageSubtitle'] : "Thêm " . str_singular($_pageTitle));
 $_formFiles = isset($addVarsForView['formFiles']) ? $addVarsForView['formFiles'] : false;
 $_listLink = route($resourceRoutesAlias . '.index');
@@ -63,20 +63,13 @@ $_storeLink = route($resourceRoutesAlias . '.store');
 
                     <div class="box-footer clearfix">
                         <!-- Edit Button -->
-                        <div class="col-xs-6">
-                            <div class="text-center margin-b-5 margin-t-5">
-                                <button class="btn btn-info">
-                                    <i class="fa fa-save"></i> <span>Lưu</span>
-                                </button>
-                            </div>
-                        </div>
-                        <!-- /.col-xs-6 -->
-                        <div class="col-xs-6">
-                            <div class="text-center margin-b-5 margin-t-5">
-                                <a href="{{ $_listLink }}" class="btn btn-default">
-                                    <i class="fa fa-ban"></i> <span>Hủy</span>
-                                </a>
-                            </div>
+                        <div class="col-xs-12 text-right">
+                            <a href="{{ $_listLink }}" class="btn btn-default">
+                                <i class="fa fa-ban"></i> <span>Hủy</span>
+                            </a>
+                            <button class="btn btn-info margin-l-5">
+                                <i class="fa fa-save"></i> <span>Lưu</span>
+                            </button>
                         </div>
                         <!-- /.col-xs-6 -->
                     </div>

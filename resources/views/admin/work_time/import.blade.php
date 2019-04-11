@@ -49,7 +49,7 @@ $baseRoute = 'admin::work_times';
     <div class="row">
         <div class="col-md-2">
             <div class="form-group margin-b-5 margin-t-5{{ $errors->has('year') ? ' has-error' : '' }}">
-                <label for="year">Chọn năm *</label>
+                <label for="year">Chọn năm</label>
                 <div class="input-group date">
                     <div class="input-group-addon">
                         <i class="fa fa-calendar"></i>
@@ -65,12 +65,12 @@ $baseRoute = 'admin::work_times';
         </div>
         <div class="col-md-2">
             <div class="form-group margin-b-5 margin-t-5{{ $errors->has('month') ? ' has-error' : '' }}">
-                <label for="month">Chọn tháng *</label>
+                <label for="month">Chọn tháng</label>
                 <div class="input-group date">
                     <div class="input-group-addon">
                         <i class="fa fa-calendar"></i>
                     </div>
-                    {{ Form::select('month', get_months('Tháng ', true), request('month', (int)date('m')), ['class'=>'form-control']) }}
+                    {{ Form::select('month', get_months('Tháng ', true), request('month'), ['class'=>'form-control']) }}
                 </div>
                 @if ($errors->has('month'))
                     <span class="help-block">
@@ -80,7 +80,47 @@ $baseRoute = 'admin::work_times';
             </div>
         </div>
     </div>
-
+    <p class="text-primary">
+        hoặc
+    </p>
+    <div class="row">
+        <div class="col-md-2">
+            <div class="form-group margin-b-5 margin-t-5{{ $errors->has('start_date') ? ' has-error' : '' }}">
+                <label for="start_date">Từ ngày</label>
+                <div class="input-group date">
+                    <div class="input-group-addon">
+                        <i class="fa fa-calendar"></i>
+                    </div>
+                    <input type="text" class="form-control pull-right datepicker"
+                           name="start_date" autocomplete="off"
+                           value="{{ old('start_date') }}" id="start_date">
+                </div>
+                @if ($errors->has('start_date'))
+                    <span class="help-block">
+                                <strong>{{ $errors->first('start_date') }}</strong>
+                            </span>
+                @endif
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div class="form-group margin-b-5 margin-t-5{{ $errors->has('end_date') ? ' has-error' : '' }}">
+                <label for="end_date">Đến ngày</label>
+                <div class="input-group date">
+                    <div class="input-group-addon">
+                        <i class="fa fa-calendar"></i>
+                    </div>
+                    <input type="text" class="form-control pull-right datepicker"
+                           name="end_date" autocomplete="off"
+                           value="{{ old('end_date') }}" id="end_date">
+                </div>
+                @if ($errors->has('end_date'))
+                    <span class="help-block">
+                                <strong>{{ $errors->first('end_date') }}</strong>
+                            </span>
+                @endif
+            </div>
+        </div>
+    </div>
     <div class="form-group{{ ($errors->has('import_file') || $errors->has('ext')) ? ' has-error' : '' }}">
         <label for="importFile">Chọn file</label>
         <input type="file" name="import_file" id="importFile" required
@@ -100,3 +140,19 @@ $baseRoute = 'admin::work_times';
 
     <a href="/admin/work_times/download-template"><i class="fa fa-download"></i> Tải file mẫu!</a>
 @endsection
+@push('footer-scripts')
+    <style>
+        .datepicker-days table tbody tr td:nth-child(1),
+        .datepicker-days table thead tr th.dow:nth-child(1),
+        .datepicker-days table tbody tr td:nth-child(7),
+        .datepicker-days table thead tr th.dow:nth-child(7) {
+            background: #e2e2e2;
+        }
+    </style>
+    <script>
+
+        $(function () {
+            myDatePicker($("#start_date, #end_date"));
+        })
+    </script>
+@endpush

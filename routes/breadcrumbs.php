@@ -76,6 +76,11 @@ Breadcrumbs::register('project_detail', function ($breadcrumbs, $project) {
     $breadcrumbs->push($project->name, route('project_detail', ['id' => $project->id]));
 
 });
+//Home > Meeting Room
+Breadcrumbs::register('meetings', function ($breadcrumbs) {
+    $breadcrumbs->parent('home');
+    $breadcrumbs->push(__l('meetings'), route('meetings'));
+});
 // Dashboard > Profile
 Breadcrumbs::register('_personal', function ($breadcrumbs) {
     $breadcrumbs->parent('personal');
@@ -98,7 +103,7 @@ Breadcrumbs::register('work_time', function ($breadcrumbs) {
 });
 // Dashboard > list_share_document
 Breadcrumbs::register('list_share_document', function ($breadcrumbs) {
-    $breadcrumbs->parent('personal');
+    $breadcrumbs->parent('home');
     $breadcrumbs->push(__l('list_share_document'), route('list_share_document'));
 });
 // Dashboard > day_off
@@ -124,14 +129,15 @@ $resources = [
     'users' => 'Quản lý nhân viên',
     'events' => 'Quản lý sự kiện',
     'posts' => 'Quản lý thông báo',
-    'regulations' => 'Nội quy, quy định',
+    'regulations' => 'Nội quy, Quy định',
     'teams' => 'Quản lý nhóm',
     'day_offs' => 'Quản lý nghỉ phép',
     'work_times' => 'Quản lý làm việc',
     'work_time_register' => 'Đăng ký thời gian làm việc',
     'projects' => 'Quản lý dự án',
     'devices' => 'Quản lý thiết bị',
-    'deviceusers' => 'Quản lý thiết bị'
+    'deviceusers' => 'Quản lý thiết bị',
+    'meetings'=> 'Phòng họp'
 ];
 foreach ($resources as $resource => $data) {
     $parent = 'admin';

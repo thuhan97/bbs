@@ -62,19 +62,24 @@ class WorkRegisterController extends AdminBaseController
     public function __construct(IWorkTimeRegisterRepository $repository, IWorkTimeRegisterService $service, IUserRepository $userRepository)
     {
         $settings = app('settings')->first();
+
         $this->WORK_PATH = [
+            //morning only
             0 => [
                 'start_at' => $settings['morning_start_work_at'],
                 'end_at' => $settings['morning_end_work_at']
             ],
+            //afternoon only
             1 => [
                 'start_at' => $settings['afternoon_start_work_at'],
                 'end_at' => $settings['afternoon_end_work_at']
             ],
+            //off
             2 => [
                 'start_at' => 0,
                 'end_at' => 0
             ],
+            //full
             3 => [
                 'start_at' => $settings['morning_start_work_at'],
                 'end_at' => $settings['afternoon_end_work_at']
@@ -145,6 +150,7 @@ class WorkRegisterController extends AdminBaseController
                     'day' => $i
                 ];
             }
+
             if (WorkTimeRegister::insert($createDefaultArray)) {
                 $record = WorkTimeRegister::where('user_id', $id)->first();
             } else {
@@ -253,8 +259,13 @@ class WorkRegisterController extends AdminBaseController
 
         foreach (PART_OF_THE_DAY as $item) {
             $validateOptions['rules'][$item . '_part'] = 'nullable|numeric|between:0,3';
-            $validateOptions['rules'][$item . '_start'] = 'nullable|max:8';
-            $validateOptions['rules'][$item . '_end'] = 'nullable|max:8';
+            $validateOptions['rules'][$item . '_start'] = 'nullable|date|date_format:h:i';
+            $validateOptions['rules'][$item . '_end'] = 'nullable|date|date_format:h:i';
+
+            $validateOptions['attributes'][$item . '_start'] = 'từ giờ';
+            $validateOptions['attributes'][$item . '_end'] = 'đến giờ';
+            $validateOptions['messages'][$item . '_start.date'] = 'vui lòng chọn giờ bắt đầu.';
+            $validateOptions['messages'][$item . '_end.date'] = 'vui lòng chọn giờ kết thúc.';
         }
 
         return $validateOptions;

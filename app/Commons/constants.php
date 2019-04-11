@@ -116,7 +116,14 @@ define('PART_OF_THE_DAY', [
     'fri',
     'sat',
 ]);
-
+define('PART_OF_THE_DAY_NAME', [
+    'mon' => 'Thứ 2',
+    'tue' => 'Thứ 3',
+    'wed' => 'Thứ 4',
+    'thu' => 'Thứ 5',
+    'fri' => 'Thứ 6',
+    'sat' => 'Thứ 7',
+]);
 define('STATUS_PROJECT', [
     0 => 'Chưa bắt đầu',
     1 => 'Đang phát triển',
@@ -159,6 +166,7 @@ define('ICONS_TYPES_FILES', [
     'png' => 'far fa-image',
     'pdf' => 'fa fa-file-pdf',
     'doc' => 'fa fa-file-word',
+    'docx' => 'fa fa-file-word',
     'zip' => 'fa fa-file-archive',
     'xlsx' => 'fa fa-file-excel',
     'xls' => 'fa fa-file-excel',
@@ -174,3 +182,12 @@ define('ICONS_TYPES_FILES', [
 
 define('SHARE_DUCOMMENT', 2);
 
+define('VACATION', [
+    1 => 'Lý do cá nhân',
+    2 => 'Nghỉ đám cưới',
+    3 => 'Nghỉ đám hiếu',
+]);
+
+define('DAILY_REPORT', 0);
+define('WEEKLY_REPORT', 1);
+define('XLS_TYPE', '.xls');

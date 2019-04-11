@@ -74,31 +74,33 @@
                 Hiển thị: Chưa duyệt
             @elseif(isset($status) && $status == 1)
                 Hiển thị: Đã duyệt
+            @else
+                Hiển thị: Tất cả
             @endif
         </button>
 
         <div class="dropdown-menu">
-                <a class="dropdown-item"
-                   href="{{ route('day_off',['status'=>ALL_DAY_OFF]) }}">
+            <a class="dropdown-item"
+               href="{{ route('day_off',['status'=>ALL_DAY_OFF]) }}">
                 <span class="d-flex">
                     <span class="green-red-circle mr-2"></span>
                     <span class="content">Tất cả</span>
                 </span>
-                </a>
-                <a class="dropdown-item"
-                   href="{{ route('day_off',['status'=>STATUS_DAY_OFF['abide']]) }}">
+            </a>
+            <a class="dropdown-item"
+               href="{{ route('day_off',['status'=>STATUS_DAY_OFF['abide']]) }}">
                 <span class="d-flex">
                     <span class="red-circle mr-2"></span>
                     <span class="content">Chưa duyệt</span>
                 </span>
-                </a>
-                <a class="dropdown-item"
-                   href="{{ route('day_off',['status'=>STATUS_DAY_OFF['active']]) }}">
+            </a>
+            <a class="dropdown-item"
+               href="{{ route('day_off',['status'=>STATUS_DAY_OFF['active']]) }}">
                 <span class="d-flex">
                     <span class="green-circle mr-2"></span>
                     <span class="content">Đã duyệt</span>
                 </span>
-                </a>
+            </a>
         </div>
 
         <?php
@@ -237,10 +239,8 @@
                 <form action="{{ route('day_off_create') }}" method="post" id="form_create_day_off">
                     @csrf
                     <div class="modal-body mx-3 mt-0 pb-0">
-                        <div class="mb-3 ml-3">
-                            @if(isset($record))
-                            <input type="hidden" name="flag" value="a">
-                            @endif
+                        <div class="mb-3">
+
                             <!-- Default input -->
                             <label class="text-w-400" for="exampleForm2">Mục đích xin nghỉ*</label>
                             {{ Form::select('title', VACATION, $record->title ?? null,[ isset($record) ? 'disabled' : '' ,'class' => 'form-control my-1 mr-1  browser-default custom-select md-form select-item reason_id','placeholder'=>'Chọn lý do xin nghỉ']) }}
@@ -251,19 +251,20 @@
                             @endif
                         </div>
                         <input type="hidden" name="day_off_id" value="{{ $record->id ?? '' }}">
-                        <div class="mb-3 ml-3">
+                        <div class="mb-3">
                             <label class="text-w-400" for="exampleFormControlTextarea5">Nội dung</label>
                             <textarea
-                                    class="form-control rounded-0 select-item {{ $errors->has('reason') ? ' has-error' : '' }}"
+                                    class="form-control reason_id rounded-0 select-item {{ $errors->has('reason') ? ' has-error' : '' }}"
                                     id="exampleFormControlTextarea2" rows="3" placeholder="lý do xin nghỉ..."
-                                    name="reason" @if(isset($record)) readonly @endif>{{ $record->reason ?? old('reason') }}</textarea>
+                                    name="reason"
+                                    @if(isset($record)) readonly @endif>{{ $record->reason ?? old('reason') }}</textarea>
                             @if ($errors->has('reason'))
                                 <div class="mt-1">
                                     <span class="help-block text-danger">{{ $errors->first('reason') }}</span>
                                 </div>
                             @endif
                         </div>
-                        <div class="mb-2 ml-3">
+                        <div class="mb-2">
                             <div class="row">
                                 <div class="form-group col-6 m-0">
                                     <label class=" text-w-400" for="inputCity">Ngày bắt đầu nghỉ*</label>
@@ -294,23 +295,39 @@
                                 </div>
                             @endif
                         </div>
-                        <div class="ml-3">
-                            <label class=" mt-1 text-w-400" for="exampleForm2">Người duyệt*</label>
-                            {{ Form::select('approver_id', $userManager, $record->approver_id ?? null, [isset($record) ? 'disabled' : '' ,'class' => 'form-control my-1 mr-1 browser-default custom-select md-form select-item mannager_id','placeholder'=>'Chọn người duyệt đơn' ]) }}
-                            @if ($errors->has('approver_id'))
-                                <div class="mt-1 ml-3">
-                                    <span class="help-block text-danger">{{ $errors->first('approver_id') }}</span>
+                        @if(isset($record) && $record->status==1)
+                            <div class="mb-2" id="show-record">
+                                <div class="row">
+                                    <div class="form-group col-6 m-0">
+                                        <label class=" text-w-400" for="inputCity">Thời gian được tính</label>
+                                        <input class="form-control select-item " type="text"
+                                               value="{{ $record->number_off }}" readonly="readonly">
+                                    </div>
+                                    <!-- Default input -->
+                                    <div class="form-group col-6 m-0">
+                                        <label class="ml-3 text-w-400" for="inputZip">Ngày phê duyệt</label>
+                                        <input class="form-control select-item " type="text"
+                                               value="{{ $record->approver_date }}" readonly="readonly">
+                                    </div>
                                 </div>
-                            @endif
-                        </div>
-                    </div>
-                    <div class="pt-3 pb-4 d-flex justify-content-center border-top-0 rounded mb-0" id="create_day_off">
-                        @if(isset($record) && $record->status ==0)
-                            <span class="btn btn-danger" data-toggle="modal" data-target="#basicExampleModal">HỦY ĐƠN</span>
-                        @else
-                            <button class="btn btn-primary btn-send">GỬI ĐƠN</button>
+                            </div>
                         @endif
-                    </div>
+                                <div class="">
+                                    <label class=" mt-1 text-w-400" for="exampleForm2">Người duyệt*</label>
+                                    {{ Form::select('approver_id', $userManager, $record->approver_id ?? null, [isset($record) ? 'disabled' : '' ,'class' => 'form-control my-1 mr-1 browser-default custom-select md-form select-item mannager_id','placeholder'=>'Chọn người duyệt đơn' ]) }}
+                                    @if ($errors->has('approver_id'))
+                                        <div class="mt-1 ml-3">
+                                            <span class="help-block text-danger">{{ $errors->first('approver_id') }}</span>
+                                        </div>
+                                    @endif
+                                </div>
+                            </div>
+                            <div class="pt-3 pb-4 d-flex justify-content-center border-top-0 rounded mb-0"
+                                 id="create_day_off">
+                                @if(isset($record) && $record->status ==0)
+                                    <span class="btn btn-danger" data-toggle="modal" data-target="#basicExampleModal">HỦY ĐƠN</span>
+                                @endif
+                            </div>
                 </form>
             </div>
         </div>
@@ -344,6 +361,7 @@
     @if (count($errors) > 0)
         <script>
             $(function () {
+                $('#create_day_off').html('<button class="btn btn-primary btn-send">GỬI ĐƠN</button>');
                 $('#modal-form').modal('show');
             });
         </script>
@@ -443,8 +461,12 @@
             var mon = today.getMonth() + 1;
             var date = today.getFullYear() + '-' + mon + '-' + today.getDate()
             $('#show-modal').on('click', function () {
-                $('.mannager_id , .reason_id , #start_date , #end_date').val('');
+                $('.mannager_id , .reason_id , #start_date , #end_date ').val('');
+                $('.mannager_id,.reason_id').removeAttr('readonly');
+                $('.mannager_id , .reason_id ').removeAttr('disabled');
+                $('#show-record').hide();
                 $('#exampleFormControlTextarea2').text('');
+                $('#create_day_off').html('<button class="btn btn-primary btn-send">GỬI ĐƠN</button>');
                 $('#modal-form').modal('show');
             });
 

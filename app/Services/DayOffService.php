@@ -181,7 +181,7 @@ class DayOffService extends AbstractService implements IDayOffService
         }
         $dataDate = $dataDate->paginate(PAGINATE_DAY_OFF);
         return [
-            'dateDate' => $dataDate,
+            'dataDate' => $dataDate,
             'data' => $data,
             'total' => $data->count(),
             'totalActive' => $data->where('status', STATUS_DAY_OFF['active'])->count(),

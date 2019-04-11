@@ -5,7 +5,10 @@
     <?php
     if (isset($dayOffSearch)) {
         $getDayOff = $dayOffSearch['data'];
-    } else {
+    }elseif (isset($status)){
+        $getDayOff = $dataDayOff['dataDate'];
+    }
+    else {
         $getDayOff = $dataDayOff['data'];
     }
     if (session()->has('data')) {

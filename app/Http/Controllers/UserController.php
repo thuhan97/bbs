@@ -284,7 +284,7 @@ class UserController extends Controller
 
         $dataDayOff = $this->userDayOffService->showList($status);
         return view('end_user.user.day_off_approval', compact(
-            'dataDayOff'
+            'dataDayOff','status'
         ));
     }
 

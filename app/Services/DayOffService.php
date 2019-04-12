@@ -223,12 +223,39 @@ class DayOffService extends AbstractService implements IDayOffService
 
     public function countDayOff($id)
     {
-        $data=$this->model::groupBy('user_id')->select('user_id', DB::raw('sum(number_off) as total'))
+        $data=$this->model::groupBy('user_id','check_free')
+            ->select('user_id','check_free', DB::raw('sum(number_off) as total'))
             ->where('user_id', $id)
             ->where('status', 1)
             ->whereMonth('day_offs.start_at', '=', date('m'))
             ->whereYear('day_offs.start_at', '=', date('Y'))->first();
         return $data;
+    }
+
+    public function countDayOffUserLogin()
+    {
+        $user=Auth::user();
+        $data=$this->model::select('user_id','check_free',DB::raw('YEAR(start_at) year, MONTH(start_at) month'),DB::raw('sum(number_off) as total'))
+            ->groupBy('user_id','check_free','year','month')
+            ->where('user_id',$user->id)
+            ->where('status', 1)
+            ->whereMonth('start_at' , '<=',date('m'))
+            ->whereYear('day_offs.start_at', '=', date('Y'))
+            ->get();
+        $total=0;
+        $sumDayOff=RemainDayoff::firstOrCreate(['user_id' => $user->id]);
+        foreach ($data as $key => $value){
+            $total=$total + $value->total;
+            if ($user->sex==1 && $value->check_free == 0){
+              $total=$total - 1;
+            }
+        }
+        return $countDayyOff=[
+            'total'=>$total,
+            'remain'=>$sumDayOff->year,
+
+        ];
+
     }
 
     public function searchStatus($status)

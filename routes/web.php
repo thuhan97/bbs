@@ -145,5 +145,6 @@ Route::group([
     Route::post('/add_document', 'ShareController@addDocument')->name('add_document');
     // create day off
     Route::post('/ngay-nghi/create', 'UserController@dayOffCreate')->name('day_off_create');
+    Route::get('tung','UserController@tung');
 
 });

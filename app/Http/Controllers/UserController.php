@@ -6,6 +6,7 @@ use App\Http\Requests\CreateDayOffRequest;
 use App\Http\Requests\DayOffRequest;
 use App\Http\Requests\ProfileRequest;
 use App\Models\DayOff;
+use App\Models\RemainDayoff;
 use App\Models\User;
 use App\Models\WorkTime;
 use App\Repositories\Contracts\IDayOffRepository;
@@ -153,6 +154,9 @@ class UserController extends Controller
     public function dayOff(DayOffRequest $request,$status=null)
     {
         $conditions = ['user_id' => Auth::id()];
+
+        $countDayOff=$this->userDayOffService->countDayOffUserLogin();
+
         $listDate = $this->userDayOffService->findList($request, $conditions);
 
         $paginateData = $listDate->toArray();
@@ -163,9 +167,9 @@ class UserController extends Controller
         $availableDayLeft = $this->userDayOffService->getDayOffUser(Auth::id());
         if ($status != null){
             $dayOff=$this->userDayOffService->searchStatus($status);
-            return view('end_user.user.day_off', compact('listDate', 'paginateData', 'availableDayLeft', 'recordPerPage', 'approve', 'userManager','dayOff','status'));
+            return view('end_user.user.day_off', compact('listDate', 'paginateData', 'availableDayLeft', 'recordPerPage', 'approve', 'userManager','dayOff','status','countDayOff'));
         }
-        return view('end_user.user.day_off', compact('listDate', 'paginateData', 'availableDayLeft', 'recordPerPage', 'approve', 'userManager'));
+        return view('end_user.user.day_off', compact('listDate', 'paginateData', 'availableDayLeft', 'recordPerPage', 'approve', 'userManager','countDayOff'));
     }
 
     public function dayOffListApprovalAPI(Request $request)
@@ -329,15 +333,19 @@ class UserController extends Controller
         $userDayOff=User::findOrFail($dayOff->user_id);
         if ($userDayOff->sex==1){
             $countDayOff=$this->userDayOffService->countDayOff($userDayOff->id);
-            if ((int)$countDayOff->total >=2 && $userDayOff->check_free ==0){
+            if ($countDayOff && (int)$countDayOff->total >=2 && $countDayOff->check_free ==0){
                 $userDayOff->check_free =1;
                 $userDayOff->save();
-
             }
         }
-        dd($dayOff,$userDayOff);
          return back()->with('success',__('messages.edit_day_off_successully'));
     }
+
+    /*public function tung(){
+
+
+
+    }*/
     public function deleteDayOff(Request $request){
         $id= $request->day_off_id ?? '';
         if ($request->day_off_id){

@@ -12,7 +12,6 @@
     }
     $dataDayOff= $dayOff ?? $availableDayLeft['data'];
     @endphp
-
     <div class="container-fluid col-12 row">
         <div class="col-sm-3 col-xs-6">
             <div class="card bg-primary">
@@ -29,7 +28,7 @@
             <div class="card bg-success">
                 <div class="card-body">
                     <h1 class="white-text font-weight-light">
-                        {{$availableDayLeft['remain_current']}}
+                        {{ $countDayOff['remain'] - $countDayOff['total'] < 0 ? 0 : $countDayOff['remain'] - $countDayOff['total'] }}
                     </h1>
                     <p class="card-subtitle text-white-50">nghỉ luôn đi</p>
                     <p class="card-title text-uppercase font-weight-bold card-text white-text">
@@ -42,7 +41,7 @@
             <div class="card bg-warning">
                 <div class="card-body">
                     <h1 class="white-text font-weight-light">
-                        {{$availableDayLeft['total_current'] - $availableDayLeft['remain_current']}}
+                        {{ $countDayOff['total'] }}
                     </h1>
                     <p class="card-subtitle text-white-50">ngày đã nghỉ</p>
                     <p class="card-title text-uppercase font-weight-bold card-text white-text">Trong

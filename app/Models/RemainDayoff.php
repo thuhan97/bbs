@@ -23,7 +23,8 @@ class RemainDayoff extends Model
     protected $fillable = [
         'id',
         'user_id',
-        'year'
+        'previous_year',
+        'current_year'
     ];
 
     /**

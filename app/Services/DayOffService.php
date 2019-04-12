@@ -167,17 +167,14 @@ class DayOffService extends AbstractService implements IDayOffService
 
     public function showList($status)
     {
-        $data = $this->getdata()->whereYear('day_offs.start_at', '=', date('Y'))->paginate(PAGINATE_DAY_OFF);
-
+         $model= $this->getdata()->whereYear('day_offs.start_at', '=', date('Y'));
+        $data=$model->paginate(PAGINATE_DAY_OFF);
+        $dataDate = $model->whereMonth('day_offs.start_at', '=', date('m'));
         if ($status != null) {
+            $dataDate = $model;
             if ($status < ALL_DAY_OFF) {
-                $dataDate = $this->getdata()->where('day_offs.status', $status)->whereYear('day_offs.created_at', '=', date('Y'));
-            } else {
-                $dataDate = $this->getdata()->whereYear('day_offs.start_at', '=', date('Y'));
+                $dataDate = $model->where('day_offs.status', $status);
             }
-
-        } else {
-            $dataDate = $this->getdata()->whereMonth('day_offs.start_at', '=', date('m'))->whereYear('day_offs.created_at', '=', date('Y'));
         }
         $dataDate = $dataDate->paginate(PAGINATE_DAY_OFF);
         return [
@@ -226,7 +223,7 @@ class DayOffService extends AbstractService implements IDayOffService
         $data = $this->model::groupBy('user_id', 'check_free')
             ->select('user_id', 'check_free', DB::raw('sum(number_off) as total'))
             ->where('user_id', $id)
-            ->where('status', 1)
+            ->where('status', STATUS_DAY_OFF['active'])
             ->whereMonth('day_offs.start_at', '=', date('m'))
             ->whereYear('day_offs.start_at', '=', date('Y'))->first();
         return $data;
@@ -238,7 +235,7 @@ class DayOffService extends AbstractService implements IDayOffService
         $data = $this->model::select('user_id', 'check_free', DB::raw('YEAR(start_at) year, MONTH(start_at) month'), DB::raw('sum(number_off) as total'))
             ->groupBy('user_id', 'check_free', 'year', 'month')
             ->where('user_id', $user->id)
-            ->where('status', 1)
+            ->where('status', STATUS_DAY_OFF['active'])
             ->whereMonth('start_at', '<=', date('m'))
             ->whereYear('day_offs.start_at', '=', date('Y'))
             ->get();
@@ -246,7 +243,7 @@ class DayOffService extends AbstractService implements IDayOffService
         $sumDayOff = RemainDayoff::firstOrCreate(['user_id' => $user->id]);
         foreach ($data as $key => $value) {
             $total = $total + $value->total;
-            if ($user->sex == 1 && $value->check_free == 0) {
+            if ($user->sex == SEX['female'] && $value->check_free == DAY_OFF_FREE) {
                 $total = $total - 1;
             }
         }

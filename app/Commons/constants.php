@@ -209,8 +209,12 @@ define('STATUS_DAY_OFF', [
     'active'=> 1,
     'noActive'=>2
 ]);
-
+define('SEX',[
+    'male'=>0,
+    'female'=>1
+]);
 define('ALL_DAY_OFF',3);
+define('DAY_OFF_FREE',0);
 define('PAGINATE_DAY_OFF',20);
 
 define('XLS_TYPE', '.xls');

@@ -20,7 +20,7 @@
         </div>
         <div class="col-md-8">
             <div class="row mb-4" id="form-check-time">
-                <button type="button" class="btn btn-danger btn-late" id="btn-late">Số buổi đi
+                <button type="button" class="btn btn-danger btn-early-late" id="btn-early-late">Số buổi đi
                     muộn/sớm:
                 </button>
                 <button type="button" class="btn btn-primary btn-ot" id="btn-ot">Số buổi đi
@@ -90,8 +90,6 @@
                     renderCalendar(current_year, current_month);
                 },
                 show: function (el) {
-                    $("#modal-form").css("padding-right", "0px !important");
-                    $(".modal-open").css("padding-right", "0px !important");
                     var getCurrentTime = new Date();
                     var currentMY = getCurrentTime.getFullYear() + "-" + getCurrentTime.getMonth();
                     var calendarYM = calendar.sYear + "-" + calendar.sMth;
@@ -280,9 +278,7 @@
                         const dataRes = respond.data;
                         const dataType = respond.dataType;
                         const dataModal = respond.dataModal;
-                        $("#btn-late").text('Số buổi đi muộn/sớm: ' + dataType.type_1);
-                        $("#btn-ot").text('Số buổi đi OT: ' + dataType.type_2);
-                        $("#btn-late-ot").text('Số buổi đi muộn + OT: ' + dataType.type_3);
+
                         dataRes.forEach(function (data) {
                             const work_day = data.work_day;
                             const work_time = data.start_at + ' - ' + data.end_at;
@@ -306,7 +302,15 @@
                                     $(this).append('<p class="data-work-day" hidden>' + data.work_day + '</p>');
                                 }
                             });
-                        })
+                        });
+                        var type_1 = $('#calendar .data-type-1').length;
+                        var type_2 = $('#calendar .data-type-2').length;
+                        var type_4 = $('#calendar .data-type-4').length;
+                        var type_5 = $('#calendar .data-type-5').length;
+                        var earlyLate = type_1 + type_2;
+                        $("#btn-early-late").text('Số buổi đi muộn/sớm: ' + earlyLate);
+                        $("#btn-ot").text('Số buổi đi OT: ' + type_4);
+                        $("#btn-late-ot").text('Số buổi đi muộn + OT: ' + type_5);
                     },
                     error: (data) => {
                         console.log(data.status);

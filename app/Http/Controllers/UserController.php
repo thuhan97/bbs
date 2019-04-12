@@ -87,91 +87,25 @@ class UserController extends Controller
         return redirect('/login')->with('notification_change_pass', __('messages.notification_change_pass'));
     }
 
-    public function workTime(Request $request)
+    public function workTime()
     {
-        $late = $early = $ot = 0;
-        $month = $request->input('month') ?? date('m');
-        $type = $request->input('type');
-        $type_late = array(1, 3, 5);
-        $type_early = array(2, 3);
-        $type_ot = array(4, 5);
-        $t = array();
-
-        if ($type == 'di_muon') {
-            $t = $type_late;
-        } elseif ($type == 've_som') {
-            $t = $type_early;
-        } elseif ($type == 'ot') {
-            $t = $type_ot;
-        }
-
-        $list_work_times = WorkTime::where('user_id', Auth::user()->id)->whereMonth('work_day', (int)$month - 1)->get();
-        if (!empty($t)) {
-            $list_work_times = $list_work_times->whereIn('type', $t);
-            if ($type == 'di_muon') {
-                $late = $list_work_times->count();
-            } elseif ($type == 've_som') {
-                $early = $list_work_times->count();
-            } elseif ($type == 'ot') {
-                $ot = $list_work_times->count();
-            }
-        } else {
-            $late = $list_work_times->whereIn('type', $type_late)->count();
-            $early = $list_work_times->whereIn('type', $type_early)->count();
-            $ot = $list_work_times->whereIn('type', $type_ot)->count();
-        }
-
-        if (Auth::user()) {
-            $calendarData = [];
-            $list_work_times_calendar = WorkTime::where('user_id', Auth::user()->id)->get();
-            if ($list_work_times_calendar) {
-                foreach ($list_work_times_calendar->toArray() as $item) {
-                    $startDay = $item['start_at'] ? new DateTime($item['start_at']) : '';
-                    $dataStartDay = $startDay ? $startDay->format('H:i') : '';
-                    $endDay = $item['end_at'] ? new DateTime($item['end_at']) : '';
-                    $dataEndDay = $endDay ? $endDay->format('H:i') : '';
-                    $calendarData[] = [
-                        'work_day' => $item['work_day'],
-                        'start_at' => $dataStartDay,
-                        'end_at' => $dataEndDay,
-                        'type' => $item['type'],
-                        'note' => $item['note'],
-                        'attendance-time' => $dataStartDay && $dataEndDay ? " - " : '',
-                        'id' => $item['id'],
-                    ];
-                }
-            }
-        }
-        return view('end_user.user.work_time', compact('list_work_times', 'late', 'early', 'ot', 'list_work_times_calendar', 'calendarData'));
+        return view('end_user.user.work_time');
     }
 
     public function workTimeAPI(Request $request)
     {
         $this->validate($request, [
-
+            'year' =>'required|integer|min:'.date('Y'),
         ]);
 
         $calendarData = [];
-        $list_work_times_calendar = WorkTime::where('user_id', Auth::user()->id)
+        $list_work_times_calendar = WorkTime::where('user_id', Auth::id())
             ->whereYear('work_day', $request->year)
             ->whereMonth('work_day', $request->month);
 
-        $explanation_calendar = Explanation::where('user_id', Auth::user()->id)
+        $explanation_calendar = Explanation::where('user_id', Auth::id())
             ->whereYear('work_day', $request->year)
             ->whereMonth('work_day', $request->month);
-        $types = [1, 2, 3, 4, 5];
-        $types = collect($types);
-
-        $arrCount = [];
-        $types->each(function ($item) use ($request, &$arrCount) {
-            $getType = WorkTime::where('user_id', Auth::user()->id)
-                ->whereYear('work_day', $request->year)
-                ->whereMonth('work_day', $request->month);
-            $arrCount[] = $getType->where('type', $item)->count();
-        });
-        $type_1 = $arrCount[0] + $arrCount[1];
-        $type_2 = $arrCount[3];
-        $type_3 = $arrCount[4];
         if ($list_work_times_calendar) {
             foreach ($list_work_times_calendar->get()->toArray() as $item) {
                 $startDay = $item['start_at'] ? new DateTime($item['start_at']) : '';
@@ -179,7 +113,7 @@ class UserController extends Controller
                 if ($dataStartDay && $dataStartDay != '00:00:00') {
                     $dataStartDay = $startDay->format('H:i');
                 } elseif ($dataStartDay == '00:00:00') {
-                    $dataStartDay = '* * * *';
+                    $dataStartDay = '* * : * *';
                 } else {
                     $dataStartDay = '';
                 }
@@ -207,16 +141,10 @@ class UserController extends Controller
                 ];
             }
         }
-        $dataType = [
-            'type_1' => $type_1,
-            'type_2' => $type_2,
-            'type_3' => $type_3
-        ];
         return response([
             'success' => true,
             'message' => 'success',
             'data' => $calendarData,
-            'dataType' => $dataType,
             'dataModal' => $calendarDataModal
         ]);
     }

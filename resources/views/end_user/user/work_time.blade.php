@@ -90,45 +90,33 @@
                     renderCalendar(current_year, current_month);
                 },
                 show: function (el) {
-                    $("#modal-form").css("padding-right","0px !important");
-                    $(".modal-open").css("padding-right","0px !important");
+                    $("#modal-form").css("padding-right", "0px !important");
+                    $(".modal-open").css("padding-right", "0px !important");
                     var getCurrentTime = new Date();
                     var currentMY = getCurrentTime.getFullYear() + "-" + getCurrentTime.getMonth();
                     var calendarYM = calendar.sYear + "-" + calendar.sMth;
                     if (currentMY === calendarYM) {
                         calendar.sDay = el.getElementsByClassName("dayNumber")[0].innerHTML;
-                        var time = calendarYM + "-" + calendar.sDay;
-                        if (currentMY + "-" + getCurrentTime.getDate() >= time) {
-                            if (el.getElementsByClassName("data-id")[0]) {
-                                var dataReason = el.getElementsByClassName("data-reason")[0].innerHTML;
-                                var dataID = el.getElementsByClassName("data-id")[0].innerHTML;
-                                var dataWorkDay = el.getElementsByClassName("data-work-day")[0].innerHTML;
-                                document.getElementById("div-reason").innerHTML =
-                                    '<div class="row col-md-12">' +
-                                    '<div class="col-md-12 d-flex justify-content-center">' +
-                                    '<input hidden name="id" value="' + dataID + '">' +
-                                    '<input hidden name="work_day" value="' + dataWorkDay + '">' +
-                                    '<textarea class="form-control" name="reason" rows="6">' + dataReason + '</textarea>' +
-                                    '</div>' +
-                                    '<div class="row col-md-12">' +
-                                    '</div>' +
-                                    '</div>';
-                            } else {
-                                var dataTime = el.getAttribute("data-time");
-                                document.getElementById("div-reason").innerHTML =
-                                    '<div class="row col-md-12">' +
-                                    '<div class="col-md-12 d-flex justify-content-center">' +
-                                    '<input hidden name="work_day" value="' + dataTime + '">' +
-                                    '<textarea class="form-control" name="reason" rows="6"></textarea>' +
-                                    '</div>' +
-                                    '<div class="row col-md-12">' +
-                                    '</div>' +
-                                    '</div>';
-                            }
-                        } else {
+                        if (el.getElementsByClassName("data-id")[0]) {
+                            var dataReason = el.getElementsByClassName("data-reason")[0].innerHTML;
+                            var dataID = el.getElementsByClassName("data-id")[0].innerHTML;
+                            var dataWorkDay = el.getElementsByClassName("data-work-day")[0].innerHTML;
                             document.getElementById("div-reason").innerHTML =
                                 '<div class="row col-md-12">' +
                                 '<div class="col-md-12 d-flex justify-content-center">' +
+                                '<input hidden name="id" value="' + dataID + '">' +
+                                '<input hidden name="work_day" value="' + dataWorkDay + '">' +
+                                '<textarea class="form-control" name="reason" rows="6">' + dataReason + '</textarea>' +
+                                '</div>' +
+                                '<div class="row col-md-12">' +
+                                '</div>' +
+                                '</div>';
+                        } else {
+                            var dataTime = el.getAttribute("data-time");
+                            document.getElementById("div-reason").innerHTML =
+                                '<div class="row col-md-12">' +
+                                '<div class="col-md-12 d-flex justify-content-center">' +
+                                '<input hidden name="work_day" value="' + dataTime + '">' +
                                 '<textarea class="form-control" name="reason" rows="6"></textarea>' +
                                 '</div>' +
                                 '<div class="row col-md-12">' +

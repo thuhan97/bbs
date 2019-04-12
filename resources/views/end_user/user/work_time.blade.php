@@ -194,7 +194,7 @@
                 container.appendChild(cTable);
                 var cRow = document.createElement("tr"),
                     cCell = null,
-                    days = ["Chủ nhật", "Thứ hai", "Thứ ba", "Thứ tư", "Thứ năm", "Thứ sáu", "Thứ bảy"];
+                    days = ["Chủ Nhật", "Thứ Hai", "Thứ Ba", "Thứ Tư", "Thứ Năm", "Thứ Sáu", "Thứ Bảy"];
                 for (var d of days) {
                     cCell = document.createElement("td");
                     cCell.innerHTML = d;

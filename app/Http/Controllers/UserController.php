@@ -7,6 +7,7 @@ use App\Http\Requests\DayOffRequest;
 use App\Http\Requests\ProfileRequest;
 use App\Models\User;
 use App\Models\WorkTime;
+use App\Models\Explanation;
 use App\Services\Contracts\IDayOffService;
 use App\Services\Contracts\IUserService;
 use App\Transformers\DayOffTransformer;
@@ -144,34 +145,80 @@ class UserController extends Controller
         return view('end_user.user.work_time', compact('list_work_times', 'late', 'early', 'ot', 'list_work_times_calendar', 'calendarData'));
     }
 
-    public function workTimeAPI()
+    public function workTimeAPI(Request $request)
     {
-        if (Auth::user()) {
-            $calendarData = [];
-            $list_work_times_calendar = WorkTime::where('user_id', Auth::user()->id)->get();
-            if ($list_work_times_calendar) {
-                foreach ($list_work_times_calendar->toArray() as $item) {
-                    $startDay = $item['start_at'] ? new DateTime($item['start_at']) : '';
-                    $dataStartDay = $startDay ? $startDay->format('H:i') : '';
-                    $endDay = $item['end_at'] ? new DateTime($item['end_at']) : '';
-                    $dataEndDay = $endDay ? $endDay->format('H:i') : '';
-                    $calendarData[] = [
-                        'work_day' => $item['work_day'],
-                        'start_at' => $dataStartDay,
-                        'end_at' => $dataEndDay,
-                        'type' => $item['type'],
-                        'note' => $item['note'],
-                        'attendance-time' => $dataStartDay && $dataEndDay ? " - " : '',
-                        'id' => $item['id'],
-                    ];
+        $this->validate($request, [
+
+        ]);
+
+        $calendarData = [];
+        $list_work_times_calendar = WorkTime::where('user_id', Auth::user()->id)
+            ->whereYear('work_day', $request->year)
+            ->whereMonth('work_day', $request->month);
+
+        $explanation_calendar = Explanation::where('user_id', Auth::user()->id)
+            ->whereYear('work_day', $request->year)
+            ->whereMonth('work_day', $request->month);
+        $types = [1, 2, 3, 4, 5];
+        $types = collect($types);
+
+        $arrCount = [];
+        $types->each(function ($item) use ($request, &$arrCount) {
+            $getType = WorkTime::where('user_id', Auth::user()->id)
+                ->whereYear('work_day', $request->year)
+                ->whereMonth('work_day', $request->month);
+            $arrCount[] = $getType->where('type', $item)->count();
+        });
+        $type_1 = $arrCount[0] + $arrCount[1];
+        $type_2 = $arrCount[3];
+        $type_3 = $arrCount[4];
+        if ($list_work_times_calendar) {
+            foreach ($list_work_times_calendar->get()->toArray() as $item) {
+                $startDay = $item['start_at'] ? new DateTime($item['start_at']) : '';
+                $dataStartDay = $item['start_at'];
+                if ($dataStartDay && $dataStartDay != '00:00:00') {
+                    $dataStartDay = $startDay->format('H:i');
+                } elseif ($dataStartDay == '00:00:00') {
+                    $dataStartDay = '* * * *';
+                } else {
+                    $dataStartDay = '';
                 }
+                $endDay = $item['end_at'] ? new DateTime($item['end_at']) : '';
+                $dataEndDay = $endDay ? $endDay->format('H:i') : '17:30';
+                $calendarData[] = [
+                    'work_day' => $item['work_day'],
+                    'start_at' => $dataStartDay,
+                    'end_at' => $dataEndDay,
+                    'type' => $item['type'],
+                    'note' => $item['note'],
+                    'attendance_time' => $dataStartDay != '****' && $dataEndDay ? " - " : '',
+                    'id' => $item['id'],
+                ];
             }
-            return response([
-                'success'=>true,
-                'message'=>'Lịch',
-                'data'=>$calendarData
-            ]);
         }
+        $calendarDataModal = [];
+        if (isset($explanation_calendar)) {
+            foreach ($explanation_calendar->get()->toArray() as $item) {
+                $calendarDataModal[] = [
+                    'work_day' => $item['work_day'],
+                    'type' => $item['type'],
+                    'note' => $item['note'],
+                    'id' => $item['id'],
+                ];
+            }
+        }
+        $dataType = [
+            'type_1' => $type_1,
+            'type_2' => $type_2,
+            'type_3' => $type_3
+        ];
+        return response([
+            'success' => true,
+            'message' => 'success',
+            'data' => $calendarData,
+            'dataType' => $dataType,
+            'dataModal' => $calendarDataModal
+        ]);
     }
 
     //
@@ -333,11 +380,12 @@ class UserController extends Controller
         $reason = $request['reason'];
         $idUser = Auth::user()->id;
         if ($id) {
-            WorkTime::where('id', $id)->update(['note' => $reason]);
+            Explanation::where('id', $id)->update(['note' => $reason]);
         } else {
-            WorkTime::create([
+            Explanation::create([
                 'user_id' => $idUser,
                 'work_day' => $request['work_day'],
+                'type' => 0,
                 'note' => $reason
             ]);
         }

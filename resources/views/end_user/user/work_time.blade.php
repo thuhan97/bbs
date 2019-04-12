@@ -11,34 +11,24 @@
     <div class="row">
         <div class="col-md-4 pr-0 select-month-calendar">
             <form name="dateChooser">
-                <select id="year" class="w-22 mr-1 browser-default form-control float-left chooseYear"
-                        name="chooseYear"
-                        onChange="calendar.list()"></select>
-                <select name="chooseMonth" onChange="calendar.list()" id="month"
+                <select id="chooseYear" class="w-22 mr-1 browser-default form-control float-left chooseYear"
+                        name="chooseYear"></select>
+                <select name="chooseMonth" id="chooseMonth"
                         class="w-74 mr-1 browser-default custom-select float-right chooseMonth">
                 </select>
             </form>
         </div>
         <div class="col-md-8">
-            <div class="row mb-4">
-                <form method="get">
-                    <input hidden name="month">
-                    <input hidden name="type" value="di_muon">
-                    <button type="button" class="btn btn-danger" onclick="exec_submit(0)">Số buổi đi
-                        muộn/sớm: {{$late}}</button>
-                </form>
-                <form method="get">
-                    <input hidden name="month">
-                    <input hidden name="type" value="ve_som">
-                    <button type="button" class="btn btn-primary" onclick="exec_submit(1)">Số buổi
-                        OT: {{$early}}</button>
-                </form>
-                <form method="get">
-                    <input hidden name="month">
-                    <input hidden name="type" value="ot">
-                    <button type="button" class="btn btn-success" onclick="exec_submit(2)">Số buổi đi muộn +
-                        OT: {{$ot}}</button>
-                </form>
+            <div class="row mb-4" id="form-check-time">
+                <button type="button" class="btn btn-danger btn-late" id="btn-late" onclick="exec_submit(0)">Số buổi đi
+                    muộn/sớm:
+                </button>
+                <button type="button" class="btn btn-primary btn-ot" id="btn-ot" onclick="exec_submit(0)">Số buổi đi
+                    OT:
+                </button>
+                <button type="button" class="btn btn-success btn-late-ot" id="btn-late-ot" onclick="exec_submit(0)">Số
+                    buổi đi muộn + OT:
+                </button>
             </div>
         </div>
     </div>
@@ -71,72 +61,118 @@
             </div>
         </div>
     </div>
-
-    <!-- [EVENT] -->
     {{--<div id="event"></div>--}}
     <!-- [CALENDAR] -->
     <div id="container"></div>
+@endsection
+@push('extend-js')
     <script type="text/javascript">
-        var id = 0;
+        $(function () {
+            var date = new Date();
+            var current_year = date.getFullYear(), current_month = date.getMonth();
+            var month = document.getElementById("chooseMonth");
+            var year = document.getElementById("chooseYear");
 
-        function exec_submit(i) {
-            var f = document.forms[i];
-            if (getParam('month') == null) {
-                var d = new Date();
-                var m = d.getMonth();
-                f.month.value = m + 1;
-            } else {
-                f.month.value = getParam('month');
-            }
-            f.action = "/thoi-gian-lam-viec";
-            f.submit();
-        }
+            var showCalendar = function () {
+                current_year = $("#chooseYear").val();
+                current_month = $("#chooseMonth").val();
+                showCalendar();
+                renderCalendar(current_year, current_month);
+            };
+            $("#chooseMonth, #chooseYear").change(showCalendar);
+            var calendar = {
+                mName: ["Tháng 01", "Tháng 02", "Tháng 03", "Tháng 04", "Tháng 05", "Tháng 06", "Tháng 07", "Tháng 08", "Tháng 09", "Tháng 10", "Tháng 11", "Tháng 12"],
+                valMonth: ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"],
+                getValMonth: ["01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12"],
+                data: null,
+                sDay: 0,
+                sMth: 0,
+                cMth: 1,
+                sYear: 0,
+                list: function () {
+                    showCalendar();
+                    renderCalendar(current_year, current_month);
+                },
+                show: function (el) {
+                    $("#modal-form").css("padding-right","0px !important");
+                    $(".modal-open").css("padding-right","0px !important");
+                    var getCurrentTime = new Date();
+                    var currentMY = getCurrentTime.getFullYear() + "-" + getCurrentTime.getMonth();
+                    var calendarYM = calendar.sYear + "-" + calendar.sMth;
+                    if (currentMY === calendarYM) {
+                        calendar.sDay = el.getElementsByClassName("dayNumber")[0].innerHTML;
+                        var time = calendarYM + "-" + calendar.sDay;
+                        if (currentMY + "-" + getCurrentTime.getDate() >= time) {
+                            if (el.getElementsByClassName("data-id")[0]) {
+                                var dataReason = el.getElementsByClassName("data-reason")[0].innerHTML;
+                                var dataID = el.getElementsByClassName("data-id")[0].innerHTML;
+                                var dataWorkDay = el.getElementsByClassName("data-work-day")[0].innerHTML;
+                                document.getElementById("div-reason").innerHTML =
+                                    '<div class="row col-md-12">' +
+                                    '<div class="col-md-12 d-flex justify-content-center">' +
+                                    '<input hidden name="id" value="' + dataID + '">' +
+                                    '<input hidden name="work_day" value="' + dataWorkDay + '">' +
+                                    '<textarea class="form-control" name="reason" rows="6">' + dataReason + '</textarea>' +
+                                    '</div>' +
+                                    '<div class="row col-md-12">' +
+                                    '</div>' +
+                                    '</div>';
+                            } else {
+                                var dataTime = el.getAttribute("data-time");
+                                document.getElementById("div-reason").innerHTML =
+                                    '<div class="row col-md-12">' +
+                                    '<div class="col-md-12 d-flex justify-content-center">' +
+                                    '<input hidden name="work_day" value="' + dataTime + '">' +
+                                    '<textarea class="form-control" name="reason" rows="6"></textarea>' +
+                                    '</div>' +
+                                    '<div class="row col-md-12">' +
+                                    '</div>' +
+                                    '</div>';
+                            }
+                        } else {
+                            document.getElementById("div-reason").innerHTML =
+                                '<div class="row col-md-12">' +
+                                '<div class="col-md-12 d-flex justify-content-center">' +
+                                '<textarea class="form-control" name="reason" rows="6"></textarea>' +
+                                '</div>' +
+                                '<div class="row col-md-12">' +
+                                '</div>' +
+                                '</div>';
+                        }
+                        $('.myModal').modal('show');
+                    }
+                },
+            };
+            window.addEventListener("load", function () {
+                var now = new Date(),
+                    nowMth = now.getMonth(),
+                    nowYear = parseInt(now.getFullYear());
 
-        function getParam(param) {
-            var results = new RegExp('[\?&]' + param + '=([^&#]*)').exec(window.location.href);
-            if (results == null) {
-                return null;
-            }
-            return decodeURI(results[1]) || 0;
-        }
+                for (var i = 0; i < 12; i++) {
+                    var opt = document.createElement("option");
+                    opt.value = calendar.valMonth[i];
+                    opt.setAttribute("data-type", calendar.getValMonth[i]);
+                    opt.innerHTML = calendar.mName[i];
+                    if (i == nowMth) {
+                        opt.selected = true;
+                    }
+                    month.appendChild(opt);
+                }
 
-        $('.feedback').click(function () {
-            id = $(this).attr('data-id')
-        });
-
-        $('.complain').click(function () {
-            var message = $('.modal-body textarea').val();
-            $('#feedback').modal('hide');
-        });
-
-
-        /**
-         *          Create calendar
-         */
-        var dataCalendar = [
-                @foreach($calendarData as $data)
-            [
-                "{{ $data['work_day'] }}",
-                "{{  $data['start_at'] }}",
-                "{{ $data['end_at'] }}",
-                "{{ $data['type'] }}",
-                "{{ $data['note'] }}",
-                "{{ $data['attendance-time'] }}",
-                "{{ $data['id'] }}",
-            ],
-            @endforeach
-        ];
-        var calendar = {
-            mName: ["Tháng 01", "Tháng 02", "Tháng 03", "Tháng 04", "Tháng 05", "Tháng 06", "Tháng 07", "Tháng 08", "Tháng 09", "Tháng 10", "Tháng 11", "Tháng 12"],
-            valMonth: ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"],
-            getValMonth: ["01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12"],
-            data: null,
-            sDay: 0,
-            sMth: 0,
-            sYear: 0,
-            list: function () {
-                calendar.sMth = parseInt(document.getElementById("month").value);
-                calendar.sYear = parseInt(document.getElementById("year").value);
+                for (var i = nowYear - 1; i <= nowYear; i++) {
+                    var opt = document.createElement("option");
+                    opt.value = i;
+                    opt.innerHTML = i;
+                    if (i == nowYear) {
+                        opt.selected = true;
+                    }
+                    year.appendChild(opt);
+                }
+                calendar.list();
+            });
+            var showCalendar = function () {
+                calendar.sMth = parseInt(month.value);
+                calendar.sYear = parseInt(year.value);
                 var daysInMth = new Date(calendar.sYear, calendar.sMth + 1, 0).getDate(),
                     startDay = new Date(calendar.sYear, calendar.sMth, 1).getDay(),
                     endDay = new Date(calendar.sYear, calendar.sMth, daysInMth).getDay();
@@ -166,20 +202,21 @@
                         squares.push("next");
                     }
                 }
-
                 var container = document.getElementById("container"),
                     cTable = document.createElement("table");
                 cTable.id = "calendar";
                 container.innerHTML = "";
+
                 container.appendChild(cTable);
                 var cRow = document.createElement("tr"),
                     cCell = null,
-                    days = ["Chủ nhật", "Thứ hai", "Thứ hai", "Thứ ba", "Thứ năm", "Thứ sáu", "Thứ bảy"];
+                    days = ["Chủ nhật", "Thứ hai", "Thứ ba", "Thứ tư", "Thứ năm", "Thứ sáu", "Thứ bảy"];
                 for (var d of days) {
                     cCell = document.createElement("td");
                     cCell.innerHTML = d;
                     cRow.appendChild(cCell);
                 }
+
                 cRow.classList.add("calendar-header");
                 cTable.appendChild(cRow);
                 cRow = document.createElement("tr");
@@ -187,27 +224,14 @@
 
                 var total = squares.length;
                 var daysOfNextMonth = 1;
-                var year = document.getElementById("year");
                 var valYear = year.options[year.selectedIndex].value;
-                var month = document.getElementById("month");
                 var inputMonth = month.options[month.selectedIndex];
                 var valMonth = inputMonth.value;
                 var getValMonth = inputMonth.dataset.type;
                 var lastDateOfLastMonth = valMonth == 0 ? new Date(valYear - 1, 12, 0).getDate() : new Date(valYear, valMonth, 0).getDate();
                 var firstDayOfCurrentMonth = new Date(valYear, valMonth, 0).getDay();
                 var dayOfLastMonth = lastDateOfLastMonth - firstDayOfCurrentMonth;
-                        {{--var dataCalendar = [--}}
-                        {{--@foreach($calendarData as $data)--}}
-                        {{--[--}}
-                        {{--"{{ $data['work_day'] }}",--}}
-                        {{--"{{  $data['start_at'] }}",--}}
-                        {{--"{{ $data['end_at'] }}",--}}
-                        {{--"{{ $data['type'] }}",--}}
-                        {{--"{{ $data['note'] }}",--}}
-                        {{--"{{ $data['attendance-time'] }}",--}}
-                        {{--],--}}
-                        {{--@endforeach--}}
-                        {{--];--}}
+
                 for (var i = 0; i < total; i++) {
                     cCell = document.createElement("td");
                     cCell.classList.add("calendar-td-body");
@@ -222,7 +246,6 @@
                         cells[current_day].style.backgroundColor = '#222222';
                         cells[current_day].style.color = '#f4f4f4';
                     }
-
 
                     if (squares[i] == "last") {
                         cCell.classList.add("blank");
@@ -242,17 +265,15 @@
                         } else {
                             var dataDate = valYear + "-" + getValMonth + "-" + squares[i];
                         }
-                        cCell.innerHTML = "<div class='dayNumber'>" + squares[i] + "</div>";
-                        dataCalendar.forEach(function (element) {
-                            if (element[0] === dataDate) {
-                                cCell.classList.add("calendar-body");
-                                cCell.setAttribute("class", "calendar-td-body data-type-" + element[3]);
-                                cCell.setAttribute("data-type", +element[3]);
-                                cCell.innerHTML += "<div class='attendance-time'>" + element[1] + element[5] + element[2] + "</div>";
-                                cCell.innerHTML += "<div class='id-reason-time' style='display: none'>" + element[6] + "</div>";
-                                cCell.innerHTML += "<div class='reason-time' style='display: none'>" + element[4] + "</div>";
-                            }
-                        });
+                        if (n < 2) {
+                            cCell.innerHTML = "<div class='dayNumber'>" + "0" + squares[i] + "</div>";
+                            cCell.setAttribute("data-time", valYear + "-" + getValMonth + "-" + "0" + squares[i]);
+
+                        } else {
+                            cCell.innerHTML = "<div class='dayNumber'>" + squares[i] + "</div>";
+                            cCell.setAttribute("data-time", valYear + "-" + getValMonth + "-" + squares[i]);
+
+                        }
                     }
                     cRow.appendChild(cCell);
                     if (i != 0 && (i + 1) % 7 == 0) {
@@ -261,88 +282,85 @@
                         cRow.classList.add("calendar-body");
                     }
                 }
-            },
+            }
+            var renderCalendar = function (year, month) {
+                $.ajax({
+                    url: '/thoi-gian-lam-viec-api',
+                    dataType: 'json',
+                    method: 'get',
+                    data: {
+                        year: current_year,
+                        month: parseInt(current_month) + 1,
+                    },
+                    success: (respond) => {
+                        const dataRes = respond.data;
+                        const dataType = respond.dataType;
+                        const dataModal = respond.dataModal;
+                        $("#btn-late").text('Số buổi đi muộn/sớm: ' + dataType.type_1);
+                        $("#btn-ot").text('Số buổi đi OT: ' + dataType.type_2);
+                        $("#btn-late-ot").text('Số buổi đi muộn + OT: ' + dataType.type_3);
+                        dataRes.forEach(function (data) {
+                            const work_day = data.work_day;
+                            const work_time = data.start_at + ' - ' + data.end_at;
+                            $('.calendar-td-body').each(function () {
+                                const data_time = $(this).data('time');
+                                if (data_time === work_day) {
+                                    $(this).addClass("data-type-" + data.type);
+                                    $(this).addClass("hasData");
+                                    $(this).append('<p>' + work_time + '</p>');
+                                }
+                            });
+                        });
 
-            show: function (el) {
-                var getCurrentTime = new Date();
-                var currentMY = getCurrentTime.getFullYear() + "-" + getCurrentTime.getMonth();
-                var calendarYM = calendar.sYear + "-" + calendar.sMth;
-                if (currentMY === calendarYM) {
-                    calendar.sDay = el.getElementsByClassName("dayNumber")[0].innerHTML;
-                    var time = calendarYM + "-" + calendar.sDay;
-                    dataCalendar.forEach(function (element) {
-                        var element = document.getElementsByClassName("calendar-td-body");
-                        var idReasonTime = el.getElementsByClassName("id-reason-time")[0];
-                        var reasonTime = el.getElementsByClassName("reason-time")[0];
-                        console.log(idReasonTime != undefined && reasonTime != undefined)
-                        if (idReasonTime != undefined && reasonTime != undefined) {
-                            calendar.sDay = el.getElementsByClassName("dayNumber")[0].innerHTML;
-                            document.getElementById("div-reason").innerHTML =
-                                '<div class="row col-md-12">' +
-                                '<input hidden name="id" value="' + idReasonTime.innerHTML + '">' +
-                                '<div class="row col-md-12 d-flex justify-content-center">' +
-                                '<textarea class="form-control w-90" name="reason" rows="6">' + reasonTime.innerHTML + '</textarea>' +
-                                '</div>' +
-                                '<div class="row col-md-12">' +
-                                '<input hidden name="work_day" value="' + time + '">' +
-                                '</div>' +
-                                '</div>';
+                        dataModal.forEach(function (data) {
+                            const work_day = data.work_day;
+                            $('.calendar-td-body').each(function () {
+                                const data_time = $(this).data('time');
+                                if (data_time === work_day) {
+                                    $(this).append('<p class="data-id" hidden>' + data.id + '</p>');
+                                    $(this).append('<p class="data-reason" hidden>' + data.note + '</p>');
+                                    $(this).append('<p class="data-work-day" hidden>' + data.work_day + '</p>');
+                                }
+                            });
+                        })
+                    },
+                    error: (data) => {
+                        console.log(data.status);
+                    },
+                });
+            };
+            var id = 0;
 
-                            var container = document.getElementById("event");
-                        } else if (currentMY + "-" + getCurrentTime.getDate() <= time) {
-                            document.getElementById("div-reason").innerHTML =
-                                '<div class="row col-md-12">' +
-                                '<div class="row col-md-12 d-flex justify-content-center">' +
-                                '<textarea class="form-control w-90" name="reason" rows="6">' + 'Next day' + '</textarea>' +
-                                '</div>' +
-                                '<div class="row col-md-12">' +
-                                '<input name="work_day" value="' + time + '">"' +
-                                '</div>' +
-                                '</div>';
-                        } else {
-                            var  calendarMonth = calendar.sMth + 1;
-                            document.getElementById("div-reason").innerHTML =
-                                '<div class="row col-md-12">' +
-                                '<div class="row col-md-12 d-flex justify-content-center">' +
-                                '<input hidden name="work_day" value="' + calendar.sYear + "-" + calendarMonth + "-" + calendar.sDay + '">' +
-                                '<textarea class="form-control w-90" name="reason" rows="6"></textarea>' +
-                                '</div>' +
-                                '</div>';
-                        }
-                        document.getElementById("div-reason").innerHTML
-                    });
-                    $('.myModal').modal('show');
+            function exec_submit(i) {
+                var f = document.forms[i];
+                if (getParam('month') == null) {
+                    var d = new Date();
+                    var m = d.getMonth();
+                    f.month.value = m + 1;
+                } else {
+                    f.month.value = getParam('month');
                 }
-            },
-        };
-        window.addEventListener("load", function () {
-            var now = new Date(),
-                nowMth = now.getMonth(),
-                nowYear = parseInt(now.getFullYear());
-
-            var mth = document.getElementById("month");
-            for (var i = 0; i < 12; i++) {
-                var opt = document.createElement("option");
-                opt.value = calendar.valMonth[i];
-                opt.setAttribute("data-type", calendar.getValMonth[i]);
-                opt.innerHTML = calendar.mName[i];
-                if (i == nowMth) {
-                    opt.selected = true;
-                }
-                month.appendChild(opt);
+                f.action = "/thoi-gian-lam-viec";
+                f.submit();
             }
 
-            var year = document.getElementById("year");
-            for (var i = nowYear - 1; i <= nowYear; i++) {
-                var opt = document.createElement("option");
-                opt.value = i;
-                opt.innerHTML = i;
-                if (i == nowYear) {
-                    opt.selected = true;
+            function getParam(param) {
+                var results = new RegExp('[\?&]' + param + '=([^&#]*)').exec(window.location.href);
+                if (results == null) {
+                    return null;
                 }
-                year.appendChild(opt);
+                return decodeURI(results[1]) || 0;
             }
-            calendar.list();
-        });
+
+            $('.feedback').click(function () {
+                id = $(this).attr('data-id')
+            });
+
+            $('.complain').click(function () {
+                var message = $('.modal-body textarea').val();
+                $('#feedback').modal('hide');
+            });
+        })
+
     </script>
-@endsection
+@endpush

@@ -581,17 +581,26 @@ tr.calendar-body td {
     margin-left: 43%;
 }
 
-.data-type-3 {
+.data-type-1,.data-type-2 {
     background-color: #ff3548 !important;
     color: #ffffff !important;
 }
+
 .data-type-4 {
     background-color: #4385f5 !important;
     color: #ffffff !important;
 }
+
 .data-type-5 {
     background-color: #01c851 !important;
     color: #ffffff !important;
+}
+
+.modal-open .modal{
+    padding-right: 0px !important;
+}
+.modal-open {
+    padding-right: 0px !important;
 }
 /*
             End work time calendar

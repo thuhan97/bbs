@@ -167,17 +167,17 @@ class DayOffService extends AbstractService implements IDayOffService
 
     public function showList($status)
     {
-        $data = $this->getdata()->whereYear('day_offs.start_at', '=', date('Y'))->paginate(PAGINATE_DAY_OFF);
+        $model = $this->getdata()->whereYear('day_offs.start_at', '=', date('Y'));
+        
+        $data = $model->paginate(PAGINATE_DAY_OFF);
 
         if ($status != null) {
             if ($status < ALL_DAY_OFF) {
-                $dataDate = $this->getdata()->where('day_offs.status', $status)->whereYear('day_offs.created_at', '=', date('Y'));
-            } else {
-                $dataDate = $this->getdata()->whereYear('day_offs.start_at', '=', date('Y'));
+                $dataDate = $model->where('day_offs.status', $status);
             }
 
         } else {
-            $dataDate = $this->getdata()->whereMonth('day_offs.start_at', '=', date('m'))->whereYear('day_offs.created_at', '=', date('Y'));
+            $dataDate = $dataDate->whereMonth('day_offs.start_at', '=', date('m'));
         }
         $dataDate = $dataDate->paginate(PAGINATE_DAY_OFF);
         return [

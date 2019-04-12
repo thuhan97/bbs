@@ -38,7 +38,7 @@ class AddDayOffMonth extends Command
      */
     public function handle()
     {
-        DB::table('remain_dayoffs')->increment('current_year', 1);
+        DB::table('remain_dayoffs')->whereYear('created_at', '=', date('Y'))->increment('active', 1);
     }
 
 }

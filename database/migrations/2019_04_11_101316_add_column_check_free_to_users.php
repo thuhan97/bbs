@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddColumnCheckFreeToDayOff extends Migration
+class AddColumnCheckFreeToUsers extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class AddColumnCheckFreeToDayOff extends Migration
      */
     public function up()
     {
-        Schema::table('day_offs', function (Blueprint $table) {
+        Schema::table('users', function (Blueprint $table) {
             $table->tinyInteger('check_free')->default(0)->comment('nếu là nữ check xem còn ngày nghỉ free hay không');
         });
     }
@@ -25,7 +25,7 @@ class AddColumnCheckFreeToDayOff extends Migration
      */
     public function down()
     {
-        Schema::table('day_offs', function (Blueprint $table) {
+        Schema::table('users', function (Blueprint $table) {
             //
         });
     }

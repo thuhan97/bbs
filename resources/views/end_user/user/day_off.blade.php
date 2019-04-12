@@ -14,7 +14,7 @@
             <div class="card bg-primary">
                 <div class="card-body">
                     <h1 class="white-text font-weight-light">
-                        {{ $countDayOff['previous_year'] + $countDayOff['current_year'] - $countDayOff['total'] < 0 ? 0 : $countDayOff['previous_year'] + $countDayOff['current_year'] - $countDayOff['total'] }}
+                        {{ $countDayOff['previous_year'] + (int)date('m') - $countDayOff['total'] < 0 ? 0 : $countDayOff['previous_year'] + (int)date('m') - $countDayOff['total'] }}
                     </h1>
                     <p class="card-subtitle text-white-50">ngày khả dụng</p>
                     <p class="card-title text-uppercase font-weight-bold card-text white-text">Tính từ năm trước</p>

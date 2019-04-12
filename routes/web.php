@@ -134,6 +134,9 @@ Route::group([
     Route::get('/du-an', 'ProjectController@index')->name('project');
     Route::get('/du-an/{id}', 'ProjectController@detail')->where(['id' => '\d+'])->name('project_detail');
 
+    Route::get('/chia-se-tai-lieu', 'ShareController@listShareDocument')->name('list_share_document');
+    Route::get('/download_file_share/{url}', 'ShareController@downloadFileShare');
+    Route::post('/add_document', 'ShareController@addDocument')->name('add_document');
     // create day off
     Route::post('/ngay-nghi/create', 'UserController@dayOffCreate')->name('day_off_create');
 

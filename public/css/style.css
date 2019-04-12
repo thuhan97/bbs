@@ -581,6 +581,9 @@ tr.calendar-body td {
     background-color: #01c851 !important;
     color: #ffffff !important;
 }
+.list-reulation{
+    margin-left: 15px;
+}
 /*
             End work time calendar
  */

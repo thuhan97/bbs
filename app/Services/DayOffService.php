@@ -167,8 +167,8 @@ class DayOffService extends AbstractService implements IDayOffService
 
     public function showList($status)
     {
-         $model= $this->getdata()->whereYear('day_offs.start_at', '=', date('Y'));
-        $data=$model->paginate(PAGINATE_DAY_OFF);
+        $model = $this->getdata()->whereYear('day_offs.start_at', '=', date('Y'));
+        $data = $model->paginate(PAGINATE_DAY_OFF);
         $dataDate = $model->whereMonth('day_offs.start_at', '=', date('m'));
         if ($status != null) {
             $dataDate = $model;
@@ -176,115 +176,116 @@ class DayOffService extends AbstractService implements IDayOffService
                 $dataDate = $model->where('day_offs.status', $status);
             }
         }
-        $dataDate = $dataDate->paginate(PAGINATE_DAY_OFF);
-        return [
-            'dataDate' => $dataDate,
-            'data' => $data,
-            'total' => $data->count(),
-            'totalActive' => $data->where('status', STATUS_DAY_OFF['active'])->count(),
-            'totalAbide' => $data->where('status', STATUS_DAY_OFF['abide'])->count(),
-            'totalnoActive' => $data->where('status', STATUS_DAY_OFF['noActive'])->count(),
+            $dataDate = $dataDate->paginate(PAGINATE_DAY_OFF);
+            return [
+                'dataDate' => $dataDate,
+                'data' => $data,
+                'total' => $data->count(),
+                'totalActive' => $data->where('status', STATUS_DAY_OFF['active'])->count(),
+                'totalAbide' => $data->where('status', STATUS_DAY_OFF['abide'])->count(),
+                'totalnoActive' => $data->where('status', STATUS_DAY_OFF['noActive'])->count(),
 
-        ];
+            ];
+
     }
 
-    public function getDataSearch($year, $month, $status, $search = null)
-    {
+        public function getDataSearch($year, $month, $status, $search = null)
+        {
 
-        $data = $this->getdata();
-        if ($year) {
-            $data = $data->whereYear('day_offs.start_at', '=', $year);
-        } else {
-            $data = $data->whereYear('day_offs.start_at', '=', date('Y'));
+            $data = $this->getdata();
+            if ($year) {
+                $data = $data->whereYear('day_offs.start_at', '=', $year);
+            } else {
+                $data = $data->whereYear('day_offs.start_at', '=', date('Y'));
+            }
+            if ($month) {
+                $data = $data->whereMonth('day_offs.start_at', '=', $month);
+            }
+            if ($search) {
+                $data = $data->Where('users.name', 'like', '%' . $search . '%');
+
+            }
+            if ($status < ALL_DAY_OFF) {
+                $data = $data->where('day_offs.status', $status);
+            }
+            $data = $data->paginate(PAGINATE_DAY_OFF);
+            return [
+                'data' => $data,
+            ];
         }
-        if ($month) {
-            $data = $data->whereMonth('day_offs.start_at', '=', $month);
+
+        public function getOneData($id)
+        {
+            return $data = $this->getdata(false, $id)->first();
         }
-        if ($search) {
-            $data = $data->Where('users.name', 'like', '%' . $search . '%');
+
+        public function countDayOff($id)
+        {
+            $data = $this->model::groupBy('user_id', 'check_free')
+                ->select('user_id', 'check_free', DB::raw('sum(number_off) as total'))
+                ->where('user_id', $id)
+                ->where('status', STATUS_DAY_OFF['active'])
+                ->whereMonth('day_offs.start_at', '=', date('m'))
+                ->whereYear('day_offs.start_at', '=', date('Y'))->first();
+            return $data;
+        }
+
+        public function countDayOffUserLogin()
+        {
+            $user = Auth::user();
+            $data = $this->model::select('user_id', 'check_free', DB::raw('YEAR(start_at) year, MONTH(start_at) month'), DB::raw('sum(number_off) as total'))
+                ->groupBy('user_id', 'check_free', 'year', 'month')
+                ->where('user_id', $user->id)
+                ->where('status', STATUS_DAY_OFF['active'])
+                ->whereMonth('start_at', '<=', date('m'))
+                ->whereYear('day_offs.start_at', '=', date('Y'))
+                ->get();
+            $total = 0;
+            $sumDayOff = RemainDayoff::firstOrCreate(['user_id' => $user->id]);
+            foreach ($data as $key => $value) {
+                $total = $total + $value->total;
+                if ($user->sex == SEX['female'] && $value->check_free == DAY_OFF_FREE) {
+                    $total = $total - 1;
+                }
+            }
+            return $countDayyOff = [
+                'total' => $total,
+                'previous_year' => $sumDayOff->previous_year,
+                'current_year' => $sumDayOff->current_year,
+            ];
 
         }
-        if ($status < ALL_DAY_OFF) {
-            $data = $data->where('day_offs.status', $status);
+
+        public function searchStatus($status)
+        {
+            $data = DayOff::select('*', DB::raw('DATE_FORMAT(start_at, "%d/%m/%Y (%H:%i)") as start_date'),
+                DB::raw('DATE_FORMAT(end_at, "%d/%m/%Y (%H:%i)") as end_date'),
+                DB::raw('DATE_FORMAT(approver_at, "%d/%m/%Y (%H:%i)") as approver_date'))
+                ->where('user_id', Auth::id());
+            if ($status < ALL_DAY_OFF) {
+                $data = $data->where('status', $status);
+            }
+            $data = $data->whereYear('start_at', '=', date('Y'))
+                ->orderBy('status', 'ASC')->orderBy('start_at', 'DESC')
+                ->paginate(PAGINATE_DAY_OFF);
+            return $data;
         }
-        $data = $data->paginate(PAGINATE_DAY_OFF);
-        return [
-            'data' => $data,
-        ];
-    }
 
-    public function getOneData($id)
-    {
-        return $data = $this->getdata(false, $id)->first();
-    }
-
-    public function countDayOff($id)
-    {
-        $data = $this->model::groupBy('user_id', 'check_free')
-            ->select('user_id', 'check_free', DB::raw('sum(number_off) as total'))
-            ->where('user_id', $id)
-            ->where('status', STATUS_DAY_OFF['active'])
-            ->whereMonth('day_offs.start_at', '=', date('m'))
-            ->whereYear('day_offs.start_at', '=', date('Y'))->first();
-        return $data;
-    }
-
-    public function countDayOffUserLogin()
-    {
-        $user = Auth::user();
-        $data = $this->model::select('user_id', 'check_free', DB::raw('YEAR(start_at) year, MONTH(start_at) month'), DB::raw('sum(number_off) as total'))
-            ->groupBy('user_id', 'check_free', 'year', 'month')
-            ->where('user_id', $user->id)
-            ->where('status', STATUS_DAY_OFF['active'])
-            ->whereMonth('start_at', '<=', date('m'))
-            ->whereYear('day_offs.start_at', '=', date('Y'))
-            ->get();
-        $total = 0;
-        $sumDayOff = RemainDayoff::firstOrCreate(['user_id' => $user->id]);
-        foreach ($data as $key => $value) {
-            $total = $total + $value->total;
-            if ($user->sex == SEX['female'] && $value->check_free == DAY_OFF_FREE) {
-                $total = $total - 1;
+        private function getdata($check = true, $id = null)
+        {
+            $data = DayOff::select('day_offs.*', DB::raw('DATE_FORMAT(day_offs.start_at, "%d/%m/%Y (%H:%i)") as start_date'),
+                DB::raw('DATE_FORMAT(day_offs.end_at, "%d/%m/%Y (%H:%i)") as end_date'),
+                DB::raw('DATE_FORMAT(day_offs.approver_at, "%d/%m/%Y (%H:%i)") as approver_date'), 'users.name')
+                ->join('users', 'users.id', '=', 'day_offs.user_id');
+            if ($check) {
+                $data = $data->where('day_offs.approver_id', Auth::id())
+                    ->where('day_offs.user_id', '<>', Auth::id())
+                    ->orderBy('day_offs.status', ASC)
+                    ->orderBy('start_at', 'DESC');
+                return $data;
+            } else {
+                $data = $data->where('day_offs.id', $id);
+                return $data;
             }
         }
-        return $countDayyOff = [
-            'total' => $total,
-            'previous_year' => $sumDayOff->previous_year,
-            'current_year' => $sumDayOff->current_year,
-        ];
-
     }
-
-    public function searchStatus($status)
-    {
-        $data = DayOff::select('*', DB::raw('DATE_FORMAT(start_at, "%d/%m/%Y (%H:%i)") as start_date'),
-            DB::raw('DATE_FORMAT(end_at, "%d/%m/%Y (%H:%i)") as end_date'),
-            DB::raw('DATE_FORMAT(approver_at, "%d/%m/%Y (%H:%i)") as approver_date'))
-            ->where('user_id', Auth::id());
-        if ($status < ALL_DAY_OFF) {
-            $data = $data->where('status', $status);
-        }
-        $data = $data->whereYear('start_at', '=', date('Y'))
-            ->orderBy('status', 'ASC')->orderBy('start_at', 'DESC')
-            ->paginate(PAGINATE_DAY_OFF);
-        return $data;
-    }
-
-    private function getdata($check = true, $id = null)
-    {
-        $data = DayOff::select('day_offs.*', DB::raw('DATE_FORMAT(day_offs.start_at, "%d/%m/%Y (%H:%i)") as start_date'),
-            DB::raw('DATE_FORMAT(day_offs.end_at, "%d/%m/%Y (%H:%i)") as end_date'),
-            DB::raw('DATE_FORMAT(day_offs.approver_at, "%d/%m/%Y (%H:%i)") as approver_date'), 'users.name')
-            ->join('users', 'users.id', '=', 'day_offs.user_id');
-        if ($check) {
-            $data = $data->where('day_offs.approver_id', Auth::id())
-                ->where('day_offs.user_id', '<>', Auth::id())
-                ->orderBy('day_offs.status', ASC)
-                ->orderBy('start_at', 'DESC');
-            return $data;
-        } else {
-            $data = $data->where('day_offs.id', $id);
-            return $data;
-        }
-    }
-}

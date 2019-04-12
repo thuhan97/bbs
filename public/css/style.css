@@ -391,6 +391,15 @@
         left: 20px;
     }
 
+    tr.calendar-header td {
+        background: #eeeeee;
+        color: #000000;
+        text-align: center;
+        padding: 17px 0 17px 0;
+        /*height: 4em;*/
+        /*padding: 20px 5px;*/
+    }
+
     tr.calendar-body td {
         width: 162px;
         height: 120px;
@@ -411,6 +420,16 @@
         height: 95px;
         padding-top: 15px;
         cursor: pointer;
+    }
+
+
+    tr.calendar-header td {
+        background: #eeeeee;
+        color: #000000;
+        text-align: center;
+        padding: 15px 0 15px 0;
+        /*height: 4em;*/
+        /*padding: 20px 5px;*/
     }
 }
 
@@ -573,15 +592,6 @@ td.blank {
     opacity: 0.4;
 }
 
-tr.calendar-header td {
-    background: #eeeeee;
-    color: #000000;
-    text-align: center;
-    padding: 10px 0 10px 0;
-    /*height: 4em;*/
-    /*padding: 20px 5px;*/
-}
-
 .attendance-time {
     margin-top: 5px;
     padding: 5px;
@@ -613,13 +623,10 @@ tr.calendar-header td {
     color: #ffffff !important;
 }
 
-.modal-open .modal {
-    padding-right: 0px !important;
+.list-reulation {
+    margin-left: 15px;
 }
 
-.modal-open {
-    padding-right: 0px !important;
-}
 /*
             End work time calendar
  */

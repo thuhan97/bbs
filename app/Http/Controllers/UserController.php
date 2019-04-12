@@ -326,6 +326,18 @@ class UserController extends Controller
         $dayOff->approver_at=now();
         $dayOff->number_off=$request->number_off;
         $dayOff->save();
+        $userDayOff=User::findOrFail($dayOff->user_id);
+        dd($userDayOff);
+        if ($userDayOff->sex==1){
+            $countDayOff=$this->userDayOffService->countDayOff($userDayOff->id);
+            if ((int)$countDayOff->total >=2 && $userDayOff->check_free ==0){
+                $dayOff->number_off = (int)$countDayOff->total -1;
+                $dayOff->check_free =1;
+                $dayOff->save();
+
+            }
+        }
+        dd($dayOff);
          return back()->with('success',__('messages.edit_day_off_successully'));
     }
     public function deleteDayOff(Request $request){

@@ -221,12 +221,14 @@ class DayOffService extends AbstractService implements IDayOffService
         return $data = $this->getdata(false, $id)->first();
     }
 
-    public function countDayOff()
+    public function countDayOff($id)
     {
-        $data=$this->model::groupBy('user_id','sex')->select('user_id','sex', DB::raw('sum(number_off) as total'))
-            ->where('user_id', Auth::id())->where('status', 1);
-        $countDayOffYear=$data->whereYear('day_offs.start_at', '=', date('Y'));
-        $countDayOffMonth=$countDayOffYear->whereMonth('day_offs.start_at', '=', date('m'));
+        $data=$this->model::groupBy('user_id')->select('user_id', DB::raw('sum(number_off) as total'))
+            ->where('user_id', $id)
+            ->where('status', 1)
+            ->whereMonth('day_offs.start_at', '=', date('m'))
+            ->whereYear('day_offs.start_at', '=', date('Y'))->first();
+        return $data;
     }
 
     public function searchStatus($status)

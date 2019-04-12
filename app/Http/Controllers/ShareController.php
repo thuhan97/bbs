@@ -21,7 +21,8 @@ class ShareController extends Controller
     	$list_document = Share::find($id);
         $pathBase = base_path();
         $fileurl = $pathBase . $list_document->file;
-		header('Content-Disposition: attachment; filename=' . $fileurl);
+        $name = explode('/',$list_document->file);
+		header('Content-Disposition: attachment; filename=' . end($name));
 		readfile( $fileurl );
     }
 

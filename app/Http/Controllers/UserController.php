@@ -340,12 +340,6 @@ class UserController extends Controller
         }
          return back()->with('success',__('messages.edit_day_off_successully'));
     }
-
-    /*public function tung(){
-
-
-
-    }*/
     public function deleteDayOff(Request $request){
         $id= $request->day_off_id ?? '';
         if ($request->day_off_id){

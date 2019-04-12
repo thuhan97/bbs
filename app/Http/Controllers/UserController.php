@@ -153,18 +153,10 @@ class UserController extends Controller
 
     public function dayOff(DayOffRequest $request,$status=null)
     {
-        $conditions = ['user_id' => Auth::id()];
-
         $countDayOff=$this->userDayOffService->countDayOffUserLogin();
-
-        $listDate = $this->userDayOffService->findList($request, $conditions);
-
-        $paginateData = $listDate->toArray();
-        $recordPerPage = $request->get('per_page');
-        $approve = $request->get('approve');
         $userManager = $this->userService->getUserManager();
-
         $availableDayLeft = $this->userDayOffService->getDayOffUser(Auth::id());
+
         if ($status != null){
             $dayOff=$this->userDayOffService->searchStatus($status);
             return view('end_user.user.day_off', compact('listDate', 'paginateData', 'availableDayLeft', 'recordPerPage', 'approve', 'userManager','dayOff','status','countDayOff'));
@@ -291,19 +283,14 @@ class UserController extends Controller
             'dataDayOff','status'
         ));
     }
-
-    public function dayOffDetail($id){
-        $data= $this->userDayOffService->getOneData($id);
-        return back()->with(['data'=>$data]);
-
-    }
-    public function dayOffApproveOne($id){
+    public function dayOffDetail($id,$check=false){
         $dayOff= $this->userDayOffService->getOneData($id);
-        if ($dayOff->status == 0){
+        if ($dayOff->status == 0 && $check){
             $dayOff->status=2;
             $dayOff->save();
             return back()->with('close','');
         }
+        return back()->with(['data'=>$dayOff]);
        /* if ($dayOff->status == STATUS_DAY_OFF['noActive']){
             $check=['yes'];
             $manager=$this->userService->getUserManager();
@@ -323,7 +310,7 @@ class UserController extends Controller
     public function editDayOffDetail(Request $request,$id){
 
         $this->validate($request, [
-            'number_off' => 'required|integer',
+            'number_off' => 'required|numeric',
         ]);
         $dayOff=DayOff::findOrFail($id);
         $dayOff->status=STATUS_DAY_OFF['active'];

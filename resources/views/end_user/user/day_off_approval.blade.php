@@ -310,10 +310,8 @@
                                 </div>
                                 @if($data->status ==0)
                                     <div class=" mb-1 pb-4 d-flex justify-content-center border-top-0 rounded mb-0">
-                                        {{--<a href="{{ route('day_off_approve',['id'=>$data->id]) }}" class="btn btn-primary btn-send">DYỆT ĐƠN
-                                        </a>--}}
                                         <button type="submit" class="btn  btn-primary">DUYỆT ĐƠN</button>
-                                        <a href="{{ route('day_off_approve',['id'=>$data->id]) }}"
+                                        <a href="{{ route('day_off_detail',['id'=>$data->id,'check'=>true]) }}"
                                            class="btn btn-danger btn-send">
                                             HỦY DUYỆT</a>
                                     </div>

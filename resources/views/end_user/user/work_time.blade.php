@@ -20,13 +20,13 @@
         </div>
         <div class="col-md-8">
             <div class="row mb-4" id="form-check-time">
-                <button type="button" class="btn btn-danger btn-late" id="btn-late" onclick="exec_submit(0)">Số buổi đi
+                <button type="button" class="btn btn-danger btn-late" id="btn-late">Số buổi đi
                     muộn/sớm:
                 </button>
-                <button type="button" class="btn btn-primary btn-ot" id="btn-ot" onclick="exec_submit(0)">Số buổi đi
+                <button type="button" class="btn btn-primary btn-ot" id="btn-ot">Số buổi đi
                     OT:
                 </button>
-                <button type="button" class="btn btn-success btn-late-ot" id="btn-late-ot" onclick="exec_submit(0)">Số
+                <button type="button" class="btn btn-success btn-late-ot" id="btn-late-ot">Số
                     buổi đi muộn + OT:
                 </button>
             </div>
@@ -49,10 +49,7 @@
                 <br>
                 <form action="{{ route('day_off_create') }}" method="post">
                     @csrf
-                    <div class="d-flex justify-content-center text-area-reason" id="div-reason">
-                        {{--<textarea class="form-control w-90" name="reason" id="" rows="6"--}}
-                        {{--placeholder="Nội dung bạn muốn gửi..."></textarea>--}}
-                    </div>
+                    <div class="d-flex justify-content-center text-area-reason" id="div-reason"></div>
                     <div id="event"></div>
                     <div class="pt-3 pb-4 d-flex justify-content-center border-top-0 rounded mb-0">
                         <button class="btn btn-primary btn-send">GỬI ĐƠN</button>
@@ -61,7 +58,6 @@
             </div>
         </div>
     </div>
-    {{--<div id="event"></div>--}}
     <!-- [CALENDAR] -->
     <div id="container"></div>
 @endsection
@@ -329,38 +325,6 @@
                     },
                 });
             };
-            var id = 0;
-
-            function exec_submit(i) {
-                var f = document.forms[i];
-                if (getParam('month') == null) {
-                    var d = new Date();
-                    var m = d.getMonth();
-                    f.month.value = m + 1;
-                } else {
-                    f.month.value = getParam('month');
-                }
-                f.action = "/thoi-gian-lam-viec";
-                f.submit();
-            }
-
-            function getParam(param) {
-                var results = new RegExp('[\?&]' + param + '=([^&#]*)').exec(window.location.href);
-                if (results == null) {
-                    return null;
-                }
-                return decodeURI(results[1]) || 0;
-            }
-
-            $('.feedback').click(function () {
-                id = $(this).attr('data-id')
-            });
-
-            $('.complain').click(function () {
-                var message = $('.modal-body textarea').val();
-                $('#feedback').modal('hide');
-            });
         })
-
     </script>
 @endpush

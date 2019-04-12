@@ -15,7 +15,7 @@
     width: 74%;
 }
 
-.w-90{
+.w-90 {
     width: 90%;
 }
 
@@ -390,11 +390,27 @@
         top: 10px;
         left: 20px;
     }
+
+    tr.calendar-body td {
+        width: 162px;
+        height: 120px;
+        padding-top: 25px;
+        cursor: pointer;
+    }
 }
 
 @media (max-width: 1199.98px) {
     .sidebar-fixed {
         display: none;
+    }
+}
+
+@media (max-width: 1564px) {
+    tr.calendar-body td {
+        width: 162px;
+        height: 95px;
+        padding-top: 15px;
+        cursor: pointer;
     }
 }
 
@@ -458,31 +474,37 @@
 .joinEvent {
     justify-content: center !important;
 }
+
 /*Nguyễn Thanh Tùng*/
-.btn-close-icon{
-    display: block ;
+.btn-close-icon {
+    display: block;
     background: #DDDDDD;
     border-radius: 30px;
     width: 26px;
     height: 27px;
 }
-.text-w-400{
+
+.text-w-400 {
     font-weight: 400;
 }
-.select-item{
+
+.select-item {
     opacity: 0.7;
 }
-#bg-img{
+
+#bg-img {
     background-size: cover;
     background-position: center;
 }
-.modal-center{
+
+.modal-center {
     display: flex;
     flex-direction: column;
     justify-content: center;
     overflow-y: auto;
     min-height: calc(100vh - 60px);
 }
+
 .text-black {
     color: black;
 }
@@ -555,14 +577,9 @@ tr.calendar-header td {
     background: #eeeeee;
     color: #000000;
     text-align: center;
-    padding: 20px 5px;
-}
-tr.calendar-body td {
-    width: 162px;
-    height: 109px;
-    padding-top: 30px;
-    cursor: pointer;
-
+    padding: 10px 0 10px 0;
+    /*height: 4em;*/
+    /*padding: 20px 5px;*/
 }
 
 .attendance-time {
@@ -573,15 +590,15 @@ tr.calendar-body td {
     overflow: hidden;
 }
 
-.calendar-td-body{
+.calendar-td-body {
     user-select: none;
 }
 
-.modal-set-center{
+.modal-set-center {
     margin-left: 43%;
 }
 
-.data-type-1,.data-type-2 {
+.data-type-1, .data-type-2 {
     background-color: #ff3548 !important;
     color: #ffffff !important;
 }
@@ -596,9 +613,10 @@ tr.calendar-body td {
     color: #ffffff !important;
 }
 
-.modal-open .modal{
+.modal-open .modal {
     padding-right: 0px !important;
 }
+
 .modal-open {
     padding-right: 0px !important;
 }

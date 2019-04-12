@@ -15,7 +15,7 @@ class Explanation extends Model
 {
     use FillableFields, OrderableTrait, SearchLikeTrait;
 
-    protected $table = 'explanation';
+    protected $table = 'work_times_explanation';
 
     protected $fillable = [
         'id',

@@ -243,6 +243,7 @@ class DayOffService extends AbstractService implements IDayOffService
             ->get();
         $total = 0;
         $sumDayOffPreYear = RemainDayoff::where('user_id',Auth::id())->where('year',(int)date('Y')-1)->first();
+        $sumDayOffCurrentYear = RemainDayoff::where('user_id',Auth::id())->where('year',(int)date('Y'))->first();
     
         foreach ($dataTotalCurrentYear as $key => $value) {
             $total = $total + $value->total;
@@ -252,7 +253,8 @@ class DayOffService extends AbstractService implements IDayOffService
         }
         return $countDayyOff = [
             'total' => $total,
-            'previous_year' => $sumDayOffPreYear->remain
+            'previous_year' => $sumDayOffPreYear->remain ?? 0,
+            'current_year'=>$sumDayOffCurrentYear->active ?? 0
         ];
 
     }

@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Models\RemainDayoff;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
 
@@ -38,7 +39,20 @@ class AddDayOffMonth extends Command
      */
     public function handle()
     {
-        DB::table('remain_dayoffs')->whereYear('created_at', '=', date('Y'))->increment('active', 1);
+        $users=User::where('contract_type',CONTRACT_TYPES['staff'])->whereNull('end_date')->get();
+        foreach ($users as $user){
+            $dayOffRemain=DB::table('remain_dayoffs')->where('year', '=', date('Y'))
+                ->where('user_id',$user->id);
+            if ($dayOffRemain->first()){
+                $dayOffRemain=$dayOffRemain->increment('active', 1);
+            }else{
+                $dayOffRemain=new RemainDayoff();
+                $dayOffRemain->user_id=$user->id;
+                $dayOffRemain->year=date('Y');
+                $dayOffRemain->save();
+            }
+        }
+
     }
 
 }

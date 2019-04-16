@@ -308,7 +308,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                @if(isset($data))
+                                @if(isset($data) && $data->status==0)
                                     <div class="mb-3 ml-3">
                                         <label class="text-d-bold" for="exampleFormControlTextarea5">Ý kiến người duyệt</label>
                                         <textarea

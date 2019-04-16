@@ -275,7 +275,7 @@ class DayOffService extends AbstractService implements IDayOffService
 
             $DayOffPreYear=$sumDayOffPreYear->active ?? DAY_OFF_DEFAULT;
 
-            if ($DayOffPrePreYear >= 0) {
+            if ($DayOffPrePreYear >= DAY_OFF_DEFAULT) {
                 $remainCurrentYear->remain = date('m');
             } elseif ($DayOffPrePreYear + $sumDayOffPreYear >= DAY_OFF_DEFAULT) {
                 $remainCurrentYear->remain = $DayOffPrePreYear + $DayOffPreYear;

@@ -290,8 +290,20 @@ class UserController extends Controller
         return back()->with('day_off_success', '');
     }
 
-    public function dayOffShow($status)
+    public function dayOffSearch(Request $request)
     {
+        $year=$request->year;
+        $month=$request->month;
+        $status=$request->status;
+        $search=$request->search;
+
+        $dataDayOff = $this->userDayOffService->showList(null);
+        $dayOffSearch= $this->userDayOffService->getDataSearch($year,$month ,$status,$search);
+        return view('end_user.user.day_off_approval', compact(
+            'dataDayOff','dayOffSearch','year','month','status','search'
+        ));
+    }
+    public function dayOffShow($status){
 
         $dataDayOff = $this->userDayOffService->showList($status);
         return view('end_user.user.day_off_approval', compact(

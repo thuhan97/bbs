@@ -220,3 +220,4 @@ define('PAGINATE_DAY_OFF',20);
 
 define('XLS_TYPE', '.xls');
 
+define('ADD_DAY_OFF_MONTH',1);

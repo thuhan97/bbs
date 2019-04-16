@@ -729,7 +729,7 @@ table.calendarTable td {
     font-weight: bold;
 }
 
-td.blank {
+td.blank , .type-1{
     opacity: 0.4;
 }
 

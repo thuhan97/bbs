@@ -2,14 +2,17 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Facades\AuthAdmin;
 use App\Http\Requests\Admin\WorkTimeImportRequest;
 use App\Http\Requests\Admin\WorkTimeRequest;
 use App\Imports\WorkTimeImport;
 use App\Models\User;
 use App\Models\WorkTime;
+use App\Models\WorkTimesExplanation;
 use App\Repositories\Contracts\IWorkTimeRepository;
 use App\Services\Contracts\IWorkTimeService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Maatwebsite\Excel\Facades\Excel;
 
 /**
@@ -50,7 +53,7 @@ class WorkTimeController extends AdminBaseController
      * Controller construct
      *
      * @param IWorkTimeRepository $repository
-     * @param IWorkTimeService    $service
+     * @param IWorkTimeService $service
      */
     public function __construct(IWorkTimeRepository $repository, IWorkTimeService $service)
     {
@@ -145,6 +148,16 @@ class WorkTimeController extends AdminBaseController
         return $this->makeRelationData($data);
     }
 
+    public function addVarsSearchViewData($data = [])
+    {
+
+        return $this->getExplanation($data);
+    }
+
+
+
+
+
     /**
      * @param       $record
      * @param array $data
@@ -188,5 +201,11 @@ class WorkTimeController extends AdminBaseController
         $data['request_users'] = $userModel->availableUsers()->pluck('name', 'id')->toArray();
 
         return $data;
+    }
+
+    private function getExplanation()
+    {
+        $explanation = WorkTimesExplanation::where('user_id', Auth::id())->get();
+        return $explanation;
     }
 }

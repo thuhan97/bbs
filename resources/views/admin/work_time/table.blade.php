@@ -17,6 +17,7 @@
         <th>Nhân viên</th>
         <th>Checkin</th>
         <th>Checkout</th>
+        <th>Giải trình</th>
         <th>Chú thích</th>
         <th style="width: 100px;">Chức năng</th>
         </thead>
@@ -30,13 +31,23 @@
             $formId = 'formDeleteModel_' . $record->id;
             ?>
             <tr>
-                <td><input type="checkbox" name="ids[]" value="{{ $record->id }}" class="square-blue chkDelete"></td>
+                <td class="text-center"><input type="checkbox" name="ids[]" value="{{ $record->id }}"
+                                               class="square-blue chkDelete"></td>
                 <td>{{ $record->work_day }}</td>
                 <td class="table-text">
                     <a href="{{ $userLink }}">{{ $record->user->name ?? '' }}</a>
                 </td>
                 <td class="text-right">{{ $record->start_at }}</td>
                 <td class="text-right">{{ $record->end_at }}</td>
+                <td>
+                    <?php
+                    foreach ($addVarsForView as $value) {
+                        if ($record->user_id === $value->user_id && $record->work_day === $value->work_day) {
+                            echo $value->note;
+                        }
+                    }
+                    ?>
+                </td>
                 <td>
                     <?php
                     switch ($record->type) {

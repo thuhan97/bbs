@@ -326,3 +326,12 @@ a.disabled {
     pointer-events: none;
     cursor: default;
 }
+.calendar-year{
+    height: 50px;
+}
+#option-calendar{
+    background: #f4f4f4;
+}
+#option-calendar > select{
+    height: 48px;border: 2px solid #f4f4f4
+}

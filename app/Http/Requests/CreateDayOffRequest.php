@@ -24,7 +24,7 @@ class CreateDayOffRequest extends FormRequest
      */
     public function rules()
     {
-        return [
+        $rules= [
             'approver_id' => ['required', 'integer',
                 Rule::exists('users', 'id')->where(function ($query) {
                     $query->where('jobtitle_id', '>=', MIN_APPROVE_JOB)->where('status', ACTIVE_STATUS);
@@ -36,6 +36,10 @@ class CreateDayOffRequest extends FormRequest
             'end_at' => 'required|after_or_equal:start_at',
             'status' => 'nullable|integer|between:0,1',
         ];
+        if ($this->id) {
+            $rules['start_at'] = "required|date";
+        }
+        return $rules;
     }
     public function messages()
     {

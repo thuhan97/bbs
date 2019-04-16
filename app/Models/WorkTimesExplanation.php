@@ -11,7 +11,7 @@ use App\Traits\Eloquent\OrderableTrait;
 use App\Traits\Eloquent\SearchLikeTrait;
 use App\Traits\Models\FillableFields;
 
-class Explanation extends Model
+class WorkTimesExplanation extends Model
 {
     use FillableFields, OrderableTrait, SearchLikeTrait;
 
@@ -20,7 +20,9 @@ class Explanation extends Model
     protected $fillable = [
         'id',
         'user_id',
+        'work_times_id',
         'work_day',
+        'type',
         'note',
     ];
 
@@ -30,5 +32,10 @@ class Explanation extends Model
     public function user()
     {
         return $this->belongsTo(User::class);//->where('status', ACTIVE_STATUS);
+    }
+
+    public function workTime()
+    {
+        return $this->belongsTo(WorkTime::class, 'work_times_id', 'id');
     }
 }

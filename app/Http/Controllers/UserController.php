@@ -7,7 +7,7 @@ use App\Http\Requests\DayOffRequest;
 use App\Http\Requests\ProfileRequest;
 use App\Models\User;
 use App\Models\WorkTime;
-use App\Models\Explanation;
+use App\Models\WorkTimesExplanation;
 use App\Services\Contracts\IDayOffService;
 use App\Services\Contracts\IUserService;
 use App\Transformers\DayOffTransformer;
@@ -94,8 +94,10 @@ class UserController extends Controller
 
     public function workTimeAPI(Request $request)
     {
+        $lastyear =(int)date('Y')-1;
         $this->validate($request, [
-            'year' =>'required|integer|min:'.date('Y'),
+            'year' =>"required|min:". $lastyear."|integer|max:".date('Y'),
+            'month' =>'required|integer|max:12',
         ]);
 
         $calendarData = [];
@@ -103,7 +105,7 @@ class UserController extends Controller
             ->whereYear('work_day', $request->year)
             ->whereMonth('work_day', $request->month);
 
-        $explanation_calendar = Explanation::where('user_id', Auth::id())
+        $explanation_calendar = WorkTimesExplanation::where('user_id', Auth::id())
             ->whereYear('work_day', $request->year)
             ->whereMonth('work_day', $request->month);
         if ($list_work_times_calendar) {
@@ -125,7 +127,6 @@ class UserController extends Controller
                     'end_at' => $dataEndDay,
                     'type' => $item['type'],
                     'note' => $item['note'],
-                    'attendance_time' => $dataStartDay != '****' && $dataEndDay ? " - " : '',
                     'id' => $item['id'],
                 ];
             }
@@ -306,11 +307,11 @@ class UserController extends Controller
     {
         $id = $request['id'];
         $reason = $request['reason'];
-        $idUser = Auth::user()->id;
+        $idUser = Auth::id();
         if ($id) {
-            Explanation::where('id', $id)->update(['note' => $reason]);
+            WorkTimesExplanation::where('id', $id)->update(['note' => $reason]);
         } else {
-            Explanation::create([
+            WorkTimesExplanation::create([
                 'user_id' => $idUser,
                 'work_day' => $request['work_day'],
                 'type' => 0,

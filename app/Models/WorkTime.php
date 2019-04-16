@@ -60,4 +60,9 @@ class WorkTime extends Model
     {
         return $this->belongsTo(User::class);//->where('status', ACTIVE_STATUS);
     }
+
+    public function explanation()
+    {
+        return $this->hasOne(WorkTimesExplanation::class, 'work_times_id', 'id');
+    }
 }

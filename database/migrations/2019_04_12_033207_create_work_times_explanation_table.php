@@ -13,9 +13,10 @@ class CreateExplanationTable extends Migration
      */
     public function up()
     {
-        Schema::create('explanation', function (Blueprint $table) {
+        Schema::create('work_times_explanation', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('user_id');
+            $table->integer('work_times_id');
             $table->date('work_day');
             $table->integer('type')->nullable();
             $table->text('note')->nullable();

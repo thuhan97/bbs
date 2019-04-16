@@ -15,6 +15,10 @@
     width: 74%;
 }
 
+.w-90 {
+    width: 90%;
+}
+
 .no-border {
     border: none;
 }
@@ -386,11 +390,46 @@
         top: 10px;
         left: 20px;
     }
+
+    tr.calendar-header td {
+        background: #eeeeee;
+        color: #000000;
+        text-align: center;
+        padding: 17px 0 17px 0;
+        /*height: 4em;*/
+        /*padding: 20px 5px;*/
+    }
+
+    tr.calendar-body td {
+        width: 162px;
+        height: 120px;
+        padding-top: 25px;
+        cursor: pointer;
+    }
 }
 
 @media (max-width: 1199.98px) {
     .sidebar-fixed {
         display: none;
+    }
+}
+
+@media (max-width: 1564px) {
+    tr.calendar-body td {
+        width: 162px;
+        height: 95px;
+        padding-top: 15px;
+        cursor: pointer;
+    }
+
+
+    tr.calendar-header td {
+        background: #eeeeee;
+        color: #000000;
+        text-align: center;
+        padding: 15px 0 15px 0;
+        /*height: 4em;*/
+        /*padding: 20px 5px;*/
     }
 }
 
@@ -488,6 +527,7 @@
 .text-black {
     color: black;
 }
+
 .calendar-year {
     height: 50px;
     background: #f4f4f4;
@@ -565,10 +605,12 @@
     -ms-text-overflow: ellipsis;
     text-overflow: ellipsis;
 }
-.border-radius-2{
+
+.border-radius-2 {
     border-radius: 12px;
 }
-.border-radius-1{
+
+.border-radius-1 {
     border-radius: 6px;
 }
 
@@ -579,10 +621,12 @@
     -ms-text-overflow: ellipsis;
     text-overflow: ellipsis;
 }
-.select_year{
-    background:#f4f4f4;
+
+.select_year {
+    background: #f4f4f4;
     text-align-last: center;
 }
+
 @media (min-width: 768px) and (max-width: 1366px) {
     .dayoff-header {
         width: 40px;
@@ -614,14 +658,17 @@
         top: 7px;
     }
 }
+
 @media (min-width: 1800px) {
-.ml-xxl-2{
-    margin-left: -60px;
-}
-    .ml-xxl-1{
+    .ml-xxl-2 {
+        margin-left: -60px;
+    }
+
+    .ml-xxl-1 {
         margin-left: -74px;
     }
 }
+
 /*
         Style work time calendar
  */
@@ -686,20 +733,6 @@ td.blank {
     opacity: 0.4;
 }
 
-tr.calendar-header td {
-    background: #eeeeee;
-    color: #000000;
-    text-align: center;
-    padding: 20px 5px;
-}
-tr.calendar-body td {
-    width: 162px;
-    height: 109px;
-    padding-top: 30px;
-    cursor: pointer;
-
-}
-
 .attendance-time {
     margin-top: 5px;
     padding: 5px;
@@ -708,32 +741,47 @@ tr.calendar-body td {
     overflow: hidden;
 }
 
-.data-type-3 {
+.calendar-td-body {
+    user-select: none;
+}
+
+.modal-set-center {
+    margin-left: 43%;
+}
+
+.data-type-1, .data-type-2 {
     background-color: #ff3548 !important;
     color: #ffffff !important;
 }
+
 .data-type-4 {
     background-color: #4385f5 !important;
     color: #ffffff !important;
 }
+
 .data-type-5 {
     background-color: #01c851 !important;
     color: #ffffff !important;
 }
-.text-d-bold{
+
+.text-d-bold {
     font-weight: bold;
 }
-#number_off-error ,#title-error ,#exampleFormControlTextarea2-error,#approver_id-error{
+
+#number_off-error, #title-error, #exampleFormControlTextarea2-error, #approver_id-error {
     color: red;
 }
+
 .paginate-center {
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;
 }
-.list-reulation{
+
+.list-reulation {
     margin-left: 15px;
 }
+
 /*
             End work time calendar
  */

@@ -528,6 +528,147 @@
     color: black;
 }
 
+.calendar-year {
+    height: 50px;
+    background: #f4f4f4;
+    border: none;
+}
+
+#option-calendar {
+    background: #f4f4f4;
+}
+
+#select-month {
+    height: 48px !important;
+    border: 2px solid #f4f4f4;
+}
+
+.dayoff-header {
+    width: 80px;
+    height: 80px;
+    position: relative;
+}
+
+.dayoff-icoin {
+    font-size: 33px;
+    position: absolute;
+    left: 24px;
+    top: 23px;
+    margin: 0 auto;
+}
+
+#dayoff-option-header-4 {
+    background: #ff848f;
+}
+
+#dayoff-option-header-3 {
+    background: #ffda91;
+}
+
+#dayoff-option-header-2 {
+    background: #2aea78;
+}
+
+#dayoff-option-header-1 {
+    background: #79abff;
+}
+
+#bg-yellow {
+    background: #ffbb33;
+}
+
+.dayoff-cioin-1-2-3 {
+    left: 29px !important;
+}
+
+.text-size-header {
+    font-size: 16px !important;
+}
+
+#btnSearch {
+    background: #f4f4f4 !important;;
+}
+
+.search-day-off {
+    border: 1px solid #f4f4f4;
+}
+
+.color-search {
+    color: #d8d8d8;
+    font-size: 18px;
+}
+
+.table-name {
+    width: 210px;
+    white-space: nowrap;
+    overflow: hidden;
+    -ms-text-overflow: ellipsis;
+    text-overflow: ellipsis;
+}
+
+.border-radius-2 {
+    border-radius: 12px;
+}
+
+.border-radius-1 {
+    border-radius: 6px;
+}
+
+.table-title {
+    width: 200px;
+    white-space: nowrap;
+    overflow: hidden;
+    -ms-text-overflow: ellipsis;
+    text-overflow: ellipsis;
+}
+
+.select_year {
+    background: #f4f4f4;
+    text-align-last: center;
+}
+
+@media (min-width: 768px) and (max-width: 1366px) {
+    .dayoff-header {
+        width: 40px;
+        height: 40px;
+        position: relative;
+    }
+
+    .dayoff-icoin {
+        font-size: 27px;
+        position: absolute;
+        left: 24px;
+        top: 6px;
+    }
+
+    .dayoff-cioin-1-2-3 {
+        left: 10px !important;
+    }
+
+    .text-size-header {
+        font-size: 14px !important;
+    }
+
+    .text-size-table {
+        font-size: 12px;
+    }
+
+    .size-table {
+        left: 7px;
+        top: 7px;
+    }
+}
+
+@media (min-width: 1800px) {
+    .ml-xxl-2 {
+        margin-left: -60px;
+    }
+
+    .ml-xxl-1 {
+        margin-left: -74px;
+    }
+}
+
 /*
         Style work time calendar
  */
@@ -623,6 +764,20 @@ td.blank {
     color: #ffffff !important;
 }
 
+.text-d-bold {
+    font-weight: bold;
+}
+
+#number_off-error, #title-error, #exampleFormControlTextarea2-error, #approver_id-error {
+    color: red;
+}
+
+.paginate-center {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+}
+
 .list-reulation {
     margin-left: 15px;
 }
@@ -630,3 +785,4 @@ td.blank {
 /*
             End work time calendar
  */
+

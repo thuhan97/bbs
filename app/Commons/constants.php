@@ -183,5 +183,40 @@ define('VACATION', [
 
 define('DAILY_REPORT', 0);
 define('WEEKLY_REPORT', 1);
+
+define('MONTH', [
+    '01' => 'Tháng 1',
+    '02' => 'Tháng 2',
+    '03' => 'Tháng 3',
+    '04'=> 'Tháng 4',
+    '05' => 'Tháng 5',
+    '06' => 'Tháng 6',
+    '07' => 'Tháng 7',
+    '08' => 'Tháng 8',
+    '09' => 'Tháng 9',
+    '10' => 'Tháng 10',
+    '11' => 'Tháng 11',
+    '12' => 'Tháng 12',
+]);
+define('SHOW_DAY_OFFF', [
+    0 => 'Chờ Duyệt',
+    1=> 'Đã duyệt',
+    2=> 'Không duyệt',
+    3=>'Tất cả đơn'
+]);
+
+define('STATUS_DAY_OFF', [
+    'abide' => 0,
+    'active'=> 1,
+    'noActive'=>2
+]);
+define('SEX',[
+    'male'=>0,
+    'female'=>1
+]);
+define('ALL_DAY_OFF',3);
+define('DAY_OFF_FREE',0);
+define('PAGINATE_DAY_OFF',20);
+
 define('XLS_TYPE', '.xls');
 

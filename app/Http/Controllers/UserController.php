@@ -156,7 +156,7 @@ class UserController extends Controller
         $countDayOff=$this->userDayOffService->countDayOffUserLogin();
         $userManager = $this->userService->getUserManager();
         $availableDayLeft = $this->userDayOffService->getDayOffUser(Auth::id());
-
+//dd($countDayOff,$userManager,$availableDayLeft);
         if ($status != null){
             $dayOff=$this->userDayOffService->searchStatus($status);
             return view('end_user.user.day_off', compact('listDate', 'paginateData', 'availableDayLeft', 'recordPerPage', 'approve', 'userManager','dayOff','status','countDayOff'));
@@ -308,15 +308,17 @@ class UserController extends Controller
         }*/
     }
     public function editDayOffDetail(Request $request,$id){
-
         $this->validate($request, [
             'number_off' => 'required|numeric',
+            'approve_comment'=>'nullable|min:1|max:255'
         ]);
         $dayOff=DayOff::findOrFail($id);
         $dayOff->status=STATUS_DAY_OFF['active'];
         $dayOff->approver_at=now();
         $dayOff->number_off=$request->number_off;
+        $dayOff->approve_comment=$request->approve_comment;
         $dayOff->save();
+        dd($dayOff);
         $userDayOff=User::findOrFail($dayOff->user_id);
         if ($userDayOff->sex==1){
             $countDayOff=$this->userDayOffService->countDayOff($userDayOff->id);

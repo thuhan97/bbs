@@ -308,6 +308,15 @@
                                 </div>
                             </div>
                         @endif
+                        @if(isset($record->approve_comment))
+                            <div class="mb-3">
+                                <label class="text-d-bold" for="exampleFormControlTextarea5">Ý kiến người duyệt</label>
+                                <textarea
+                                        class="form-control reason_id rounded-0 select-item {{ $errors->has('approve_comment') ? ' has-error' : '' }}"
+                                        id="exampleFormControlTextarea2" rows="3"
+                                        name="approve_comment" readonly>{{ $record->approve_comment ?? old('approve_comment') }}</textarea>
+                            </div>
+                        @endif
                                 <div class="">
                                     <label class=" mt-1 text-w-400" for="exampleForm2">Người duyệt*</label>
                                     {{ Form::select('approver_id', $userManager, $record->approver_id ?? null, [isset($record) ? 'disabled' : '' ,'class' => 'form-control my-1 mr-1 browser-default custom-select md-form select-item mannager_id','placeholder'=>'Chọn người duyệt đơn' ]) }}

@@ -308,6 +308,20 @@
                                         </div>
                                     </div>
                                 </div>
+                                @if(isset($data))
+                                    <div class="mb-3 ml-3">
+                                        <label class="text-d-bold" for="exampleFormControlTextarea5">Ý kiến người duyệt</label>
+                                        <textarea
+                                                class="form-control reason_id rounded-0 select-item {{ $errors->has('approve_comment') ? ' has-error' : '' }}"
+                                                id="exampleFormControlTextarea2" rows="3" placeholder="Nhập ý kiến của người duyệt"
+                                                name="approve_comment">{{ $data->approve_comment ?? old('approve_comment') }}</textarea>
+                                        @if ($errors->has('approve_comment'))
+                                            <div class="mt-1">
+                                                <span class="help-block text-danger">{{ $errors->first('approve_comment') }}</span>
+                                            </div>
+                                        @endif
+                                    </div>
+                                @endif
                                 @if($data->status ==0)
                                     <div class=" mb-1 pb-4 d-flex justify-content-center border-top-0 rounded mb-0">
                                         <button type="submit" class="btn  btn-primary">DUYỆT ĐƠN</button>

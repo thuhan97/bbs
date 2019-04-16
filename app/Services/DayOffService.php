@@ -275,15 +275,16 @@ class DayOffService extends AbstractService implements IDayOffService
 
             $DayOffPreYear=$sumDayOffPreYear->active ?? DAY_OFF_DEFAULT;
 
-            if ($DayOffPrePreYear > 0) {
+            if ($DayOffPrePreYear >= 0) {
                 $remainCurrentYear->remain = date('m');
-            } elseif ($DayOffPrePreYear + $sumDayOffPreYear > DAY_OFF_DEFAULT) {
+            } elseif ($DayOffPrePreYear + $sumDayOffPreYear >= DAY_OFF_DEFAULT) {
                 $remainCurrentYear->remain = $DayOffPrePreYear + $DayOffPreYear;
             }else {
                 $remainCurrentYear->remain = DAY_OFF_DEFAULT;
             }
             $remainCurrentYear->save();
         }
+
         return $countDayyOff = [
             'total' => $total,
             'previous_year' => $sumDayOffPreYear->remain ?? DAY_OFF_DEFAULT,
@@ -307,8 +308,8 @@ class DayOffService extends AbstractService implements IDayOffService
             ->get();
         foreach ($data as $key => $value) {
             $total = $total + $value->total;
-            if ($user->sex == SEX['female'] && $value->check_free == DAY_OFF_FREE) {
-                $total = $total - 1;
+            if ($user->sex == SEX['female'] && $value->check_free == DAY_OFF_FREE_ACTIVE) {
+                $total = $total - DAY_OFF_FREE_ACTIVE;
             }
         }
         return $total;

@@ -337,12 +337,11 @@ class UserController extends Controller
         $dayOff->number_off = $request->number_off;
         $dayOff->approve_comment = $request->approve_comment;
         $dayOff->save();
-        dd($dayOff);
         $userDayOff = User::findOrFail($dayOff->user_id);
         if ($userDayOff->sex == 1) {
             $countDayOff = $this->userDayOffService->countDayOff($userDayOff->id);
-            if ($countDayOff && (int)$countDayOff->total >= 2 && $countDayOff->check_free == 0) {
-                $userDayOff->check_free = 1;
+            if ($countDayOff && (int)$countDayOff->total >= 2 && $countDayOff->check_free == DAY_OFF_FREE_DEFAULT) {
+                $userDayOff->check_free = DAY_OFF_FREE_ACTIVE;
                 $userDayOff->save();
             }
         }

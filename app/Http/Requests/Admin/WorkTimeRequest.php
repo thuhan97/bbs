@@ -24,8 +24,8 @@ class WorkTimeRequest extends FormRequest
     public function rules()
     {
         return [
-            'start_at' => 'required|date|date_format:h:i',
-            'end_at' => 'required|date|date_format:h:i',
+            'start_at' => 'required',
+            'end_at' => 'required',
             'work_day' => 'required|date',
         ];
     }

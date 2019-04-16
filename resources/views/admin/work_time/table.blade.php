@@ -17,8 +17,8 @@
         <th>Nhân viên</th>
         <th>Checkin</th>
         <th>Checkout</th>
-        <th>Giải trình</th>
         <th>Chú thích</th>
+        <th>Giải trình</th>
         <th style="width: 100px;">Chức năng</th>
         </thead>
         <tbody>
@@ -33,21 +33,12 @@
             <tr>
                 <td class="text-center"><input type="checkbox" name="ids[]" value="{{ $record->id }}"
                                                class="square-blue chkDelete"></td>
-                <td>{{ $record->work_day }}</td>
+                <td class="w-10">{{ $record->work_day }}</td>
                 <td class="table-text">
                     <a href="{{ $userLink }}">{{ $record->user->name ?? '' }}</a>
                 </td>
-                <td class="text-right">{{ $record->start_at }}</td>
-                <td class="text-right">{{ $record->end_at }}</td>
-                <td>
-                    <?php
-                    foreach ($addVarsForView as $value) {
-                        if ($record->user_id === $value->user_id && $record->work_day === $value->work_day) {
-                            echo $value->note;
-                        }
-                    }
-                    ?>
-                </td>
+                <td class="text-right w-10">{{ $record->start_at }}</td>
+                <td class="text-right w-10">{{ $record->end_at }}</td>
                 <td>
                     <?php
                     switch ($record->type) {
@@ -67,6 +58,7 @@
                         <span class="label label-{{$typeClass}}">{{ $record->note }}</span>
                     @endif
                 </td>
+                <td class="w-20">{{ $record->explanation($record->work_day)->note ?? '' }}</td>
                 <td>
                     <div class="btn-group">
                         <a href="{{ $editLink }}" class="btn btn-info btn-sm"><i class="fa fa-edit"></i></a>

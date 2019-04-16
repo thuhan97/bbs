@@ -124,6 +124,25 @@ class WorkTimeController extends AdminBaseController
         return response()->download($pathToFile);
     }
 
+    public function getRedirectAfterSave($record, $request)
+    {
+        $explanationID = $request->explanation_id;
+        $explanationNote = $request->explanation_note;
+        $idUser = Auth::id();
+        if ($explanationID) {
+            $data = WorkTimesExplanation::where('id', $explanationID)->first();
+            $data->note = $explanationNote;
+            $data->save();
+        } else {
+            WorkTimesExplanation::create([
+                'user_id' => $idUser,
+                'work_day' => $record->work_day,
+                'note' => $explanationNote
+            ]);
+        }
+        return $this->redirectBackTo(route($this->getResourceRoutesAlias() . '.index'));
+    }
+
     /**
      * @return array
      */
@@ -147,16 +166,6 @@ class WorkTimeController extends AdminBaseController
     {
         return $this->makeRelationData($data);
     }
-
-    public function addVarsSearchViewData($data = [])
-    {
-
-        return $this->getExplanation($data);
-    }
-
-
-
-
 
     /**
      * @param       $record
@@ -201,11 +210,5 @@ class WorkTimeController extends AdminBaseController
         $data['request_users'] = $userModel->availableUsers()->pluck('name', 'id')->toArray();
 
         return $data;
-    }
-
-    private function getExplanation()
-    {
-        $explanation = WorkTimesExplanation::where('user_id', Auth::id())->get();
-        return $explanation;
     }
 }

@@ -268,7 +268,7 @@ class UserController extends Controller
 
     /**
      * Create or edit day off
-     * 
+     *
      * @param Request $request
      * @return \Illuminate\Http\RedirectResponse
      */

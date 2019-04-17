@@ -95,6 +95,7 @@
                     var calendarYM = calendar.sYear + "-" + calendar.sMth;
                     if (currentMY === calendarYM) {
                         calendar.sDay = el.getElementsByClassName("dayNumber")[0].innerHTML;
+                        console.log(el)
                         if (el.getElementsByClassName("data-id")[0]) {
                             var dataReason = el.getElementsByClassName("data-reason")[0].innerHTML;
                             var dataID = el.getElementsByClassName("data-id")[0].innerHTML;
@@ -286,6 +287,7 @@
                                 const data_time = $(this).data('time');
                                 if (data_time === work_day) {
                                     $(this).addClass("data-type-" + data.type);
+                                    $(this).addClass("type" + data.type);
                                     $(this).addClass("hasData");
                                     $(this).append('<p>' + work_time + '</p>');
                                 }

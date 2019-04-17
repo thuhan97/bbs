@@ -143,6 +143,7 @@ trait ResourceController
      */
     public function update(Request $request, $id)
     {
+//        dd($request->all());
         $record = $this->repository->findOne($id);
 
         $this->authorize('update', $record);

@@ -302,8 +302,8 @@ class UserController extends Controller
     public function dayOffDetail($id, $check = false)
     {
         $dayOff = $this->userDayOffService->getOneData($id);
-        if ($dayOff->status == 0 && $check) {
-            $dayOff->status = 2;
+        if ($dayOff->status == STATUS_DAY_OFF['abide'] && $check) {
+            $dayOff->status = STATUS_DAY_OFF['noActive'];
             $dayOff->save();
             return back()->with('close', '');
         }

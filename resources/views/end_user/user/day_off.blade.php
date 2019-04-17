@@ -309,7 +309,7 @@
                             </div>
                         @endif
                         @if(isset($record->approve_comment))
-                            <div class="mb-3">
+                            <div class="mb-3" id="approve_comment">
                                 <label class="text-d-bold" for="exampleFormControlTextarea5">Ý kiến người duyệt</label>
                                 <textarea
                                         class="form-control reason_id rounded-0 select-item {{ $errors->has('approve_comment') ? ' has-error' : '' }}"
@@ -470,6 +470,7 @@
                 $('.mannager_id,.reason_id').removeAttr('readonly');
                 $('.mannager_id , .reason_id ').removeAttr('disabled');
                 $('#show-record').hide();
+                $('#approve_comment').hide();
                 $('#exampleFormControlTextarea2').text('');
                 $('#create_day_off').html('<button class="btn btn-primary btn-send">GỬI ĐƠN</button>');
                 $('#modal-form').modal('show');

@@ -369,9 +369,9 @@ class UserController extends Controller
         };
         $dayOff->save();
             // check if female && sum day off in month >=2 && check_free =0 -> +1 column remain table day off
-        if ($userDayOff->sex == SEX['female']) {
+        if ($userDayOff->sex == SEX['female'] && $userDayOff->contract_type == CONTRACT_TYPES['staff']) {
 
-            //sum day off in month
+            //total day off in month
             $countDayOff = $this->userDayOffService->countDayOff($userDayOff->id);
 
             if ($countDayOff && (int)$countDayOff->total >= 2 && $countDayOff->check_free == DAY_OFF_FREE_DEFAULT) {

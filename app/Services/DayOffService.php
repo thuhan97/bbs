@@ -291,7 +291,7 @@ class DayOffService extends AbstractService implements IDayOffService
             ->get();
         foreach ($data as $key => $value) {
             $total = $total + $value->total + $value->total_absent;
-            if ($user->sex == SEX['female'] && $value->check_free == DAY_OFF_FREE_DEFAULT) {
+            if ($user->sex == SEX['female'] && $value->check_free == DAY_OFF_FREE_DEFAULT && $user->contract_type == CONTRACT_TYPES['staff']) {
                 $total = $total - DAY_OFF_FREE_ACTIVE;
             }
         }

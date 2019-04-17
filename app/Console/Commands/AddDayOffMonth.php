@@ -44,7 +44,7 @@ class AddDayOffMonth extends Command
             $dayOffRemain=DB::table('remain_dayoffs')->where('year', '=', date('Y'))
                 ->where('user_id',$user->id);
             if ($dayOffRemain->first()){
-                $dayOffRemain=$dayOffRemain->increment('active', ADD_DAY_OFF_MONTH);
+                $dayOffRemain=$dayOffRemain->increment('remain', ADD_DAY_OFF_MONTH);
             }else{
                 $dayOffRemain=new RemainDayoff();
                 $dayOffRemain->user_id=$user->id;

@@ -41,7 +41,7 @@ class AddDayOffMonth extends Command
     {
         $users=User::where('contract_type',CONTRACT_TYPES['staff'])->whereNull('end_date')->get();
         foreach ($users as $user){
-            $dayOffRemain=DB::table('remain_dayoffs')->where('year', '=', date('Y'))
+            $dayOffRemain=RemainDayoff::where('year', '=', date('Y'))
                 ->where('user_id',$user->id);
             if ($dayOffRemain->first()){
                 $dayOffRemain=$dayOffRemain->increment('remain', ADD_DAY_OFF_MONTH);

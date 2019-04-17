@@ -331,20 +331,51 @@ class UserController extends Controller
             'number_off' => 'required|numeric',
             'approve_comment' => 'nullable|min:1|max:255'
         ]);
+        //manager active day off
         $dayOff = DayOff::findOrFail($id);
         $dayOff->status = STATUS_DAY_OFF['active'];
         $dayOff->approver_at = now();
         $dayOff->number_off = $request->number_off;
         $dayOff->approve_comment = $request->approve_comment;
-        $dayOff->save();
+
+
+        //check reamin day off Current Year and Pre Year -> update column ramian of table remain_day_offs
         $userDayOff = User::findOrFail($dayOff->user_id);
-        if ($userDayOff->sex == 1) {
+        $remainDayOffCurrentYear=RemainDayoff::where('user_id',$dayOff->user_id)->where('year',date('Y'))->first();
+        $remainDayOffPreYear=RemainDayoff::where('user_id',$dayOff->user_id)->where('year',(int)date('Y')-1)->first();
+
+        $dayOffCurrentYear=$remainDayOffCurrentYear ? $remainDayOffCurrentYear->remain : DAY_OFF_DEFAULT;
+        $dayOffPreYear=$remainDayOffPreYear ? $remainDayOffPreYear->remain : DAY_OFF_DEFAULT;
+
+        if ($dayOffPreYear - $dayOff->number_off >= DAY_OFF_DEFAULT){
+            $remainDayOffPreYear->remain=$dayOffPreYear - $dayOff->number_off;
+            $remainDayOffPreYear->save();
+        }elseif ($dayOffCurrentYear + $dayOffPreYear - $dayOff->number_off >= DAY_OFF_DEFAULT ){
+            $remainDayOffPreYear->remain=DAY_OFF_DEFAULT;
+            $remainDayOffCurrentYear=$dayOffCurrentYear + $dayOffPreYear - $dayOff->number_off;
+            $remainDayOffPreYear->save();
+            $remainDayOffCurrentYear->save();
+
+        }else {
+
+        }
+            // check if female && sum day off in month >=2 && check_free =0 -> +1 day off
+        if ($userDayOff->sex == SEX['female']) {
+
+            //sum day off in month
             $countDayOff = $this->userDayOffService->countDayOff($userDayOff->id);
+
             if ($countDayOff && (int)$countDayOff->total >= 2 && $countDayOff->check_free == DAY_OFF_FREE_DEFAULT) {
-                $userDayOff->check_free = DAY_OFF_FREE_ACTIVE;
-                $userDayOff->save();
+                DB::table('day_offs')->where('user_id',$userDayOff->id)
+                    ->whereMonth('start_at', '=', date('m'))
+                    ->whereYear('start_at', '=', date('Y'))
+                    ->update(['check_free'=>DAY_OFF_FREE_ACTIVE]);
+                $remainDayOffPreYear->remain=$remainDayOffPreYear->remain + DAY_OFF_FREE_ACTIVE;
+                $remainDayOffCurrentYear->save();
+
             }
         }
+        $dayOff->save();
         return back()->with('success', __('messages.edit_day_off_successully'));
     }
 

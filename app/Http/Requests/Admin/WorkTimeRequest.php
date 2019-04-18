@@ -25,7 +25,7 @@ class WorkTimeRequest extends FormRequest
     {
         return [
             'start_at' => 'required|date_format:h:i',
-            'end_at' => 'required|date_format:H:i',
+            'end_at' => 'required|after:start_at|date_format:h:i',
             'work_day' => 'required|date',
         ];
     }
@@ -38,5 +38,4 @@ class WorkTimeRequest extends FormRequest
             'end_at' => 'giờ checkout',
         ];
     }
-
 }

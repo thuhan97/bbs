@@ -226,3 +226,6 @@ define('PRE_PRE_YEAR',2);
 define('XLS_TYPE', '.xls');
 
 define('ADD_DAY_OFF_MONTH',1);
+define('WEEKLY',1);
+define('MONTHLY',2);
+define('YEARLY',3);

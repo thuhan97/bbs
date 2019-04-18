@@ -41,17 +41,15 @@ class BookingCommand extends Command
     {
          $recurs= Recur::all();
             foreach ($recurs as $recur) {
-               if($recur->repeat_type==1){
-                   $add=true;
+                $type=$recur->repeat_type;
+                $days=$recur->days_repeat;
+                if(($type==WEEKLY &&$days==\Carbon::now()->dayOfWeek) ||
+                    ($type==MONTHLY &&$days==\Carbon::now()->day) ||
+                    ($type==YEARLY && $days==\Carbon::now()->format('m-d')))
+                {
+                        $add=true;
                 }
-               else if($recur->repeat_type==2){
-                if($recur->days_repeat==\Carbon::now()->day)
-                   $add=true;
-               }
-               else{
-                if($recur->days_repeat==\Carbon::now()->format('m-d'))
-                    $add=true;
-               }
+               
                if(isset($add)&&$add==true){
                     $booking=[
                             'title'=>$recur->title,

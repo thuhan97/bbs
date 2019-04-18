@@ -51,7 +51,7 @@ class RegulationController extends AdminBaseController
      *
      * @return \Illuminate\Http\Response
      */
-    public function getRedirectAfterSave($record, $request)
+    public function getRedirectAfterSave($record, $request,$isCreate = true)
     {
         //Delete relate files
         $record->regulation_files()->delete();

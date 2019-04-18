@@ -147,7 +147,7 @@ class UserController extends AdminBaseController
         }
         return redirect(route('admin::users.index'));
     }
-    public function getRedirectAfterSave($record, $request, $isCreate = false)
+    public function getRedirectAfterSave($record, $request, $isCreate = true)
     {
         if ($isCreate){
             $dayOff=new RemainDayoff();

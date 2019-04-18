@@ -49,7 +49,7 @@
                         <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button"
                            aria-haspopup="true"
                            aria-expanded="false">{{Auth::user()->name}}</a>
-                        <div class="dropdown-menu">
+                        <div class="dropdown-menu menu-left">
                             <a class="dropdown-item" href="{{route('profile')}}">{{__l('Profile')}}</a>
                             <a class="dropdown-item" href="{{route('changePassword')}}">{{__l('change_password')}}</a>
                             <div class="dropdown-divider"></div>

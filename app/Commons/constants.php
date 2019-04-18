@@ -225,4 +225,4 @@ define('PRE_PRE_YEAR',2);
 
 define('XLS_TYPE', '.xls');
 
-
+define('ADD_DAY_OFF_MONTH',1);

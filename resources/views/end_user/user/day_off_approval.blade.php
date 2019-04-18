@@ -60,7 +60,7 @@
             <div class="col-3 position-relative">
                 <div class="row border-radius-1" id="option-calendar" style="height: 50px">
                     <div class="col-3 p-0 m-auto">
-                        {{ Form::select('year', get_years(), $year ?? date('Y') , ['class'=>'yearselect browser-default custom-select w-100 border-0 select_year option-select']) }}
+                        {{ Form::select('year', get_years(), $year ?? date('Y') , ['class'=>'yearselect browser-default custom-select w-100 border-0 select_year option-select p-1']) }}
                     </div>
                     <div class="col-9 p-0 m-auto pr-2 ">
                         {{ Form::select('month', MONTH, $month ?? null, ['class' => 'browser-default custom-select w-100 month option-select','placeholder'=>'Chọn tháng']) }}
@@ -71,7 +71,7 @@
         <div class="container-fluid col-12 row border-bottom-2 mb-2" style="position: relative;">
             <div class="col-sm-3 col-md-6 col-lg-3 position-relative">
                 <a href="{{ route('day_off_show',['status'=>ALL_DAY_OFF]) }}" class="card bg-primary border-radius-2">
-                    <div class="card-body mr-lg-2 row d-flex justify-content-center px-0 ml-xxl-2">
+                    <div class="card-body row d-flex justify-content-center px-0 ml-xxl-2">
                         <div class="media mr-xl-1 d-md-flex">
                             <span id="dayoff-option-header-1"
                                   class="d-flex rounded-circle avatar z-depth-1-half mb-3 mx-auto dayoff-header mt-1">
@@ -92,7 +92,7 @@
             <div class="col-sm-3 col-md-6 col-lg-3 position-relative ">
                 <a href="{{ route('day_off_show',['status'=>STATUS_DAY_OFF['active']]) }}"
                    class="card bg-success border-radius-2">
-                    <div class="card-body mr-lg-2 row d-flex justify-content-center px-0 ml-xxl-2">
+                    <div class="card-body row d-flex justify-content-center px-0 ml-xxl-2">
                         <div class="media mr-lg-5 d-md-flex">
                             <span id="dayoff-option-header-2"
                                   class="d-flex rounded-circle avatar z-depth-1-half mb-3 mx-auto dayoff-header mt-1">
@@ -113,7 +113,7 @@
             <div class="col-sm-3 col-md-6 col-lg-3 position-relative">
                 <a href="{{ route('day_off_show',['status'=>STATUS_DAY_OFF['abide']]) }}" class="card border-radius-2"
                    id="bg-yellow">
-                    <div class="card-body mr-lg-2 row d-flex justify-content-center px-0 ml-xxl-2">
+                    <div class="card-body  row d-flex justify-content-center px-0 ml-xxl-2">
                         <div class="media mr-lg-5  d-md-flex">
                             <span id="dayoff-option-header-3"
                                   class="d-flex rounded-circle avatar z-depth-1-half mb-3 mx-auto dayoff-header mt-1">
@@ -216,7 +216,7 @@
                             @endif
                         @endforeach
                     </td>
-                    <td class="text-center">{{!!!$record->number_off ?'Chưa rõ': $record->number_off}} ngày</td>
+                    <td class="text-center">{{!!!$record->number_off ? 'Chưa rõ' : FloatAndInt::checkNumber($record->number_off)}} ngày</td>
 
                     <td class="text-center p-0" style="vertical-align: middle;">
                         @if($record->status == STATUS_DAY_OFF['abide'])
@@ -292,7 +292,7 @@
                                         @endif
 
                                     @else
-                                        <div class="ml-3">{{$data->number_off }}</div>
+                                        <div class="ml-3">{{!!!$data->number_off ? 'Chưa rõ' : FloatAndInt::checkNumber($data->number_off)}} ngày</div>
                                     @endif
                                 </div>
                                 <div class="mb-4 pb-2">

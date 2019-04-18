@@ -245,6 +245,7 @@ return [
         'Socialite' => Laravel\Socialite\Facades\Socialite::class,
         'ImageFacade' => App\Facades\ImageFacade::class,
         'Input' => Illuminate\Support\Facades\Input::class,
+        'FloatAndInt' =>App\Facades\FloaIntFacade::class,
 
     ],
 

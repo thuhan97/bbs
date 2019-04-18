@@ -57,4 +57,5 @@ return [
     'share_document_successully' => 'Chia sẻ tài liệu thành công',
     'share_document_error' => 'Chia sẻ tài liệu thất bại',
     'notification_change_pass' => 'Đổi mật khẩu thành công, xin vui lòng đăng nhập lại!',
+    'edit_day_off_successully' => 'Chỉnh sửa ngày nghỉ thành công',
 ];

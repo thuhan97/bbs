@@ -109,12 +109,22 @@ Route::group([
     Route::get('/doi-mat-khau', 'UserController@changePassword')->name('changePassword');
     Route::post('/doi-mat-khau', 'UserController@updatePassword')->name('update_password');
     Route::get('/thoi-gian-lam-viec', 'UserController@workTime')->name('work_time');
+    Route::get('/thoi-gian-lam-viec-api', 'UserController@workTimeAPI')->name('work_time_api');
     Route::get('/ngay-nghi', 'UserController@dayOff')->name('day_off');
    /* Route::post('/ngay-nghi/create-api', 'UserController@dayOffCreate_API')->name('day_off_createAPI');*/
     Route::get('/ngay-nghi/list-approval-api', 'UserController@dayOffListApprovalAPI')->name('day_off_listApprovalAPI');
     Route::get('/phe-duyet-ngay-nghi', 'UserController@dayOffApprove')->name('day_off_approval');
     Route::post('/phe-duyet-ngay-nghi/approve-api', 'UserController@dayOffApprove_AcceptAPI')->name('day_off_approval_approveAPI');
     Route::post('/phe-duyet-ngay-nghi/one/{id}', 'UserController@dayOffApprove_get')->name('day_off_approval_one');
+    Route::get('/ngay-nghi/{status?}', 'UserController@dayOff')->name('day_off');
+    Route::get('/phe-duyet-ngay-nghi/', 'UserController@dayOffApprove')->name('day_off_approval');
+
+    Route::get('/hien-thi-ngay-nghi/{status}', 'UserController@dayOffShow')->name('day_off_show');
+    Route::get('/tim-kiem-ngay-nghi/', 'UserController@dayOffSearch')->name('day_off_search');
+    Route::get('/chi-tiet-ngay-nghi/{id?}/{check?}', 'UserController@dayOffDetail')->name('day_off_detail');
+    Route::post('/chinh-sua-ngay-nghi/{id}', 'UserController@editDayOffDetail')->name('edit_day_off_detail');
+    Route::post('/xoa-don-xin-nghi/', 'UserController@deleteDayOff')->name('delete_day_off');
+
 
     Route::get('/noi-quy-quy-dinh', 'RegulationController@index')->name('regulation');
     Route::get('/noi-quy-quy-dinh/{id}', 'RegulationController@detail')->where(['id' => '\d+'])->name('regulation_detail');
@@ -137,6 +147,8 @@ Route::group([
     Route::get('/download_file_share/{url}', 'ShareController@downloadFileShare');
     Route::post('/add_document', 'ShareController@addDocument')->name('add_document');
     // create day off
-    Route::post('/ngay-nghi/create', 'UserController@dayOffCreate')->name('day_off_create');
+    Route::post('/ngay-nghi/create-calendar', 'UserController@dayOffCreateCalendar')->name('day_off_create_calendar');
+    Route::post('/ngay-nghi/create-day-off', 'UserController@dayOffCreate')->name('day_off_create');
+
 
 });

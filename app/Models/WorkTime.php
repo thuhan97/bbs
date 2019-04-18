@@ -23,6 +23,7 @@ class WorkTime extends Model
         'work_day',
         'start_at',
         'end_at',
+        'type',
         'note',
     ];
 
@@ -30,7 +31,7 @@ class WorkTime extends Model
         0 => 'Bình thường',
         1 => 'Đi muộn',
         2 => 'Về sớm',
-        3 => 'Overtime',
+        4 => 'Overtime',
     ];
 
     const TYPES = [
@@ -61,8 +62,8 @@ class WorkTime extends Model
         return $this->belongsTo(User::class);//->where('status', ACTIVE_STATUS);
     }
 
-    public function explanation()
+    public function explanation($work_day)
     {
-        return $this->hasOne(WorkTimesExplanation::class, 'work_times_id', 'id');
+        return $this->hasOne(WorkTimesExplanation::class, 'user_id', 'user_id')->where('work_times_explanation.work_day', $work_day)->first();
     }
 }

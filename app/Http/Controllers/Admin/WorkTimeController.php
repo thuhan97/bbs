@@ -2,14 +2,17 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Facades\AuthAdmin;
 use App\Http\Requests\Admin\WorkTimeImportRequest;
 use App\Http\Requests\Admin\WorkTimeRequest;
 use App\Imports\WorkTimeImport;
 use App\Models\User;
 use App\Models\WorkTime;
+use App\Models\WorkTimesExplanation;
 use App\Repositories\Contracts\IWorkTimeRepository;
 use App\Services\Contracts\IWorkTimeService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Maatwebsite\Excel\Facades\Excel;
 
 /**
@@ -50,7 +53,7 @@ class WorkTimeController extends AdminBaseController
      * Controller construct
      *
      * @param IWorkTimeRepository $repository
-     * @param IWorkTimeService    $service
+     * @param IWorkTimeService $service
      */
     public function __construct(IWorkTimeRepository $repository, IWorkTimeService $service)
     {
@@ -119,6 +122,25 @@ class WorkTimeController extends AdminBaseController
     {
         $pathToFile = public_path('/template/mau-cham-cong.xls');
         return response()->download($pathToFile);
+    }
+
+    public function getRedirectAfterSave($record, $request)
+    {
+        $explanationID = $request->explanation_id;
+        $explanationNote = $request->explanation_note;
+        $idUser = Auth::id();
+        if ($explanationID) {
+            $data = WorkTimesExplanation::where('id', $explanationID)->first();
+            $data->note = $explanationNote;
+            $data->save();
+        } else {
+            WorkTimesExplanation::create([
+                'user_id' => $idUser,
+                'work_day' => $record->work_day,
+                'note' => $explanationNote
+            ]);
+        }
+        return $this->redirectBackTo(route($this->getResourceRoutesAlias() . '.index'));
     }
 
     /**

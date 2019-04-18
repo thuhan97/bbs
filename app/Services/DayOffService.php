@@ -231,34 +231,10 @@ class DayOffService extends AbstractService implements IDayOffService
         return $data;
     }
 
-    public function countDayOffUserLogin()
-    {
-        $user = Auth::user();
-        $dataTotalCurrentYear = $this->model::select('user_id', 'check_free', DB::raw('YEAR(start_at) year, MONTH(start_at) month'), DB::raw('sum(number_off) as total'))
-            ->groupBy('user_id', 'check_free', 'year', 'month')
-            ->where('user_id', $user->id)
-            ->where('status', STATUS_DAY_OFF['active'])
-            ->whereMonth('start_at', '<=', date('m'))
-            ->whereYear('day_offs.start_at', '=', date('Y'))
-            ->get();
-        $total = 0;
-        $sumDayOffPreYear = RemainDayoff::where('user_id',Auth::id())->where('year',(int)date('Y')-1)->first();
-        $sumDayOffCurrentYear = RemainDayoff::where('user_id',Auth::id())->where('year',(int)date('Y'))->first();
-    
-        foreach ($dataTotalCurrentYear as $key => $value) {
-            $total = $total + $value->total;
-            if ($user->sex == SEX['female'] && $value->check_free == DAY_OFF_FREE) {
-                $total = $total - 1;
-            }
-        }
-        return $countDayyOff = [
-            'total' => $total,
-            'previous_year' => $sumDayOffPreYear->remain ?? 0,
-            'current_year'=>$sumDayOffCurrentYear->active ?? 0
-        ];
-
-    }
-
+    /**
+     * @param integer $status
+     * @return collection
+     */
     public function searchStatus($status)
     {
         $data = DayOff::select('*', DB::raw('DATE_FORMAT(start_at, "%d/%m/%Y (%H:%i)") as start_date'),
@@ -274,6 +250,60 @@ class DayOffService extends AbstractService implements IDayOffService
         return $data;
     }
 
+
+    /**
+     *
+     * @return array
+     */
+
+    public function countDayOffUserLogin()
+    {
+        $user = Auth::user();
+        $total = $this->sumDayOff();
+        $sumDayOffPreYear = RemainDayoff::where('user_id', $user->id)->where('year', (int)date('Y') - PRE_YEAR)->first();
+        $sumDayOffCurrentYear = RemainDayoff::where('user_id', $user->id)->where('year', (int)date('Y'))->first();
+        return $countDayyOff = [
+            'total' => $total,
+            'previous_year' => $sumDayOffPreYear->remain ?? DAY_OFF_DEFAULT,
+            'current_year' => $sumDayOffCurrentYear->active ?? DAY_OFF_DEFAULT
+        ];
+    }
+
+
+    /**
+     * @param integer $month
+     * @param Boolean  $check
+     *
+     * @return collection
+     */
+    private function sumDayOff($month = null, $check = false)
+    {
+        $user = Auth::user();
+        $total = 0;
+        $monthSearch = $month ?? date('m');
+        $yearSearch = $check ? (int)date('Y') - PRE_YEAR : date('Y');
+        $data = $this->model::select('user_id', 'check_free', DB::raw('YEAR(start_at) year, MONTH(start_at) month'), DB::raw('sum(number_off) as total'), DB::raw('sum(absent) as total_absent'))
+            ->groupBy('user_id', 'check_free', 'year', 'month')
+            ->where('user_id', $user->id)
+            ->where('status', STATUS_DAY_OFF['active'])
+            ->whereMonth('start_at', '<=', $monthSearch)
+            ->whereYear('day_offs.start_at', '=', $yearSearch)
+            ->get();
+        foreach ($data as $key => $value) {
+            $total = $total + $value->total + $value->total_absent;
+            if ($user->sex == SEX['female'] && $value->check_free == DAY_OFF_FREE_DEFAULT && $user->contract_type == CONTRACT_TYPES['staff']) {
+                $total = $total - DAY_OFF_FREE_ACTIVE;
+            }
+        }
+        return $total;
+    }
+
+    /**
+     * @param integer $id
+     * @param Boolean  $check
+     *
+     * @return collection
+     */
     private function getdata($check = true, $id = null)
     {
         $data = DayOff::select('day_offs.*', DB::raw('DATE_FORMAT(day_offs.start_at, "%d/%m/%Y (%H:%i)") as start_date'),

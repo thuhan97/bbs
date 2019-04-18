@@ -272,7 +272,16 @@ class UserController extends Controller
      * @param Request $request
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function dayOffCreate(Request $request)
+    public function dayOffCreate(createDayOffRequest $request)
+    {
+        $dayOff=new DayOff();
+        $dayOff->fill($request->all());
+        $dayOff->user_id=Auth::id();
+        $dayOff->save();
+        return back()->with('day_off_success','');
+    }
+
+    public function dayOffCreateCalendar(Request $request)
     {
         $id = $request['id'];
         $reason = $request['reason'];

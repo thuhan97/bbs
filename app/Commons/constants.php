@@ -215,8 +215,14 @@ define('SEX',[
     'female'=>1
 ]);
 define('ALL_DAY_OFF',3);
-define('DAY_OFF_FREE',0);
+define('DAY_OFF_FREE_DEFAULT',0);
+define('DAY_OFF_FREE_ACTIVE',1);
 define('PAGINATE_DAY_OFF',20);
+define('DAY_OFF_DEFAULT',0);
+define('TOTAL_MONTH',12);
+define('PRE_YEAR',1);
+define('PRE_PRE_YEAR',2);
 
 define('XLS_TYPE', '.xls');
+
 

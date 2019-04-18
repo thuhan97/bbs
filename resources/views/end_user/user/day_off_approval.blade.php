@@ -54,16 +54,16 @@
             });
         </script>
     @endif
-    <form action="{{ route('day_off_search') }}" method="get">
+    <form action="{{ route('day_off_search') }}" method="get" id="form-search">
         <div id="user-login" attr="{{ \Illuminate\Support\Facades\Auth::user()->name }}"></div>
         <div class="row mb-5 ml-3">
             <div class="col-3 position-relative">
                 <div class="row border-radius-1" id="option-calendar" style="height: 50px">
                     <div class="col-3 p-0 m-auto">
-                        {{ Form::select('year', get_years(), $year ?? date('Y') , ['class'=>'yearselect browser-default custom-select w-100 border-0 select_year']) }}
+                        {{ Form::select('year', get_years(), $year ?? date('Y') , ['class'=>'yearselect browser-default custom-select w-100 border-0 select_year option-select']) }}
                     </div>
                     <div class="col-9 p-0 m-auto pr-2 ">
-                        {{ Form::select('month', MONTH, $month ?? null, ['class' => 'browser-default custom-select w-100 month ','placeholder'=>'Chọn tháng']) }}
+                        {{ Form::select('month', MONTH, $month ?? null, ['class' => 'browser-default custom-select w-100 month option-select','placeholder'=>'Chọn tháng']) }}
                     </div>
                 </div>
             </div>
@@ -155,7 +155,7 @@
         <div class="container-fluid row">
             <div class="col-sm-7 col-xs-12 row">
                 <div class="col-5">
-                    {{ Form::select('status', SHOW_DAY_OFFF, $status ?? ALL_DAY_OFF, ['class' => 'browser-default custom-select w-100 search-day-off border-radius-1']) }}
+                    {{ Form::select('status', SHOW_DAY_OFFF, $status ?? ALL_DAY_OFF, ['class' => 'browser-default custom-select w-100 search-day-off border-radius-1 option-select']) }}
                 </div>
                 <div class="col-7 pl-0">
                     <div class="input-group col-12">
@@ -363,6 +363,9 @@
         <script src="{{ cdn_asset('js/jquery.validate.min.js') }}"></script>
         <script type="text/javascript">
             $(document).ready(function (e) {
+                $('.option-select').on('change',function () {
+                    $( "#form-search" ).submit();
+                });
 
                 $("#edit-day-off").validate({
                     rules: {

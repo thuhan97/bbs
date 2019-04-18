@@ -69,4 +69,29 @@ interface IDayOffService extends IBaseService
      * @return mixed Collection contain all the approval
      */
     public function listApprovals($minJobTitle = 1);
+    /**
+     * @return mixed Collection
+     */
+    public function showList($status);
+    /**
+     * @return mixed Collection
+     */
+    public function getDataSearch($year,$month,$status,$search='');
+    /**
+     * @return mixed Collection
+     */
+    public function getOneData($id);
+    /**
+     * @return mixed Collection
+     */
+    public function  searchStatus ($status);
+    /**
+     * @return mixed Collection
+     */
+    public function countDayOff($id);
+    /**
+     * @return mixed Collection
+     */
+    public function countDayOffUserLogin();
+
 }

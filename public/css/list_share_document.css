@@ -45,7 +45,8 @@ th, .center{
   border: 1px solid #ced4da;
   transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); 
   overflow: hidden;
-  color: #ced4da;  
+  color: #495057a6;
+  font-size: 1rem;  
 }
 #ErrorMessaging{
     margin: 5px 0px 0px 0px;

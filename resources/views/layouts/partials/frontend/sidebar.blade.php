@@ -30,7 +30,7 @@
 
         <a href="{{route('bookings')}}" class="list-group-item list-group-item-action waves-effect {{ \App\Utils::checkRoute(['bookings']) ? 'active': '' }}"">
            <i class="fas fa-building mr-3"></i>
-           {{__l('Booking')}} 
+           {{__l('Phòng họp')}} 
            </a>
         <a href="#" class="list-group-item list-group-item-action waves-effect disabled">
             <i class="fas fa-desktop mr-3"></i>

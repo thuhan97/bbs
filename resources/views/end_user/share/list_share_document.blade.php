@@ -45,10 +45,10 @@
                     <td>
                         {{$document->name}}
                     </td>
-                    <td>
+                    <td class="center">
                     	<?php echo isset($document->user->name) ? $document->user->name : ''; ?>
                     </td>
-                    <td>
+                    <td class="center">
                         {{$document->created_at}}
                     </td>
                     <?php 

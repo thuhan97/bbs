@@ -40,7 +40,6 @@ class EventController extends Controller
     public function index(Request $request)
     {
         $events = $this->eventService->search($request, $perPage, $search);
-
         return $this->respondTransformer($events);
     }
 

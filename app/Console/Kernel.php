@@ -2,6 +2,7 @@
 
 namespace App\Console;
 
+use App\Console\Commands\AddDayOffMonth;
 use Illuminate\Console\Scheduling\Schedule;
 use App\Console\Commands\SentMailEvent;
 use App\Console\Commands\BookingCommand;
@@ -18,7 +19,11 @@ class Kernel extends ConsoleKernel
      */
     protected $commands = array(
         SentMailEvent::class,
+
         BookingCommand::class,
+
+        AddDayOffMonth::class
+
     );
 
     /**
@@ -34,6 +39,8 @@ class Kernel extends ConsoleKernel
         $schedule->command('command:sent_mail_event')->cron('0 8 * * *');
         //Hệ thống tự động checkDB và thêm phòng họp vào lịch lúc 05:00 hằng ngày
        $schedule->command('booking:create')->dailyAt('05:00');
+        $schedule->command('command:add_day_off_moth')->cron('* * 1 * *');
+
     }
 
     /**

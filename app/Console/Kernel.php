@@ -4,7 +4,10 @@ namespace App\Console;
 
 use Illuminate\Console\Scheduling\Schedule;
 use App\Console\Commands\SentMailEvent;
+use App\Console\Commands\BookingCommand;
+
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
+
 
 class Kernel extends ConsoleKernel
 {
@@ -15,6 +18,7 @@ class Kernel extends ConsoleKernel
      */
     protected $commands = array(
         SentMailEvent::class,
+        BookingCommand::class,
     );
 
     /**
@@ -28,6 +32,8 @@ class Kernel extends ConsoleKernel
     {
         // Hện thống sẽ tự động check DB và gửi mail lúc 8h sáng
         $schedule->command('command:sent_mail_event')->cron('0 8 * * *');
+        //Hệ thống tự động checkDB và thêm phòng họp vào lịch lúc 05:00 hằng ngày
+       $schedule->command('booking:create')->dailyAt('05:00');
     }
 
     /**

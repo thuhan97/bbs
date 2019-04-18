@@ -76,10 +76,10 @@ Breadcrumbs::register('project_detail', function ($breadcrumbs, $project) {
     $breadcrumbs->push($project->name, route('project_detail', ['id' => $project->id]));
 
 });
-//Home > Meeting Room
-Breadcrumbs::register('meetings', function ($breadcrumbs) {
+//Home > Booking
+Breadcrumbs::register('bookings', function ($breadcrumbs) {
     $breadcrumbs->parent('home');
-    $breadcrumbs->push(__l('meetings'), route('meetings'));
+    $breadcrumbs->push(__l('Booking'), route('bookings'));
 });
 // Dashboard > Profile
 Breadcrumbs::register('_personal', function ($breadcrumbs) {

@@ -206,7 +206,7 @@ trait ResourceHelper
      *
      * @return \Illuminate\Http\Response
      */
-    public function getRedirectAfterSave($record, $request)
+    public function getRedirectAfterSave($record, $request,$isCreate = null)
     {
         return $this->redirectBackTo(route($this->getResourceRoutesAlias() . '.index'));
     }

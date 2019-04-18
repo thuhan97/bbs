@@ -7,7 +7,6 @@ use App\Helpers\AuthAdminHelper;
 use App\Helpers\AuthApiHelper;
 use App\Helpers\DatabaseHelper;
 use App\Helpers\DateTimeHelper;
-use App\Helpers\FloatAndIntHelper;
 use App\Helpers\SendMailHelper;
 use App\Helpers\StringHelper;
 use App\Helpers\TranscriptHelper;
@@ -49,9 +48,6 @@ class FacadesProvider extends ServiceProvider
         });
         $this->app->singleton('image_helper', function () {
             return new ImageHelper();
-        });
-        $this->app->singleton('float_int_helper', function () {
-            return new FloatAndIntHelper();
         });
     }
 

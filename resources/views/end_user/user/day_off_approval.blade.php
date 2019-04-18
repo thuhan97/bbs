@@ -216,7 +216,7 @@
                             @endif
                         @endforeach
                     </td>
-                    <td class="text-center">{{!!!$record->number_off ? 'Chưa rõ' : FloatAndInt::checkNumber($record->number_off)}} ngày</td>
+                    <td class="text-center">{{!!!$record->number_off ? 'Chưa rõ' : checkNumber($record->number_off)  }} ngày</td>
 
                     <td class="text-center p-0" style="vertical-align: middle;">
                         @if($record->status == STATUS_DAY_OFF['abide'])
@@ -292,7 +292,7 @@
                                         @endif
 
                                     @else
-                                        <div class="ml-3">{{!!!$data->number_off ? 'Chưa rõ' : FloatAndInt::checkNumber($data->number_off)}} ngày</div>
+                                        <div class="ml-3">{{!!!$data->number_off ? 'Chưa rõ' : checkNumber($data->number_off)}} ngày</div>
                                     @endif
                                 </div>
                                 <div class="mb-4 pb-2">

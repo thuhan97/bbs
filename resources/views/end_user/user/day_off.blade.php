@@ -147,7 +147,7 @@
                     <td class="text-center">{{$absence->start_date}}</td>
                     <td class="text-center">{{$absence->end_date}}</td>
                     <td class="text-center">{{ array_key_exists($absence->title,VACATION) ?  VACATION[$absence->title] : '' }}</td>
-                    <td class="text-center">{{!!!$absence->number_off ? 'Chưa rõ' : FloatAndInt::checkNumber($absence->number_off)}} ngày</td>
+                    <td class="text-center">{{!!!$absence->number_off ? 'Chưa rõ' : checkNumber($absence->number_off)}} ngày</td>
                     <td class="text-center">
                         @if($absence->status == STATUS_DAY_OFF['abide'])
                             <i class="fas fa-meh-blank fa-2x text-warning text-center"></i>
@@ -363,7 +363,7 @@
                         <div class="mb-3 ml-3 ">
                             <!-- Default input -->
                             <label class="text-d-bold" for="exampleForm2">Thời gian được tính:</label>
-                            <div class="ml-3">{{ FloatAndInt::checkNumber($record->number_off)  }}</div>
+                            <div class="ml-3">{{ checkNumber($record->number_off)  }}</div>
                         </div>
                         @endif
                         <div class="mb-4 pb-2">

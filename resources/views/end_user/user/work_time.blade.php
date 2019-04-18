@@ -47,7 +47,7 @@
                     <img src="{{ asset('img/font/gio_lam_viec_popup.png') }}" alt="" width="355px" height="260px">
                 </div>
                 <br>
-                <form action="{{ route('day_off_create') }}" method="post">
+                <form action="{{ route('day_off_create_calendar') }}" method="post">
                     @csrf
                     <div class="d-flex justify-content-center text-area-reason" id="div-reason"></div>
                     <div id="event"></div>

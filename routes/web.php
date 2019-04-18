@@ -147,6 +147,8 @@ Route::group([
     Route::get('/download_file_share/{url}', 'ShareController@downloadFileShare');
     Route::post('/add_document', 'ShareController@addDocument')->name('add_document');
     // create day off
-    Route::post('/ngay-nghi/create', 'UserController@dayOffCreate')->name('day_off_create');
+    Route::post('/ngay-nghi/create-calendar', 'UserController@dayOffCreateCalendar')->name('day_off_create_calendar');
+    Route::post('/ngay-nghi/create-day-off', 'UserController@dayOffCreate')->name('day_off_create');
+
 
 });

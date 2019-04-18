@@ -31,7 +31,16 @@ class WorkTime extends Model
         0 => 'Bình thường',
         1 => 'Đi muộn',
         2 => 'Về sớm',
+        3 => 'Overtime',
+    ];
+
+    const WORK_TIME_CALENDAR_TYPE = [
+        -1 => 'Nghỉ',
+        0 => 'Bình thường',
+        1 => 'Đi muộn',
+        2 => 'Về sớm',
         4 => 'Overtime',
+        5 => 'Đi muộn + Overtime',
     ];
 
     const TYPES = [

@@ -24,8 +24,8 @@ class WorkTimeRequest extends FormRequest
     public function rules()
     {
         return [
-            'start_at' => 'required|date_format:h:i',
-            'end_at' => 'required|date_format:H:i',
+            'start_at' => 'required|date_format:H:i',
+            'end_at' => 'required|after:start_at|date_format:H:i',
             'work_day' => 'required|date',
         ];
     }
@@ -39,4 +39,10 @@ class WorkTimeRequest extends FormRequest
         ];
     }
 
+    public function messages()
+    {
+        return [
+            'end_at.after'=> 'Trường :attribute phải lớn hơn ngày bắt đầu'
+        ];
+    }
 }

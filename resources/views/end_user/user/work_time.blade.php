@@ -8,6 +8,27 @@
     {!! Breadcrumbs::render('work_time') !!}
 @endsection
 @section('content')
+    @if(session()->has('day_off_success'))
+        @if(session()->get('day_off_success') != '')
+            <script>
+                swal({
+                    title: "Thông báo!",
+                    text: "Bạn đã gửi đơn thành công!",
+                    icon: "success",
+                    button: "Đóng",
+                });
+            </script>
+        @else
+            <script>
+                swal({
+                    title: "Thông báo!",
+                    text: "Bạn đã sửa đơn thành công!",
+                    icon: "success",
+                    button: "Đóng",
+                });
+            </script>
+        @endif
+    @endif
     <div class="row">
         <div class="col-md-4 pr-0 select-month-calendar">
             <form name="dateChooser">
@@ -105,7 +126,7 @@
                                 '<div class="col-md-12 d-flex justify-content-center">' +
                                 '<input hidden name="id" value="' + dataID + '">' +
                                 '<input hidden name="work_day" value="' + dataWorkDay + '">' +
-                                '<textarea class="form-control" name="reason" rows="6">' + dataReason + '</textarea>' +
+                                '<textarea class="form-control" name="reason" rows="6" placeholder="Nội dung bạn muốn gửi...">' + dataReason + '</textarea>' +
                                 '</div>' +
                                 '<div class="row col-md-12">' +
                                 '</div>' +
@@ -116,7 +137,7 @@
                                 '<div class="row col-md-12">' +
                                 '<div class="col-md-12 d-flex justify-content-center">' +
                                 '<input hidden name="work_day" value="' + dataTime + '">' +
-                                '<textarea class="form-control" name="reason" rows="6"></textarea>' +
+                                '<textarea class="form-control" name="reason" rows="6" placeholder="Nội dung bạn muốn gửi..."></textarea>' +
                                 '</div>' +
                                 '<div class="row col-md-12">' +
                                 '</div>' +

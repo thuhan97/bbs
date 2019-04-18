@@ -274,14 +274,10 @@ class UserController extends Controller
      */
     public function dayOffCreate(createDayOffRequest $request)
     {
-        $indicate=DayOff::create([
-            'user_id'=>Auth::id(),
-            'title'=>$request->input('title'),
-            'reason'=>$request->input('reason'),
-            'start_at'=>$request->input('start_at'),
-            'end_at'=>$request->input('end_at'),
-            'approver_id'=>$request->input('approver_id')
-        ]);
+        $dayOff=new DayOff();
+        $dayOff->fill($request->all());
+        $dayOff->user_id=Auth::id();
+        $dayOff->save();
         return back()->with('day_off_success','');
     }
 

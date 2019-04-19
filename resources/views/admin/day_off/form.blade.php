@@ -108,7 +108,7 @@
             <div class="form-group margin-b-5 margin-t-5{{ $errors->has('number_off') ? ' has-error' : '' }}">
                 <label for="number_off">Số ngày nghỉ được tính (1 ngày hoặc nửa ngày) *</label>
                 <input type="text" class="form-control" name="number_off" placeholder="Số ngày phép bị trừ"
-                       value="{{ old('number_off', $record->number_off) }}" required>
+                       value="{{ old('number_off', $record->number_off) }}" >
 
                 @if ($errors->has('number_off'))
                     <span class="help-block">
@@ -143,7 +143,7 @@
                      <span>
                         <input type="radio" class="square-blue" name="status"
                                value="1"
-                                {{ old('status', $record->status ) == 1|| $record->status == null ? 'checked' : '' }} >
+                                {{ old('status', $record->status ) == 1 ? 'checked' : '' }} >
                     Duyệt
                     </span>
                     <span style="padding: 15px">
@@ -151,7 +151,7 @@
                                value="0" {{ old('status', $record->status ) ==0  ? 'checked' : '' }}>
                     Chờ duyệt
                     </span>
-                    @if(isset($record->status))
+                    @if(isset($record->id))
                     <span >
                         <input type="radio" class="square-blue" name="status"
                                value="2" {{ old('status', $record->status ) ==2  ? 'checked' : '' }}>

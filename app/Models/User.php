@@ -164,5 +164,12 @@ class User extends Authenticatable implements JWTSubject
             ->orwhere('phone', 'like', '%' . $searchTerm . '%')
             ->orWhere('email', 'like', '%' . $searchTerm . '%');
     }
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\hasOne
+     */
+    public function remain_dayoff()
+    {
+        return $this->hasOne(RemainDayoff::class,'id','user_id');
+    }
 
 }

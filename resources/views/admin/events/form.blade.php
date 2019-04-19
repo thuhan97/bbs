@@ -117,7 +117,7 @@
                         <div class="input-group date">
                             <div class="input-group-addon">
                                 <i class="fa fa-calendar"></i>
-                            </div>
+              z              </div>
                             <input type="text" class="form-control pull-right datepicker" autocomplete="off"
                                    name="deadline_at"
                                    value="{{ old('deadline_at', $record->deadline_at) }}" id="deadline_at">

@@ -28,6 +28,10 @@ class ReportController extends Controller
     public function index(Request $request)
     {
         $data = $request->all();
+        if (!$request->has('year'))
+            $request->merge(['year' => date('Y')]);
+        if (!$request->has('month'))
+            $request->merge(['month' => date('n')]);
         $reports = $this->service->search($request, $perPage, $search);
 
         return view('end_user.report.index', compact('reports', 'search', 'perPage', 'data'));
@@ -39,14 +43,12 @@ class ReportController extends Controller
     public function create()
     {
         $week_number = get_week_number();
-        $report = Report::where([
-            'user_id' => Auth::id(),
-            'year' => date('Y'),
-            'week_num' => $week_number,
-        ])->first();
-        if (!$report) {
-            $report = $this->service->newReportFromTemplate();
-        }
+//        $report = Report::where([
+//            'user_id' => Auth::id(),
+//            'year' => date('Y'),
+//            'week_num' => $week_number,
+//        ])->first();
+        $report = $this->service->newReportFromTemplate();
         return view('end_user.report.create', compact('report'));
     }
 
@@ -84,17 +86,24 @@ class ReportController extends Controller
      */
     public function saveReport(CreateReportRequest $request)
     {
-        $data = $request->only('status', 'choose_week', 'to_ids', 'content', 'title', 'is_new');
-        get_week_info($data['choose_week'], $week_number);
+        $data = $request->only('status', 'choose_week', 'to_ids', 'content', 'is_new');
+        $choose_week = $data['choose_week'];
+        if ($choose_week < 0) {
+            $choose_week = 0;
+        }
+        get_week_info($choose_week, $week_number);
+
+        $data['title'] = $this->service->getReportTitle($data['choose_week']);
         $data['week_num'] = $week_number;
         $data['user_id'] = Auth::id();
-
+        $data['month'] = getMonthFormWeek($week_number);
         $report = Report::updateOrCreate([
             'user_id' => Auth::id(),
             'year' => date('Y'),
+            'month' => $data['month'],
             'week_num' => $week_number,
+            'title' => $data['title'],
         ], $data);
-
         if ($report) {
             if (!$data['is_new']) {
                 flash()->success(__l('report_resent_successully'));

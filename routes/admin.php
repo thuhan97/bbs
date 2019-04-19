@@ -26,11 +26,11 @@ Route::group([
 
     ##AUTO_INSERT_ROUTE##
 
-		//DeviceUser
+    //DeviceUser
     Route::get('devices/{id}/allocate', ['as' => 'deviceusers.allocate', 'uses' => 'DeviceUserController@allocate']);
     Route::post('deviceusers/deletes', ['as' => 'deviceusers.deletes', 'uses' => 'DeviceUserController@deletes']);
     Route::resource('deviceusers', 'DeviceUserController');
-		
+
 
     //ActionDevice
 //    Route::resource('ActionDevice', 'ActionDeviceController');
@@ -89,6 +89,8 @@ Route::group([
     //event
     Route::post('events/deletes', ['as' => 'events.deletes', 'uses' => 'EventController@deletes']);
     Route::resource('events', 'EventController');
+    Route::get('events/detail/{id}', 'EventController@detailEvent')->name('events.detailEvent');
+    Route::get('events/dowload-excel-list-user/{id}', 'EventController@dowloadExcelListUserJoin')->name('events.dowloadExcelListUserJoin');
 
     //regulation
     Route::post('regulations/deletes', ['as' => 'regulations.deletes', 'uses' => 'RegulationController@deletes']);
@@ -122,5 +124,8 @@ Route::group([
     Route::post('work_time_statistic/deletes', ['as' => 'work_time_statistic.deletes', 'uses' => 'StatisticController@deletes']);
     Route::get('work_time_statistic/exprot', ['as' => 'work_time_statistic.exprot', 'uses' => 'StatisticController@exprot']);
     Route::resource('work_time_statistic', 'StatisticController');
+    //rooms
+    Route::post('meetings/deletes', ['as' => 'meetings.deletes', 'uses' => 'MeetingController@deletes']);
+    Route::resource('meetings', 'MeetingController');
 
 });

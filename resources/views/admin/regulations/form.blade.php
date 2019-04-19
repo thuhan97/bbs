@@ -40,7 +40,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-7">
+        <div class="col-md-7" style="margin-top: 36px">
             <label for="image_url">Danh sách file đính kèm</label>
 
             <table id="attachTable" class="table table-bordered">
@@ -48,7 +48,7 @@
                 @foreach($record->regulation_files as $file)
                     <tr>
                         <td><a href="{{$file->file_path}}">{{$file->file_path}}</a></td>
-                        <td>
+                        <td class="text-center">
                             <input type="hidden" name="file_path[]" value="{{$file->file_path}}">
                             <a href="#" class="removeFile">Xóa</a>
                         </td>

@@ -34,7 +34,7 @@ class RegulationController extends AdminBaseController
     /**
      * @var  string
      */
-    protected $resourceTitle = 'Quy định, nội quy';
+    protected $resourceTitle = 'Quy định, Nội quy';
 
     /**
      * Controller construct
@@ -51,7 +51,7 @@ class RegulationController extends AdminBaseController
      *
      * @return \Illuminate\Http\Response
      */
-    public function getRedirectAfterSave($record, $request)
+    public function getRedirectAfterSave($record, $request,$isCreate = true)
     {
         //Delete relate files
         $record->regulation_files()->delete();

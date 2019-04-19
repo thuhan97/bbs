@@ -188,7 +188,7 @@ if (!function_exists('get_week_number')) {
 }
 if (!function_exists('get_week_info')) {
     /**
-     * 0: this week, 1: next week; -1: last week
+     * 0: this week, -1: next week; 1: last week
      *
      * @param $type
      * @param $week_number
@@ -206,7 +206,7 @@ if (!function_exists('get_week_info')) {
 
 if (!function_exists('get_first_last_day_in_week')) {
     /**
-     * 0: this week, 1: next week; -1: last week
+     * 0: this week, -1: next week; 1: last week
      *
      * @param $type
      * @param $day
@@ -216,10 +216,10 @@ if (!function_exists('get_first_last_day_in_week')) {
     function get_first_last_day_in_week($type = 0, &$day = null)
     {
         switch ($type) {
-            case -1;
+            case 1;
                 $day = date(DATE_FORMAT, strtotime('-7 days'));
                 break;
-            case 1;
+            case -1;
                 $day = date(DATE_FORMAT, strtotime('+7 days'));
                 break;
             default:
@@ -234,7 +234,28 @@ if (!function_exists('get_first_last_day_in_week')) {
     }
 }
 
+if (!function_exists('getMonthFormWeek')) {
+    function getMonthFormWeek($week, $year = null)
+    {
+        if (!$year) $year = date('Y');
+        $weekDays = getStartAndEndDate($week, $year);
+        $week_start = $weekDays['week_start'];
+        return explode('-', $week_start)[1];
+    }
+}
 
+if (!function_exists('getStartAndEndDate')) {
+    function getStartAndEndDate($week, $year)
+    {
+        $dto = new DateTime();
+        $dto->setISODate($year, $week);
+        $ret['week_start'] = $dto->format('Y-m-d');
+        $dto->modify('+6 days');
+        $ret['week_end'] = $dto->format('Y-m-d');
+
+        return $ret;
+    }
+}
 if (!function_exists('get_years')) {
     /**
      * Encode unicode

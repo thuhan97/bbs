@@ -153,7 +153,80 @@ define('TYPES_DEVICE', [
 ]);
 
 define('DATE', 'ngày');
-define('MONTH', 'tháng');
+//define('MONTH', 'tháng');
 define('WEEK', 'tuần');
 define('COUNT', 'buổi');
+define('ICONS_TYPES_FILES', [
+    'jpg' => 'far fa-image',
+    'jpeg' => 'far fa-image',
+    'gif' => 'far fa-image',
+    'png' => 'far fa-image',
+    'pdf' => 'fa fa-file-pdf',
+    'doc' => 'fa fa-file-word',
+    'docx' => 'fa fa-file-word',
+    'zip' => 'fa fa-file-archive',
+    'xlsx' => 'fa fa-file-excel',
+    'xls' => 'fa fa-file-excel',
+    'pptx' => 'fa fa-file-powerpoint',
+    'mp4' => 'fas fa-file-video',
+    'mov' => 'fas fa-file-video',
+    'mp3' => 'fas fa-file-audio',
+    'php' => 'far fa-file-code',
+    'css' => 'far fa-file-code',
+    'js' => 'far fa-file-code',
+    'sql' => 'far fa-file-code',
+]);
 
+define('SHARE_DUCOMMENT', 2);
+
+define('VACATION', [
+    1 => 'Lý do cá nhân',
+    2 => 'Nghỉ đám cưới',
+    3 => 'Nghỉ đám hiếu',
+]);
+
+define('DAILY_REPORT', 0);
+define('WEEKLY_REPORT', 1);
+
+define('MONTH', [
+    '01' => 'Tháng 1',
+    '02' => 'Tháng 2',
+    '03' => 'Tháng 3',
+    '04'=> 'Tháng 4',
+    '05' => 'Tháng 5',
+    '06' => 'Tháng 6',
+    '07' => 'Tháng 7',
+    '08' => 'Tháng 8',
+    '09' => 'Tháng 9',
+    '10' => 'Tháng 10',
+    '11' => 'Tháng 11',
+    '12' => 'Tháng 12',
+]);
+define('SHOW_DAY_OFFF', [
+    0 => 'Chờ Duyệt',
+    1=> 'Đã duyệt',
+    2=> 'Không duyệt',
+    3=>'Tất cả đơn'
+]);
+
+define('STATUS_DAY_OFF', [
+    'abide' => 0,
+    'active'=> 1,
+    'noActive'=>2
+]);
+define('SEX',[
+    'male'=>0,
+    'female'=>1
+]);
+define('ALL_DAY_OFF',3);
+define('DAY_OFF_FREE_DEFAULT',0);
+define('DAY_OFF_FREE_ACTIVE',1);
+define('PAGINATE_DAY_OFF',20);
+define('DAY_OFF_DEFAULT',0);
+define('TOTAL_MONTH',12);
+define('PRE_YEAR',1);
+define('PRE_PRE_YEAR',2);
+
+define('XLS_TYPE', '.xls');
+
+define('ADD_DAY_OFF_MONTH',1);

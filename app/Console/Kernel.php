@@ -2,6 +2,7 @@
 
 namespace App\Console;
 
+use App\Console\Commands\AddDayOffMonth;
 use Illuminate\Console\Scheduling\Schedule;
 use App\Console\Commands\SentMailEvent;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
@@ -15,6 +16,7 @@ class Kernel extends ConsoleKernel
      */
     protected $commands = array(
         SentMailEvent::class,
+        AddDayOffMonth::class
     );
 
     /**
@@ -28,6 +30,7 @@ class Kernel extends ConsoleKernel
     {
         // Hện thống sẽ tự động check DB và gửi mail lúc 8h sáng
         $schedule->command('command:sent_mail_event')->cron('0 8 * * *');
+        $schedule->command('command:add_day_off_moth')->cron('* * 1 * *');
     }
 
     /**

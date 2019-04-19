@@ -2,7 +2,7 @@
 @extends('layouts.admin.master')
 
 <?php
-$_pageTitle = (isset($addVarsForView['_pageTitle']) && !empty($addVarsForView['_pageTitle']) ? $addVarsForView['_pageTitle'] : ucwords($resourceTitle));
+$_pageTitle = (isset($addVarsForView['_pageTitle']) && !empty($addVarsForView['_pageTitle']) ? $addVarsForView['_pageTitle'] : ($resourceTitle));
 $_pageSubtitle = (isset($addVarsForView['_pageSubtitle']) && !empty($addVarsForView['_pageSubtitle']) ? $addVarsForView['_pageSubtitle'] : "Chi Tiết  " . str_singular($_pageTitle));
 $_formFiles = isset($addVarsForView['formFiles']) ? $addVarsForView['formFiles'] : false;
 $_listLink = route($resourceRoutesAlias . '.index');

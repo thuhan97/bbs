@@ -19,25 +19,15 @@
                             {{__l('sent')}}</button>
                     </div>
                 </div>
-                <label for="choose_week">Chọn tuần</label>
+                <label for="choose_week">Hình thức báo cáo</label>
                 <div class="md-form mt-1 mb-0">
                     <select id="choose_week" name="choose_week" class="browser-default custom-select w-50">
-                        <option selected value="0">Tuần {{get_week_info(0)}}</option>
-                        <option value="-1">Tuần {{get_week_info(-1)}}</option>
+                        <option value="-1">Báo cáo ngày [{{date('d/m')}}]</option>
+                        <option selected value="0">Báo cáo tuần {{get_week_info(0)}}</option>
+                        <option value="-1">Báo cáo tuần {{get_week_info(-1)}}</option>
                     </select>
                 </div>
-                <label class="mt-3" for="to_ids">Tiêu đề báo cáo</label>
-                <div class="md-form mt-1 mb-0">
-                    <input type="text" id="title" name="title" class="form-control"
-                           value="{{old('title', $report->title)}}"
-                           required>
-                </div>
-                @if ($errors->has('title'))
-                    <div class="red-text">
-                        <strong>{{ $errors->first('title') }}</strong>
-                    </div>
-                @endif
-                <label class="mt-3" for="to_ids">Người nhận</label>
+                <label class="mt-3" for="to_ids">Bạn gửi báo cáo cho ai?</label>
                 <div class="md-form mt-1 mb-0">
                     <input type="text" id="to_ids" name="to_ids" class="form-control"
                            value="{{old('to_ids', $report->to_ids)}}"

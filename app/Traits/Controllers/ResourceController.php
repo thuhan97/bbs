@@ -73,7 +73,7 @@ trait ResourceController
         if ($record = $this->repository->save($this->alterValuesToSave($request, $valuesToSave))) {
             flash()->success('Thêm mới thành công.');
 
-            return $this->getRedirectAfterSave($record, $request);
+            return $this->getRedirectAfterSave($record, $request,$isCreate = true);
         } else {
             flash()->info('Thêm mới thất bại.');
         }
@@ -143,6 +143,7 @@ trait ResourceController
      */
     public function update(Request $request, $id)
     {
+//        dd($request->all());
         $record = $this->repository->findOne($id);
 
         $this->authorize('update', $record);
@@ -154,7 +155,7 @@ trait ResourceController
 
             flash()->success('Cập nhật thành công.');
 
-            return $this->getRedirectAfterSave($record, $request);
+            return $this->getRedirectAfterSave($record, $request,$isCreate = false);
 
         } else {
             flash()->info('Cập nhật thất bại.');

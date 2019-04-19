@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\HtmlString;
+use App\Models\Team;
 
 if (!function_exists('number_collapse')) {
     /**
@@ -272,13 +273,13 @@ if (!function_exists('get_years')) {
      * Encode unicode
      *
      * @param integer $num
-     * @param string  $prefix
-     * @param bool    $isDesc
+     * @param string $prefix
+     * @param bool $isDesc
      *
-     * @return string
-     *
+     * @param bool $istatic
+     * @return array
      */
-    function get_years($num = 5, $prefix = '', $isDesc = true)
+    function get_years($num = 5, $prefix = '', $isDesc = true, $istatic = false)
     {
         $result = [];
         $currentYear = date('Y');
@@ -290,7 +291,9 @@ if (!function_exists('get_years')) {
             $result[$start] = $prefix . $start;
             $start = $start + $step;
         }
-
+        if ($istatic) {
+            return $result;
+        }
         return ['' => 'Chọn năm'] + $result;
     }
 }
@@ -359,6 +362,48 @@ if (!function_exists('__admin_sortable')) {
         echo '</a>';
     }
 }
+
+if (!function_exists('statistics')) {
+    /**
+     * statistics
+     *
+     * @return array {array}
+     */
+    function statistics()
+    {
+        return [
+          '1' => 'Tất cả công ty',
+          '2' => 'Team',
+          '3' => 'Cá nhân',
+        ];
+    }
+}
+
+if (!function_exists('team')) {
+    /**
+     * get all team
+     *
+     * @return array {array}
+     */
+    function team()
+    {
+        $teams = DB::table('teams')->select('id', 'name')->pluck( 'name', 'id')->toArray();
+        return ['' => 'Chọn team'] + $teams;
+    }
+}
+if (!function_exists('users')) {
+    /**
+     * get all users
+     *
+     * @return array {array}
+     */
+    function users()
+    {
+        $teams = DB::table('users')->select('id', 'name')->orderBy('name', 'ASC')->pluck( 'name', 'id')->toArray();
+        return ['' => 'Chọn nhân viên'] + $teams;
+    }
+}
+
 /**
  * @param $number
  *
@@ -374,3 +419,4 @@ function checkNumber($number)
         return $explode[0];
     }
 }
+

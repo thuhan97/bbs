@@ -159,6 +159,10 @@ define('TYPES_DEVICE', [
     6 => 'Khác'
 ]);
 
+define('DATE', 'ngày');
+//define('MONTH', 'tháng');
+define('WEEK', 'tuần');
+define('COUNT', 'buổi');
 define('ICONS_TYPES_FILES', [
     'jpg' => 'far fa-image',
     'jpeg' => 'far fa-image',

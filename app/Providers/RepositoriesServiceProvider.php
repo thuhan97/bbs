@@ -12,6 +12,7 @@ use App\Models\Post;
 use App\Models\Project;
 use App\Models\Regulation;
 use App\Models\Report;
+use App\Models\Statistics;
 use App\Models\Team;
 use App\Models\User;
 use App\Models\UserTeam;
@@ -31,6 +32,7 @@ use App\Repositories\Contracts\IPostRepository;
 use App\Repositories\Contracts\IProjectRepository;
 use App\Repositories\Contracts\IRegulationRepository;
 use App\Repositories\Contracts\IReportRepository;
+use App\Repositories\Contracts\IStatisticRepository;
 use App\Repositories\Contracts\ITeamRepository;
 use App\Repositories\Contracts\IUserRepository;
 use App\Repositories\Contracts\IUserTeamRepository;
@@ -51,6 +53,7 @@ use App\Repositories\UserTeamRepository;
 use App\Repositories\WorkTimeDetailRepository;
 use App\Repositories\WorkTimeRegisterRepository;
 use App\Repositories\WorkTimeRepository;
+use App\Repositories\StatisticRepository;
 use App\Repositories\MeetingRepository;
 use Illuminate\Support\ServiceProvider;
 
@@ -111,6 +114,12 @@ class RepositoriesServiceProvider extends ServiceProvider
         $this->app->bind(IWorkTimeRepository::class, function () {
             return new WorkTimeRepository(new WorkTime());
         });
+
+        $this->app->bind(IStatisticRepository::class, function () {
+            return new StatisticRepository(new Statistics());
+        });
+
+
         $this->app->bind(IDayOffRepository::class, function () {
             return new DayOffRepository(new DayOff());
         });
@@ -173,6 +182,7 @@ class RepositoriesServiceProvider extends ServiceProvider
             IUserRepository::class,
             IDayOffRepository::class,
             IWorkTimeRepository::class,
+            IStatisticRepository::class,
             ITeamRepository::class,
             IUserTeamRepository::class,
             IWorkTimeRegisterRepository::class,

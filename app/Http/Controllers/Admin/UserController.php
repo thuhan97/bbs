@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Models\RemainDayoff;
 use App\Models\User;
 use App\Repositories\Contracts\IUserRepository;
 use Illuminate\Http\Request;
@@ -55,7 +56,7 @@ class UserController extends AdminBaseController
                 'id_card' => 'nullable|min:9|max:12|unique:users,id_card',
                 'password'=>'required|same:password_confirmation',
                 'password_confirmation'=>'required',
-                'start_date'=>'nullable|date',
+                'start_date'=>'nullable|date|before_or_equal:today',
                 'end_date'=>"nullable|date|after:start_date"
             ],
             'messages' => [],
@@ -70,6 +71,7 @@ class UserController extends AdminBaseController
 
     public function resourceUpdateValidationData($record)
     {
+
         return [
             'rules' => [
                 'name' => 'required|max:255',
@@ -79,7 +81,7 @@ class UserController extends AdminBaseController
                 'phone' => 'nullable|numeric|digits_between:10,30|unique:users,phone,' . $record->id,
                 'id_card' => 'nullable|min:9|max:12|unique:users,id_card,' . $record->id,
                 'password'=>'nullable|same:password_confirmation',
-                'start_date'=>'nullable|date',
+                'start_date'=>'nullable|date|before_or_equal:today',
                 'end_date'=>"nullable|date|after:start_date"
             ],
             'messages' => [
@@ -145,5 +147,15 @@ class UserController extends AdminBaseController
             flash()->error('Không tìm thấy nhân viên');
         }
         return redirect(route('admin::users.index'));
+    }
+    public function getRedirectAfterSave($record, $request, $isCreate = true)
+    {
+        if ($isCreate){
+            $dayOff=new RemainDayoff();
+            $dayOff->user_id=$record->id;
+            $dayOff->year=date('Y');
+            $dayOff->save();
+        }
+        return $this->redirectBackTo(route($this->getResourceRoutesAlias() . '.index'));
     }
 }

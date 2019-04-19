@@ -31,7 +31,7 @@
         <div class="col-md-6">
             <div class="form-group margin-b-5 margin-t-5{{ $errors->has('type') ? ' has-error' : '' }}">
                 <label for="type">Phân loại</label>
-                {{ Form::select('type', \App\Models\WorkTime::TYPE_NAMES, $record->type, ['class'=>'form-control']) }}
+                {{ Form::select('type', \App\Models\WorkTime::WORK_TIME_CALENDAR_TYPE, $record->type, ['class'=>'form-control']) }}
                 @if ($errors->has('type'))
                     <span class="help-block">
                     <strong>{{ $errors->first('type') }}</strong>
@@ -101,7 +101,7 @@
         <input type="hidden" value="{{ $record->explanation($record->work_day)->work_day ?? '' }}"
                name="explanation_work_day">
         <textarea id="explanation_note" type="text" class="form-control mt-2" rows="10"
-                  name="explanation_note">{{ $record->explanation($record->work_day)->note ?? '' }}</textarea>
+                  name="explanation_note">{{ old('explanation_note', $record->explanation($record->work_day)->note ?? '') }}</textarea>
     </div>
 </div>
 

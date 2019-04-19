@@ -67,7 +67,7 @@
                 <!-- we will also add show, edit, and delete buttons -->
                 <td>
                     <div class="btn-group">
-                        <a href="{{ $showLink }}" class="btn btn-info btn-sm"><i class="fa fa-eye"></i></a>
+{{--                        <a href="{{ $showLink }}" class="btn btn-info btn-sm"><i class="fa fa-eye"></i></a>--}}
                         <a href="{{ $editLink }}" class="btn btn-info btn-sm"><i class="fa fa-edit"></i></a>
                     </div>
 

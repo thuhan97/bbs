@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Admin\WorkTimeRequest;
 use App\Http\Requests\CreateDayOffRequest;
 use App\Http\Requests\DayOffRequest;
 use App\Http\Requests\ProfileRequest;
@@ -151,6 +152,7 @@ class UserController extends Controller
                     'work_day' => $item['work_day'],
                     'type' => $item['type'],
                     'note' => $item['note'],
+                    'user_id' => $item['user_id'],
                     'id' => $item['id'],
                 ];
             }
@@ -161,6 +163,42 @@ class UserController extends Controller
             'data' => $calendarData,
             'dataModal' => $calendarDataModal
         ]);
+    }
+
+    /**
+     * Create or edit work time calendar
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function dayOffCreateCalendar(WorkTimeRequest $request)
+    {
+        $id = $request['id'];
+        $reason = $request['reason'];
+        $startAt = $request['start_at'];
+        $userID = $request['user_id'];
+        $workDay = $request['work_day'];
+        $idUser = Auth::id();
+        if ($id) {
+          WorkTimesExplanation::where('user_id',$userID)->where('work_day',$workDay)->update(['note' => $reason]);
+        } else if ($startAt) {
+            WorkTimesExplanation::create([
+                'user_id' => $idUser,
+                'work_day' => $request['work_day'],
+                'type' => 0,
+                'note' => $reason,
+                'start_at' => $startAt,
+                'end_at' => $request['end_at'],
+            ]);
+        } else {
+            WorkTimesExplanation::create([
+                'user_id' => $idUser,
+                'work_day' => $request['work_day'],
+                'type' => 0,
+                'note' => $reason
+            ]);
+        }
+        return back()->with('day_off_success', '');
     }
 
     //
@@ -274,45 +312,29 @@ class UserController extends Controller
      */
     public function dayOffCreate(createDayOffRequest $request)
     {
-        $dayOff=new DayOff();
+        $dayOff = new DayOff();
         $dayOff->fill($request->all());
-        $dayOff->user_id=Auth::id();
+        $dayOff->user_id = Auth::id();
         $dayOff->save();
-        return back()->with('day_off_success','');
-    }
-
-    public function dayOffCreateCalendar(Request $request)
-    {
-        $id = $request['id'];
-        $reason = $request['reason'];
-        $idUser = Auth::id();
-        if ($id) {
-            WorkTimesExplanation::where('id', $id)->update(['note' => $reason]);
-        } else {
-            WorkTimesExplanation::create([
-                'user_id' => $idUser,
-                'work_day' => $request['work_day'],
-                'type' => 0,
-                'note' => $reason
-            ]);
-        }
         return back()->with('day_off_success', '');
     }
 
     public function dayOffSearch(Request $request)
     {
-        $year=$request->year;
-        $month=$request->month;
-        $status=$request->status;
-        $search=$request->search;
+        $year = $request->year;
+        $month = $request->month;
+        $status = $request->status;
+        $search = $request->search;
 
         $dataDayOff = $this->userDayOffService->showList(null);
-        $dayOffSearch= $this->userDayOffService->getDataSearch($year,$month ,$status,$search);
+        $dayOffSearch = $this->userDayOffService->getDataSearch($year, $month, $status, $search);
         return view('end_user.user.day_off_approval', compact(
-            'dataDayOff','dayOffSearch','year','month','status','search'
+            'dataDayOff', 'dayOffSearch', 'year', 'month', 'status', 'search'
         ));
     }
-    public function dayOffShow($status){
+
+    public function dayOffShow($status)
+    {
 
         $dataDayOff = $this->userDayOffService->showList($status);
         return view('end_user.user.day_off_approval', compact(
@@ -358,63 +380,63 @@ class UserController extends Controller
         $dayOff->approver_at = now();
         $dayOff->number_off = $request->number_off;
         $dayOff->approve_comment = $request->approve_comment;
-       //check reamin day off Current Year and Pre Year -> update column ramian of table remain_day_offs
+        //check reamin day off Current Year and Pre Year -> update column ramian of table remain_day_offs
         $userDayOff = User::findOrFail($dayOff->user_id);
 
         // user create day off = staff -> check remain day off table
-        if ($userDayOff->contract_type == CONTRACT_TYPES['staff'] && $userDayOff->end_date == null){
+        if ($userDayOff->contract_type == CONTRACT_TYPES['staff'] && $userDayOff->end_date == null) {
 
             // create new if reamin day off curent year = null
-            $remainDayOffCurrentYear=RemainDayoff::firstOrCreate([
+            $remainDayOffCurrentYear = RemainDayoff::firstOrCreate([
                 'user_id' => $dayOff->user_id,
-                'year'=>date('Y')
+                'year' => date('Y')
             ], [
                 'user_id' => $dayOff->user_id,
                 'year' => date('Y'),
                 'remain' => 1
             ]);
-            $remainDayOffPreYear=RemainDayoff::where('user_id',$dayOff->user_id)->where('year',(int)date('Y')-1)->first();
-            $dayOffCurrentYear=$remainDayOffCurrentYear->remain;
-            $dayOffPreYear=$remainDayOffPreYear ? $remainDayOffPreYear->remain : DAY_OFF_DEFAULT;
+            $remainDayOffPreYear = RemainDayoff::where('user_id', $dayOff->user_id)->where('year', (int)date('Y') - 1)->first();
+            $dayOffCurrentYear = $remainDayOffCurrentYear->remain;
+            $dayOffPreYear = $remainDayOffPreYear ? $remainDayOffPreYear->remain : DAY_OFF_DEFAULT;
 
-            if ($dayOffPreYear - $dayOff->number_off >= DAY_OFF_DEFAULT){
-                $remainDayOffPreYear->remain=$dayOffPreYear - $dayOff->number_off;
+            if ($dayOffPreYear - $dayOff->number_off >= DAY_OFF_DEFAULT) {
+                $remainDayOffPreYear->remain = $dayOffPreYear - $dayOff->number_off;
                 $remainDayOffPreYear->save();
 
-            }elseif ($dayOffCurrentYear + $dayOffPreYear - $dayOff->number_off >= DAY_OFF_DEFAULT ){
-                if ($remainDayOffPreYear){
-                    $remainDayOffPreYear->remain=DAY_OFF_DEFAULT;
+            } elseif ($dayOffCurrentYear + $dayOffPreYear - $dayOff->number_off >= DAY_OFF_DEFAULT) {
+                if ($remainDayOffPreYear) {
+                    $remainDayOffPreYear->remain = DAY_OFF_DEFAULT;
                     $remainDayOffPreYear->save();
                 }
-                $remainDayOffCurrentYear->remain=$dayOffCurrentYear + $dayOffPreYear - $dayOff->number_off;
+                $remainDayOffCurrentYear->remain = $dayOffCurrentYear + $dayOffPreYear - $dayOff->number_off;
                 $remainDayOffCurrentYear->save();
 
-            }else {
-                if ($remainDayOffPreYear){
-                    $remainDayOffPreYear->remain=DAY_OFF_DEFAULT;
+            } else {
+                if ($remainDayOffPreYear) {
+                    $remainDayOffPreYear->remain = DAY_OFF_DEFAULT;
                     $remainDayOffPreYear->save();
                 }
-                $remainDayOffCurrentYear->remain=DAY_OFF_DEFAULT;
+                $remainDayOffCurrentYear->remain = DAY_OFF_DEFAULT;
                 $dayOff->absent = $dayOff->number_off - ($dayOffCurrentYear + $dayOffPreYear);
                 $remainDayOffCurrentYear->save();
             };
-        }else{
+        } else {
             // user create day off != staff -> insert column absent table day off = total number off
-            $dayOff->absent=$request->number_off;
+            $dayOff->absent = $request->number_off;
         }
         $dayOff->save();
-            // check if female && sum day off in month >=2 && check_free =0 -> +1 column remain table day off
+        // check if female && sum day off in month >=2 && check_free =0 -> +1 column remain table day off
         if ($userDayOff->sex == SEX['female'] && $userDayOff->contract_type == CONTRACT_TYPES['staff']) {
 
             //total day off in month
             $countDayOff = $this->userDayOffService->countDayOff($userDayOff->id);
 
             if ($countDayOff && (int)$countDayOff->total >= 2 && $countDayOff->check_free == DAY_OFF_FREE_DEFAULT) {
-                DayOff::where('user_id',$userDayOff->id)
+                DayOff::where('user_id', $userDayOff->id)
                     ->whereMonth('start_at', '=', date('m'))
                     ->whereYear('start_at', '=', date('Y'))
-                    ->update(['check_free'=>DAY_OFF_FREE_ACTIVE]);
-                $remainDayOffPreYear->remain=$remainDayOffPreYear->remain + DAY_OFF_FREE_ACTIVE;
+                    ->update(['check_free' => DAY_OFF_FREE_ACTIVE]);
+                $remainDayOffPreYear->remain = $remainDayOffPreYear->remain + DAY_OFF_FREE_ACTIVE;
                 $remainDayOffCurrentYear->save();
             }
         }

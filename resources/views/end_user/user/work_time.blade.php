@@ -53,9 +53,25 @@
             </div>
         </div>
     </div>
-
-    <!-- Modal -->
-    <div class="modal fade myModal" id="modal-form" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+    @if ($errors->has('start_at'))
+        <span class="help-block mb-5 color-red">
+            <strong>{{ $errors->first('start_at') }}</strong>
+        </span>
+        <br>
+    @endif
+    @if ($errors->has('end_at'))
+        <span class="help-block mb-5 color-red">
+            <strong>{{ $errors->first('end_at') }}</strong>
+        </span>
+        <br>
+    @endif
+    @if ($errors->has('work_day'))
+        <span class="help-block mb-5 color-red">
+            <strong>{{ $errors->first('work_day') }}</strong>
+        </span>
+    @endif
+    <div class="modal fade myModal" id="modal-form" tabindex="-1"
+         role="dialog" aria-labelledby="myModalLabel"
          aria-hidden="true">
         <div class="modal-dialog modal-center modal-set-center" role="document">
             <div class="modal-content" id="bg-img" style="background-image: url({{ asset('img/font/xin_nghi.png') }})">
@@ -111,32 +127,52 @@
                     renderCalendar(current_year, current_month);
                 },
                 show: function (el) {
-                    var getCurrentTime = new Date();
-                    var currentMY = getCurrentTime.getFullYear() + "-" + getCurrentTime.getMonth();
-                    var calendarYM = calendar.sYear + "-" + calendar.sMth;
-                    if (currentMY === calendarYM) {
+                    const getCurrentTime = new Date();
+                    const currentMY = getCurrentTime.getFullYear() + "-" + getCurrentTime.getMonth();
+                    const calendarYM = calendar.sYear + "-" + calendar.sMth;
+                    const getTimeCalendar = el.getAttribute("calendar-time");
+                    const getDataTime = el.getAttribute("data-time");
+                    if (calendarYM >= currentMY) {
                         calendar.sDay = el.getElementsByClassName("dayNumber")[0].innerHTML;
-                        console.log(el)
                         if (el.getElementsByClassName("data-id")[0]) {
                             var dataReason = el.getElementsByClassName("data-reason")[0].innerHTML;
                             var dataID = el.getElementsByClassName("data-id")[0].innerHTML;
                             var dataWorkDay = el.getElementsByClassName("data-work-day")[0].innerHTML;
+                            var dataUserID = el.getElementsByClassName("data-user-id")[0].innerHTML;
                             document.getElementById("div-reason").innerHTML =
                                 '<div class="row col-md-12">' +
                                 '<div class="col-md-12 d-flex justify-content-center">' +
                                 '<input hidden name="id" value="' + dataID + '">' +
+                                '<input hidden name="user_id" value="' + dataUserID + '">' +
                                 '<input hidden name="work_day" value="' + dataWorkDay + '">' +
                                 '<textarea class="form-control" name="reason" rows="6" placeholder="Nội dung bạn muốn gửi...">' + dataReason + '</textarea>' +
                                 '</div>' +
                                 '<div class="row col-md-12">' +
                                 '</div>' +
                                 '</div>';
+                        } else if (getTimeCalendar > currentMY + '-' + getCurrentTime.getDate()) {
+                            document.getElementById("div-reason").innerHTML =
+                                '<div class="row col-md-12">' +
+                                '<input hidden name="work_day" value="' + getDataTime + '">' +
+                                '<div class="col-md-12 d-flex justify-content-center">' +
+                                '<textarea class="form-control" name="reason" rows="6" placeholder="Nội dung bạn muốn gửi...">The next day</textarea>' +
+                                '</div>' +
+                                '<div class="row col-md-12 d-flex justify-content-center ml-1  mt-4">' +
+                                '<div class="form-group col-md-6">' +
+                                '<label for="start_at">Giờ đến công ty *</label>\n' +
+                                '<input type="time" class="form-control pull-right" id="start_at" name="start_at" autocomplete="off">' +
+                                '</div>' +
+                                '<div class="form-group col-md-6">' +
+                                '<label for="end_at">Giờ rời công ty *</label>\n' +
+                                '<input type="time" class="form-control pull-right" id="end_at" name="end_at" autocomplete="off">' +
+                                '</div>' +
+                                '</div>' +
+                                '</div>';
                         } else {
-                            var dataTime = el.getAttribute("data-time");
                             document.getElementById("div-reason").innerHTML =
                                 '<div class="row col-md-12">' +
                                 '<div class="col-md-12 d-flex justify-content-center">' +
-                                '<input hidden name="work_day" value="' + dataTime + '">' +
+                                '<input hidden name="work_day" value="' + getDataTime + '">' +
                                 '<textarea class="form-control" name="reason" rows="6" placeholder="Nội dung bạn muốn gửi..."></textarea>' +
                                 '</div>' +
                                 '<div class="row col-md-12">' +
@@ -272,11 +308,12 @@
                         if (n < 2) {
                             cCell.innerHTML = "<div class='dayNumber'>" + "0" + squares[i] + "</div>";
                             cCell.setAttribute("data-time", valYear + "-" + getValMonth + "-" + "0" + squares[i]);
+                            cCell.setAttribute("calendar-time", valYear + "-" + valMonth + "-" + squares[i]);
 
                         } else {
                             cCell.innerHTML = "<div class='dayNumber'>" + squares[i] + "</div>";
                             cCell.setAttribute("data-time", valYear + "-" + getValMonth + "-" + squares[i]);
-
+                            cCell.setAttribute("calendar-time", valYear + "-" + valMonth + "-" + squares[i]);
                         }
                     }
                     cRow.appendChild(cCell);
@@ -321,6 +358,7 @@
                                 const data_time = $(this).data('time');
                                 if (data_time === work_day) {
                                     $(this).append('<p class="data-id" hidden>' + data.id + '</p>');
+                                    $(this).append('<p class="data-user-id" hidden>' + data.user_id + '</p>');
                                     $(this).append('<p class="data-reason" hidden>' + data.note + '</p>');
                                     $(this).append('<p class="data-work-day" hidden>' + data.work_day + '</p>');
                                 }

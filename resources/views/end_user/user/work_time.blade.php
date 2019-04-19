@@ -257,7 +257,7 @@
                     cCell = document.createElement("td");
                     cCell.classList.add("calendar-td-body");
                     var selectMonthYear = valYear + "-" + valMonth,
-                        currentMonthYear = currentMonth.toString() + "-" + currentMonth.toString();
+                        currentMonthYear = currentYear.toString() + "-" + currentMonth.toString();
                     if (selectMonthYear === currentMonthYear) {
                         var current_day = date.getDay();
                         var cells = document.getElementById('calendar').getElementsByTagName('td');

@@ -234,5 +234,7 @@ define('XLS_TYPE', '.xls');
 
 define('ADD_DAY_OFF_MONTH', 1);
 
+define('TOTAL_MONTH_IN_YEAR',12);
+
 define('OFF_TIME', '00:00:00');
 define('SWITCH_TIME', '12:00:00');

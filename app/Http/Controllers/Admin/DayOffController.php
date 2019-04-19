@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Requests\Admin\DayOffRequest;
 use App\Models\DayOff;
+use App\Models\RemainDayoff;
 use App\Models\User;
 use App\Repositories\Contracts\IDayOffRepository;
 use App\Services\Contracts\IDayOffService;
@@ -86,6 +87,8 @@ class DayOffController extends AdminBaseController
      */
     public function byUser(Request $request, $id)
     {
+        $totalDayOfff=$this->service->countDayOff($id,true);
+        $remainDayOff=RemainDayoff::select('remain')->where('user_id',$id)->where('year',date('Y'))->first();
         $user = User::where('id', $id)->first();
         if ($user) {
             $conditions = ['user_id' => $id];
@@ -94,7 +97,7 @@ class DayOffController extends AdminBaseController
             $year = $request->get('year');
             $month = $request->get('month');
            $numberThisYearAndLastYear= $this->service->getDayOffUser($id);
-            return view($this->resourceAlias . '.user', compact('user', 'records', 'search', 'perPage', 'year', 'month', 'numberThisYearAndLastYear'));
+            return view($this->resourceAlias . '.user', compact('user', 'records', 'search', 'perPage', 'year', 'month', 'numberThisYearAndLastYear','totalDayOfff','remainDayOff'));
         } else {
             flash()->error(__l('user_not_found'));
             return redirect(route('admin::day_offs.index'));
@@ -128,6 +131,21 @@ class DayOffController extends AdminBaseController
     {
         return $this->validationData();
     }
+
+    /**
+     * @param         $record
+     * @param Request $request
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function getRedirectAfterSave($record, $request,$isCreate = null)
+    {
+        if ($record->status == STATUS_DAY_OFF['active']){
+            $this->service->calculateDayOff($request,$record->id);
+        }
+        return $this->redirectBackTo(route($this->getResourceRoutesAlias() . '.index'));
+    }
+
 
     public function resourceUpdateValidationData($record)
     {

@@ -72,18 +72,20 @@ $_printLink = false;
                         @include($resourceAlias.'.form')
                     </div>
                     <!-- /.box-body -->
+                    @if($resourceRoutesAlias != 'admin::day_offs')
 
-                    <div class="box-footer clearfix text-right">
-                        <!-- Edit Button -->
-                        <a href="{{ $_listLink }}" class="btn btn-default">
-                            <i class="fa fa-ban"></i> <span>Hủy</span>
-                        </a>
-                        <button class="btn btn-info margin-l-5">
-                            <i class="fa fa-save"></i> <span>Lưu</span>
-                        </button>
+                        <div class="box-footer clearfix text-right">
+                            <!-- Edit Button -->
+                            <a href="{{ $_listLink }}" class="btn btn-default">
+                                <i class="fa fa-ban"></i> <span>Hủy</span>
+                            </a>
+                            <button class="btn btn-info margin-l-5">
+                                <i class="fa fa-save"></i> <span>Lưu</span>
+                            </button>
 
-                    </div>
-                    <!-- /.box-footer -->
+                        </div>
+                @endif
+                <!-- /.box-footer -->
                 </form>
             </div>
             <!-- /.box -->

@@ -132,6 +132,19 @@ class DayOffController extends AdminBaseController
         return $this->validationData();
     }
 
+    /**
+     * @param         $record
+     * @param Request $request
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function getRedirectAfterSave($record, $request,$isCreate = null)
+    {
+        $this->service->calculateDayOff($request,$record->id);
+        return $this->redirectBackTo(route($this->getResourceRoutesAlias() . '.index'));
+    }
+
+
     public function resourceUpdateValidationData($record)
     {
         return $this->validationData();

@@ -294,6 +294,18 @@
     border-radius: 50%;
 }
 
+.orange-circle {
+    display: block;
+    height: 1.5rem;
+    width: 1.5rem;
+    background: #FFBB34;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    border-radius: 50%;
+}
+
 .green-circle {
     display: block;
     height: 1.5rem;
@@ -420,7 +432,6 @@
         padding-top: 15px;
         cursor: pointer;
     }
-
 
     tr.calendar-header td {
         background: #eeeeee;
@@ -664,7 +675,7 @@
     }
 
     .ml-xxl-1 {
-        margin-left: -74px;
+        margin-left: -56px;
     }
 }
 

@@ -359,3 +359,18 @@ if (!function_exists('__admin_sortable')) {
         echo '</a>';
     }
 }
+/**
+ * @param $number
+ *
+ * @return number
+ */
+
+function checkNumber($number)
+{
+    $explode=explode('.',$number);
+    if ($explode[1] > 0){
+        return $number;
+    }else{
+        return $explode[0];
+    }
+}

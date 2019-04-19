@@ -226,3 +226,5 @@ define('PRE_PRE_YEAR',2);
 define('XLS_TYPE', '.xls');
 
 define('ADD_DAY_OFF_MONTH',1);
+
+define('TOTAL_MONTH_IN_YEAR',12);

@@ -72,7 +72,7 @@ $_printLink = false;
                         @include($resourceAlias.'.form')
                     </div>
                     <!-- /.box-body -->
-
+                    @if($resourceRoutesAlias != 'admin::day_offs')
                     <div class="box-footer clearfix">
                         <!-- Edit Button -->
                         <div class="col-xs-6">
@@ -92,6 +92,7 @@ $_printLink = false;
                         </div>
                         <!-- /.col-xs-6 -->
                     </div>
+                    @endif
                     <!-- /.box-footer -->
                 </form>
             </div>

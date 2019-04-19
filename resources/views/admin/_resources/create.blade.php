@@ -60,26 +60,27 @@ $_storeLink = route($resourceRoutesAlias . '.store');
                         @include($resourceAlias.'.form')
                     </div>
                     <!-- /.box-body -->
-
-                    <div class="box-footer clearfix">
-                        <!-- Edit Button -->
-                        <div class="col-xs-6">
-                            <div class="text-center margin-b-5 margin-t-5">
-                                <button class="btn btn-info">
-                                    <i class="fa fa-save"></i> <span>Lưu</span>
-                                </button>
+                    @if($resourceRoutesAlias != 'admin::day_offs')
+                        <div class="box-footer clearfix">
+                            <!-- Edit Button -->
+                            <div class="col-xs-6">
+                                <div class="text-center margin-b-5 margin-t-5">
+                                    <button class="btn btn-info">
+                                        <i class="fa fa-save"></i> <span>Lưu</span>
+                                    </button>
+                                </div>
                             </div>
-                        </div>
-                        <!-- /.col-xs-6 -->
-                        <div class="col-xs-6">
-                            <div class="text-center margin-b-5 margin-t-5">
-                                <a href="{{ $_listLink }}" class="btn btn-default">
-                                    <i class="fa fa-ban"></i> <span>Hủy</span>
-                                </a>
+                            <!-- /.col-xs-6 -->
+                            <div class="col-xs-6">
+                                <div class="text-center margin-b-5 margin-t-5">
+                                    <a href="{{ $_listLink }}" class="btn btn-default">
+                                        <i class="fa fa-ban"></i> <span>Hủy</span>
+                                    </a>
+                                </div>
                             </div>
+                            <!-- /.col-xs-6 -->
                         </div>
-                        <!-- /.col-xs-6 -->
-                    </div>
+                @endif
                     <!-- /.box-footer -->
                 </form>
             </div>

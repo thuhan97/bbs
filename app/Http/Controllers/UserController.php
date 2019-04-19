@@ -358,36 +358,50 @@ class UserController extends Controller
         $dayOff->approver_at = now();
         $dayOff->number_off = $request->number_off;
         $dayOff->approve_comment = $request->approve_comment;
-
-        //check reamin day off Current Year and Pre Year -> update column ramian of table remain_day_offs
+       //check reamin day off Current Year and Pre Year -> update column ramian of table remain_day_offs
         $userDayOff = User::findOrFail($dayOff->user_id);
-        $remainDayOffCurrentYear=RemainDayoff::where('user_id',$dayOff->user_id)->where('year',date('Y'))->first();
-        $remainDayOffPreYear=RemainDayoff::where('user_id',$dayOff->user_id)->where('year',(int)date('Y')-1)->first();
-        $dayOffCurrentYear=$remainDayOffCurrentYear ? $remainDayOffCurrentYear->remain : DAY_OFF_DEFAULT;
-        $dayOffPreYear=$remainDayOffPreYear ? $remainDayOffPreYear->remain : DAY_OFF_DEFAULT;
 
-        if ($dayOffPreYear - $dayOff->number_off >= DAY_OFF_DEFAULT){
-            $remainDayOffPreYear->remain=$dayOffPreYear - $dayOff->number_off;
-            $remainDayOffPreYear->save();
+        // user create day off = staff -> check remain day off table
+        if ($userDayOff->contract_type == CONTRACT_TYPES['staff'] && $userDayOff->end_date == null){
 
-        }elseif ($dayOffCurrentYear + $dayOffPreYear - $dayOff->number_off >= DAY_OFF_DEFAULT ){
-            if ($remainDayOffPreYear){
-                $remainDayOffPreYear->remain=DAY_OFF_DEFAULT;
+            // create new if reamin day off curent year = null
+            $remainDayOffCurrentYear=RemainDayoff::firstOrCreate([
+                'user_id' => $dayOff->user_id,
+                'year'=>date('Y')
+            ], [
+                'user_id' => $dayOff->user_id,
+                'year' => date('Y'),
+                'remain' => 1
+            ]);
+            $remainDayOffPreYear=RemainDayoff::where('user_id',$dayOff->user_id)->where('year',(int)date('Y')-1)->first();
+            $dayOffCurrentYear=$remainDayOffCurrentYear->remain;
+            $dayOffPreYear=$remainDayOffPreYear ? $remainDayOffPreYear->remain : DAY_OFF_DEFAULT;
+
+            if ($dayOffPreYear - $dayOff->number_off >= DAY_OFF_DEFAULT){
+                $remainDayOffPreYear->remain=$dayOffPreYear - $dayOff->number_off;
                 $remainDayOffPreYear->save();
-            }
-            $remainDayOffCurrentYear->remain=$dayOffCurrentYear + $dayOffPreYear - $dayOff->number_off;
-            $remainDayOffCurrentYear->save();
 
-        }else {
-            if ($remainDayOffPreYear){
-                $remainDayOffPreYear->remain=DAY_OFF_DEFAULT;
-                $remainDayOffPreYear->save();
-            }
-            $remainDayOffCurrentYear->remain=DAY_OFF_DEFAULT;
-            $dayOff->absent = $dayOff->number_off - ($dayOffCurrentYear + $dayOffPreYear);
-            $remainDayOffCurrentYear->save();
+            }elseif ($dayOffCurrentYear + $dayOffPreYear - $dayOff->number_off >= DAY_OFF_DEFAULT ){
+                if ($remainDayOffPreYear){
+                    $remainDayOffPreYear->remain=DAY_OFF_DEFAULT;
+                    $remainDayOffPreYear->save();
+                }
+                $remainDayOffCurrentYear->remain=$dayOffCurrentYear + $dayOffPreYear - $dayOff->number_off;
+                $remainDayOffCurrentYear->save();
 
-        };
+            }else {
+                if ($remainDayOffPreYear){
+                    $remainDayOffPreYear->remain=DAY_OFF_DEFAULT;
+                    $remainDayOffPreYear->save();
+                }
+                $remainDayOffCurrentYear->remain=DAY_OFF_DEFAULT;
+                $dayOff->absent = $dayOff->number_off - ($dayOffCurrentYear + $dayOffPreYear);
+                $remainDayOffCurrentYear->save();
+            };
+        }else{
+            // user create day off != staff -> insert column absent table day off = total number off
+            $dayOff->absent=$request->number_off;
+        }
         $dayOff->save();
             // check if female && sum day off in month >=2 && check_free =0 -> +1 column remain table day off
         if ($userDayOff->sex == SEX['female'] && $userDayOff->contract_type == CONTRACT_TYPES['staff']) {

@@ -162,7 +162,7 @@
         </div>
     </div>
 </div>
-@if(!isset($record->id) || $record->status ==STATUS_DAY_OFF['noActive'] )
+@if(!isset($record->id) || $record->status ==STATUS_DAY_OFF['abide'] )
 <div class="box-footer clearfix">
     <!-- Edit Button -->
     <div class="col-xs-6">

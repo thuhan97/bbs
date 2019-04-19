@@ -22,6 +22,14 @@ use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use PhpOffice\PhpSpreadsheet\Writer\Xls;
 use function PHPSTORM_META\type;
 
+use PHPExcel;
+use PHPExcel_IOFactory;
+use PHPExcel_Cell;
+use PHPExcel_Worksheet;
+use PHPExcel_Style;
+use PHPExcel_Style_Border;
+use PHPExcel_Style_Alignment;
+
 /**
  * StatisticController
  * Author: jvb
@@ -158,6 +166,11 @@ class StatisticController extends AdminBaseController
         return $this->getSearchRecords($request, $perPage, $search);
     }
 
+    /**
+     * @param Request $request
+     * @param null $user_id
+     * @return array
+     */
     public function dongusChartUser(Request $request, $user_id = null)
     {
 
@@ -179,7 +192,7 @@ class StatisticController extends AdminBaseController
     {
         $months = [];
         if ($request->get('month')) {
-            $months = $this->_percent(Statistics::dongusMonth($request->get('month'), $user_team, null));
+            $months = $this->_percent(Statistics::dongusMonth($request->get('month'), $user_team, null, false));
         }
         $weeks = [];
         if ($request->get('week')) {
@@ -201,7 +214,7 @@ class StatisticController extends AdminBaseController
         $seach_type = ($request->get('statistics')) ? $request->get('statistics') : 1;
         $months = [];
         if ($request->get('month')) {
-            $months = $this->_percent(Statistics::dongusMonth($request->get('month'), []));
+            $months = $this->_percent(Statistics::dongusMonth($request->get('month'), [], null, false));
         }
         $weeks = [];
         if ($request->get('week')) {
@@ -209,7 +222,7 @@ class StatisticController extends AdminBaseController
         }
         $dates = [];
         if ($seach_type == StatisticService::TYPE_ONE) {
-            $dates = $this->_percent(Statistics::dongusDate($request->get('date')));
+            $dates = $this->_percent(Statistics::dongusDate($request->get('date'), false));
         }
         return [
             'months' => $months,
@@ -253,44 +266,268 @@ class StatisticController extends AdminBaseController
         return $output;
     }
 
-    
-    public function exprot(Request $request)
+
+    /**
+     * @param Request $request
+     * @throws \PHPExcel_Exception
+     * @throws \PHPExcel_Reader_Exception
+     * @throws \PHPExcel_Writer_Exception
+     */
+    public function export(Request $request)
     {
         if ($request->session()->has('search')) {
             $search = $request->session()->get('search');
+            if (!empty($search)) {
+                if ($search['statistics'] == StatisticService::TYPE_ONE) {
+                    $date = $search['date'];
+                    $records = Statistics::dongusDate($date, true);
+                    $work_types = $this->arraySort($records, $sortkey = 'type', 'name');
+                    $this->processDownload($work_types, StatisticService::TYPE_ONE, []);
+                } elseif ($search['statistics'] == StatisticService::TYPE_TWO) {
+                    $user_team = UserTeam::getUsers($search['team_id']);
+                    $work_types = $this->arraySort(Statistics::dongusMonth($search['month'], $user_team, null, true), $sortkey = 'id', 'type');
+                    foreach ($work_types as $index => $work_type) {
+                        $work_types[$index] = array_count_values($work_type);
+                    }
+                    $this->processDownload($work_types, StatisticService::TYPE_TWO, $user_team);
+                } else {
+                    $work_types = Statistics::dongusMonth($search['month'], [], $search['user_id'], true);
+                    $this->processDownload($work_types, StatisticService::TYPE_THREE, []);
+                }
+            }
+        }
+    }
 
-            print_r('<pre>');
-            print_r($search);
-            print_r('</pre>');
-            die;
-            $spreadsheet = new Spreadsheet();
-            $sheet = $spreadsheet->getActiveSheet();
-            $sheet->setCellValue('A1', 'Id');
-            $sheet->setCellValue('B1', 'Name');
-            $sheet->setCellValue('C1', 'Age');
-            $sheet->setCellValue('D1', 'Skills');
-            $sheet->setCellValue('E1', 'Address');
-            $sheet->setCellValue('F1', 'Designation');
-            $rows = 2;
-
-            foreach($employees as $empDetails){
-                $sheet->setCellValue('A' . $rows, $empDetails['id']);
-                $sheet->setCellValue('B' . $rows, $empDetails['name']);
-                $sheet->setCellValue('C' . $rows, $empDetails['age']);
-                $sheet->setCellValue('D' . $rows, $empDetails['skills']);
-                $sheet->setCellValue('E' . $rows, $empDetails['address']);
-                $sheet->setCellValue('F' . $rows, $empDetails['designation']);
+    /**
+     * @param array $arr
+     * @param string $type
+     * @param array $user_team
+     * @throws \PHPExcel_Exception
+     * @throws \PHPExcel_Reader_Exception
+     * @throws \PHPExcel_Writer_Exception
+     */
+    private function processDownload($arr = [], $type = '', $user_team = [])
+    {
+        // Create new PHPExcel object
+        $objPHPExcel = new PHPExcel();
+        // Add some data
+        if ($type == StatisticService::TYPE_ONE) {
+            $objPHPExcel->setActiveSheetIndex(0)
+                ->setCellValue('A1', STT)
+                ->setCellValue('B1', ON_TIME)
+                ->setCellValue('C1', LATE_EARLY)
+                ->setCellValue('D1', OT)
+                ->setCellValue('E1', LATE_OT)
+                ->setCellValue('F1', LEAVE);
+        } else if ($type == StatisticService::TYPE_TWO) {
+            $objPHPExcel->setActiveSheetIndex(0)
+                ->setCellValue('A1', USER_NAME)
+                ->setCellValue('B1', ON_TIME)
+                ->setCellValue('C1', LATE_EARLY)
+                ->setCellValue('D1', OT)
+                ->setCellValue('E1', LATE_OT)
+                ->setCellValue('F1', LEAVE);
+        } else {
+            $objPHPExcel->setActiveSheetIndex(0)
+                ->setCellValue('A1', TIME_STA)
+                ->setCellValue('B1', ON_TIME_USER)
+                ->setCellValue('C1', LATE_EARLY_USER)
+                ->setCellValue('D1', OT_USER)
+                ->setCellValue('E1', LATE_OT_USER)
+                ->setCellValue('F1', LEAVE);
+        }
+        $styleArray = array(
+            'font' => array(
+                //'color' => array('rgb' => 'FF0000'),
+                'size' => 10,
+                'name' => 'Arial'
+            ),
+            'borders' => array(
+                'allborders' => array(
+                    'style' => PHPExcel_Style_Border::BORDER_THIN,
+                    //'color' => array('rgb' => 'DDDDDD')
+                )
+            )
+        );
+        $rows = 2;
+        if ($type == StatisticService::TYPE_ONE) {
+            $row_max = max(array_map("count", $arr));
+            $tableCounter = 0;
+            for ($i = 0; $i < $row_max; $i++) {
+                $tableCounter++;
+                // Miscellaneous glyphs, UTF-8
+                $objPHPExcel->setActiveSheetIndex(0)
+                    ->setCellValue('A' . $rows, $tableCounter)
+                    ->getColumnDimension('A')
+                    ->setWidth(5);
+                if (isset($arr[Statistics::TYPES['normal']][$i])) {
+                    $objPHPExcel->setActiveSheetIndex(0)
+                        ->setCellValue('B' . $rows, $arr[Statistics::TYPES['normal']][$i])
+                        ->getColumnDimension('B')
+                        ->setWidth(28);
+                }
+                if (isset($arr[Statistics::TYPES['latey_early']][$i])) {
+                    $objPHPExcel->setActiveSheetIndex(0)
+                        ->setCellValue('C' . $rows, $arr[Statistics::TYPES['latey_early']][$i])
+                        ->getColumnDimension('c')
+                        ->setWidth(28);
+                }
+                if (isset($arr[Statistics::TYPES['ot']][$i])) {
+                    $objPHPExcel->setActiveSheetIndex(0)
+                        ->setCellValue('D' . $rows, $arr[Statistics::TYPES['ot']][$i])
+                        ->getColumnDimension('D')
+                        ->setWidth(25);
+                }
+                if (isset($arr[Statistics::TYPES['lately_ot']][$i])) {
+                    $objPHPExcel->setActiveSheetIndex(0)
+                        ->setCellValue('E' . $rows, $arr[Statistics::TYPES['lately_ot']][$i])
+                        ->getColumnDimension('E')
+                        ->setWidth(28);
+                }
+                if (isset($arr[Statistics::TYPES['leave']][$i])) {
+                    $objPHPExcel->setActiveSheetIndex(0)
+                        ->setCellValue('F' . $rows, $arr[Statistics::TYPES['leave']][$i])
+                        ->getColumnDimension('F')
+                        ->setWidth(28);
+                }
                 $rows++;
             }
-            $fileName = "emp.".$type;
-            if($type == 'xlsx') {
-                $writer = new Xlsx($spreadsheet);
-            } else if($type == 'xls') {
-                $writer = new Xls($spreadsheet);
+            $objPHPExcel->getActiveSheet()->getStyle('A1:F' . ($row_max + 1))->applyFromArray($styleArray);
+        } elseif ($type == StatisticService::TYPE_TWO) {
+            foreach ($user_team as $key => $item) {
+                $objPHPExcel->setActiveSheetIndex(0)
+                    ->setCellValue('A' . $rows, $item)
+                    ->getColumnDimension('A')
+                    ->setWidth(25);
+                // normal
+                if (isset($arr[$key][Statistics::TYPES['normal']])) {
+                    $val = $arr[$key][Statistics::TYPES['normal']];
+                } else {
+                    $val = 0;
+                }
+                $val = $val . COUNT;
+                $objPHPExcel->setActiveSheetIndex(0)
+                    ->setCellValue('B' . $rows, $val)
+                    ->getColumnDimension('B')
+                    ->setWidth(10);
+
+                // latey_early
+                if (isset($arr[$key][Statistics::TYPES['latey_early']])) {
+                    $val = $arr[$key][Statistics::TYPES['latey_early']];
+                } else {
+                    $val = 0;
+                }
+                $val = $val . COUNT;
+                $objPHPExcel->setActiveSheetIndex(0)
+                    ->setCellValue('C' . $rows, $val)
+                    ->getColumnDimension('C')
+                    ->setWidth(10);
+                // ot
+                if (isset($arr[$key][Statistics::TYPES['ot']])) {
+                    $val = $arr[$key][Statistics::TYPES['ot']];
+                } else {
+                    $val = 0;
+                }
+                $val = $val . COUNT;
+                $objPHPExcel->setActiveSheetIndex(0)
+                    ->setCellValue('D' . $rows, $val)
+                    ->getColumnDimension('D')
+                    ->setWidth(10);
+
+                // lately_ot
+                if (isset($arr[$key][Statistics::TYPES['lately_ot']])) {
+                    $val = $arr[$key][Statistics::TYPES['lately_ot']];
+                } else {
+                    $val = 0;
+                }
+                $val = $val . COUNT;
+                $objPHPExcel->setActiveSheetIndex(0)
+                    ->setCellValue('E' . $rows, $val)
+                    ->getColumnDimension('E')
+                    ->setWidth(10);
+
+                // leave
+                if (isset($arr[$key][Statistics::TYPES['leave']])) {
+                    $val = $arr[$key][Statistics::TYPES['leave']];
+                } else {
+                    $val = 0;
+                }
+                $val = $val . COUNT;
+                $objPHPExcel->setActiveSheetIndex(0)
+                    ->setCellValue('F' . $rows, $val)
+                    ->getColumnDimension('F')
+                    ->setWidth(10);
+                $rows++;
+
             }
-            $writer->save("export/".$fileName);
-            header("Content-Type: application/vnd.ms-excel");
-            dd($search);
+            $objPHPExcel->getActiveSheet()->getStyle('A1:F' . (count($user_team) + 1))->applyFromArray($styleArray);
+        } else {
+            foreach ($arr as $key => $val) {
+                $time = $val['work_date'] . $val['start'] . ' - ' . $val['end'];
+                $objPHPExcel->setActiveSheetIndex(0)
+                    ->setCellValue('A' . $rows, $time)
+                    ->getColumnDimension('A')
+                    ->setWidth(15);
+
+                // normal
+                if ($val['type'] == Statistics::TYPES['normal']) {
+                    $objPHPExcel->setActiveSheetIndex(0)
+                        ->setCellValue('B' . $rows, 'x')
+                        ->getColumnDimension('B')
+                        ->setWidth(10);
+                }
+
+                // latey_early
+                if ($val['type'] == Statistics::TYPES['latey_early']) {
+                    $objPHPExcel->setActiveSheetIndex(0)
+                        ->setCellValue('C' . $rows, 'x')
+                        ->getColumnDimension('C')
+                        ->setWidth(10);
+                }
+
+                // ot
+                if ($val['type'] == Statistics::TYPES['latey_early']) {
+                    $objPHPExcel->setActiveSheetIndex(0)
+                        ->setCellValue('D' . $rows, 'x')
+                        ->getColumnDimension('D')
+                        ->setWidth(10);
+                }
+
+                // lately_ot
+
+                if ($val['type'] == Statistics::TYPES['lately_ot']) {
+                    $objPHPExcel->setActiveSheetIndex(0)
+                        ->setCellValue('E' . $rows, 'x')
+                        ->getColumnDimension('E')
+                        ->setWidth(10);
+                }
+                // leave
+                if ($val['type'] == Statistics::TYPES['leave']) {
+                    $objPHPExcel->setActiveSheetIndex(0)
+                        ->setCellValue('F' . $rows, 'x')
+                        ->getColumnDimension('F')
+                        ->setWidth(10);
+                }
+                $rows++;
+            }
+            $objPHPExcel->getActiveSheet()->getStyle('B2:F1' . (count($arr) + 1))->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+            $objPHPExcel->getActiveSheet()->getStyle('A1:F' . (count($arr) + 1))->applyFromArray($styleArray);
+            $objPHPExcel->getActiveSheet()->getStyle('A2:A1' . (count($arr) + 1))->getAlignment()->setWrapText(true);
         }
+
+
+        $objPHPExcel->getActiveSheet()->getStyle('A1:F1')->getFont()->setName('Arial')->setSize(10)->setBold(true);
+
+        // Rename worksheet
+        //$objPHPExcel->getActiveSheet()->setTitle('xxx');
+        // Set active sheet index to the first sheet, so Excel opens this as the first sheet
+        $objPHPExcel->setActiveSheetIndex(0);
+        // Redirect output to a client’s web browser (Excel5)
+        header('Content-Type: application/vnd.ms-excel');
+        header('Content-Disposition: attachment;filename=danhsach_' . date('Y_m_d') . '.xls');
+        header('Cache-Control: max-age=0');
+        $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
+        $objWriter->save('php://output');
+        exit;
     }
 }

@@ -64,19 +64,8 @@ class StatisticService extends AbstractService implements IStatisticService
                 $model = $model->whereDate('work_day', date('Y-m-d'));
             }
         } elseif ($search_type == self::TYPE_TWO) {
-            if ($week) {
-                $explode = explode(' - ', $week);
-                foreach ($explode as $index => $item) {
-                    $item = explode('/', $item);
-                    $item = implode('-', array_reverse($item, true));
-                    $explode[$index] = $item;
-                }
-                if (isset($explode[0])) {
-                    $model = $model->whereDate('work_day', '>=', $explode[0]);
-                }
-                if (isset($explode[1])) {
-                    $model = $model->whereDate('work_day', ' <= ', $explode[1]);
-                }
+            if ($month) {
+                $model = $model->whereMonth('work_day', $month);
             }
             // team
             $team_id = $request->get('team_id');

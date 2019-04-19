@@ -155,7 +155,7 @@ define('TYPES_DEVICE', [
 define('DATE', 'ngày');
 //define('MONTH', 'tháng');
 define('WEEK', 'tuần');
-define('COUNT', 'buổi');
+define('COUNT', ' buổi');
 define('ICONS_TYPES_FILES', [
     'jpg' => 'far fa-image',
     'jpeg' => 'far fa-image',
@@ -226,7 +226,17 @@ define('DAY_OFF_DEFAULT',0);
 define('TOTAL_MONTH',12);
 define('PRE_YEAR',1);
 define('PRE_PRE_YEAR',2);
-
 define('XLS_TYPE', '.xls');
-
 define('ADD_DAY_OFF_MONTH',1);
+define('STT','Stt');
+define('ON_TIME','Danh sách đi làm đúng giờ');
+define('LATE_EARLY','Danh sách đi làm muộn/sớm');
+define('OT','Danh sách OT');
+define('LATE_OT','Danh sách đi làm muộn + OT');
+define('LEAVE','Xin nghỉ');
+define('USER_NAME','Tên thành viên');
+define('TIME_STA','Thời gian thống kê');
+define('ON_TIME_USER','Đi làm đúng giờ');
+define('LATE_EARLY_USER','Đi làm muộn/sớm');
+define('OT_USER','OT');
+define('LATE_OT_USER','Đi làm muộn + OT');

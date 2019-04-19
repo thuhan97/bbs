@@ -102,9 +102,10 @@ class Statistics extends Model
      * @param string $month
      * @param array $user_team
      * @param null $user_id
+     * @param bool $export_flag
      * @return mixed
      */
-    public function scopedongusMonth($query, $month = '', $user_team = [], $user_id = null)
+    public function scopedongusMonth($query, $month = '', $user_team = [], $user_id = null, $export_flag = false)
     {
         $model = $query;
         if ($month != '') {
@@ -117,16 +118,26 @@ class Statistics extends Model
             $model = $model->where('user_id', $user_id);
         }
         $model = $model->whereNotIn('type', [1, 2]);
-        $model->selectRaw('count(*) as amount, work_times.type')->groupBy('work_times.type');
+        if ($export_flag) {
+            $model->join('users', 'users.id', 'user_id');
+            $model->select('work_times.type', 'users.id', 'users.name',
+                DB::raw("DATE_FORMAT(work_times.start_at, '%H:%i') as start"),
+                DB::raw("DATE_FORMAT(work_times.end_at, '%H:%i') as end"),
+                DB::raw("DATE_FORMAT(work_times.work_day, '%d/%m/%Y') as work_date"))->orderBy('work_times.work_day', 'desc');
+//            $model->selectRaw('work_times.*, users.name')->orderBy('work_times.work_day', 'desc');
+        } else {
+            $model->selectRaw('count(*) as amount, work_times.type')->groupBy('work_times.type');
+        }
         return $model->get()->toArray();
     }
 
     /**
      * @param $query
      * @param string $date
+     * @param bool $export_flag
      * @return mixed
      */
-    public function scopedongusDate($query, $date = '')
+    public function scopedongusDate($query, $date = '', $export_flag = false)
     {
         $model = $query;
         $model = $model->whereNotIn('type', [1, 2]);
@@ -138,7 +149,12 @@ class Statistics extends Model
         } else {
             $model = $model->whereDate('work_day', date('Y-m-d'));
         }
-        $model->selectRaw('count(*) as amount, work_times.type')->groupBy('work_times.type');
+        if ($export_flag) {
+            $model->join('users', 'users.id', 'user_id');
+            $model->selectRaw('work_times.*, users.name')->orderBy('work_times.work_day', 'desc');
+        } else {
+            $model->selectRaw('count(*) as amount, work_times.type')->groupBy('work_times.type');
+        }
         return $model->get()->toArray();
     }
 

@@ -133,7 +133,7 @@ $_createLink = route($baseResourceRoutesAlias . '.create', ['user_id' => $user->
                 <p class="margin-l-5 lead text-green">Không có ngày nghỉ phép.</p>
             @endif
         <!-- /.box-body -->
-          @if (count($records) > 0)
+            @if (count($records) > 0)
                 @include('common.paginate', ['records' => $records])
             @endif
 
@@ -143,11 +143,13 @@ $_createLink = route($baseResourceRoutesAlias . '.create', ['user_id' => $user->
                         <h3 class="box-title">Thống kê nghỉ phép</h3>
                     </div>
                     <div class="box-body">
-                        Năm {{date('Y')}}: Đã nghỉ nghỉ {{$numberThisYearAndLastYear['remain_current']}}/{{DAY_OFF_TOTAL}} ngày.
+                        Năm {{date('Y')}}: Đã nghỉ nghỉ {{$totalDayOfff['countDayOffCurrenYear']}} ngày.
                         <br>
-                        Năm {{(int)date('Y') - 1}}: Đã nghỉ {{$numberThisYearAndLastYear['remain_previous']}}/{{DAY_OFF_TOTAL}} ngày.
+                        Năm {{(int)date('Y') - 1}}: Đã nghỉ {{$totalDayOfff['countDayOffPreYear']}}
+                        /{{DAY_OFF_TOTAL}} ngày.
                         <hr>
-                        Số ngày nghỉ phép còn lại: {{DAY_OFF_TOTAL*2 - $numberThisYearAndLastYear['remain_current'] - $numberThisYearAndLastYear['remain_previous']}}
+                        Số ngày nghỉ phép còn
+                        lại: {{ $remainDayOff ? $remainDayOff->remain : 0 }}
                     </div>
                     <!-- /.box-body -->
                 </div>

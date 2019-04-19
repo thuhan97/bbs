@@ -124,7 +124,7 @@ class WorkTimeController extends AdminBaseController
         return response()->download($pathToFile);
     }
 
-    public function getRedirectAfterSave($record, $request)
+    public function getRedirectAfterSave($record, $request,$isCreate = NULL)
     {
         $explanationID = $request->explanation_id;
         $explanationNote = $request->explanation_note;

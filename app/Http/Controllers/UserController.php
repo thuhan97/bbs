@@ -393,7 +393,7 @@ class UserController extends Controller
         if ($userDayOff->sex == SEX['female'] && $userDayOff->contract_type == CONTRACT_TYPES['staff']) {
 
             //total day off in month
-            $countDayOff = $this->userDayOffService->countDayOff($userDayOff->id);
+            $countDayOff = $this->userDayOffService->countDayOff($userDayOff->id,false);
 
             if ($countDayOff && (int)$countDayOff->total >= 2 && $countDayOff->check_free == DAY_OFF_FREE_DEFAULT) {
                 DayOff::where('user_id',$userDayOff->id)

@@ -149,8 +149,11 @@ trait ResourceController
         $this->authorize('update', $record);
 
         $valuesToSave = $this->getValuesToSave($request, $record);
+
         $request->merge($valuesToSave);
+
         $this->resourceValidate($request, 'update', $record);
+        dd($record,$request->all());
         if ($this->repository->update($record, $this->alterValuesToSave($request, $valuesToSave))) {
 
             flash()->success('Cập nhật thành công.');

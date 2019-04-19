@@ -1,10 +1,9 @@
 <div class="col-md-7">
-    <h3>Dành cho nhân viên xin nghỉ phép</h3>
     <div class="row">
         <div class="col-md-12">
             <div class="form-group margin-b-5 margin-t-5{{ $errors->has('user_id') ? ' has-error' : '' }}">
                 <label for="user_id">Chọn nhân viên *</label>
-                {{ Form::select('user_id', ['' => 'Chọn nhân viên'] +  $request_users, $record->user_id ?? $user_id, $record->user_id ? ['disabled' => 'disabled','class'=>'select2 form-control'] : ['class'=>'select2 form-control']) }}
+                {{ Form::select('user_id', ['' => 'Chọn nhân viên'] +  $request_users, $record->user_id ?? $user_id, $record->user_id ? ['disabled'=>'disabled','class'=>'select2 form-control'] : ['class'=>'select2 form-control']) }}
                 @if ($errors->has('user_id'))
                     <span class="help-block">
                     <strong>{{ $errors->first('user_id') }}</strong>
@@ -13,7 +12,9 @@
             </div>
             <!-- /.form-group -->
         </div>
-
+@if(isset($record->user_id ))
+            <input type="hidden" name="user_id" value="{{ $record->user_id  }}">
+    @endif
         <div class="col-md-12">
             <div class="form-group margin-b-5 margin-t-5{{ $errors->has('title') ? ' has-error' : '' }}">
                 <label for="title">Tiêu đề</label>
@@ -131,13 +132,33 @@
             </div>
             <!-- /.form-group -->
         </div>
-
         <div class="col-xs-12">
             <div class="form-group margin-b-5 margin-t-5">
                 <label for="status">
-                    <input type="checkbox" class="square-blue" name="status" id="status"
-                           value="{{ACTIVE_STATUS}}" {{ old('status', $record->status ?? 1) == 1 ? 'checked' : '' }}>
-                    Đã duyệt
+                    <?php
+                    if(!isset($record->status)){
+                        $record->status = ACTIVE_STATUS;
+                    }
+                    ?>
+                     <span>
+                        <input type="radio" class="square-blue" name="status"
+                               value="1"
+                                {{ old('status', $record->status ) == 1|| $record->status == null ? 'checked' : '' }} >
+                    Duyệt
+                    </span>
+                    <span style="padding: 15px">
+                        <input type="radio" class="square-blue" name="status"
+                               value="0" {{ old('status', $record->status ) ==0  ? 'checked' : '' }}>
+                    Chờ duyệt
+                    </span>
+                    @if(isset($record->status))
+                    <span >
+                        <input type="radio" class="square-blue" name="status"
+                               value="2" {{ old('status', $record->status ) ==2  ? 'checked' : '' }}>
+                    Hủy duyệt
+                    </span>
+                        @endif
+
                 </label>
             </div>
             <!-- /.form-group -->

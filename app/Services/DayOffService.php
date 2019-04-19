@@ -220,14 +220,23 @@ class DayOffService extends AbstractService implements IDayOffService
         return $data = $this->getdata(false, $id)->first();
     }
 
-    public function countDayOff($id)
+    public function countDayOff($id,$check=false)
     {
-        $data = $this->model::groupBy('user_id', 'check_free')
-            ->select('user_id', 'check_free', DB::raw('sum(number_off) as total'))
-            ->where('user_id', $id)
-            ->where('status', STATUS_DAY_OFF['active'])
-            ->whereMonth('day_offs.start_at', '=', date('m'))
-            ->whereYear('day_offs.start_at', '=', date('Y'))->first();
+        if ($check){
+            $data=[
+              'countDayOffCurrenYear'=>$this->sumDayOff($id,null,false),
+              'countDayOffPreYear'=>$this->sumDayOff($id,12,true),
+            ];
+            
+        }else{
+            $data = $this->model::groupBy('user_id', 'check_free')
+                ->select('user_id', 'check_free', DB::raw('sum(number_off) as total'))
+                ->where('user_id', $id)
+                ->where('status', STATUS_DAY_OFF['active'])
+                ->whereMonth('day_offs.start_at', '=', date('m'))
+                ->whereYear('day_offs.start_at', '=', date('Y'))->first();
+        }
+
         return $data;
     }
 
@@ -259,7 +268,7 @@ class DayOffService extends AbstractService implements IDayOffService
     public function countDayOffUserLogin()
     {
         $user = Auth::user();
-        $total = $this->sumDayOff();
+        $total = $this->sumDayOff(null,null,false);
         $sumDayOffPreYear = RemainDayoff::where('user_id', $user->id)->where('year', (int)date('Y') - PRE_YEAR)->first();
         $sumDayOffCurrentYear = RemainDayoff::where('user_id', $user->id)->where('year', (int)date('Y'))->first();
         return $countDayyOff = [
@@ -276,9 +285,9 @@ class DayOffService extends AbstractService implements IDayOffService
      *
      * @return collection
      */
-    private function sumDayOff($month = null, $check = false)
+    private function sumDayOff($user_id=null,$month = null, $check = false)
     {
-        $user = Auth::user();
+        $user = $user_id ? User::findOrFail($user_id) : Auth::user();
         $total = 0;
         $monthSearch = $month ?? date('m');
         $yearSearch = $check ? (int)date('Y') - PRE_YEAR : date('Y');

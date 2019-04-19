@@ -130,11 +130,10 @@
                     renderCalendar(current_year, current_month);
                 },
                 show: function (el) {
-                    let currentMY = currentYear + "-" + currentMonth,
-                        calendarYM = calendar.sYear + "-" + calendar.sMth,
+                    let currentMY = parseInt(currentYear) + parseInt(currentMonth),
+                        calendarYM = calendar.sYear + calendar.sMth,
                         getDataTime = el.getAttribute("data-time");
                     if (parseInt(calendarYM) >= parseInt(currentMY)) {
-
                         calendar.sDay = el.getElementsByClassName("dayNumber")[0].innerHTML;
                         if (el.getElementsByClassName("data-id")[0]) {
                             let dataReason = el.getElementsByClassName("data-reason")[0].innerHTML,

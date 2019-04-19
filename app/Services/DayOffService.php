@@ -225,7 +225,7 @@ class DayOffService extends AbstractService implements IDayOffService
         if ($check){
             $data=[
               'countDayOffCurrenYear'=>$this->sumDayOff($id,null,false),
-              'countDayOffPreYear'=>$this->sumDayOff($id,12,true),
+              'countDayOffPreYear'=>$this->sumDayOff($id,TOTAL_MONTH_IN_YEAR,true),
             ];
             
         }else{

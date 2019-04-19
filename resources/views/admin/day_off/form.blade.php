@@ -186,14 +186,6 @@
 <!-- /.col-md-7 -->
 @push('footer-scripts')
     <script>
-        $(document).ready(function () {
-            var check = $('#check-status').attr('attr');
-            if (check == 1) {
-                $('.btn-save').remove();
-            }
-        })
-    </script>
-    <script>
         $(function () {
             myDateTimePicker($("#start_at, #end_at"));
         })

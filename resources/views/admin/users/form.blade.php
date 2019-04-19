@@ -1,5 +1,5 @@
 <?php
-$defaultStaffCode=' J'.(explode('J',\App\Models\User::max('staff_code'))[1]+1);
+$defaultStaffCode = "J" . str_pad((\App\Models\User::max('id') + 1), 3, '0', STR_PAD_LEFT);
 ?>
 <div class="col-md-5">
     <div class="row">
@@ -9,7 +9,7 @@ $defaultStaffCode=' J'.(explode('J',\App\Models\User::max('staff_code'))[1]+1);
                     <div class="form-group margin-b-5 margin-t-5{{ $errors->has('staff_code') ? ' has-error' : '' }}">
                         <label for="staff_code">Mã nhân viên *</label>
                         <input type="text" class="form-control" name="staff_code" placeholder="Nhập mã nhân viên"
-                               value="{{ $record->staff_code ?? $defaultStaffCode }}" readonly>
+                               value="{{ old('staff_code', $record->staff_code ?? $defaultStaffCode ) }}" required>
                         @if ($errors->has('staff_code'))
                             <span class="help-block">
                     <strong>{{ $errors->first('staff_code') }}</strong>

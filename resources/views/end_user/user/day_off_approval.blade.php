@@ -242,7 +242,6 @@
         @if(!empty($data))
             <form action="{{ route('edit_day_off_detail',['id'=>$data->id]) }}" method="post" id="edit-day-off">
                 @csrf
-                <input type="hidden" name="status" value="1">
                 <div class="modal fade modal-open" id="modal-form" tabindex="-1" role="dialog"
                      aria-labelledby="myModalLabel"
                      aria-hidden="true">

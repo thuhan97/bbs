@@ -145,8 +145,7 @@ $_createLink = route($baseResourceRoutesAlias . '.create', ['user_id' => $user->
                     <div class="box-body">
                         Năm {{date('Y')}}: Đã nghỉ nghỉ {{$totalDayOfff['countDayOffCurrenYear']}} ngày.
                         <br>
-                        Năm {{(int)date('Y') - 1}}: Đã nghỉ {{$totalDayOfff['countDayOffPreYear']}}
-                        /{{DAY_OFF_TOTAL}} ngày.
+                        Năm {{(int)date('Y') - 1}}:  {{$totalDayOfff['countDayOffPreYear'] ? 'Đã nghỉ'.$totalDayOfff['countDayOffPreYear'].'/'.DAY_OFF_TOTAL : ''}}
                         <hr>
                         Số ngày nghỉ phép còn
                         lại: {{ $remainDayOff ? $remainDayOff->remain : 0 }}

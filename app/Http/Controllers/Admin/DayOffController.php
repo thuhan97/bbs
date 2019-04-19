@@ -140,7 +140,9 @@ class DayOffController extends AdminBaseController
      */
     public function getRedirectAfterSave($record, $request,$isCreate = null)
     {
-        $this->service->calculateDayOff($request,$record->id);
+        if ($record->status == STATUS_DAY_OFF['active']){
+            $this->service->calculateDayOff($request,$record->id);
+        }
         return $this->redirectBackTo(route($this->getResourceRoutesAlias() . '.index'));
     }
 

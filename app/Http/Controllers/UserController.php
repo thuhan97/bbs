@@ -352,7 +352,9 @@ class UserController extends Controller
             'number_off' => 'required|numeric',
             'approve_comment' => 'nullable|min:1|max:255'
         ]);
+
         $this->userDayOffService->calculateDayOff($request,$id);
+
         return back()->with('success', __('messages.edit_day_off_successully'));
     }
 

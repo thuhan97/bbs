@@ -12,9 +12,10 @@
             </div>
             <!-- /.form-group -->
         </div>
-@if(isset($record->user_id ))
+
+        @if(isset($record->id ))
             <input type="hidden" name="user_id" value="{{ $record->user_id  }}">
-    @endif
+        @endif
         <div class="col-md-12">
             <div class="form-group margin-b-5 margin-t-5{{ $errors->has('title') ? ' has-error' : '' }}">
                 <label for="title">Tiêu đề</label>
@@ -108,7 +109,7 @@
             <div class="form-group margin-b-5 margin-t-5{{ $errors->has('number_off') ? ' has-error' : '' }}">
                 <label for="number_off">Số ngày nghỉ được tính (1 ngày hoặc nửa ngày) *</label>
                 <input type="text" class="form-control" name="number_off" placeholder="Số ngày phép bị trừ"
-                       value="{{ old('number_off', $record->number_off) }}" >
+                       value="{{ old('number_off', $record->number_off) }}">
 
                 @if ($errors->has('number_off'))
                     <span class="help-block">
@@ -137,27 +138,23 @@
                 <label for="status">
                     <?php
                     if(!isset($record->status)){
-                        $record->status = ACTIVE_STATUS;
+                        $record->status = STATUS_DAY_OFF['active'];
                     }
                     ?>
                      <span>
-                        <input type="radio" class="square-blue" name="status"
-                               value="1"
-                                {{ old('status', $record->status ) == 1 ? 'checked' : '' }} >
+                        <input type="radio" class="square-blue" name="status" value="1"{{ old('status', $record->status ) == STATUS_DAY_OFF['active'] ? 'checked' : '' }} >
                     Duyệt
                     </span>
                     <span style="padding: 15px">
-                        <input type="radio" class="square-blue" name="status"
-                               value="0" {{ old('status', $record->status ) ==0  ? 'checked' : '' }}>
+                        <input type="radio" class="square-blue" name="status" value="0" {{ old('status', $record->status ) == STATUS_DAY_OFF['abide'] ? 'checked' : '' }}>
                     Chờ duyệt
                     </span>
                     @if(isset($record->id))
-                    <span >
-                        <input type="radio" class="square-blue" name="status"
-                               value="2" {{ old('status', $record->status ) ==2  ? 'checked' : '' }}>
+                        <span>
+                        <input type="radio" class="square-blue" name="status" value="2" {{ old('status', $record->status ) ==STATUS_DAY_OFF['noActive']  ? 'checked' : '' }}>
                     Hủy duyệt
                     </span>
-                        @endif
+                    @endif
 
                 </label>
             </div>
@@ -165,11 +162,38 @@
         </div>
     </div>
 </div>
-
+@if(!isset($record->id) || $record->status ==STATUS_DAY_OFF['noActive'] )
+<div class="box-footer clearfix">
+    <!-- Edit Button -->
+    <div class="col-xs-6">
+        <div class="text-center margin-b-5 margin-t-5">
+            <button class="btn btn-info">
+                <i class="fa fa-save"></i> <span>Lưu</span>
+            </button>
+        </div>
+    </div>
+    <!-- /.col-xs-6 -->
+    <div class="col-xs-6">
+        <div class="text-center margin-b-5 margin-t-5">
+            <a href="{{ $_listLink }}" class="btn btn-default">
+                <i class="fa fa-ban"></i> <span>Hủy</span>
+            </a>
+        </div>
+    </div>
+    <!-- /.col-xs-6 -->
+</div>
+@endif
 <!-- /.col-md-7 -->
 @push('footer-scripts')
     <script>
-
+        $(document).ready(function () {
+            var check = $('#check-status').attr('attr');
+            if (check == 1) {
+                $('.btn-save').remove();
+            }
+        })
+    </script>
+    <script>
         $(function () {
             myDateTimePicker($("#start_at, #end_at"));
         })

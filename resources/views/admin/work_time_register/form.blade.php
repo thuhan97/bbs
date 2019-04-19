@@ -63,6 +63,7 @@ $currentId = intval(session('currentId'));
                                 </div>
                             </div>
                         </div>
+
                         <input type="text" class="form-control" id="{{$item}}_end" name="{{$item}}_end"
                                placeholder="Thời gian kết thúc"
                                value="{{ $addVarsForView['old_value']['type_3'][$item]['end_at'] }}" readonly="">
@@ -106,7 +107,7 @@ $currentId = intval(session('currentId'));
                 return '{{ $config['morning_start_end_at'] }}'
             }
 
-                minute = minute == 0 ? '00' : minute
+            minute = minute == 0 ? '00' : minute
             return hour + ':' + minute + ':00'
         }
 
@@ -124,7 +125,8 @@ $currentId = intval(session('currentId'));
                 showInputs: true,
                 showMeridian: false,
                 defaultTime: null,
-                showSeconds: true,
+                showSeconds: false,
+                timeFormat: 'hh:mm'
             })
 
             $('.timepicker').timepicker().on('changeTime.timepicker', function (e) {

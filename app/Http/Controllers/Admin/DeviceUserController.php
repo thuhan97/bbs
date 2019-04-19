@@ -2,16 +2,11 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Controllers\Controller;
 use App\Models\Device;
 use App\Models\DeviceUser;
 use App\Repositories\Contracts\IDeviceRepository;
 use App\Repositories\Contracts\IDeviceUserRepository;
-use App\Repositories\Contracts\IUserRepository;
-use App\Services\Contracts\IDeviceService;
 use App\Services\Contracts\IDeviceUserService;
-use App\Traits\Controllers\ResourceController;
-use App\Transformers\DeviceTransformer;
 use App\User;
 use Illuminate\Http\Request;
 
@@ -19,6 +14,9 @@ use Illuminate\Http\Request;
  * DeviceUserController
  * Author: jvb
  * Date: 2019/03/12 02:45
+ *
+ * @property IDeviceRepository  deviceRepository
+ * @property IDeviceUserService service
  */
 class DeviceUserController extends AdminBaseController
 {
@@ -92,9 +90,9 @@ class DeviceUserController extends AdminBaseController
      *
      * @return \Illuminate\Http\Response
      */
-    public function allocate($id) {
+    public function allocate($id)
+    {
         $record = Device::where('id', $id)->select('id as devices_id', 'types_device_id')->first();
-        $this->authorize('create', $this->getResourceModel());
         $users = User::all('id', 'name');
         $devices = Device::all('id', 'name', 'types_device_id');
         $class = $this->getResourceModel();
@@ -116,7 +114,6 @@ class DeviceUserController extends AdminBaseController
      */
     public function create(Request $request)
     {
-        $this->authorize('create', $this->getResourceModel());
         $users = User::all('id', 'name');
         $devices = Device::all('id', 'name', 'types_device_id');
         $class = $this->getResourceModel();
@@ -167,15 +164,13 @@ class DeviceUserController extends AdminBaseController
      */
     public function store(Request $request)
     {
-
-        $this->authorize('create', $this->getResourceModel());
         $devicesId = $request->get('devices_id');
         $device = $this->deviceRepository->findOne($devicesId);
         \DB::beginTransaction();
         if ($device->final > 0) {
             $dataUpdate = [
-                'month_of_use' => (int) $device['month_of_use'] + 1,
-                'final' => (int) $device['final'] - 1
+                'month_of_use' => (int)$device['month_of_use'] + 1,
+                'final' => (int)$device['final'] - 1
             ];
             $this->deviceRepository->update($device, $dataUpdate);
             $valuesToSave = $this->getValuesToSave($request);

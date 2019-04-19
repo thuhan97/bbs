@@ -5,6 +5,8 @@
     {{ Form::select('year', get_years(), request('year'), ['class'=>'mr-1 w-22 form-control']) }}
     {{ Form::select('month', get_months(), request('month'), ['class'=>'w-22 form-control']) }}
 
+    <input type="hidden" name="user_id" value="{{request('user_id')}}">
+
     <div class="input-group-btn">
         <button type="submit" class="btn btn-primary"><i class="fa fa-search"></i> Tìm kiếm</button>
     </div>

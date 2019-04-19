@@ -29,7 +29,7 @@ class DayOffRequest extends FormRequest
             'reason' => 'required|max:1000',
             'start_at' => 'required|date',
             'end_at' => 'required|date|after_or_equal:start_at',
-            'status' => 'required|numeric|min:0|max:1',
+            'status' => 'required|numeric|between:0,2',
             'user_id' => 'required|exists:users,id',
             'approver_id' => ['nullable',
                 Rule::exists('users', 'id')->where(function ($query) {

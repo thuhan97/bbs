@@ -46,11 +46,17 @@
                 <td class="text-right">{{ $record->start_at }}</td>
                 <td class="text-right">{{ $record->end_at }}</td>
                 <td class="text-right">{{ $record->created_at }}</td>
-                @if ($record->status == 1)
-                    <td class="text-center"><span class="label label-info">Yes</span></td>
-                @else
-                    <td class="text-center"><span class="label label-warning">No</span></td>
-            @endif
+                <td class="text-center">
+                    @if($record->status == STATUS_DAY_OFF['abide'])
+                        <span class="label label-warning">No</span>
+                    @elseif($record->status == STATUS_DAY_OFF['active'])
+                        <span class="label label-info">Yes</span>
+                    @else
+                        <span class="label label-danger">close</span>
+                    @endif
+                </td>
+
+
 
             <!-- we will also add show, edit, and delete buttons -->
                 <td>

@@ -1,25 +1,17 @@
 <div class="table-responsive list-records">
     <table class="table table-hover table-bordered">
-        <colgroup>
-            <col style="width: 30px">
-            <col style="width: 200px">
-            <col style="">
-            <col style="width: 180px">
-            <col style="width: 180px">
-            <col style="width: 180px">
-            <col style="width: 70px">
-        </colgroup>
         <thead>
-        <th style="width: 10px;">
+        <th>
             <button type="button" class="btn btn-default btn-sm checkbox-toggle"><i class="fa fa-square-o"></i></button>
         </th>
+        <th>Thứ</th>
         <th>Ngày</th>
         <th>Nhân viên</th>
         <th>Checkin</th>
         <th>Checkout</th>
         <th>Chú thích</th>
         <th>Giải trình</th>
-        <th style="width: 100px;">Chức năng</th>
+        <th>Chức năng</th>
         </thead>
         <tbody>
         @foreach ($records as $record)
@@ -33,6 +25,11 @@
             <tr>
                 <td class="text-center"><input type="checkbox" name="ids[]" value="{{ $record->id }}"
                                                class="square-blue chkDelete"></td>
+                <td class="w-10">
+                    @php($day = date_format(date_create($record->work_day) , 'N') + 1)
+                    {{ $day == 8 ? 'Chủ nhật' : $day }}
+
+                </td>
                 <td class="w-10">{{ $record->work_day }}</td>
                 <td class="table-text">
                     <a href="{{ $userLink }}">{{ $record->user->name ?? '' }}</a>
@@ -51,6 +48,9 @@
                             break;
                         case 1:
                             $typeClass = 'danger';
+                            break;
+                        case -1:
+                            $typeClass = 'disable';
                             break;
                     }
                     ?>

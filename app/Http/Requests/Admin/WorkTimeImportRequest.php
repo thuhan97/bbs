@@ -25,7 +25,9 @@ class WorkTimeImportRequest extends FormRequest
     {
         return [
             'year' => 'required',
-            'month' => 'required',
+            'month' => 'required_without:start_date',
+            'start_date' => 'nullable|date',
+            'end_date' => 'nullable|required_with:start_date|date|after:start_date',
             'import_file' => 'required',
         ];
     }
@@ -34,6 +36,8 @@ class WorkTimeImportRequest extends FormRequest
     {
         return [
             'import_file' => 'bảng chấm công',
+            'start_date' => 'từ ngày',
+            'end_date' => 'đến ngày',
         ];
     }
 }

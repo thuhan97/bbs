@@ -101,10 +101,12 @@
 @push('extend-js')
     <script type="text/javascript">
         $(function () {
-            var date = new Date();
-            var current_year = date.getFullYear(), current_month = date.getMonth();
-            var month = document.getElementById("chooseMonth");
-            var year = document.getElementById("chooseYear");
+            var date = new Date(),
+                current_year = date.getFullYear(), current_month = date.getMonth(),
+                month = document.getElementById("chooseMonth"),
+                year = document.getElementById("chooseYear");
+            const currentMonth = date.getMonth();
+            const currentYear = date.getFullYear();
 
             var showCalendar = function () {
                 current_year = $("#chooseYear").val();
@@ -112,6 +114,7 @@
                 showCalendar();
                 renderCalendar(current_year, current_month);
             };
+
             $("#chooseMonth, #chooseYear").change(showCalendar);
             var calendar = {
                 mName: ["Tháng 01", "Tháng 02", "Tháng 03", "Tháng 04", "Tháng 05", "Tháng 06", "Tháng 07", "Tháng 08", "Tháng 09", "Tháng 10", "Tháng 11", "Tháng 12"],
@@ -127,18 +130,17 @@
                     renderCalendar(current_year, current_month);
                 },
                 show: function (el) {
-                    const getCurrentTime = new Date();
-                    const currentMY = getCurrentTime.getFullYear() + "-" + getCurrentTime.getMonth();
-                    const calendarYM = calendar.sYear + "-" + calendar.sMth;
-                    const getTimeCalendar = el.getAttribute("calendar-time");
-                    const getDataTime = el.getAttribute("data-time");
-                    if (calendarYM >= currentMY) {
+                    let currentMY = currentYear + "-" + currentMonth,
+                        calendarYM = calendar.sYear + "-" + calendar.sMth,
+                        getDataTime = el.getAttribute("data-time");
+                    if (parseInt(calendarYM) >= parseInt(currentMY)) {
+
                         calendar.sDay = el.getElementsByClassName("dayNumber")[0].innerHTML;
                         if (el.getElementsByClassName("data-id")[0]) {
-                            var dataReason = el.getElementsByClassName("data-reason")[0].innerHTML;
-                            var dataID = el.getElementsByClassName("data-id")[0].innerHTML;
-                            var dataWorkDay = el.getElementsByClassName("data-work-day")[0].innerHTML;
-                            var dataUserID = el.getElementsByClassName("data-user-id")[0].innerHTML;
+                            let dataReason = el.getElementsByClassName("data-reason")[0].innerHTML,
+                                dataID = el.getElementsByClassName("data-id")[0].innerHTML,
+                                dataWorkDay = el.getElementsByClassName("data-work-day")[0].innerHTML,
+                                dataUserID = el.getElementsByClassName("data-user-id")[0].innerHTML;
                             document.getElementById("div-reason").innerHTML =
                                 '<div class="row col-md-12">' +
                                 '<div class="col-md-12 d-flex justify-content-center">' +
@@ -148,24 +150,6 @@
                                 '<textarea class="form-control" name="reason" rows="6" placeholder="Nội dung bạn muốn gửi...">' + dataReason + '</textarea>' +
                                 '</div>' +
                                 '<div class="row col-md-12">' +
-                                '</div>' +
-                                '</div>';
-                        } else if (getTimeCalendar > currentMY + '-' + getCurrentTime.getDate()) {
-                            document.getElementById("div-reason").innerHTML =
-                                '<div class="row col-md-12">' +
-                                '<input hidden name="work_day" value="' + getDataTime + '">' +
-                                '<div class="col-md-12 d-flex justify-content-center">' +
-                                '<textarea class="form-control" name="reason" rows="6" placeholder="Nội dung bạn muốn gửi...">The next day</textarea>' +
-                                '</div>' +
-                                '<div class="row col-md-12 d-flex justify-content-center ml-1  mt-4">' +
-                                '<div class="form-group col-md-6">' +
-                                '<label for="start_at">Giờ đến công ty *</label>\n' +
-                                '<input type="time" class="form-control pull-right" id="start_at" name="start_at" autocomplete="off">' +
-                                '</div>' +
-                                '<div class="form-group col-md-6">' +
-                                '<label for="end_at">Giờ rời công ty *</label>\n' +
-                                '<input type="time" class="form-control pull-right" id="end_at" name="end_at" autocomplete="off">' +
-                                '</div>' +
                                 '</div>' +
                                 '</div>';
                         } else {
@@ -184,16 +168,14 @@
                 },
             };
             window.addEventListener("load", function () {
-                var now = new Date(),
-                    nowMth = now.getMonth(),
-                    nowYear = parseInt(now.getFullYear());
+                nowYear = parseInt(currentYear);
 
                 for (var i = 0; i < 12; i++) {
                     var opt = document.createElement("option");
                     opt.value = calendar.valMonth[i];
                     opt.setAttribute("data-type", calendar.getValMonth[i]);
                     opt.innerHTML = calendar.mName[i];
-                    if (i == nowMth) {
+                    if (i == currentMonth) {
                         opt.selected = true;
                     }
                     month.appendChild(opt);
@@ -262,26 +244,23 @@
                 cRow = document.createElement("tr");
                 cRow.classList.add("calendar-body");
 
-                var total = squares.length;
-                var daysOfNextMonth = 1;
-                var valYear = year.options[year.selectedIndex].value;
-                var inputMonth = month.options[month.selectedIndex];
-                var valMonth = inputMonth.value;
-                var getValMonth = inputMonth.dataset.type;
-                var lastDateOfLastMonth = valMonth == 0 ? new Date(valYear - 1, 12, 0).getDate() : new Date(valYear, valMonth, 0).getDate();
-                var firstDayOfCurrentMonth = new Date(valYear, valMonth, 0).getDay();
-                var dayOfLastMonth = lastDateOfLastMonth - firstDayOfCurrentMonth;
+                var total = squares.length,
+                    daysOfNextMonth = 1,
+                    valYear = year.options[year.selectedIndex].value,
+                    inputMonth = month.options[month.selectedIndex],
+                    valMonth = inputMonth.value,
+                    getValMonth = inputMonth.dataset.type,
+                    lastDateOfLastMonth = valMonth == 0 ? new Date(valYear - 1, 12, 0).getDate() : new Date(valYear, valMonth, 0).getDate(),
+                    firstDayOfCurrentMonth = new Date(valYear, valMonth, 0).getDay(),
+                    dayOfLastMonth = lastDateOfLastMonth - firstDayOfCurrentMonth;
 
                 for (var i = 0; i < total; i++) {
                     cCell = document.createElement("td");
                     cCell.classList.add("calendar-td-body");
-                    var dates = new Date();
-                    var getCurrentMonth = dates.getMonth().toString();
-                    var getCurrentYear = dates.getFullYear().toString();
-                    var selectMonthYear = valYear + "-" + valMonth;
-                    var currentMonthYear = getCurrentYear + "-" + getCurrentMonth;
+                    var selectMonthYear = valYear + "-" + valMonth,
+                        currentMonthYear = currentMonth.toString() + "-" + currentMonth.toString();
                     if (selectMonthYear === currentMonthYear) {
-                        var current_day = dates.getDay();
+                        var current_day = date.getDay();
                         var cells = document.getElementById('calendar').getElementsByTagName('td');
                         cells[current_day].style.backgroundColor = '#222222';
                         cells[current_day].style.color = '#f4f4f4';
@@ -300,12 +279,6 @@
                         });
                         var n = squares[i].toString().length;
                         if (n < 2) {
-                            var daySquares = "0" + squares[i];
-                            var dataDate = valYear + "-" + getValMonth + "-" + daySquares;
-                        } else {
-                            var dataDate = valYear + "-" + getValMonth + "-" + squares[i];
-                        }
-                        if (n < 2) {
                             cCell.innerHTML = "<div class='dayNumber'>" + "0" + squares[i] + "</div>";
                             cCell.setAttribute("data-time", valYear + "-" + getValMonth + "-" + "0" + squares[i]);
                             cCell.setAttribute("calendar-time", valYear + "-" + valMonth + "-" + squares[i]);
@@ -323,7 +296,7 @@
                         cRow.classList.add("calendar-body");
                     }
                 }
-            }
+            };
             var renderCalendar = function (year, month) {
                 $.ajax({
                     url: '/thoi-gian-lam-viec-api',
@@ -334,13 +307,12 @@
                         month: parseInt(current_month) + 1,
                     },
                     success: (respond) => {
-                        const dataRes = respond.data;
-                        const dataType = respond.dataType;
-                        const dataModal = respond.dataModal;
+                        let dataRes = respond.data,
+                            dataModal = respond.dataModal;
 
                         dataRes.forEach(function (data) {
-                            const work_day = data.work_day;
-                            const work_time = data.start_at + ' - ' + data.end_at;
+                            let work_day = data.work_day,
+                                work_time = data.start_at + ' - ' + data.end_at;
                             $('.calendar-td-body').each(function () {
                                 const data_time = $(this).data('time');
                                 if (data_time === work_day) {
@@ -364,11 +336,11 @@
                                 }
                             });
                         });
-                        var type_1 = $('#calendar .data-type-1').length;
-                        var type_2 = $('#calendar .data-type-2').length;
-                        var type_4 = $('#calendar .data-type-4').length;
-                        var type_5 = $('#calendar .data-type-5').length;
-                        var earlyLate = type_1 + type_2;
+                        let type_1 = $('#calendar .data-type-1').length,
+                            type_2 = $('#calendar .data-type-2').length,
+                            type_4 = $('#calendar .data-type-4').length,
+                            type_5 = $('#calendar .data-type-5').length,
+                            earlyLate = type_1 + type_2;
                         $("#btn-early-late").text('Số buổi đi muộn/sớm: ' + earlyLate);
                         $("#btn-ot").text('Số buổi đi OT: ' + type_4);
                         $("#btn-late-ot").text('Số buổi đi muộn + OT: ' + type_5);

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Admin\WorkTimeRequest;
 use App\Http\Requests\CreateDayOffRequest;
 use App\Http\Requests\DayOffRequest;
 use App\Http\Requests\ProfileRequest;
@@ -151,6 +152,7 @@ class UserController extends Controller
                     'work_day' => $item['work_day'],
                     'type' => $item['type'],
                     'note' => $item['note'],
+                    'user_id' => $item['user_id'],
                     'id' => $item['id'],
                 ];
             }
@@ -161,6 +163,32 @@ class UserController extends Controller
             'data' => $calendarData,
             'dataModal' => $calendarDataModal
         ]);
+    }
+
+    /**
+     * Create or edit work time calendar
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function dayOffCreateCalendar(WorkTimeRequest $request)
+    {
+        $id = $request['id'];
+        $reason = $request['reason'];
+        $userID = $request['user_id'];
+        $workDay = $request['work_day'];
+        if ($id) {
+            WorkTimesExplanation::where('user_id', $userID)->where('work_day', $workDay)->update(['note' => $reason]);
+            return back()->with('day_off_success', '');
+        } else {
+            WorkTimesExplanation::create([
+                'user_id' => Auth::id(),
+                'work_day' => $request['work_day'],
+                'type' => 0,
+                'note' => $reason
+            ]);
+            return back()->with('day_off_success', 'day_off_success');
+        }
     }
 
     //
@@ -274,45 +302,29 @@ class UserController extends Controller
      */
     public function dayOffCreate(createDayOffRequest $request)
     {
-        $dayOff=new DayOff();
+        $dayOff = new DayOff();
         $dayOff->fill($request->all());
-        $dayOff->user_id=Auth::id();
+        $dayOff->user_id = Auth::id();
         $dayOff->save();
-        return back()->with('day_off_success','');
-    }
-
-    public function dayOffCreateCalendar(Request $request)
-    {
-        $id = $request['id'];
-        $reason = $request['reason'];
-        $idUser = Auth::id();
-        if ($id) {
-            WorkTimesExplanation::where('id', $id)->update(['note' => $reason]);
-        } else {
-            WorkTimesExplanation::create([
-                'user_id' => $idUser,
-                'work_day' => $request['work_day'],
-                'type' => 0,
-                'note' => $reason
-            ]);
-        }
         return back()->with('day_off_success', '');
     }
 
     public function dayOffSearch(Request $request)
     {
-        $year=$request->year;
-        $month=$request->month;
-        $status=$request->status;
-        $search=$request->search;
+        $year = $request->year;
+        $month = $request->month;
+        $status = $request->status;
+        $search = $request->search;
 
         $dataDayOff = $this->userDayOffService->showList(null);
-        $dayOffSearch= $this->userDayOffService->getDataSearch($year,$month ,$status,$search);
+        $dayOffSearch = $this->userDayOffService->getDataSearch($year, $month, $status, $search);
         return view('end_user.user.day_off_approval', compact(
-            'dataDayOff','dayOffSearch','year','month','status','search'
+            'dataDayOff', 'dayOffSearch', 'year', 'month', 'status', 'search'
         ));
     }
-    public function dayOffShow($status){
+
+    public function dayOffShow($status)
+    {
 
         $dataDayOff = $this->userDayOffService->showList($status);
         return view('end_user.user.day_off_approval', compact(
@@ -352,9 +364,7 @@ class UserController extends Controller
             'number_off' => 'required|numeric',
             'approve_comment' => 'nullable|min:1|max:255'
         ]);
-
         $this->userDayOffService->calculateDayOff($request,$id);
-
         return back()->with('success', __('messages.edit_day_off_successully'));
     }
 

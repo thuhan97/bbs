@@ -256,6 +256,18 @@ if (!function_exists('getStartAndEndDate')) {
         return $ret;
     }
 }
+if (!function_exists('getStartAndEndDateOfMonth')) {
+    function getStartAndEndDateOfMonth($month, $year)
+    {
+        $dto = new DateTime();
+        $dto->setDate($year, $month, 1);;
+
+        return [
+            $dto->format('Y-m-01'),
+            $dto->format('Y-m-t'),
+        ];
+    }
+}
 if (!function_exists('get_years')) {
     /**
      * Encode unicode
@@ -391,3 +403,20 @@ if (!function_exists('users')) {
         return ['' => 'Chọn nhân viên'] + $teams;
     }
 }
+
+/**
+ * @param $number
+ *
+ * @return number
+ */
+
+function checkNumber($number)
+{
+    $explode=explode('.',$number);
+    if ($explode[1] > 0){
+        return $number;
+    }else{
+        return $explode[0];
+    }
+}
+

@@ -23,11 +23,14 @@ class WorkTimeRequest extends FormRequest
      */
     public function rules()
     {
-        return [
-            'start_at' => 'required|date_format:H:i',
-            'end_at' => 'required|after:start_at|date_format:H:i',
-            'work_day' => 'required|date',
-        ];
+        $datas = $this->request->all();
+        $rules = [];
+        if (isset($datas['start_at']) || empty($datas)) {
+            $rules['work_day'] = 'required|date';
+            $rules['start_at'] = 'required|date_format:H:i';
+            $rules['end_at'] = 'required|after:start_at|date_format:H:i';
+        }
+        return $rules;
     }
 
     public function attributes()
@@ -42,7 +45,7 @@ class WorkTimeRequest extends FormRequest
     public function messages()
     {
         return [
-            'end_at.after'=> 'Trường :attribute phải lớn hơn ngày bắt đầu'
+            'end_at.after' => 'Trường :attribute phải lớn hơn giờ checkin'
         ];
     }
 }

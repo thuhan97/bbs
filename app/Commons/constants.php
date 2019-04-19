@@ -116,7 +116,14 @@ define('PART_OF_THE_DAY', [
     'fri',
     'sat',
 ]);
-
+define('PART_OF_THE_DAY_NAME', [
+    'mon' => 'Thứ 2',
+    'tue' => 'Thứ 3',
+    'wed' => 'Thứ 4',
+    'thu' => 'Thứ 5',
+    'fri' => 'Thứ 6',
+    'sat' => 'Thứ 7',
+]);
 define('STATUS_PROJECT', [
     0 => 'Chưa bắt đầu',
     1 => 'Đang phát triển',
@@ -192,7 +199,7 @@ define('MONTH', [
     '01' => 'Tháng 1',
     '02' => 'Tháng 2',
     '03' => 'Tháng 3',
-    '04'=> 'Tháng 4',
+    '04' => 'Tháng 4',
     '05' => 'Tháng 5',
     '06' => 'Tháng 6',
     '07' => 'Tháng 7',
@@ -204,9 +211,9 @@ define('MONTH', [
 ]);
 define('SHOW_DAY_OFFF', [
     0 => 'Chờ Duyệt',
-    1=> 'Đã duyệt',
-    2=> 'Không duyệt',
-    3=>'Tất cả đơn'
+    1 => 'Đã duyệt',
+    2 => 'Không duyệt',
+    3 => 'Tất cả đơn'
 ]);
 
 define('STATUS_DAY_OFF', [
@@ -240,3 +247,6 @@ define('ON_TIME_USER','Đi làm đúng giờ');
 define('LATE_EARLY_USER','Đi làm muộn/sớm');
 define('OT_USER','OT');
 define('LATE_OT_USER','Đi làm muộn + OT');
+define('TOTAL_MONTH_IN_YEAR',12);
+define('OFF_TIME', '00:00:00');
+define('SWITCH_TIME', '12:00:00');

@@ -19,12 +19,12 @@
     </li>
     <li class="{{ \App\Utils::checkRoute(['admin::teams.index', 'admin::teams.create', 'admin::teams.edit', 'admin::teams.show']) ? 'active': '' }}">
         <a href="{{ route('admin::teams.index') }}">
-            <i class="fa fa-user"></i> <span>Nhóm</span>
+            <i class="fa fa-users"></i> <span>Nhóm</span>
         </a>
     </li>
     <li class="{{ \App\Utils::checkRoute(['admin::projects.index', 'admin::projects.create', 'admin::projects.edit', 'admin::projects.show']) ? 'active': '' }}">
         <a href="{{ route('admin::projects.index') }}">
-            <i class="fa fa-user"></i> <span>Dự án</span>
+            <i class="fa fa-anchor"></i> <span>Dự án</span>
         </a>
     </li>
     <li class="{{ \App\Utils::checkRoute(['admin::events.index', 'admin::events.create', 'admin::events.edit']) ? 'active': '' }}">
@@ -68,23 +68,38 @@
             <li><a href="{{ route('admin::day_offs.index') }}"><i class="fa fa-circle"></i> Nghỉ phép</a></li>
             <li><a href="{{ route('admin::work_times.index') }}"><i class="fa fa-circle"></i> Thời gian làm việc</a></li>
             <li><a href="{{ route('admin::over_times.index') }}"><i class="fa fa-circle"></i> Làm thêm</a></li>
+
             <li><a href="{{ route('admin::work_time_register.index') }}"><i class="fa fa-circle"></i>Đăng ký thời gian làm việc</a></li>
             <li><a href="{{ route('admin::work_time_statistic.index') }}"><i class="fa fa-circle"></i>Thống kê thời gian làm việc</a></li>
+
+            <li><a href="{{ route('admin::work_time_register.index') }}"><i class="fa fa-circle"></i>Đăng ký thời gian
+                    làm việc</a></li>
+
         </ul>
     </li>
-    <li class="{{ \App\Utils::checkRoute(['admin::devices.index', 'admin::devices.create', 'admin::devices.edit']) ? 'active': '' }}">
-        <a href="{{ route('admin::devices.index') }}">
-            <i class="fa fa-share-alt"></i> <span>Quản lý thiết bị</span>
+    <li class="treeview {{ \App\Utils::checkRoute([
+    'admin::devices.index',
+    'admin::devices.create',
+    'admin::devices.edit',
+    'admin::deviceusers.index',
+    'admin::deviceusers.create',
+    'admin::deviceusers.edit',
+    ]) ? 'active': '' }}">
+        <a href="#">
+            <i class="fa fa-desktop"></i>
+            <span>Quản lý thiết bị</span>
+            <span class="pull-right-container">
+                <i class="fa fa-angle-left pull-right"></i>
+            </span>
         </a>
-    </li>
-    <li class="{{ \App\Utils::checkRoute(['admin::deviceusers.index', 'admin::deviceusers.create', 'admin::deviceusers.edit']) ? 'active': '' }}">
-        <a href="{{ route('admin::deviceusers.index') }}">
-            <i class="fa fa-share-alt"></i> <span>Cấp thiết bị</span>
-        </a>
+        <ul class="treeview-menu">
+            <li><a href="{{ route('admin::devices.index') }}"><i class="fa fa-circle"></i> Quản lý thiết bị</a></li>
+            <li><a href="{{ route('admin::deviceusers.index') }}"><i class="fa fa-circle"></i> Cấp thiết bị</a></li>
+        </ul>
     </li>
     <li class="{{ \App\Utils::checkRoute(['admin::meetings.index', 'admin::meetings.create', 'admin::meetings.edit']) ? 'active': '' }}">
         <a href="{{ route('admin::meetings.index') }}">
-            <i class="fa fa-calendar"></i> <span>Phòng họp</span>
+            <i class="fa fa-bank"></i> <span>Phòng họp</span>
         </a>
     </li>
 </ul>

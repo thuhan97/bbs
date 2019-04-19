@@ -88,10 +88,14 @@ interface IDayOffService extends IBaseService
     /**
      * @return mixed Collection
      */
-    public function countDayOff($id);
+    public function countDayOff($id,$check=false);
     /**
      * @return mixed Collection
      */
     public function countDayOffUserLogin();
+    /**
+     * @return mixed Collection
+     */
+    public function calculateDayOff($request,$id);
 
 }

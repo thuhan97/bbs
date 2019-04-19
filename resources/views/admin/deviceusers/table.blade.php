@@ -1,31 +1,33 @@
 <div class="table-responsive list-records">
     <table class="table table-hover table-bordered dataTable">
         <thead>
-        <th style="width: 10px;">
-            <button type="button" class="btn btn-default btn-sm checkbox-toggle"><i class="fa fa-square-o"></i></button>
-        </th>
-        <th style="width: 10%;" class="no-wap">
-            Nhân viên
-            {!! __admin_sortable('userName') !!}
-        </th>
-        <th style="width: 12%;">
-            Tên thiết bị
-            {!! __admin_sortable('devicesName') !!}
-        </th>
-        <th style="width: 9%;">Mã thiết bị
-            {!! __admin_sortable('code') !!}
-        </th>
+        <tr>
+            <th style="width: 10px;">
+                <button type="button" class="btn btn-default btn-sm checkbox-toggle"><i class="fa fa-square-o"></i>
+                </button>
+            </th>
+            <th style="width: 10%;" class="no-wap">
+                Nhân viên
+                {!! __admin_sortable('userName') !!}
+            </th>
+            <th style="width: 12%;">
+                Tên thiết bị
+                {!! __admin_sortable('devicesName') !!}
+            </th>
+            <th style="width: 9%;">Mã thiết bị
+                {!! __admin_sortable('code') !!}
+            </th>
 
-        <th style="width: 9%;">Ngày cấp
-            {!! __admin_sortable('allocate_date') !!}
-        </th>
-        <th style="width: 9%;">Ngày trả
-            {!! __admin_sortable('return_date') !!}
-        </th>
-        <th>Ghi chú
-            {!! __admin_sortable('note') !!}
-        </th>
-        <th style="width: 120px;">Chức năng</th>
+            <th style="width: 9%;">Ngày cấp
+                {!! __admin_sortable('allocate_date') !!}
+            </th>
+            <th style="width: 9%;">Ngày trả
+                {!! __admin_sortable('return_date') !!}
+            </th>
+            <th>Ghi chú
+            </th>
+            <th style="width: 120px;">Chức năng</th>
+        </tr>
         </thead>
         <tbody>
         <?php
@@ -44,8 +46,8 @@
                 <td>{{ $record->userName }}</td>
                 <td>{{ $record->devicesName }}</td>
                 <td>{{ $record->code }}</td>
-                <td>{{ $record->allocate_date | date(DATE_FORMAT) }}</td>
-                <td>{{ $record->return_date ?  $record->return_date | date(DATE_FORMAT) : ''}}</td>
+                <td class="text-right">{{ date(DATE_FORMAT, strtotime($record->allocate_date)) }}</td>
+                <td class="text-right">{{ $record->return_date ? date(DATE_FORMAT, strtotime($record->return_date)) : ''}}</td>
 
                 <td>{{ $record->note }}</td>
                 <td>

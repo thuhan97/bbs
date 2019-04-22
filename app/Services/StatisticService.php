@@ -54,7 +54,7 @@ class StatisticService extends AbstractService implements IStatisticService
 
         //$type_search = $this->_getConditon($request);
 
-        $search_type = $request->get('statistics') ? $request->get('statistics'): 1;
+        $search_type = $request->get('statistics', 1);
         if ($search_type == self::TYPE_ONE) {
             if ($date) {
                 $date = explode('/', $date);
@@ -64,19 +64,8 @@ class StatisticService extends AbstractService implements IStatisticService
                 $model = $model->whereDate('work_day', date('Y-m-d'));
             }
         } elseif ($search_type == self::TYPE_TWO) {
-            if ($week) {
-                $explode = explode(' - ', $week);
-                foreach ($explode as $index => $item) {
-                    $item = explode('/', $item);
-                    $item = implode('-', array_reverse($item, true));
-                    $explode[$index] = $item;
-                }
-                if (isset($explode[0])) {
-                    $model = $model->whereDate('work_day', '>=', $explode[0]);
-                }
-                if (isset($explode[1])) {
-                    $model = $model->whereDate('work_day', ' <= ', $explode[1]);
-                }
+            if ($month) {
+                $model = $model->whereMonth('work_day', $month);
             }
             // team
             $team_id = $request->get('team_id');
@@ -151,35 +140,5 @@ class StatisticService extends AbstractService implements IStatisticService
         }
         $model->selectRaw('count(*) as xx')->groupBy('work_times.type');
         return $model->search($search)->get()->toArray();
-    }
-
-
-    /**
-     * @param $request
-     * @return int
-     */
-    private function _getConditon($request)
-    {
-        // Month
-        $month = $request->get('month');
-        // Week
-        $week = $request->get('week');
-        // Date
-        $date = $request->get('date');
-        if (isset($month) && isset($week) && isset($date)) {
-            return 1;
-        } elseif (isset($month) && isset($week) && !isset($date)) {
-            return 2;
-        } elseif (isset($month) && !isset($week) && !isset($date)) {
-            return 3;
-        } elseif (!isset($month) && isset($week) && isset($date)) {
-            return 4;
-        } elseif (!isset($month) && !isset($week) && isset($date)) {
-            return 5;
-        } elseif (!isset($month) && isset($week) && !isset($date)) {
-            return 6;
-        } else {
-            return 7;
-        }
     }
 }

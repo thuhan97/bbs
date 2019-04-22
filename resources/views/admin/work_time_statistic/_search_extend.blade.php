@@ -3,7 +3,7 @@
     <div class="col-xs-2 pd-r-0">
         <div class="input-group">
             <div class="input-group-btn statistic_year">
-                {{ Form::select('year', get_years($num = 5, $prefix = '', $isDesc = true, $istatic = true), request('year'), ['class'=>'form-control title_year']) }}
+                {{ Form::select('year', get_years($num = 5, $prefix = '', $isDesc = true, $noHeading = true), request('year'), ['class'=>'form-control title_year']) }}
             </div>
                 {{ Form::select('month', get_months(), request('month'), ['class'=>'form-control', 'id' => 'month']) }}
         </div>

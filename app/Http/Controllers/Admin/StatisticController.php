@@ -463,11 +463,11 @@ class StatisticController extends AdminBaseController
             $objPHPExcel->getActiveSheet()->getStyle('A1:F' . (count($user_team) + 1))->applyFromArray($styleArray);
         } else {
             foreach ($arr as $key => $val) {
-                $time = $val['work_date'] . $val['start'] . ' - ' . $val['end'];
+                $time = ' ' .$val['work_date'] . $val['start'] . '-' . $val['end'];
                 $objPHPExcel->setActiveSheetIndex(0)
                     ->setCellValue('A' . $rows, $time)
                     ->getColumnDimension('A')
-                    ->setWidth(15);
+                    ->setWidth(10);
 
                 // normal
                 if ($val['type'] == Statistics::TYPES['normal']) {
@@ -494,7 +494,6 @@ class StatisticController extends AdminBaseController
                 }
 
                 // lately_ot
-
                 if ($val['type'] == Statistics::TYPES['lately_ot']) {
                     $objPHPExcel->setActiveSheetIndex(0)
                         ->setCellValue('E' . $rows, 'x')
@@ -511,8 +510,9 @@ class StatisticController extends AdminBaseController
                 $rows++;
             }
             $objPHPExcel->getActiveSheet()->getStyle('B2:F1' . (count($arr) + 1))->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
-            $objPHPExcel->getActiveSheet()->getStyle('A1:F' . (count($arr) + 1))->applyFromArray($styleArray);
-            $objPHPExcel->getActiveSheet()->getStyle('A2:A1' . (count($arr) + 1))->getAlignment()->setWrapText(true);
+            $objPHPExcel->getActiveSheet()->getStyle('A1:F' . (count($arr) + 1))->applyFromArray($styleArray)->getAlignment()->setVertical(PHPExcel_Style_Alignment::VERTICAL_CENTER);
+            $objPHPExcel->getActiveSheet()->getStyle('A2:A1' . (count($arr) + 1))->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER)
+                ->setWrapText(true);
         }
 
 

@@ -54,7 +54,7 @@ class StatisticService extends AbstractService implements IStatisticService
 
         //$type_search = $this->_getConditon($request);
 
-        $search_type = $request->get('statistics') ? $request->get('statistics'): 1;
+        $search_type = $request->get('statistics', 1);
         if ($search_type == self::TYPE_ONE) {
             if ($date) {
                 $date = explode('/', $date);
@@ -140,35 +140,5 @@ class StatisticService extends AbstractService implements IStatisticService
         }
         $model->selectRaw('count(*) as xx')->groupBy('work_times.type');
         return $model->search($search)->get()->toArray();
-    }
-
-
-    /**
-     * @param $request
-     * @return int
-     */
-    private function _getConditon($request)
-    {
-        // Month
-        $month = $request->get('month');
-        // Week
-        $week = $request->get('week');
-        // Date
-        $date = $request->get('date');
-        if (isset($month) && isset($week) && isset($date)) {
-            return 1;
-        } elseif (isset($month) && isset($week) && !isset($date)) {
-            return 2;
-        } elseif (isset($month) && !isset($week) && !isset($date)) {
-            return 3;
-        } elseif (!isset($month) && isset($week) && isset($date)) {
-            return 4;
-        } elseif (!isset($month) && !isset($week) && isset($date)) {
-            return 5;
-        } elseif (!isset($month) && isset($week) && !isset($date)) {
-            return 6;
-        } else {
-            return 7;
-        }
     }
 }

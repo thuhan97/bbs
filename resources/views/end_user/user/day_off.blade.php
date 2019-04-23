@@ -147,7 +147,9 @@
                     <td class="text-center">{{$absence->start_date}}</td>
                     <td class="text-center">{{$absence->end_date}}</td>
                     <td class="text-center">{{ array_key_exists($absence->title,VACATION) ?  VACATION[$absence->title] : '' }}</td>
-                    <td class="text-center">{{!!!$absence->number_off ? 'Chưa rõ' : checkNumber($absence->number_off)}} ngày</td>
+                    <td class="text-center">{{!!!$absence->number_off ? 'Chưa rõ' : checkNumber($absence->number_off)}}
+                        ngày
+                    </td>
                     <td class="text-center">
                         @if($absence->status == STATUS_DAY_OFF['abide'])
                             <i class="fas fa-meh-blank fa-2x text-warning text-center"></i>
@@ -237,7 +239,6 @@
          aria-hidden="true">
 
 
-
         <div class="modal-dialog modal-center" role="document">
             <div class="modal-content" id="bg-img" style="background-image: url({{ asset('img/font/xin_nghi.png') }})">
                 <div class="modal-header text-center border-bottom-0 p-3">
@@ -305,6 +306,19 @@
                             @endif
                         </div>
 
+                        <div class="mb-3 ">
+                            <!-- Default input -->
+                            <label class="text-w-400" for="exampleForm2">Thời gian được tính:</label>
+                            <input type="text" class="form-control select-item " autocomplete="off" name="number_off"
+                                   value="{{  old('number_off') }}" id="number_off">
+                            @if ($errors->has('number_off'))
+                                <div>
+                                    <span class="help-block text-danger">{{ $errors->first('number_off') }}</span>
+                                </div>
+                            @endif
+
+                        </div>
+
                         <div class="">
                             <label class=" mt-1 text-w-400" for="exampleForm2">Người duyệt*</label>
                             {{ Form::select('approver_id', $userManager, null, ['class' => 'form-control my-1 mr-1 browser-default custom-select md-form select-item mannager_id check-value','placeholder'=>'Chọn người duyệt đơn' ]) }}
@@ -360,11 +374,11 @@
                             <div class="ml-3">{{ $record->start_date .' - '. $record->end_date}}</div>
                         </div>
                         @if($record->status == STATUS_DAY_OFF['active'])
-                        <div class="mb-3 ml-3 ">
-                            <!-- Default input -->
-                            <label class="text-d-bold" for="exampleForm2">Thời gian được tính:</label>
-                            <div class="ml-3">{{ checkNumber($record->number_off)  }}</div>
-                        </div>
+                            <div class="mb-3 ml-3 ">
+                                <!-- Default input -->
+                                <label class="text-d-bold" for="exampleForm2">Thời gian được tính:</label>
+                                <div class="ml-3">{{ checkNumber($record->number_off)  }}</div>
+                            </div>
                         @endif
                         <div class="mb-4 pb-2">
                             <div class="row">
@@ -374,16 +388,17 @@
                                 </div>
                                 <!-- Default input -->
                                 @if($record->status == STATUS_DAY_OFF['active'])
-                                <div class="form-group col-6 m-0">
-                                    <label class="ml-3 text-d-bold" for="inputZip">Ngày duyệt</label>
-                                    <div class="ml-3">{{ $record->approver_date }}</div>
-                                </div>
-                                    @endif
+                                    <div class="form-group col-6 m-0">
+                                        <label class="ml-3 text-d-bold" for="inputZip">Ngày duyệt</label>
+                                        <div class="ml-3">{{ $record->approver_date }}</div>
+                                    </div>
+                                @endif
                             </div>
                         </div>
                         @if(isset($record->approve_comment))
                             <div class="mb-5">
-                                <label class="text-d-bold ml-3" for="exampleFormControlTextarea5">Ý kiến người duyệt</label>
+                                <label class="text-d-bold ml-3" for="exampleFormControlTextarea5">Ý kiến người
+                                    duyệt</label>
                                 <div class="ml-3">{{ $record->approve_comment }}</div>
                             </div>
                         @endif
@@ -393,7 +408,7 @@
                             </div>
                         @endif
                     </div>
-                    </div>
+                </div>
             </div>
         </div>
     @endif
@@ -495,6 +510,12 @@
                         required: true,
                         maxlength: 100
                     }
+                    ,
+                    number_off: {
+                        required: true,
+                        number: true
+                    }
+
                 },
                 messages: {
                     title: {
@@ -517,6 +538,10 @@
                     reason: {
                         required: "Vui lòng nhập nội dung đơn",
                         maxlength: "Bạn đã nhập quá 100 kí tự"
+                    },
+                    number_off: {
+                        required: "Vui lòng nhập số ngày dự kiến",
+                        number: "Vui lòng nhập đúng định dạng số"
                     },
                 }
             });
@@ -565,7 +590,7 @@
                     $(this).css('opacity', 1);
                 }
             })
-            $('.btn-close-icon').on('click',function () {
+            $('.btn-close-icon').on('click', function () {
                 $('.check-value').css('opacity', 0.7);
             })
         });

@@ -677,6 +677,9 @@
     .ml-xxl-1 {
         margin-left: -56px;
     }
+    .ml-xxxl-1{
+        margin-left: -57px;
+    }
 }
 
 /*
@@ -800,6 +803,20 @@ td.blank, .type-1 {
 
 .color-red {
     color: red;
+}
+.text-size-header-1{
+    font-size: 14px !important;
+ }
+#btn-select{
+    color: black !important;
+    background: white!important;
+    width: 200px;
+}
+.select-search{
+    height: 42px;
+}
+.day-off-icoi{
+    left: 25px !important;
 }
 
 /*

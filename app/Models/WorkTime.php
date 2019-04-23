@@ -31,7 +31,7 @@ class WorkTime extends Model
         0 => 'Bình thường',
         1 => 'Đi muộn',
         2 => 'Về sớm',
-        3 => 'Overtime',
+        4 => 'Overtime',
     ];
 
     const WORK_TIME_CALENDAR_TYPE = [
@@ -57,6 +57,7 @@ class WorkTime extends Model
         'lately' => 1,
         'early' => 2,
         'ot' => 4,
+        'lately_ot' => 5,
     ];
 
     public function scopeSearch($query, $searchTerm)

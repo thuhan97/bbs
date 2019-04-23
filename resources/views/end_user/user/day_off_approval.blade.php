@@ -1,5 +1,8 @@
 @extends('layouts.end_user')
+@section('page-title', __l('day_off_approval'))
+
 @section('breadcrumbs')
+    {!! Breadcrumbs::render('day_off_approval') !!}
 @endsection
 @section('content')
     <?php

@@ -128,4 +128,6 @@ Route::group([
     Route::post('meetings/deletes', ['as' => 'meetings.deletes', 'uses' => 'MeetingController@deletes']);
     Route::resource('meetings', 'MeetingController');
 
+    Route::resource('ask_permission', 'DayOffController');
+
 });

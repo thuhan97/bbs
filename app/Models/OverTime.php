@@ -26,5 +26,8 @@ class OverTime extends Model
         'status',
         'approver_id',
         'approver_at',
+        'work_day',
     ];
+
+
 }

@@ -345,7 +345,7 @@
                 </div>
                 <div class="modal-body mx-3 mt-0 pb-0">
                     <div class="mb-3">
-                        <label class="ml-3 text-w-400" for="exampleFormControlTextarea5">Tên nhân
+                        <label class="ml-3 text-d-bold" for="exampleFormControlTextarea5">Tên nhân
                             viên</label>
                         <div class="ml-3">{{ \Illuminate\Support\Facades\Auth::user()->name }}</div>
                     </div>

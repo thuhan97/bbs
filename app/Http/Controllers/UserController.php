@@ -367,7 +367,7 @@ class UserController extends Controller
         return back()->with('success', __('messages.edit_day_off_successully'));
     }
 
-    public function deleteDayOff(Request $request)
+    public function deleteOrCloseDayOff(Request $request)
     {
         if (isset($request->day_off_id)) {
             DayOff::findOrFail($request->day_off_id)->delete();
@@ -379,7 +379,9 @@ class UserController extends Controller
                 $dayOff->save();
                 return back()->with('close', '');
             }
-
+        }else
+        {
+            abort(404);
         }
 
     }

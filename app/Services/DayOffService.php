@@ -244,17 +244,26 @@ class DayOffService extends AbstractService implements IDayOffService
      * @param integer $status
      * @return collection
      */
-    public function searchStatus($status)
+    public function searchStatus($year,$month,$status)
     {
         $data = DayOff::select('*', DB::raw('DATE_FORMAT(start_at, "%d/%m/%Y (%H:%i)") as start_date'),
             DB::raw('DATE_FORMAT(end_at, "%d/%m/%Y (%H:%i)") as end_date'),
             DB::raw('DATE_FORMAT(approver_at, "%d/%m/%Y (%H:%i)") as approver_date'))
             ->where('user_id', Auth::id());
+        if ($year){
+            $data=$data->whereYear('start_at', '=', $year);
+        }else{
+            $data=$data->whereYear('start_at', '=', date('Y'));
+        }
+        if ($month){
+            $data=$data->whereMonth('start_at', '=', $month);
+        }else{
+            $data=$data->whereMonth('start_at', '=', date('m'));
+        }
         if ($status < ALL_DAY_OFF) {
             $data = $data->where('status', $status);
         }
-        $data = $data->whereYear('start_at', '=', date('Y'))
-            ->orderBy('status', 'ASC')->orderBy('start_at', 'DESC')
+        $data =$data->orderBy('status', 'ASC')->orderBy('start_at', 'DESC')
             ->paginate(PAGINATE_DAY_OFF);
         return $data;
     }
@@ -277,7 +286,10 @@ class DayOffService extends AbstractService implements IDayOffService
             'current_year' => $sumDayOffCurrentYear->remain ?? DAY_OFF_DEFAULT
         ];
     }
-
+public function searchUserLogin($request)
+{
+    // TODO: Implement searchUserLogin() method.
+}
 
 
     public function calculateDayOff($request, $id)

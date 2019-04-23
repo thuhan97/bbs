@@ -9,113 +9,116 @@
        }
        $dataDayOff= $dayOff ?? $availableDayLeft['data'];
     @endphp
-    <div class="container-fluid col-12 row">
-        <div class="col-sm-3 col-xs-6">
-            <div class="card bg-primary">
-                <div class="card-body">
-                    <h1 class="white-text font-weight-light">
-                        {{ $countDayOff['previous_year'] + $countDayOff['current_year'] }}
-                    </h1>
-                    <p class="card-subtitle text-white-50">ngày khả dụng</p>
-                    <p class="card-title text-uppercase font-weight-bold card-text white-text">Tính từ năm trước</p>
+    <form action="{{ route('day_off') }}" method="get" id="form-search">
+    <div class="row mb-5 ml-3">
+        <div class="col-3 position-relative">
+            <div class="row border-radius-1" id="option-calendar" style="height: 50px">
+                <div class="col-3 p-0 m-auto">
+                    {{ Form::select('year', get_years(), $year ?? date('Y') , ['class'=>'yearselect browser-default custom-select w-100 border-0 select_year option-select p-1']) }}
+                </div>
+                <div class="col-9 p-0 m-auto pr-2 ">
+                    {{ Form::select('month', MONTH, $month ?? date('m'), ['class' => 'browser-default custom-select w-100 month option-select','placeholder'=>'Chọn tháng']) }}
                 </div>
             </div>
         </div>
-        <div class="col-sm-3 col-xs-6">
-            <div class="card bg-success">
-                <div class="card-body">
-                    <h1 class="white-text font-weight-light">
-                        {{ $countDayOff['previous_year'] }}
-                    </h1>
-                    <p class="card-subtitle text-white-50">nghỉ luôn đi</p>
-                    <p class="card-title text-uppercase font-weight-bold card-text white-text">
-                        Cuối năm reset
-                    </p>
-                </div>
-            </div>
-        </div>
-        <div class="col-sm-3 col-xs-6">
-            <div class="card bg-warning">
-                <div class="card-body">
-                    <h1 class="white-text font-weight-light">
-                        {{ $countDayOff['total'] }}
-                    </h1>
-                    <p class="card-subtitle text-white-50">ngày đã nghỉ</p>
-                    <p class="card-title text-uppercase font-weight-bold card-text white-text">Trong
-                        năm {{date('Y')}}</p>
-                </div>
-            </div>
-        </div>
-        <div class="col-sm-3 col-xs-6" id="show-modal">
-            <div class="card bg-danger cursor-effect" onclick="openCreateAbsenceForm()">
-                <div class="card-body">
-                    <h1 class="white-text font-weight-light">Thêm</h1>
-                    <p class="card-subtitle text-white-50">&nbsp</p>
-                    <p class="card-title text-uppercase font-weight-bold card-text white-text">
-                        Xin nghỉ phép
-                    </p>
-                </div>
-            </div>
-        </div>
-
     </div>
-    <hr>
-    <div class="container-fluid col-12 flex-row-reverse d-flex">
-        <button class="btn btn-secondary dropdown-toggle mr-4" type="button" data-toggle="dropdown" aria-haspopup="true"
-                aria-expanded="false">
-            @if(isset($status) && $status == 3)
-                Hiển thị: Tất cả
-            @elseif(isset($status) && $status == 0)
+    <div class="container-fluid col-12 row border-bottom-2 mb-3" style="position: relative;">
+        <div class="col-sm-3 col-md-6 col-lg-3 position-relative">
+            <a href="{{ route('day_off_show',['status'=>ALL_DAY_OFF]) }}" class="card bg-primary border-radius-2">
+                <div class="card-body row d-flex justify-content-center px-0 ml-xxl-2">
+                    <div class="media ml-2 d-md-flex">
+                            <span id="dayoff-option-header-1"
+                                  class="d-flex rounded-circle avatar z-depth-1-half mb-3 mx-auto dayoff-header mt-1">
+                                {{--<i class="fas fa-clipboard-list dayoff-icoin text-primary dayoff-cioin-1-2-3"></i>--}}
+                                <i class="fas fa-calendar-alt dayoff-icoin text-primary day-off-icoi"></i>
+                            </span>
+                        <div class="media-body text-center text-md-left ml-xl-4">
+                            <h1 class="white-text font-weight-bold">{{ $countDayOff['previous_year'] + $countDayOff['current_year'] }}</h1>
+                            <p class="card-subtitle text-white-50 text-size-table">Ngày khả dụng</p>
+                            <p class="card-title text-uppercase font-weight-bold card-text white-text text-size-header-1">
+                                TÍNH TỪ NĂM TRƯỚC</p>
 
-                Hiển thị: Chưa duyệt
-            @elseif(isset($status) && $status == 1)
-                Hiển thị: Đã duyệt
-            @elseif(isset($status) && $status == 2)
-                Hiển thị: Đã hủy
-            @else
-                Hiển thị: Tất cả
-            @endif
-        </button>
+                        </div>
+                    </div>
 
-        <div class="dropdown-menu">
-            <a class="dropdown-item"
-               href="{{ route('day_off',['status'=>ALL_DAY_OFF]) }}">
-                <span class="d-flex">
-                    <span class="green-red-circle mr-2"></span>
-                    <span class="content">Tất cả</span>
-                </span>
+                </div>
             </a>
-            <a class="dropdown-item"
-               href="{{ route('day_off',['status'=>STATUS_DAY_OFF['active']]) }}">
-                <span class="d-flex">
-                    <span class="green-circle mr-2"></span>
-                    <span class="content">Đã duyệt</span>
-                </span>
-            </a>
-            <a class="dropdown-item"
-               href="{{ route('day_off',['status'=>STATUS_DAY_OFF['abide']]) }}">
-                <span class="d-flex">
-                    <span class="orange-circle mr-2"></span>
-                    <span class="content">Chưa duyệt</span>
-                </span>
-            </a>
-            <a class="dropdown-item"
-               href="{{ route('day_off',['status'=>STATUS_DAY_OFF['noActive']]) }}">
-                <span class="d-flex">
-                    <span class="red-circle mr-2"></span>
-                    <span class="content">Đã hủy</span>
-                </span>
-            </a>
-
         </div>
+        <div class="col-sm-3 col-md-6 col-lg-3 position-relative ">
+            <a href="{{ route('day_off_show',['status'=>STATUS_DAY_OFF['active']]) }}"
+               class="card bg-success border-radius-2">
+                <div class="card-body row d-flex justify-content-center px-0 ml-xxl-2">
+                    <div class="media mr-2 d-md-flex">
+                            <span id="dayoff-option-header-2"
+                                  class="d-flex rounded-circle avatar z-depth-1-half mb-3 mx-auto dayoff-header mt-1">
+                                {{--<i class="fas fa-clipboard-check dayoff-icoin text-success dayoff-cioin-1-2-3"></i>--}}
+                                <i class="fas fa-calendar-times dayoff-icoin text-success day-off-icoi"></i>
+                            </span>
+                        <div class="media-body text-center text-md-left ml-xl-4">
+                            <h1 class="white-text font-weight-bold">{{ $countDayOff['previous_year'] }}</h1>
+                            <p class="card-subtitle text-white-50 text-size-table">Ngày sắp hết hạn</p>
+                            <p class="card-title text-uppercase font-weight-bold card-text white-text text-size-header-1">
+                                CUỐI NĂM HỦY</p>
+
+                        </div>
+                    </div>
+
+                </div>
+            </a>
+        </div>
+        <div class="col-sm-3 col-md-6 col-lg-3 position-relative">
+            <a href="{{ route('day_off_show',['status'=>STATUS_DAY_OFF['abide']]) }}" class="card border-radius-2"
+               id="bg-yellow">
+                <div class="card-body  row d-flex justify-content-center px-0 ml-xxl-2">
+                    <div class="media mr-2  d-md-flex">
+                            <span id="dayoff-option-header-3"
+                                  class="d-flex rounded-circle avatar z-depth-1-half mb-3 mx-auto dayoff-header mt-1">
+                               {{--<i class="fas fa-clipboard dayoff-icoin text-warning dayoff-cioin-1-2-3"></i>--}}
+                                <i class="fas fa-calendar-check dayoff-icoin text-warning day-off-icoi"></i>
+                            </span>
+                        <div class="media-body text-center text-md-left ml-xl-4">
+                            <h1 class="white-text font-weight-bold ">{{ $countDayOff['total'] }}</h1>
+                            <p class="card-subtitle text-white-50 text-size-table">Ngày đã nghỉ</p>
+                            <p class="card-title text-uppercase font-weight-bold card-text white-text text-size-header-1">
+                                TRONG NĂM {{date('Y')}}</p>
+                        </div>
+                    </div>
+
+                </div>
+            </a>
+        </div>
+        <div class="col-sm-3 col-md-6 col-lg-3 position-relative pr-0" id="show-modal">
+            <span class="card bg-danger border-radius-2">
+                <div class="card-body  row d-flex justify-content-center px-0 ml-xxxl-1">
+                    <div class="media d-md-flex">
+                            <span id="dayoff-option-header-4"
+                                  class="d-flex rounded-circle avatar z-depth-1-half mb-3 mx-auto dayoff-header mt-1">
+                                {{--<i class="fas fa-times-circle dayoff-icoin text-danger size-table"></i>--}}
+                                <i class="fas fa-calendar-plus dayoff-icoin text-danger size-table"></i>
+                            </span>
+                        <div class="media-body text-center text-md-left ml-xl-4">
+                            <h1 class="white-text font-weight-bold">Đơn</h1>
+                            <p class="card-subtitle text-white-50 text-size-table">Đơn xin</p>
+                            <p class="card-title text-uppercase font-weight-bold card-text white-text text-size-header-1">
+                                XIN NGHỈ / NGHỈ PHÉP</p>
+                        </div>
+                    </div>
+
+                </div>
+            </span>
+        </div>
+    </div>
+    <div class="container-fluid col-12 flex-row-reverse d-flex">
+        <span class=" btn-secondary mr-4" id="btn-select" >
+            {{ Form::select('status_search', SHOW_DAY_OFFF, $statusSearch ?? ALL_DAY_OFF, ['class' => 'browser-default custom-select mt-2 w-100 month option-select select-search','placeholder'=>'']) }}
+        </span>
 
         <?php
         $user = \Illuminate\Support\Facades\Auth::user();
         ?>
         @if($user->jobtitle_id >= \App\Models\Report::MIN_APPROVE_JOBTITLE)
-            <div class="row d-flex flex-row pr-4 mr-4" style="border-right: 2px solid whitesmoke">
-                <div class="d-flex flex-center pl-2 mr-2 ml-2">
-                    Quản lý:
+            <div class="row d-flex flex-row pr-4 mr-1">
+                <div class="d-flex flex-center ">
                 </div>
                 <a href="{{route('day_off_approval')}}" class="btn btn-primary" type="button">
                     {{__l('day_off_approval')}}
@@ -123,12 +126,14 @@
             </div>
         @endif
     </div>
-
+    </form>
+    <br>
+    <br>
     <div class="container-fluid col-12">
-        <table class="table ">
+        <table class="table table-bordered ">
             <thead class="grey lighten-2">
             <tr>
-                <th class="text-center">#</th>
+                <th class="text-center">STT</th>
                 <th class="text-center">Từ ngày</th>
                 <th class="text-center">Tới ngày</th>
                 <th class="text-center">Tiêu đề</th>
@@ -146,9 +151,9 @@
                     </th>
                     <td class="text-center">{{$absence->start_date}}</td>
                     <td class="text-center">{{$absence->end_date}}</td>
-                    <td class="text-center">{{ array_key_exists($absence->title,VACATION) ?  VACATION[$absence->title] : '' }}</td>
-                    <td class="text-center">{{!!!$absence->number_off ? 'Chưa rõ' : checkNumber($absence->number_off)}}
-                        ngày
+                    <td class="text-center">{{ $absence->reason  }}</td>
+                    <td class="text-center">{{!!!$absence->number_off ? 'Đang duyệt' : checkNumber($absence->number_off).' ngày'}}
+
                     </td>
                     <td class="text-center">
                         @if($absence->status == STATUS_DAY_OFF['abide'])
@@ -160,8 +165,8 @@
                         @endif
                     </td>
                     <td class="text-center">
-                        <a class="btn btn-indigo btn-sm m-0" href="{{ route('day_off_detail',['id'=>$absence->id]) }}">Chi
-                            tiết</a>
+                        <p class=" btn-sm m-0 detail-dayoff
+                            @if($keys ==0) text-primary  @endif" style="cursor: pointer" attr="{{ $absence->id }}">Chi tiết >></p>
                     </td>
                 </tr>
             @endforeach
@@ -305,20 +310,6 @@
                                 </div>
                             @endif
                         </div>
-
-                        <div class="mb-3 ">
-                            <!-- Default input -->
-                            <label class="text-w-400" for="exampleForm2">Thời gian được tính:</label>
-                            <input type="text" class="form-control select-item " autocomplete="off" name="number_off"
-                                   value="{{  old('number_off') }}" id="number_off">
-                            @if ($errors->has('number_off'))
-                                <div>
-                                    <span class="help-block text-danger">{{ $errors->first('number_off') }}</span>
-                                </div>
-                            @endif
-
-                        </div>
-
                         <div class="">
                             <label class=" mt-1 text-w-400" for="exampleForm2">Người duyệt*</label>
                             {{ Form::select('approver_id', $userManager, null, ['class' => 'form-control my-1 mr-1 browser-default custom-select md-form select-item mannager_id check-value','placeholder'=>'Chọn người duyệt đơn' ]) }}
@@ -338,87 +329,78 @@
         </div>
     </div>
 
-    @if(isset($record))
-        <div class="modal fade modal-open" id="modal-form-detail" tabindex="-1" role="dialog"
-             aria-labelledby="myModalLabel"
-             aria-hidden="true">
-            <div class="modal-dialog modal-center" role="document">
-                <div class="modal-content" id="bg-img"
-                     style="background-image: url({{ asset('img/font/xin_nghi.png') }})">
-                    <div class="modal-header text-center border-bottom-0 p-3">
-                        <h4 class="modal-title w-100 font-weight-bold pt-2">NỘI DUNG ĐƠN</h4>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span class="btn-close-icon" aria-hidden="true">&times;</span>
-                        </button>
+    <div class="modal fade modal-open" id="modal-form-detail" tabindex="-1" role="dialog"
+         aria-labelledby="myModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog modal-center" role="document">
+            <div class="modal-content" id="bg-img"
+                 style="background-image: url({{ asset('img/font/xin_nghi.png') }})">
+                <div class="modal-header text-center border-bottom-0 p-3">
+                    <h4 class="modal-title w-100 font-weight-bold pt-2">NỘI DUNG ĐƠN</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span class="btn-close-icon" aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body mx-3 mt-0 pb-0">
+                    <div class="mb-3">
+                        <label class="ml-3 text-w-400" for="exampleFormControlTextarea5">Tên nhân
+                            viên</label>
+                        <div class="ml-3">{{ \Illuminate\Support\Facades\Auth::user()->name }}</div>
                     </div>
-                    <div class="modal-body mx-3 mt-0 pb-0">
-                        <div class="mb-3">
-                            <label class="ml-3 text-w-400" for="exampleFormControlTextarea5">Tên nhân
-                                viên</label>
-                            <div class="ml-3">{{ $record->user->name }}</div>
-                        </div>
-                        <div class="mb-3">
-                            <!-- Default input -->
-                            <label class="ml-3 text-d-bold" for="exampleForm2">Lý do:</label>
-                            <div class="ml-3">{{ array_key_exists($record->title,VACATION) ?  VACATION[$record->title] : '' }}</div>
-                        </div>
+                    <div class="mb-3">
+                        <!-- Default input -->
+                        <label class="ml-3 text-d-bold" for="exampleForm2">Lý do:</label>
+                        <div class="ml-3" id="title"></div>
+                    </div>
 
-                        <div class="mb-3">
-                            <label class="ml-3 text-d-bold" for="exampleFormControlTextarea5">Chi tiết lý
-                                do:</label>
-                            <div class="ml-3">{{ $record->reason}}</div>
-                        </div>
-                        <div class="mb-3">
+                    <div class="mb-3">
+                        <label class="ml-3 text-d-bold" for="exampleFormControlTextarea5">Chi tiết lý
+                            do:</label>
+                        <div class="ml-3" id="reason"></div>
+                    </div>
+                    <div class="mb-3">
+                        <!-- Default input -->
+                        <label class="ml-3 text-d-bold" for="exampleForm2">Ngày nghỉ:</label>
+                        <div class="ml-3" id="strat_end"></div>
+                    </div>
+                    <div class="mb-3 ml-3" id="remove-numoff">
+                        <!-- Default input -->
+                        <label class="text-d-bold" for="exampleForm2">Thời gian được tính:</label>
+                        <div class="ml-3" id="number_off"></div>
+                    </div>
+                    <div class="mb-4 pb-2">
+                        <div class="row">
+                            <div class="form-group col-6 m-0">
+                                <label class="ml-3 text-d-bold" for="inputCity">Người duyệt</label>
+                                <div id="approver_id" class="ml-3"></div>
+                            </div>
                             <!-- Default input -->
-                            <label class="ml-3 text-d-bold" for="exampleForm2">Ngày nghỉ:</label>
-                            <div class="ml-3">{{ $record->start_date .' - '. $record->end_date}}</div>
-                        </div>
-                        @if($record->status == STATUS_DAY_OFF['active'])
-                            <div class="mb-3 ml-3 ">
-                                <!-- Default input -->
-                                <label class="text-d-bold" for="exampleForm2">Thời gian được tính:</label>
-                                <div class="ml-3">{{ checkNumber($record->number_off)  }}</div>
-                            </div>
-                        @endif
-                        <div class="mb-4 pb-2">
-                            <div class="row">
-                                <div class="form-group col-6 m-0">
-                                    <label class="ml-3 text-d-bold" for="inputCity">Người duyệt</label>
-                                    <div class="ml-3">{{ auth()->user()->name }}</div>
-                                </div>
-                                <!-- Default input -->
-                                @if($record->status == STATUS_DAY_OFF['active'])
-                                    <div class="form-group col-6 m-0">
-                                        <label class="ml-3 text-d-bold" for="inputZip">Ngày duyệt</label>
-                                        <div class="ml-3">{{ $record->approver_date }}</div>
-                                    </div>
-                                @endif
+                            <div class="form-group col-6 m-0" id="remove-app-date">
+                                <label class="ml-3 text-d-bold" for="inputZip">Ngày duyệt</label>
+                                <div id="approver_date" class="ml-3"></div>
                             </div>
                         </div>
-                        @if(isset($record->approve_comment))
-                            <div class="mb-5">
-                                <label class="text-d-bold ml-3" for="exampleFormControlTextarea5">Ý kiến người
-                                    duyệt</label>
-                                <div class="ml-3">{{ $record->approve_comment }}</div>
-                            </div>
-                        @endif
-                        @if($record->status ==0)
-                            <div class=" mb-1 pb-4 d-flex justify-content-center border-top-0 rounded mb-0">
-                                <span class="btn btn-danger" data-toggle="modal" data-target="#basicExampleModal">HỦY ĐƠN</span>
-                            </div>
-                        @endif
+                    </div>
+                    <div class="mb-5" id="remove-app-comment">
+                        <label class="text-d-bold ml-3" for="exampleFormControlTextarea5">Ý kiến người
+                            duyệt</label>
+                        <div class="ml-3" id="app-comment"></div>
+                    </div>
+
+                    <div class=" mb-1 pb-4 d-flex justify-content-center border-top-0 rounded mb-0" id="btn-show-modal">
+
                     </div>
                 </div>
             </div>
         </div>
-    @endif
+    </div>
 
     <!-- Modal -->
     <form action="{{ route('delete_day_off') }}" method="post">
         @csrf
         <div class="modal fade" id="basicExampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
              aria-hidden="true">
-            <input type="hidden" value="{{ $record->id ?? '' }}" name="day_off_id">
+            <input type="hidden" value="" name="day_off_id" id="id-delete">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -438,19 +420,14 @@
     </form>
     {{-- Modal: Create absence form--}}
     @if (count($errors) > 0)
+        {{--@dd($errors)--}}
         <script>
             $(function () {
                 $('#modal-form').modal('show');
             });
         </script>
     @endif
-    @if (isset($record))
-        <script>
-            $(function () {
-                $('#modal-form-detail').modal('show');
-            });
-        </script>
-    @endif
+
     @if(session()->has('day_off_success'))
         @if(session()->get('day_off_success') != '')
             <script>
@@ -487,6 +464,10 @@
     <script type="text/javascript">
 
         $(document).ready(function () {
+            $('.option-select').on('change', function () {
+                $("#form-search").submit();
+            });
+
             $("#form_create_day_off").validate({
                 rules: {
                     title: {
@@ -532,7 +513,7 @@
                         date: "Vui lòng nhập đúng địn dạng ngày tháng"
                     },
                     approver_id: {
-                        required: "Vui lòng chọn ngày phê duyệt",
+                        required: "Vui lòng chọn người phê duyệt",
                         digits: "Vui lòng nhập đúng định dạng số"
                     },
                     reason: {
@@ -593,6 +574,54 @@
             $('.btn-close-icon').on('click', function () {
                 $('.check-value').css('opacity', 0.7);
             })
+
+            $('.detail-dayoff').on('click', function () {
+                var id = $(this).attr('attr');
+                var title = {
+                    "1": "Lý do cá nhân",
+                    "2": "Nghỉ đám cưới",
+                    "3": "Nghỉ đám hiếu",
+                }
+                $.ajax
+                ({
+                    'url': '{{ route('day_off_detail') }}' + '/' + id,
+                    'type': 'get',
+                    success: function (data) {
+                        $('#approver_id').html(data.approver);
+                        $('#number_off').html(data.data.number_off);
+                        $('#strat_end').html(data.data.start_date + ' - ' + data.data.end_date);
+                        $('#reason').html(data.data.reason);
+                        $('#id-delete').val(data.data.id);
+                        if (title.hasOwnProperty(data.data.title)) {
+                            $('#title').html(title[data.data.title]);
+                        }
+                        if (data.data.approver_date) {
+                            $('#remove-app-date').show();
+                            $('#approver_date').html(data.data.approver_date);
+                        } else {
+                            $('#remove-app-date').hide();
+                        }
+                        if (data.data.approve_comment) {
+                            $('#remove-app-comment').show();
+                            $('#app-comment').html(data.data.approve_comment);
+                        } else {
+                            $('#remove-app-comment').hide();
+                        }
+                        if (data.numoff) {
+                            $('#number_off').html(data.numoff);
+                            $('#remove-numoff').show();
+                        } else {
+                            $('#remove-numoff').hide();
+                        }
+                        if (data.data.status == 0) {
+                            $('#btn-show-modal').html('<span class="btn btn-danger" data-toggle="modal" data-target="#basicExampleModal">HỦY ĐƠN</span>');
+                        }
+                        $('#modal-form-detail').modal('show');
+                    }
+                });
+            })
+
+
         });
     </script>
 @endsection

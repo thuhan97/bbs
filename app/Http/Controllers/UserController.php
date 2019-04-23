@@ -151,6 +151,7 @@ class UserController extends Controller
                 $calendarDataModal[] = [
                     'work_day' => $item['work_day'],
                     'type' => $item['type'],
+                    'ot_type' => $item['ot_type'],
                     'note' => $item['note'],
                     'user_id' => $item['user_id'],
                     'id' => $item['id'],
@@ -177,15 +178,16 @@ class UserController extends Controller
         $reason = $request['reason'];
         $userID = $request['user_id'];
         $workDay = $request['work_day'];
-        $type = $request['ot_type'];
+        $otType = $request['ot_type'];
         if ($id) {
-            WorkTimesExplanation::where('user_id', $userID)->where('work_day', $workDay)->update(['note' => $reason,'type' => $type]);
+            WorkTimesExplanation::where('user_id', $userID)->where('work_day', $workDay)->update(['note' => $reason, 'ot_type' => $otType]);
             return back()->with('day_off_success', '');
         } else {
             WorkTimesExplanation::create([
                 'user_id' => Auth::id(),
                 'work_day' => $request['work_day'],
-                'type' => $type,
+                'type' => array_search('Đi muộn', WORK_TIME_TYPE),
+                'ot_type' => $otType,
                 'note' => $reason
             ]);
             return back()->with('day_off_success', 'day_off_success');
@@ -365,7 +367,7 @@ class UserController extends Controller
             'number_off' => 'required|numeric',
             'approve_comment' => 'nullable|min:1|max:255'
         ]);
-        $this->userDayOffService->calculateDayOff($request,$id);
+        $this->userDayOffService->calculateDayOff($request, $id);
         return back()->with('success', __('messages.edit_day_off_successully'));
     }
 

@@ -131,15 +131,11 @@
                     renderCalendar(current_year, current_month);
                 },
                 show: function (el) {
-                    // console.log(el.getAttribute("data-week"));
                     calendar.sDay = el.getElementsByClassName("dayNumber")[0].innerHTML;
                     let currentMY = parseInt(currentYear) + parseInt(currentMonth),
                         calendarYM = calendar.sYear + calendar.sMth,
                         getDataTime = el.getAttribute("data-time"),
                         attrWeek = el.getAttribute("data-week");
-                    if (attrWeek) {
-                        alert(123)
-                    }
                     if (parseInt(calendarYM) >= parseInt(currentMY)) {
                         if (el.getElementsByClassName("data-id")[0]) {
                             let dataReason = el.getElementsByClassName("data-reason")[0].innerHTML,
@@ -147,12 +143,13 @@
                                 dataWorkDay = el.getElementsByClassName("data-work-day")[0].innerHTML,
                                 dataUserID = el.getElementsByClassName("data-user-id")[0].innerHTML,
                                 dataType = el.getElementsByClassName("data-type")[0].innerHTML;
+                                dataTypeOT = el.getElementsByClassName("data-ot-type")[0].innerHTML;
                             if (calendarYM + parseInt(calendar.sDay) === currentMY + parseInt(currentDay)) {
                                 switch (true) {
-                                    case parseInt(dataType) === 1:
+                                    case parseInt(dataTypeOT) === 1:
                                         var projectOT = 'checked';
                                         break;
-                                    case parseInt(dataType) === 2:
+                                    case parseInt(dataTypeOT) === 2:
                                         var otherOT = 'checked';
                                         break;
                                     default:
@@ -172,12 +169,9 @@
                                     '<label for="other-ot">Lý do cá nhân</label>' +
                                     '</div>' +
                                     '</div>' +
-                                    '<div class="col-md-12 d-flex justify-content-center mt-3 xin-ot">' +
                                     '<input hidden name="id" value="' + dataID + '">' +
                                     '<input hidden name="user_id" value="' + dataUserID + '">' +
                                     '<input hidden name="work_day" value="' + dataWorkDay + '">' +
-                                    '<textarea class="form-control" name="reason" rows="6" placeholder="Nội dung bạn muốn gửi...">' + dataReason + '</textarea>' +
-                                    '</div>' +
                                     '</div>';
                             } else {
                                 document.getElementById("div-reason").innerHTML =
@@ -187,9 +181,6 @@
                                     '<input hidden name="id" value="' + dataID + '">' +
                                     '<input hidden name="user_id" value="' + dataUserID + '">' +
                                     '<input hidden name="work_day" value="' + dataWorkDay + '">' +
-                                    '<textarea class="form-control" name="reason" rows="6" placeholder="Nội dung bạn muốn gửi...">' + dataReason + '</textarea>' +
-                                    '</div>' +
-                                    '<div class="row col-md-12">' +
                                     '</div>' +
                                     '</div>';
                             }
@@ -206,6 +197,7 @@
                                 '</div>';
                         }
                         $('.myModal').modal('show');
+
                     }
                 },
             };
@@ -320,20 +312,22 @@
                             calendar.show(this);
                         });
                         var n = squares[i].toString().length,
-                            calendarTime = valYear + "-" + valMonth + "-" + squares[i];
-                        intCalendarTime = parseInt(valYear) + parseInt(valMonth) + parseInt(squares[i]);
+                            calendarTime = valYear + "-" + valMonth + "-" + squares[i],
+                            timeTotal = parseInt(valYear) + parseInt(valMonth) + parseInt(squares[i]);
+
 
                         if (n < 2) {
                             let dataTime = valYear + "-" + getValMonth + "-" + "0" + squares[i];
                             cCell.innerHTML = "<div class='dayNumber'>" + "0" + squares[i] + "</div>";
                             cCell.setAttribute("data-time", dataTime);
                             cCell.setAttribute("data-calendar", calendarTime);
+                            cCell.setAttribute("data-time-total", timeTotal);
 
                         } else {
                             let dataTime = valYear + "-" + getValMonth + "-" + squares[i];
                             cCell.innerHTML = "<div class='dayNumber'>" + squares[i] + "</div>";
                             cCell.setAttribute("data-time", dataTime);
-                            cCell.setAttribute("data-calendarInt", intCalendarTime);
+                            cCell.setAttribute("data-time-total", timeTotal);
                         }
                     }
                     cRow.appendChild(cCell);
@@ -361,19 +355,12 @@
                                 work_time = data.start_at + ' - ' + data.end_at;
                             $('.calendar-td-body').each(function () {
                                 const data_time = $(this).data('time');
-                                const calendarTime = $(this).data('calendar');
-                                const calendarTimeInt = $(this).data('data-calendarInt');
                                 if (data_time === work_day) {
                                     $(this).addClass("data-type-" + data.type);
                                     $(this).addClass("type" + data.type);
                                     $(this).addClass("hasData");
                                     $(this).append('<p>' + work_time + '</p>');
                                 }
-                                if (calendarTimeInt > currentTime) {
-                                    $("#calendar > tr > td:first-child").attr('data-week', calendarTimeInt);
-                                    $("#calendar > tr > td:last-child").attr('data-week', calendarTimeInt);
-                                }
-
                             });
                         });
 
@@ -387,6 +374,8 @@
                                     $(this).append('<p class="data-reason" hidden>' + data.note + '</p>');
                                     $(this).append('<p class="data-work-day" hidden>' + data.work_day + '</p>');
                                     $(this).append('<p class="data-type" hidden>' + data.type + '</p>');
+                                    $(this).append('<p class="data-ot-type" hidden>' + data.ot_type + '</p>');
+                                    $(this).attr('data-exist', 'true');
                                 }
                             });
                         });

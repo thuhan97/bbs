@@ -21,6 +21,9 @@ class EventServiceProvider extends ServiceProvider
         'App\Events\EventSentMail' => [
             'App\Listeners\EventSendMail',
         ],
+        'App\Events\CaculateLateTimeEvent' => [
+            'App\Listeners\CaculateLateTimeListener',
+        ],
     ];
 
     /**

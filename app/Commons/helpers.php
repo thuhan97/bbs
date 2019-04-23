@@ -2,7 +2,6 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\HtmlString;
-use App\Models\Team;
 
 if (!function_exists('number_collapse')) {
     /**
@@ -102,10 +101,10 @@ if (!function_exists('redirect_back_to')) {
     /**
      * Get an instance of the redirector.
      *
-     * @param  string|null $callbackUrl
-     * @param  int         $status
-     * @param  array       $headers
-     * @param  bool        $secure
+     * @param string|null $callbackUrl
+     * @param int         $status
+     * @param array       $headers
+     * @param bool        $secure
      *
      * @return \Illuminate\Routing\Redirector|\Illuminate\Http\RedirectResponse
      */
@@ -273,10 +272,11 @@ if (!function_exists('get_years')) {
      * Encode unicode
      *
      * @param integer $num
-     * @param string $prefix
-     * @param bool $isDesc
+     * @param string  $prefix
+     * @param bool    $isDesc
      *
-     * @param bool $istatic
+     * @param bool    $istatic
+     *
      * @return array
      */
     function get_years($num = 5, $prefix = '', $isDesc = true, $istatic = false)
@@ -322,7 +322,19 @@ if (!function_exists('get_months')) {
         return ['' => 'Chọn tháng'] + $result;
     }
 }
-
+if (!function_exists('get_month')) {
+    /**
+     * Get month
+     *
+     * @param $date
+     *
+     * @return string
+     */
+    function get_month($date)
+    {
+        return date('m', strtotime($date));
+    }
+}
 if (!function_exists('__l')) {
     /**
      * Encode unicode
@@ -372,9 +384,9 @@ if (!function_exists('statistics')) {
     function statistics()
     {
         return [
-          '1' => 'Tất cả công ty',
-          '2' => 'Team',
-          '3' => 'Cá nhân',
+            '1' => 'Tất cả công ty',
+            '2' => 'Team',
+            '3' => 'Cá nhân',
         ];
     }
 }
@@ -387,7 +399,7 @@ if (!function_exists('team')) {
      */
     function team()
     {
-        $teams = DB::table('teams')->select('id', 'name')->pluck( 'name', 'id')->toArray();
+        $teams = DB::table('teams')->select('id', 'name')->pluck('name', 'id')->toArray();
         return ['' => 'Chọn team'] + $teams;
     }
 }
@@ -399,7 +411,7 @@ if (!function_exists('users')) {
      */
     function users()
     {
-        $teams = DB::table('users')->select('id', 'name')->orderBy('name', 'ASC')->pluck( 'name', 'id')->toArray();
+        $teams = DB::table('users')->select('id', 'name')->orderBy('name', 'ASC')->pluck('name', 'id')->toArray();
         return ['' => 'Chọn nhân viên'] + $teams;
     }
 }
@@ -412,10 +424,10 @@ if (!function_exists('users')) {
 
 function checkNumber($number)
 {
-    $explode=explode('.',$number);
-    if ($explode[1] > 0){
+    $explode = explode('.', $number);
+    if ($explode[1] > 0) {
         return $number;
-    }else{
+    } else {
         return $explode[0];
     }
 }

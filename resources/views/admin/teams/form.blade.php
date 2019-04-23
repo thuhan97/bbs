@@ -118,5 +118,6 @@
             myFilemanager($('#lfm'), 'image');
             myEditor($("#description"));
         })
+        $('.option-with').addClass('col-xs-6');
     </script>
 @endpush

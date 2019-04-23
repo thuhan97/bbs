@@ -26,6 +26,15 @@ Route::group([
 
     ##AUTO_INSERT_ROUTE##
 
+    //punishes
+    Route::get('punishes/status/{id}', ['as' => 'punishes.status', 'uses' => 'PunishesController@changeSubmitStatus']);
+    Route::post('punishes/deletes', ['as' => 'punishes.deletes', 'uses' => 'PunishesController@deletes']);
+    Route::resource('punishes', 'PunishesController');
+
+    //rules
+    Route::post('rules/deletes', ['as' => 'rules.deletes', 'uses' => 'RulesController@deletes']);
+    Route::resource('rules', 'RulesController');
+
     //DeviceUser
     Route::get('devices/{id}/allocate', ['as' => 'deviceusers.allocate', 'uses' => 'DeviceUserController@allocate']);
     Route::post('deviceusers/deletes', ['as' => 'deviceusers.deletes', 'uses' => 'DeviceUserController@deletes']);

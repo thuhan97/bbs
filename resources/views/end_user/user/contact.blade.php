@@ -1,4 +1,6 @@
 @extends('layouts.end_user')
+@section('page-title', __l('contact'))
+
 @section('breadcrumbs')
     {!! Breadcrumbs::render('contact') !!}
 @endsection

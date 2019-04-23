@@ -235,9 +235,13 @@ class UserController extends Controller
         $countDayOff = $this->userDayOffService->countDayOffUserLogin();
         $userManager = $this->userService->getUserManager();
         $availableDayLeft = $this->userDayOffService->getDayOffUser(Auth::id());
-        if ($status != null) {
-            $dayOff = $this->userDayOffService->searchStatus($status);
-            return view('end_user.user.day_off', compact('listDate', 'paginateData', 'availableDayLeft', 'recordPerPage', 'approve', 'userManager', 'dayOff', 'status', 'countDayOff'));
+        if (isset($request->status_search) || isset($request->year)|| isset($request->month)) {
+            $year=$request->year;
+            $month=$request->month;
+            $statusSearch=$request->status_search;
+
+            $dayOff = $this->userDayOffService->searchStatus($year,$month,$statusSearch);
+            return view('end_user.user.day_off', compact('listDate', 'paginateData', 'availableDayLeft', 'recordPerPage', 'approve', 'userManager', 'dayOff', 'statusSearch', 'countDayOff','year','month'));
         }
         return view('end_user.user.day_off', compact('listDate', 'paginateData', 'availableDayLeft', 'recordPerPage', 'approve', 'userManager', 'countDayOff'));
     }
@@ -324,6 +328,7 @@ class UserController extends Controller
     public function contact(Request $request)
     {
         $users = $this->userService->getContact($request, $perPage, $search);
+
         return view('end_user.user.contact', compact('users', 'search', 'perPage'));
     }
 
@@ -374,22 +379,15 @@ class UserController extends Controller
             $dayOff->save();
             return back()->with('close', '');
         }
-        return back()->with(['data' => $dayOff]);
-        /* if ($dayOff->status == STATUS_DAY_OFF['noActive']){
-             $check=['yes'];
-             $manager=$this->userService->getUserManager();
-             $dataDayOff = $this->userDayOffService->showList(null);
-             return back()->with(['check'=>$check,'dayOff'=>$dayOff,'manager'=>$manager]);
-         }else{
-             $newStatus= $dayOff->status == STATUS_DAY_OFF['active'] ? STATUS_DAY_OFF['noActive'] : STATUS_DAY_OFF['active'];
-             $dayOff->status=$newStatus;
-             $dayOff->save();
-             if ($dayOff->status == STATUS_DAY_OFF['active']){
-                 return back()->with('active','');
-             }else{
-                 return back()->with('close','');
-             }
-         }*/
+        if ($dayOff->number_off){
+            $numOff=checkNumber($dayOff->number_off);
+        }
+        return response()->json([
+            'data' => $dayOff,
+            'numoff'=> $numOff ?? null,
+            'approver'=>User::findOrFail($dayOff->approver_id)->name,
+            'userdayoff'=>User::findOrFail($dayOff->user_id)->name
+    ]);
     }
 
     public function editDayOffDetail(Request $request, $id)
@@ -402,13 +400,23 @@ class UserController extends Controller
         return back()->with('success', __('messages.edit_day_off_successully'));
     }
 
-    public function deleteDayOff(Request $request)
+    public function deleteOrCloseDayOff(Request $request)
     {
-        $id = $request->day_off_id ?? '';
-        if ($id) {
-            DayOff::findOrFail($id)->delete();
+        if (isset($request->day_off_id)) {
+            DayOff::findOrFail($request->day_off_id)->delete();
+            return back()->with('delete_day_off', '');
+        }else if (isset($request->id_close)){
+            $dayOff=DayOff::findOrFail($request->id_close);
+            if ($dayOff->status == STATUS_DAY_OFF['abide']){
+                $dayOff->status = STATUS_DAY_OFF['noActive'];
+                $dayOff->save();
+                return back()->with('close', '');
+            }
+        }else
+        {
+            abort(404);
         }
-        return back()->with('delete_day_off', '');
+
     }
 
 }

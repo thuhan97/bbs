@@ -1,4 +1,6 @@
 @extends('layouts.end_user')
+@section('page-title', $event->name)
+
 @section('breadcrumbs')
     {!! Breadcrumbs::render('event_detail', $event) !!}
 @endsection

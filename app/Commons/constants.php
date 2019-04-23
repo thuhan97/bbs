@@ -229,6 +229,13 @@ define('STATUS_STATUS', [
     0 => ' Chưa duyệt',
     1 => 'Đã duyệt'
 ]);
+define('PUNISH_SUBMIT', [
+    'new' => 0,
+    'submitted' => 1
+]);
+define('LATE_MONEY_CONFIG', 'config/late_time.json');
+define('LATE_RULE_ID', 0);
+
 define('ALL_DAY_OFF', 3);
 define('DAY_OFF_FREE_DEFAULT', 0);
 define('DAY_OFF_FREE_ACTIVE', 1);

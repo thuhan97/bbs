@@ -1,4 +1,6 @@
 @extends('layouts.end_user')
+@section('page-title', $regulation->name)
+
 @section('breadcrumbs')
     {!! Breadcrumbs::render('regulation_detail', $regulation) !!}
 @endsection

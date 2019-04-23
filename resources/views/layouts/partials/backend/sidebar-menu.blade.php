@@ -88,8 +88,8 @@
         </a>
         <ul class="treeview-menu">
             <li><a href="{{ route('admin::day_offs.index') }}"><i class="fa fa-circle"></i> Nghỉ phép</a></li>
-            <li><a href="{{ route('admin::ask_permission.index') }}"><i class="fa fa-circle"></i> Xin phép</a></li>
-            <li><a href="{{ route('admin::work_times.index') }}"><i class="fa fa-circle"></i> Thời gian làm việc</a></li>
+            <li><a href="{{ route('admin::work_times.index') }}"><i class="fa fa-circle"></i> Thời gian làm việc</a>
+            </li>
             <li><a href="{{ route('admin::over_times.index') }}"><i class="fa fa-circle"></i> Làm thêm</a></li>
 
             <li><a href="{{ route('admin::work_time_register.index') }}"><i class="fa fa-circle"></i> Đăng ký lịch làm

@@ -122,7 +122,7 @@ Route::group([
 
     //statistic work time
     Route::post('work_time_statistic/deletes', ['as' => 'work_time_statistic.deletes', 'uses' => 'StatisticController@deletes']);
-    Route::get('work_time_statistic/exprot', ['as' => 'work_time_statistic.exprot', 'uses' => 'StatisticController@exprot']);
+    Route::get('work_time_statistic/export', ['as' => 'work_time_statistic.export', 'uses' => 'StatisticController@export']);
     Route::resource('work_time_statistic', 'StatisticController');
     //rooms
     Route::post('meetings/deletes', ['as' => 'meetings.deletes', 'uses' => 'MeetingController@deletes']);

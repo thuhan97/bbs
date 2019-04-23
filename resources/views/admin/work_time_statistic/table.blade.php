@@ -31,13 +31,13 @@
                         {{ $work_types[app\Models\Statistics::TYPES['latey_early']][$i] }}
                     @endisset
                 </td>
-                {{--lately + early--}}
+                {{--ot--}}
                 <td class="text-center">
                     @isset($work_types[app\Models\Statistics::TYPES['ot']][$i])
                         {{ $work_types[app\Models\Statistics::TYPES['ot']][$i] }}
                     @endisset
                 </td>
-                {{--lately + early--}}
+                {{--lately_ot--}}
                 <td class="text-center">
                     @isset($work_types[app\Models\Statistics::TYPES['lately_ot']][$i])
                         {{ $work_types[app\Models\Statistics::TYPES['lately_ot']][$i] }}

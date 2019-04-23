@@ -37,7 +37,7 @@ class DayOffRequest extends FormRequest
                 })
             ],
             'approver_at' => 'nullable|date|after_or_equal:start_at',
-            'number_off' => 'required|min:1|max:10|numeric',
+            'number_off' => array('regex:/^\d(\.[05])?$/', 'min:1', 'max:10'),
             'approve_comment' => 'nullable|max:255',
         ];
     }

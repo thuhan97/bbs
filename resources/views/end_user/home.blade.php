@@ -1,4 +1,5 @@
 @extends('layouts.end_user')
+@section('page-title', __l('Home'))
 
 @section('content')
     <section class="mt-4">

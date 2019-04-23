@@ -3,6 +3,8 @@
     preg_match('/month=([0-9]+)/', $url, $m);
     $m = isset($m[1]) ? $m[1] : 0;
 @endphp
+@section('page-title', __l('work_time'))
+
 @extends('layouts.end_user')
 @section('breadcrumbs')
     {!! Breadcrumbs::render('work_time') !!}

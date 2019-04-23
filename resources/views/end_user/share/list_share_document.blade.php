@@ -4,6 +4,8 @@
     $m = isset($m[1]) ? $m[1] : 0;
 @endphp
 @extends('layouts.end_user')
+@section('page-title', __l('list_share_document'))
+
 @section('breadcrumbs')
     {!! Breadcrumbs::render('list_share_document') !!}
 @endsection

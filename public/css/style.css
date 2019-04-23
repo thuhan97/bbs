@@ -790,11 +790,18 @@ td.blank, .type-1 {
 
 .list-reulation {
     margin-left: 15px;
+    font-size: 19px;
+}
+
+.list-reulation .index-regulation {
+    width: 25px;
+    display: inline-block;
 }
 
 .color-red {
     color: red;
 }
+
 /*
             End work time calendar
  */

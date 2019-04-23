@@ -1,14 +1,16 @@
 @extends('layouts.end_user')
+@section('page-title', __l('day_off_approval'))
+
 @section('breadcrumbs')
+    {!! Breadcrumbs::render('day_off_approval') !!}
 @endsection
 @section('content')
     <?php
     if (isset($dayOffSearch)) {
         $getDayOff = $dayOffSearch['data'];
-    }elseif (isset($status)){
+    } elseif (isset($status)) {
         $getDayOff = $dataDayOff['dataDate'];
-    }
-    else {
+    } else {
         $getDayOff = $dataDayOff['data'];
     }
     if (session()->has('data')) {
@@ -216,7 +218,9 @@
                             @endif
                         @endforeach
                     </td>
-                    <td class="text-center">{{!!!$record->number_off ? 'Chưa rõ' : checkNumber($record->number_off)  }} ngày</td>
+                    <td class="text-center">{{!!!$record->number_off ? 'Chưa rõ' : checkNumber($record->number_off)  }}
+                        ngày
+                    </td>
 
                     <td class="text-center p-0" style="vertical-align: middle;">
                         @if($record->status == STATUS_DAY_OFF['abide'])
@@ -292,7 +296,9 @@
                                         @endif
 
                                     @else
-                                        <div class="ml-3">{{!!!$data->number_off ? 'Chưa rõ' : checkNumber($data->number_off)}} ngày</div>
+                                        <div class="ml-3">{{!!!$data->number_off ? 'Chưa rõ' : checkNumber($data->number_off)}}
+                                            ngày
+                                        </div>
                                     @endif
                                 </div>
                                 <div class="mb-4 pb-2">
@@ -310,10 +316,12 @@
                                 </div>
                                 @if(isset($data) && $data->status==0)
                                     <div class="mb-3 ml-3">
-                                        <label class="text-d-bold" for="exampleFormControlTextarea5">Ý kiến người duyệt</label>
+                                        <label class="text-d-bold" for="exampleFormControlTextarea5">Ý kiến người
+                                            duyệt</label>
                                         <textarea
                                                 class="form-control reason_id rounded-0 select-item {{ $errors->has('approve_comment') ? ' has-error' : '' }}"
-                                                id="exampleFormControlTextarea2" rows="3" placeholder="Nhập ý kiến của người duyệt"
+                                                id="exampleFormControlTextarea2" rows="3"
+                                                placeholder="Nhập ý kiến của người duyệt"
                                                 name="approve_comment">{{ $data->approve_comment ?? old('approve_comment') }}</textarea>
                                         @if ($errors->has('approve_comment'))
                                             <div class="mt-1">
@@ -363,8 +371,8 @@
         <script src="{{ cdn_asset('js/jquery.validate.min.js') }}"></script>
         <script type="text/javascript">
             $(document).ready(function (e) {
-                $('.option-select').on('change',function () {
-                    $( "#form-search" ).submit();
+                $('.option-select').on('change', function () {
+                    $("#form-search").submit();
                 });
 
                 $("#edit-day-off").validate({

@@ -1,5 +1,10 @@
 <?php
 $defaultStaffCode = "J" . str_pad((\App\Models\User::max('id') + 1), 3, '0', STR_PAD_LEFT);
+if (isset($record->end_date)) {
+    if (strtotime($record->end_date) <= strtotime(date('Ymd'))) {
+        $record->status = 0;
+    }
+}
 ?>
 <div class="col-md-5">
     <div class="row">

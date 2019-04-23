@@ -6,17 +6,17 @@
             <div class="modal-header bg-red color-palette">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="modalConfirmModelDeleteLabel">Are you sure <i class="fa fa-question"></i>
+                <h4 class="modal-title" id="modalConfirmModelDeleteLabel">Bạn có chắc chắn <i class="fa fa-question"></i>
                 </h4>
             </div>
             <div class="modal-body">
-                <p> Are you sure you want to delete this item<i class="fa fa-question"></i></p>
+                <p> Bạn có chắc chắn muốn xóa bản ghi này không<i class="fa fa-question"></i></p>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-danger" id="btnModalConfirmModelDelete" data-form-id="">Confirm
+                <button type="button" class="btn btn-danger" id="btnModalConfirmModelDelete" data-form-id="">Xác nhận
                 </button>
                 <button type="button" class="btn btn-default" data-dismiss="modal" id="btnModalCancelModelDelete">
-                    Cancel
+                    Hủy bỏ
                 </button>
             </div>
         </div>
@@ -33,17 +33,17 @@
             <div class="modal-header bg-red color-palette">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="modalConfirmMutipleDeleteLabel">Are you sure <i class="fa fa-question"></i>
+                <h4 class="modal-title" id="modalConfirmMutipleDeleteLabel">Bạn có chắc chắn<i class="fa fa-question"></i>
                 </h4>
             </div>
             <div class="modal-body">
-                <p> Are you sure you want to delete <span id="itemCount"></span> selected item(s)?</p>
+                <p> Bạn có chắc chắn muốn xóa <span id="itemCount"></span> bản ghi được chọn?</p>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-danger" id="btnModalConfirmMutipleDelete" data-form-id="">Confirm
+                <button type="button" class="btn btn-danger" id="btnModalConfirmMutipleDelete" data-form-id="">Xác nhận
                 </button>
                 <button type="button" class="btn btn-default" data-dismiss="modal" id="btnModalCancelMutipleDelete">
-                    Cancel
+                    Hủy bỏ
                 </button>
             </div>
         </div>

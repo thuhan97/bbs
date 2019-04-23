@@ -17,8 +17,8 @@ $defaultStaffCode = "J" . str_pad((\App\Models\User::max('id') + 1), 3, '0', STR
                         @endif
                     </div>
                 </div>
-                <div class="col-md-3">
-                    <label for="staff_code">Giới tinh</label>
+                <div class="col-md-6">
+                    <label for="staff_code">Giới tính</label>
                     {{ Form::select('sex', SEXS, $record->sex, ['class'=>'form-control']) }}
                 </div>
             </div>

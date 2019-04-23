@@ -7,6 +7,7 @@ use App\Http\Requests\CreateDayOffRequest;
 use App\Http\Requests\DayOffRequest;
 use App\Http\Requests\ProfileRequest;
 use App\Models\DayOff;
+use App\Models\OverTime;
 use App\Models\RemainDayoff;
 use App\Models\User;
 use App\Models\WorkTime;
@@ -191,6 +192,35 @@ class UserController extends Controller
         }
     }
 
+    public function askPermission()
+    {
+        $dataLeader = WorkTimesExplanation::select(
+            'work_times_explanation.work_day', 'work_times_explanation.type',
+            'work_times_explanation.ot_type', 'work_times_explanation.note',
+            'work_times_explanation.user_id','ot_times.creator_id','ot_times.id as id_ot_time')
+            ->leftjoin('ot_times', 'ot_times.creator_id', '=', 'work_times_explanation.user_id')
+            ->whereYear('work_times_explanation.work_day', date('Y'))
+            ->groupBy('work_times_explanation.work_day', 'work_times_explanation.type',
+                'work_times_explanation.ot_type', 'work_times_explanation.note', 'work_times_explanation.user_id','ot_times.creator_id')
+            ->orderBy('work_times_explanation.work_day', 'desc')
+            ->paginate(PAGINATE_DAY_OFF, ['*'], 'Leader-page');
+        $datas = WorkTimesExplanation::where('user_id', Auth::id())->whereYear('work_day', date('Y'))->orderBy('work_day', 'desc')->paginate(PAGINATE_DAY_OFF, ['*'], 'user-page');
+        return view('end_user.user.ask_permission', compact('datas', 'dataLeader'));
+    }
+
+    public function approved(Request $request)
+    {
+        OverTime::create([
+            'creator_id' => $request['user_id'],
+            'reason' => $request['reason'],
+            'status' => array_search('Đã duyệt', STATUS_STATUS),
+            'approver_id' => $request['approver_id'],
+            'approver_at' => now(),
+            'work_day' => $request['work_day'],
+        ]);
+        return back();
+    }
+
     //
     //
     //  DAY OFF SECTION
@@ -363,7 +393,7 @@ class UserController extends Controller
             'number_off' => 'required|numeric',
             'approve_comment' => 'nullable|min:1|max:255'
         ]);
-        $this->userDayOffService->calculateDayOff($request,$id);
+        $this->userDayOffService->calculateDayOff($request, $id);
         return back()->with('success', __('messages.edit_day_off_successully'));
     }
 

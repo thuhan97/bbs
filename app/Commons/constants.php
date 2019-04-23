@@ -225,6 +225,10 @@ define('SEX', [
     'male' => 0,
     'female' => 1
 ]);
+define('STATUS_STATUS', [
+    0 => ' Chưa duyệt',
+    1 => 'Đã duyệt'
+]);
 define('PUNISH_SUBMIT', [
     'new' => 0,
     'submitted' => 1

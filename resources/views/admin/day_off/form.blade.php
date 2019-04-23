@@ -163,25 +163,19 @@
     </div>
 </div>
 @if(!isset($record->id) || $record->status ==STATUS_DAY_OFF['abide'] )
-<div class="box-footer clearfix">
-    <!-- Edit Button -->
-    <div class="col-xs-6">
-        <div class="text-center margin-b-5 margin-t-5">
-            <button class="btn btn-info">
-                <i class="fa fa-save"></i> <span>Lưu</span>
-            </button>
+    <div class="box-footer clearfix">
+        <div class="col-xs-12 project-form">
+            <div align="center">
+                <button class="btn btn-info mr-2">
+                    <i class="fa fa-save"></i> <span>Lưu</span>
+                </button>
+                <a href="{{ $_listLink }}" class="btn btn-default">
+                    <i class="fa fa-ban"></i> <span>Hủy</span>
+                </a>
+            </div>
         </div>
+        <!-- /.col-xs-6 -->
     </div>
-    <!-- /.col-xs-6 -->
-    <div class="col-xs-6">
-        <div class="text-center margin-b-5 margin-t-5">
-            <a href="{{ $_listLink }}" class="btn btn-default">
-                <i class="fa fa-ban"></i> <span>Hủy</span>
-            </a>
-        </div>
-    </div>
-    <!-- /.col-xs-6 -->
-</div>
 @endif
 <!-- /.col-md-7 -->
 @push('footer-scripts')

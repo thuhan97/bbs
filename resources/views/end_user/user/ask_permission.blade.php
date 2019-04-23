@@ -32,7 +32,7 @@
                 <tr>
                     <th>{{ $increment++ }}</th>
                     <th>{{ $item['work_day'] ?? '' }}</th>
-                    <th>{{ $item->user->name }}</th>
+                    <th>{{ $item->user->name ?? '' }}</th>
                     <td>
                         @if($item['type'] === 0)
                             Bình thường

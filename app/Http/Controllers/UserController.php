@@ -204,15 +204,12 @@ class UserController extends Controller
                 'work_times_explanation.ot_type', 'work_times_explanation.note', 'work_times_explanation.user_id','ot_times.creator_id')
             ->orderBy('work_times_explanation.work_day', 'desc')
             ->paginate(PAGINATE_DAY_OFF, ['*'], 'Leader-page');
-//        ->toSql();
-//        dd($dataLeader);
         $datas = WorkTimesExplanation::where('user_id', Auth::id())->whereYear('work_day', date('Y'))->orderBy('work_day', 'desc')->paginate(PAGINATE_DAY_OFF, ['*'], 'user-page');
         return view('end_user.user.ask_permission', compact('datas', 'dataLeader'));
     }
 
     public function approved(Request $request)
     {
-//        dd($request['work_day']);
         OverTime::create([
             'creator_id' => $request['user_id'],
             'reason' => $request['reason'],

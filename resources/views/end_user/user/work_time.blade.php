@@ -107,7 +107,8 @@
                 year = document.getElementById("chooseYear");
             const currentMonth = date.getMonth();
             const currentYear = date.getFullYear();
-
+            const currentDay = date.getDate();
+            const currentTime = parseInt(currentYear) + parseInt(currentMonth) + parseInt(currentDay);
             var showCalendar = function () {
                 current_year = $("#chooseYear").val();
                 current_month = $("#chooseMonth").val();
@@ -130,30 +131,72 @@
                     renderCalendar(current_year, current_month);
                 },
                 show: function (el) {
+                    // console.log(el.getAttribute("data-week"));
+                    calendar.sDay = el.getElementsByClassName("dayNumber")[0].innerHTML;
                     let currentMY = parseInt(currentYear) + parseInt(currentMonth),
                         calendarYM = calendar.sYear + calendar.sMth,
-                        getDataTime = el.getAttribute("data-time");
+                        getDataTime = el.getAttribute("data-time"),
+                        attrWeek = el.getAttribute("data-week");
+                    if (attrWeek) {
+                        alert(123)
+                    }
                     if (parseInt(calendarYM) >= parseInt(currentMY)) {
-                        calendar.sDay = el.getElementsByClassName("dayNumber")[0].innerHTML;
                         if (el.getElementsByClassName("data-id")[0]) {
                             let dataReason = el.getElementsByClassName("data-reason")[0].innerHTML,
                                 dataID = el.getElementsByClassName("data-id")[0].innerHTML,
                                 dataWorkDay = el.getElementsByClassName("data-work-day")[0].innerHTML,
-                                dataUserID = el.getElementsByClassName("data-user-id")[0].innerHTML;
-                            document.getElementById("div-reason").innerHTML =
-                                '<div class="row col-md-12">' +
-                                '<div class="col-md-12 d-flex justify-content-center">' +
-                                '<input hidden name="id" value="' + dataID + '">' +
-                                '<input hidden name="user_id" value="' + dataUserID + '">' +
-                                '<input hidden name="work_day" value="' + dataWorkDay + '">' +
-                                '<textarea class="form-control" name="reason" rows="6" placeholder="Nội dung bạn muốn gửi...">' + dataReason + '</textarea>' +
-                                '</div>' +
-                                '<div class="row col-md-12">' +
-                                '</div>' +
-                                '</div>';
+                                dataUserID = el.getElementsByClassName("data-user-id")[0].innerHTML,
+                                dataType = el.getElementsByClassName("data-type")[0].innerHTML;
+                            if (calendarYM + parseInt(calendar.sDay) === currentMY + parseInt(currentDay)) {
+                                switch (true) {
+                                    case parseInt(dataType) === 1:
+                                        var projectOT = 'checked';
+                                        break;
+                                    case parseInt(dataType) === 2:
+                                        var otherOT = 'checked';
+                                        break;
+                                    default:
+                                        var projectOT = '',
+                                            otherOT = '';
+                                }
+                                document.getElementById("div-reason").innerHTML =
+                                    '<div class="row col-md-12">' +
+                                    '<div class="row col-md-12">' +
+                                    '<div class="offset-5"><h3 class="">Xin OT</h3></div>' +
+                                    '<div class="col-md-6 text-center">' +
+                                    ' <input ' + projectOT + ' style="position: relative;opacity: 1;pointer-events: inherit" class="other-ot" type="radio" name="ot_type" id="project-ot" value="1">' +
+                                    '<label for="project-ot">OT dự án</label>' +
+                                    '</div>' +
+                                    '<div class="col-md-6 text-center">' +
+                                    ' <input ' + otherOT + '  style="position: relative;opacity: 1;pointer-events: inherit" class="other-ot" type="radio" name="ot_type" id="other-ot" value="2">' +
+                                    '<label for="other-ot">Lý do cá nhân</label>' +
+                                    '</div>' +
+                                    '</div>' +
+                                    '<div class="col-md-12 d-flex justify-content-center mt-3 xin-ot">' +
+                                    '<input hidden name="id" value="' + dataID + '">' +
+                                    '<input hidden name="user_id" value="' + dataUserID + '">' +
+                                    '<input hidden name="work_day" value="' + dataWorkDay + '">' +
+                                    '<textarea class="form-control" name="reason" rows="6" placeholder="Nội dung bạn muốn gửi...">' + dataReason + '</textarea>' +
+                                    '</div>' +
+                                    '</div>';
+                            } else {
+                                document.getElementById("div-reason").innerHTML =
+                                    '<div class="row col-md-12">' +
+                                    '<div class="ml-36"><h3 class="">Giải trình</h3></div>' +
+                                    '<div class="col-md-12 d-flex justify-content-center">' +
+                                    '<input hidden name="id" value="' + dataID + '">' +
+                                    '<input hidden name="user_id" value="' + dataUserID + '">' +
+                                    '<input hidden name="work_day" value="' + dataWorkDay + '">' +
+                                    '<textarea class="form-control" name="reason" rows="6" placeholder="Nội dung bạn muốn gửi...">' + dataReason + '</textarea>' +
+                                    '</div>' +
+                                    '<div class="row col-md-12">' +
+                                    '</div>' +
+                                    '</div>';
+                            }
                         } else {
                             document.getElementById("div-reason").innerHTML =
                                 '<div class="row col-md-12">' +
+                                '<div class="ml-36"><h3 class="">Giải trình</h3></div>' +
                                 '<div class="col-md-12 d-flex justify-content-center">' +
                                 '<input hidden name="work_day" value="' + getDataTime + '">' +
                                 '<textarea class="form-control" name="reason" rows="6" placeholder="Nội dung bạn muốn gửi..."></textarea>' +
@@ -259,8 +302,8 @@
                     var selectMonthYear = valYear + "-" + valMonth,
                         currentMonthYear = currentYear.toString() + "-" + currentMonth.toString();
                     if (selectMonthYear === currentMonthYear) {
-                        var current_day = date.getDay();
-                        var cells = document.getElementById('calendar').getElementsByTagName('td');
+                        var current_day = date.getDay(),
+                            cells = document.getElementById('calendar').getElementsByTagName('td');
                         cells[current_day].style.backgroundColor = '#222222';
                         cells[current_day].style.color = '#f4f4f4';
                     }
@@ -276,16 +319,21 @@
                         cCell.addEventListener("dblclick", function () {
                             calendar.show(this);
                         });
-                        var n = squares[i].toString().length;
+                        var n = squares[i].toString().length,
+                            calendarTime = valYear + "-" + valMonth + "-" + squares[i];
+                        intCalendarTime = parseInt(valYear) + parseInt(valMonth) + parseInt(squares[i]);
+
                         if (n < 2) {
+                            let dataTime = valYear + "-" + getValMonth + "-" + "0" + squares[i];
                             cCell.innerHTML = "<div class='dayNumber'>" + "0" + squares[i] + "</div>";
-                            cCell.setAttribute("data-time", valYear + "-" + getValMonth + "-" + "0" + squares[i]);
-                            cCell.setAttribute("calendar-time", valYear + "-" + valMonth + "-" + squares[i]);
+                            cCell.setAttribute("data-time", dataTime);
+                            cCell.setAttribute("data-calendar", calendarTime);
 
                         } else {
+                            let dataTime = valYear + "-" + getValMonth + "-" + squares[i];
                             cCell.innerHTML = "<div class='dayNumber'>" + squares[i] + "</div>";
-                            cCell.setAttribute("data-time", valYear + "-" + getValMonth + "-" + squares[i]);
-                            cCell.setAttribute("calendar-time", valYear + "-" + valMonth + "-" + squares[i]);
+                            cCell.setAttribute("data-time", dataTime);
+                            cCell.setAttribute("data-calendarInt", intCalendarTime);
                         }
                     }
                     cRow.appendChild(cCell);
@@ -308,18 +356,24 @@
                     success: (respond) => {
                         let dataRes = respond.data,
                             dataModal = respond.dataModal;
-
                         dataRes.forEach(function (data) {
                             let work_day = data.work_day,
                                 work_time = data.start_at + ' - ' + data.end_at;
                             $('.calendar-td-body').each(function () {
                                 const data_time = $(this).data('time');
+                                const calendarTime = $(this).data('calendar');
+                                const calendarTimeInt = $(this).data('data-calendarInt');
                                 if (data_time === work_day) {
                                     $(this).addClass("data-type-" + data.type);
                                     $(this).addClass("type" + data.type);
                                     $(this).addClass("hasData");
                                     $(this).append('<p>' + work_time + '</p>');
                                 }
+                                if (calendarTimeInt > currentTime) {
+                                    $("#calendar > tr > td:first-child").attr('data-week', calendarTimeInt);
+                                    $("#calendar > tr > td:last-child").attr('data-week', calendarTimeInt);
+                                }
+
                             });
                         });
 
@@ -332,9 +386,11 @@
                                     $(this).append('<p class="data-user-id" hidden>' + data.user_id + '</p>');
                                     $(this).append('<p class="data-reason" hidden>' + data.note + '</p>');
                                     $(this).append('<p class="data-work-day" hidden>' + data.work_day + '</p>');
+                                    $(this).append('<p class="data-type" hidden>' + data.type + '</p>');
                                 }
                             });
                         });
+
                         let type_1 = $('#calendar .data-type-1').length,
                             type_2 = $('#calendar .data-type-2').length,
                             type_4 = $('#calendar .data-type-4').length,
@@ -349,6 +405,7 @@
                     },
                 });
             };
+
         })
     </script>
 @endpush

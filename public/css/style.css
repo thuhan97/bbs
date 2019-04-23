@@ -795,6 +795,23 @@ td.blank, .type-1 {
 .color-red {
     color: red;
 }
+
+.other-ot {
+    top: 1px;
+    right: 10px;
+    position: relative;
+    opacity: 1;
+}
+
+.ml-40 {
+    margin-left: 40%;
+}
+
+.ml-36 {
+    margin-left: 36%;
+}
+
+
 /*
             End work time calendar
  */

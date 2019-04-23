@@ -177,14 +177,15 @@ class UserController extends Controller
         $reason = $request['reason'];
         $userID = $request['user_id'];
         $workDay = $request['work_day'];
+        $type = $request['ot_type'];
         if ($id) {
-            WorkTimesExplanation::where('user_id', $userID)->where('work_day', $workDay)->update(['note' => $reason]);
+            WorkTimesExplanation::where('user_id', $userID)->where('work_day', $workDay)->update(['note' => $reason,'type' => $type]);
             return back()->with('day_off_success', '');
         } else {
             WorkTimesExplanation::create([
                 'user_id' => Auth::id(),
                 'work_day' => $request['work_day'],
-                'type' => 0,
+                'type' => $type,
                 'note' => $reason
             ]);
             return back()->with('day_off_success', 'day_off_success');

@@ -303,6 +303,7 @@ class UserController extends Controller
      */
     public function dayOffCreate(createDayOffRequest $request)
     {
+
         $dayOff = new DayOff();
         $dayOff->fill($request->all());
         $dayOff->user_id = Auth::id();

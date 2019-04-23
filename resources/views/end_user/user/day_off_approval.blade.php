@@ -260,9 +260,34 @@
                             </div>
                             <div class="modal-body mx-3 mt-0 pb-0">
                                 <div class="mb-3">
-                                    <label class="ml-3 text-w-400" for="exampleFormControlTextarea5">Tên nhân
+                                    <label class="ml-3 text-d-bold" for="exampleFormControlTextarea5">Tên nhân
                                         viên</label>
                                     <div class="ml-3">{{ $data->user->name }}</div>
+                                </div>
+                                <div class="mb-3 ml-3 ">
+                                    <!-- Default input -->
+                                    <label class="text-d-bold" for="exampleForm2">Thời gian được tính:</label>
+                                    @if($data->status ==0)
+                                        <input type="text"
+                                               class="form-control select-item {{ $errors->has('number_off') ? ' has-error' : '' }}"
+                                               autocomplete="off" name="number_off"
+                                               value="{{ old('number_off',$data->number_off) }}" id="number_off">
+                                        @if ($errors->has('number_off'))
+                                            <div class="">
+                                                <span class="help-block text-danger">{{ $errors->first('number_off') }}</span>
+                                            </div>
+                                        @endif
+
+                                    @else
+                                        <div class="ml-3">{{!!!$data->number_off ? 'Chưa rõ' : checkNumber($data->number_off)}}
+                                            ngày
+                                        </div>
+                                    @endif
+                                </div>
+                                <div class="mb-3">
+                                    <!-- Default input -->
+                                    <label class="ml-3 text-d-bold" for="exampleForm2">Ngày nghỉ:</label>
+                                    <div class="ml-3">{{ $data->start_date .' - '. $data->end_date}}</div>
                                 </div>
                                 <div class="mb-3">
                                     <!-- Default input -->
@@ -274,32 +299,6 @@
                                     <label class="ml-3 text-d-bold" for="exampleFormControlTextarea5">Chi tiết lý
                                         do:</label>
                                     <div class="ml-3">{{ $data->reason}}</div>
-                                </div>
-                                <div class="mb-3">
-                                    <!-- Default input -->
-                                    <label class="ml-3 text-d-bold" for="exampleForm2">Ngày nghỉ:</label>
-                                    <div class="ml-3">{{ $data->start_date .' - '. $data->end_date}}</div>
-                                </div>
-
-                                <div class="mb-3 ml-3 ">
-                                    <!-- Default input -->
-                                    <label class="text-d-bold" for="exampleForm2">Thời gian được tính:</label>
-                                    @if($data->status ==0)
-                                        <input type="text"
-                                               class="form-control select-item {{ $errors->has('number_off') ? ' has-error' : '' }}"
-                                               autocomplete="off" name="number_off"
-                                               value="{{ old('number_off',$data->number_off) }}" id="number_off">
-                                        @if ($errors->has('title'))
-                                            <div class="">
-                                                <span class="help-block text-danger">{{ $errors->first('start_at') }}</span>
-                                            </div>
-                                        @endif
-
-                                    @else
-                                        <div class="ml-3">{{!!!$data->number_off ? 'Chưa rõ' : checkNumber($data->number_off)}}
-                                            ngày
-                                        </div>
-                                    @endif
                                 </div>
                                 <div class="mb-4 pb-2">
                                     <div class="row">

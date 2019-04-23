@@ -18,7 +18,7 @@ class AdminTableSeeder extends Seeder
             [
                 'name' => 'Administrator',
                 'username' => 'admin123',
-                'password' => Hash::make('admin@123'),
+                'password' => Hash::make('admin123'),
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now(),
             ],

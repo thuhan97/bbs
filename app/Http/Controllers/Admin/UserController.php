@@ -48,12 +48,12 @@ class UserController extends AdminBaseController
     {
         return [
             'rules' => [
-                'name' => 'filled|max:255',
+                'name' => 'filled|max:255|alpha',
                 'email' => 'email|unique:users,email',
-                'staff_code' => 'filled|max:10|unique:users,staff_code',
+                'staff_code' => 'filled|max:10|unique:users,staff_code|alpha',
                 'birthday' => 'nullable|date|before:' . date('Y-m-d', strtotime('- 15 years')),
                 'phone' => 'nullable|numeric|digits_between:10,30|unique:users,phone',
-                'id_card' => 'nullable|min:9|max:12|unique:users,id_card',
+                'id_card' => 'nullable|min:9|max:12|unique:users,id_card|numeric',
                 'password'=>'required|same:password_confirmation',
                 'password_confirmation'=>'required',
                 'start_date'=>'nullable|date|before_or_equal:today',
@@ -63,7 +63,8 @@ class UserController extends AdminBaseController
             'attributes' => [
                 'phone'=>'số điện thoại',
                 'start_date'=>'ngày vào công ty',
-                'end_date'=>'ngày nghỉ việc'
+                'end_date'=>'ngày nghỉ việc',
+                'staff_code'=>'mã nhân viên'
             ],
             'advanced' => [],
         ];
@@ -74,12 +75,12 @@ class UserController extends AdminBaseController
 
         return [
             'rules' => [
-                'name' => 'required|max:255',
+                'name' => 'required|max:255|alpha',
                 'email' => 'required|email|unique:users,email,' . $record->id,
-                'staff_code' => 'filled|max:10|unique:users,staff_code,' . $record->id,
+                'staff_code' => 'filled|max:10|alpha|unique:users,staff_code,' . $record->id,
                 'birthday' => 'nullable|date|before:' . date('Y-m-d', strtotime('- 15 years')),
                 'phone' => 'nullable|numeric|digits_between:10,30|unique:users,phone,' . $record->id,
-                'id_card' => 'nullable|min:9|max:12|unique:users,id_card,' . $record->id,
+                'id_card' => 'nullable|min:9|numeric|max:12|unique:users,id_card,' . $record->id,
                 'password'=>'nullable|same:password_confirmation',
                 'start_date'=>'nullable|date|before_or_equal:today',
                 'end_date'=>"nullable|date|after:start_date"
@@ -90,7 +91,8 @@ class UserController extends AdminBaseController
             'attributes' => [
                 'phone'=>'số điện thoại',
                 'start_date'=>'ngày vào công ty',
-                'end_date'=>'ngày nghỉ việc'
+                'end_date'=>'ngày nghỉ việc',
+                'staff_code'=>'mã nhân viên'
             ],
             'advanced' => [],
         ];

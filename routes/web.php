@@ -122,8 +122,8 @@ Route::group([
     Route::get('/hien-thi-ngay-nghi/{status}', 'UserController@dayOffShow')->name('day_off_show');
     Route::get('/tim-kiem-ngay-nghi/', 'UserController@dayOffSearch')->name('day_off_search');
     Route::get('/chi-tiet-ngay-nghi/{id?}/{check?}', 'UserController@dayOffDetail')->name('day_off_detail');
-    Route::post('/chinh-sua-ngay-nghi/{id}', 'UserController@editDayOffDetail')->name('edit_day_off_detail');
-    Route::post('/xoa-don-xin-nghi/', 'UserController@deleteDayOff')->name('delete_day_off');
+    Route::post('/chinh-sua-ngay-nghi/{id?}', 'UserController@editDayOffDetail')->name('edit_day_off_detail');
+    Route::post('/sua-xoa-xin-nghi/', 'UserController@deleteDayOff')->name('delete_day_off');
 
 
     Route::get('/noi-quy-quy-dinh', 'RegulationController@index')->name('regulation');

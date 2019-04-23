@@ -351,7 +351,8 @@ class UserController extends Controller
         return response()->json([
             'data' => $dayOff,
             'numoff'=> $numOff ?? null,
-            'approver'=>User::findOrFail($dayOff->approver_id)->name
+            'approver'=>User::findOrFail($dayOff->approver_id)->name,
+            'userdayoff'=>User::findOrFail($dayOff->user_id)->name
     ]);
     }
 
@@ -367,14 +368,19 @@ class UserController extends Controller
 
     public function deleteDayOff(Request $request)
     {
+        if (isset($request->day_off_id)) {
+            DayOff::findOrFail($request->day_off_id)->delete();
+            return back()->with('delete_day_off', '');
+        }else if (isset($request->id_close)){
+            $dayOff=DayOff::findOrFail($request->id_close);
+            if ($dayOff->status == STATUS_DAY_OFF['abide']){
+                $dayOff->status = STATUS_DAY_OFF['noActive'];
+                $dayOff->save();
+                return back()->with('close', '');
+            }
 
-        $id = $request->day_off_id ?? '';
-        if ($id) {
-            DayOff::findOrFail($id)->delete();
-        }else{
-            abort(404);
         }
-        return back()->with('delete_day_off', '');
+
     }
 
 }

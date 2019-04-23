@@ -20,7 +20,7 @@ Breadcrumbs::register('contact', function ($breadcrumbs) {
 // Home > Post
 Breadcrumbs::register('regulation', function ($breadcrumbs) {
     $breadcrumbs->parent('home');
-    $breadcrumbs->push(__l('Post'), route('regulation'));
+    $breadcrumbs->push(__l('regulation'), route('regulation'));
 });
 Breadcrumbs::register('regulation_search', function ($breadcrumbs, $search) {
     $breadcrumbs->parent('regulation');
@@ -91,6 +91,10 @@ Breadcrumbs::register('profile', function ($breadcrumbs) {
     $breadcrumbs->parent('personal');
     $breadcrumbs->push(__l('Profile'), route('profile'));
 });
+Breadcrumbs::register('punish', function ($breadcrumbs) {
+    $breadcrumbs->parent('personal');
+    $breadcrumbs->push(__l('Punish'), route('punish'));
+});
 
 Breadcrumbs::register('change_password', function ($breadcrumbs) {
     $breadcrumbs->parent('personal');
@@ -129,7 +133,6 @@ Breadcrumbs::register('work_time_statistic', function ($breadcrumbs) {
 });
 
 
-
 // Admin / {Resource} / {List|Edit|Create}
 $resources = [
     'admins' => 'Trang quản trị',
@@ -146,7 +149,9 @@ $resources = [
     'devices' => 'Quản lý thiết bị',
     'deviceusers' => 'Quản lý thiết bị',
     'work_time_statistic' => 'Thống kê thời gian làm việc',
-    'meetings'=> 'Phòng họp'
+    'meetings' => 'Phòng họp',
+    'rules' => 'Quy định tiền phạt',
+    'punishes' => 'Danh sách tiền phạt',
 ];
 foreach ($resources as $resource => $data) {
     $parent = 'admin';

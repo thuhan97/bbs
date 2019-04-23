@@ -13,6 +13,65 @@
 
 use Illuminate\Support\Facades\Route;
 
+Auth::routes();
+Route::any('logout', 'Auth\LoginController@logout')->name('logout');
+
+Route::group([
+    'middleware' => ['auth'],
+], function () {
+    Route::any('/', 'HomeController@index')->name('default');
+    Route::get('/trang-chu', 'HomeController@index');
+
+    Route::get('/ca-nhan', 'UserController@index')->name('personal');
+    Route::get('/thiet-lap-ca-nhan', 'UserController@profile')->name('profile');
+    Route::post('/thiet-lap-ca-nhan', 'UserController@saveProfile')->name('save_profile');
+    Route::get('/danh-ba', 'UserController@contact')->name('contact');
+    Route::get('/doi-mat-khau', 'UserController@changePassword')->name('changePassword');
+    Route::post('/doi-mat-khau', 'UserController@updatePassword')->name('update_password');
+    Route::get('/thoi-gian-lam-viec', 'UserController@workTime')->name('work_time');
+    Route::get('/thoi-gian-lam-viec-api', 'UserController@workTimeAPI')->name('work_time_api');
+    Route::get('/ngay-nghi', 'UserController@dayOff')->name('day_off');
+    /* Route::post('/ngay-nghi/create-api', 'UserController@dayOffCreate_API')->name('day_off_createAPI');*/
+    Route::get('/ngay-nghi/list-approval-api', 'UserController@dayOffListApprovalAPI')->name('day_off_listApprovalAPI');
+    Route::get('/phe-duyet-ngay-nghi', 'UserController@dayOffApprove')->name('day_off_approval');
+    Route::post('/phe-duyet-ngay-nghi/approve-api', 'UserController@dayOffApprove_AcceptAPI')->name('day_off_approval_approveAPI');
+    Route::post('/phe-duyet-ngay-nghi/one/{id}', 'UserController@dayOffApprove_get')->name('day_off_approval_one');
+    Route::get('/ngay-nghi/{status?}', 'UserController@dayOff')->name('day_off');
+    Route::get('/phe-duyet-ngay-nghi/', 'UserController@dayOffApprove')->name('day_off_approval');
+
+    Route::get('/hien-thi-ngay-nghi/{status}', 'UserController@dayOffShow')->name('day_off_show');
+    Route::get('/tim-kiem-ngay-nghi/', 'UserController@dayOffSearch')->name('day_off_search');
+    Route::get('/chi-tiet-ngay-nghi/{id?}/{check?}', 'UserController@dayOffDetail')->name('day_off_detail');
+    Route::post('/chinh-sua-ngay-nghi/{id}', 'UserController@editDayOffDetail')->name('edit_day_off_detail');
+    Route::post('/xoa-don-xin-nghi/', 'UserController@deleteDayOff')->name('delete_day_off');
+
+    Route::get('/cong-no', 'PunishesController@index')->name('punish');
+    Route::get('/noi-quy-quy-dinh', 'RegulationController@index')->name('regulation');
+    Route::get('/noi-quy-quy-dinh/{id}', 'RegulationController@detail')->where(['id' => '\d+'])->name('regulation_detail');
+    Route::get('/su-kien', 'EventController@calendar')->name('event');
+    Route::get('/events', 'EventController@getCalendar')->name('getCalendar');
+    Route::get('/danh-sach-su-kien', 'EventController@index')->name('event_list');
+    Route::get('/su-kien/{id}', 'EventController@detail')->where(['id' => '\d+'])->name('event_detail');
+    Route::post('/dang-ki-su-kien', 'EventAttendanceController@JoinEvent')->name('join_event');
+    Route::get('/thong-bao', 'PostController@index')->name('post');
+    Route::get('/thong-bao/{id}', 'PostController@detail')->where(['id' => '\d+'])->name('post_detail');
+    Route::get('/bao-cao', 'ReportController@index')->name('report');
+    Route::get('/tao-bao-cao', 'ReportController@create')->name('create_report');
+    Route::get('/report', 'ReportController@getReport')->name('getReport');
+    Route::post('/tao-bao-cao', 'ReportController@saveReport')->name('save_report');
+    Route::get('/bao-cao/{id}', 'ReportController@detail')->where(['id' => '\d+'])->name('report_detail');
+    Route::get('/du-an', 'ProjectController@index')->name('project');
+    Route::get('/du-an/{id}', 'ProjectController@detail')->where(['id' => '\d+'])->name('project_detail');
+
+    Route::get('/chia-se-tai-lieu', 'ShareController@listShareDocument')->name('list_share_document');
+    Route::get('/download_file_share/{url}', 'ShareController@downloadFileShare');
+    Route::post('/add_document', 'ShareController@addDocument')->name('add_document');
+    // create day off
+    Route::post('/ngay-nghi/create-calendar', 'UserController@dayOffCreateCalendar')->name('day_off_create_calendar');
+    Route::post('/ngay-nghi/create-day-off', 'UserController@dayOffCreate')->name('day_off_create');
+
+});
+
 Route::group(['prefix' => 'file-manager', 'as' => 'unisharp.lfm.'], function () {
     $namespace = '\\UniSharp\\LaravelFilemanager\\Controllers\\';
     // display main layout

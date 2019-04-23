@@ -295,6 +295,7 @@ class UserController extends Controller
     public function contact(Request $request)
     {
         $users = $this->userService->getContact($request, $perPage, $search);
+
         return view('end_user.user.contact', compact('users', 'search', 'perPage'));
     }
 

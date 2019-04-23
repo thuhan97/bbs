@@ -1,4 +1,6 @@
 @extends('layouts.end_user')
+@section('page-title', __l('Event'))
+
 @section('breadcrumbs')
     @if(empty($search))
         {!! Breadcrumbs::render('event') !!}

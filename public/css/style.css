@@ -793,6 +793,12 @@ td.blank, .type-1 {
 
 .list-reulation {
     margin-left: 15px;
+    font-size: 19px;
+}
+
+.list-reulation .index-regulation {
+    width: 25px;
+    display: inline-block;
 }
 
 .color-red {
@@ -812,6 +818,7 @@ td.blank, .type-1 {
 .day-off-icoi{
     left: 25px !important;
 }
+
 /*
             End work time calendar
  */

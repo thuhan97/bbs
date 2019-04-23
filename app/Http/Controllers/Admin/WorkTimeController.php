@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Facades\AuthAdmin;
+use App\Events\CaculateLateTimeEvent;
 use App\Http\Requests\Admin\WorkTimeImportRequest;
 use App\Http\Requests\Admin\WorkTimeRequest;
 use App\Imports\WorkTimeImport;
@@ -53,7 +53,7 @@ class WorkTimeController extends AdminBaseController
      * Controller construct
      *
      * @param IWorkTimeRepository $repository
-     * @param IWorkTimeService $service
+     * @param IWorkTimeService    $service
      */
     public function __construct(IWorkTimeRepository $repository, IWorkTimeService $service)
     {
@@ -106,7 +106,7 @@ class WorkTimeController extends AdminBaseController
         Excel::import(new WorkTimeImport($startDate, $endDate), $importFile);
 
         \DB::commit();
-
+        event(new CaculateLateTimeEvent($startDate, $endDate));
         $message = 'Nhập dữ liệu thành công.';
 
         return view('admin.work_time.import', [
@@ -127,7 +127,7 @@ class WorkTimeController extends AdminBaseController
         return response()->download($pathToFile);
     }
 
-    public function getRedirectAfterSave($record, $request,$isCreate = NULL)
+    public function getRedirectAfterSave($record, $request, $isCreate = NULL)
     {
         $explanationID = $request->explanation_id;
         $explanationNote = $request->explanation_note;

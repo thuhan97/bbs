@@ -5,7 +5,7 @@
         <div class="col-sm-6">
             <div class="form-group margin-b-5 margin-t-5{{ $errors->has('rule_id') ? ' has-error' : '' }}">
                 <label for="rule_id">Vi phạm *</label>
-                {{ Form::select('rule_id', ['' => 'Chọn vi phạm'] +  $rules, $record->rule_id, $record->rule_id ? ['disabled'=>'disabled','class'=>'select2 form-control'] : ['class'=>'select2 form-control']) }}
+                {{ Form::select('rule_id', ['0' => 'Đi muộn'] +  $rules, $record->rule_id, $record->rule_id ? ['disabled'=>'disabled','class'=>'select2 form-control'] : ['class'=>'select2 form-control']) }}
                 @if ($errors->has('rule_id'))
                     <span class="help-block">
                     <strong>{{ $errors->first('rule_id') }}</strong>

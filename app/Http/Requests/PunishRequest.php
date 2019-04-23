@@ -27,7 +27,7 @@ class PunishRequest extends FormRequest
         $request = \request();
         $isEdit = $request->id > 0;
         return [
-            'rule_id' => ($isEdit ? 'nullable' : 'required') . '|exists:rules,id',
+            'rule_id' => ($isEdit ? 'nullable' : 'required') . ($request->rule_id == 0 ? '' : '|exists:rules,id'),
             'user_id' => ($isEdit ? 'nullable' : 'required') . '|exists:users,id',
             'infringe_date' => 'required|date',
             'detail' => 'max:191',

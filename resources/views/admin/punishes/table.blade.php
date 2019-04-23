@@ -40,7 +40,7 @@
             <tr>
                 <td><input type="checkbox" name="ids[]" value="{{ $record->id }}" class="square-blue chkDelete"></td>
                 <td class="table-text">
-                    <a href="{{ $userLink }}">{{ $record->rule->name ?? '' }}</a>
+                    <a href="{{ $userLink }}">{{ $record->rule->name ?? 'Đi muộn' }}</a>
                 </td>
                 <td class="table-text">
                     <a href="{{ $userLink }}">{{ $record->user->name ?? '' }}</a>

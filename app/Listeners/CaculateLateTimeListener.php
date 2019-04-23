@@ -4,9 +4,13 @@ namespace App\Listeners;
 
 use App\Events\CaculateLateTimeEvent as CaculateLateTimeEventAlias;
 use App\Services\Contracts\IWorkTimeService;
+use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Queue\InteractsWithQueue;
 
-class CaculateLateTimeListener
+class CaculateLateTimeListener implements ShouldQueue
 {
+    use InteractsWithQueue;
+
     /**
      * Create the event listener.
      *

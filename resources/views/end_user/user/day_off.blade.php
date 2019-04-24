@@ -26,7 +26,7 @@
     </div>
     <div class="container-fluid col-12 row border-bottom-2 mb-3" style="position: relative;">
         <div class="col-sm-3 col-md-6 col-lg-3 position-relative">
-            <a href="{{ route('day_off_show',['status'=>ALL_DAY_OFF]) }}" class="card bg-primary border-radius-2">
+            <span class="card bg-primary border-radius-2">
                 <div class="card-body row d-flex justify-content-center px-0 ml-xxl-2">
                     <div class="media ml-2 d-md-flex">
                             <span id="dayoff-option-header-1"
@@ -44,10 +44,10 @@
                     </div>
 
                 </div>
-            </a>
+            </span>
         </div>
         <div class="col-sm-3 col-md-6 col-lg-3 position-relative ">
-            <a href="{{ route('day_off_show',['status'=>STATUS_DAY_OFF['active']]) }}"
+            <span
                class="card bg-success border-radius-2">
                 <div class="card-body row d-flex justify-content-center px-0 ml-xxl-2">
                     <div class="media mr-2 d-md-flex">
@@ -66,10 +66,10 @@
                     </div>
 
                 </div>
-            </a>
+            </span>
         </div>
         <div class="col-sm-3 col-md-6 col-lg-3 position-relative">
-            <a href="{{ route('day_off_show',['status'=>STATUS_DAY_OFF['abide']]) }}" class="card border-radius-2"
+            <span class="card border-radius-2"
                id="bg-yellow">
                 <div class="card-body  row d-flex justify-content-center px-0 ml-xxl-2">
                     <div class="media mr-2  d-md-flex">
@@ -87,7 +87,7 @@
                     </div>
 
                 </div>
-            </a>
+            </span>
         </div>
         <div class="col-sm-3 col-md-6 col-lg-3 position-relative pr-0" id="show-modal">
             <span class="card bg-danger border-radius-2">
@@ -431,7 +431,6 @@
     @endif
 
     @if(session()->has('day_off_success'))
-        @if(session()->get('day_off_success') != '')
             <script>
                 swal({
                     title: "Thông báo!",
@@ -440,16 +439,6 @@
                     button: "Đóng",
                 });
             </script>
-        @else
-            <script>
-                swal({
-                    title: "Thông báo!",
-                    text: "Bạn đã sửa đơn thành công!",
-                    icon: "success",
-                    button: "Đóng",
-                });
-            </script>
-        @endif
     @endif
 
     @if(session()->has('delete_day_off'))

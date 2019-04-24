@@ -367,7 +367,8 @@
                     rules: {
                         number_off: {
                             required: true,
-                            number: true
+                            number: true,
+                            min:0
                         },
                         approve_comment:{
                             minlength:3,
@@ -377,7 +378,8 @@
                     messages: {
                         number_off: {
                             required: "Vui lòng nhập số ngày nghỉ được phê duyệt",
-                            number: "Vui lòng nhập đúng định dạng số"
+                            number: "Vui lòng nhập đúng định dạng số",
+                            min:"Không thể chọn số ngày phê duyệt nhỏ hơn 0"
                         },
                         approve_comment:{
                             minlength:"nội dung ít nhất là 3 kí tự",

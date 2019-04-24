@@ -9,6 +9,7 @@ use App\Services\Contracts\IDeviceService;
 use App\Services\Contracts\IDeviceUserService;
 use App\Services\Contracts\IEventService;
 use App\Services\Contracts\IFeedbackService;
+use App\Services\Contracts\IOverTimeService;
 use App\Services\Contracts\IPostService;
 use App\Services\Contracts\IProjectService;
 use App\Services\Contracts\IRegulationService;
@@ -106,6 +107,9 @@ class AdditionServiceProvider extends ServiceProvider
         $this->app->bind(IMeetingService::class, function () {
             return app()->make(MeetingService::class);
         });
+        $this->app->bind(IOverTimeService::class, function () {
+            return app()->make(IOverTimeService::class);
+        });
     }
 
     /**
@@ -133,7 +137,8 @@ class AdditionServiceProvider extends ServiceProvider
             IDeviceService::class,
             IDeviceUserService::class,
             IWorkTimeRegisterService::class,
-            IMeetingService::class
+            IMeetingService::class,
+            IOverTimeService::class,
         ];
     }
 }

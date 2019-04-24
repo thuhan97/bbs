@@ -225,7 +225,7 @@ define('SEX', [
     'male' => 0,
     'female' => 1
 ]);
-define('STATUS_STATUS', [
+define('OT_STATUS', [
     0 => ' Chưa duyệt',
     1 => 'Đã duyệt'
 ]);

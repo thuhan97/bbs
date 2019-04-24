@@ -49,6 +49,11 @@ Breadcrumbs::register('post', function ($breadcrumbs) {
     $breadcrumbs->parent('home');
     $breadcrumbs->push(__l('Post'), route('post'));
 });
+// Home > over_times
+Breadcrumbs::register('over_times', function ($breadcrumbs) {
+    $breadcrumbs->parent('home');
+    $breadcrumbs->push(__l('over_times'), route('over_times'));
+});
 Breadcrumbs::register('post_search', function ($breadcrumbs, $search) {
     $breadcrumbs->parent('post');
     $breadcrumbs->push(__l('search_with', ['key' => $search]), route('post'));
@@ -149,6 +154,7 @@ $resources = [
     'teams' => 'Quản lý nhóm',
     'day_offs' => 'Quản lý nghỉ phép',
     'work_times' => 'Quản lý làm việc',
+    'over_times' => 'Làm thêm',
     'work_time_register' => 'Đăng ký thời gian làm việc',
     'projects' => 'Quản lý dự án',
     'devices' => 'Quản lý thiết bị',

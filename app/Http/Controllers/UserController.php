@@ -213,8 +213,8 @@ class UserController extends Controller
         OverTime::create([
             'creator_id' => $request['user_id'],
             'reason' => $request['reason'],
-            'status' => array_search('Đã duyệt', STATUS_STATUS),
-            'approver_id' => $request['approver_id'],
+            'status' => array_search('Đã duyệt', OT_STATUS),
+            'approver_id' => Auth::id(),
             'approver_at' => now(),
             'work_day' => $request['work_day'],
         ]);

@@ -194,6 +194,7 @@ class RepositoriesServiceProvider extends ServiceProvider
             IAdminRepository::class,
             IUserRepository::class,
             IDayOffRepository::class,
+            IOverTimeRepository::class,
             IWorkTimeRepository::class,
             IStatisticRepository::class,
             ITeamRepository::class,

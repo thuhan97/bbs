@@ -132,9 +132,11 @@ class WorkTimeService extends AbstractService implements IWorkTimeService
             ])
             ->whereDate('work_day', '>=', $fromDate)
             ->whereDate('work_day', '<=', $toDate);
+
         if (!empty($userIds)) $model->whereIn('id', $userIds);
         $lateList = $model->orderBy('work_day')
             ->get()->groupBy('user_id');
+
         DB::beginTransaction();
         //clear old data
         $punish = Punishes::where('rule_id', LATE_RULE_ID)

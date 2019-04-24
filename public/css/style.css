@@ -805,6 +805,19 @@ td.blank, .type-1 {
     color: red;
 }
 
+#post-content .post-item {
+    border-bottom: 1px solid #ccc;
+}
+
+#post-content {
+    padding-top: 0 !important;
+    padding-bottom: 10px !important;
+}
+
+#post-content .post-item:last-child {
+    border-bottom: none;
+}
+
 .other-ot {
     top: 1px;
     right: 10px;

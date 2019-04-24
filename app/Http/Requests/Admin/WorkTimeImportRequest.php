@@ -23,12 +23,23 @@ class WorkTimeImportRequest extends FormRequest
      */
     public function rules()
     {
+        \Validator::extend('same_month', function ($attribute, $value, $parameters, $validator) {
+            $startDate = $this->request->get($parameters[0]);
+            return get_month($startDate) == get_month($value);
+        });
         return [
             'year' => 'required',
             'month' => 'required_without:start_date',
             'start_date' => 'nullable|date',
-            'end_date' => 'nullable|required_with:start_date|date|after:start_date',
+            'end_date' => 'nullable|required_with:start_date|date|after:start_date|same_month:start_date',
             'import_file' => 'required',
+        ];
+    }
+
+    public function messages()
+    {
+        return [
+           'same_month' => 'Vui lòng chọn dữ liệu trong cùng một tháng.'
         ];
     }
 

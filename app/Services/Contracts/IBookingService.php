@@ -17,7 +17,7 @@ interface IBookingService extends IBaseService
      *
      * @return collection
      */
-    public function getBooking();
+    public function getBooking($start,$end);
 
     public function getBookingRecur($start,$end);
 

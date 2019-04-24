@@ -43,8 +43,9 @@ class BookingService extends AbstractService implements IBookingService
      *
      * @return collection
      */
-    public function getBooking(){
+    public function getBooking($start,$end){
         $bookings=Booking::all();
+        $results=[];
         if ($bookings->isNotEmpty()) {
             foreach ($bookings as $booking) {
                 $results[] = [
@@ -63,7 +64,7 @@ class BookingService extends AbstractService implements IBookingService
     public function getBookingRecur($start, $end)
     {
         $results=[];  
-        if(date('Y-m-d',strtotime($start))>\Carbon::now()->format('Y-m-d')){
+        // if(date('Y-m-d',strtotime($start))>\Carbon::now()->format('Y-m-d')){
             $recurs=Recur::all();
             foreach($recurs as $recur){
                 $startDate=null;
@@ -96,7 +97,7 @@ class BookingService extends AbstractService implements IBookingService
                     ];
                 }
             }
-        }
+        // }
         return $results;
     }
 

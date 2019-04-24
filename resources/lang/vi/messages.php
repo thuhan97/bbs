@@ -32,6 +32,7 @@ return [
     'list_share_document' => 'Chia sẻ tài liệu',
     'contact' => 'Danh bạ',
     'day_off' => 'Ngày phép',
+    'ask_permission' => 'Xin phép',
     'day_off_approval' => 'Phê duyệt nghỉ phép',
     'Login' => 'Đăng nhập',
     'logout' => 'Đăng xuất',

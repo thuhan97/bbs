@@ -24,6 +24,7 @@ class WorkTimesExplanation extends Model
         'work_day',
         'type',
         'note',
+        'ot_type',
     ];
 
     /**

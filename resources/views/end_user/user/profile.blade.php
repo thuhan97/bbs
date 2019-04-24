@@ -80,7 +80,7 @@
                             <div class="d-flex justify-content-center">
                                 <div class="btn btn-mdb-color btn-rounded text-center hidden">
                                     <span class="changeImage">Đổi ảnh</span>
-                                    <input type="file" name="avatar" onchange="loadFile(event)">
+                                    <input type="file" accept="image/*" name="avatar" onchange="loadFile(event)">
 
                                 </div>
                             </div>

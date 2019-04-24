@@ -23,7 +23,7 @@
             </a>
         </div>
     </div>
-    <div id="calendar">
+    <div id="calendar-event">
     </div>
 
 @endsection
@@ -31,14 +31,15 @@
 @push('extend-js')
     <link href="{{ asset('fullcalendar/fullcalendar.min.css') }}" rel="stylesheet">
     <script type="text/javascript" src="{{ asset('js/moment.min.js') }}"></script>
+
     <script type="text/javascript" src="{{ asset('fullcalendar/fullcalendar.min.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('fullcalendar/locales/vi.js') }}"></script>
 
     <script>
         $(function () {
+
             window.start_date = null;
             window.end_date = null;
-            var $calendar = $('#calendar');
+            var $calendar = $('#calendar-event');
             var $search = $('#txtSearch');
 
             function renderCalendar() {
@@ -77,7 +78,6 @@
                     right: 'month,agendaWeek,agendaDay,listMonth'
                 },
                 defaultDate: '{{date('Y-m-d')}}',
-                locale: 'vi',
                 editable: true,
                 eventLimit: true, // allow "more" link when too many events
                 height: 650,

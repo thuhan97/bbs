@@ -32,7 +32,7 @@
     </div> 
 </div>
 
-    <div id="calendar">
+    <div id="calendar-meeting">
     </div>
 
     <!-- add booking -->
@@ -182,7 +182,7 @@
     padding: 5px;
     }
     .form-control{
-        border: 2px solid #dedede75;
+        border: -2px solid #dedede75;
     }
     textarea{
         height: 100px !important;
@@ -250,6 +250,18 @@
         top: 0!important;
         height: 200px!important;
     }
+    .fc-event-container{
+        text-align: center;
+    }
+    .fc-content .fc-time{
+       
+        font-size: 13px !important;
+        font-weight: bold;
+        margin-bottom: 5px;
+    }
+    .input-group-prepend{
+        margin-right: -10px!important;
+    }
 </style>
 @endpush
 @push('extend-js')
@@ -259,8 +271,8 @@
     <script src="{{asset('bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js')}}" type="text/javascript"></script>
     <link href="{{ asset('fullcalendar/fullcalendar.min.css') }}" rel="stylesheet">
     <script type="text/javascript" src="{{ asset('js/moment.min.js') }}"></script>
+
     <script type="text/javascript" src="{{ asset('fullcalendar/fullcalendar.min.js') }}"></script>
-   
     <script >
         window.addEventListener("load", function () {
     // selectMonths= {"01":"Tháng 1" , "02": "Tháng 2", "03":"Tháng 3", "04":"Tháng 4", "05":"Tháng 5", "06":"Tháng 6", "07": "Tháng 7", "08":"Tháng 8", "09":"Tháng 9","10":"Tháng 10", "11":"Tháng 11", "12":"Tháng 12"};
@@ -292,7 +304,7 @@
         $(function () {
             window.start_date = null;
             window.end_date = null;
-            var $calendar = $('#calendar');
+            var $calendar = $('#calendar-meeting');
             var $month = $('#month');
             var $date= $('#date');
 
@@ -337,13 +349,13 @@
                 defaultView:'agendaWeek',
                 allDaySlot: false,
                 minTime: "08:00",
-                maxTime: "18:30",
+                maxTime: "19:00",
 
                 defaultDate: '{{date('Y-m-d')}}',
                 locale: 'vi',
                 editable: true,
                 eventLimit: true, // allow "more" link when too many events
-                height: 650,
+                height: 570,
                 eventRender: function (eventObj, $el) {
                     $el.popover({
                         title: eventObj.title,

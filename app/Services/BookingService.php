@@ -43,24 +43,6 @@ class BookingService extends AbstractService implements IBookingService
      *
      * @return collection
      */
-    public function getBooking($start,$end){
-        $bookings=Booking::all();
-        $results=[];
-        if ($bookings->isNotEmpty()) {
-            foreach ($bookings as $booking) {
-                $results[] = [
-                    'id' => $booking->id,
-                    'title' => $booking->title,
-                    'description' => $booking->content,
-                    'start' => $booking->start_date,
-                    'end' => $booking->end_date,
-                    'textColor'=>'#fff',
-                    'color'=>$booking->color,
-                ];
-            }
-        }
-        return $results;
-    }
     public function getBookingRecur($start, $end)
     {
         $results=[];  
@@ -79,15 +61,18 @@ class BookingService extends AbstractService implements IBookingService
                         $startDate=$day;
                     }
                 }
-                else{
+                else if($recur->repeat_type==YEARLY){
                     $day=self::getDateOfRecurYearly($start,$end, $days_repeat);
                     if($day!==null)
                         $startDate=$day;
 
                 }
+                else{
+                    $startDate=$recur->date;
+                }
                 if($startDate!=null){
                     $results[]=[
-                        'id'=>$recur->id,
+                        // 'id'=>$recur->id,
                         'title' => $recur->title,
                         'description' => $recur->content,
                         'start' => $startDate.' '. $recur->start_time,

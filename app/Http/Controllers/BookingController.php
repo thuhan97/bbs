@@ -33,9 +33,7 @@ class BookingController extends Controller
 	public function getCalendar(Request $request){
 		$start= $request->start;
 		$end= $request->end;
-		$results1=$this->bookingService->getBooking($start,$end);
-		$results2=$this->bookingService->getBookingRecur($start,$end);
-		$results=array_merge($results1,$results2);
+		$results=$this->bookingService->getBookingRecur($start,$end);
 
         return $this->respond(['bookings' => $results]);
 	}
@@ -64,22 +62,14 @@ class BookingController extends Controller
            return  response()->json(["errors"=>$validator->errors(),'status'=>422],200);
 
         }else{
-            $data=[
-            	'users_id'=>\Auth::user()->id,
-            	'title'=>$request->title,
-	            'content'=>$request->content,
-	            'participants'=>$request->participants,
-	            'meetings_id'=>$request->meetings_id,
-	            'start_date'=>$request->days_repeat.' '.$request->start_time,
-	            'end_date'=>$request->days_repeat.' '.$request->end_time,
-	            'color'=>$request->color,
-	            'is_notify'=>$request->is_notify
-            ];  
-           Booking::insert($data);
-           if($request->repeat_type>0){
+           		$date=null;
 	           	if($request->repeat_type==3) $days_repeat=date('m-d',strtotime($request->days_repeat));
 	            else if($request->repeat_type==2) $days_repeat=(new \Carbon($request->days_repeat))->day;
 	            else if($request->repeat_type==1 ) $days_repeat=(new \Carbon($request->days_repeat))->dayOfWeek;
+	            else {
+	            	$date=$request->days_repeat;
+	            	$days_repeat=null;
+	            }
 	           	$data=[
 	            	'users_id'=>\Auth::user()->id,
 	            	'title'=>$request->title,
@@ -91,10 +81,12 @@ class BookingController extends Controller
 		            'color'=>$request->color,
 		            'is_notify'=>$request->is_notify,
 		            'repeat_type'=>$request->repeat_type,
-		            'days_repeat'=>$days_repeat
+		            'days_repeat'=>$days_repeat,
+		            'date'=>$date
 	            ]; 
 	            Recur::insert($data) ;
-           }
+           
+
             return response()->json(["success"=>true]);
             
         }   

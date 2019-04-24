@@ -107,9 +107,6 @@ class AdditionServiceProvider extends ServiceProvider
         $this->app->bind(IMeetingService::class, function () {
             return app()->make(MeetingService::class);
         });
-        $this->app->bind(IOverTimeService::class, function () {
-            return app()->make(IOverTimeService::class);
-        });
     }
 
     /**
@@ -138,7 +135,6 @@ class AdditionServiceProvider extends ServiceProvider
             IDeviceUserService::class,
             IWorkTimeRegisterService::class,
             IMeetingService::class,
-            IOverTimeService::class,
         ];
     }
 }

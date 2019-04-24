@@ -14,7 +14,7 @@ if (isset($record->end_date)) {
                     <div class="form-group margin-b-5 margin-t-5{{ $errors->has('staff_code') ? ' has-error' : '' }}">
                         <label for="staff_code">Mã nhân viên *</label>
                         <input type="text" class="form-control" name="staff_code" placeholder="Nhập mã nhân viên"
-                               value="{{ old('staff_code', $record->staff_code ?? $defaultStaffCode ) }}" required>
+                               value="{{ old('staff_code', $record->staff_code ?? $defaultStaffCode ) }}" {{ $record->staff_code ? 'readonly':'' }}   required>
                         @if ($errors->has('staff_code'))
                             <span class="help-block">
                     <strong>{{ $errors->first('staff_code') }}</strong>

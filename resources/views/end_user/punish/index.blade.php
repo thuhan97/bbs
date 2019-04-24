@@ -12,11 +12,11 @@
     <form class="mb-4 mb-3" id="formReport">
         <div class="md-form active-cyan-2 mb-0">
             <div class="row">
-                <div class="col-sm-1">
+                <div class="col-sm-2 col-xl-1">
                     {{ Form::select('year', get_years(2), request('year', date('Y')), ['class'=>'mr-1 w-30 browser-default custom-select']) }}
                 </div>
-                <div class="col-sm-2">
-                    {{ Form::select('month', get_months('Tháng '), request('month', date('n')), ['class'=>'mr-1 w-30 browser-default custom-select']) }}
+                <div class="col-sm-3 col-md-2 col-xl-1">
+                    {{ Form::select('month', get_months('Tháng '), request('month', date('n')), ['class'=>'mr-1 mt-1 mt-md-0 w-30 browser-default custom-select']) }}
                 </div>
                 <div class="col-sm-2"></div>
                 <div class="col-sm-2"></div>
@@ -43,10 +43,10 @@
                     <table class="table">
                         <thead>
                         <tr>
-                            <th scope="col">#</th>
+                            <th scope="col" class="d-none d-md-block">#</th>
                             <th scope="col">Ngày vi phạm</th>
                             <th scope="col">Xử phạt</th>
-                            <th scope="col">Ghi chú</th>
+                            <th scope="col" class="d-none d-md-block">Ghi chú</th>
                             <th scope="col">Số tiền</th>
                             <th scope="col">Đã nộp tiền</th>
                         </tr>
@@ -55,10 +55,10 @@
 
                         @foreach($punishes as $idx => $punish)
                             <tr>
-                                <th scope="row">{{$idx + 1}}</th>
+                                <th scope="row" class="d-none d-md-block">{{$idx + 1}}</th>
                                 <td class="text-right">{{$punish->infringe_date}}</td>
                                 <td>{{ $punish->rule->name ?? 'Đi muộn'}}</td>
-                                <td>{{ $punish->detail }}</td>
+                                <td class="d-none d-md-block">{{ $punish->detail }}</td>
                                 <td class="text-right">{{ number_format($punish->total_money) }}</td>
                                 <td class="text-center">
                                     @if($punish->is_submit != PUNISH_SUBMIT['new'])

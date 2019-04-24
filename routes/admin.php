@@ -23,6 +23,7 @@ Route::group([
 ], function () {
 
     Route::get('/', ['as' => 'index', 'uses' => 'MasterController@index']);
+    Route::get('/download', ['as' => 'download', 'uses' => 'MasterController@download']);
 
     ##AUTO_INSERT_ROUTE##
 

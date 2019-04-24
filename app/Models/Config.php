@@ -32,6 +32,7 @@ class Config extends Model
         'time_ot_early_at',
         'weekly_report_title',
         'html_weekly_report_template',
+        'late_time_rule_json',
     ];
 
     public function setWorkDaysAttribute($value)

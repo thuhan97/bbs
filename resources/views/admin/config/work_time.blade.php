@@ -91,6 +91,7 @@
 </div>
 <hr/>
 <h4>Giờ tính đi muộn</h4>
+<h5>Tính trên lịch</h5>
 <div class="row">
     <div class="col-md-6">
         <div class="row">
@@ -136,6 +137,38 @@
         </div>
     </div>
 </div>
+<h5>Tính theo giờ đi muộn</h5>
+<div class="row">
+    <div class="col-md-5">
+        <div class="form-group margin-b-5 margin-t-5{{ $errors->has('late_time_rule_json') ? ' has-error' : '' }}">
+            <span for="late_time_rule_json">Chọn file cấu hình (.json)</span>
+            <div class="input-group date">
+                <div class="input-group-addon">
+                    <i class="fa fa-file"></i>
+                </div>
+
+                <input type="file" class="form-control pull-right" autocomplete="off"
+                       name="late_time_rule_file"
+                       value="{{ old('late_time_rule_json', $record->late_time_rule_json) }}"
+                       id="late_time_rule_json">
+            </div>
+            @if ($errors->has('late_time_rule_file'))
+                <span class="help-block text-danger">
+                    <strong>{{ $errors->first('late_time_rule_file') }}</strong>
+                </span>
+            @endif
+        </div>
+    </div>
+    <div class="col-md-1">
+        @if($record->late_time_rule_json)
+            <input type="hidden" name="file_late_time_rule_json" value="{{$record->late_time_rule_json}}">
+
+            <a href="{{route('admin::download', ['file_path' => $record->late_time_rule_json])}}"
+               class="btn btn-primary"
+               style="position: relative; top: 25px;">Tải file</a>
+        @endif
+    </div>
+</div>
 <hr/>
 <h4>Giờ tính Overtime</h4>
 <div class="row">
@@ -166,7 +199,6 @@
 <hr/>
 <h4>Ngày làm việc</h4>
 <div class="form-group margin-b-5 margin-t-5{{ $errors->has('work_days') ? ' has-error' : '' }}">
-    <label for="work_days">Đến</label>
     <div class="input-group date">
         <ul class="list-group list-inline">
             <?php $days = get_day_of_week();?>

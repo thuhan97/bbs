@@ -117,9 +117,10 @@ class WorkTimeService extends AbstractService implements IWorkTimeService
     public function calculateLateTime($fromDate, $toDate, $userIds = [])
     {
         //read config file
-        $path = storage_path('app/' . LATE_MONEY_CONFIG); // ie: /var/www/laravel/app/storage/json/filename.json
+        $path = storage_path('app/' . $this->config->late_time_rule_json ?? LATE_MONEY_CONFIG); // ie: /var/www/laravel/app/storage/json/filename.json
 
         $configs = collect(json_decode(file_get_contents($path), true)['configs']);
+
         $freeCount = $configs->where('free', true)->count();
         $aioConfigs = $configs->where('aio', '!=', 0);
         $eachConfigs = $configs->where('free', false)->where('aio', 0);

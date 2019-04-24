@@ -229,6 +229,7 @@ define('PUNISH_SUBMIT', [
     'new' => 0,
     'submitted' => 1
 ]);
+define('LATE_MONEY_CONFIG_FOLDER', 'json_config/');
 define('LATE_MONEY_CONFIG', 'config/late_time.json');
 define('LATE_RULE_ID', 0);
 

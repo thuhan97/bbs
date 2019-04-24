@@ -14,7 +14,7 @@ class AddOtTypeToWorkTimesExplanationTable extends Migration
     public function up()
     {
         Schema::table('work_times_explanation', function (Blueprint $table) {
-            $table->integer('ot_type')->comment('1: OT dự án / 2: OT lý do cá nhân');
+            $table->integer('ot_type')->nullable()->comment('1: OT dự án / 2: OT lý do cá nhân');
             $table->integer('type')->change()->comment('0: Bình thường / 1: Đi muộn / 2: Về sớm / 4: Overtime');
         });
     }

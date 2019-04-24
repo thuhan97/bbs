@@ -232,9 +232,10 @@
                         @endif
                     </td>
                     <td class="text-center">
-                        <a class="show-day-off @if($keys ==0)text-primary @endif"
-                           href="{{ route('day_off_detail',['id'=>$record->id]) }}">chi tiết >></a>
+                        <p class=" btn-sm m-0 detail-dayoff
+                            @if($keys ==0) text-primary  @endif" style="cursor: pointer" attr="{{ $record->id }}">Chi tiết >></p>
                     </td>
+
                 </tr>
             @endforeach
             </tbody>
@@ -243,8 +244,8 @@
         </table>
     {{$getDayOff->render('end_user.paginate') }}
     <!--Table-->
-        @if(!empty($data))
-            <form action="{{ route('edit_day_off_detail',['id'=>$data->id]) }}" method="post" id="edit-day-off">
+
+            <form action="{{ route('edit_day_off_detail',['id'=>1]) }}" method="post" id="edit-day-off">
                 @csrf
                 <div class="modal fade modal-open" id="modal-form" tabindex="-1" role="dialog"
                      aria-labelledby="myModalLabel"
@@ -262,43 +263,29 @@
                                 <div class="mb-3">
                                     <label class="ml-3 text-d-bold" for="exampleFormControlTextarea5">Tên nhân
                                         viên</label>
-                                    <div class="ml-3">{{ $data->user->name }}</div>
+                                    <div class="ml-3" id="user-day-off"></div>
                                 </div>
                                 <div class="mb-3 ml-3 ">
                                     <!-- Default input -->
                                     <label class="text-d-bold" for="exampleForm2">Thời gian được tính:</label>
-                                    @if($data->status ==0)
-                                        <input type="text"
-                                               class="form-control select-item {{ $errors->has('number_off') ? ' has-error' : '' }}"
-                                               autocomplete="off" name="number_off"
-                                               value="{{ old('number_off',$data->number_off) }}" id="number_off">
-                                        @if ($errors->has('number_off'))
-                                            <div class="">
-                                                <span class="help-block text-danger">{{ $errors->first('number_off') }}</span>
-                                            </div>
-                                        @endif
-
-                                    @else
-                                        <div class="ml-3">{{!!!$data->number_off ? 'Chưa rõ' : checkNumber($data->number_off)}}
-                                            ngày
+                                        <div class="" id="number_off">
                                         </div>
-                                    @endif
                                 </div>
                                 <div class="mb-3">
                                     <!-- Default input -->
                                     <label class="ml-3 text-d-bold" for="exampleForm2">Ngày nghỉ:</label>
-                                    <div class="ml-3">{{ $data->start_date .' - '. $data->end_date}}</div>
+                                    <div class="ml-3" id="strat_end"></div>
                                 </div>
                                 <div class="mb-3">
                                     <!-- Default input -->
                                     <label class="ml-3 text-d-bold" for="exampleForm2">Lý do:</label>
-                                    <div class="ml-3">{{ array_key_exists($data->title,VACATION) ?  VACATION[$data->title] : '' }}</div>
+                                    <div class="ml-3" id="title"></div>
                                 </div>
 
                                 <div class="mb-3">
                                     <label class="ml-3 text-d-bold" for="exampleFormControlTextarea5">Chi tiết lý
                                         do:</label>
-                                    <div class="ml-3">{{ $data->reason}}</div>
+                                    <div class="ml-3" id="reason"></div>
                                 </div>
                                 <div class="mb-4 pb-2">
                                     <div class="row">
@@ -307,50 +294,52 @@
                                             <div class="ml-3">{{ auth()->user()->name }}</div>
                                         </div>
                                         <!-- Default input -->
-                                        <div class="form-group col-6 m-0">
+                                        <div class="form-group col-6 m-0" id="remove-app-date">
                                             <label class="ml-3 text-d-bold" for="inputZip">Ngày duyệt</label>
-                                            <div class="ml-3">{{ $data->approver_date }}</div>
+                                            <div class="ml-3" id="approver_date"></div>
                                         </div>
                                     </div>
                                 </div>
-                                @if(isset($data) && $data->status==0)
-                                    <div class="mb-3 ml-3">
+                                    <div class="mb-3 ml-3" id="remove-app-comment">
                                         <label class="text-d-bold" for="exampleFormControlTextarea5">Ý kiến người
                                             duyệt</label>
-                                        <textarea
-                                                class="form-control reason_id rounded-0 select-item {{ $errors->has('approve_comment') ? ' has-error' : '' }}"
-                                                id="exampleFormControlTextarea2" rows="3"
-                                                placeholder="Nhập ý kiến của người duyệt"
-                                                name="approve_comment">{{ $data->approve_comment ?? old('approve_comment') }}</textarea>
-                                        @if ($errors->has('approve_comment'))
-                                            <div class="mt-1">
-                                                <span class="help-block text-danger">{{ $errors->first('approve_comment') }}</span>
-                                            </div>
-                                        @endif
+                                        <div class="" id="app-comment"></div>
                                     </div>
-                                @endif
-                                @if($data->status ==0)
-                                    <div class=" mb-1 pb-4 d-flex justify-content-center border-top-0 rounded mb-0">
-                                        <button type="submit" class="btn  btn-primary">DUYỆT ĐƠN</button>
-                                        <a href="{{ route('day_off_detail',['id'=>$data->id,'check'=>true]) }}"
-                                           class="btn btn-danger btn-send">
-                                            HỦY DUYỆT</a>
+                                    <div class=" mb-1 pb-4 d-flex justify-content-center border-top-0 rounded mb-0" id="btn-submit-form">
                                     </div>
-
-                                @endif
                             </div>
                         </div>
                     </div>
                 </div>
             </form>
-        @endif
-        @if(!empty($data))
-            <script>
-                $(function () {
-                    $('#modal-form').modal('show');
-                });
-            </script>
-        @endif
+
+        <form action="{{ route('delete_day_off') }}" method="post">
+            @csrf
+            <div class="modal fade" id="basicExampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+                 aria-hidden="true">
+                <input type="hidden" value="" name="id_close" id="id-close">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="ml-4 modal-title text-center" id="exampleModalLabel">Bạn có chắc chắn muốn hủy đơn
+                                này không ? </h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="d-flex justify-content-center">
+                            <button type="submit" class="btn btn-secondary w-25">ĐỒNG Ý</button>
+                            <span class="btn btn-primary w-25" data-dismiss="modal">HỦY</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+
+
+
+
+
         @push('extend-css')
             <link href="{{ cdn_asset('/bootstrap-datepicker/css/bootstrap-datepicker.min.css') }}" rel="stylesheet">
             <link href="{{ cdn_asset('/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css') }}"
@@ -378,13 +367,23 @@
                     rules: {
                         number_off: {
                             required: true,
-                            number: true
+                            number: true,
+                            min:0
+                        },
+                        approve_comment:{
+                            minlength:3,
+                            maxlength:100
                         }
                     },
                     messages: {
                         number_off: {
                             required: "Vui lòng nhập số ngày nghỉ được phê duyệt",
-                            number: "Vui lòng nhập đúng định dạng số"
+                            number: "Vui lòng nhập đúng định dạng số",
+                            min:"Không thể chọn số ngày phê duyệt nhỏ hơn 0"
+                        },
+                        approve_comment:{
+                            minlength:"nội dung ít nhất là 3 kí tự",
+                            maxlength:"nội dung nhiều nhất là 100 kí tự"
                         }
                     }
                 });
@@ -405,139 +404,60 @@
                     $("#edit-day-off").submit();
                 })
 
+
+
+
+            $('.detail-dayoff').on('click', function () {
+                var id = $(this).attr('attr');
+                var title = {
+                    "1": "Lý do cá nhân",
+                    "2": "Nghỉ đám cưới",
+                    "3": "Nghỉ đám hiếu",
+                }
+                $.ajax
+                ({
+                    'url': '{{ route('day_off_detail') }}' + '/' + id,
+                    'type': 'get',
+                    success: function (data) {
+                        $('#user-day-off').html(data.userdayoff);
+                        $('#number_off').html(data.data.number_off);
+                        $('#strat_end').html(data.data.start_date + ' - ' + data.data.end_date);
+                        $('#reason').html(data.data.reason);
+                        $('#id-delete').val(data.data.id);
+                        if (title.hasOwnProperty(data.data.title)) {
+                            $('#title').html(title[data.data.title]);
+                        }
+                        if (data.data.approver_date) {
+                            $('#remove-app-date').show();
+                            $('#approver_date').html(data.data.approver_date);
+                        } else {
+                            $('#remove-app-date').hide();
+                        }
+                        if (data.numoff) {
+                            $('#number_off').html(data.numoff);
+                            $('#remove-numoff').show();
+                        } else {
+                            $('#remove-numoff').hide();
+                        }
+                        if (data.data.status == 0) {
+                            $('#app-comment').html('<textarea class="form-control reason_id rounded-0 select-item "id="exampleFormControlTextarea2" rows="3" placeholder="Nhập ý kiến của người duyệt" name="approve_comment"></textarea>');
+                            $('#number_off').html('<input type="text" class="form-control select-item" autocomplete="off" name="number_off" value="" id="number_off">')
+                            $('#btn-submit-form').html('<button type="submit" class="btn  btn-primary">DUYỆT ĐƠN</button> <span class="btn btn-danger btn-send" id="close-day-off" data-toggle="modal" data-target="#basicExampleModal"> HỦY DUYỆT </span>')
+                        }else{
+                            $('#number_off').html(data.numoff);
+                            $('#app-comment').html(data.data.approve_comment);
+                        }
+                        var urlForm="{{ route('edit_day_off_detail') }}"+'/'+ data.data.id;
+
+                        $('#edit-day-off').attr('action',urlForm);
+
+                        $('#id-close').val(data.data.id)
+                        $('#modal-form').modal('show');
+                    }
+                });
+            })
             });
 
-            /*        $('.select_year , .month , .search-day-off').on('change', function () {
-                        var year = $('.select_year ').val();
-                        var month = $('.month ').val();
-                        var status = $('.search-day-off ').val();
-                        $.ajax
-                        ({
-                            'url': '/phe-duyet-ngay-nghi/search/',
-                            'type': 'get',
-                            'data': {'year': year, 'month': month, 'status': status},
-                            success: function (data) {
-                                $('.pagination').hide();
-                                var html = teamplate(data);
-                                var pagiante=pagination(data);
-                                $('#ajax-show').html(html);
-                                $('#pagiante-ajax').html(pagiante);
-
-                            }
-                        });
-                    })
-
-                    $('#btnSearch').on('click', function () {
-                        var search = $('#content-search').val();
-                        var year = $('.select_year ').val();
-                        var month = $('.month ').val();
-                        var status = $('.search-day-off ').val();
-                        $.ajax
-                        ({
-                            'url': '/phe-duyet-ngay-nghi/search/',
-                            'type': 'get',
-                            'data': {'year': year, 'month': month, 'status': status, 'search': search},
-                            success: function (data) {
-                                $('.pagination').hide();
-                                var html = teamplate(data);
-                                $('#ajax-show').html(html);
-                            }
-                        });
-                    })
-
-
-
-
-                    $(document).on('click','.papginate-page', function () {
-                       var page=$(this).attr('attr');
-                       alert(page);
-
-                        $.ajax
-                        ({
-                            'url': '/phe-duyet-ngay-nghi/search?page='+page,
-                            'type': 'get',
-                            success: function (data) {
-                                console.log(data)
-                               /!* $('.pagination').hide();
-                                var html = teamplate(data);
-                                var pagiante=pagination(data);
-                                $('#ajax-show').html(html);
-                                $('#pagiante-ajax').html(pagiante);*!/
-                            }
-                        });
-
-                    });
-                });
-
-                function teamplate(data) {
-                    var html = '';
-                    $.each(data.data.data, function (key, value) {
-                        console.log(data.data)
-                        html += '<tr><th scope="row" class="text-center">';
-                        html += key + 1;
-                        html += ' </th> <td class="text-center table-name">';
-                        html += value['name'];
-                        html += ' </td> <td class="text-center">';
-                        html += value['start_date'];
-                        html += '</td> <td class="text-center">';
-                        html += value['end_date']
-
-                        html += '</td> <td class="text-center table-title">';
-                        if (value['title'] == 1) {
-                            html += 'Lý do cá nhân';
-                        } else if (value['title'] == 2) {
-                            html += 'Nghỉ đám cưới';
-                        }
-                        else {
-                            html += 'Nghỉ đám hiếu';
-                        }
-                        html += '</td><td class="text-center">'
-                        if (value['number_off']) {
-                            html += value['number_off'] + 'ngày';
-                        } else {
-                            html += 'chưa rõ';
-                        }
-                        html += '</td> <td class="text-center p-0" style="vertical-align: middle;">';
-                        if (value['status'] == 0) {
-                            html += '<i class="fas fa-meh-blank fa-2x text-warning text-center"></i>';
-                        } else if (value['status'] == 1) {
-                            html += '<i class="fas fa-grin-stars fa-2x text-success"></i>';
-                        }
-                        else {
-                            html += '<i class="fas fa-frown fa-2x text-danger"></i>';
-                        }
-                        html += '</td> <td class="text-center">';
-                        html += ' <a  class="';
-                        if (key == 0) {
-                            html += 'text-primary';
-                        }
-                        html += ' show-day-off "attr="' + value['id'] + '"';
-                        html += 'href="'
-
-                    html += '">chi tiết>></a>';
-                    html += '</td> </tr>';
-                });
-                return html;
-            }
-
-            function pagination(data) {
-            var pagi='';
-
-                pagi+='<ul class="pagination" role="navigation">';
-
-                pagi+='<li class="page-item" id="first-page" aria-disabled="true" aria-label="« Trang sau">';
-                pagi+='<span class="page-link waves-effect waves-effect" aria-hidden="true">‹</span> </li>'
-for (var i=1;i < data.data.total +1;i++){
-    pagi+='<li attr="'+ i +'" class="page-item papginate-page';
-    if (data.data.current_page == i)
-        pagi+=' active';
-    pagi+='"><span class="page-link waves-effect waves-effect ">'+ i + '</span></li>';
-}
-                pagi+='<li class="page-item" id="last-page">';
-                pagi+='›</li> </ul>';
-return pagi;
-
-            }*/
         </script>
     </div>
 @endsection

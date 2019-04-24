@@ -225,6 +225,16 @@ define('SEX', [
     'male' => 0,
     'female' => 1
 ]);
+define('WORK_TIME_TYPE', [
+    0 => 'Bình thường',
+    1 => 'Đi muộn',
+    2 => 'Về Sớm',
+    4 => 'Overtime',
+]);
+define('STATUS_STATUS', [
+    0 => ' Chưa duyệt',
+    1 => 'Đã duyệt'
+]);
 define('PUNISH_SUBMIT', [
     'new' => 0,
     'submitted' => 1

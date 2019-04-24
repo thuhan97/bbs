@@ -105,6 +105,11 @@ Breadcrumbs::register('work_time', function ($breadcrumbs) {
     $breadcrumbs->parent('personal');
     $breadcrumbs->push(__l('work_time'), route('work_time'));
 });
+// Dashboard > ask_permission
+Breadcrumbs::register('ask_permission', function ($breadcrumbs) {
+    $breadcrumbs->parent('personal');
+    $breadcrumbs->push(__l('ask_permission'), route('ask_permission'));
+});
 // Dashboard > list_share_document
 Breadcrumbs::register('list_share_document', function ($breadcrumbs) {
     $breadcrumbs->parent('home');

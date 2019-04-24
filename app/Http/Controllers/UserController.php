@@ -152,6 +152,7 @@ class UserController extends Controller
                 $calendarDataModal[] = [
                     'work_day' => $item['work_day'],
                     'type' => $item['type'],
+                    'ot_type' => $item['ot_type'],
                     'note' => $item['note'],
                     'user_id' => $item['user_id'],
                     'id' => $item['id'],
@@ -176,16 +177,17 @@ class UserController extends Controller
     {
         $id = $request['id'];
         $reason = $request['reason'];
-        $userID = $request['user_id'];
         $workDay = $request['work_day'];
+        $otType = $request['ot_type'];
         if ($id) {
-            WorkTimesExplanation::where('user_id', $userID)->where('work_day', $workDay)->update(['note' => $reason]);
+            WorkTimesExplanation::where('user_id', Auth::id())->where('work_day', $workDay)->update(['note' => $reason, 'ot_type' => $otType]);
             return back()->with('day_off_success', '');
         } else {
             WorkTimesExplanation::create([
                 'user_id' => Auth::id(),
                 'work_day' => $request['work_day'],
-                'type' => 0,
+                'type' => array_search('Đi muộn', WORK_TIME_TYPE),
+                'ot_type' => $otType,
                 'note' => $reason
             ]);
             return back()->with('day_off_success', 'day_off_success');

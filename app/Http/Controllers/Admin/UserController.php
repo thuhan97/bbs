@@ -50,7 +50,7 @@ class UserController extends AdminBaseController
             'rules' => [
                 'name' => 'filled|max:255',
                 'email' => 'email|unique:users,email',
-                'staff_code' => 'filled|max:10|unique:users,staff_code',
+                'staff_code' => 'filled|max:10|unique:users,staff_code,NULL,NULL,deleted_at,NULL',
                 'birthday' => 'nullable|date|before:' . date('Y-m-d', strtotime('- 15 years')),
                 'phone' => 'nullable|numeric|digits_between:10,30|unique:users,phone',
                 'id_card' => 'nullable|digits_between:9,12|unique:users,id_card|numeric',

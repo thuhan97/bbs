@@ -804,6 +804,39 @@ td.blank, .type-1 {
 .color-red {
     color: red;
 }
+
+#post-content .post-item {
+    border-bottom: 1px solid #ccc;
+}
+
+#post-content {
+    padding-top: 0 !important;
+    padding-bottom: 10px !important;
+}
+
+#post-content .post-item:last-child {
+    border-bottom: none;
+}
+
+.other-ot {
+    top: 1px;
+    right: 10px;
+    position: relative;
+    opacity: 1;
+}
+
+.ml-40 {
+    margin-left: 40%;
+}
+
+.ml-36 {
+    margin-left: 36%;
+}
+
+
+/*
+            End work time calendar
+ */
 .text-size-header-1{
     font-size: 14px !important;
  }

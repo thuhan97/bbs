@@ -33,21 +33,23 @@ class OverTime extends Model
 
     public function scopeSearch($query, $searchOtTimes)
     {
-        return $query->where('work_time_id', 'like', '%' . $searchOtTimes . '%')
-            ->orWhere('creator_id', 'like', '%' . $searchOtTimes . '%')
-            ->orWhere('status', 'like', '%' . $searchOtTimes . '%')
-            ->orWhere('approver_at', 'like', '%' . $searchOtTimes . '%')
-            ->orWhere('work_day', 'like', '%' . $searchOtTimes . '%')
-            ->orWhere('approver_id', 'like', '%' . $searchOtTimes . '%');
+        return $query->where(function ($q) use ($searchOtTimes) {
+            $q->orWhere('work_day', 'like', '%' . $searchOtTimes . '%')
+                ->orWhere('users.name', 'like', '%' . $searchOtTimes . '%')
+                ->orWhere('users.staff_code', 'like', '%' . $searchOtTimes . '%');
+        })
+            ->join('users', 'users.id', 'creator_id')
+            ->select('ot_times.*')
+            ->orderBy('ot_times.id', 'desc');
     }
 
     public function creator()
     {
-        return $this->belongsTo(User::class,'creator_id','id');
+        return $this->belongsTo(User::class, 'creator_id', 'id');
     }
 
     public function approver()
     {
-        return $this->belongsTo(User::class,'approver_id','id');
+        return $this->belongsTo(User::class, 'approver_id', 'id');
     }
 }

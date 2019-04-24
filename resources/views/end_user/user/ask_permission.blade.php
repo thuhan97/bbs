@@ -68,8 +68,8 @@
             @endforeach
         </table>
         {{$dataLeader->render('end_user.paginate') }}
+        <br><br><br>
     @endif
-    <br><br><br>
     <h2>Xin phép cá nhân</h2>
     <table id="contactTbl" class="table table-striped">
         <colgroup>

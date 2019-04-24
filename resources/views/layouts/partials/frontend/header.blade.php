@@ -41,6 +41,12 @@
                             <span class="sr-only">(current)</span>
                         </a>
                     </li>
+                    <li class="nav-item {{ \App\Utils::checkRoute(['ask_permission']) ? 'active': '' }}">
+                        <a href="{{route('ask_permission')}}"
+                           class="nav-link waves-effect">{{__l('ask_permission')}}
+                            <span class="sr-only">(current)</span>
+                        </a>
+                    </li>
                 </ul>
                 <!-- Right -->
                 <ul class="navbar-nav nav-flex-icons">

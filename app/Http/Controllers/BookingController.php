@@ -33,8 +33,9 @@ class BookingController extends Controller
 	public function getCalendar(Request $request){
 		$start= $request->start;
 		$end= $request->end;
-		$results=$this->bookingService->getBooking($start,$end);
-		$results=array_merge($results,$this->bookingService->getBookingRecur($start,$end));
+		$results1=$this->bookingService->getBooking($start,$end);
+		$results2=$this->bookingService->getBookingRecur($start,$end);
+		$results=array_merge($results1,$results2);
 
         return $this->respond(['bookings' => $results]);
 	}

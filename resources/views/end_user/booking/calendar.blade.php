@@ -260,7 +260,7 @@
     <link href="{{ asset('fullcalendar/fullcalendar.min.css') }}" rel="stylesheet">
     <script type="text/javascript" src="{{ asset('js/moment.min.js') }}"></script>
     <script type="text/javascript" src="{{ asset('fullcalendar/fullcalendar.min.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('fullcalendar/locales/vi.js') }}"></script>
+   
     <script >
         window.addEventListener("load", function () {
     // selectMonths= {"01":"Tháng 1" , "02": "Tháng 2", "03":"Tháng 3", "04":"Tháng 4", "05":"Tháng 5", "06":"Tháng 6", "07": "Tháng 7", "08":"Tháng 8", "09":"Tháng 9","10":"Tháng 10", "11":"Tháng 11", "12":"Tháng 12"};

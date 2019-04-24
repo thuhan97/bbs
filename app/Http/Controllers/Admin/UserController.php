@@ -48,12 +48,12 @@ class UserController extends AdminBaseController
     {
         return [
             'rules' => [
-                'name' => 'filled|max:255|alpha',
+                'name' => 'filled|max:255|regex:/^[\pL\s\-]+$/u',
                 'email' => 'email|unique:users,email',
                 'staff_code' => 'filled|max:10|unique:users,staff_code|alpha',
                 'birthday' => 'nullable|date|before:' . date('Y-m-d', strtotime('- 15 years')),
                 'phone' => 'nullable|numeric|digits_between:10,30|unique:users,phone',
-                'id_card' => 'nullable|min:9|max:12|unique:users,id_card|numeric',
+                'id_card' => 'nullable|digits_between:9,12|unique:users,id_card|numeric',
                 'password'=>'required|same:password_confirmation',
                 'password_confirmation'=>'required',
                 'start_date'=>'nullable|date|before_or_equal:today',

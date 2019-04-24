@@ -80,3 +80,16 @@
         </tbody>
     </table>
 </div>
+
+<form action="{{ route('admin::statistical-day-off-excel') }}" method="get" id="form-excel">
+    @foreach ($records as $record)
+        <input type="hidden" name="ids[]" value="{{ $record->user_id }}">
+    @endforeach
+</form>
+<script>
+    $(document).ready(function () {
+        $('#btn-submit-excel').on('click',function () {
+            $('#form-excel').submit();
+        })
+    })
+</script>

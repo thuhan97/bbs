@@ -151,6 +151,22 @@ class DayOffController extends AdminBaseController
     {
         return $this->validationData();
     }
+    public function getSearchRecords(Request $request, $perPage = 15, $search = null)
+    {
+        $model = $this->getResourceModel()::search($search);
+        if ($request->has('sort')) {
+            $model->orderBy($request->get('sort'), $request->get('is_desc') ? 'asc' : 'desc');
+        } else {
+            $model->orderBy('id', 'desc');
+        }
+        if ($request->year) {
+            $model = $model->whereYear('day_offs.start_at', $request->year);
+        }
+        if ($request->month) {
+            $model = $model->whereMonth('day_offs.start_at', $request->month);
+        }
+        return $model->paginate($perPage);
+    }
 
     /**
      * @param Request $request
@@ -165,6 +181,9 @@ class DayOffController extends AdminBaseController
         }
 
         return $values;
+    }
+    public function statisticalDayOffExcel(Request $request){
+
     }
 
     private function validationData()

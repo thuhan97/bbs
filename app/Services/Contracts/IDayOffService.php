@@ -102,4 +102,9 @@ interface IDayOffService extends IBaseService
      */
     public function searchUserLogin($request);
 
+    /**
+     * @return mixed Collection
+     */
+    public function statisticalDayOffExcel($ids);
+
 }

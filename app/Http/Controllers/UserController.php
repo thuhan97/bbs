@@ -390,7 +390,7 @@ class UserController extends Controller
     public function editDayOffDetail(Request $request, $id)
     {
         $this->validate($request, [
-            'number_off' => 'required|numeric',
+            'number_off' => 'required|numeric|min:0',
             'approve_comment' => 'nullable|min:1|max:255'
         ]);
         $this->userDayOffService->calculateDayOff($request, $id);

@@ -431,7 +431,6 @@
     @endif
 
     @if(session()->has('day_off_success'))
-        @if(session()->get('day_off_success') != '')
             <script>
                 swal({
                     title: "Thông báo!",
@@ -440,16 +439,6 @@
                     button: "Đóng",
                 });
             </script>
-        @else
-            <script>
-                swal({
-                    title: "Thông báo!",
-                    text: "Bạn đã sửa đơn thành công!",
-                    icon: "success",
-                    button: "Đóng",
-                });
-            </script>
-        @endif
     @endif
 
     @if(session()->has('delete_day_off'))

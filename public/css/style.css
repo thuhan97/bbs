@@ -802,6 +802,18 @@ td.blank, .type-1 {
     color: red;
 }
 
+#post-content .post-item {
+    border-bottom: 1px solid #ccc;
+}
+
+#post-content {
+    padding-top: 0 !important;
+    padding-bottom: 10px !important;
+}
+
+#post-content .post-item:last-child {
+    border-bottom: none;
+}
 
 @media (min-width: 768px) and (max-width: 1000px) {
     #app {

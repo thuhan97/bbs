@@ -48,14 +48,14 @@ class UserController extends AdminBaseController
     {
         return [
             'rules' => [
-                'name' => 'filled|max:255|regex:/^[\pL\s\-]+$/u',
+                'name' => 'filled|max:255',
                 'email' => 'email|unique:users,email',
-                'staff_code' => 'filled|max:10|unique:users,staff_code|alpha',
+                'staff_code' => 'filled|max:10|unique:users,staff_code',
                 'birthday' => 'nullable|date|before:' . date('Y-m-d', strtotime('- 15 years')),
                 'phone' => 'nullable|numeric|digits_between:10,30|unique:users,phone',
                 'id_card' => 'nullable|digits_between:9,12|unique:users,id_card|numeric',
-                'password'=>'required|same:password_confirmation',
-                'password_confirmation'=>'required',
+                'password'=>'required|min:6',
+                'password_confirmation'=>'same:password',
                 'start_date'=>'nullable|date|before_or_equal:today',
                 'end_date'=>"nullable|date|after:start_date"
             ],
@@ -75,13 +75,14 @@ class UserController extends AdminBaseController
 
         return [
             'rules' => [
-                'name' => 'required|max:255|alpha',
+                'name' => 'required|max:255',
                 'email' => 'required|email|unique:users,email,' . $record->id,
-                'staff_code' => 'filled|max:10|alpha|unique:users,staff_code,' . $record->id,
+                'staff_code' => 'filled|max:10|unique:users,staff_code,' . $record->id,
                 'birthday' => 'nullable|date|before:' . date('Y-m-d', strtotime('- 15 years')),
                 'phone' => 'nullable|numeric|digits_between:10,30|unique:users,phone,' . $record->id,
-                'id_card' => 'nullable|min:9|numeric|max:12|unique:users,id_card,' . $record->id,
-                'password'=>'nullable|same:password_confirmation',
+                'id_card' => 'nullable|digits_between:9,12|unique:users,id_card,' . $record->id,
+                'password'=>'nullable|min:6',
+                'password_confirmation'=>'same:password',
                 'start_date'=>'nullable|date|before_or_equal:today',
                 'end_date'=>"nullable|date|after:start_date"
             ],

@@ -37,7 +37,7 @@
         <a href="{{route('list_share_document')}}" class="list-group-item list-group-item-action waves-effect {{ \App\Utils::checkRoute(['list_share_document']) ? 'active': '' }}">
             <i class="fas fa-file mr-3"></i>
             Chia sẻ tài liệu</a>
-        <a href="#" class="list-group-item list-group-item-action waves-effect disabled">
+        <a href="{{route('share_experience')}}" class="list-group-item list-group-item-action waves-effect {{ \App\Utils::checkRoute(['share_experience']) ? 'active': '' }}">
             <i class="fas fa-book mr-3"></i>
             Kinh nghiệm làm việc</a>
         <a href="{{route('post')}}"

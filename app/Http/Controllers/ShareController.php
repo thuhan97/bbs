@@ -45,5 +45,10 @@ class ShareController extends Controller
             flash()->error(__l('share_document_error'));
         }     
         return redirect()->route('list_share_document');             
-    }           
+    }
+
+    public function shareExperience(){
+        $list_document = Share::where('type','=', SHARE_DUCOMMENT)->orderBy('created_at','desc')->paginate(15);
+        return view('end_user.share.share_experience', compact('list_document'));
+    }               
 }

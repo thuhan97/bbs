@@ -56,7 +56,8 @@
                            aria-haspopup="true"
                            aria-expanded="false">{{Auth::user()->name}}</a>
                         <div class="dropdown-menu">
-                            <a class="dropdown-item" href="{{route('profile')}}">{{__l('Profile')}}</a>
+                            <a class="dropdown-item d-none d-sm-block "
+                               href="{{route('profile')}}">{{__l('Profile')}}</a>
                             <a class="dropdown-item" href="{{route('changePassword')}}">{{__l('change_password')}}</a>
                             <div class="dropdown-divider"></div>
                             <a class="dropdown-item"

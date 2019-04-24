@@ -7,12 +7,11 @@
 @section('content')
 
     <div class="row">
-        <div class="col-md-4"></div>
-        <div class="col-md-4">
+        <div class="col-md-3 col-xl-4"></div>
+        <div class="col-md-6 col-xl-4">
             <form class="mb-4 mb-3" method="post" action="{{route('update_password')}}">
                 @csrf
-                <div class="card mt-5">
-
+                <div class="card mt-xl-5">
                     <div class="card-header">
                         Đổi mật khẩu
                     </div>

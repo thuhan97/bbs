@@ -61,13 +61,12 @@ Route::group([
     Route::resource('project', 'ProjectController');
 
     //OverTime
+    Route::post('over_times/deletes', ['as' => 'over_times.deletes', 'uses' => 'OverTimeController@deletes']);
     Route::resource('over_times', 'OverTimeController');
+
 
     //feedback
     Route::resource('feedback', 'FeedbackController');
-
-    //OverTime
-    Route::resource('over_times', 'OverTimeController');
 
     //WorkTimeDetail
     Route::resource('work_time_details', 'WorkTimeDetailController');

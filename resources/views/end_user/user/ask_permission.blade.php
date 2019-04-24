@@ -55,8 +55,6 @@
                                 <input type="hidden" name="user_id"
                                        value="{{ $item['user_id'] ? $item['user_id'] : '' }}">
                                 <input type="hidden" name="reason" value="{{ $item['note'] ? $item['note'] : '' }}">
-                                <input type="hidden" name="approver_id"
-                                       value="{{ \Illuminate\Support\Facades\Auth::id() }}">
                                 <input type="hidden" name="work_day"
                                        value="{{ $item['work_day'] ? $item['work_day'] : '' }}">
                                 <button class="btn btn-primary waves-effect waves-light">Phê duyệt</button>

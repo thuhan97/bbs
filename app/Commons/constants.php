@@ -231,7 +231,7 @@ define('WORK_TIME_TYPE', [
     2 => 'Về Sớm',
     4 => 'Overtime',
 ]);
-define('STATUS_STATUS', [
+define('OT_STATUS', [
     0 => ' Chưa duyệt',
     1 => 'Đã duyệt'
 ]);

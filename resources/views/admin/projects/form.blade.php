@@ -223,5 +223,6 @@
             myEditor($("#description"));
             myDatePicker($("#start_date, #end_date"));
         });
+        $('.option-with').addClass('col-xs-6');
     </script>
 @endpush

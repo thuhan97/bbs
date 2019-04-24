@@ -35,6 +35,7 @@ class CreateDayOffRequest extends FormRequest
             'start_at' => 'required|after_or_equal:today',
             'end_at' => 'required|after_or_equal:start_at',
             'status' => 'nullable|integer|between:0,1',
+
         ];
         if ($this->id) {
             $rules['start_at'] = "required|date";
@@ -55,7 +56,8 @@ class CreateDayOffRequest extends FormRequest
             'reason' => 'nội dung xin nghỉ',
             'start_at' => 'ngày bắt đầu',
             'end_at' => 'ngày kết thúc',
-            'approver_id' => 'người phê duyệt'
+            'approver_id' => 'người phê duyệt',
+            'number_off'=>'số ngày dự kiến'
         ];
     }
 }

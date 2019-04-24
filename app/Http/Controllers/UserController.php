@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Admin\WorkTimeRequest;
 use App\Http\Requests\CreateDayOffRequest;
 use App\Http\Requests\DayOffRequest;
 use App\Http\Requests\ProfileRequest;
 use App\Models\DayOff;
+use App\Models\OverTime;
 use App\Models\RemainDayoff;
 use App\Models\User;
 use App\Models\WorkTime;
@@ -151,6 +153,7 @@ class UserController extends Controller
                     'work_day' => $item['work_day'],
                     'type' => $item['type'],
                     'note' => $item['note'],
+                    'user_id' => $item['user_id'],
                     'id' => $item['id'],
                 ];
             }
@@ -161,6 +164,61 @@ class UserController extends Controller
             'data' => $calendarData,
             'dataModal' => $calendarDataModal
         ]);
+    }
+
+    /**
+     * Create or edit work time calendar
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function dayOffCreateCalendar(WorkTimeRequest $request)
+    {
+        $id = $request['id'];
+        $reason = $request['reason'];
+        $userID = $request['user_id'];
+        $workDay = $request['work_day'];
+        if ($id) {
+            WorkTimesExplanation::where('user_id', $userID)->where('work_day', $workDay)->update(['note' => $reason]);
+            return back()->with('day_off_success', '');
+        } else {
+            WorkTimesExplanation::create([
+                'user_id' => Auth::id(),
+                'work_day' => $request['work_day'],
+                'type' => 0,
+                'note' => $reason
+            ]);
+            return back()->with('day_off_success', 'day_off_success');
+        }
+    }
+
+    public function askPermission()
+    {
+        $dataLeader = WorkTimesExplanation::select(
+            'work_times_explanation.work_day', 'work_times_explanation.type',
+            'work_times_explanation.ot_type', 'work_times_explanation.note',
+            'work_times_explanation.user_id','ot_times.creator_id','ot_times.id as id_ot_time')
+            ->leftjoin('ot_times', 'ot_times.creator_id', '=', 'work_times_explanation.user_id')
+            ->whereYear('work_times_explanation.work_day', date('Y'))
+            ->groupBy('work_times_explanation.work_day', 'work_times_explanation.type',
+                'work_times_explanation.ot_type', 'work_times_explanation.note', 'work_times_explanation.user_id','ot_times.creator_id')
+            ->orderBy('work_times_explanation.work_day', 'desc')
+            ->paginate(PAGINATE_DAY_OFF, ['*'], 'Leader-page');
+        $datas = WorkTimesExplanation::where('user_id', Auth::id())->whereYear('work_day', date('Y'))->orderBy('work_day', 'desc')->paginate(PAGINATE_DAY_OFF, ['*'], 'user-page');
+        return view('end_user.user.ask_permission', compact('datas', 'dataLeader'));
+    }
+
+    public function approved(Request $request)
+    {
+        OverTime::create([
+            'creator_id' => $request['user_id'],
+            'reason' => $request['reason'],
+            'status' => array_search('Đã duyệt', STATUS_STATUS),
+            'approver_id' => $request['approver_id'],
+            'approver_at' => now(),
+            'work_day' => $request['work_day'],
+        ]);
+        return back();
     }
 
     //
@@ -174,9 +232,13 @@ class UserController extends Controller
         $countDayOff = $this->userDayOffService->countDayOffUserLogin();
         $userManager = $this->userService->getUserManager();
         $availableDayLeft = $this->userDayOffService->getDayOffUser(Auth::id());
-        if ($status != null) {
-            $dayOff = $this->userDayOffService->searchStatus($status);
-            return view('end_user.user.day_off', compact('listDate', 'paginateData', 'availableDayLeft', 'recordPerPage', 'approve', 'userManager', 'dayOff', 'status', 'countDayOff'));
+        if (isset($request->status_search) || isset($request->year)|| isset($request->month)) {
+            $year=$request->year;
+            $month=$request->month;
+            $statusSearch=$request->status_search;
+
+            $dayOff = $this->userDayOffService->searchStatus($year,$month,$statusSearch);
+            return view('end_user.user.day_off', compact('listDate', 'paginateData', 'availableDayLeft', 'recordPerPage', 'approve', 'userManager', 'dayOff', 'statusSearch', 'countDayOff','year','month'));
         }
         return view('end_user.user.day_off', compact('listDate', 'paginateData', 'availableDayLeft', 'recordPerPage', 'approve', 'userManager', 'countDayOff'));
     }
@@ -263,6 +325,7 @@ class UserController extends Controller
     public function contact(Request $request)
     {
         $users = $this->userService->getContact($request, $perPage, $search);
+
         return view('end_user.user.contact', compact('users', 'search', 'perPage'));
     }
 
@@ -272,38 +335,32 @@ class UserController extends Controller
      * @param Request $request
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function dayOffCreate(Request $request)
+    public function dayOffCreate(createDayOffRequest $request)
     {
-        $id = $request['id'];
-        $reason = $request['reason'];
-        $idUser = Auth::id();
-        if ($id) {
-            WorkTimesExplanation::where('id', $id)->update(['note' => $reason]);
-        } else {
-            WorkTimesExplanation::create([
-                'user_id' => $idUser,
-                'work_day' => $request['work_day'],
-                'type' => 0,
-                'note' => $reason
-            ]);
-        }
+
+        $dayOff = new DayOff();
+        $dayOff->fill($request->all());
+        $dayOff->user_id = Auth::id();
+        $dayOff->save();
         return back()->with('day_off_success', '');
     }
 
     public function dayOffSearch(Request $request)
     {
-        $year=$request->year;
-        $month=$request->month;
-        $status=$request->status;
-        $search=$request->search;
+        $year = $request->year;
+        $month = $request->month;
+        $status = $request->status;
+        $search = $request->search;
 
         $dataDayOff = $this->userDayOffService->showList(null);
-        $dayOffSearch= $this->userDayOffService->getDataSearch($year,$month ,$status,$search);
+        $dayOffSearch = $this->userDayOffService->getDataSearch($year, $month, $status, $search);
         return view('end_user.user.day_off_approval', compact(
-            'dataDayOff','dayOffSearch','year','month','status','search'
+            'dataDayOff', 'dayOffSearch', 'year', 'month', 'status', 'search'
         ));
     }
-    public function dayOffShow($status){
+
+    public function dayOffShow($status)
+    {
 
         $dataDayOff = $this->userDayOffService->showList($status);
         return view('end_user.user.day_off_approval', compact(
@@ -319,22 +376,15 @@ class UserController extends Controller
             $dayOff->save();
             return back()->with('close', '');
         }
-        return back()->with(['data' => $dayOff]);
-        /* if ($dayOff->status == STATUS_DAY_OFF['noActive']){
-             $check=['yes'];
-             $manager=$this->userService->getUserManager();
-             $dataDayOff = $this->userDayOffService->showList(null);
-             return back()->with(['check'=>$check,'dayOff'=>$dayOff,'manager'=>$manager]);
-         }else{
-             $newStatus= $dayOff->status == STATUS_DAY_OFF['active'] ? STATUS_DAY_OFF['noActive'] : STATUS_DAY_OFF['active'];
-             $dayOff->status=$newStatus;
-             $dayOff->save();
-             if ($dayOff->status == STATUS_DAY_OFF['active']){
-                 return back()->with('active','');
-             }else{
-                 return back()->with('close','');
-             }
-         }*/
+        if ($dayOff->number_off){
+            $numOff=checkNumber($dayOff->number_off);
+        }
+        return response()->json([
+            'data' => $dayOff,
+            'numoff'=> $numOff ?? null,
+            'approver'=>User::findOrFail($dayOff->approver_id)->name,
+            'userdayoff'=>User::findOrFail($dayOff->user_id)->name
+    ]);
     }
 
     public function editDayOffDetail(Request $request, $id)
@@ -343,68 +393,27 @@ class UserController extends Controller
             'number_off' => 'required|numeric',
             'approve_comment' => 'nullable|min:1|max:255'
         ]);
-        //manager active day off
-        $dayOff = DayOff::findOrFail($id);
-        $dayOff->status = STATUS_DAY_OFF['active'];
-        $dayOff->approver_at = now();
-        $dayOff->number_off = $request->number_off;
-        $dayOff->approve_comment = $request->approve_comment;
-
-        //check reamin day off Current Year and Pre Year -> update column ramian of table remain_day_offs
-        $userDayOff = User::findOrFail($dayOff->user_id);
-        $remainDayOffCurrentYear=RemainDayoff::where('user_id',$dayOff->user_id)->where('year',date('Y'))->first();
-        $remainDayOffPreYear=RemainDayoff::where('user_id',$dayOff->user_id)->where('year',(int)date('Y')-1)->first();
-        $dayOffCurrentYear=$remainDayOffCurrentYear ? $remainDayOffCurrentYear->remain : DAY_OFF_DEFAULT;
-        $dayOffPreYear=$remainDayOffPreYear ? $remainDayOffPreYear->remain : DAY_OFF_DEFAULT;
-
-        if ($dayOffPreYear - $dayOff->number_off >= DAY_OFF_DEFAULT){
-            $remainDayOffPreYear->remain=$dayOffPreYear - $dayOff->number_off;
-            $remainDayOffPreYear->save();
-
-        }elseif ($dayOffCurrentYear + $dayOffPreYear - $dayOff->number_off >= DAY_OFF_DEFAULT ){
-            if ($remainDayOffPreYear){
-                $remainDayOffPreYear->remain=DAY_OFF_DEFAULT;
-                $remainDayOffPreYear->save();
-            }
-            $remainDayOffCurrentYear->remain=$dayOffCurrentYear + $dayOffPreYear - $dayOff->number_off;
-            $remainDayOffCurrentYear->save();
-
-        }else {
-            if ($remainDayOffPreYear){
-                $remainDayOffPreYear->remain=DAY_OFF_DEFAULT;
-                $remainDayOffPreYear->save();
-            }
-            $remainDayOffCurrentYear->remain=DAY_OFF_DEFAULT;
-            $dayOff->absent = $dayOff->number_off - ($dayOffCurrentYear + $dayOffPreYear);
-            $remainDayOffCurrentYear->save();
-
-        };
-        $dayOff->save();
-            // check if female && sum day off in month >=2 && check_free =0 -> +1 column remain table day off
-        if ($userDayOff->sex == SEX['female'] && $userDayOff->contract_type == CONTRACT_TYPES['staff']) {
-
-            //total day off in month
-            $countDayOff = $this->userDayOffService->countDayOff($userDayOff->id);
-
-            if ($countDayOff && (int)$countDayOff->total >= 2 && $countDayOff->check_free == DAY_OFF_FREE_DEFAULT) {
-                DayOff::where('user_id',$userDayOff->id)
-                    ->whereMonth('start_at', '=', date('m'))
-                    ->whereYear('start_at', '=', date('Y'))
-                    ->update(['check_free'=>DAY_OFF_FREE_ACTIVE]);
-                $remainDayOffPreYear->remain=$remainDayOffPreYear->remain + DAY_OFF_FREE_ACTIVE;
-                $remainDayOffCurrentYear->save();
-            }
-        }
+        $this->userDayOffService->calculateDayOff($request, $id);
         return back()->with('success', __('messages.edit_day_off_successully'));
     }
 
-    public function deleteDayOff(Request $request)
+    public function deleteOrCloseDayOff(Request $request)
     {
-        $id = $request->day_off_id ?? '';
-        if ($id) {
-            DayOff::findOrFail($id)->delete();
+        if (isset($request->day_off_id)) {
+            DayOff::findOrFail($request->day_off_id)->delete();
+            return back()->with('delete_day_off', '');
+        }else if (isset($request->id_close)){
+            $dayOff=DayOff::findOrFail($request->id_close);
+            if ($dayOff->status == STATUS_DAY_OFF['abide']){
+                $dayOff->status = STATUS_DAY_OFF['noActive'];
+                $dayOff->save();
+                return back()->with('close', '');
+            }
+        }else
+        {
+            abort(404);
         }
-        return back()->with('delete_day_off', '');
+
     }
 
 }

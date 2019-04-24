@@ -1,4 +1,3 @@
-
 .no-padding-right {
     padding-right: 0 !important;
 }
@@ -295,6 +294,18 @@
     border-radius: 50%;
 }
 
+.orange-circle {
+    display: block;
+    height: 1.5rem;
+    width: 1.5rem;
+    background: #FFBB34;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    border-radius: 50%;
+}
+
 .green-circle {
     display: block;
     height: 1.5rem;
@@ -421,7 +432,6 @@
         padding-top: 15px;
         cursor: pointer;
     }
-
 
     tr.calendar-header td {
         background: #eeeeee;
@@ -665,7 +675,10 @@
     }
 
     .ml-xxl-1 {
-        margin-left: -74px;
+        margin-left: -56px;
+    }
+    .ml-xxxl-1{
+        margin-left: -57px;
     }
 }
 
@@ -780,6 +793,30 @@ td.blank, .type-1 {
 
 .list-reulation {
     margin-left: 15px;
+    font-size: 19px;
+}
+
+.list-reulation .index-regulation {
+    width: 25px;
+    display: inline-block;
+}
+
+.color-red {
+    color: red;
+}
+.text-size-header-1{
+    font-size: 14px !important;
+ }
+#btn-select{
+    color: black !important;
+    background: white!important;
+    width: 200px;
+}
+.select-search{
+    height: 42px;
+}
+.day-off-icoi{
+    left: 25px !important;
 }
 
 /*

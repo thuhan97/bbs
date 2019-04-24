@@ -34,11 +34,30 @@ class WorkTime extends Model
         4 => 'Overtime',
     ];
 
+    const WORK_TIME_CALENDAR_TYPE = [
+        -1 => 'Nghỉ',
+        0 => 'Bình thường',
+        1 => 'Đi muộn',
+        2 => 'Về sớm',
+        4 => 'Overtime',
+        5 => 'Đi muộn + Overtime',
+    ];
+    const WORK_TIME_CALENDAR_DISPLAY = [
+        -1 => 'Nghỉ',
+        0 => '',
+        1 => 'Đi muộn',
+        2 => 'Về sớm',
+        4 => 'Overtime',
+        5 => 'Đi muộn + Overtime',
+    ];
+
     const TYPES = [
+        'off' => -1,
         'normal' => 0,
         'lately' => 1,
         'early' => 2,
         'ot' => 4,
+        'lately_ot' => 5,
     ];
 
     public function scopeSearch($query, $searchTerm)
@@ -66,4 +85,6 @@ class WorkTime extends Model
     {
         return $this->hasOne(WorkTimesExplanation::class, 'user_id', 'user_id')->where('work_times_explanation.work_day', $work_day)->first();
     }
+
+
 }

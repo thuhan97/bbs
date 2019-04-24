@@ -20,7 +20,7 @@ Breadcrumbs::register('contact', function ($breadcrumbs) {
 // Home > Post
 Breadcrumbs::register('regulation', function ($breadcrumbs) {
     $breadcrumbs->parent('home');
-    $breadcrumbs->push(__l('Post'), route('regulation'));
+    $breadcrumbs->push(__l('regulation'), route('regulation'));
 });
 Breadcrumbs::register('regulation_search', function ($breadcrumbs, $search) {
     $breadcrumbs->parent('regulation');
@@ -91,6 +91,10 @@ Breadcrumbs::register('profile', function ($breadcrumbs) {
     $breadcrumbs->parent('personal');
     $breadcrumbs->push(__l('Profile'), route('profile'));
 });
+Breadcrumbs::register('punish', function ($breadcrumbs) {
+    $breadcrumbs->parent('personal');
+    $breadcrumbs->push(__l('Punish'), route('punish'));
+});
 
 Breadcrumbs::register('change_password', function ($breadcrumbs) {
     $breadcrumbs->parent('personal');
@@ -100,6 +104,11 @@ Breadcrumbs::register('change_password', function ($breadcrumbs) {
 Breadcrumbs::register('work_time', function ($breadcrumbs) {
     $breadcrumbs->parent('personal');
     $breadcrumbs->push(__l('work_time'), route('work_time'));
+});
+// Dashboard > ask_permission
+Breadcrumbs::register('ask_permission', function ($breadcrumbs) {
+    $breadcrumbs->parent('personal');
+    $breadcrumbs->push(__l('ask_permission'), route('ask_permission'));
 });
 // Dashboard > list_share_document
 Breadcrumbs::register('list_share_document', function ($breadcrumbs) {
@@ -122,6 +131,13 @@ Breadcrumbs::register('admin', function ($breadcrumbs) {
     $breadcrumbs->push(__l('admin_page'), route('admin::index'));
 });
 
+// Dashboard > day_off_approval
+Breadcrumbs::register('work_time_statistic', function ($breadcrumbs) {
+    $breadcrumbs->parent('home');
+    $breadcrumbs->push(__l('day_off_approval'), route('admin::work_time_statistic'));
+});
+
+
 // Admin / {Resource} / {List|Edit|Create}
 $resources = [
     'admins' => 'Trang quản trị',
@@ -137,7 +153,10 @@ $resources = [
     'projects' => 'Quản lý dự án',
     'devices' => 'Quản lý thiết bị',
     'deviceusers' => 'Quản lý thiết bị',
-    'meetings'=> 'Phòng họp'
+    'work_time_statistic' => 'Thống kê thời gian làm việc',
+    'meetings' => 'Phòng họp',
+    'rules' => 'Quy định tiền phạt',
+    'punishes' => 'Danh sách tiền phạt',
 ];
 foreach ($resources as $resource => $data) {
     $parent = 'admin';

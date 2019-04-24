@@ -8,7 +8,7 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'BBS') }}</title>
+    <title>{{ config('app.name', 'BBS') }} @hasSection('page-title') | @yield('page-title') @endif</title>
 
     <!-- Styles -->
     <link href="{{ cdn_asset('mdb/css/bootstrap.min.css') }}" rel="stylesheet">

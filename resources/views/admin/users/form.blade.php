@@ -1,7 +1,11 @@
 <?php
 $defaultStaffCode = "J" . str_pad((\App\Models\User::max('id') + 1), 3, '0', STR_PAD_LEFT);
+if (isset($record->end_date)) {
+    if (strtotime($record->end_date) <= strtotime(date('Ymd'))) {
+        $record->status = 0;
+    }
+}
 ?>
-
 <div class="col-md-5">
     <div class="row">
         <div class="col-md-12">
@@ -11,7 +15,6 @@ $defaultStaffCode = "J" . str_pad((\App\Models\User::max('id') + 1), 3, '0', STR
                         <label for="staff_code">Mã nhân viên *</label>
                         <input type="text" class="form-control" name="staff_code" placeholder="Nhập mã nhân viên"
                                value="{{ old('staff_code', $record->staff_code ?? $defaultStaffCode ) }}" required>
-
                         @if ($errors->has('staff_code'))
                             <span class="help-block">
                     <strong>{{ $errors->first('staff_code') }}</strong>
@@ -19,8 +22,8 @@ $defaultStaffCode = "J" . str_pad((\App\Models\User::max('id') + 1), 3, '0', STR
                         @endif
                     </div>
                 </div>
-                <div class="col-md-3">
-                    <label for="staff_code">Giới tinh</label>
+                <div class="col-md-6">
+                    <label for="staff_code">Giới tính</label>
                     {{ Form::select('sex', SEXS, $record->sex, ['class'=>'form-control']) }}
                 </div>
             </div>
@@ -71,7 +74,7 @@ $defaultStaffCode = "J" . str_pad((\App\Models\User::max('id') + 1), 3, '0', STR
             <div class="row">
                 <div class="col-md-6">
                     <div class="form-group margin-b-5 margin-t-5{{ $errors->has('id_card') ? ' has-error' : '' }}">
-                        <label for="id_card">Số chứng minh nhân dân</label>
+                        <label for="id_card">Số CMND/TCC/HC *</label>
                         <input type="text" class="form-control" name="id_card" placeholder="CMND"
                                value="{{ old('id_card', $record->id_card) }}">
 
@@ -102,7 +105,7 @@ $defaultStaffCode = "J" . str_pad((\App\Models\User::max('id') + 1), 3, '0', STR
             <div class="row">
                 <div class="col-md-6">
                     <div class="form-group margin-b-5 margin-t-5{{ $errors->has('email') ? ' has-error' : '' }}">
-                        <label for="email">Email</label>
+                        <label for="email">Email *</label>
                         <input type="email" class="form-control" name="email" placeholder="Email"
                                value="{{ old('email', $record->email) }}">
 

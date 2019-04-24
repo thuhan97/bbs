@@ -26,12 +26,20 @@
     margin-left: 5px;
 }
 
+.margin-l-15 {
+    margin-left: 15px;
+}
+
+.margin-l-50 {
+    margin-left: 50px;
+}
+
 .margin-t-5 {
     margin-top: 5px;
 }
 
-.margin-b-5 {
-    margin-bottom: 5px;
+.margin-t-40 {
+    margin-top: 40px;
 }
 
 .margin-b-5 {
@@ -314,6 +322,18 @@
     width: 106px !important;
 }
 
+.w-5 {
+    width: 5% !important;
+}
+
+.w-3 {
+    width: 3% !important;
+}
+
+.w-13 {
+    width: 13% !important;
+}
+
 .w-30 {
     width: 30% !important;
 }
@@ -334,9 +354,142 @@
     margin-right: 2rem;
 }
 
+.mr-3 {
+    margin-right: -3rem;
+}
+
+.mr-15 {
+    margin-right: 15rem;
+}
+
 a.disabled {
     pointer-events: none;
     cursor: default;
+}
+
+.input-group-addon.title_date, select.form-control.title_year {
+    background: #d2d6de;
+}
+
+select.title_year {
+    -webkit-appearance: none;
+    appearance: none;
+}
+
+.first_chart {
+    margin-left: -85px;
+}
+
+.margin-b-40 {
+    margin-bottom: 40px;
+}
+
+.on_time, .early, .ot, .late, .leave, .stt {
+    text-align: center;
+    color: #fff;
+    line-height: 30px !important;
+}
+
+.on_time, .early, .ot, .late, .leave {
+    width: 302px !important;
+    height: 50px;
+}
+
+th.no-wap.on_time {
+    background: #ad6cd6;
+}
+
+th.early {
+    background: #ff3548;
+}
+
+th.ot {
+    background: #4385f5;
+}
+
+th.late {
+    background: #01c851;
+}
+
+th.leave {
+    background: #ffbb34;
+}
+
+th.stt {
+    background: #222d32;
+}
+
+@font-face {
+    font-family: 'Roboto-Regular';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 16px;
+    src: url("../../font/roboto/Roboto-Regular.woff2") format("woff2"),
+    url("../../font/roboto/Roboto-Regular.woff") format("woff");
+}
+
+.work_time {
+    font-family: "Roboto-Regular", sans-serif;
+}
+
+.pd-r-0 {
+    padding-right: 0 !important;
+}
+
+.statistic_year {
+    width: 25% !important;
+    white-space: nowrap;
+    vertical-align: middle;
+}
+
+.statistic_week {
+    background: #d2d6de;
+}
+
+.l-h-45 {
+    line-height: 45px !important;
+}
+
+.on_time, .early, .ot, .late, .leave {
+    width: 250px !important;
+}
+
+.navbar-inverse .navbar-nav > li {
+    padding-top: 40px;
+    font-family: "Roboto-Regular", sans-serif;
+    font-size: 18px;
+}
+
+.navbar-inverse .navbar-nav > li:not(:first-child) {
+    padding-left: 25px;
+}
+
+.navbar-inverse .navbar-nav > li > span.on_time_total {
+    color: #ad6cd6;
+}
+
+.navbar-inverse .navbar-nav > li > span.early_total {
+    color: #ff3548;
+}
+
+.navbar-inverse .navbar-nav > li > span.ot_total {
+    color: #4385f5;
+}
+
+.navbar-inverse .navbar-nav > li > span.late_total {
+    color: #01c851;
+}
+
+.navbar-inverse .navbar-nav > li > span.leave_total {
+    color: #ffbb34;
+}
+
+.noHover {
+    pointer-events: none;
+}
+
+.h-100 {
+    height: 100px;
 }
 
 .calendar-year {
@@ -355,4 +508,8 @@ a.disabled {
 .explanation-note {
     width: 80%;
     margin: 0 auto;
+}
+
+.label-disable {
+    background: grey;
 }

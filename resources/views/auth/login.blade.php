@@ -1,5 +1,15 @@
 @extends('layouts.app')
 
+@section('js-extend')
+    <script>
+        $(function () {
+            window.setTimeout(function () {
+                $("#email").next().addClass('active')
+                $("#password").next().addClass('active')
+            }, 500);
+        })
+    </script>
+@endsection
 @section('content')
     <div class="container">
         <div class="row mt-5">

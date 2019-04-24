@@ -8,6 +8,7 @@ use App\Traits\Models\FillableFields;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\DB;
 
 class UserTeam extends Model
 {
@@ -67,6 +68,15 @@ class UserTeam extends Model
     public function getMemberIdAttribute()
     {
         return $this->select(['user_id'])->groupBy(['user_id'])->get();
+    }
+
+    public static function getUsers($team_id = null)
+    {
+        return DB::table('user_teams')->where('team_id', $team_id)
+            ->join('users', 'user_teams.user_id', '=', 'users.id')
+            ->select('users.id', 'users.name')->distinct()
+            ->orderBy('name', 'ASC')->pluck('name', 'id')->toArray();
+
     }
 
 }

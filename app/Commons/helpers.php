@@ -101,10 +101,10 @@ if (!function_exists('redirect_back_to')) {
     /**
      * Get an instance of the redirector.
      *
-     * @param  string|null $callbackUrl
-     * @param  int         $status
-     * @param  array       $headers
-     * @param  bool        $secure
+     * @param string|null $callbackUrl
+     * @param int         $status
+     * @param array       $headers
+     * @param bool        $secure
      *
      * @return \Illuminate\Routing\Redirector|\Illuminate\Http\RedirectResponse
      */
@@ -255,6 +255,18 @@ if (!function_exists('getStartAndEndDate')) {
         return $ret;
     }
 }
+if (!function_exists('getStartAndEndDateOfMonth')) {
+    function getStartAndEndDateOfMonth($month, $year)
+    {
+        $dto = new DateTime();
+        $dto->setDate($year, $month, 1);;
+
+        return [
+            $dto->format('Y-m-01'),
+            $dto->format('Y-m-t'),
+        ];
+    }
+}
 if (!function_exists('get_years')) {
     /**
      * Encode unicode
@@ -263,10 +275,11 @@ if (!function_exists('get_years')) {
      * @param string  $prefix
      * @param bool    $isDesc
      *
-     * @return string
+     * @param bool    $istatic
      *
+     * @return array
      */
-    function get_years($num = 5, $prefix = '', $isDesc = true)
+    function get_years($num = 5, $prefix = '', $isDesc = true, $istatic = false)
     {
         $result = [];
         $currentYear = date('Y');
@@ -278,7 +291,9 @@ if (!function_exists('get_years')) {
             $result[$start] = $prefix . $start;
             $start = $start + $step;
         }
-
+        if ($istatic) {
+            return $result;
+        }
         return ['' => 'Chọn năm'] + $result;
     }
 }
@@ -307,7 +322,19 @@ if (!function_exists('get_months')) {
         return ['' => 'Chọn tháng'] + $result;
     }
 }
-
+if (!function_exists('get_month')) {
+    /**
+     * Get month
+     *
+     * @param $date
+     *
+     * @return string
+     */
+    function get_month($date)
+    {
+        return date('m', strtotime($date));
+    }
+}
 if (!function_exists('__l')) {
     /**
      * Encode unicode
@@ -347,3 +374,61 @@ if (!function_exists('__admin_sortable')) {
         echo '</a>';
     }
 }
+
+if (!function_exists('statistics')) {
+    /**
+     * statistics
+     *
+     * @return array {array}
+     */
+    function statistics()
+    {
+        return [
+            '1' => 'Tất cả công ty',
+            '2' => 'Team',
+            '3' => 'Cá nhân',
+        ];
+    }
+}
+
+if (!function_exists('team')) {
+    /**
+     * get all team
+     *
+     * @return array {array}
+     */
+    function team()
+    {
+        $teams = DB::table('teams')->select('id', 'name')->pluck('name', 'id')->toArray();
+        return ['' => 'Chọn team'] + $teams;
+    }
+}
+if (!function_exists('users')) {
+    /**
+     * get all users
+     *
+     * @return array {array}
+     */
+    function users()
+    {
+        $teams = DB::table('users')->select('id', 'name')->orderBy('name', 'ASC')->pluck('name', 'id')->toArray();
+        return ['' => 'Chọn nhân viên'] + $teams;
+    }
+}
+
+/**
+ * @param $number
+ *
+ * @return number
+ */
+
+function checkNumber($number)
+{
+    $explode = explode('.', $number);
+    if ($explode[1] > 0) {
+        return $number;
+    } else {
+        return $explode[0];
+    }
+}
+

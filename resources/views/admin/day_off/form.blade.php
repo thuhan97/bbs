@@ -1,10 +1,9 @@
 <div class="col-md-7">
-    <h3>Dành cho nhân viên xin nghỉ phép</h3>
     <div class="row">
         <div class="col-md-12">
             <div class="form-group margin-b-5 margin-t-5{{ $errors->has('user_id') ? ' has-error' : '' }}">
                 <label for="user_id">Chọn nhân viên *</label>
-                {{ Form::select('user_id', ['' => 'Chọn nhân viên'] +  $request_users, $record->user_id ?? $user_id, $record->user_id ? ['disabled' => 'disabled','class'=>'select2 form-control'] : ['class'=>'select2 form-control']) }}
+                {{ Form::select('user_id', ['' => 'Chọn nhân viên'] +  $request_users, $record->user_id ?? $user_id, $record->user_id ? ['disabled'=>'disabled','class'=>'select2 form-control'] : ['class'=>'select2 form-control']) }}
                 @if ($errors->has('user_id'))
                     <span class="help-block">
                     <strong>{{ $errors->first('user_id') }}</strong>
@@ -14,13 +13,18 @@
             <!-- /.form-group -->
         </div>
 
+        @if(isset($record->id ))
+            <input type="hidden" name="user_id" value="{{ $record->user_id  }}">
+        @endif
         <div class="col-md-12">
-            <div class="form-group margin-b-5 margin-t-5{{ $errors->has('title') ? ' has-error' : '' }}">
-                <label for="title">Tiêu đề</label>
-                {{ Form::select('title', VACATION, $record->title, ['class' => 'form-control my-1 mr-1 browser-default custom-select md-form select-item']) }}
-                @if ($errors->has('title'))
+            <div class="form-group margin-b-5 margin-t-5{{ $errors->has('number_off') ? ' has-error' : '' }}">
+                <label for="number_off">Số ngày nghỉ được tính (1 ngày hoặc nửa ngày) *</label>
+                <input type="text" class="form-control" name="number_off" placeholder="Số ngày phép bị trừ"
+                       value="{{ old('number_off', $record->number_off) }}">
+
+                @if ($errors->has('number_off'))
                     <span class="help-block">
-                    <strong>{{ $errors->first('title') }}</strong>
+                    <strong>{{ $errors->first('number_off') }}</strong>
                 </span>
                 @endif
             </div>
@@ -68,8 +72,19 @@
             </div>
 
         </div>
-
         <!-- /.col-md-12 -->
+        <div class="col-md-12">
+            <div class="form-group margin-b-5 margin-t-5{{ $errors->has('title') ? ' has-error' : '' }}">
+                <label for="title">Tiêu đề</label>
+                {{ Form::select('title', VACATION, $record->title, ['class' => 'form-control my-1 mr-1 browser-default custom-select md-form select-item']) }}
+                @if ($errors->has('title'))
+                    <span class="help-block">
+                    <strong>{{ $errors->first('title') }}</strong>
+                </span>
+                @endif
+            </div>
+            <!-- /.form-group -->
+        </div>
         <div class="col-md-12">
             <div class="form-group margin-b-5 margin-t-5{{ $errors->has('reason') ? ' has-error' : '' }}">
                 <label for="reason">Nhập lý do nghỉ phép *</label>
@@ -104,17 +119,6 @@
             <!-- /.form-group -->
         </div>
         <div class="col-md-12">
-            <div class="form-group margin-b-5 margin-t-5{{ $errors->has('number_off') ? ' has-error' : '' }}">
-                <label for="number_off">Số ngày nghỉ được tính (1 ngày hoặc nửa ngày) *</label>
-                <input type="text" class="form-control" name="number_off" placeholder="Số ngày phép bị trừ"
-                       value="{{ old('number_off', $record->number_off) }}" required>
-
-                @if ($errors->has('number_off'))
-                    <span class="help-block">
-                    <strong>{{ $errors->first('number_off') }}</strong>
-                </span>
-                @endif
-            </div>
             <!-- /.form-group -->
         </div>
         <div class="col-md-12">
@@ -131,24 +135,53 @@
             </div>
             <!-- /.form-group -->
         </div>
-
         <div class="col-xs-12">
             <div class="form-group margin-b-5 margin-t-5">
                 <label for="status">
-                    <input type="checkbox" class="square-blue" name="status" id="status"
-                           value="{{ACTIVE_STATUS}}" {{ old('status', $record->status ?? 1) == 1 ? 'checked' : '' }}>
-                    Đã duyệt
+                    <?php
+                    if(!isset($record->status)){
+                        $record->status = STATUS_DAY_OFF['active'];
+                    }
+                    ?>
+                     <span>
+                        <input type="radio" class="square-blue" name="status" value="1"{{ old('status', $record->status ) == STATUS_DAY_OFF['active'] ? 'checked' : '' }} >
+                    Duyệt
+                    </span>
+                    <span style="padding: 15px">
+                        <input type="radio" class="square-blue" name="status" value="0" {{ old('status', $record->status ) == STATUS_DAY_OFF['abide'] ? 'checked' : '' }}>
+                    Chờ duyệt
+                    </span>
+                    @if(isset($record->id))
+                        <span>
+                        <input type="radio" class="square-blue" name="status" value="2" {{ old('status', $record->status ) ==STATUS_DAY_OFF['noActive']  ? 'checked' : '' }}>
+                    Hủy duyệt
+                    </span>
+                    @endif
+
                 </label>
             </div>
             <!-- /.form-group -->
         </div>
     </div>
 </div>
-
+@if(!isset($record->id) || $record->status ==STATUS_DAY_OFF['abide'] )
+    <div class="box-footer clearfix">
+        <div class="col-xs-12 project-form">
+            <div align="center">
+                <button class="btn btn-info mr-2">
+                    <i class="fa fa-save"></i> <span>Lưu</span>
+                </button>
+                <a href="{{ $_listLink }}" class="btn btn-default">
+                    <i class="fa fa-ban"></i> <span>Hủy</span>
+                </a>
+            </div>
+        </div>
+        <!-- /.col-xs-6 -->
+    </div>
+@endif
 <!-- /.col-md-7 -->
 @push('footer-scripts')
     <script>
-
         $(function () {
             myDateTimePicker($("#start_at, #end_at"));
         })

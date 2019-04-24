@@ -802,7 +802,9 @@ td.blank, .type-1 {
     color: red;
 }
 
-/*
-            End work time calendar
- */
 
+@media (min-width: 768px) and (max-width: 1000px) {
+    #app {
+        padding-top: 0rem !important;
+    }
+}

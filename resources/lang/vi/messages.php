@@ -21,7 +21,7 @@ return [
     'Event' => 'Sự kiện',
     'Post' => 'Thông báo',
     'Report' => 'Báo cáo công việc',
-    'Punish' => 'Công nợ',
+    'Punish' => 'Tiền phạt',
     'Report_create' => 'Tạo báo cáo',
     'Home' => 'Trang chủ',
     'Project' => 'Dự án',

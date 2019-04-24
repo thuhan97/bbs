@@ -30,8 +30,8 @@
 <body>
 @include('layouts.partials.frontend.header')
 
-<main id="app" class="pt-5 mx-lg-5">
-    <div class="container-fluid mt-5">
+<main id="app" class="pt-md-5">
+    <div class="container-fluid  mt-3 mt-md-5">
         @if(View::hasSection('breadcrumbs'))
             @yield('breadcrumbs')
         @endif

@@ -63,14 +63,15 @@ $_storeLink = route($resourceRoutesAlias . '.store');
                     @if($resourceRoutesAlias != 'admin::day_offs')
 
                         <div class="box-footer clearfix">
-                            <!-- Edit Button -->
-                            <div class="col-xs-12 text-right">
-                                <a href="{{ $_listLink }}" class="btn btn-default">
-                                    <i class="fa fa-ban"></i> <span>Hủy</span>
-                                </a>
-                                <button class="btn btn-info margin-l-5">
-                                    <i class="fa fa-save"></i> <span>Lưu</span>
-                                </button>
+                            <div class="col-xs-12 option-with">
+                                <div align="center">
+                                    <button class="btn btn-info mr-2">
+                                        <i class="fa fa-save"></i> <span>Lưu</span>
+                                    </button>
+                                    <a href="{{ $_listLink }}" class="btn btn-default">
+                                        <i class="fa fa-ban"></i> <span>Hủy</span>
+                                    </a>
+                                </div>
                             </div>
                             <!-- /.col-xs-6 -->
                         </div>

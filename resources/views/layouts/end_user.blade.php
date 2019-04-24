@@ -8,7 +8,7 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'BBS') }}</title>
+    <title>{{ config('app.name', 'BBS') }} @hasSection('page-title') | @yield('page-title') @endif</title>
 
     <!-- Styles -->
     <link href="{{ cdn_asset('mdb/css/bootstrap.min.css') }}" rel="stylesheet">
@@ -30,8 +30,8 @@
 <body>
 @include('layouts.partials.frontend.header')
 
-<main id="app" class="pt-5 mx-lg-5">
-    <div class="container-fluid mt-5">
+<main id="app" class="pt-md-5">
+    <div class="container-fluid  mt-3 mt-md-5">
         @if(View::hasSection('breadcrumbs'))
             @yield('breadcrumbs')
         @endif

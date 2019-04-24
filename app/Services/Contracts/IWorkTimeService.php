@@ -20,4 +20,13 @@ interface IWorkTimeService extends IBaseService
      * @return collection
      */
     public function search(Request $request, &$perPage, &$search);
+
+    /**
+     * @param       $fromDate
+     * @param       $toDate
+     * @param array $userIds
+     *
+     * @return mixed
+     */
+    public function calculateLateTime($fromDate, $toDate, $userIds = []);
 }

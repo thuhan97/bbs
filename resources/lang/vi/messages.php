@@ -21,6 +21,7 @@ return [
     'Event' => 'Sự kiện',
     'Post' => 'Thông báo',
     'Report' => 'Báo cáo công việc',
+    'Punish' => 'Tiền phạt',
     'Report_create' => 'Tạo báo cáo',
     'Home' => 'Trang chủ',
     'Project' => 'Dự án',
@@ -31,6 +32,7 @@ return [
     'list_share_document' => 'Chia sẻ tài liệu',
     'contact' => 'Danh bạ',
     'day_off' => 'Ngày phép',
+    'ask_permission' => 'Xin phép',
     'day_off_approval' => 'Phê duyệt nghỉ phép',
     'Login' => 'Đăng nhập',
     'logout' => 'Đăng xuất',
@@ -58,4 +60,6 @@ return [
     'share_document_error' => 'Chia sẻ tài liệu thất bại',
     'notification_change_pass' => 'Đổi mật khẩu thành công, xin vui lòng đăng nhập lại!',
     'edit_day_off_successully' => 'Chỉnh sửa ngày nghỉ thành công',
+    'punish_late_money' => 'Phạt đi muộn lần :number (:check_in) tháng :month.',
+    'punish_late_money_aio' => 'Phạt đi muộn :number buổi (từ :start_date đến :to_date).',
 ];

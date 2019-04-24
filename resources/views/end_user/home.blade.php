@@ -1,4 +1,5 @@
 @extends('layouts.end_user')
+@section('page-title', __l('Home'))
 
 @section('content')
     <section class="mt-4">
@@ -47,14 +48,22 @@
                         <ul class="list-unstyled">
                             @foreach($posts as $post)
                                 <li class="media mb-3">
-                                    <img class="d-flex mr-3"
-                                         src="{{lfm_thumbnail($post->image_url)}}"
-                                         alt="{{$post->name}}" width="60">
-                                    <div class="media-body">
-                                        <a href="{{route('post_detail', ['id' => $post->id])}}">
-                                            <h5 class="mt-0 mb-1 font-weight-bold">{{$post->name}}</h5>
-                                        </a>
-                                        {{str_limit(strip_tags(nl2br($post->introduction) )) }}
+                                    <div class="row">
+                                        <div class="col-sm-5 text-center">
+                                            <img class="d-flex mr-3"
+                                                 src="{{lfm_thumbnail($post->image_url)}}"
+                                                 alt="{{$post->name}}" width="60">
+
+                                        </div>
+                                        <div class="col-sm-7">
+                                            <div class="media-body">
+                                                <a href="{{route('post_detail', ['id' => $post->id])}}">
+                                                    <h5 class="mt-0 mb-1 font-weight-bold">{{$post->name}}</h5>
+                                                </a>
+                                                {{str_limit(strip_tags(nl2br($post->introduction) )) }}
+                                            </div>
+
+                                        </div>
                                     </div>
                                 </li>
                             @endforeach

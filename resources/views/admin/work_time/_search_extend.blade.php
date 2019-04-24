@@ -6,6 +6,7 @@
     {{ Form::select('month', get_months(), request('month'), ['class'=>'w-22 form-control']) }}
 
     <input type="hidden" name="user_id" value="{{request('user_id')}}">
+    <input type="hidden" name="work_day" value="{{request('work_day')}}">
 
     <div class="input-group-btn">
         <button type="submit" class="btn btn-primary"><i class="fa fa-search"></i> Tìm kiếm</button>

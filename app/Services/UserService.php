@@ -79,7 +79,7 @@ class UserService extends AbstractService implements IUserService
 
         $criterias['orders'] = ['id' => 'asc'];
         $criterias['status'] = ACTIVE_STATUS;
-        $perPage = $criterias['page_size'] ?? DEFAULT_PAGE_SIZE;
+        $perPage = $criterias['page_size'] ?? 2000;
         $search = $criterias['search'] ?? '';
 
         return $this->repository->findBy($criterias, ['*'], true);

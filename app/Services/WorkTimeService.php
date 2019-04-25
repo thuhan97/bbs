@@ -49,42 +49,21 @@ class WorkTimeService extends AbstractService implements IWorkTimeService
      */
     public function search(Request $request, &$perPage, &$search)
     {
-        $model = $this->model;
-        $year = $request->get('year');
-
-        if ($year) {
-            $model = $model->whereYear('work_day', $year);
-        }
-        $month = $request->get('month');
-        if ($month) {
-            $model = $model->whereMonth('work_day', $month);
-        }
-        $work_day = $request->get('work_day');
-        if ($work_day) {
-            $model = $model->whereDate('work_day', $work_day);
-        }
-        $type = $request->get('type');
-        if ($type != null) {
-            if ($type == WorkTime::TYPES['lately']) {
-                //lately || lately + early || lately + OT
-                $model = $model->whereIn('type', [1, 3, 5]);
-            } else if ($type == WorkTime::TYPES['ot']) {
-                //OT || lately + OT
-                $model = $model->whereIn('type', [4, 5]);
-            } else {
-                $model = $model->where('type', $type);
-            }
-        }
-        $userId = $request->get('user_id');
-        if ($userId) {
-            $model = $model->where('user_id', $userId);
-        }
-        if ($request->has('sort')) {
-            $model->orderBy($request->get('sort'), $request->get('is_desc') ? 'asc' : 'desc');
-        } else {
-            $model->orderBy('id', 'desc');
-        }
+        $model = $this->getSearchModel($request);
         return $model->search($search)->paginate($perPage);
+    }
+
+    /**
+     * @param Request $request
+     * @param         $search
+     *
+     * @return mixed
+     */
+    public function export(Request $request)
+    {
+        $search = $request->search;
+        $model = $this->getSearchModel($request, true);
+        return $model->search($search)->get();
     }
 
     public function deletes($startDate, $endDate)
@@ -313,5 +292,50 @@ class WorkTimeService extends AbstractService implements IWorkTimeService
             ];
     }
 
+    protected function getSearchModel(Request $request, $forExport = false)
+    {
+        $model = $this->model;
+        $year = $request->get('year');
+
+        if ($year) {
+            $model = $model->whereYear('work_day', $year);
+        }
+        $month = $request->get('month');
+        if ($month) {
+            $model = $model->whereMonth('work_day', $month);
+        }
+        $work_day = $request->get('work_day');
+        if ($work_day) {
+            $model = $model->whereDate('work_day', $work_day);
+        }
+        $type = $request->get('type');
+        if ($type != null) {
+            if ($type == WorkTime::TYPES['lately']) {
+                //lately || lately + early || lately + OT
+                $model = $model->whereIn('type', [1, 3, 5]);
+            } else if ($type == WorkTime::TYPES['ot']) {
+                //OT || lately + OT
+                $model = $model->whereIn('type', [4, 5]);
+            } else {
+                $model = $model->where('type', $type);
+            }
+        }
+        if (!$request->search) {
+            $userId = $request->get('user_id');
+            if ($userId) {
+                $model = $model->where('user_id', $userId);
+            }
+        }
+
+        if ($forExport) {
+            $model->orderBy('user_id')->orderBy('work_day');
+        } else if ($request->has('sort')) {
+            $model->orderBy($request->get('sort'), $request->get('is_desc') ? 'asc' : 'desc');
+        } else {
+            $model->orderBy('work_day', 'desc')->orderBy('user_id');
+        }
+
+        return $model;
+    }
 
 }

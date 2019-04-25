@@ -17,6 +17,13 @@ class WorkTimesExplanation extends Model
 
     protected $table = 'work_times_explanation';
 
+    const TYPES = [
+        'normal' => 0,
+        'lately' => 1,
+        'early' => 2,
+        'ot' => 3,
+    ];
+
     protected $fillable = [
         'id',
         'user_id',

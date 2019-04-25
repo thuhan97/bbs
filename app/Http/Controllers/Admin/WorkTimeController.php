@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Events\CaculateLateTimeEvent;
+use App\Exports\WorkTimeAllExport;
 use App\Http\Requests\Admin\WorkTimeImportRequest;
 use App\Http\Requests\Admin\WorkTimeRequest;
 use App\Imports\WorkTimeImport;
@@ -22,6 +23,7 @@ use Maatwebsite\Excel\Facades\Excel;
  */
 class WorkTimeController extends AdminBaseController
 {
+    public $defaultPageSize = 50;
 
     /**
      * @var  string
@@ -193,6 +195,11 @@ class WorkTimeController extends AdminBaseController
 
     public function getSearchRecords(Request $request, $perPage = 15, $search = null)
     {
+        if (!$request->has('year'))
+            $request->merge(['year' => date('Y')]);
+        if (!$request->has('month'))
+            $request->merge(['month' => date('n')]);
+
         return $this->sevice->search($request, $perPage, $search);
     }
 
@@ -213,5 +220,19 @@ class WorkTimeController extends AdminBaseController
         $data['request_users'] = $userModel->availableUsers()->pluck('name', 'id')->toArray();
 
         return $data;
+    }
+
+    public function exportData(Request $request)
+    {
+        switch ($request->path()) {
+            case 'admin/work_times':
+                $date = date('-ymd');
+                $records = $this->sevice->export($request);
+                return Excel::download(new WorkTimeAllExport($records), "worktimes$date.xlsx");
+                break;
+
+            default:
+                abort(404);
+        }
     }
 }

@@ -239,6 +239,11 @@ define('PUNISH_SUBMIT', [
     'new' => 0,
     'submitted' => 1
 ]);
+
+define('EXPORT_PATHS', [
+    'admin/work_times'
+]);
+
 define('LATE_MONEY_CONFIG_FOLDER', 'json_config/');
 define('LATE_MONEY_CONFIG', 'config/late_time.json');
 define('LATE_RULE_ID', 0);

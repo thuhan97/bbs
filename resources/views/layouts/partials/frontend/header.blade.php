@@ -35,15 +35,15 @@
                             <span class="sr-only">(current)</span>
                         </a>
                     </li>
-                    <li class="nav-item {{ \App\Utils::checkRoute(['punish']) ? 'active': '' }}">
-                        <a href="{{route('punish')}}"
-                           class="nav-link waves-effect">{{__l('Punish')}}
-                            <span class="sr-only">(current)</span>
-                        </a>
-                    </li>
                     <li class="nav-item {{ \App\Utils::checkRoute(['ask_permission']) ? 'active': '' }}">
                         <a href="{{route('ask_permission')}}"
                            class="nav-link waves-effect">{{__l('ask_permission')}}
+                            <span class="sr-only">(current)</span>
+                        </a>
+                    </li>
+                    <li class="nav-item {{ \App\Utils::checkRoute(['punish']) ? 'active': '' }}">
+                        <a href="{{route('punish')}}"
+                           class="nav-link waves-effect">{{__l('Punish')}}
                             <span class="sr-only">(current)</span>
                         </a>
                     </li>

@@ -178,17 +178,19 @@ class WorkRegisterController extends AdminBaseController
                 'end_at' => to_work_time($item->end_at),
             ];
         });
-
         // minimize this later
         foreach ($oldValue as $key => $item) {
-            if ($item == $this->WORK_PATH[3]) {
-                $oldValue[self::SELECT_TYPE['DETAIL_SELECT_TYPE']['name']][PART_OF_THE_DAY[$key]] = 3;
-            } elseif ($item['start_at'] == $this->WORK_PATH[0]['start_at'] && $item['end_at'] == $this->WORK_PATH[0]['end_at']) {
+            if ($item == $this->WORK_PATH[0]) {
                 $oldValue[self::SELECT_TYPE['DETAIL_SELECT_TYPE']['name']][PART_OF_THE_DAY[$key]] = 0;
             } elseif ($item['start_at'] == '00:00' || $item['end_at'] == '00:00') {
-                $oldValue[self::SELECT_TYPE['DETAIL_SELECT_TYPE']['name']][PART_OF_THE_DAY[$key]] = 2;
+                //Off
+                $oldValue[self::SELECT_TYPE['DETAIL_SELECT_TYPE']['name']][PART_OF_THE_DAY[$key]] = 0;
             } elseif ($item['start_at'] == $this->WORK_PATH[1]['start_at'] && $item['end_at'] == $this->WORK_PATH[1]['end_at']) {
                 $oldValue[self::SELECT_TYPE['DETAIL_SELECT_TYPE']['name']][PART_OF_THE_DAY[$key]] = 1;
+            } elseif ($item['start_at'] == $this->WORK_PATH[2]['start_at'] && $item['end_at'] == $this->WORK_PATH[2]['end_at']) {
+                $oldValue[self::SELECT_TYPE['DETAIL_SELECT_TYPE']['name']][PART_OF_THE_DAY[$key]] = 2;
+            } elseif ($item['start_at'] == $this->WORK_PATH[3]['start_at'] && $item['end_at'] == $this->WORK_PATH[3]['end_at']) {
+                $oldValue[self::SELECT_TYPE['DETAIL_SELECT_TYPE']['name']][PART_OF_THE_DAY[$key]] = 3;
             } else {
                 $oldValue[self::SELECT_TYPE['DETAIL_SELECT_TYPE']['name']][PART_OF_THE_DAY[$key]] = 0;
             }
@@ -196,10 +198,10 @@ class WorkRegisterController extends AdminBaseController
             $oldValue[self::SELECT_TYPE['DETAIL_TIME_SELECT_TYPE']['name']][PART_OF_THE_DAY[$key]] = $item;
         }
 
-        if ($oldValue[0]['start_at'] == $this->WORK_PATH[0]) {
-            $oldValue[self::SELECT_TYPE['QUICK_SELECT_TYPE']['name']] = 0;
-        } else {
+        if ($oldValue[0]['start_at'] == $this->WORK_PATH[3]['start_at']) {
             $oldValue[self::SELECT_TYPE['QUICK_SELECT_TYPE']['name']] = 1;
+        } else {
+            $oldValue[self::SELECT_TYPE['QUICK_SELECT_TYPE']['name']] = 2;
         }
         // ---
 
@@ -289,6 +291,7 @@ class WorkRegisterController extends AdminBaseController
                 $payload[$key]['end_at'] = $request[$item . '_end'];
             }
         }
+
         return $payload;
     }
 }

@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <meta name="robots" content="noindex, nofollow, noarchive">
-
+    <link rel="icon" type="image/png" href="/favicon.png">
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
@@ -50,7 +50,8 @@
     <![endif]-->
 
     <!-- Google Font -->
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
+    <link rel="stylesheet"
+          href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
     <!-- jQuery 3 -->
     <script src="{{ cdn_asset('/js/jquery.min.js') }}"></script>
     <!-- Moment Js-->
@@ -77,6 +78,7 @@
 @include('layouts.partials.backend.header')
 
 @include('layouts.partials.backend.sidebar')
+@include('layouts.partials.backend.modal')
 
 <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper">

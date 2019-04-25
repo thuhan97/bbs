@@ -97,15 +97,15 @@ define('SEXS', [
 ]);
 
 define('WORK_TIME_QUICK_SELECT', [
-    0 => 'Full sáng',
-    1 => 'Full chiều',
+    1 => 'Full sáng',
+    2 => 'Full chiều',
 ]);
 
 define('WORK_TIME_SELECT', [
-    0 => 'Cả ngày',
+    0 => 'Không làm',
     1 => 'Sáng',
     2 => 'Chiều',
-    3 => 'Không làm'
+    3 => 'Cả ngày',
 ]);
 
 define('PART_OF_THE_DAY', [
@@ -240,6 +240,11 @@ define('PUNISH_SUBMIT', [
     'submitted' => 1
 ]);
 
+define('PUNISH_SUBMIT_NAME', [
+    0 => 'Chưa nộp',
+    1 => 'Đã nộp'
+]);
+
 define('EXPORT_PATHS', [
     'admin/work_times'
 ]);
@@ -273,3 +278,5 @@ define('LATE_OT_USER', 'Đi làm muộn + OT');
 define('TOTAL_MONTH_IN_YEAR', 12);
 define('OFF_TIME', '00:00:00');
 define('SWITCH_TIME', '12:00:00');
+define('HAFT_MORNING', '10:00');
+define('HAFT_AFTERNOON', '15:30');

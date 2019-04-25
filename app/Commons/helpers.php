@@ -415,6 +415,21 @@ if (!function_exists('users')) {
         return ['' => 'Chọn nhân viên'] + $teams;
     }
 }
+if (!function_exists('to_work_time')) {
+    /**
+     *
+     *
+     * @return string
+     */
+    function to_work_time($time)
+    {
+        $times = explode(':', $time);
+        if (count($times) == 3) {
+            return $times[0] . ':' . $times[1];
+        }
+        return $time;
+    }
+}
 
 /**
  * @param $number

@@ -52,10 +52,21 @@ window.uploadPreview = function ($input, $preview, isChangeBg) {
     });
 }
 
+window.openAlert = function (content, title, type) {
+    var $modal = $("#modalAlert");
+    if (title) {
+        $modal.find('.modal-title').text(title);
+    }
+    $modal.find('.modal-body').text(content);
+    $modal.modal('show');
+}
+
 window.myDatePicker = function ($selector, date) {
     if (!date) date = new Date();
     $selector.datepicker({
-        useCurrent: date,
+        setDate: new Date(),
+        // useCurrent: date,
+        todayHighlight: true,
         autoclose: true,
         format: 'yyyy-mm-dd'
     });

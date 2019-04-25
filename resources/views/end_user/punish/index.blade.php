@@ -67,24 +67,24 @@
                     <table class="table">
                         <thead>
                         <tr>
-                            <th scope="col" class="d-none d-md-block">#</th>
-                            <th scope="col">Ngày vi phạm</th>
-                            <th scope="col">Xử phạt</th>
-                            <th scope="col" class="d-none d-md-block">Ghi chú</th>
-                            <th scope="col">Số tiền</th>
-                            <th scope="col">Đã nộp tiền</th>
+                            <th class="d-none d-md-table-cell" style="width: 50px">#</th>
+                            <th style="width: 120px">Ngày vi phạm</th>
+                            <th>Xử phạt</th>
+                            <th class="d-none d-md-table-cell">Ghi chú</th>
+                            <th style="width: 120px">Số tiền</th>
+                            <th class="d-none d-md-table-cell" style="width: 150px">Đã nộp tiền</th>
                         </tr>
                         </thead>
                         <tbody>
 
                         @foreach($punishes as $idx => $punish)
                             <tr>
-                                <th scope="row" class="d-none d-md-block">{{$idx + 1}}</th>
+                                <th scope="row" class="d-none d-md-table-cell">{{$idx + 1}}</th>
                                 <td class="text-right">{{$punish->infringe_date}}</td>
                                 <td>{{ $punish->rule->name ?? 'Đi muộn'}}</td>
-                                <td class="d-none d-md-block">{{ $punish->detail }}</td>
+                                <td class="d-none d-md-table-cell">{{ $punish->detail }}</td>
                                 <td class="text-right">{{ number_format($punish->total_money) }}</td>
-                                <td class="text-center">
+                                <td class="text-center d-none d-md-table-cell">
                                     @if($punish->is_submit != PUNISH_SUBMIT['new'])
                                         <span class="text-success">
                                             <i class="fa fa-check"></i>

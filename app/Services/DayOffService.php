@@ -300,23 +300,24 @@ class DayOffService extends AbstractService implements IDayOffService
             DB::raw('sum(number_off) as total'),
             DB::raw('sum(absent) as total_absent'))
             ->join('users', 'users.id', '=', 'day_offs.user_id')
-            ->groupBy('day_offs.user_id', 'day_offs.check_free'/*, 'year', 'month', 'users.name', 'users.staff_code', 'users.sex', 'users.start_date'*/)
+            ->groupBy('day_offs.user_id', 'day_offs.check_free', 'year', 'month'/*, 'users.name', 'users.staff_code', 'users.sex', 'users.start_date'*/)
             ->whereIn('day_offs.user_id', [109, 14, 15, 16])
             ->where('day_offs.status', STATUS_DAY_OFF['active'])
             ->whereMonth('day_offs.start_at', '<=', date('m'))
             ->whereYear('day_offs.start_at', '=', date('Y'))
             ->get();
-        $dayoff[] = [];
+      /*  $dayoff[] = [];
         foreach ($datas as $data) {
             foreach ([109, 14, 15] as $key => $value) {
                 if ($data->user_id == $value) {
                     $dayoff[$key][] = $data;
                 }
             }
-        }
+        }*/
 
         return $datas;
-            /*$result = [];
+            $result = [];
+            $string='';
             $users = User::whereIn('id', [109, 15, 14])->get();
             foreach ($users as $key => $user) {
                 $dayOffPreYear=RemainDayoff::where('user_id', $user->id)->where('year', date('Y') - 1)->first();
@@ -329,7 +330,17 @@ class DayOffService extends AbstractService implements IDayOffService
                     'strat_date' => $users->contract_type,
                     'contract_type_0_date' => '',
                     'remain_day_off_pre_year' => $dayOffPreYear->year ?? '',
+                    foreach ($datas as $data){
+                        foreach (DAY_OFF_MONTH as $key => $value){
+                            if ($data->user_id == $user->id){
+                                $string.="'". $key ."'=>" . 0;
+                                if ($data->month == $value){
+                                    if ($user == )
+                                }
+                            }
 
+                        }
+                    }
                     'day_off_month_Jan' =>
                     'day_off_month_Feb'=>
                     'day_off_month_Mar'=>
@@ -352,7 +363,7 @@ class DayOffService extends AbstractService implements IDayOffService
 
 
                 ];
-            }*/
+            }
     }
 
     public function calculateDayOff($request, $id)

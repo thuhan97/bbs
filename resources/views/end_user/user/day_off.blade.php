@@ -118,7 +118,7 @@
         <?php
         $user = \Illuminate\Support\Facades\Auth::user();
         ?>
-        @if($user->jobtitle_id >= \App\Models\Report::MIN_APPROVE_JOBTITLE)
+        @if($user->jobtitle_id >= MANAGER_ROLE)
             <div class="row d-flex flex-row pr-4 mr-1">
                 <div class="d-flex flex-center ">
                 </div>

@@ -677,7 +677,8 @@
     .ml-xxl-1 {
         margin-left: -56px;
     }
-    .ml-xxxl-1{
+
+    .ml-xxxl-1 {
         margin-left: -57px;
     }
 }
@@ -837,18 +838,21 @@ td.blank, .type-1 {
 /*
             End work time calendar
  */
-.text-size-header-1{
+.text-size-header-1 {
     font-size: 14px !important;
- }
-#btn-select{
+}
+
+#btn-select {
     color: black !important;
-    background: white!important;
+    background: white !important;
     width: 200px;
 }
-.select-search{
+
+.select-search {
     height: 42px;
 }
-.day-off-icoi{
+
+.day-off-icoi {
     left: 25px !important;
 }
 
@@ -857,4 +861,13 @@ td.blank, .type-1 {
     #app {
         padding-top: 0rem !important;
     }
+}
+
+.text-center {
+    text-align: center;
+}
+
+.permission-reason {
+    width: 85%;
+    margin: 0 auto;
 }

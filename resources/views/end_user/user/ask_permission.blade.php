@@ -3,6 +3,37 @@
     {!! Breadcrumbs::render('ask_permission') !!}
 @endsection
 @section('content')
+    @if(session()->has('create_permission_success'))
+        <script>
+            swal({
+                title: "Thông báo!",
+                text: "Bạn đã gửi đơn thành công!",
+                icon: "success",
+                button: "Đóng",
+            });
+        </script>
+        @elseif(session()->has('approver_success'))
+        <script>
+            swal({
+                title: "Thông báo!",
+                text: "Bạn đã duyệt đơn thành công!",
+                icon: "success",
+                button: "Đóng",
+            });
+        </script>
+    @endif
+    @if ($errors->has('work_day'))
+        <span class="help-block mb-5 color-red">
+            <strong>{{ $errors->first('work_day') }}</strong>
+        </span>
+        <br>
+    @endif
+    @if ($errors->has('type'))
+        <span class="help-block mb-5 color-red">
+            <strong>{{ $errors->first('type') }}</strong>
+        </span>
+        <br>
+    @endif
     <?php
     $user = \Illuminate\Support\Facades\Auth::user();
     ?>
@@ -19,10 +50,10 @@
             <tr>
                 <th>#</th>
                 <th>Ngày</th>
-                <th>Người làm đơn</th>
-                <th>Loại</th>
+                <th>Tên nhân viên</th>
+                <th>Hình thức</th>
                 <th>Nội dung</th>
-                <th>Trạng Thái</th>
+                <th class="text-center">Trạng Thái</th>
             </tr>
             </thead>
             <?php $increment = 1; ?>
@@ -49,7 +80,7 @@
                         @endif
                     </td>
                     <td>{{ $item['note'] ?? '' }}</td>
-                    <td>
+                    <td class="text-center">
                         @if(is_null($item['id_ot_time']))
                             <form action="{{ route('approved') }}">
                                 <input type="hidden" name="user_id"
@@ -60,7 +91,7 @@
                                 <button class="btn btn-primary waves-effect waves-light">Phê duyệt</button>
                             </form>
                         @else
-                            Đã Duyệt
+                            <i class="fas fa-grin-stars fa-2x text-success"></i>
                         @endif
                     </td>
                 </tr>
@@ -70,7 +101,24 @@
         {{$dataLeader->render('end_user.paginate') }}
         <br><br><br>
     @endif
-    <h2>Xin phép cá nhân</h2>
+    <div class="row">
+        <div class="col-md-7">
+            <h2>Xin phép cá nhân</h2>
+        </div>
+        <div class="col-md-5" style="float: right">
+            <button type="button" class="btn btn-danger btn-early waves-effect waves-light float-right"
+                    id="btn-early-late">Xin
+                về sớm
+            </button>
+            <button type="button" class="btn btn-primary btn-ot waves-effect waves-light float-right" id="btn-late-ot">
+                Xin OT
+            </button>
+            <button type="button" class="btn btn-success btn-late waves-effect waves-light float-right" id="btn-ot">Xin
+                đi muôn
+            </button>
+
+        </div>
+    </div>
     <table id="contactTbl" class="table table-striped">
         <colgroup>
             <col style="">
@@ -82,9 +130,9 @@
         <tr>
             <th>#</th>
             <th>Ngày</th>
-            <th>Loại</th>
+            <th>Hình thức</th>
             <th>Nội dung</th>
-            <th>Trạng Thái</th>
+            <th class="text-center">Trạng Thái</th>
         </tr>
         </thead>
         <?php $increment = 1; ?>
@@ -110,17 +158,85 @@
                     @endif
                 </td>
                 <td>{{ $item['note'] ?? '' }}</td>
-                <td>
-                    Phê duyệt
-                    {{--<a href="{{ route('approved') }}" class="btn btn-primary waves-effect waves-light">Phê duyệt</a>--}}
+                <td class="text-center">
+                    @if(is_null($item['id_ot_time']))
+                        <i class="fas fa-meh-blank fa-2x text-warning text-center"></i>
+                    @else
+                        <i class="fas fa-grin-stars fa-2x text-success"></i>
+                    @endif
                 </td>
             </tr>
             </tbody>
         @endforeach
     </table>
     {{$datas->render('end_user.paginate') }}
+    <div class="modal fade myModal" id="modal-form" tabindex="-1"
+         role="dialog" aria-labelledby="myModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog modal-center modal-set-center" role="document">
+            <div class="modal-content" id="bg-img" style="background-image: url({{ asset('img/font/xin_nghi.png') }})">
+                <div class="modal-header text-center border-bottom-0 p-3">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span class="btn-close-icon" aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="d-flex justify-content-center">
+                    <img src="{{ asset('img/font/gio_lam_viec_popup.png') }}" alt="" width="355px" height="260px">
+                </div>
+                <br>
+                <form action="{{ route('ask_permission.create') }}" method="post">
+                    @csrf
+                    <div class="d-flex justify-content-center text-area-reason" id="div-reason"></div>
+                    <div class="offset-1 select-day">
+                        <label class=" text-w-400" for="inputCity">Chọn ngày *</label>
+                        <input style="width: 43%;" type="text"
+                               class="form-control select-item {{ $errors->has('work_day') ? ' has-error' : '' }}"
+                               id="work_day" autocomplete="off" name="work_day" value="{{  old('work_day') }}"
+                               readonly="readonly">
+                    </div>
+                    <br>
+                    <textarea class="form-control permission-reason" name="reason" cols="48" rows="6"
+                              placeholder="Nội dung bạn muốn gửi..."></textarea>
+                    <div class="pt-3 pb-4 d-flex justify-content-center border-top-0 rounded mb-0">
+                        <button class="btn btn-primary btn-send">GỬI ĐƠN</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    @push('extend-css')
+        <link href="{{ cdn_asset('/bootstrap-datepicker/css/bootstrap-datepicker.min.css') }}" rel="stylesheet">
+        <link href="{{ cdn_asset('/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css') }}" rel="stylesheet">
+    @endpush
+    <script src="{{ cdn_asset('/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js') }}"></script>
+    <script src="{{ cdn_asset('/bootstrap-datepicker/js/bootstrap-datepicker.min.js') }}"></script>
+    <script type="text/javascript">
+        $(function () {
+            var date = new Date(),
+                currentDate = date.getDate() + 1,
+                currentMonth = date.getMonth(),
+                currentYear = date.getFullYear(),
+                currenFullTime = currentYear + '-' + currentMonth + '-' + currentDate;
+            $('#work_day').datepicker({format: 'yyyy-mm-dd'});
+            $('.btn-early').on('click', function () {
+                $('#modal-form').modal('show');
+                $(".permission-reason").append("<input name='type' type='text' value='2'>");
+                $('#work_day').datepicker("setDate", date);
 
-    <script type="text/javascript"></script>
+            });
+            $('.btn-late').on('click', function () {
+                $('#modal-form').modal('show');
+                $(".permission-reason").append("<input name='type' type='text' value='1'>");
+                $('#work_day').datepicker("setDate", currenFullTime);
+
+            });
+            $('.btn-ot').on('click', function () {
+                $('#modal-form').modal('show');
+                $(".permission-reason").append("<input name='type' type='text' value='4'>");
+                $('#work_day').datepicker("setDate", (date));
+            });
+        });
+    </script>
 @endsection
 
                         

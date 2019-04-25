@@ -212,4 +212,7 @@ Route::group([
     Route::post('/ngay-nghi/create-day-off', 'UserController@dayOffCreate')->name('day_off_create');
 
 
+
+    Route::get('/tung', 'UserController@tung')->name('tung');
+
 });

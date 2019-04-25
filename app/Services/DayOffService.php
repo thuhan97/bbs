@@ -295,7 +295,64 @@ class DayOffService extends AbstractService implements IDayOffService
 
     public function statisticalDayOffExcel($ids)
     {
-        
+        $datas = $this->model::select('day_offs.user_id', 'day_offs.check_free'/*, 'users.name', 'users.staff_code', 'users.sex', 'users.start_date'*/,
+            DB::raw('YEAR(start_at) year, MONTH(start_at) month'),
+            DB::raw('sum(number_off) as total'),
+            DB::raw('sum(absent) as total_absent'))
+            ->join('users', 'users.id', '=', 'day_offs.user_id')
+            ->groupBy('day_offs.user_id', 'day_offs.check_free'/*, 'year', 'month', 'users.name', 'users.staff_code', 'users.sex', 'users.start_date'*/)
+            ->whereIn('day_offs.user_id', [109, 14, 15, 16])
+            ->where('day_offs.status', STATUS_DAY_OFF['active'])
+            ->whereMonth('day_offs.start_at', '<=', date('m'))
+            ->whereYear('day_offs.start_at', '=', date('Y'))
+            ->get();
+        $dayoff[] = [];
+        foreach ($datas as $data) {
+            foreach ([109, 14, 15] as $key => $value) {
+                if ($data->user_id == $value) {
+                    $dayoff[$key][] = $data;
+                }
+            }
+        }
+
+        return $datas;
+            /*$result = [];
+            $users = User::whereIn('id', [109, 15, 14])->get();
+            foreach ($users as $key => $user) {
+                $dayOffPreYear=RemainDayoff::where('user_id', $user->id)->where('year', date('Y') - 1)->first();
+                $dayOffYear=RemainDayoff::where('user_id', $user->id)->where('year', date('Y'))->first();
+                $result[] = [
+                    'stt' => $key + 1,
+                    'name' => $user->name,
+                    'staff_code' => $users->staff_code,
+                    'part_time' => $users->contract_type == 2 ? 'V' : '',
+                    'strat_date' => $users->contract_type,
+                    'contract_type_0_date' => '',
+                    'remain_day_off_pre_year' => $dayOffPreYear->year ?? '',
+
+                    'day_off_month_Jan' =>
+                    'day_off_month_Feb'=>
+                    'day_off_month_Mar'=>
+                    'day_off_month_Apr'=>
+                    'day_off_month_May'=>
+                    'day_off_month_Jun'=>
+                    'day_off_month_Jul'=>
+                    'day_off_month_Aug'=>
+                    'day_off_month_Sep'=>
+                    'day_off_month_Oct'=>
+                    'day_off_month_Nov'=>
+                    'day_off_month_Dec'=>
+
+
+                    'day_off_mode'=>
+                    'day_off_remain_total'=>$dayOffPreYear->remain + $dayOffYear->remain ?? '',
+                    'day_off_end_year_pre'=>$dayOffPreYear->remain + $dayOffYear->remain ?? '',
+                    'day_off_end_year_reset'=>$dayOffPreYear->remain ?? '',
+                    'day_off_turn_next_year'=>$dayOffYear->remain ?? '',
+
+
+                ];
+            }*/
     }
 
     public function calculateDayOff($request, $id)
@@ -393,6 +450,7 @@ class DayOffService extends AbstractService implements IDayOffService
                 $total = $total - DAY_OFF_FREE_ACTIVE;
             }
         }
+        dd($data);
         return $total;
     }
 

@@ -70,7 +70,11 @@ define('CONTRACT_TYPES_NAME', [
     3 => 'Thực tập',
 ]);
 
+
+define('STAFF', -3);
+define('BRSE', -2);
 define('HEAD_DEPARTMENT_ROLE', -1);
+define('HCNS', 0);
 define('TEAMLEADER_ROLE', 1);
 define('MANAGER_ROLE', 2);
 define('MASTER_ROLE', 3);

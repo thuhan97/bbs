@@ -12,7 +12,7 @@
                 button: "Đóng",
             });
         </script>
-        @elseif(session()->has('approver_success'))
+    @elseif(session()->has('approver_success'))
         <script>
             swal({
                 title: "Thông báo!",
@@ -37,7 +37,7 @@
     <?php
     $user = \Illuminate\Support\Facades\Auth::user();
     ?>
-    @if($user->jobtitle_id >= \App\Models\Report::MIN_APPROVE_JOBTITLE)
+    @can('manager')
         <h1>Danh sách xin phép</h1>
         <table id="contactTbl" class="table table-striped">
             <colgroup>
@@ -81,8 +81,8 @@
                     </td>
                     <td>{{ $item['note'] ?? '' }}</td>
                     <td class="text-center">
-                        @if(is_null($item['id_ot_time']))
-                            <form action="{{ route('approved') }}">
+                        @if(!$item['id_ot_time'])
+                        <form action="{{ route('approved') }}">
                                 <input type="hidden" name="user_id"
                                        value="{{ $item['user_id'] ? $item['user_id'] : '' }}">
                                 <input type="hidden" name="reason" value="{{ $item['note'] ? $item['note'] : '' }}">
@@ -100,21 +100,20 @@
         </table>
         {{$dataLeader->render('end_user.paginate') }}
         <br><br><br>
-    @endif
+    @endcan
     <div class="row">
         <div class="col-md-7">
             <h2>Xin phép cá nhân</h2>
         </div>
         <div class="col-md-5" style="float: right">
-            <button type="button" class="btn btn-danger btn-early waves-effect waves-light float-right"
-                    id="btn-early-late">Xin
-                về sớm
-            </button>
             <button type="button" class="btn btn-primary btn-ot waves-effect waves-light float-right" id="btn-late-ot">
                 Xin OT
             </button>
-            <button type="button" class="btn btn-success btn-late waves-effect waves-light float-right" id="btn-ot">Xin
-                đi muôn
+            <button type="button" class="btn btn-warning btn-early waves-effect waves-light float-right"
+                    id="btn-early-late">Xin về sớm
+            </button>
+            <button type="button" class="btn btn-success btn-late waves-effect waves-light float-right" id="btn-ot">
+                Xin đi muôn
             </button>
 
         </div>
@@ -137,7 +136,6 @@
         </thead>
         <?php $increment = 1; ?>
         @foreach($datas as $item)
-
             <tbody>
             <tr>
                 <th>{{ $increment++ }}</th>
@@ -195,7 +193,51 @@
                                readonly="readonly">
                     </div>
                     <br>
-                    <textarea class="form-control permission-reason" name="reason" cols="48" rows="6"
+                    <textarea class="form-control permission-reason" name="note" cols="48" rows="6"
+                              placeholder="Nội dung bạn muốn gửi..."></textarea>
+                    <div class="pt-3 pb-4 d-flex justify-content-center border-top-0 rounded mb-0">
+                        <button class="btn btn-primary btn-send">GỬI ĐƠN</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade myModal" id="modal-form-ot" tabindex="-1"
+         role="dialog" aria-labelledby="myModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog modal-center modal-set-center" role="document">
+            <div class="modal-content" id="bg-img" style="background-image: url({{ asset('img/font/xin_nghi.png') }})">
+                <div class="modal-header text-center border-bottom-0 p-3">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span class="btn-close-icon" aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="d-flex justify-content-center">
+                    <img src="{{ asset('img/font/gio_lam_viec_popup.png') }}" alt="" width="355px" height="260px">
+                </div>
+                <br>
+                <form action="{{ route('ask_permission.create') }}" method="post">
+                    @csrf
+                    <div class="row col-md-12">
+                        <div class="offset-5"><h3 class="">Xin OT</h3></div>
+                        <div class="col-md-6 text-center">
+                            <input style="position: relative;opacity: 1;pointer-events: inherit" class="other-ot" type="radio" name="ot_type" id="project-ot" value="1">
+                            <label for="project-ot">OT dự án</label>
+                        </div>
+                        <div class="col-md-6 text-center">
+                            <input  style="position: relative;opacity: 1;pointer-events: inherit" class="other-ot" type="radio" name="ot_type" id="other-ot" value="2">
+                            <label for="other-ot">Lý do cá nhân</label>
+                        </div>
+                    </div>
+                    <div class="offset-4 select-day">
+                        <label class=" text-w-400 offset-1 mt-3" for="inputCity">Chọn ngày *</label>
+                        <input style="width: 43%;" type="text"
+                               class="form-control select-item {{ $errors->has('work_day') ? ' has-error' : '' }}"
+                               id="work_day_ot" autocomplete="off" name="work_day" value="{{  old('work_day') }}"
+                               readonly="readonly">
+                    </div>
+                    <br>
+                    <textarea class="form-control permission-reason" name="note" cols="48" rows="6"
                               placeholder="Nội dung bạn muốn gửi..."></textarea>
                     <div class="pt-3 pb-4 d-flex justify-content-center border-top-0 rounded mb-0">
                         <button class="btn btn-primary btn-send">GỬI ĐƠN</button>
@@ -218,6 +260,7 @@
                 currentYear = date.getFullYear(),
                 currenFullTime = currentYear + '-' + currentMonth + '-' + currentDate;
             $('#work_day').datepicker({format: 'yyyy-mm-dd'});
+            $('#work_day_ot').datepicker({format: 'yyyy-mm-dd'});
             $('.btn-early').on('click', function () {
                 $('#modal-form').modal('show');
                 $(".permission-reason").append("<input name='type' type='text' value='2'>");
@@ -231,9 +274,9 @@
 
             });
             $('.btn-ot').on('click', function () {
-                $('#modal-form').modal('show');
+                $('#modal-form-ot').modal('show');
                 $(".permission-reason").append("<input name='type' type='text' value='4'>");
-                $('#work_day').datepicker("setDate", (date));
+                $('#modal-form-ot').datepicker("setDate", (date));
             });
         });
     </script>

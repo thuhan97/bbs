@@ -26,8 +26,7 @@
             <th colspan="5" class="text-center">
                 Lịch đăng ký
             </th>
-            <th rowspan="2" style="width: 150px;">Ngày tạo
-                {!! __admin_sortable('created_at') !!}
+            <th rowspan="2" style="width: 150px;">Ngày cập nhật cuối
             </th>
             <th rowspan="2" style="width: 100px;">Chức năng</th>
         </tr>
@@ -86,8 +85,10 @@
                     <td></td>
                     <td></td>
                 @endif
-
-                <td class="text-right">{{ $record->created_at->format('Y-m-d') }}</td>
+                <?php
+                $firstRecord = $record->workTimeRegisters->first();
+                ?>
+                <td class="text-right">{{ $firstRecord ? $firstRecord->updated_at->format('Y-m-d') : '' }}</td>
 
                 <!-- we will also add show, edit, and delete buttons -->
                 <td>

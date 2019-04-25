@@ -7,6 +7,7 @@
 
 namespace App\Services;
 
+use App\Helpers\DatabaseHelper;
 use App\Models\DayOff;
 use App\Models\RemainDayoff;
 use App\Models\User;
@@ -295,75 +296,79 @@ class DayOffService extends AbstractService implements IDayOffService
 
     public function statisticalDayOffExcel($ids)
     {
-        $datas = $this->model::select('day_offs.user_id', 'day_offs.check_free'/*, 'users.name', 'users.staff_code', 'users.sex', 'users.start_date'*/,
-            DB::raw('YEAR(start_at) year, MONTH(start_at) month'),
-            DB::raw('sum(number_off) as total'),
-            DB::raw('sum(absent) as total_absent'))
-            ->join('users', 'users.id', '=', 'day_offs.user_id')
-            ->groupBy('day_offs.user_id', 'day_offs.check_free', 'year', 'month'/*, 'users.name', 'users.staff_code', 'users.sex', 'users.start_date'*/)
-            ->whereIn('day_offs.user_id', [109, 14, 15, 16])
-            ->where('day_offs.status', STATUS_DAY_OFF['active'])
-            ->whereMonth('day_offs.start_at', '<=', date('m'))
-            ->whereYear('day_offs.start_at', '=', date('Y'))
-            ->get();
-      /*  $dayoff[] = [];
-        foreach ($datas as $data) {
-            foreach ([109, 14, 15] as $key => $value) {
-                if ($data->user_id == $value) {
-                    $dayoff[$key][] = $data;
-                }
-            }
-        }*/
 
-        return $datas;
+
+
+         $dayoff[] = [];
+        /* foreach ($datas as $data) {
+             foreach ([109, 14,15] as $key => $value) {
+                 if ($data->user_id == $value) {
+                     $dayoff[$value][] = [];
+                 }
+             }
+         }*/
+
+
             $result = [];
-            $string='';
+
             $users = User::whereIn('id', [109, 15, 14])->get();
-            foreach ($users as $key => $user) {
+            $dayOffMonth=$this->statisticalDayOff([109,15,14],null);
+            foreach ($users as $keys => $user) {
                 $dayOffPreYear=RemainDayoff::where('user_id', $user->id)->where('year', date('Y') - 1)->first();
                 $dayOffYear=RemainDayoff::where('user_id', $user->id)->where('year', date('Y'))->first();
-                $result[] = [
-                    'stt' => $key + 1,
-                    'name' => $user->name,
-                    'staff_code' => $users->staff_code,
-                    'part_time' => $users->contract_type == 2 ? 'V' : '',
-                    'strat_date' => $users->contract_type,
-                    'contract_type_0_date' => '',
-                    'remain_day_off_pre_year' => $dayOffPreYear->year ?? '',
-                    foreach ($datas as $data){
-                        foreach (DAY_OFF_MONTH as $key => $value){
-                            if ($data->user_id == $user->id){
-                                $string.="'". $key ."'=>" . 0;
-                                if ($data->month == $value){
-                                    if ($user == )
-                                }
-                            }
-
-                        }
+                $dayOffPreYearTotal=$dayOffPreYear->remain ?? 0;
+                $dayOffYearTotal=$dayOffYear->remain ?? 0;
+                foreach ($dayOffMonth as $key =>$value){
+                    if ($value->user_id == $user->id){
+                        $month1= $value->month == 1 ? $value->total + $value->total_absent : ( $month1 ?? 0 ) ;
+                        $month2= $value->month == 2 ? $value->total + $value->total_absent : ( $month2 ?? 0 ) ;
+                        $month3= $value->month == 3 ? $value->total + $value->total_absent : ( $month3 ?? 0 ) ;
+                        $month4= $value->month == 4 ? $value->total + $value->total_absent : ( $month4 ?? 0 ) ;
+                        $month5= $value->month == 5 ? $value->total + $value->total_absent : ( $month5 ?? 0 ) ;
+                        $month6= $value->month == 6 ? $value->total + $value->total_absent : ( $month6 ?? 0 ) ;
+                        $month7= $value->month == 7 ? $value->total + $value->total_absent : ( $month7 ?? 0 ) ;
+                        $month8= $value->month == 8 ? $value->total + $value->total_absent : ( $month8 ?? 0 ) ;
+                        $month9= $value->month == 8 ? $value->total + $value->total_absent : ( $month9 ?? 0 ) ;
+                        $month10= $value->month == 10 ? $value->total + $value->total_absent : ( $month10 ?? 0 ) ;
+                        $month11= $value->month == 11 ? $value->total + $value->total_absent : ( $month11 ?? 0 ) ;
+                        $month12= $value->month == 12 ? $value->total + $value->total_absent : ( $month12 ?? 0 ) ;
                     }
-                    'day_off_month_Jan' =>
-                    'day_off_month_Feb'=>
-                    'day_off_month_Mar'=>
-                    'day_off_month_Apr'=>
-                    'day_off_month_May'=>
-                    'day_off_month_Jun'=>
-                    'day_off_month_Jul'=>
-                    'day_off_month_Aug'=>
-                    'day_off_month_Sep'=>
-                    'day_off_month_Oct'=>
-                    'day_off_month_Nov'=>
-                    'day_off_month_Dec'=>
 
+                }
+                $result[] = [
 
-                    'day_off_mode'=>
-                    'day_off_remain_total'=>$dayOffPreYear->remain + $dayOffYear->remain ?? '',
-                    'day_off_end_year_pre'=>$dayOffPreYear->remain + $dayOffYear->remain ?? '',
-                    'day_off_end_year_reset'=>$dayOffPreYear->remain ?? '',
-                    'day_off_turn_next_year'=>$dayOffYear->remain ?? '',
+                    'stt' => $keys + 1,
+                    'name' => $user->name,
+                    'staff_code' => $user->staff_code,
+                    'part_time' => $user->contract_type == 2 ? 'V' : '',
+                    'strat_date' => $user->contract_type,
+                    'contract_type_0_date' => '',
+                    'remain_day_off_pre_year' => $dayOffPreYearTotal ?? '',
+                    'day_off_month_Jan' => $month1,
+                    'day_off_month_Feb' => $month2 ,
+                    'day_off_month_Mar' => $month3 ,
+                    'day_off_month_Apr' => $month4,
+                    'day_off_month_May' => $month5 ,
+                    'day_off_month_Jun' => $month6 ,
+                    'day_off_month_Jul' => $month7 ,
+                    'day_off_month_Aug' => $month8 ,
+                    'day_off_month_Sep' => $month9 ,
+                    'day_off_month_Oct' => $month10,
+                    'day_off_month_Nov' => $month11 ,
+                    'day_off_month_Dec' => $month12,
+                    'day_off_mode'=>1,
+                    'day_off_remain_total'=>$dayOffPreYearTotal + $dayOffYearTotal,
+                    'day_off_end_year_pre'=>$dayOffPreYearTotal + $dayOffYearTotal,
+                    'day_off_end_year_reset'=>$dayOffPreYearTotal,
+                    'day_off_turn_next_year'=>$dayOffYearTotal,
+
 
 
                 ];
+
             }
+        dd($result);
+
     }
 
     public function calculateDayOff($request, $id)
@@ -487,5 +492,50 @@ class DayOffService extends AbstractService implements IDayOffService
             $data = $data->where('day_offs.id', $id);
             return $data;
         }
+    }
+    private function statisticalDayOff ($ids,$month=null){
+       /* $datas = DayOff::select
+        (
+            DB::raw("(SELECT SUM(day_offs.number_off) FROM day_offs as d WHERE MONTH (d.start_at)=1 AND YEAR(d.start_at) = YEAR(CURDATE()) AND (d.status)=1 AND (d.user_id) = $ids GROUP BY (day_offs.user_id)) as month_1"),
+            DB::raw("(SELECT SUM(day_offs.number_off) FROM day_offs as d WHERE MONTH (d.start_at)=2 AND YEAR(d.start_at) = YEAR(CURDATE()) AND (d.status)=1 AND (d.user_id) = $ids GROUP BY (day_offs.user_id)) as month_2"),
+            DB::raw("(SELECT SUM(day_offs.number_off) FROM day_offs as d WHERE MONTH (d.start_at)=3 AND YEAR(d.start_at) = YEAR(CURDATE()) AND (d.status)=1 AND (d.user_id) = $ids GROUP BY (day_offs.user_id)) as month_3"),
+            DB::raw("(SELECT SUM(day_offs.number_off) FROM day_offs as d WHERE MONTH (d.start_at)=4 AND YEAR(d.start_at) = YEAR(CURDATE()) AND (d.status)=1 AND (d.user_id) = $ids GROUP BY (day_offs.user_id)) as month_4"),
+            DB::raw("(SELECT SUM(day_offs.number_off) FROM day_offs as d WHERE MONTH (d.start_at)=5 AND YEAR(d.start_at) = YEAR(CURDATE()) AND (d.status)=1 AND (d.user_id) = $ids GROUP BY (day_offs.user_id)) as month_5"),
+            DB::raw("(SELECT SUM(day_offs.number_off) FROM day_offs as d WHERE MONTH (d.start_at)=6 AND YEAR(d.start_at) = YEAR(CURDATE()) AND (d.status)=1 AND (d.user_id) = $ids GROUP BY (day_offs.user_id)) as month_6"),
+            DB::raw("(SELECT SUM(day_offs.number_off) FROM day_offs as d WHERE MONTH (d.start_at)=7 AND YEAR(d.start_at) = YEAR(CURDATE()) AND (d.status)=1 AND (d.user_id) = $ids GROUP BY (day_offs.user_id)) as month_7"),
+            DB::raw("(SELECT SUM(day_offs.number_off) FROM day_offs as d WHERE MONTH (d.start_at)=8 AND YEAR(d.start_at) = YEAR(CURDATE()) AND (d.status)=1 AND (d.user_id) = $ids GROUP BY (day_offs.user_id)) as month_8"),
+            DB::raw("(SELECT SUM(day_offs.number_off) FROM day_offs as d WHERE MONTH (d.start_at)=9 AND YEAR(d.start_at) = YEAR(CURDATE()) AND (d.status)=1 AND (d.user_id) = $ids GROUP BY (day_offs.user_id)) as month_9"),
+            DB::raw("(SELECT SUM(day_offs.number_off) FROM day_offs as d WHERE MONTH (d.start_at)=10 AND YEAR(d.start_at) = YEAR(CURDATE()) AND (d.status)=1 AND (d.user_id) = $ids GROUP BY (day_offs.user_id)) as month_10"),
+            DB::raw("(SELECT SUM(day_offs.number_off) FROM day_offs as d WHERE MONTH (d.start_at)=11 AND YEAR(d.start_at) = YEAR(CURDATE()) AND (d.status)=1 AND (d.user_id) = $ids GROUP BY (day_offs.user_id)) as month_11"),
+            DB::raw("(SELECT SUM(day_offs.number_off) FROM day_offs as d WHERE MONTH (d.start_at)=12 AND YEAR(d.start_at) = YEAR(CURDATE()) AND (d.status)=1 AND (d.user_id) = $ids GROUP BY (day_offs.user_id)) as month_12"),
+
+            DB::raw("(SELECT SUM(day_offs.absent) FROM day_offs as d WHERE MONTH (d.start_at)=1 AND YEAR(d.start_at) = YEAR(CURDATE()) AND (d.status)=1 AND (d.user_id) = $ids GROUP BY (day_offs.user_id)) as absent_1"),
+            DB::raw("(SELECT SUM(day_offs.absent) FROM day_offs as d WHERE MONTH (d.start_at)=2 AND YEAR(d.start_at) = YEAR(CURDATE()) AND (d.status)=1 AND (d.user_id) = $ids GROUP BY (day_offs.user_id)) as absent_2"),
+            DB::raw("(SELECT SUM(day_offs.absent) FROM day_offs as d WHERE MONTH (d.start_at)=3 AND YEAR(d.start_at) = YEAR(CURDATE()) AND (d.status)=1 AND (d.user_id) = $ids GROUP BY (day_offs.user_id)) as absent_3"),
+            DB::raw("(SELECT SUM(day_offs.absent) FROM day_offs as d WHERE MONTH (d.start_at)=4 AND YEAR(d.start_at) = YEAR(CURDATE()) AND (d.status)=1 AND (d.user_id) = $ids GROUP BY (day_offs.user_id)) as absent_4"),
+            DB::raw("(SELECT SUM(day_offs.absent) FROM day_offs as d WHERE MONTH (d.start_at)=5 AND YEAR(d.start_at) = YEAR(CURDATE()) AND (d.status)=1 AND (d.user_id) = $ids GROUP BY (day_offs.user_id)) as absent_5"),
+            DB::raw("(SELECT SUM(day_offs.absent) FROM day_offs as d WHERE MONTH (d.start_at)=6 AND YEAR(d.start_at) = YEAR(CURDATE()) AND (d.status)=1 AND (d.user_id) = $ids GROUP BY (day_offs.user_id)) as absent_6"),
+            DB::raw("(SELECT SUM(day_offs.absent) FROM day_offs as d WHERE MONTH (d.start_at)=7 AND YEAR(d.start_at) = YEAR(CURDATE()) AND (d.status)=1 AND (d.user_id) = $ids GROUP BY (day_offs.user_id)) as absent_7"),
+            DB::raw("(SELECT SUM(day_offs.absent) FROM day_offs as d WHERE MONTH (d.start_at)=8 AND YEAR(d.start_at) = YEAR(CURDATE()) AND (d.status)=1 AND (d.user_id) = $ids GROUP BY (day_offs.user_id)) as absent_8"),
+            DB::raw("(SELECT SUM(day_offs.absent) FROM day_offs as d WHERE MONTH (d.start_at)=9 AND YEAR(d.start_at) = YEAR(CURDATE()) AND (d.status)=1 AND (d.user_id) = $ids GROUP BY (day_offs.user_id)) as absent_9"),
+            DB::raw("(SELECT SUM(day_offs.absent) FROM day_offs as d WHERE MONTH (d.start_at)=10 AND YEAR(d.start_at) = YEAR(CURDATE()) AND (d.status)=1 AND (d.user_id) = $ids GROUP BY (day_offs.user_id)) as absent_10"),
+            DB::raw("(SELECT SUM(day_offs.absent) FROM day_offs as d WHERE MONTH (d.start_at)=11 AND YEAR(d.start_at) = YEAR(CURDATE()) AND (d.status)=1 AND (d.user_id) = $ids GROUP BY (day_offs.user_id)) as absent_11"),
+            DB::raw("(SELECT SUM(day_offs.absent) FROM day_offs as d WHERE MONTH (d.start_at)=12 AND YEAR(d.start_at) = YEAR(CURDATE()) AND (d.status)=1 AND (d.user_id) = $ids GROUP BY (day_offs.user_id)) as absent_12"),
+            'day_offs.user_id'
+        );*/
+
+
+        $datas = $this->model::select('day_offs.user_id', 'day_offs.check_free',
+            DB::raw('YEAR(start_at) year, MONTH(start_at) month'),
+            DB::raw('sum(number_off) as total'),
+            DB::raw('sum(absent) as total_absent'))
+            ->join('users', 'users.id', '=', 'day_offs.user_id')
+            ->groupBy('day_offs.user_id', 'day_offs.check_free', 'year', 'month')
+            ->whereIn('day_offs.user_id', $ids)
+            ->where('day_offs.status', STATUS_DAY_OFF['active'])
+            ->whereMonth('day_offs.start_at', '<=', date('m'))
+            ->whereYear('day_offs.start_at', '=', date('Y'))
+            ->get();
+        return $datas;
     }
 }

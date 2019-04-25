@@ -419,7 +419,7 @@ class UserController extends Controller
     }
 
     public function tung(){
-        dd($this->userDayOffService->statisticalDayOffExcel(1));
+        dd($this->userDayOffService->statisticalDayOffExcel(14));
     }
 
 }

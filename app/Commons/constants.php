@@ -270,16 +270,16 @@ define('OFF_TIME', '00:00:00');
 define('SWITCH_TIME', '12:00:00');
 
 define('DAY_OFF_MONTH',[
-    'day_off_month_Jan' => '1',
-    'day_off_month_Feb' => '2',
-    'day_off_month_Mar' => '3',
-    'day_off_month_Apr' => '4',
-    'day_off_month_May' => '5',
-    'day_off_month_Jun' => '6',
-    'day_off_month_Jul' => '7',
-    'day_off_month_Aug' => '8',
-    'day_off_month_Sep' => '9',
-    'day_off_month_Oct' => '10',
-    'day_off_month_Nov' => '11',
-    'day_off_month_Dec' => '12',
+    'day_off_month_Jan' => 1,
+    'day_off_month_Feb' => 2,
+    'day_off_month_Mar' => 3,
+    'day_off_month_Apr' => 4,
+    'day_off_month_May' => 5,
+    'day_off_month_Jun' => 6,
+    'day_off_month_Jul' => 7,
+    'day_off_month_Aug' => 8,
+    'day_off_month_Sep' => 9,
+    'day_off_month_Oct' => 10,
+    'day_off_month_Nov' => 11,
+    'day_off_month_Dec' => 12,
 ]);

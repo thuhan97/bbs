@@ -74,7 +74,7 @@
             <!--Grid column-->
 
             <!--Grid column-->
-            <div class="col-md-5 mb-4">
+            <div class="d-none d-md-block col-md-5 mb-4">
 
                 <!--Card: Jumbotron-->
                 <div class="card blue-gradient mb-4 wow fadeIn">

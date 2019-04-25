@@ -513,3 +513,7 @@ th.stt {
 .label-disable {
     background: grey;
 }
+
+#exportExcel {
+    margin: 0 15px 10px;
+}

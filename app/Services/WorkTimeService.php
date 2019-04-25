@@ -329,7 +329,7 @@ class WorkTimeService extends AbstractService implements IWorkTimeService
         } else if ($request->has('sort')) {
             $model->orderBy($request->get('sort'), $request->get('is_desc') ? 'asc' : 'desc');
         } else {
-            $model->orderBy('id', 'desc');
+            $model->orderBy('work_day', 'desc')->orderBy('user_id');
         }
 
         return $model;

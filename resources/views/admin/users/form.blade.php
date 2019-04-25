@@ -1,5 +1,9 @@
 <?php
 $defaultStaffCode = "J" . str_pad((\App\Models\User::max('id') + 1), 3, '0', STR_PAD_LEFT);
+
+if (!isset($record->status)) {
+    $record->status = ACTIVE_STATUS;
+}
 if (isset($record->end_date)) {
     if (strtotime($record->end_date) <= strtotime(date('Ymd'))) {
         $record->status = 0;
@@ -176,7 +180,7 @@ if (isset($record->end_date)) {
                     <div class="input-group-addon">
                         <i class="fa fa-calendar"></i>
                     </div>
-                    <input type="text" autocomplete="false" class="form-control pull-right datepicker"
+                    <input type="text" autocomplete="off" class="form-control pull-right "
                            name="start_date"
                            value="{{ old('start_date', $record->start_date) }}" id="start_date">
                 </div>
@@ -196,7 +200,7 @@ if (isset($record->end_date)) {
                         <i class="fa fa-calendar"></i>
                     </div>
                     <input type="text" class="form-control pull-right datepicker"
-                           name="end_date"
+                           name="end_date" autocomplete="off"
                            value="{{ old('end_date', $record->end_date) }}" id="end_date">
                 </div>
                 @if ($errors->has('end_date'))
@@ -250,6 +254,7 @@ if (isset($record->end_date)) {
             </div>
             <!-- /.form-group -->
         </div>
+
         <div class="col-md-6">
             <div class="form-group margin-b-5 margin-t-5">
                 <label for="status">

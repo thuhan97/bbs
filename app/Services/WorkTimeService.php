@@ -190,6 +190,9 @@ class WorkTimeService extends AbstractService implements IWorkTimeService
      */
     private function getWorkTime($user, $date, $startAt, $endAt)
     {
+        if ($endAt == null && $startAt != null && $startAt > HAFT_AFTERNOON) {
+            [$startAt, $endAt] = [$endAt, $startAt];
+        }
         if (!$this->config->time_afternoon_go_late_at) throw new \Exception('Chưa cấu hình thời gian thiết lập hệ thống.');
         $addData = false;
         $type = 0;

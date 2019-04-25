@@ -28,6 +28,7 @@ Route::group([
     ##AUTO_INSERT_ROUTE##
 
     //punishes
+    Route::post('punishes-submit', ['as' => 'punishes.submit', 'uses' => 'PunishesController@submits']);
     Route::get('punishes/status/{id}', ['as' => 'punishes.status', 'uses' => 'PunishesController@changeSubmitStatus']);
     Route::post('punishes/deletes', ['as' => 'punishes.deletes', 'uses' => 'PunishesController@deletes']);
     Route::resource('punishes', 'PunishesController');

@@ -268,3 +268,5 @@ define('LATE_OT_USER', 'Đi làm muộn + OT');
 define('TOTAL_MONTH_IN_YEAR', 12);
 define('OFF_TIME', '00:00:00');
 define('SWITCH_TIME', '12:00:00');
+
+define('JOBTITLE_MANAGER',2);

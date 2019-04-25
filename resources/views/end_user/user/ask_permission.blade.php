@@ -37,7 +37,7 @@
     <?php
     $user = \Illuminate\Support\Facades\Auth::user();
     ?>
-    @if($user->jobtitle_id >= \App\Models\Report::MIN_APPROVE_JOBTITLE)
+    @can('manager')
         <h1>Danh sách xin phép</h1>
         <table id="contactTbl" class="table table-striped">
             <colgroup>
@@ -81,8 +81,8 @@
                     </td>
                     <td>{{ $item['note'] ?? '' }}</td>
                     <td class="text-center">
-                        @if($item['ot_type'] === 0)
-                            <form action="{{ route('approved') }}">
+                        @if(!$item['id_ot_time'])
+                        <form action="{{ route('approved') }}">
                                 <input type="hidden" name="user_id"
                                        value="{{ $item['user_id'] ? $item['user_id'] : '' }}">
                                 <input type="hidden" name="reason" value="{{ $item['note'] ? $item['note'] : '' }}">
@@ -100,7 +100,7 @@
         </table>
         {{$dataLeader->render('end_user.paginate') }}
         <br><br><br>
-    @endif
+    @endcan
     <div class="row">
         <div class="col-md-7">
             <h2>Xin phép cá nhân</h2>
@@ -136,7 +136,6 @@
         </thead>
         <?php $increment = 1; ?>
         @foreach($datas as $item)
-
             <tbody>
             <tr>
                 <th>{{ $increment++ }}</th>
@@ -277,7 +276,7 @@
             $('.btn-ot').on('click', function () {
                 $('#modal-form-ot').modal('show');
                 $(".permission-reason").append("<input name='type' type='text' value='4'>");
-                $('#work_day').datepicker("setDate", (date));
+                $('#modal-form-ot').datepicker("setDate", (date));
             });
         });
     </script>

@@ -178,7 +178,7 @@ if (!function_exists('get_week_number')) {
      */
     function get_week_number($ddate = null)
     {
-        if ($ddate !== null)
+        if ($ddate == null)
             $ddate = date(DATE_FORMAT);
         $date = new DateTime($ddate);
 

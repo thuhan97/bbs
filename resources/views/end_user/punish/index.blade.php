@@ -10,7 +10,6 @@
     $submitedMoney = $totalMoney - $unSubmitMoney;
     $otherMoney = $totalMoney - $totalLateMoney;
     $groupPunishes = $punishes->groupBy('rule_id');
-
 @endphp
 @section('content')
     <div class="row">
@@ -41,10 +40,10 @@
                         <br/>
                         <div class="row">
                             <div class="col-6 text-right">
-                                <h4>Chưa nộp phạt: <b class="text-danger">{{number_format($unSubmitMoney)}}</b> VNĐ</h4>
+                                <h4>Chưa nộp: <b class="text-danger">{{number_format($unSubmitMoney)}}</b> VNĐ</h4>
                             </div>
                             <div class="col-6">
-                                <h4>Đã nộp phạt: <b class="text-success">{{number_format($submitedMoney)}}</b> VNĐ</h4>
+                                <h4>Đã nộp: <b class="text-success">{{number_format($submitedMoney)}}</b> VNĐ</h4>
                             </div>
                         </div>
 
@@ -54,7 +53,7 @@
                         <br/>
                         <div class="row">
                             <div class="col-6 text-right">
-                                <h4>Phạt đi muộn: <b class="text-danger">{{number_format($totalLateMoney)}}</b> VNĐ</h4>
+                                <h4>Đi muộn: <b class="text-danger">{{number_format($totalLateMoney)}}</b> VNĐ</h4>
                             </div>
                             <div class="col-6">
                                 <h4>Vi phạm khác: <b class="text-success">{{number_format($otherMoney)}}</b> VNĐ</h4>
@@ -64,7 +63,7 @@
                 </div>
 
                 <div class="accordion md-accordion mt-2 mt-xl-4" id="punish" role="tablist">
-                    <table class="table">
+                    <table class="table table-bordered">
                         <thead>
                         <tr>
                             <th class="d-none d-md-table-cell" style="width: 50px">#</th>
@@ -80,10 +79,10 @@
                         @foreach($punishes as $idx => $punish)
                             <tr>
                                 <th scope="row" class="d-none d-md-table-cell">{{$idx + 1}}</th>
-                                <td class="text-right">{{$punish->infringe_date}}</td>
+                                <td class="text-center">{{$punish->infringe_date}}</td>
                                 <td>{{ $punish->rule->name ?? 'Đi muộn'}}</td>
                                 <td class="d-none d-md-table-cell">{{ $punish->detail }}</td>
-                                <td class="text-right">{{ number_format($punish->total_money) }}</td>
+                                <td class="text-center">{{ number_format($punish->total_money) }}</td>
                                 <td class="text-center d-none d-md-table-cell">
                                     @if($punish->is_submit != PUNISH_SUBMIT['new'])
                                         <span class="text-success">
@@ -115,7 +114,13 @@
             $('.custom-select').change(function () {
                 $('form').submit();
             });
-        })
+        });
+
+        function formatTootip(tooltipItem, data) {
+            var label = (data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index] || '') + '';
+            return data.labels[tooltipItem.index] + ' ' + label.toGeneralConcurency() + ' VNĐ';
+        }
+
         //pie
         var ctxP = document.getElementById("pieChartTotal").getContext('2d');
         var myPieChart = new Chart(ctxP, {
@@ -129,7 +134,12 @@
                 }]
             },
             options: {
-                responsive: true
+                responsive: true,
+                tooltips: {
+                    callbacks: {
+                        label: formatTootip
+                    }
+                }
             }
         });
         //pie
@@ -145,7 +155,13 @@
                 }]
             },
             options: {
-                responsive: true
+                responsive: true,
+                tooltips: {
+                    callbacks: {
+                        label: formatTootip
+                    }
+                }
+
             }
         });
     </script>

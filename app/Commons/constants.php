@@ -249,6 +249,17 @@ define('PUNISH_SUBMIT_NAME', [
     1 => 'Đã nộp'
 ]);
 
+define('REPORT_SEARCH_TYPE_NAME', [
+    0 => 'Cá nhân',
+    1 => 'Tất cả công ty',
+    2 => 'Xem theo team',
+]);
+define('REPORT_SEARCH_TYPE', [
+    'private' => 0,
+    'all' => 1,
+    'team' => 2
+]);
+
 define('EXPORT_PATHS', [
     'admin/work_times'
 ]);

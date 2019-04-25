@@ -42,7 +42,6 @@ class ReportController extends Controller
      */
     public function create()
     {
-        $week_number = get_week_number();
 //        $report = Report::where([
 //            'user_id' => Auth::id(),
 //            'year' => date('Y'),
@@ -92,11 +91,12 @@ class ReportController extends Controller
             $choose_week = 0;
         }
         get_week_info($choose_week, $week_number);
-
         $data['title'] = $this->service->getReportTitle($data['choose_week']);
+
         $data['week_num'] = $week_number;
         $data['user_id'] = Auth::id();
         $data['month'] = getMonthFormWeek($week_number);
+
         $report = Report::updateOrCreate([
             'user_id' => Auth::id(),
             'year' => date('Y'),

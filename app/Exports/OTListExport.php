@@ -56,7 +56,7 @@ class OTListExport implements FromArray, WithHeadings
             'creator' => $explanation->creator->name,
             'ot_type' => $explanation->ot_type == 0 ? 'Lý do cá nhân' : 'OT dự án',
             'work_day' => $explanation->work_day,
-            'work_time_end_at' => $explanation->work_time_end_at ?? '** : ** : **',
+            'work_time_end_at' => $explanation->work_time_end_at ?? '**:**:**',
             'status' => $explanation->status == 0 ? 'Chưa duyệt' : 'Đã duyệt',
             'approver' => $explanation->approver,
             'note' => $explanation->note,

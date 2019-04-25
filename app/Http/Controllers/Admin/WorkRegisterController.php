@@ -223,7 +223,7 @@ class WorkRegisterController extends AdminBaseController
         if ($this->service->update($id, $valuesToSave)) {
             flash()->success('Cập nhật thành công.');
 
-            return $this->getRedirectAfterSave($record, $request);
+            return $this->getRedirectAfterSave($record, $request,$isCreate = false);
         } else {
             flash()->info('Cập nhật thất bại.');
         }

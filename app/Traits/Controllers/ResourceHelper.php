@@ -168,6 +168,11 @@ trait ResourceHelper
         return $values;
     }
 
+    public function exportData(Request $request)
+    {
+        abort(404);
+    }
+
     /**
      * @param $record
      *
@@ -206,7 +211,7 @@ trait ResourceHelper
      *
      * @return \Illuminate\Http\Response
      */
-    public function getRedirectAfterSave($record, $request)
+    public function getRedirectAfterSave($record, $request, $isCreate = null)
     {
         return $this->redirectBackTo(route($this->getResourceRoutesAlias() . '.index'));
     }

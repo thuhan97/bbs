@@ -23,8 +23,18 @@ Route::group([
 ], function () {
 
     Route::get('/', ['as' => 'index', 'uses' => 'MasterController@index']);
+    Route::get('/download', ['as' => 'download', 'uses' => 'MasterController@download']);
 
     ##AUTO_INSERT_ROUTE##
+
+    //punishes
+    Route::get('punishes/status/{id}', ['as' => 'punishes.status', 'uses' => 'PunishesController@changeSubmitStatus']);
+    Route::post('punishes/deletes', ['as' => 'punishes.deletes', 'uses' => 'PunishesController@deletes']);
+    Route::resource('punishes', 'PunishesController');
+
+    //rules
+    Route::post('rules/deletes', ['as' => 'rules.deletes', 'uses' => 'RulesController@deletes']);
+    Route::resource('rules', 'RulesController');
 
     //DeviceUser
     Route::get('devices/{id}/allocate', ['as' => 'deviceusers.allocate', 'uses' => 'DeviceUserController@allocate']);
@@ -51,13 +61,12 @@ Route::group([
     Route::resource('project', 'ProjectController');
 
     //OverTime
+    Route::post('over_times/deletes', ['as' => 'over_times.deletes', 'uses' => 'OverTimeController@deletes']);
     Route::resource('over_times', 'OverTimeController');
+
 
     //feedback
     Route::resource('feedback', 'FeedbackController');
-
-    //OverTime
-    Route::resource('over_times', 'OverTimeController');
 
     //WorkTimeDetail
     Route::resource('work_time_details', 'WorkTimeDetailController');
@@ -120,9 +129,13 @@ Route::group([
     Route::post('work_time_register/deletes', ['as' => 'work_time_register.deletes', 'uses' => 'WorkRegisterController@deletes']);
     Route::resource('work_time_register', 'WorkRegisterController');
 
-
+    //statistic work time
+    Route::post('work_time_statistic/deletes', ['as' => 'work_time_statistic.deletes', 'uses' => 'StatisticController@deletes']);
+    Route::get('work_time_statistic/export', ['as' => 'work_time_statistic.export', 'uses' => 'StatisticController@export']);
+    Route::resource('work_time_statistic', 'StatisticController');
     //rooms
     Route::post('meetings/deletes', ['as' => 'meetings.deletes', 'uses' => 'MeetingController@deletes']);
     Route::resource('meetings', 'MeetingController');
+
 
 });

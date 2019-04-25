@@ -70,7 +70,7 @@ class User extends Authenticatable implements JWTSubject
     /**
      * Sends the password reset notification.
      *
-     * @param  string $token
+     * @param string $token
      *
      * @return void
      */
@@ -163,6 +163,19 @@ class User extends Authenticatable implements JWTSubject
             ->orwhere('staff_code', 'like', '%' . $searchTerm . '%')
             ->orwhere('phone', 'like', '%' . $searchTerm . '%')
             ->orWhere('email', 'like', '%' . $searchTerm . '%');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\hasOne
+     */
+    public function remain_dayoff()
+    {
+        return $this->hasOne(RemainDayoff::class, 'id', 'user_id');
+    }
+
+    public function workTimeRegisters()
+    {
+        return $this->hasMany(WorkTimeRegister::class);
     }
 
 }

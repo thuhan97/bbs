@@ -1,4 +1,6 @@
 @extends('layouts.end_user')
+@section('page-title', __l('Post'))
+
 @section('breadcrumbs')
     @if(empty($search))
         {!! Breadcrumbs::render('post') !!}

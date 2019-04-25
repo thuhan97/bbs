@@ -59,15 +59,17 @@ class ProjectController extends AdminBaseController
             'rules' => [
                 'name' => 'required|max:255',
                 'customer' => 'required|max:255',
-                'scale' => 'nullable|numeric',
+                'scale' => 'nullable|numeric|min:1',
                 'start_date' => 'nullable|date',
-                'end_date' => 'nullable|date',
+                'end_date' => 'nullable|date|after_or_equal:start_date',
             ],
             'messages' => [],
             'attributes' => [
                 'name' => 'tên dự án',
                 'customer' => 'khách hàng',
                 'start_date' => 'ngày bắt đầu',
+                'end_date' => 'ngày kết thúc',
+                'scale' => 'quy mô dự án',
             ],
             'advanced' => [],
         ];

@@ -180,7 +180,7 @@ class DeviceUserController extends AdminBaseController
             if ($record = $this->repository->save($this->alterValuesToSave($request, $valuesToSave))) {
                 flash()->success('Thêm mới thành công.');
                 \DB::commit();
-                return $this->getRedirectAfterSave($record, $request);
+                return $this->getRedirectAfterSave($record, $request,$isCreate = true);
             } else {
                 flash()->info('Thêm mới thất bại.');
             }

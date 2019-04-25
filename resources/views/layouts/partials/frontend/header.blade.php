@@ -19,12 +19,12 @@
             <!-- Links -->
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav mr-auto">
-                    <li class="nav-item {{ \App\Utils::checkRoute(['work_time']) ? 'active': '' }}">
+                    <li class="d-none d-sm-block nav-item {{ \App\Utils::checkRoute(['work_time']) ? 'active': '' }}">
                         <a href="{{route('work_time')}}" class="nav-link waves-effect">{{__l('work_time')}}
                             <span class="sr-only">(current)</span>
                         </a>
                     </li>
-                    <li class="nav-item {{ \App\Utils::checkRoute(['day_off']) ? 'active': '' }}">
+                    <li class="d-none d-sm-block nav-item {{ \App\Utils::checkRoute(['day_off']) ? 'active': '' }}">
                         <a href="{{route('day_off')}}" class="nav-link waves-effect">{{__l('day_off')}}
                             <span class="sr-only">(current)</span>
                         </a>
@@ -32,6 +32,18 @@
                     <li class="nav-item {{ \App\Utils::checkRoute(['report']) ? 'active': '' }}">
                         <a href="{{route('report')}}"
                            class="nav-link waves-effect">{{__l('Report')}}
+                            <span class="sr-only">(current)</span>
+                        </a>
+                    </li>
+                    <li class="nav-item {{ \App\Utils::checkRoute(['ask_permission']) ? 'active': '' }}">
+                        <a href="{{route('ask_permission')}}"
+                           class="nav-link waves-effect">{{__l('ask_permission')}}
+                            <span class="sr-only">(current)</span>
+                        </a>
+                    </li>
+                    <li class="nav-item {{ \App\Utils::checkRoute(['punish']) ? 'active': '' }}">
+                        <a href="{{route('punish')}}"
+                           class="nav-link waves-effect">{{__l('Punish')}}
                             <span class="sr-only">(current)</span>
                         </a>
                     </li>
@@ -50,7 +62,8 @@
                            aria-haspopup="true"
                            aria-expanded="false">{{Auth::user()->name}}</a>
                         <div class="dropdown-menu">
-                            <a class="dropdown-item" href="{{route('profile')}}">{{__l('Profile')}}</a>
+                            <a class="dropdown-item d-none d-sm-block "
+                               href="{{route('profile')}}">{{__l('Profile')}}</a>
                             <a class="dropdown-item" href="{{route('changePassword')}}">{{__l('change_password')}}</a>
                             <div class="dropdown-divider"></div>
                             <a class="dropdown-item"

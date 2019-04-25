@@ -1,4 +1,6 @@
 @extends('layouts.end_user')
+@section('page-title', __l('regulation'))
+
 @section('breadcrumbs')
     @if(empty($search))
         {!! Breadcrumbs::render('regulation') !!}
@@ -18,9 +20,12 @@
     @if($regulations->isNotEmpty())
         <ol class="list-group list-group-flush">
             @foreach($regulations as $idx => $regulation)
-                <li class="list-group-item no-border">
-                    {{$idx + 1}}. <a
-                            href="{{route('regulation_detail', ['id' => $regulation->id])}}">{{$regulation->name}}</a>
+                <li class="list-group-item no-border p-0 list-reulation">
+                    <span class="text-right index-regulation">
+                        {{$idx + 1}}.
+                    </span>
+                    <a class="text-dark"
+                       href="{{route('regulation_detail', ['id' => $regulation->id])}}">{{$regulation->name}}</a>
                 </li>
             @endforeach
         </ol>

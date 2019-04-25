@@ -1,4 +1,5 @@
 @extends('layouts.end_user')
+@section('page-title', __l('Home'))
 
 @section('content')
     <section class="mt-4">
@@ -43,23 +44,28 @@
                 <div class="card mb-4 wow fadeIn">
                     <div class="card-header">Thông báo mới</div>
                     <!--Card content-->
-                    <div class="card-body">
-                        <ul class="list-unstyled">
-                            @foreach($posts as $post)
-                                <li class="media mb-3">
-                                    <img class="d-flex mr-3"
-                                         src="{{lfm_thumbnail($post->image_url)}}"
-                                         alt="{{$post->name}}" width="60">
-                                    <div class="media-body">
-                                        <a href="{{route('post_detail', ['id' => $post->id])}}">
-                                            <h5 class="mt-0 mb-1 font-weight-bold">{{$post->name}}</h5>
-                                        </a>
-                                        {{str_limit(strip_tags(nl2br($post->introduction) )) }}
-                                    </div>
-                                </li>
-                            @endforeach
-                        </ul>
+                    <div class="card-body" id="post-content">
+                        @foreach($posts as $post)
+                            <div class="post-item">
+                                <div class="row mt-4 mb-3 ">
+                                    <div class="col-sm-2 text-center">
+                                        <img class="mb-2"
+                                             src="{{lfm_thumbnail($post->image_url)}}"
+                                             alt="{{$post->name}}" width="100%">
 
+                                    </div>
+                                    <div class="col-sm-10">
+                                        <div class="media-body">
+                                            <a href="{{route('post_detail', ['id' => $post->id])}}">
+                                                <h5 class="mt-0 mb-3 font-weight-bold">{{$post->name}}</h5>
+                                            </a>
+                                            {{str_limit(strip_tags(nl2br($post->introduction) )) }}
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        @endforeach
                     </div>
 
                 </div>
@@ -68,7 +74,7 @@
             <!--Grid column-->
 
             <!--Grid column-->
-            <div class="col-md-5 mb-4">
+            <div class="d-none d-md-block col-md-5 mb-4">
 
                 <!--Card: Jumbotron-->
                 <div class="card blue-gradient mb-4 wow fadeIn">

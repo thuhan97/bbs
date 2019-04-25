@@ -24,14 +24,15 @@
     <!-- Select2 -->
     <link href="{{ cdn_asset('/adminlte/plugins/select2/css/select2.min.css') }}" rel="stylesheet" type="text/css">
     <!-- datetimepicker -->
-    <link href="{{ cdn_asset('/bootstrap-datepicker/css/bootstrap-datepicker.min.css') }}">
     <link href="{{ cdn_asset('/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css') }}"
           rel="stylesheet" type="text/css">
     <!-- timepicker -->
     <link href="{{ cdn_asset('/bootstrap-datetimepicker/css/bootstrap-timepicker.min.css') }}"
           rel="stylesheet" type="text/css">
     <!-- END - Plugins -->
-
+    <!-- bootstrap-daterangepicker -->
+    <link href="{{ cdn_asset('/bootstrap-daterangepicker/daterangepicker.css') }}" rel="stylesheet" type="text/css">
+    <!-- AdminLTE App -->
     <!-- Theme CSS -->
     <link rel="stylesheet" href="{{ cdn_asset('/adminlte/css/AdminLTE.min.css') }}">
     <!-- AdminLTE Skin. -->
@@ -49,9 +50,11 @@
     <![endif]-->
 
     <!-- Google Font -->
-    <link rel="stylesheet"
-          href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
-
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
+    <!-- jQuery 3 -->
+    <script src="{{ cdn_asset('/js/jquery.min.js') }}"></script>
+    <!-- Moment Js-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
     @yield('head-extras')
 </head>
 
@@ -107,8 +110,7 @@
 </div>
 <!-- ./wrapper -->
 <input type="file" id="file_editor_upload" class="hidden">
-<!-- jQuery 3 -->
-<script src="{{ cdn_asset('/js/jquery.min.js') }}"></script>
+
 <!-- Bootstrap 3.3.7 -->
 <script src="{{ cdn_asset('/bootstrap/js/bootstrap.min.js') }}"></script>
 <!-- SlimScroll -->
@@ -121,8 +123,7 @@
 <script src="{{ cdn_asset('/adminlte/plugins/iCheck/icheck.min.js') }}" type="text/javascript"></script>
 <!-- Select2 -->
 <script src="{{ cdn_asset('/adminlte/plugins/select2/js/select2.min.js') }}" type="text/javascript"></script>
-<!-- Moment Js-->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
+
 <!-- DatetimePicker Js-->
 <script src="{{ cdn_asset('/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js') }}"></script>
 <script src="{{ cdn_asset('/bootstrap-datepicker/js/bootstrap-datepicker.min.js') }}"></script>
@@ -130,6 +131,16 @@
 <!-- Timepicker -->
 <script src="{{ cdn_asset('/bootstrap-datetimepicker/js/bootstrap-timepicker.min.js') }}"></script>
 <!-- AdminLTE App -->
+<!-- Chart JS -->
+<script src="{{ cdn_asset('/chart/js/Chart.min.js') }}" type="text/javascript"></script>
+<script src="{{ cdn_asset('/chart/js/utils.js') }}"></script>
+<script src="{{ cdn_asset('/chart/js/chartjs-plugin-labels.js') }}" type="text/javascript"></script>
+<!-- End Chart JS -->
+
+<!-- bootstrap-daterangepicker -->
+<script src="{{ cdn_asset('/bootstrap-daterangepicker/daterangepicker.js') }}"></script>
+<!-- AdminLTE App -->
+
 <script src="{{ cdn_asset('/adminlte/js/adminlte.min.js') }}"></script>
 <!-- Custom Js -->
 <script src="{{ cdn_asset('/js/backend.js?version=' . config('adminlte.version')) }}"></script>
@@ -151,24 +162,18 @@
 </script>
 <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css"/>
 <link href="{{ cdn_asset('/adminlte/css/multiselect.css') }}" rel="stylesheet" type="text/css">
-
 <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/prettify/r298/prettify.min.js"></script>
 <script type="text/javascript" src="{{ cdn_asset('/adminlte/js/multiselect.min.js') }}"></script>
-
-<script>
-
-</script>
-
 <script type="text/javascript">
     $(document).ready(function () {
         // make code pretty
         window.prettyPrint && prettyPrint();
-
         $('#undo_redo').multiselect();
     });
 </script>
 @yield('footer-extras')
 
 @stack('footer-scripts')
+
 </body>
 </html>

@@ -1,4 +1,6 @@
 @extends('layouts.end_user')
+@section('page-title', $post->name)
+
 @section('breadcrumbs')
     {!! Breadcrumbs::render('post_detail', $post) !!}
 @endsection

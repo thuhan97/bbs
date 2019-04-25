@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Event;
 use App\Models\User;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 /**
  * AdminController
@@ -28,4 +30,9 @@ class MasterController extends Controller
         return view('admin.master', compact('probationStaffs', 'events'));
     }
 
+    public function download(Request $request)
+    {
+        if (Storage::exists($request->file_path))
+            return Storage::download($request->file_path);
+    }
 }

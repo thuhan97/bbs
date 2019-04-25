@@ -17,6 +17,11 @@ $(function () {
 
         uploadPreview($(this), $target);
     });
+
+    $("#exportExcel").click(function () {
+        $("#searchForm").append('<input type="hidden" name="is_export" value="1" />');
+        $("#searchForm").submit();
+    });
 });
 
 window.uploadPreview = function ($input, $preview, isChangeBg) {

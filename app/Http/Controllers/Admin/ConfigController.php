@@ -3,9 +3,9 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\ConfigRequest;
 use App\Models\Config;
 use App\Repositories\Contracts\IConfigRepository;
-use Illuminate\Http\Request;
 
 /**
  * ConfigController
@@ -51,14 +51,21 @@ class ConfigController extends Controller
         ]);
     }
 
-    public function store(Request $request)
+    public function store(ConfigRequest $request)
     {
         $data = $request->all();
+
+        if ($request->file('late_time_rule_file')) {
+            $fileName = 'late_time-' . (date('Ymdhis')) . '.json';
+            $path = LATE_MONEY_CONFIG_FOLDER;
+            $request->file('late_time_rule_file')->storeAs($path, $fileName);
+
+            $data['late_time_rule_json'] = $path . $fileName;
+        }
 
         Config::updateOrCreate([
             'id' => 1
         ], $data);
-
         flash()->success('Lưu thiết lập thành công');
         return redirect(route($this->resourceRoutesAlias . '.index'));
     }

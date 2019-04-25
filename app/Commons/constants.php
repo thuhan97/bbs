@@ -70,7 +70,11 @@ define('CONTRACT_TYPES_NAME', [
     3 => 'Thực tập',
 ]);
 
+
+define('STAFF', -3);
+define('BRSE', -2);
 define('HEAD_DEPARTMENT_ROLE', -1);
+define('HCNS', 0);
 define('TEAMLEADER_ROLE', 1);
 define('MANAGER_ROLE', 2);
 define('MASTER_ROLE', 3);
@@ -159,6 +163,10 @@ define('TYPES_DEVICE', [
     6 => 'Khác'
 ]);
 
+define('DATE', 'ngày');
+//define('MONTH', 'tháng');
+define('WEEK', 'tuần');
+define('COUNT', ' buổi');
 define('ICONS_TYPES_FILES', [
     'jpg' => 'far fa-image',
     'jpeg' => 'far fa-image',
@@ -190,4 +198,84 @@ define('VACATION', [
 
 define('DAILY_REPORT', 0);
 define('WEEKLY_REPORT', 1);
+
+define('MONTH', [
+    '01' => 'Tháng 1',
+    '02' => 'Tháng 2',
+    '03' => 'Tháng 3',
+    '04' => 'Tháng 4',
+    '05' => 'Tháng 5',
+    '06' => 'Tháng 6',
+    '07' => 'Tháng 7',
+    '08' => 'Tháng 8',
+    '09' => 'Tháng 9',
+    '10' => 'Tháng 10',
+    '11' => 'Tháng 11',
+    '12' => 'Tháng 12',
+]);
+define('SHOW_DAY_OFFF', [
+    0 => 'Chờ Duyệt',
+    1 => 'Đã duyệt',
+    2 => 'Không duyệt',
+    3 => 'Tất cả đơn'
+]);
+
+define('STATUS_DAY_OFF', [
+    'abide' => 0,
+    'active' => 1,
+    'noActive' => 2
+]);
+define('SEX', [
+    'male' => 0,
+    'female' => 1
+]);
+define('WORK_TIME_TYPE', [
+    0 => 'Bình thường',
+    1 => 'Đi muộn',
+    2 => 'Về Sớm',
+    4 => 'Overtime',
+]);
+define('OT_STATUS', [
+    0 => ' Chưa duyệt',
+    1 => 'Đã duyệt'
+]);
+define('PUNISH_SUBMIT', [
+    'new' => 0,
+    'submitted' => 1
+]);
+
+define('EXPORT_PATHS', [
+    'admin/work_times'
+]);
+
+define('LATE_MONEY_CONFIG_FOLDER', 'json_config/');
+define('LATE_MONEY_CONFIG', 'config/late_time.json');
+define('LATE_RULE_ID', 0);
+
+define('ALL_DAY_OFF', 3);
+define('DAY_OFF_FREE_DEFAULT', 0);
+define('DAY_OFF_FREE_ACTIVE', 1);
+define('PAGINATE_DAY_OFF', 20);
+define('DAY_OFF_DEFAULT', 0);
+define('TOTAL_MONTH', 12);
+define('PRE_YEAR', 1);
+define('PRE_PRE_YEAR', 2);
 define('XLS_TYPE', '.xls');
+define('ADD_DAY_OFF_MONTH', 1);
+define('STT', 'Stt');
+define('ON_TIME', 'Danh sách đi làm đúng giờ');
+define('LATE_EARLY', 'Danh sách đi làm muộn/sớm');
+define('OT', 'Danh sách OT');
+define('LATE_OT', 'Danh sách đi làm muộn + OT');
+define('LEAVE', 'Xin nghỉ');
+define('USER_NAME', 'Tên thành viên');
+define('TIME_STA', 'Thời gian thống kê');
+define('ON_TIME_USER', 'Đi làm đúng giờ');
+define('LATE_EARLY_USER', 'Đi làm muộn/sớm');
+define('OT_USER', 'OT');
+define('LATE_OT_USER', 'Đi làm muộn + OT');
+define('TOTAL_MONTH_IN_YEAR', 12);
+define('OFF_TIME', '00:00:00');
+define('SWITCH_TIME', '12:00:00');
+
+define('JOBTITLE_MANAGER', 2);

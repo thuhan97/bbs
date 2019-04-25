@@ -1,37 +1,41 @@
+<div class="text-right">
+    <span class="btn btn-primary" id="exportExcel">Xuất file excel</span>
+</div>
 <div class="table-responsive list-records">
     <table class="table table-hover table-bordered">
-        <colgroup>
-            <col style="width: 30px">
-            <col style="width: 200px">
-            <col style="">
-            <col style="width: 180px">
-            <col style="width: 180px">
-            <col style="width: 180px">
-            <col style="width: 70px">
-        </colgroup>
         <thead>
-        <th style="width: 10px;">
+        <th style="width: 30px">
             <button type="button" class="btn btn-default btn-sm checkbox-toggle"><i class="fa fa-square-o"></i></button>
         </th>
-        <th>Ngày</th>
+        <th style="width: 150px">Ngày
+            {{__admin_sortable('work_day')}}
+        </th>
         <th>Nhân viên</th>
-        <th>Checkin</th>
-        <th>Checkout</th>
-        <th>Chú thích</th>
-        <th style="width: 100px;">Chức năng</th>
+        <th style="width: 150px">Checkin</th>
+        <th style="width: 150px">Checkout</th>
+        <th style="width: 200px">Chú thích</th>
+        <th>Giải trình</th>
+        <th style="width: 100px">Chức năng</th>
         </thead>
         <tbody>
         @foreach ($records as $record)
             <?php
             $editLink = route($resourceRoutesAlias . '.edit', $record->id);
+            $dayLink = route($resourceRoutesAlias . '.index', ['work_day' => $record->work_day]);
             $userLink = route($resourceRoutesAlias . '.index', ['user_id' => $record->user_id]);
 
             $deleteLink = route($resourceRoutesAlias . '.destroy', $record->id);
             $formId = 'formDeleteModel_' . $record->id;
             ?>
             <tr>
-                <td><input type="checkbox" name="ids[]" value="{{ $record->id }}" class="square-blue chkDelete"></td>
-                <td>{{ $record->work_day }}</td>
+                <td class="text-center"><input type="checkbox" name="ids[]" value="{{ $record->id }}"
+                                               class="square-blue chkDelete"></td>
+                <td class="text-right">
+                    @php($day = date_format(date_create($record->work_day) , 'N') + 1)
+
+                    <a href="{{ $dayLink }}">{{ $record->work_day }}
+                        ({{ $day == 8 ? 'Chủ nhật' : ('Thứ ' . $day) }}) </a>
+                </td>
                 <td class="table-text">
                     <a href="{{ $userLink }}">{{ $record->user->name ?? '' }}</a>
                 </td>
@@ -50,12 +54,16 @@
                         case 1:
                             $typeClass = 'danger';
                             break;
+                        case -1:
+                            $typeClass = 'disable';
+                            break;
                     }
                     ?>
                     @if(isset($typeClass))
                         <span class="label label-{{$typeClass}}">{{ $record->note }}</span>
                     @endif
                 </td>
+                <td class="w-20">{{ $record->explanation($record->work_day)->note ?? '' }}</td>
                 <td>
                     <div class="btn-group">
                         <a href="{{ $editLink }}" class="btn btn-info btn-sm"><i class="fa fa-edit"></i></a>

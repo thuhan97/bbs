@@ -2,17 +2,20 @@
 
 namespace App\Imports;
 
-use App\Models\Config;
 use App\Models\User;
 use App\Models\WorkTime;
+use App\Services\WorkTimeService;
 use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\ToCollection;
 use Maatwebsite\Excel\Concerns\WithValidation;
 
 class WorkTimeImport implements ToCollection, WithValidation
 {
-    private $config;
     private $users;
+    /*
+     * @var WorkTimeService $workTimeService
+     */
+    private $workTimeService;
 
     const START_ROW = 3;
 
@@ -24,19 +27,31 @@ class WorkTimeImport implements ToCollection, WithValidation
     ];
 
     const DEFAULT_END_AT = '17:30';
+    private $startDate;
+    private $endDate;
 
+    /**
+     * WorkTimeImport constructor.
+     *
+     * @param $startDate
+     * @param $endDate
+     */
     public function __construct($startDate, $endDate)
     {
-        $this->config = Config::first();
         $this->users = User::pluck('id', 'staff_code', 'contract_type')->toArray();
 
-        WorkTime::whereDate('work_day', '>=', $startDate)
-            ->whereDate('work_day', '<=', $endDate)
-            ->delete();
+        $this->workTimeService = app()->make(WorkTimeService::class);
+
+        $this->workTimeService->deletes($startDate, $endDate);
+
+        $this->startDate = $startDate;
+        $this->endDate = $endDate;
     }
 
     /**
      * @param Collection $rows
+     *
+     * @throws \Exception
      */
     public function collection(Collection $rows)
     {
@@ -47,7 +62,7 @@ class WorkTimeImport implements ToCollection, WithValidation
                 if ($item) {
                     $results[] = $item;
 
-                    if ($index % 1000 === 0) {
+                    if ($index % 100 === 0) {
                         $this->insertData($results);
                     }
                 }
@@ -68,6 +83,7 @@ class WorkTimeImport implements ToCollection, WithValidation
      * @param Collection $row
      *
      * @return array
+     * @throws \Exception
      */
     private function mappingData(collection $row)
     {
@@ -76,64 +92,11 @@ class WorkTimeImport implements ToCollection, WithValidation
 
             $startAt = $row[self::HEADINGS['start_at']];
             $endAt = $row[self::HEADINGS['end_at']];
-
-            if ($startAt || $endAt) {
-                $work_day = \PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($row[self::HEADINGS['date']]);
-                $workTime = $this->getWorkTime($work_day, $startAt, $endAt);
-                $workTime['user_id'] = $this->users[$staffCode];
-                $workTime['work_day'] = $work_day->format(DATE_FORMAT_SLASH);
-
-                return $workTime;
+            $work_day = \PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($row[self::HEADINGS['date']]);
+            if (date_create($this->startDate) <= $work_day && date_create($this->endDate) >= $work_day) {
+                return $this->workTimeService->importWorkTime($this->users, $staffCode, $work_day, $startAt, $endAt);
             }
-
         }
-    }
-
-    /**
-     * @param $startAt
-     * @param $endAt
-     *
-     * @return array
-     */
-    private function getWorkTime($date, $startAt, $endAt)
-    {
-
-//        if ($endAt == null) $endAt = self::DEFAULT_END_AT;
-        $note = [];
-        $type = 0;
-        if (($this->config->work_days && in_array($date->format('N'), $this->config->work_days)) || !$this->config->work_days) {
-            if ($startAt) {
-                if ($this->config->time_afternoon_go_late_at && $startAt >= $this->config->time_afternoon_go_late_at) {
-                    $note[] = 'Đi muộn buổi chiều';
-                    $type += WorkTime::TYPES['lately'];
-                } else if ($this->config->time_morning_go_late_at && $startAt >= $this->config->time_morning_go_late_at) {
-                    $note[] = 'Đi muộn buổi sáng';
-                    $type += WorkTime::TYPES['lately'];
-                }
-            }
-            if ($endAt) {
-                if ($this->config->morning_end_work_at && $endAt <= $this->config->morning_end_work_at) {
-                    $note[] = 'Về sớm buổi sáng';
-                    $type += WorkTime::TYPES['early'];
-                } else if ($this->config->afternoon_end_work_at && $endAt <= $this->config->afternoon_end_work_at) {
-                    $note[] = 'Về sớm buổi chiều';
-                    $type += WorkTime::TYPES['early'];
-                } else if ($this->config->time_ot_early_at && $endAt >= $this->config->time_ot_early_at) {
-                    $note[] = 'Overtime';
-                    $type += WorkTime::TYPES['ot'];
-                }
-            }
-        } else {
-            $note[] = 'Overtime';
-            $type += WorkTime::TYPES['ot'];
-        }
-        //
-        return [
-            'start_at' => $startAt,
-            'end_at' => $endAt,
-            'note' => implode(', ', $note),
-            'type' => $type,
-        ];
     }
 
     /**

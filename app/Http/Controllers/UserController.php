@@ -2,11 +2,18 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Admin\WorkTimeRequest;
+use App\Http\Requests\AskPermissionRequest;
 use App\Http\Requests\CreateDayOffRequest;
 use App\Http\Requests\DayOffRequest;
 use App\Http\Requests\ProfileRequest;
+use App\Models\DayOff;
+use App\Models\OverTime;
+use App\Models\RemainDayoff;
 use App\Models\User;
 use App\Models\WorkTime;
+use App\Models\WorkTimesExplanation;
+use App\Repositories\Contracts\IDayOffRepository;
 use App\Services\Contracts\IDayOffService;
 use App\Services\Contracts\IUserService;
 use App\Transformers\DayOffTransformer;
@@ -14,16 +21,19 @@ use Carbon\Carbon;
 use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class UserController extends Controller
 {
     private $userService;
-    private $userDayOff;
+    private $userDayOffService;
+    private $dayOffRepository;
 
-    public function __construct(IUserService $userService, IDayOffService $userDayOff)
+    public function __construct(IUserService $userService, IDayOffService $userDayOffService, IDayOffRepository $dayOffRepository)
     {
+        $this->dayOffRepository = $dayOffRepository;
         $this->userService = $userService;
-        $this->userDayOff = $userDayOff;
+        $this->userDayOffService = $userDayOffService;
     }
 
     public function index()
@@ -83,60 +93,153 @@ class UserController extends Controller
         $user->save();
         Auth::logout();
 
-        return redirect('/login')->with('notification_change_pass',__('messages.notification_change_pass'));
+        return redirect('/login')->with('notification_change_pass', __('messages.notification_change_pass'));
     }
 
-    public function workTime(Request $request)
+    public function workTime()
     {
-        $late = $early = $ot = 0;
-        $month = $request->input('month') ?? date('m');
-        $type = $request->input('type');
-        $type_late = array(1, 3, 5);
-        $type_early = array(2, 3);
-        $type_ot = array(4, 5);
-        $t = array();
+        return view('end_user.user.work_time');
+    }
 
-        if ($type == 'di_muon') {
-            $t = $type_late;
-        } elseif ($type == 've_som') {
-            $t = $type_early;
-        } elseif ($type == 'ot') {
-            $t = $type_ot;
-        }
+    /**
+     * Show work time calendar
+     *
+     * @param Request $request
+     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
+     * @throws \Illuminate\Validation\ValidationException
+     */
+    public function workTimeAPI(Request $request)
+    {
+        $lastyear = (int)date('Y') - 1;
+        $this->validate($request, [
+            'year' => "required|min:" . $lastyear . "|integer|max:" . date('Y'),
+            'month' => 'required|integer|max:12',
+        ]);
 
-        $list_work_times = WorkTime::where('user_id', Auth::user()->id)->whereMonth('work_day', (int)$month - 1)->get();
-        if (!empty($t)) {
-            $list_work_times = $list_work_times->whereIn('type', $t);
-            if ($type == 'di_muon') {
-                $late = $list_work_times->count();
-            } elseif ($type == 've_som') {
-                $early = $list_work_times->count();
-            } elseif ($type == 'ot') {
-                $ot = $list_work_times->count();
-            }
-        } else {
-            $late = $list_work_times->whereIn('type', $type_late)->count();
-            $early = $list_work_times->whereIn('type', $type_early)->count();
-            $ot = $list_work_times->whereIn('type', $type_ot)->count();
-        }
         $calendarData = [];
-        $list_work_times_calendar = WorkTime::where('user_id', Auth::user()->id)->get();
-        foreach ($list_work_times_calendar->toArray() as $item) {
-            $startDay = $item['start_at'] ? new DateTime($item['start_at']) : '';
-            $dataStartDay = $startDay ? $startDay->format('H:i') : '';
-            $endDay = $item['end_at'] ? new DateTime($item['end_at']) : '';
-            $dataEndDay = $endDay ? $endDay->format('H:i') : '';
-            $calendarData[] = [
-                'work_day' => $item['work_day'],
-//                'start_at' => $item['start_at'] ? $item['start_at']." - " : '',
-                'start_at' => $dataStartDay,
-                'end_at' => $dataEndDay,
-                'type' => $item['type'],
-                'note' => $item['note'],
-                'attendance-time'=> $dataStartDay && $dataEndDay ?  " - "  : '' ,
-            ];
+        $list_work_times_calendar = WorkTime::where('user_id', Auth::id())
+            ->whereYear('work_day', $request->year)
+            ->whereMonth('work_day', $request->month);
+
+        $explanation_calendar = WorkTimesExplanation::where('user_id', Auth::id())
+            ->whereYear('work_day', $request->year)
+            ->whereMonth('work_day', $request->month);
+        if ($list_work_times_calendar) {
+            foreach ($list_work_times_calendar->get()->toArray() as $item) {
+                $startDay = $item['start_at'] ? new DateTime($item['start_at']) : '';
+                $dataStartDay = $item['start_at'];
+                if ($dataStartDay && $dataStartDay != '00:00:00') {
+                    $dataStartDay = $startDay->format('H:i');
+                } elseif ($dataStartDay == '00:00:00') {
+                    $dataStartDay = '* * : * *';
+                } else {
+                    $dataStartDay = '';
+                }
+                $endDay = $item['end_at'] ? new DateTime($item['end_at']) : '';
+                $dataEndDay = $endDay ? $endDay->format('H:i') : '17:30';
+                $calendarData[] = [
+                    'work_day' => $item['work_day'],
+                    'start_at' => $dataStartDay,
+                    'end_at' => $dataEndDay,
+                    'type' => $item['type'],
+                    'note' => $item['note'],
+                    'id' => $item['id'],
+                ];
+            }
         }
-        return view('end_user.user.work_time', compact('list_work_times', 'late', 'early', 'ot','list_work_times_calendar','calendarData'));
+        $calendarDataModal = [];
+        if (isset($explanation_calendar)) {
+            foreach ($explanation_calendar->get()->toArray() as $item) {
+                $calendarDataModal[] = [
+                    'work_day' => $item['work_day'],
+                    'type' => $item['type'],
+                    'ot_type' => $item['ot_type'],
+                    'note' => $item['note'],
+                    'user_id' => $item['user_id'],
+                    'id' => $item['id'],
+                ];
+            }
+        }
+        return response([
+            'success' => true,
+            'message' => 'success',
+            'data' => $calendarData,
+            'dataModal' => $calendarDataModal
+        ]);
+    }
+
+    /**
+     * Create or edit work time calendar
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function dayOffCreateCalendar(WorkTimeRequest $request)
+    {
+        $id = $request['id'];
+        $reason = $request['reason'];
+        $workDay = $request['work_day'];
+        $otType = $request['ot_type'];
+        if ($id) {
+            WorkTimesExplanation::where('user_id', Auth::id())->where('work_day', $workDay)->update(['note' => $reason, 'ot_type' => $otType]);
+            return back()->with('day_off_success', '');
+        } else {
+            WorkTimesExplanation::create([
+                'user_id' => Auth::id(),
+                'work_day' => $request['work_day'],
+                'type' => array_search('Đi muộn', WORK_TIME_TYPE),
+                'ot_type' => $otType,
+                'note' => $reason
+            ]);
+            return back()->with('day_off_success', 'day_off_success');
+        }
+    }
+
+    public function askPermission()
+    {
+        $query = WorkTimesExplanation::select(
+            'work_times_explanation.work_day', 'work_times_explanation.type',
+            'work_times_explanation.ot_type', 'work_times_explanation.note',
+            'work_times_explanation.user_id', 'ot_times.creator_id', 'ot_times.id as id_ot_time')
+            ->leftJoin('ot_times', function ($join) {
+                $join->on('ot_times.creator_id', '=', 'work_times_explanation.user_id')
+                    ->on('ot_times.work_day', '=', 'work_times_explanation.work_day');
+            })
+            ->whereYear('work_times_explanation.work_day', date('Y'));
+
+        $dataLeader = $query->groupBy('work_times_explanation.work_day', 'work_times_explanation.type',
+            'work_times_explanation.ot_type', 'work_times_explanation.note', 'work_times_explanation.user_id', 'ot_times.creator_id')
+            ->orderBy('work_times_explanation.work_day', 'desc')
+            ->paginate(PAGINATE_DAY_OFF, ['*'], 'approver-page');
+        $datas = $query->where('user_id', Auth::id())->groupBy('work_times_explanation.work_day', 'work_times_explanation.type',
+            'work_times_explanation.ot_type', 'work_times_explanation.note', 'work_times_explanation.user_id', 'ot_times.creator_id')
+            ->orderBy('work_times_explanation.work_day', 'desc')
+            ->paginate(PAGINATE_DAY_OFF, ['*'], 'user-page');
+        return view('end_user.user.ask_permission', compact('datas', 'dataLeader'));
+    }
+
+    public function askPermissionCreate(AskPermissionRequest $request)
+    {
+        WorkTimesExplanation::create([
+            'user_id' => Auth::id(),
+            'work_day' => $request['work_day'],
+            'type' => $request['type'],
+            'note' => $request['note'],
+        ]);
+        return back()->with('create_permission_success', '');
+    }
+
+    public function approved(Request $request)
+    {
+        OverTime::create([
+            'creator_id' => $request['user_id'],
+            'reason' => $request['reason'],
+            'status' => array_search('Đã duyệt', OT_STATUS),
+            'approver_id' => Auth::id(),
+            'approver_at' => now(),
+            'work_day' => $request['work_day'],
+        ]);
+        return back()->with('approver_success', '');
     }
 
     //
@@ -145,45 +248,21 @@ class UserController extends Controller
     //
     //
 
-    public function dayOff(DayOffRequest $request)
+    public function dayOff(DayOffRequest $request, $status = null)
     {
-        $conditions = ['user_id' => Auth::id()];
-        $listDate = $this->userDayOff->findList($request, $conditions);
-
-        $paginateData = $listDate->toArray();
-        $recordPerPage = $request->get('per_page');
-        $approve = $request->get('approve');
+        $countDayOff = $this->userDayOffService->countDayOffUserLogin();
         $userManager = $this->userService->getUserManager();
+        $availableDayLeft = $this->userDayOffService->getDayOffUser(Auth::id());
+        if (isset($request->status_search) || isset($request->year) || isset($request->month)) {
+            $year = $request->year;
+            $month = $request->month;
+            $statusSearch = $request->status_search;
 
-        $availableDayLeft = $this->userDayOff->getDayOffUser(Auth::id());
-        return view('end_user.user.day_off', compact('listDate', 'paginateData', 'availableDayLeft', 'recordPerPage', 'approve', 'userManager'));
-    }
-
-   /* public function dayOffCreate_API(DayOffRequest $request)
-    {
-        $response = [
-            'success' => false,
-            'message' => NOT_AUTHORIZED
-        ];
-        if (!$request->ajax() || !Auth::check()) {
-            return response($response);
+            $dayOff = $this->userDayOffService->searchStatus($year, $month, $statusSearch);
+            return view('end_user.user.day_off', compact('listDate', 'paginateData', 'availableDayLeft', 'recordPerPage', 'approve', 'userManager', 'dayOff', 'statusSearch', 'countDayOff', 'year', 'month'));
         }
-
-        $indicate = $this->userDayOff->create(
-            Auth::id(), $request->input('title'),
-            $request->input('reason'),
-            $request->input('start_at'),
-            $request->input('end_at'),
-            $request->input('approver_id')
-        );
-
-
-        $response['message'] = !!$indicate['record'] ? "Gửi thành công!" : $indicate['message'];
-        $response['success'] = $indicate['status'];
-        $response['record'] = $indicate['record'];
-
-        return response($response);
-    }*/
+        return view('end_user.user.day_off', compact('listDate', 'paginateData', 'availableDayLeft', 'recordPerPage', 'approve', 'userManager', 'countDayOff'));
+    }
 
     public function dayOffListApprovalAPI(Request $request)
     {
@@ -195,7 +274,7 @@ class UserController extends Controller
             return response($response);
         }
         $user = Auth::user();
-        $dataResponse = $this->userDayOff->listApprovals((int)$user->jobtitle_id + 1);
+        $dataResponse = $this->userDayOffService->listApprovals((int)$user->jobtitle_id + 1);
 
         return response([
             'success' => true,
@@ -204,33 +283,11 @@ class UserController extends Controller
         ]);
     }
 
-    public function dayOffApprove(DayOffRequest $request)
+    public function dayOffApprove(DayOffRequest $request, $status = null)
     {
-        // Checking authorize for action
-        $isApproval = Auth::user()->jobtitle_id >= \App\Models\Report::MIN_APPROVE_JOBTITLE;
-
-        // If user is able to do approve then
-        $searchView = $request->get('search') ?? '';
-        $approval_view = $request->get('approve');
-        $atPage_view = $request->get('page');
-        $perPage_view = $request->get('per_page');
-
-        $request_view = $this->userDayOff->findList($request, ['approver_id' => Auth::id()], ['*'], $searchView, $perPage);
-        $request_view_array = $request_view->toArray();
-
-        $request->merge(['year' => date('Y')]);
-        $request->merge(['approve' => null]);
-        $request->merge(['search' => '']);
-        $search = '';
-        // get all request
-        $totalRequest = $this->userDayOff->findList($request, ['approver_id' => Auth::id()], ['*'], $search, $perPage)->toArray();
-        // get only approved request
-        $request->merge(['approve' => 1]);
-        $approvedRequest = $this->userDayOff->findList($request, ['approver_id' => Auth::id()], ['*'], $search, $perPage)->toArray();
-
+        $dataDayOff = $this->userDayOffService->showList($status);
         return view('end_user.user.day_off_approval', compact(
-            'isApproval', 'totalRequest', 'approvedRequest', 'approval_view', 'atPage_view', 'perPage_view',
-            'request_view', 'request_view_array', 'searchView'
+            'dataDayOff'
         ));
     }
 
@@ -240,7 +297,7 @@ class UserController extends Controller
             return null;
         }
 
-        $responseObject = $this->userDayOff->getRecordOf($id);
+        $responseObject = $this->userDayOffService->getRecordOf($id);
         if ($responseObject == null) return null;
         $transformer = new DayOffTransformer();
 
@@ -265,7 +322,7 @@ class UserController extends Controller
         $recievingObject = (object)$arrRequest;
 //		return 	$recievingObject;
 
-        $targetRecordResponse = $this->userDayOff->updateStatusDayOff(
+        $targetRecordResponse = $this->userDayOffService->updateStatusDayOff(
             $recievingObject->id, Auth::id(), $recievingObject->approve_comment,
             $recievingObject->number_off
         );
@@ -289,19 +346,92 @@ class UserController extends Controller
     public function contact(Request $request)
     {
         $users = $this->userService->getContact($request, $perPage, $search);
+
         return view('end_user.user.contact', compact('users', 'search', 'perPage'));
     }
 
-    public function dayOffCreate(CreateDayOffRequest $request)
+    /**
+     * Create or edit day off
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function dayOffCreate(createDayOffRequest $request)
     {
-        $indicate = $this->userDayOff->create(
-            Auth::id(), $request->input('title'),
-            $request->input('reason'),
-            $request->input('start_at'),
-            $request->input('end_at'),
-            $request->input('approver_id')
-        );
-        return back()->with('day_off_success','');
 
+        $dayOff = new DayOff();
+        $dayOff->fill($request->all());
+        $dayOff->user_id = Auth::id();
+        $dayOff->save();
+        return back()->with('day_off_success', '');
+    }
+
+    public function dayOffSearch(Request $request)
+    {
+        $year = $request->year;
+        $month = $request->month;
+        $status = $request->status;
+        $search = $request->search;
+
+        $dataDayOff = $this->userDayOffService->showList(null);
+        $dayOffSearch = $this->userDayOffService->getDataSearch($year, $month, $status, $search);
+        return view('end_user.user.day_off_approval', compact(
+            'dataDayOff', 'dayOffSearch', 'year', 'month', 'status', 'search'
+        ));
+    }
+
+    public function dayOffShow($status)
+    {
+
+        $dataDayOff = $this->userDayOffService->showList($status);
+        return view('end_user.user.day_off_approval', compact(
+            'dataDayOff', 'status'
+        ));
+    }
+
+    public function dayOffDetail($id, $check = false)
+    {
+        $dayOff = $this->userDayOffService->getOneData($id);
+        if ($dayOff->status == STATUS_DAY_OFF['abide'] && $check) {
+            $dayOff->status = STATUS_DAY_OFF['noActive'];
+            $dayOff->save();
+            return back()->with('close', '');
+        }
+        if ($dayOff->number_off) {
+            $numOff = checkNumber($dayOff->number_off);
+        }
+        return response()->json([
+            'data' => $dayOff,
+            'numoff' => $numOff ?? null,
+            'approver' => User::findOrFail($dayOff->approver_id)->name,
+            'userdayoff' => User::findOrFail($dayOff->user_id)->name
+        ]);
+    }
+
+    public function editDayOffDetail(Request $request, $id)
+    {
+        $this->validate($request, [
+            'number_off' => 'required|numeric|min:0',
+            'approve_comment' => 'nullable|min:1|max:255'
+        ]);
+        $this->userDayOffService->calculateDayOff($request, $id);
+        return back()->with('success', __('messages.edit_day_off_successully'));
+    }
+
+    public function deleteOrCloseDayOff(Request $request)
+    {
+        if (isset($request->day_off_id)) {
+            DayOff::findOrFail($request->day_off_id)->delete();
+            return back()->with('delete_day_off', '');
+        } else if (isset($request->id_close)) {
+            $dayOff = DayOff::findOrFail($request->id_close);
+            if ($dayOff->status == STATUS_DAY_OFF['abide']) {
+                $dayOff->status = STATUS_DAY_OFF['noActive'];
+                $dayOff->save();
+                return back()->with('close', '');
+            }
+        } else {
+            abort(404);
+        }
     }
 }

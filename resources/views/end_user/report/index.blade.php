@@ -1,4 +1,5 @@
 @extends('layouts.end_user')
+@section('page-title', __l('Report'))
 @section('breadcrumbs')
     {!! Breadcrumbs::render('report') !!}
 @endsection
@@ -12,11 +13,11 @@
     <form class="mb-4 mb-3" id="formReport">
         <div class="md-form active-cyan-2 mb-0">
             <div class="row">
-                <div class="col-sm-1">
+                <div class="col-sm-2 col-xl-1">
                     {{ Form::select('year', get_years(2), request('year', date('Y')), ['class'=>'mr-1 w-30 browser-default custom-select']) }}
                 </div>
-                <div class="col-sm-2">
-                    {{ Form::select('month', get_months('Tháng '), request('month', date('n')), ['class'=>'mr-1 w-30 browser-default custom-select']) }}
+                <div class="col-sm-3 col-md-2 col-xl-1">
+                    {{ Form::select('month', get_months('Tháng '), request('month', date('n')), ['class'=>'mr-1 mt-1 mt-md-0 w-30 browser-default custom-select']) }}
                 </div>
             </div>
         </div>

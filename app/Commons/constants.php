@@ -70,7 +70,11 @@ define('CONTRACT_TYPES_NAME', [
     3 => 'Thực tập',
 ]);
 
+
+define('STAFF', -3);
+define('BRSE', -2);
 define('HEAD_DEPARTMENT_ROLE', -1);
+define('HCNS', 0);
 define('TEAMLEADER_ROLE', 1);
 define('MANAGER_ROLE', 2);
 define('MASTER_ROLE', 3);
@@ -274,4 +278,4 @@ define('TOTAL_MONTH_IN_YEAR', 12);
 define('OFF_TIME', '00:00:00');
 define('SWITCH_TIME', '12:00:00');
 
-define('JOBTITLE_MANAGER',2);
+define('JOBTITLE_MANAGER', 2);

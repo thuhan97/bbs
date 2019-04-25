@@ -63,6 +63,7 @@ Route::group([
     //OverTime
     Route::post('over_times/deletes', ['as' => 'over_times.deletes', 'uses' => 'OverTimeController@deletes']);
     Route::resource('over_times', 'OverTimeController');
+    Route::post('over_times/export', 'OverTimeController@export')->name('over_times.export');
 
 
     //feedback

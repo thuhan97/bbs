@@ -46,4 +46,9 @@ class WorkTimesExplanation extends Model
     {
         return $this->belongsTo(WorkTime::class, 'work_times_id', 'id');
     }
+
+    public function creator()
+    {
+        return $this->belongsTo(User::class, 'user_id', 'id');
+    }
 }

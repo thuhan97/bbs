@@ -1,3 +1,12 @@
+<div class="text-right">
+    <form action="{{ route('admin::over_times.export') }}" method="post">
+        @csrf
+        @foreach ($records as $record)
+            <input type="hidden" name="creator_id" value="{{ $record['creator_id'] }}">
+        @endforeach
+        <button class="btn btn-primary" id="exportExcel">Xuất file excel</button>
+    </form>
+</div>
 <div class="table-responsive list-records">
     <table class="table table-hover table-bordered">
         <thead>

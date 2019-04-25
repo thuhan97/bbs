@@ -37,7 +37,7 @@
     <?php
     $user = \Illuminate\Support\Facades\Auth::user();
     ?>
-    @can('manager')
+    @can('team-leader')
         <h1>Danh sách xin phép</h1>
         <table id="contactTbl" class="table table-striped">
             <colgroup>
@@ -82,16 +82,22 @@
                     <td>{{ $item['note'] ?? '' }}</td>
                     <td class="text-center">
                         @if(!$item['id_ot_time'])
-                        <form action="{{ route('approved') }}">
-                                <input type="hidden" name="user_id"
-                                       value="{{ $item['user_id'] ? $item['user_id'] : '' }}">
-                                <input type="hidden" name="reason" value="{{ $item['note'] ? $item['note'] : '' }}">
-                                <input type="hidden" name="work_day"
-                                       value="{{ $item['work_day'] ? $item['work_day'] : '' }}">
-                                <button class="btn btn-primary waves-effect waves-light">Phê duyệt</button>
-                            </form>
+                            @can('manager')
+                                <form action="{{ route('approved') }}" method="post">
+                                    @csrf
+                                    <input type="hidden" name="user_id"
+                                           value="{{ $item['user_id'] ? $item['user_id'] : '' }}">
+                                    <input type="hidden" name="reason" value="{{ $item['note'] ? $item['note'] : '' }}">
+                                    <input type="hidden" name="work_day"
+                                           value="{{ $item['work_day'] ? $item['work_day'] : '' }}">
+                                    <button class="btn btn-primary waves-effect waves-light">Phê duyệt</button>
+                                </form>
+                            @endcan
+                            @cannot('manager')
+                                <i class="fas fa-meh-blank fa-2x text-warning text-center"></i>
+                            @endcannot
                         @else
-                            <i class="fas fa-grin-stars fa-2x text-success"></i>
+                            <i class="fas fa-grin-stars fa-2x text-success" title="{{ $item['approver'] }}"></i>
                         @endif
                     </td>
                 </tr>
@@ -160,7 +166,7 @@
                     @if(is_null($item['id_ot_time']))
                         <i class="fas fa-meh-blank fa-2x text-warning text-center"></i>
                     @else
-                        <i class="fas fa-grin-stars fa-2x text-success"></i>
+                        <i class="fas fa-grin-stars fa-2x text-success" title="{{ $item['approver'] }}"></i>
                     @endif
                 </td>
             </tr>
@@ -221,11 +227,13 @@
                     <div class="row col-md-12">
                         <div class="offset-5"><h3 class="">Xin OT</h3></div>
                         <div class="col-md-6 text-center">
-                            <input style="position: relative;opacity: 1;pointer-events: inherit" class="other-ot" type="radio" name="ot_type" id="project-ot" value="1">
+                            <input style="position: relative;opacity: 1;pointer-events: inherit" class="other-ot"
+                                   type="radio" name="ot_type" id="project-ot" value="1">
                             <label for="project-ot">OT dự án</label>
                         </div>
                         <div class="col-md-6 text-center">
-                            <input  style="position: relative;opacity: 1;pointer-events: inherit" class="other-ot" type="radio" name="ot_type" id="other-ot" value="2">
+                            <input style="position: relative;opacity: 1;pointer-events: inherit" class="other-ot"
+                                   type="radio" name="ot_type" id="other-ot" value="2">
                             <label for="other-ot">Lý do cá nhân</label>
                         </div>
                     </div>

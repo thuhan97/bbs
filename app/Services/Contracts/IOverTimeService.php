@@ -9,5 +9,10 @@ namespace App\Services\Contracts;
  */
 interface IOverTimeService extends IBaseService
 {
-
+    /**
+     * get over time list
+     *
+     * @return mixed
+     */
+    public function getListOverTime();
 }

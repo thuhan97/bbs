@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Exports\OTListExport;
+use App\Exports\WorkTimeAllExport;
 use App\Models\OverTime;
 use App\Models\User;
 use App\Repositories\Contracts\IOverTimeRepository;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
 
 class OverTimeController extends AdminBaseController
 {
@@ -30,7 +33,7 @@ class OverTimeController extends AdminBaseController
     /**
      * @var  string
      */
-    protected $resourceTitle = 'Làm thêm';
+    protected $resourceTitle = 'Duyệt OT';
 
     public function __construct(IOverTimeRepository $repository)
     {
@@ -61,6 +64,25 @@ class OverTimeController extends AdminBaseController
             'resourceRoutesAlias' => $this->getResourceRoutesAlias(),
             'resourceTitle' => $this->getResourceTitle(),
         ]));
+    }
+
+    public function export()
+    {
+        return Excel::download(new OTListExport(), "worktimes.xlsx");
+    }
+
+    public function exportData(Request $request)
+    {
+        switch ($request->path()) {
+            case 'admin/work_times':
+                $date = date('-ymd');
+                $records = $this->sevice->export($request);
+                return Excel::download(new WorkTimeAllExport($records), "worktimes$date.xlsx");
+                break;
+
+            default:
+                abort(404);
+        }
     }
 
     private function makeRelationData($data = [])

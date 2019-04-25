@@ -94,7 +94,7 @@
             <li><a href="{{ route('admin::work_times.index') }}"><i class="fa fa-circle"></i> Thời gian làm việc</a>
             </li>
 
-            <li><a href="{{ route('admin::over_times.index') }}"><i class="fa fa-circle"></i> Làm thêm</a>
+            <li><a href="{{ route('admin::over_times.index') }}"><i class="fa fa-circle"></i>Duyệt OT</a>
             </li>
 
 

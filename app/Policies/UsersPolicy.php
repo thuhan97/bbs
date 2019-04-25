@@ -29,7 +29,7 @@ class UsersPolicy
 
     public function teamLeader($user)
     {
-        if ($user->jobtitle_id == TEAMLEADER_ROLE) {
+        if ($user->jobtitle_id >= TEAMLEADER_ROLE) {
             return true;
         }
         return null;
@@ -53,7 +53,7 @@ class UsersPolicy
 
     public function staff($user)
     {
-        if ($user->jobtitle_id == STAFF) {
+        if ($user->jobtitle_id >= STAFF) {
             return true;
         }
         return null;

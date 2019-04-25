@@ -201,18 +201,20 @@ class UserController extends Controller
             'work_times_explanation.work_day', 'work_times_explanation.type',
             'work_times_explanation.ot_type', 'work_times_explanation.note',
             'work_times_explanation.user_id', 'ot_times.creator_id', 'ot_times.id as id_ot_time')
-            ->leftjoin('ot_times', 'ot_times.creator_id', '=', 'work_times_explanation.user_id')
+            ->leftJoin('ot_times', function ($join) {
+                $join->on('ot_times.creator_id', '=', 'work_times_explanation.user_id')
+                    ->on('ot_times.work_day', '=', 'work_times_explanation.work_day');
+            })
             ->whereYear('work_times_explanation.work_day', date('Y'));
 
         $dataLeader = $query->groupBy('work_times_explanation.work_day', 'work_times_explanation.type',
             'work_times_explanation.ot_type', 'work_times_explanation.note', 'work_times_explanation.user_id', 'ot_times.creator_id')
             ->orderBy('work_times_explanation.work_day', 'desc')
             ->paginate(PAGINATE_DAY_OFF, ['*'], 'approver-page');
-
         $datas = $query->where('user_id', Auth::id())->groupBy('work_times_explanation.work_day', 'work_times_explanation.type',
             'work_times_explanation.ot_type', 'work_times_explanation.note', 'work_times_explanation.user_id', 'ot_times.creator_id')
             ->orderBy('work_times_explanation.work_day', 'desc')
-            ->paginate(PAGINATE_DAY_OFF, ['*'], 'approver-page');
+            ->paginate(PAGINATE_DAY_OFF, ['*'], 'user-page');
         return view('end_user.user.ask_permission', compact('datas', 'dataLeader'));
     }
 
@@ -222,7 +224,7 @@ class UserController extends Controller
             'user_id' => Auth::id(),
             'work_day' => $request['work_day'],
             'type' => $request['type'],
-            'reason' => $request['reason'],
+            'note' => $request['note'],
         ]);
         return back()->with('create_permission_success', '');
     }

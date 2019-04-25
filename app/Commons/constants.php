@@ -188,6 +188,7 @@ define('ICONS_TYPES_FILES', [
 ]);
 
 define('SHARE_DUCOMMENT', 2);
+define('SHARE_EXPERIENCE', 1);
 
 define('VACATION', [
     1 => 'Lý do cá nhân',

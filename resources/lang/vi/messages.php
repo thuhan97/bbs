@@ -29,6 +29,7 @@ return [
     'regulation' => 'Nội quy/Quy định',
     'work_time' => 'Giờ làm việc',
     'list_share_document' => 'Chia sẻ tài liệu',
+    'share_experience' => 'Chia sẻ kinh nghiệm',
     'contact' => 'Danh bạ',
     'day_off' => 'Ngày phép',
     'day_off_approval' => 'Phê duyệt nghỉ phép',
@@ -56,5 +57,7 @@ return [
     'cancel' => 'Hủy bỏ',
     'share_document_successully' => 'Chia sẻ tài liệu thành công',
     'share_document_error' => 'Chia sẻ tài liệu thất bại',
+    'share_experience_successully' => 'Chia sẻ kinh nghiệm thành công',
+    'share_experience_error' => 'Chia sẻ kinh nghiệm thất bại',
     'notification_change_pass' => 'Đổi mật khẩu thành công, xin vui lòng đăng nhập lại!',
 ];

@@ -137,6 +137,7 @@ Route::group([
     Route::get('/chia-se-kinh-nghiem', 'ShareController@shareExperience')->name('share_experience');
     Route::get('/download_file_share/{url}', 'ShareController@downloadFileShare');
     Route::post('/add_document', 'ShareController@addDocument')->name('add_document');
+    Route::post('/add_experience', 'ShareController@addExperience')->name('add_experience');
     // create day off
     Route::post('/ngay-nghi/create', 'UserController@dayOffCreate')->name('day_off_create');
 

@@ -48,7 +48,26 @@ class ShareController extends Controller
     }
 
     public function shareExperience(){
-        $list_document = Share::where('type','=', SHARE_DUCOMMENT)->orderBy('created_at','desc')->paginate(15);
-        return view('end_user.share.share_experience', compact('list_document'));
-    }               
+        $list_experience = Share::where('type','=', SHARE_EXPERIENCE)->orderBy('created_at','desc')->paginate(15);
+        return view('end_user.share.share_experience', compact('list_experience'));
+    }
+
+    public function addExperience(request $request){
+        $content = trim($request->content);
+        if(!empty($content)){
+            $share = new Share;
+            $share->content = $content;
+            $share->creator_id = Auth::user()->id;
+            $share->type = SHARE_EXPERIENCE;
+            if($share->save()){
+                flash()->success(__l('share_experience_successully'));
+            }else{
+                flash()->error(__l('share_experience_error'));
+            }
+        }else{
+            flash()->error(__l('Bạn cần nhập chia sẻ kinh nghiệm'));
+        }                 
+        return redirect()->route('share_experience');
+    }
+
 }

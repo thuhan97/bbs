@@ -430,6 +430,28 @@ if (!function_exists('to_work_time')) {
         return $time;
     }
 }
+if (!function_exists('to_work_time_name')) {
+    /**
+     *
+     *
+     * @return string
+     */
+    function to_work_time_name($startAt, $endAt, &$type = 0)
+    {
+        if ($startAt >= SWITCH_TIME) {
+            $type = 2;
+            return 'Chiều';
+        } else if ($startAt == OFF_TIME) {
+            $type = 0;
+            return 'Nghỉ';
+        } else if ($endAt <= SWITCH_TIME) {
+            $type = 1;
+            return 'Sáng';
+        }
+        $type = 3;
+        return "Cả ngày";
+    }
+}
 
 /**
  * @param $number

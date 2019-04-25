@@ -2,32 +2,52 @@
     DS
 @endsection
 <div class="table-responsive list-records">
-    <table class="table table-hover table-bordered dataTable">
+    <table id="worktime-table" class="table table-hover table-bordered dataTable">
         <thead>
-        <th style="width: 10px;">
-            <button type="button" class="btn btn-default btn-sm checkbox-toggle"><i class="fa fa-square-o"></i></button>
-        </th>
-        <th class="no-wap" style="width: 130px;">
-            Mã nhân viên
-            {!! __admin_sortable('staff_code') !!}
-        </th>
-        <th style="width: 180px;">
-            Họ và tên
-            {!! __admin_sortable('name') !!}
-        </th>
-        <th style="width: 130px;">Chức vụ
-            {!! __admin_sortable('jobtitle_id') !!}
-        </th>
-        <th style="width: 130px;">Loại hợp đồng
-            {!! __admin_sortable('contract_type') !!}
-        </th>
-        <th>
-            Lịch làm việc
-        </th>
-        <th style="width: 150px;">Ngày tạo
-            {!! __admin_sortable('created_at') !!}
-        </th>
-        <th style="width: 100px;">Chức năng</th>
+        <tr>
+            <th rowspan="2" style="width: 10px;">
+                <button type="button" class="btn btn-default btn-sm checkbox-toggle"><i class="fa fa-square-o"></i>
+                </button>
+            </th>
+            <th rowspan="2" class="no-wap" style="width: 130px;">
+                Mã nhân viên
+                {!! __admin_sortable('staff_code') !!}
+            </th>
+            <th rowspan="2" style="width: 180px;">
+                Họ và tên
+                {!! __admin_sortable('name') !!}
+            </th>
+            <th rowspan="2" style="width: 130px;">Chức vụ
+                {!! __admin_sortable('jobtitle_id') !!}
+            </th>
+            <th rowspan="2" style="width: 130px;">Loại hợp đồng
+                {!! __admin_sortable('contract_type') !!}
+            </th>
+            <th colspan="5" class="text-center">
+                Lịch đăng ký
+            </th>
+            <th rowspan="2" style="width: 150px;">Ngày tạo
+                {!! __admin_sortable('created_at') !!}
+            </th>
+            <th rowspan="2" style="width: 100px;">Chức năng</th>
+        </tr>
+        <tr>
+            <th class="text-center" style="width: 100px">
+                Thứ 2
+            </th>
+            <th class="text-center" style="width: 100px">
+                Thứ 3
+            </th>
+            <th class="text-center" style="width: 100px">
+                Thứ 4
+            </th>
+            <th class="text-center" style="width: 100px">
+                Thứ 5
+            </th>
+            <th class="text-center" style="width: 100px">
+                Thứ 6
+            </th>
+        </tr>
         </thead>
         <tbody>
         @foreach ($records as $record)
@@ -52,7 +72,21 @@
                 </td>
                 <td>{{ JOB_TITLES[$record->jobtitle_id] ?? '' }}</td>
                 <td>{{ CONTRACT_TYPES_NAME[$record->contract_type] ?? '' }}</td>
-                <td></td>
+                @if($record->workTimeRegisters->isNotEmpty())
+                    @foreach($record->workTimeRegisters as $time)
+                        <?php
+                        $text = to_work_time_name($time->start_at, $time->end_at, $type);
+                        ?>
+                        <td class="text-center bg-type-{{$type}}">{{$text}}</td>
+                    @endforeach
+                @else
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                @endif
+
                 <td class="text-right">{{ $record->created_at->format('Y-m-d') }}</td>
 
                 <!-- we will also add show, edit, and delete buttons -->
@@ -77,9 +111,3 @@
         </tbody>
     </table>
 </div>
-@push('footer-scripts')
-    <script>
-        $(function () {
-        })
-    </script>
-@endpush

@@ -175,7 +175,7 @@ class User extends Authenticatable implements JWTSubject
 
     public function workTimeRegisters()
     {
-        return $this->hasMany(WorkTimeRegister::class);
+        return $this->hasMany(WorkTimeRegister::class)->where('day', '!=', 7);
     }
 
 }

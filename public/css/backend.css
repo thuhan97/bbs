@@ -527,3 +527,21 @@ th.stt {
     background: #ccc;
     border-radius: 4px;
 }
+
+#worktime-table .bg-type-0 {
+    background: grey;
+    color: white;
+}
+
+#worktime-table .bg-type-1 {
+    background: #cbffca;
+}
+
+#worktime-table .bg-type-2 {
+    background: #ffdb98;
+}
+
+#worktime-table .bg-type-3 {
+    color: white;
+    background: green;
+}

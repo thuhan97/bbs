@@ -320,10 +320,13 @@ class WorkTimeService extends AbstractService implements IWorkTimeService
                 $model = $model->where('type', $type);
             }
         }
-        $userId = $request->get('user_id');
-        if ($userId) {
-            $model = $model->where('user_id', $userId);
+        if (!$request->search) {
+            $userId = $request->get('user_id');
+            if ($userId) {
+                $model = $model->where('user_id', $userId);
+            }
         }
+
         if ($forExport) {
             $model->orderBy('user_id')->orderBy('work_day');
         } else if ($request->has('sort')) {

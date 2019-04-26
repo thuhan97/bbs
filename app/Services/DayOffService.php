@@ -296,23 +296,9 @@ class DayOffService extends AbstractService implements IDayOffService
 
     public function statisticalDayOffExcel($ids)
     {
-
-
-
-         $dayoff[] = [];
-        /* foreach ($datas as $data) {
-             foreach ([109, 14,15] as $key => $value) {
-                 if ($data->user_id == $value) {
-                     $dayoff[$value][] = [];
-                 }
-             }
-         }*/
-
-
             $result = [];
-
-            $users = User::whereIn('id', [109, 15, 14])->get();
-            $dayOffMonth=$this->statisticalDayOff([109,15,14],null);
+            $users = User::whereIn('id', $ids)->get();
+            $dayOffMonth=$this->statisticalDayOff($ids,null);
             foreach ($users as $keys => $user) {
                 $dayOffPreYear=RemainDayoff::where('user_id', $user->id)->where('year', date('Y') - 1)->first();
                 $dayOffYear=RemainDayoff::where('user_id', $user->id)->where('year', date('Y'))->first();
@@ -320,30 +306,31 @@ class DayOffService extends AbstractService implements IDayOffService
                 $dayOffYearTotal=$dayOffYear->remain ?? 0;
                 foreach ($dayOffMonth as $key =>$value){
                     if ($value->user_id == $user->id){
-                        $month1= $value->month == 1 ? $value->total + $value->total_absent : ( $month1 ?? 0 ) ;
-                        $month2= $value->month == 2 ? $value->total + $value->total_absent : ( $month2 ?? 0 ) ;
-                        $month3= $value->month == 3 ? $value->total + $value->total_absent : ( $month3 ?? 0 ) ;
-                        $month4= $value->month == 4 ? $value->total + $value->total_absent : ( $month4 ?? 0 ) ;
-                        $month5= $value->month == 5 ? $value->total + $value->total_absent : ( $month5 ?? 0 ) ;
-                        $month6= $value->month == 6 ? $value->total + $value->total_absent : ( $month6 ?? 0 ) ;
-                        $month7= $value->month == 7 ? $value->total + $value->total_absent : ( $month7 ?? 0 ) ;
-                        $month8= $value->month == 8 ? $value->total + $value->total_absent : ( $month8 ?? 0 ) ;
-                        $month9= $value->month == 8 ? $value->total + $value->total_absent : ( $month9 ?? 0 ) ;
-                        $month10= $value->month == 10 ? $value->total + $value->total_absent : ( $month10 ?? 0 ) ;
-                        $month11= $value->month == 11 ? $value->total + $value->total_absent : ( $month11 ?? 0 ) ;
-                        $month12= $value->month == 12 ? $value->total + $value->total_absent : ( $month12 ?? 0 ) ;
+                        $month1= $value->month == 1 ? ( $user->sex == 1 && $value->total >=2 ? $value->total + $value->total_absent -1:$value->total + $value->total_absent) : ( $month1 ?? '0' ) ;
+                        $month2= $value->month == 2 ? ( $user->sex == 1 && $value->total >=2 ? $value->total + $value->total_absent -1:$value->total + $value->total_absent) : ( $month2 ?? '0' ) ;
+                        $month3= $value->month == 3 ? ( $user->sex == 1 && $value->total >=2 ? $value->total + $value->total_absent -1:$value->total + $value->total_absent) : ( $month3 ?? '0' ) ;
+                        $month4= $value->month == 4 ? ( $user->sex == 1 && $value->total >=2 ? $value->total + $value->total_absent -1:$value->total + $value->total_absent) : ( $month4 ?? '0' ) ;
+                        $month5= $value->month == 5 ? ( $user->sex == 1 && $value->total >=2 ? $value->total + $value->total_absent -1:$value->total + $value->total_absent) : ( $month5 ?? '0' ) ;
+                        $month6= $value->month == 6 ? ( $user->sex == 1 && $value->total >=2 ? $value->total + $value->total_absent -1:$value->total + $value->total_absent) : ( $month6 ?? '0' ) ;
+                        $month7= $value->month == 7 ? ( $user->sex == 1 && $value->total >=2 ? $value->total + $value->total_absent -1:$value->total + $value->total_absent) : ( $month7 ?? '0' ) ;
+                        $month8= $value->month == 8 ? ( $user->sex == 1 && $value->total >=2 ? $value->total + $value->total_absent -1:$value->total + $value->total_absent) : ( $month8 ?? '0' ) ;
+                        $month9= $value->month == 8 ? ( $user->sex == 1 && $value->total >=2 ? $value->total + $value->total_absent -1:$value->total + $value->total_absent) : ( $month9 ?? '0' ) ;
+                        $month10= $value->month == 10 ? ( $user->sex == 1 && $value->total >=2 ? $value->total + $value->total_absent -1:$value->total + $value->total_absent) : ( $month10 ?? '0' ) ;
+                        $month11= $value->month == 11 ? ( $user->sex == 1 && $value->total >=2 ? $value->total + $value->total_absent -1:$value->total + $value->total_absent) : ( $month11 ?? '0' ) ;
+                        $month12= $value->month == 12 ? ( $user->sex == 1 && $value->total >=2 ? $value->total + $value->total_absent -1:$value->total + $value->total_absent): ( $month12 ?? '0' ) ;
                     }
-
                 }
                 $result[] = [
 
                     'stt' => $keys + 1,
                     'name' => $user->name,
                     'staff_code' => $user->staff_code,
+                    'sex' => $user->sex== 0 ? 'Nam' : 'Nữ',
                     'part_time' => $user->contract_type == 2 ? 'V' : '',
-                    'strat_date' => $user->contract_type,
-                    'contract_type_0_date' => '',
-                    'remain_day_off_pre_year' => $dayOffPreYearTotal ?? '',
+                    'probation_at'=>$user->probation_at ?? '' ,
+                    'strat_date' => $user->start_date,
+                    'remain_day_off_current_year' => $dayOffYearTotal->remain_increment ?? '0',
+                    'remain_day_off_pre_year' => $dayOffPreYear->remain_pre_year ?? '0',
                     'day_off_month_Jan' => $month1,
                     'day_off_month_Feb' => $month2 ,
                     'day_off_month_Mar' => $month3 ,
@@ -356,18 +343,16 @@ class DayOffService extends AbstractService implements IDayOffService
                     'day_off_month_Oct' => $month10,
                     'day_off_month_Nov' => $month11 ,
                     'day_off_month_Dec' => $month12,
-                    'day_off_mode'=>1,
-                    'day_off_remain_total'=>$dayOffPreYearTotal + $dayOffYearTotal,
-                    'day_off_end_year_pre'=>$dayOffPreYearTotal + $dayOffYearTotal,
-                    'day_off_end_year_reset'=>$dayOffPreYearTotal,
-                    'day_off_turn_next_year'=>$dayOffYearTotal,
-
-
+                    'day_off_total' => $month1+$month3+$month4+$month5+$month6+$month7+$month8+$month9+$month10+$month11+$month1+$month2,
+                    'day_off_regulation' => '',
+                    'day_off_remain_total'=>$dayOffPreYearTotal + $dayOffYearTotal == 0 ? '0':$dayOffPreYearTotal + $dayOffYearTotal,
+                    'day_off_end_year_reset'=>$dayOffPreYearTotal== 0 ? '0':$dayOffPreYearTotal,
+                    'day_off_turn_next_year'=>$dayOffYearTotal == 0 ? '0':$dayOffYearTotal,
 
                 ];
 
             }
-        dd($result);
+        return $result;
 
     }
 

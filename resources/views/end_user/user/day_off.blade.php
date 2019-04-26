@@ -12,20 +12,16 @@
        $dataDayOff= $dayOff ?? $availableDayLeft['data'];
     @endphp
     <form action="{{ route('day_off') }}" method="get" id="form-search">
-    <div class="row mb-5 ml-3">
-        <div class="col-3 position-relative">
-            <div class="row border-radius-1" id="option-calendar" style="height: 50px">
-                <div class="col-3 p-0 m-auto">
-                    {{ Form::select('year', get_years(), $year ?? date('Y') , ['class'=>'yearselect browser-default custom-select w-100 border-0 select_year option-select p-1']) }}
-                </div>
-                <div class="col-9 p-0 m-auto pr-2 ">
-                    {{ Form::select('month', MONTH, $month ?? date('m'), ['class' => 'browser-default custom-select w-100 month option-select','placeholder'=>'Chọn tháng']) }}
-                </div>
+        <div class="row mb-3">
+            <div class="col-6 col-sm-2 col-xl-1 no-padding-right">
+                {{ Form::select('year', get_years(), $year ?? date('Y') , ['class'=>'yearselect browser-default custom-select w-100 border-0 select_year option-select p-1']) }}
+            </div>
+            <div class="col-6 col-sm-4 col-xl-2 no-padding-left">
+                {{ Form::select('month', MONTH, $month ?? date('m'), ['class' => 'browser-default custom-select w-100 month option-select','placeholder'=>'Chọn tháng']) }}
             </div>
         </div>
-    </div>
-    <div class="container-fluid col-12 row border-bottom-2 mb-3" style="position: relative;">
-        <div class="col-sm-3 col-md-6 col-lg-3 position-relative">
+        <div class="d-none d-xl-flex container-fluid col-12 row border-bottom-2 mb-3" style="position: relative;">
+            <div class="col-sm-3 col-md-6 col-lg-3 position-relative">
             <span class="card bg-primary border-radius-2">
                 <div class="card-body row d-flex justify-content-center px-0 ml-xxl-2">
                     <div class="media ml-2 d-md-flex">
@@ -45,10 +41,10 @@
 
                 </div>
             </span>
-        </div>
-        <div class="col-sm-3 col-md-6 col-lg-3 position-relative ">
+            </div>
+            <div class="col-sm-3 col-md-6 col-lg-3 position-relative ">
             <span
-               class="card bg-success border-radius-2">
+                    class="card bg-success border-radius-2">
                 <div class="card-body row d-flex justify-content-center px-0 ml-xxl-2">
                     <div class="media mr-2 d-md-flex">
                             <span id="dayoff-option-header-2"
@@ -67,10 +63,10 @@
 
                 </div>
             </span>
-        </div>
-        <div class="col-sm-3 col-md-6 col-lg-3 position-relative">
+            </div>
+            <div class="col-sm-3 col-md-6 col-lg-3 position-relative">
             <span class="card border-radius-2"
-               id="bg-yellow">
+                  id="bg-yellow">
                 <div class="card-body  row d-flex justify-content-center px-0 ml-xxl-2">
                     <div class="media mr-2  d-md-flex">
                             <span id="dayoff-option-header-3"
@@ -88,8 +84,8 @@
 
                 </div>
             </span>
-        </div>
-        <div class="col-sm-3 col-md-6 col-lg-3 position-relative pr-0" id="show-modal">
+            </div>
+            <div class="col-sm-3 col-md-6 col-lg-3 position-relative pr-0 show-modal">
             <span class="card bg-danger border-radius-2">
                 <div class="card-body  row d-flex justify-content-center px-0 ml-xxxl-1">
                     <div class="media d-md-flex">
@@ -108,53 +104,60 @@
 
                 </div>
             </span>
+            </div>
         </div>
-    </div>
-    <div class="container-fluid col-12 flex-row-reverse d-flex">
-        <span class=" btn-secondary mr-4" id="btn-select" >
+        <div class="">
+            <div class="row">
+                <div class="col-sm-8 col-md-8">
+
+                </div>
+                <div class="col-sm-4 text-right col-md-4">
+                    <div class="row">
+                        <div class="col-12 col-sm-6">
+                            <?php
+                            $user = \Illuminate\Support\Facades\Auth::user();
+                            ?>
+                            @if($user->jobtitle_id >= \App\Models\Report::MIN_APPROVE_JOBTITLE)
+                                <a href="{{route('day_off_approval')}}" class="btn btn-primary" type="button">
+                                    {{__l('day_off_approval')}}
+                                </a>
+                            @endif
+                        </div>
+                        <div class="d-none d-sm-block col-sm-6">
+           <span class=" btn-secondary" id="btn-select">
             {{ Form::select('status_search', SHOW_DAY_OFFF, $statusSearch ?? ALL_DAY_OFF, ['class' => 'browser-default custom-select mt-2 w-100 month option-select select-search','placeholder'=>'']) }}
         </span>
-
-        <?php
-        $user = \Illuminate\Support\Facades\Auth::user();
-        ?>
-        @if($user->jobtitle_id >= MANAGER_ROLE)
-            <div class="row d-flex flex-row pr-4 mr-1">
-                <div class="d-flex flex-center ">
+                        </div>
+                    </div>
                 </div>
-                <a href="{{route('day_off_approval')}}" class="btn btn-primary" type="button">
-                    {{__l('day_off_approval')}}
-                </a>
             </div>
-        @endif
-    </div>
+        </div>
     </form>
     <br>
-    <br>
-    <div class="container-fluid col-12">
+    <div class="">
         <table class="table table-bordered ">
             <thead class="grey lighten-2">
             <tr>
-                <th class="text-center">STT</th>
+                <th class="d-none d-md-table-cell text-center">STT</th>
                 <th class="text-center">Từ ngày</th>
-                <th class="text-center">Tới ngày</th>
+                <th class="d-none d-md-table-cell text-center">Tới ngày</th>
                 <th class="text-center">Tiêu đề</th>
-                <th class="text-center">Ngày nghỉ</th>
+                <th class="d-none d-md-table-cell text-center">Ngày được duyệt</th>
                 <th class="text-center">Phê duyệt</th>
-                <th class="text-center">Xem thêm</th>
+                <th class="d-none d-md-table-cell text-center">Xem thêm</th>
             </tr>
             </thead>
             <tbody>
 
             @foreach ($dataDayOff as $keys => $absence)
                 <tr class="dayoffEU_record">
-                    <th class="text-center" scope="row">
+                    <th class="d-none d-md-table-cell text-center" scope="row">
                         {!! ((($dataDayOff->currentPage()*PAGINATE_DAY_OFF)-PAGINATE_DAY_OFF)+1)+$keys !!}
                     </th>
                     <td class="text-center">{{$absence->start_date}}</td>
-                    <td class="text-center">{{$absence->end_date}}</td>
+                    <td class="d-none d-md-table-cell text-center">{{$absence->end_date}}</td>
                     <td class="text-center">{{ $absence->reason  }}</td>
-                    <td class="text-center">{{!!!$absence->number_off ? 'Đang duyệt' : checkNumber($absence->number_off).' ngày'}}
+                    <td class="d-none d-md-table-cell text-center">{{!!!$absence->number_off ? 'Đang duyệt' : checkNumber($absence->number_off).' ngày'}}
 
                     </td>
                     <td class="text-center">
@@ -166,9 +169,10 @@
                             <i class="fas fa-frown fa-2x text-danger"></i>
                         @endif
                     </td>
-                    <td class="text-center">
+                    <td class=" d-none d-md-table-cell text-center">
                         <p class=" btn-sm m-0 detail-dayoff
-                            @if($keys ==0) text-primary  @endif" style="cursor: pointer" attr="{{ $absence->id }}">Chi tiết >></p>
+                            @if($keys ==0) text-primary  @endif" style="cursor: pointer" attr="{{ $absence->id }}">Chi
+                            tiết >></p>
                     </td>
                 </tr>
             @endforeach
@@ -245,7 +249,6 @@
          aria-labelledby="myModalLabel"
          aria-hidden="true">
 
-
         <div class="modal-dialog modal-center" role="document">
             <div class="modal-content" id="bg-img" style="background-image: url({{ asset('img/font/xin_nghi.png') }})">
                 <div class="modal-header text-center border-bottom-0 p-3">
@@ -283,16 +286,30 @@
                         </div>
                         <div class="mb-2">
                             <div class="row">
-                                <div class="form-group col-6 m-0">
-                                    <label class=" text-w-400" for="inputCity">Ngày bắt đầu nghỉ*</label>
+                                <div class="form-group col-sm-6 m-0">
+                                    <label class=" text-w-400" for="inputCity">Ngày bắt đầu*</label>
+                                    <?php
+                                    $hours = date('H:i');
+                                    if ($hours > '12:00') {
+                                        //tomorrow
+                                        $autoDate = date('Y-m-d 08:00', strtotime('tomorrow'));
+
+                                    } else if ($hours > '07:00') {
+                                        //affternoon
+                                        $autoDate = date('Y-m-d 12:00');
+                                    } else {
+                                        //today
+                                        $autoDate = date('Y-m-d 08:00');
+                                    }
+                                    ?>
                                     <input type="text"
                                            class="form-control select-item {{ $errors->has('start_at') ? ' has-error' : '' }}"
                                            id="start_date" autocomplete="off" name="start_at"
-                                           value="{{  old('start_at') }}" readonly="readonly">
+                                           value="{{ old('start_at', $autoDate) }}" readonly="readonly">
                                 </div>
                                 <!-- Default input -->
-                                <div class="form-group col-6 m-0">
-                                    <label class="ml-3 text-w-400" for="inputZip">Tới ngày*</label>
+                                <div class="form-group col-sm-6 m-0">
+                                    <label class="text-w-400" for="inputZip">Tới ngày*</label>
                                     <input type="text"
                                            class="form-control select-item {{ $errors->has('end_at') ? ' has-error' : '' }}"
                                            id="end_date" autocomplete="off" name="end_at"
@@ -345,11 +362,6 @@
                 </div>
                 <div class="modal-body mx-3 mt-0 pb-0">
                     <div class="mb-3">
-                        <label class="ml-3 text-d-bold" for="exampleFormControlTextarea5">Tên nhân
-                            viên</label>
-                        <div class="ml-3">{{ \Illuminate\Support\Facades\Auth::user()->name }}</div>
-                    </div>
-                    <div class="mb-3">
                         <!-- Default input -->
                         <label class="ml-3 text-d-bold" for="exampleForm2">Lý do:</label>
                         <div class="ml-3" id="title"></div>
@@ -368,7 +380,7 @@
                     <div class="mb-3 ml-3" id="remove-numoff">
                         <!-- Default input -->
                         <label class="text-d-bold" for="exampleForm2">Thời gian được tính:</label>
-                        <div class="ml-3" id="number_off"></div>
+                        <strong id="number_off"></strong> ngày
                     </div>
                     <div class="mb-4 pb-2">
                         <div class="row">
@@ -431,14 +443,14 @@
     @endif
 
     @if(session()->has('day_off_success'))
-            <script>
-                swal({
-                    title: "Thông báo!",
-                    text: "Bạn đã gửi đơn thành công!",
-                    icon: "success",
-                    button: "Đóng",
-                });
-            </script>
+        <script>
+            swal({
+                title: "Thông báo!",
+                text: "Bạn đã gửi đơn thành công!",
+                icon: "success",
+                button: "Đóng",
+            });
+        </script>
     @endif
 
     @if(session()->has('delete_day_off'))
@@ -520,7 +532,7 @@
             var today = new Date();
             var mon = today.getMonth() + 1;
             var date = today.getFullYear() + '-' + mon + '-' + today.getDate()
-            $('#show-modal').on('click', function () {
+            $('.show-modal').on('click', function () {
                 /*$('.mannager_id , .reason_id , #start_date , #end_date ').val('');
                 $('.mannager_id,.reason_id').removeAttr('readonly');
                 $('.mannager_id , .reason_id ').removeAttr('disabled');
@@ -530,6 +542,10 @@
                 $('#create_day_off').html('<button class="btn btn-primary btn-send">GỬI ĐƠN</button>');*/
                 $('#modal-form').modal('show');
             });
+
+            @if($autoShowModal)
+            $('#modal-form').modal('show');
+            @endif
 
             $('#start_date').datetimepicker({
                 hoursDisabled: '0,1,2,3,4,5,6,7,18,19,20,21,22,23',

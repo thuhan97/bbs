@@ -34,7 +34,7 @@
             <tr>
                 <td><input type="checkbox" name="ids[]" value="{{ $record->id }}" class="square-blue chkDelete"></td>
                 <td class="table-text">
-                    <a href="{{ $userLink }}">{{ $record->user->name }}</a>
+                    <a href="{{ $userLink }}">{{ $record->user->name ?? '' }}</a>
                 </td>
                 <td>
                     @foreach(VACATION as $key => $conetnt)

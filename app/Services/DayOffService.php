@@ -22,7 +22,7 @@ class DayOffService extends AbstractService implements IDayOffService
     /**
      * DayOffService constructor.
      *
-     * @param \App\Models\DayOff $model
+     * @param \App\Models\DayOff                            $model
      * @param \App\Repositories\Contracts\IDayOffRepository $repository
      */
     public function __construct(DayOff $model, IDayOffRepository $repository)
@@ -35,10 +35,10 @@ class DayOffService extends AbstractService implements IDayOffService
      * Query a list of day off
      *
      * @param Request $request
-     * @param array $moreConditions
-     * @param array $fields
-     * @param string $search
-     * @param int $perPage
+     * @param array   $moreConditions
+     * @param array   $fields
+     * @param string  $search
+     * @param int     $perPage
      *
      * @return mixed
      */
@@ -97,6 +97,7 @@ class DayOffService extends AbstractService implements IDayOffService
                 ->select('*', DB::raw('DATE_FORMAT(start_at, "%d/%m/%Y (%H:%i)") as start_date'),
                     DB::raw('DATE_FORMAT(end_at, "%d/%m/%Y (%H:%i)") as end_date'),
                     DB::raw('DATE_FORMAT(approver_at, "%d/%m/%Y (%H:%i)") as approver_date'))
+                ->orderBy('id', 'desc')
                 ->paginate(PAGINATE_DAY_OFF),
             'total' => $remainDay->previous_year + $remainDay->current_year,
             'total_previous' => $remainDay->previous_year,
@@ -242,6 +243,7 @@ class DayOffService extends AbstractService implements IDayOffService
 
     /**
      * @param integer $status
+     *
      * @return collection
      */
     public function searchStatus($year, $month, $status)

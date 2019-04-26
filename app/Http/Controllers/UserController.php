@@ -3,12 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\Admin\WorkTimeRequest;
+use App\Http\Requests\AskPermissionRequest;
 use App\Http\Requests\CreateDayOffRequest;
 use App\Http\Requests\DayOffRequest;
 use App\Http\Requests\ProfileRequest;
 use App\Models\DayOff;
 use App\Models\OverTime;
-use App\Models\RemainDayoff;
 use App\Models\User;
 use App\Models\WorkTime;
 use App\Models\WorkTimesExplanation;
@@ -16,11 +16,9 @@ use App\Repositories\Contracts\IDayOffRepository;
 use App\Services\Contracts\IDayOffService;
 use App\Services\Contracts\IUserService;
 use App\Transformers\DayOffTransformer;
-use Carbon\Carbon;
 use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
 
 class UserController extends Controller
 {
@@ -104,6 +102,7 @@ class UserController extends Controller
      * Show work time calendar
      *
      * @param Request $request
+     *
      * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
      * @throws \Illuminate\Validation\ValidationException
      */
@@ -171,6 +170,7 @@ class UserController extends Controller
      * Create or edit work time calendar
      *
      * @param Request $request
+     *
      * @return \Illuminate\Http\RedirectResponse
      */
     public function dayOffCreateCalendar(WorkTimeRequest $request)
@@ -196,18 +196,40 @@ class UserController extends Controller
 
     public function askPermission()
     {
-        $dataLeader = WorkTimesExplanation::select(
+        $query = WorkTimesExplanation::select(
             'work_times_explanation.work_day', 'work_times_explanation.type',
             'work_times_explanation.ot_type', 'work_times_explanation.note',
-            'work_times_explanation.user_id','ot_times.creator_id','ot_times.id as id_ot_time')
-            ->leftjoin('ot_times', 'ot_times.creator_id', '=', 'work_times_explanation.user_id')
-            ->whereYear('work_times_explanation.work_day', date('Y'))
-            ->groupBy('work_times_explanation.work_day', 'work_times_explanation.type',
-                'work_times_explanation.ot_type', 'work_times_explanation.note', 'work_times_explanation.user_id','ot_times.creator_id')
+            'work_times_explanation.user_id', 'ot_times.creator_id', 'ot_times.id as id_ot_time')
+            ->leftJoin('ot_times', function ($join) {
+                $join->on('ot_times.creator_id', '=', 'work_times_explanation.user_id')
+                    ->on('ot_times.work_day', '=', 'work_times_explanation.work_day');
+            })
+            ->whereYear('work_times_explanation.work_day', date('Y'));
+        $queryLeader = clone $query;
+        $dataLeader = $queryLeader->groupBy('work_times_explanation.work_day', 'work_times_explanation.type',
+            'work_times_explanation.ot_type', 'work_times_explanation.note', 'work_times_explanation.user_id', 'ot_times.creator_id')
+            ->where('user_id', '!=', Auth::id())
             ->orderBy('work_times_explanation.work_day', 'desc')
-            ->paginate(PAGINATE_DAY_OFF, ['*'], 'Leader-page');
-        $datas = WorkTimesExplanation::where('user_id', Auth::id())->whereYear('work_day', date('Y'))->orderBy('work_day', 'desc')->paginate(PAGINATE_DAY_OFF, ['*'], 'user-page');
+            ->paginate(PAGINATE_DAY_OFF, ['*'], 'approver-page');
+
+        $datas = $query->where('user_id', Auth::id())
+            ->groupBy('work_times_explanation.work_day', 'work_times_explanation.type',
+            'work_times_explanation.ot_type', 'work_times_explanation.note', 'work_times_explanation.user_id', 'ot_times.creator_id')
+            ->orderBy('work_times_explanation.work_day', 'desc')
+            ->paginate(PAGINATE_DAY_OFF, ['*'], 'user-page');
+
         return view('end_user.user.ask_permission', compact('datas', 'dataLeader'));
+    }
+
+    public function askPermissionCreate(AskPermissionRequest $request)
+    {
+        WorkTimesExplanation::create([
+            'user_id' => Auth::id(),
+            'work_day' => $request['work_day'],
+            'type' => $request['type'],
+            'note' => $request['note'],
+        ]);
+        return back()->with('create_permission_success', '');
     }
 
     public function approved(Request $request)
@@ -220,7 +242,7 @@ class UserController extends Controller
             'approver_at' => now(),
             'work_day' => $request['work_day'],
         ]);
-        return back();
+        return back()->with('approver_success', '');
     }
 
     //
@@ -234,15 +256,16 @@ class UserController extends Controller
         $countDayOff = $this->userDayOffService->countDayOffUserLogin();
         $userManager = $this->userService->getUserManager();
         $availableDayLeft = $this->userDayOffService->getDayOffUser(Auth::id());
-        if (isset($request->status_search) || isset($request->year)|| isset($request->month)) {
-            $year=$request->year;
-            $month=$request->month;
-            $statusSearch=$request->status_search;
+        $autoShowModal = $request->has('t');
+        if (isset($request->status_search) || isset($request->year) || isset($request->month)) {
+            $year = $request->year;
+            $month = $request->month;
+            $statusSearch = $request->status_search;
 
-            $dayOff = $this->userDayOffService->searchStatus($year,$month,$statusSearch);
-            return view('end_user.user.day_off', compact('listDate', 'paginateData', 'availableDayLeft', 'recordPerPage', 'approve', 'userManager', 'dayOff', 'statusSearch', 'countDayOff','year','month'));
+            $dayOff = $this->userDayOffService->searchStatus($year, $month, $statusSearch);
+            return view('end_user.user.day_off', compact('availableDayLeft', 'userManager', 'dayOff', 'statusSearch', 'countDayOff', 'year', 'month', 'autoShowModal'));
         }
-        return view('end_user.user.day_off', compact('listDate', 'paginateData', 'availableDayLeft', 'recordPerPage', 'approve', 'userManager', 'countDayOff'));
+        return view('end_user.user.day_off', compact('availableDayLeft', 'userManager', 'countDayOff', 'autoShowModal'));
     }
 
     public function dayOffListApprovalAPI(Request $request)
@@ -335,6 +358,7 @@ class UserController extends Controller
      * Create or edit day off
      *
      * @param Request $request
+     *
      * @return \Illuminate\Http\RedirectResponse
      */
     public function dayOffCreate(createDayOffRequest $request)
@@ -344,7 +368,7 @@ class UserController extends Controller
         $dayOff->fill($request->all());
         $dayOff->user_id = Auth::id();
         $dayOff->save();
-        return back()->with('day_off_success', '');
+        return redirect(route('day_off'))->with('day_off_success', '');
     }
 
     public function dayOffSearch(Request $request)
@@ -378,15 +402,15 @@ class UserController extends Controller
             $dayOff->save();
             return back()->with('close', '');
         }
-        if ($dayOff->number_off){
-            $numOff=checkNumber($dayOff->number_off);
+        if ($dayOff->number_off) {
+            $numOff = checkNumber($dayOff->number_off);
         }
         return response()->json([
             'data' => $dayOff,
-            'numoff'=> $numOff ?? null,
-            'approver'=>User::findOrFail($dayOff->approver_id)->name,
-            'userdayoff'=>User::findOrFail($dayOff->user_id)->name
-    ]);
+            'numoff' => $numOff ?? null,
+            'approver' => User::findOrFail($dayOff->approver_id)->name,
+            'userdayoff' => User::findOrFail($dayOff->user_id)->name
+        ]);
     }
 
     public function editDayOffDetail(Request $request, $id)
@@ -404,18 +428,15 @@ class UserController extends Controller
         if (isset($request->day_off_id)) {
             DayOff::findOrFail($request->day_off_id)->delete();
             return back()->with('delete_day_off', '');
-        }else if (isset($request->id_close)){
-            $dayOff=DayOff::findOrFail($request->id_close);
-            if ($dayOff->status == STATUS_DAY_OFF['abide']){
+        } else if (isset($request->id_close)) {
+            $dayOff = DayOff::findOrFail($request->id_close);
+            if ($dayOff->status == STATUS_DAY_OFF['abide']) {
                 $dayOff->status = STATUS_DAY_OFF['noActive'];
                 $dayOff->save();
                 return back()->with('close', '');
             }
-        }else
-        {
+        } else {
             abort(404);
         }
-
     }
-
 }

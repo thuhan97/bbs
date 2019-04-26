@@ -4,7 +4,8 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-
+    <meta name="robots" content="noindex, nofollow, noarchive">
+    <link rel="icon" type="image/png" href="/favicon.png">
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
@@ -31,7 +32,7 @@
 @include('layouts.partials.frontend.header')
 
 <main id="app" class="pt-md-5">
-    <div class="container-fluid  mt-3 mt-md-5">
+    <div class="container-fluid  mt-3 mt-xl-5">
         @if(View::hasSection('breadcrumbs'))
             @yield('breadcrumbs')
         @endif
@@ -40,7 +41,11 @@
         @yield('content')
     </div>
 </main>
-
+<!-- editor -->
+<script src="{{cdn_asset('/js/tinymce/tinymce.min.js')}}"></script> 
+<script src="{{cdn_asset('/js/end-user-share-experience.js')}}"></script>
+@stack('footer-scripts')
+ 
 <!-- Scripts -->
 <script type="text/javascript" src="{{ cdn_asset('js/mdb.min.js') }}"></script>
 {{--<script type="text/javascript" src="{{ asset('js/mdb.min.js') }}"></script>--}}

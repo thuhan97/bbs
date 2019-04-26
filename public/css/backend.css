@@ -513,3 +513,35 @@ th.stt {
 .label-disable {
     background: grey;
 }
+
+.btn-table {
+    margin: 0 15px 10px;
+}
+
+.datepicker-days .today {
+    background: #5288ff;
+    border-radius: 4px;
+}
+
+.datepicker-days .active {
+    background: #ccc;
+    border-radius: 4px;
+}
+
+#worktime-table .bg-type-0 {
+    background: grey;
+    color: white;
+}
+
+#worktime-table .bg-type-1 {
+    background: #cbffca;
+}
+
+#worktime-table .bg-type-2 {
+    background: #ffdb98;
+}
+
+#worktime-table .bg-type-3 {
+    color: white;
+    background: green;
+}

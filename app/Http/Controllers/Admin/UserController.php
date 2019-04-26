@@ -161,4 +161,12 @@ class UserController extends AdminBaseController
         }
         return $this->redirectBackTo(route($this->getResourceRoutesAlias() . '.index'));
     }
+    public function getValuesToSave(Request $request, $record = null)
+    {
+        if (!isset($request->status)){
+            $request->merge(['status' => '0']);
+        }
+        return $request->only($this->getResourceModel()::getFillableFields());
+    }
+
 }

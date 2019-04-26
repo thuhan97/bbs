@@ -171,7 +171,8 @@ Route::group([
     Route::get('/thoi-gian-lam-viec-api', 'UserController@workTimeAPI')->name('work_time_api');
     Route::get('/ngay-nghi', 'UserController@dayOff')->name('day_off');
     Route::get('xin-phep','UserController@askPermission')->name('ask_permission');
-    Route::get('phe-duyet-xin-phep','UserController@approved')->name('approved');
+    Route::post('xin-phep/create','UserController@askPermissionCreate')->name('ask_permission.create');
+    Route::get('phe-duyet-xin-phep','UserController@approved')->name('approved')->middleware('can:manager');
    /* Route::post('/ngay-nghi/create-api', 'UserController@dayOffCreate_API')->name('day_off_createAPI');*/
     Route::get('/ngay-nghi/list-approval-api', 'UserController@dayOffListApprovalAPI')->name('day_off_listApprovalAPI');
     Route::get('/phe-duyet-ngay-nghi', 'UserController@dayOffApprove')->name('day_off_approval');
@@ -205,8 +206,11 @@ Route::group([
     Route::get('/du-an/{id}', 'ProjectController@detail')->where(['id' => '\d+'])->name('project_detail');
 
     Route::get('/chia-se-tai-lieu', 'ShareController@listShareDocument')->name('list_share_document');
+    Route::get('/chia-se-kinh-nghiem', 'ShareController@shareExperience')->name('share_experience');
     Route::get('/download_file_share/{url}', 'ShareController@downloadFileShare');
     Route::post('/add_document', 'ShareController@addDocument')->name('add_document');
+    Route::post('/add_experience', 'ShareController@addExperience')->name('add_experience');
+    Route::post('/add_comment', 'ShareController@addComment')->name('add_comment');
     // create day off
     Route::post('/ngay-nghi/create-calendar', 'UserController@dayOffCreateCalendar')->name('day_off_create_calendar');
     Route::post('/ngay-nghi/create-day-off', 'UserController@dayOffCreate')->name('day_off_create');

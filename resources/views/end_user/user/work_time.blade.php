@@ -72,6 +72,11 @@
             <strong>{{ $errors->first('work_day') }}</strong>
         </span>
     @endif
+    @if ($errors->has('ot_type'))
+        <span class="help-block mb-5 color-red">
+            <strong>{{ $errors->first('ot_type') }}</strong>
+        </span>
+    @endif
     <div class="modal fade myModal" id="modal-form" tabindex="-1"
          role="dialog" aria-labelledby="myModalLabel"
          aria-hidden="true">
@@ -163,14 +168,15 @@
                                             otherOT = '';
                                 }
                                 if (dataWorkDay) {
-                                    var workDay = dataWorkDay;
-                                    var id = dataID;
+                                    var workDay = dataWorkDay,
+                                        id = dataID,
+                                        dataReason = dataReason;
                                 } else {
-                                    var workDay = getDataTime;
-                                    var id = '';
+                                    var workDay = getDataTime,
+                                        id = '',
+                                        dataReason = '';
                                 }
                                 document.getElementById("div-reason").innerHTML =
-                                    '<div class="row col-md-12">' +
                                     '<div class="row col-md-12">' +
                                     '<div class="offset-5"><h3 class="">Xin OT</h3></div>' +
                                     '<div class="col-md-6 text-center">' +
@@ -181,7 +187,7 @@
                                     ' <input ' + otherOT + '  style="position: relative;opacity: 1;pointer-events: inherit" class="other-ot" type="radio" name="ot_type" id="other-ot" value="2">' +
                                     '<label for="other-ot">Lý do cá nhân</label>' +
                                     '</div>' +
-                                    '</div>' +
+                                    '<textarea class="form-control mt-4" name="reason" rows="6" placeholder="Nội dung bạn muốn gửi...">' + dataReason + '</textarea>' +
                                     '<input hidden name="id" value="' + id + '">' +
                                     '<input hidden name="work_day" value="' + workDay + '">' +
                                     '</div>';

@@ -1,7 +1,6 @@
-<div class="row">
-
+<div class="text-right">
+    <span class="btn btn-primary btn-table" id="exportExcel">Xuất file excel</span>
 </div>
-
 <div class="table-responsive list-records">
     <table class="table table-hover table-bordered">
         <thead>

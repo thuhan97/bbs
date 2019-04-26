@@ -19,12 +19,12 @@
             <!-- Links -->
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav mr-auto">
-                    <li class="d-none d-sm-block nav-item {{ \App\Utils::checkRoute(['work_time']) ? 'active': '' }}">
+                    <li class="d-none d-xl-block nav-item {{ \App\Utils::checkRoute(['work_time']) ? 'active': '' }}">
                         <a href="{{route('work_time')}}" class="nav-link waves-effect">{{__l('work_time')}}
                             <span class="sr-only">(current)</span>
                         </a>
                     </li>
-                    <li class="d-none d-sm-block nav-item {{ \App\Utils::checkRoute(['day_off']) ? 'active': '' }}">
+                    <li class="nav-item {{ \App\Utils::checkRoute(['day_off', 'day_off_approval']) ? 'active': '' }}">
                         <a href="{{route('day_off')}}" class="nav-link waves-effect">{{__l('day_off')}}
                             <span class="sr-only">(current)</span>
                         </a>
@@ -35,15 +35,15 @@
                             <span class="sr-only">(current)</span>
                         </a>
                     </li>
-                    <li class="nav-item {{ \App\Utils::checkRoute(['punish']) ? 'active': '' }}">
-                        <a href="{{route('punish')}}"
-                           class="nav-link waves-effect">{{__l('Punish')}}
-                            <span class="sr-only">(current)</span>
-                        </a>
-                    </li>
                     <li class="nav-item {{ \App\Utils::checkRoute(['ask_permission']) ? 'active': '' }}">
                         <a href="{{route('ask_permission')}}"
                            class="nav-link waves-effect">{{__l('ask_permission')}}
+                            <span class="sr-only">(current)</span>
+                        </a>
+                    </li>
+                    <li class="nav-item {{ \App\Utils::checkRoute(['punish']) ? 'active': '' }}">
+                        <a href="{{route('punish')}}"
+                           class="nav-link waves-effect">{{__l('Punish')}}
                             <span class="sr-only">(current)</span>
                         </a>
                     </li>

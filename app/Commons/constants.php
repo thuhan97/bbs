@@ -70,7 +70,11 @@ define('CONTRACT_TYPES_NAME', [
     3 => 'Thực tập',
 ]);
 
+
+define('STAFF', -3);
+define('BRSE', -2);
 define('HEAD_DEPARTMENT_ROLE', -1);
+define('HCNS', 0);
 define('TEAMLEADER_ROLE', 1);
 define('MANAGER_ROLE', 2);
 define('MASTER_ROLE', 3);
@@ -97,15 +101,15 @@ define('SEXS', [
 ]);
 
 define('WORK_TIME_QUICK_SELECT', [
-    0 => 'Full sáng',
-    1 => 'Full chiều',
+    1 => 'Full sáng',
+    2 => 'Full chiều',
 ]);
 
 define('WORK_TIME_SELECT', [
-    0 => 'Cả ngày',
+    0 => 'Không làm',
     1 => 'Sáng',
     2 => 'Chiều',
-    3 => 'Không làm'
+    3 => 'Cả ngày',
 ]);
 
 define('PART_OF_THE_DAY', [
@@ -167,24 +171,32 @@ define('ICONS_TYPES_FILES', [
     'jpg' => 'far fa-image',
     'jpeg' => 'far fa-image',
     'gif' => 'far fa-image',
+    'tiff' => 'far fa-image',
     'png' => 'far fa-image',
+    'psd' => 'far fa-image',
     'pdf' => 'fa fa-file-pdf',
     'doc' => 'fa fa-file-word',
     'docx' => 'fa fa-file-word',
     'zip' => 'fa fa-file-archive',
+    'jar' => 'fa fa-file-archive',
+    'rar' => 'fa fa-file-archive',
     'xlsx' => 'fa fa-file-excel',
     'xls' => 'fa fa-file-excel',
     'pptx' => 'fa fa-file-powerpoint',
     'mp4' => 'fas fa-file-video',
+    'm4v' => 'fas fa-file-video',
+    'avi' => 'fas fa-file-video',
     'mov' => 'fas fa-file-video',
     'mp3' => 'fas fa-file-audio',
     'php' => 'far fa-file-code',
+    'html' => 'far fa-file-code',
     'css' => 'far fa-file-code',
     'js' => 'far fa-file-code',
     'sql' => 'far fa-file-code',
 ]);
 
 define('SHARE_DUCOMMENT', 2);
+define('SHARE_EXPERIENCE', 1);
 
 define('VACATION', [
     1 => 'Lý do cá nhân',
@@ -239,6 +251,34 @@ define('PUNISH_SUBMIT', [
     'new' => 0,
     'submitted' => 1
 ]);
+
+define('PUNISH_SUBMIT_NAME', [
+    0 => 'Chưa nộp',
+    1 => 'Đã nộp'
+]);
+define('REPORT_TYPE_WEEKLY', 0);
+define('REPORT_TYPE_DAILY', 1);
+
+define('REPORT_TYPES', [
+    0 => 'tuần',
+    1 => 'ngày',
+]);
+
+define('REPORT_SEARCH_TYPE_NAME', [
+    0 => 'Cá nhân',
+    1 => 'Tất cả công ty',
+    2 => 'Xem theo team',
+]);
+define('REPORT_SEARCH_TYPE', [
+    'private' => 0,
+    'all' => 1,
+    'team' => 2
+]);
+
+define('EXPORT_PATHS', [
+    'admin/work_times'
+]);
+
 define('LATE_MONEY_CONFIG_FOLDER', 'json_config/');
 define('LATE_MONEY_CONFIG', 'config/late_time.json');
 define('LATE_RULE_ID', 0);
@@ -268,7 +308,6 @@ define('LATE_OT_USER', 'Đi làm muộn + OT');
 define('TOTAL_MONTH_IN_YEAR', 12);
 define('OFF_TIME', '00:00:00');
 define('SWITCH_TIME', '12:00:00');
-
 define('DAY_OFF_MONTH',[
     'day_off_month_Jan' => 1,
     'day_off_month_Feb' => 2,
@@ -284,3 +323,6 @@ define('DAY_OFF_MONTH',[
     'day_off_month_Dec' => 12,
 ]);
 define('DEFAULT_VALUE',0);
+define('HAFT_MORNING', '10:00');
+define('HAFT_AFTERNOON', '15:30');
+

@@ -7,15 +7,17 @@
 
 namespace App\Exports;
 
-use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\FromCollection;
-use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\ShouldAutoSize;
 use Maatwebsite\Excel\Concerns\WithEvents;
+use Maatwebsite\Excel\Concerns\WithHeadings;
+use Maatwebsite\Excel\Events\AfterSheet;
+use Maatwebsite\Excel\Events\BeforeSheet;
 
-class DayOffExcel implements FromCollection, WithHeadings,ShouldAutoSize,WithEvents
+class DayOffExcel implements FromCollection, WithHeadings, ShouldAutoSize, WithEvents
 {
     public $data;
+
     /**
      * DiaryListExport constructor.
      *
@@ -38,23 +40,73 @@ class DayOffExcel implements FromCollection, WithHeadings,ShouldAutoSize,WithEve
         return collect($this->data);
     }
 
-
     public function registerEvents(): array
     {
+        $styleArray = [
+            'alignment' => array(
+                'horizontal' => \PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
+            )
+
+            ,
+            'font' => [
+                'bold' => true
+            ],
+            'borders' => [
+                'outline' => [
+                    'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+                    'color' => ['argb' => 'black'],
+                ],
+            ]
+
+        ];
+        $styleArray1 = [
+            'alignment' => array(
+                'horizontal' => \PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
+            ),
+            'borders' => [
+                'outline' => [
+                    'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+                    'color' => ['argb' => 'black'],
+                ],
+            ]
+
+        ];
+        $styleArray2 = [
+            'font' => [
+                'bold' => true,
+                'size'=>25
+            ],
+
+        ];
+
+
         return [
-            AfterSheet::class => function (AfterSheet $event) {
-                $event->sheet->getStyle('A1:Y1')->applyFromArray([
-                    'font' => [
-                        'bold' => true
-                    ]
-                ]);
+            BeforeSheet::class => function (BeforeSheet $event) {
+
             },
+            AfterSheet::class => function (AfterSheet $event) use ($styleArray,$styleArray1,$styleArray2) {
+                $count=count($this->data)+2;
+            $A=['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'];
+            foreach ($A as $value){
+                $event->sheet->getStyle($value.'1')->applyFromArray($styleArray);
+                for ($i=0 ; $count > $i ; $i++){
+                    $event->sheet->getStyle($value."1:".$value.$i)->applyFromArray($styleArray1);
+                }
+            }
+
+                $event->sheet->insertNewRowBefore(1);
+                $event->sheet->insertNewRowBefore(1);
+                $event->sheet->insertNewRowBefore(1);
+                $event->sheet->setCellValue('G1', 'THỐNG KÊ NGÀY NGHỈ PHÉP TRONG NĂM '.date('Y'))->getStyle('G1')->applyFromArray($styleArray2);
+                $event->sheet->getDelegate()->mergeCells('G1:K1');
+            },
+
+
         ];
     }
-
     /**
      * Function Heading
-     *
+     *Ư
      * @create_date: 2018/08/27
      * @author     : Tiennm
      * @return array
@@ -68,9 +120,9 @@ class DayOffExcel implements FromCollection, WithHeadings,ShouldAutoSize,WithEve
             'Giới tính ',
             'NV Part-time',
             'Ngày vào công ty',
-            'Ngày ký hợp đồng chính thức',
-            'Số ngày phép trong năm',
-            'Số ngày phép năm 2018 chuyển sang',
+            'Ngày ký HD chính thức',
+            'Số NP trong năm',
+            'Số NP năm 2018 chuyển sang',
             'Tháng 1',
             'Tháng 2',
             'Tháng 3',
@@ -84,10 +136,10 @@ class DayOffExcel implements FromCollection, WithHeadings,ShouldAutoSize,WithEve
             'Tháng 11',
             'Tháng 12',
             'Tổng',
-            'Số ngày nghỉ chế độ',
-            'Số ngày phép còn lại',
-            'Số ngày phép sẽ hết vào cuối năm 2018',
-            'Số ngày phép còn lại chuyển qua năm sau',
+            'Số NN chế độ',
+            'Số NP còn lại',
+            'Số NP sẽ hết vào cuối năm 2018',
+            'Số NP phép còn lại chuyển qua năm sau',
 
         ];
     }

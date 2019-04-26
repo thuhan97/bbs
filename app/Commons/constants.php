@@ -283,3 +283,4 @@ define('DAY_OFF_MONTH',[
     'day_off_month_Nov' => 11,
     'day_off_month_Dec' => 12,
 ]);
+define('DEFAULT_VALUE',0);

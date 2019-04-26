@@ -63,23 +63,30 @@ class DayOffController extends AdminBaseController
         parent::__construct();
     }
 
+
     /**
-     * Show the form for creating a new resource.
+     * Display a listing of the resource.
+     *
+     * @param  \Illuminate\Http\Request $request
      *
      * @return \Illuminate\Http\Response
      */
-    public function create(Request $request)
+    public function index(Request $request)
     {
-        $user_id = $request->get('user_id');
-        $this->authorize('create', $this->getResourceModel());
+        $this->authorize('viewList', $this->getResourceModel());
+        $records = $this->searchRecords($request, $perPage, $search);
+        $recordsExcel = $this->getSearchRecords($request, 1000000000, $search);
 
-        $class = $this->getResourceModel();
-        return view($this->getResourceCreatePath(), $this->filterCreateViewData([
-            'record' => new $class(),
-            'user_id' => $user_id,
+        return view($this->getResourceIndexPath(), $this->filterSearchViewData($request, [
+            'records' => $records,
+            'recordsExcel'=>$recordsExcel,
+            'search' => $search,
             'resourceAlias' => $this->getResourceAlias(),
             'resourceRoutesAlias' => $this->getResourceRoutesAlias(),
             'resourceTitle' => $this->getResourceTitle(),
+            'perPage' => $perPage,
+            'resourceSearchExtend' => $this->resourceSearchExtend,
+            'addVarsForView' => $this->addVarsSearchViewData()
         ]));
     }
 
@@ -155,22 +162,6 @@ class DayOffController extends AdminBaseController
         return $this->validationData();
     }
 
-    public function getSearchRecords(Request $request, $perPage = 15, $search = null)
-    {
-        $model = $this->getResourceModel()::search($search);
-        if ($request->has('sort')) {
-            $model->orderBy($request->get('sort'), $request->get('is_desc') ? 'asc' : 'desc');
-        } else {
-            $model->orderBy('id', 'desc');
-        }
-        if ($request->year) {
-            $model = $model->whereYear('day_offs.start_at', $request->year);
-        }
-        if ($request->month) {
-            $model = $model->whereMonth('day_offs.start_at', $request->month);
-        }
-        return $model->paginate($perPage);
-    }
 
     /**
      * @param Request $request

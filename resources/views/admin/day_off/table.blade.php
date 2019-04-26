@@ -82,7 +82,7 @@
 </div>
 
 <form action="{{ route('admin::statistical-day-off-excel') }}" method="get" id="form-excel">
-    @foreach ($records as $record)
+    @foreach ($recordsExcel as $record)
         <input type="hidden" name="ids[]" value="{{ $record->user_id }}">
     @endforeach
 </form>

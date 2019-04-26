@@ -295,3 +295,5 @@ define('OFF_TIME', '00:00:00');
 define('SWITCH_TIME', '12:00:00');
 define('HAFT_MORNING', '10:00');
 define('HAFT_AFTERNOON', '15:30');
+define('DAY_OFF_INCREMENT',1);
+define('NEXT_YEAR',1);

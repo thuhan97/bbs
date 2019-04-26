@@ -263,6 +263,9 @@ define('REPORT_SEARCH_TYPE', [
 define('EXPORT_PATHS', [
     'admin/work_times'
 ]);
+define('OVER_TIME_EXPORT_PATHS', [
+    'admin/over_times'
+]);
 
 define('LATE_MONEY_CONFIG_FOLDER', 'json_config/');
 define('LATE_MONEY_CONFIG', 'config/late_time.json');

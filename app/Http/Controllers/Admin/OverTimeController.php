@@ -3,10 +3,9 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Exports\OTListExport;
-use App\Exports\WorkTimeAllExport;
 use App\Models\OverTime;
-use App\Models\User;
 use App\Repositories\Contracts\IOverTimeRepository;
+use App\Services\Contracts\IOverTimeService;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
 
@@ -35,49 +34,52 @@ class OverTimeController extends AdminBaseController
      */
     protected $resourceTitle = 'Duyệt OT';
 
-    public function __construct(IOverTimeRepository $repository)
+    public function __construct(IOverTimeRepository $repository, IOverTimeService $overTimeService)
     {
         $this->repository = $repository;
+        $this->overTimeService = $overTimeService;
         parent::__construct();
     }
 
-    public function filterCreateViewData($data = [])
+
+    public function index(Request $request)
     {
-        return $this->makeRelationData($data);
+        $this->authorize('viewList', $this->getResourceModel());
+        if ($request->has('is_export') && in_array($request->path(), OVER_TIME_EXPORT_PATHS)) {
+            return $this->exportData($request);
+        } else {
+            $records = $this->searchRecords($request, $perPage, $search);
+            return view($this->getResourceIndexPath(), $this->filterSearchViewData($request, [
+                'records' => $records,
+                'search' => $search,
+                'resourceAlias' => $this->getResourceAlias(),
+                'resourceRoutesAlias' => $this->getResourceRoutesAlias(),
+                'resourceTitle' => $this->getResourceTitle(),
+                'perPage' => $perPage,
+                'resourceSearchExtend' => $this->resourceSearchExtend,
+                'addVarsForView' => $this->addVarsSearchViewData()
+            ]));
+        }
     }
 
-    public function filterEditViewData($record, $data = [])
+    public function getSearchRecords(Request $request, $perPage = 50, $search = null, $paginatorData = [])
     {
-        return $this->makeRelationData($data);
+        $query = $this->getSearchModel($request, $paginatorData);
+
+        return $query->paginate($perPage)->appends($paginatorData);
     }
 
-    public function create(Request $request)
+    public function getSearchModel(Request $request, &$paginatorData = [])
     {
-        $user_id = $request->get('user_id');
-        $this->authorize('create', $this->getResourceModel());
-
-        $class = $this->getResourceModel();
-        return view($this->getResourceCreatePath(), $this->filterCreateViewData([
-            'record' => new $class(),
-            'user_id' => $user_id,
-            'resourceAlias' => $this->getResourceAlias(),
-            'resourceRoutesAlias' => $this->getResourceRoutesAlias(),
-            'resourceTitle' => $this->getResourceTitle(),
-        ]));
-    }
-
-    public function export()
-    {
-        return Excel::download(new OTListExport(), "worktimes.xlsx");
+        return $this->overTimeService->getListOverTime($request, array_search('Overtime', WORK_TIME_TYPE));
     }
 
     public function exportData(Request $request)
     {
         switch ($request->path()) {
-            case 'admin/work_times':
-                $date = date('-ymd');
-                $records = $this->sevice->export($request);
-                return Excel::download(new WorkTimeAllExport($records), "worktimes$date.xlsx");
+            case OVER_TIME_EXPORT_PATHS[0]:
+                $explanations = $this->overTimeService->getListOverTime($request, array_search('Overtime', WORK_TIME_TYPE));
+                return Excel::download(new OTListExport($explanations), "over-time.xlsx");
                 break;
 
             default:
@@ -85,11 +87,4 @@ class OverTimeController extends AdminBaseController
         }
     }
 
-    private function makeRelationData($data = [])
-    {
-        $userModel = new User();
-        $data['request_users'] = $userModel->availableUsers()->pluck('name', 'id')->toArray();
-        $data['approver_users'] = $userModel->approverUsers()->pluck('name', 'id')->toArray();
-        return $data;
-    }
 }

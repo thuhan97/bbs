@@ -108,10 +108,10 @@
         </div>
         <div class="">
             <div class="row">
-                <div class="col-sm-8 col-md-4">
+                <div class="col-sm-8 col-md-8">
 
                 </div>
-                <div class="col-sm-4 text-right col-md-8">
+                <div class="col-sm-4 text-right col-md-4">
                     <div class="row">
                         <div class="col-12 col-sm-6">
                             <?php

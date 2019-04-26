@@ -82,7 +82,7 @@
                     <td>{{ $item['note'] ?? '' }}</td>
                     <td class="text-center">
                         @if(!$item['id_ot_time'])
-                        <form action="{{ route('approved') }}">
+                            <form action="{{ route('approved') }}">
                                 <input type="hidden" name="user_id"
                                        value="{{ $item['user_id'] ? $item['user_id'] : '' }}">
                                 <input type="hidden" name="reason" value="{{ $item['note'] ? $item['note'] : '' }}">
@@ -100,22 +100,30 @@
         </table>
         {{$dataLeader->render('end_user.paginate') }}
         <br><br><br>
+
     @endcan
     <div class="row">
         <div class="col-md-7">
             <h2>Xin phép cá nhân</h2>
         </div>
-        <div class="col-md-5" style="float: right">
-            <button type="button" class="btn btn-primary btn-ot waves-effect waves-light float-right" id="btn-late-ot">
+
+        <div class="col-md-5 text-right">
+            <button type="button"
+                    class="d-none d-xl-block btn btn-primary btn-ot waves-effect waves-light float-right"
+                    id="btn-late-ot">
                 Xin OT
             </button>
-            <button type="button" class="btn btn-warning btn-early waves-effect waves-light float-right"
+            <button type="button"
+                    class="d-none d-xl-block btn btn-warning btn-early waves-effect waves-light float-right"
                     id="btn-early-late">Xin về sớm
             </button>
             <button type="button" class="btn btn-success btn-late waves-effect waves-light float-right" id="btn-ot">
                 Xin đi muôn
             </button>
-
+            <button onclick="location.href='{{route("day_off")}}?t=1'"
+                    class="btn btn-danger waves-effect waves-light float-right" id="btn-off">
+                Xin nghỉ
+            </button>
         </div>
     </div>
     <table id="contactTbl" class="table table-striped">
@@ -134,11 +142,10 @@
             <th class="text-center">Trạng Thái</th>
         </tr>
         </thead>
-        <?php $increment = 1; ?>
-        @foreach($datas as $item)
+        @foreach($datas as $increment => $item)
             <tbody>
             <tr>
-                <th>{{ $increment++ }}</th>
+                <th>{{ $increment+1 }}</th>
                 <th>{{ $item['work_day'] ?? '' }}</th>
                 <td>
                     @if($item['type'] === 0)
@@ -171,7 +178,7 @@
     <div class="modal fade myModal" id="modal-form" tabindex="-1"
          role="dialog" aria-labelledby="myModalLabel"
          aria-hidden="true">
-        <div class="modal-dialog modal-center modal-set-center" role="document">
+        <div class="modal-dialog modal-center" role="document">
             <div class="modal-content" id="bg-img" style="background-image: url({{ asset('img/font/xin_nghi.png') }})">
                 <div class="modal-header text-center border-bottom-0 p-3">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -194,7 +201,7 @@
                     </div>
                     <br>
                     <textarea class="form-control permission-reason" name="note" cols="48" rows="6"
-                              placeholder="Nội dung bạn muốn gửi..."></textarea>
+                              placeholder="Nhập lý do ..."></textarea>
                     <div class="pt-3 pb-4 d-flex justify-content-center border-top-0 rounded mb-0">
                         <button class="btn btn-primary btn-send">GỬI ĐƠN</button>
                     </div>
@@ -219,26 +226,39 @@
                 <form action="{{ route('ask_permission.create') }}" method="post">
                     @csrf
                     <div class="row col-md-12">
-                        <div class="offset-5"><h3 class="">Xin OT</h3></div>
-                        <div class="col-md-6 text-center">
-                            <input style="position: relative;opacity: 1;pointer-events: inherit" class="other-ot" type="radio" name="ot_type" id="project-ot" value="1">
+                        <div class="col-2"></div>
+                        <div class="col-md-4 text-center">
+                            <input style="position: relative;opacity: 1;pointer-events: inherit" class="other-ot"
+                                   type="radio" name="ot_type" id="project-ot" value="1">
                             <label for="project-ot">OT dự án</label>
                         </div>
-                        <div class="col-md-6 text-center">
-                            <input  style="position: relative;opacity: 1;pointer-events: inherit" class="other-ot" type="radio" name="ot_type" id="other-ot" value="2">
+                        <div class="col-md-4 text-center">
+                            <input style="position: relative;opacity: 1;pointer-events: inherit" class="other-ot"
+                                   type="radio" name="ot_type" id="other-ot" value="2">
                             <label for="other-ot">Lý do cá nhân</label>
                         </div>
                     </div>
-                    <div class="offset-4 select-day">
-                        <label class=" text-w-400 offset-1 mt-3" for="inputCity">Chọn ngày *</label>
-                        <input style="width: 43%;" type="text"
-                               class="form-control select-item {{ $errors->has('work_day') ? ' has-error' : '' }}"
-                               id="work_day_ot" autocomplete="off" name="work_day" value="{{  old('work_day') }}"
-                               readonly="readonly">
+                    <div class="select-day">
+                        <div class="container-fluid">
+                            <div class="row">
+                                <div class="col-2"></div>
+                                <div class="col-4">
+                                    <label for="inputCity">Chọn ngày *</label>
+                                </div>
+                                <div class="col-4">
+                                    <input type="text"
+                                           class="form-control select-item {{ $errors->has('work_day') ? ' has-error' : '' }}"
+                                           id="work_day_ot" autocomplete="off" name="work_day"
+                                           value="{{ old('work_day', date('Y-m-d')) }}"
+                                           readonly="readonly">
+                                </div>
+                            </div>
+                        </div>
+
                     </div>
                     <br>
                     <textarea class="form-control permission-reason" name="note" cols="48" rows="6"
-                              placeholder="Nội dung bạn muốn gửi..."></textarea>
+                              placeholder="Nhập lý do ..."></textarea>
                     <div class="pt-3 pb-4 d-flex justify-content-center border-top-0 rounded mb-0">
                         <button class="btn btn-primary btn-send">GỬI ĐƠN</button>
                     </div>

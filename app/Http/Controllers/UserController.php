@@ -9,7 +9,6 @@ use App\Http\Requests\DayOffRequest;
 use App\Http\Requests\ProfileRequest;
 use App\Models\DayOff;
 use App\Models\OverTime;
-use App\Models\RemainDayoff;
 use App\Models\User;
 use App\Models\WorkTime;
 use App\Models\WorkTimesExplanation;
@@ -17,11 +16,9 @@ use App\Repositories\Contracts\IDayOffRepository;
 use App\Services\Contracts\IDayOffService;
 use App\Services\Contracts\IUserService;
 use App\Transformers\DayOffTransformer;
-use Carbon\Carbon;
 use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
 
 class UserController extends Controller
 {
@@ -105,6 +102,7 @@ class UserController extends Controller
      * Show work time calendar
      *
      * @param Request $request
+     *
      * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
      * @throws \Illuminate\Validation\ValidationException
      */
@@ -172,6 +170,7 @@ class UserController extends Controller
      * Create or edit work time calendar
      *
      * @param Request $request
+     *
      * @return \Illuminate\Http\RedirectResponse
      */
     public function dayOffCreateCalendar(WorkTimeRequest $request)
@@ -253,15 +252,16 @@ class UserController extends Controller
         $countDayOff = $this->userDayOffService->countDayOffUserLogin();
         $userManager = $this->userService->getUserManager();
         $availableDayLeft = $this->userDayOffService->getDayOffUser(Auth::id());
+        $autoShowModal = $request->has('t');
         if (isset($request->status_search) || isset($request->year) || isset($request->month)) {
             $year = $request->year;
             $month = $request->month;
             $statusSearch = $request->status_search;
 
             $dayOff = $this->userDayOffService->searchStatus($year, $month, $statusSearch);
-            return view('end_user.user.day_off', compact('listDate', 'paginateData', 'availableDayLeft', 'recordPerPage', 'approve', 'userManager', 'dayOff', 'statusSearch', 'countDayOff', 'year', 'month'));
+            return view('end_user.user.day_off', compact('availableDayLeft', 'userManager', 'dayOff', 'statusSearch', 'countDayOff', 'year', 'month', 'autoShowModal'));
         }
-        return view('end_user.user.day_off', compact('listDate', 'paginateData', 'availableDayLeft', 'recordPerPage', 'approve', 'userManager', 'countDayOff'));
+        return view('end_user.user.day_off', compact('availableDayLeft', 'userManager', 'countDayOff', 'autoShowModal'));
     }
 
     public function dayOffListApprovalAPI(Request $request)
@@ -354,6 +354,7 @@ class UserController extends Controller
      * Create or edit day off
      *
      * @param Request $request
+     *
      * @return \Illuminate\Http\RedirectResponse
      */
     public function dayOffCreate(createDayOffRequest $request)
@@ -363,7 +364,7 @@ class UserController extends Controller
         $dayOff->fill($request->all());
         $dayOff->user_id = Auth::id();
         $dayOff->save();
-        return back()->with('day_off_success', '');
+        return redirect(route('day_off'))->with('day_off_success', '');
     }
 
     public function dayOffSearch(Request $request)

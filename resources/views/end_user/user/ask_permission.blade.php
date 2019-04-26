@@ -37,70 +37,64 @@
     <?php
     $user = \Illuminate\Support\Facades\Auth::user();
     ?>
-    @can('manager')
-        <h1>Danh sách xin phép</h1>
-        <table id="contactTbl" class="table table-striped">
-            <colgroup>
-                <col style="">
-                <col style="">
-                <col style="">
-                <col style="">
-            </colgroup>
-            <thead>
-            <tr>
-                <th>#</th>
-                <th>Ngày</th>
-                <th>Tên nhân viên</th>
-                <th>Hình thức</th>
-                <th>Nội dung</th>
-                <th class="text-center">Trạng Thái</th>
-            </tr>
-            </thead>
-            <?php $increment = 1; ?>
-
-            @foreach($dataLeader as $item)
-                <tbody>
+    @can('team-leader')
+        @if($dataLeader->isNotEmpty())
+            <h1>Danh sách xin phép</h1>
+            <table id="contactTbl" class="table table-striped">
+                <colgroup>
+                    <col style="">
+                    <col style="">
+                    <col style="">
+                    <col style="">
+                </colgroup>
+                <thead>
                 <tr>
-                    <th>{{ $increment++ }}</th>
-                    <th>{{ $item['work_day'] ?? '' }}</th>
-                    <th>{{ $item->user->name ?? '' }}</th>
-                    <td>
-                        @if($item['type'] === 0)
-                            Bình thường
-                        @elseif($item['type'] === 1)
-                            Đi muộn
-                        @elseif($item['type'] === 2)
-                            Về sớm
-                        @elseif($item['type'] === 4)
-                            @if($item['ot_type'] === 1)
-                                OT Dự án
-                            @else
-                                Lý do cá nhân
-                            @endif
-                        @endif
-                    </td>
-                    <td>{{ $item['note'] ?? '' }}</td>
-                    <td class="text-center">
-                        @if(!$item['id_ot_time'])
-                            <form action="{{ route('approved') }}">
-                                <input type="hidden" name="user_id"
-                                       value="{{ $item['user_id'] ? $item['user_id'] : '' }}">
-                                <input type="hidden" name="reason" value="{{ $item['note'] ? $item['note'] : '' }}">
-                                <input type="hidden" name="work_day"
-                                       value="{{ $item['work_day'] ? $item['work_day'] : '' }}">
-                                <button class="btn btn-primary waves-effect waves-light">Phê duyệt</button>
-                            </form>
-                        @else
-                            <i class="fas fa-grin-stars fa-2x text-success"></i>
-                        @endif
-                    </td>
+                    <th>#</th>
+                    <th>Ngày</th>
+                    <th>Tên nhân viên</th>
+                    <th>Hình thức</th>
+                    <th>Nội dung</th>
+                    <th class="text-center">Trạng Thái</th>
                 </tr>
-                </tbody>
-            @endforeach
-        </table>
-        {{$dataLeader->render('end_user.paginate') }}
-        <br><br><br>
+                </thead>
+                <?php $increment = 1; ?>
+                <tbody>
+                @foreach($dataLeader as $item)
+                    <tr>
+                        <th>{{ $increment++ }}</th>
+                        <th>{{ $item['work_day'] ?? '' }}</th>
+                        <th>{{ $item->user->name ?? '' }}</th>
+                        <td>
+                            {{$item->type_name}}
+                        </td>
+                        <td>{{ $item['note'] ?? '' }}</td>
+                        <td class="text-center">
+                            @if(!$item['id_ot_time'])
+                                @can('manager')
+                                    <form action="{{ route('approved') }}">
+                                        <input type="hidden" name="user_id"
+                                               value="{{ $item['user_id'] ? $item['user_id'] : '' }}">
+                                        <input type="hidden" name="reason"
+                                               value="{{ $item['note'] ? $item['note'] : '' }}">
+                                        <input type="hidden" name="work_day"
+                                               value="{{ $item['work_day'] ? $item['work_day'] : '' }}">
+                                        <button class="btn btn-primary waves-effect waves-light">Phê duyệt</button>
+                                    </form>
+                                @else
+                                    <i class="fas fa-meh-blank fa-2x text-warning" title="Chưa duyệt"></i>
+                                @endcan
 
+                            @else
+                                <i class="fas fa-grin-stars fa-2x text-success" title="Đã duyệt"></i>
+                            @endif
+                        </td>
+                    </tr>
+                @endforeach
+                </tbody>
+            </table>
+            {{$dataLeader->render('end_user.paginate') }}
+            <br><br><br>
+        @endif
     @endcan
     <div class="row">
         <div class="col-md-7">
@@ -142,37 +136,26 @@
             <th class="text-center">Trạng Thái</th>
         </tr>
         </thead>
+        <tbody>
+
         @foreach($datas as $increment => $item)
-            <tbody>
             <tr>
                 <th>{{ $increment+1 }}</th>
                 <th>{{ $item['work_day'] ?? '' }}</th>
                 <td>
-                    @if($item['type'] === 0)
-                        Bình thường
-                    @elseif($item['type'] === 1)
-                        Đi muộn
-                    @elseif($item['type'] === 2)
-                        Về sớm
-                    @elseif($item['type'] === 4)
-                        @if($item['ot_type'] === 1)
-                            OT Dự án
-                        @else
-                            Lý do cá nhân
-                        @endif
-                    @endif
+                    {{$item->type_name}}
                 </td>
                 <td>{{ $item['note'] ?? '' }}</td>
                 <td class="text-center">
                     @if(is_null($item['id_ot_time']))
-                        <i class="fas fa-meh-blank fa-2x text-warning text-center"></i>
+                        <i class="fas fa-meh-blank fa-2x text-warning" title="Chưa duyệt"></i>
                     @else
-                        <i class="fas fa-grin-stars fa-2x text-success"></i>
+                        <i class="fas fa-grin-stars fa-2x text-success" title="Đã duyệt"></i>
                     @endif
                 </td>
             </tr>
-            </tbody>
         @endforeach
+        </tbody>
     </table>
     {{$datas->render('end_user.paginate') }}
     <div class="modal fade myModal" id="modal-form" tabindex="-1"

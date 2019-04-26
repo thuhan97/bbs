@@ -24,7 +24,7 @@
                             <span class="sr-only">(current)</span>
                         </a>
                     </li>
-                    <li class="nav-item {{ \App\Utils::checkRoute(['day_off']) ? 'active': '' }}">
+                    <li class="nav-item {{ \App\Utils::checkRoute(['day_off', 'day_off_approval']) ? 'active': '' }}">
                         <a href="{{route('day_off')}}" class="nav-link waves-effect">{{__l('day_off')}}
                             <span class="sr-only">(current)</span>
                         </a>

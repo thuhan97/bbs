@@ -264,8 +264,8 @@
                             <div class="mb-3 ml-3 ">
                                 <!-- Default input -->
                                 <label class="text-d-bold" for="exampleForm2">Thời gian được tính:</label>
-                                <div class="" id="number_off">
-                                </div>
+                                <strong class="" id="number_off">
+                                </strong> ngày
                             </div>
                             <div class="mb-3">
                                 <!-- Default input -->

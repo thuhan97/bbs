@@ -142,7 +142,7 @@
                 <th class="text-center">Từ ngày</th>
                 <th class="d-none d-md-table-cell text-center">Tới ngày</th>
                 <th class="text-center">Tiêu đề</th>
-                <th class="d-none d-md-table-cell text-center">Ngày nghỉ</th>
+                <th class="d-none d-md-table-cell text-center">Ngày được duyệt</th>
                 <th class="text-center">Phê duyệt</th>
                 <th class="d-none d-md-table-cell text-center">Xem thêm</th>
             </tr>
@@ -289,10 +289,11 @@
                                 <div class="form-group col-sm-6 m-0">
                                     <label class=" text-w-400" for="inputCity">Ngày bắt đầu*</label>
                                     <?php
-                                    $hours = date('h:i');
+                                    $hours = date('H:i');
                                     if ($hours > '12:00') {
                                         //tomorrow
                                         $autoDate = date('Y-m-d 08:00', strtotime('tomorrow'));
+
                                     } else if ($hours > '07:00') {
                                         //affternoon
                                         $autoDate = date('Y-m-d 12:00');
@@ -361,11 +362,6 @@
                 </div>
                 <div class="modal-body mx-3 mt-0 pb-0">
                     <div class="mb-3">
-                        <label class="ml-3 text-d-bold" for="exampleFormControlTextarea5">Tên nhân
-                            viên</label>
-                        <div class="ml-3">{{ \Illuminate\Support\Facades\Auth::user()->name }}</div>
-                    </div>
-                    <div class="mb-3">
                         <!-- Default input -->
                         <label class="ml-3 text-d-bold" for="exampleForm2">Lý do:</label>
                         <div class="ml-3" id="title"></div>
@@ -384,7 +380,7 @@
                     <div class="mb-3 ml-3" id="remove-numoff">
                         <!-- Default input -->
                         <label class="text-d-bold" for="exampleForm2">Thời gian được tính:</label>
-                        <div class="ml-3" id="number_off"></div>
+                        <strong id="number_off"></strong> ngày
                     </div>
                     <div class="mb-4 pb-2">
                         <div class="row">

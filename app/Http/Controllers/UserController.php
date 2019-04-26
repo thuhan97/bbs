@@ -205,15 +205,19 @@ class UserController extends Controller
                     ->on('ot_times.work_day', '=', 'work_times_explanation.work_day');
             })
             ->whereYear('work_times_explanation.work_day', date('Y'));
-
-        $dataLeader = $query->groupBy('work_times_explanation.work_day', 'work_times_explanation.type',
+        $queryLeader = clone $query;
+        $dataLeader = $queryLeader->groupBy('work_times_explanation.work_day', 'work_times_explanation.type',
             'work_times_explanation.ot_type', 'work_times_explanation.note', 'work_times_explanation.user_id', 'ot_times.creator_id')
+            ->where('user_id', '!=', Auth::id())
             ->orderBy('work_times_explanation.work_day', 'desc')
             ->paginate(PAGINATE_DAY_OFF, ['*'], 'approver-page');
-        $datas = $query->where('user_id', Auth::id())->groupBy('work_times_explanation.work_day', 'work_times_explanation.type',
+
+        $datas = $query->where('user_id', Auth::id())
+            ->groupBy('work_times_explanation.work_day', 'work_times_explanation.type',
             'work_times_explanation.ot_type', 'work_times_explanation.note', 'work_times_explanation.user_id', 'ot_times.creator_id')
             ->orderBy('work_times_explanation.work_day', 'desc')
             ->paginate(PAGINATE_DAY_OFF, ['*'], 'user-page');
+
         return view('end_user.user.ask_permission', compact('datas', 'dataLeader'));
     }
 

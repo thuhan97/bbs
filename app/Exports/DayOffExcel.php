@@ -46,7 +46,6 @@ class DayOffExcel implements FromCollection, WithHeadings, ShouldAutoSize, WithE
             'alignment' => array(
                 'horizontal' => \PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
             )
-
             ,
             'font' => [
                 'bold' => true
@@ -79,7 +78,6 @@ class DayOffExcel implements FromCollection, WithHeadings, ShouldAutoSize, WithE
 
         ];
 
-
         return [
             BeforeSheet::class => function (BeforeSheet $event) {
 
@@ -93,14 +91,12 @@ class DayOffExcel implements FromCollection, WithHeadings, ShouldAutoSize, WithE
                     $event->sheet->getStyle($value."1:".$value.$i)->applyFromArray($styleArray1);
                 }
             }
-
                 $event->sheet->insertNewRowBefore(1);
                 $event->sheet->insertNewRowBefore(1);
                 $event->sheet->insertNewRowBefore(1);
                 $event->sheet->setCellValue('G1', 'THỐNG KÊ NGÀY NGHỈ PHÉP TRONG NĂM '.date('Y'))->getStyle('G1')->applyFromArray($styleArray2);
                 $event->sheet->getDelegate()->mergeCells('G1:K1');
             },
-
 
         ];
     }
@@ -143,6 +139,5 @@ class DayOffExcel implements FromCollection, WithHeadings, ShouldAutoSize, WithE
 
         ];
     }
-
 
 }

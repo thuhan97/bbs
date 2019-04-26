@@ -47,6 +47,28 @@ class WorkTimesExplanation extends Model
         return $this->belongsTo(WorkTime::class, 'work_times_id', 'id');
     }
 
+    public function getTypeNameAttribute($key)
+    {
+        $type = $this->attributes['type'];
+        switch ($type) {
+            case 4:
+                if ($this->attributes['ot_type'] === 1) {
+                    return 'Xin OT dự án';
+                } else {
+                    return 'Xin OT cá nhân';
+                }
+                break;
+            case 2:
+                return 'Xin về sớm';
+                break;
+            case 1:
+                return 'Xin đi muộn';
+                break;
+            default:
+                break;
+        }
+    }
+
     public function creator()
     {
         return $this->belongsTo(User::class, 'user_id', 'id');

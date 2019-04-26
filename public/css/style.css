@@ -1,3 +1,7 @@
+.no-padding-left {
+    padding-left: 0 !important;
+}
+
 .no-padding-right {
     padding-right: 0 !important;
 }
@@ -860,6 +864,12 @@ td.blank, .type-1 {
 @media (min-width: 768px) and (max-width: 1000px) {
     #app {
         padding-top: 0rem !important;
+    }
+}
+
+@media (max-width: 768px) {
+    .breadcrumb {
+        padding: 10px !important;
     }
 }
 

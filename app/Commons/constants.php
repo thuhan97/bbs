@@ -248,6 +248,13 @@ define('PUNISH_SUBMIT_NAME', [
     0 => 'Chưa nộp',
     1 => 'Đã nộp'
 ]);
+define('REPORT_TYPE_WEEKLY', 0);
+define('REPORT_TYPE_DAILY', 1);
+
+define('REPORT_TYPES', [
+    0 => 'tuần',
+    2 => 'ngày',
+]);
 
 define('REPORT_SEARCH_TYPE_NAME', [
     0 => 'Cá nhân',

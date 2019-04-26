@@ -1,8 +1,14 @@
 @extends('layouts.end_user')
+
 @section('page-title', __l('Report'))
 @section('breadcrumbs')
     {!! Breadcrumbs::render('report') !!}
 @endsection
+<?php
+$type = request('type', 0);
+$year = request('year', date('Y'));
+$month = request('month', date('m'));
+?>
 @section('content')
     <div class="createReport fixed-action-btn">
         <a href="{{route('create_report')}}" class="btn-floating btn-lg red waves-effect waves-light text-white"
@@ -14,13 +20,13 @@
         <div class="md-form active-cyan-2 mb-0">
             <div class="row">
                 <div class="col-12 col-sm-3 col-md-3 col-xl-2 mb-2">
-                    {{ Form::select('type', REPORT_SEARCH_TYPE_NAME, request('type', 0), ['class'=>'mr-1 mt-md-0 w-30 browser-default custom-select']) }}
+                    {{ Form::select('type', REPORT_SEARCH_TYPE_NAME, $type, ['class'=>'mr-1 mt-md-0 w-30 browser-default custom-select']) }}
                 </div>
                 <div class="col-6 col-sm-2 col-xl-1">
-                    {{ Form::select('year', get_years(2), request('year', date('Y')), ['class'=>'mr-1 w-30 browser-default custom-select']) }}
+                    {{ Form::select('year', get_years(2), $year, ['class'=>'mr-1 w-30 browser-default custom-select']) }}
                 </div>
                 <div class="col-6 col-sm-3 col-md-2 col-xl-1">
-                    {{ Form::select('month', get_months('Tháng '), request('month', date('n')), ['class'=>'mt-md-0 w-30 browser-default custom-select']) }}
+                    {{ Form::select('month', get_months('Tháng '), $month, ['class'=>'mt-md-0 w-30 browser-default custom-select']) }}
                 </div>
 
             </div>
@@ -40,7 +46,9 @@
                                 >
                                     <h5 class="mb-0">
                                         <i class="fas fa-sticky-note"></i>
-                                        {{$report->title}} <i class="fas fa-angle-down rotate-icon"></i>
+                                        {{$report->getTitle($type, $year, $month)}}
+
+                                        <i class="fas fa-angle-down rotate-icon"></i>
                                     </h5>
                                 </a>
                             </div>

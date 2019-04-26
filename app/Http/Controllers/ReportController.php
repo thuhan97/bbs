@@ -87,8 +87,10 @@ class ReportController extends Controller
     {
         $data = $request->only('status', 'choose_week', 'to_ids', 'content', 'is_new');
         $choose_week = $data['choose_week'];
+        $reportType = REPORT_TYPE_WEEKLY;
         if ($choose_week < 0) {
             $choose_week = 0;
+            $reportType = REPORT_TYPE_DAILY;
         }
         get_week_info($choose_week, $week_number);
         $data['title'] = $this->service->getReportTitle($data['choose_week']);
@@ -103,6 +105,7 @@ class ReportController extends Controller
             'month' => $data['month'],
             'week_num' => $week_number,
             'title' => $data['title'],
+            'report_type' => $reportType,
         ], $data);
         if ($report) {
             if (!$data['is_new']) {

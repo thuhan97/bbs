@@ -48,6 +48,7 @@ class ReportService extends AbstractService implements IReportService
                 'week_num',
                 'title',
                 'content',
+                'report_type',
                 'created_at',
                 'updated_at',
             ])

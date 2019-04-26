@@ -59,5 +59,6 @@ return [
     'share_document_error' => 'Chia sẻ tài liệu thất bại',
     'share_experience_successully' => 'Chia sẻ kinh nghiệm thành công',
     'share_experience_error' => 'Chia sẻ kinh nghiệm thất bại',
+    'share_experience_error_empty' => 'Bạn cần nhập chia sẻ kinh nghiệm',
     'notification_change_pass' => 'Đổi mật khẩu thành công, xin vui lòng đăng nhập lại!',
 ];

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\CreateReportRequest;
 use App\Models\Report;
+use App\Models\Team;
 use App\Repositories\Contracts\IReportRepository;
 use App\Services\Contracts\IReportService;
 use App\Traits\RESTActions;
@@ -33,8 +34,9 @@ class ReportController extends Controller
         if (!$request->has('month'))
             $request->merge(['month' => date('n')]);
         $reports = $this->service->search($request, $perPage, $search);
+        $teams = Team::pluck('name', 'id')->toArray();
 
-        return view('end_user.report.index', compact('reports', 'search', 'perPage', 'data'));
+        return view('end_user.report.index', compact('reports', 'search', 'perPage', 'data', 'teams'));
     }
 
     /**

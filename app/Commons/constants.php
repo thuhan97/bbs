@@ -253,7 +253,7 @@ define('REPORT_TYPE_DAILY', 1);
 
 define('REPORT_TYPES', [
     0 => 'tuần',
-    2 => 'ngày',
+    1 => 'ngày',
 ]);
 
 define('REPORT_SEARCH_TYPE_NAME', [

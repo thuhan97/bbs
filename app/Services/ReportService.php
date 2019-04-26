@@ -38,9 +38,8 @@ class ReportService extends AbstractService implements IReportService
      */
     public function search(Request $request, &$perPage, &$search)
     {
-        $criterias = $request->only('page', 'page_size', 'search', 'check_all', 'date_from', 'date_to', 'year', 'month');
+        $criterias = $request->only('page', 'page_size', 'search', 'type', 'date_from', 'date_to', 'year', 'month');
 
-        $isCheckAll = $criterias['check_all'] ?? false;
         $perPage = $criterias['page_size'] ?? REPORT_PAGE_SIZE;
         $search = $criterias['search'] ?? '';
         $model = $this->model
@@ -57,9 +56,13 @@ class ReportService extends AbstractService implements IReportService
             ])
             ->search($search)
             ->orderBy('id', 'desc');
+        //default private
+        $type = $request->get('type', 0);
 
-        if (!$isCheckAll) {
+        if ($type == REPORT_SEARCH_TYPE['private']) {
             $model->where('user_id', Auth::id());
+        } else {
+
         }
         if (isset($criterias['date_from'])) {
             $model->where('created_at', '>=', $criterias['date_from']);
@@ -122,6 +125,7 @@ class ReportService extends AbstractService implements IReportService
             $config = Config::firstOrNew(['id' => 1]);
 
             $template = $config->weekly_report_title;
+
             return $this->generateTitle($template, $type);
         }
     }
@@ -133,10 +137,9 @@ class ReportService extends AbstractService implements IReportService
      */
     private function generateTitle($template, $type = 0)
     {
-        get_week_info($type, $week_number);
         [$firstDay, $lastDay] = get_first_last_day_in_week($type, $day);
 
-        'Báo cáo tuần ' . get_week_info(0, $week_number);
+        'Báo cáo tuần ' . get_week_info($type, $week_number);
         //1. ${staff_name}
         $result = str_replace('${staff_name}', Auth::user()->name, $template);
 

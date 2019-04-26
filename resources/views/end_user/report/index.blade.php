@@ -19,6 +19,9 @@
                 <div class="col-sm-3 col-md-2 col-xl-1">
                     {{ Form::select('month', get_months('Tháng '), request('month', date('n')), ['class'=>'mr-1 mt-1 mt-md-0 w-30 browser-default custom-select']) }}
                 </div>
+                <div class="col-sm-3 col-md-3 col-xl-2">
+                    {{ Form::select('type', REPORT_SEARCH_TYPE_NAME, request('type', 0), ['class'=>'mr-1 mt-1 mt-md-0 w-30 browser-default custom-select']) }}
+                </div>
             </div>
         </div>
     </form>

@@ -39,7 +39,7 @@
                                 <i class="far fa-heart"></i> Thích &nbsp   
                                 <i class="far fa-comment"></i> 15 Bình luận
                             </div>
-                            <div class="content-comments form-group row">
+ <!--                            <div class="content-comments form-group row">
                                 <div class="col-sm-10">
                                     <input type="text"  class="form-control input-comment" name="contentComment" placeholder="Viết bình luận ..." autocomplete="off">
                                 </div>
@@ -81,7 +81,7 @@
                                         </div>                                      
                                     </div>   
                                 </div>    
-                            </div>                           
+                            </div>   -->                         
                         </div>
                     </div>
                 @endforeach    

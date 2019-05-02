@@ -325,4 +325,11 @@ define('DAY_OFF_MONTH',[
 define('DEFAULT_VALUE',0);
 define('HAFT_MORNING', '10:00');
 define('HAFT_AFTERNOON', '15:30');
+define('DEFAULT_INSERT_ROW_EXCEL',1);
+define('SIZE_TEXT_EXCEL_DAY_OFF',25);
+define('NUMBER_COUNT_DAY_OFF',2);
+define('TOTAL_DAY_OFF_IN_MONTH',2);
+define('REMAIN_DAY_OFF_DEFAULT',1);
+define('XLSX_TYPE', '.xlsx');
+define('STATISTICAL_DAY_OFF_NAME', 'Thống kê phép năm');
 

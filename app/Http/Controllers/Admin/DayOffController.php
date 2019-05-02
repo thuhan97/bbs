@@ -75,8 +75,7 @@ class DayOffController extends AdminBaseController
     {
         $this->authorize('viewList', $this->getResourceModel());
         $records = $this->searchRecords($request, $perPage, $search);
-        $recordsExcel = $this->getSearchRecords($request, 1000000000, $search);
-
+        $recordsExcel = $this->getSearchRecords($request,$perPage , $search,true);
         return view($this->getResourceIndexPath(), $this->filterSearchViewData($request, [
             'records' => $records,
             'recordsExcel'=>$recordsExcel,
@@ -90,6 +89,28 @@ class DayOffController extends AdminBaseController
         ]));
     }
 
+
+    public function getSearchRecords(Request $request, $perPage = 15, $search = null,$flag=false)
+    {
+        $model = $this->getResourceModel()::search($search);
+        if ($request->year){
+            $model=$model->whereYear('day_offs.start_at',$request->year);
+        }
+        if ($request->month){
+            $model=$model->whereMonth('day_offs.start_at',$request->month);
+        }
+        if ($request->has('sort')) {
+            $model->orderBy($request->get('sort'), $request->get('is_desc') ? 'asc' : 'desc');
+        } else {
+            $model->orderBy('id', 'desc');
+        }
+        if ($flag){
+            return $model->get();
+        }else{
+            return $model->paginate($perPage);
+        }
+
+    }
     /**
      * @param $id
      *
@@ -183,7 +204,7 @@ class DayOffController extends AdminBaseController
         if ($request->ids) {
             $ids = array_unique($request->ids);
             $datas = $this->service->statisticalDayOffExcel($ids);
-            return Excel::download(new DayOffExcel($datas), 'tung.xlsx');
+            return Excel::download(new DayOffExcel($datas), STATISTICAL_DAY_OFF_NAME.XLSX_TYPE);
 
         }
     }

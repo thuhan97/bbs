@@ -298,28 +298,41 @@ class DayOffService extends AbstractService implements IDayOffService
     public function statisticalDayOffExcel($ids)
     {
         $result = [];
-        $users = User::whereIn('id', $ids)->get();
+        $users = User::whereIn('id', $ids)->whereNull('end_date')->get();
         $dayOffMonth = $this->statisticalDayOff($ids, null);
         foreach ($users as $keys => $user) {
-            $dayOffPreYear = RemainDayoff::where('user_id', $user->id)->where('year', date('Y') - 1)->first();
+            $dayOffPreYear = RemainDayoff::where('user_id', $user->id)->where('year', date('Y') - PRE_YEAR)->first();
             $dayOffYear = RemainDayoff::where('user_id', $user->id)->where('year', date('Y'))->first();
             $dayOffPreYearTotal = $dayOffPreYear->remain ?? DEFAULT_VALUE;
             $dayOffYearTotal = $dayOffYear->remain ?? DEFAULT_VALUE;
             if (count($dayOffMonth)) {
                 foreach ($dayOffMonth as $key => $value) {
                     if ($value->user_id == $user->id) {
-                        $month1 = $value->month == 1 ? ($user->sex == SEX['female'] && $value->total >= 2 ? $value->total + $value->total_absent - 1 : $value->total + $value->total_absent) : ($month1 ?? '0');
-                        $month2 = $value->month == 2 ? ($user->sex == SEX['female'] && $value->total >= 2 ? $value->total + $value->total_absent - 1 : $value->total + $value->total_absent) : ($month2 ?? '0');
-                        $month3 = $value->month == 3 ? ($user->sex == SEX['female'] && $value->total >= 2 ? $value->total + $value->total_absent - 1 : $value->total + $value->total_absent) : ($month3 ?? '0');
-                        $month4 = $value->month == 4 ? ($user->sex == SEX['female'] && $value->total >= 2 ? $value->total + $value->total_absent - 1 : $value->total + $value->total_absent) : ($month4 ?? '0');
-                        $month5 = $value->month == 5 ? ($user->sex == SEX['female'] && $value->total >= 2 ? $value->total + $value->total_absent - 1 : $value->total + $value->total_absent) : ($month5 ?? '0');
-                        $month6 = $value->month == 6 ? ($user->sex == SEX['female'] && $value->total >= 2 ? $value->total + $value->total_absent - 1 : $value->total + $value->total_absent) : ($month6 ?? '0');
-                        $month7 = $value->month == 7 ? ($user->sex == SEX['female'] && $value->total >= 2 ? $value->total + $value->total_absent - 1 : $value->total + $value->total_absent) : ($month7 ?? '0');
-                        $month8 = $value->month == 8 ? ($user->sex == SEX['female'] && $value->total >= 2 ? $value->total + $value->total_absent - 1 : $value->total + $value->total_absent) : ($month8 ?? '0');
-                        $month9 = $value->month == 8 ? ($user->sex == SEX['female'] && $value->total >= 2 ? $value->total + $value->total_absent - 1 : $value->total + $value->total_absent) : ($month9 ?? '0');
-                        $month10 = $value->month == 10 ? ($user->sex == SEX['female'] && $value->total >= 2 ? $value->total + $value->total_absent - 1 : $value->total + $value->total_absent) : ($month10 ?? '0');
-                        $month11 = $value->month == 11 ? ($user->sex == SEX['female'] && $value->total >= 2 ? $value->total + $value->total_absent - 1 : $value->total + $value->total_absent) : ($month11 ?? '0');
-                        $month12 = $value->month == 12 ? ($user->sex == SEX['female'] && $value->total >= 2 ? $value->total + $value->total_absent - 1 : $value->total + $value->total_absent) : ($month12 ?? '0');
+                        $month1 = $value->month == 1 ? ($user->sex == SEX['female'] && $value->total >= TOTAL_DAY_OFF_IN_MONTH ? $value->total + $value->total_absent - DAY_OFF_FREE_ACTIVE : $value->total + $value->total_absent) : ($month1 ?? '0');
+                        $month2 = $value->month == 2 ? ($user->sex == SEX['female'] && $value->total >= TOTAL_DAY_OFF_IN_MONTH ? $value->total + $value->total_absent - DAY_OFF_FREE_ACTIVE : $value->total + $value->total_absent) : ($month2 ?? '0');
+                        $month3 = $value->month == 3 ? ($user->sex == SEX['female'] && $value->total >= TOTAL_DAY_OFF_IN_MONTH ? $value->total + $value->total_absent - DAY_OFF_FREE_ACTIVE : $value->total + $value->total_absent) : ($month3 ?? '0');
+                        $month4 = $value->month == 4 ? ($user->sex == SEX['female'] && $value->total >= TOTAL_DAY_OFF_IN_MONTH ? $value->total + $value->total_absent - DAY_OFF_FREE_ACTIVE : $value->total + $value->total_absent) : ($month4 ?? '0');
+                        $month5 = $value->month == 5 ? ($user->sex == SEX['female'] && $value->total >= TOTAL_DAY_OFF_IN_MONTH ? $value->total + $value->total_absent - DAY_OFF_FREE_ACTIVE : $value->total + $value->total_absent) : ($month5 ?? '0');
+                        $month6 = $value->month == 6 ? ($user->sex == SEX['female'] && $value->total >= TOTAL_DAY_OFF_IN_MONTH ? $value->total + $value->total_absent - DAY_OFF_FREE_ACTIVE : $value->total + $value->total_absent) : ($month6 ?? '0');
+                        $month7 = $value->month == 7 ? ($user->sex == SEX['female'] && $value->total >= TOTAL_DAY_OFF_IN_MONTH ? $value->total + $value->total_absent - DAY_OFF_FREE_ACTIVE : $value->total + $value->total_absent) : ($month7 ?? '0');
+                        $month8 = $value->month == 8 ? ($user->sex == SEX['female'] && $value->total >= TOTAL_DAY_OFF_IN_MONTH ? $value->total + $value->total_absent - DAY_OFF_FREE_ACTIVE : $value->total + $value->total_absent) : ($month8 ?? '0');
+                        $month9 = $value->month == 8 ? ($user->sex == SEX['female'] && $value->total >= TOTAL_DAY_OFF_IN_MONTH ? $value->total + $value->total_absent - DAY_OFF_FREE_ACTIVE : $value->total + $value->total_absent) : ($month9 ?? '0');
+                        $month10 = $value->month == 10 ? ($user->sex == SEX['female'] && $value->total >= TOTAL_DAY_OFF_IN_MONTH ? $value->total + $value->total_absent - DAY_OFF_FREE_ACTIVE : $value->total + $value->total_absent) : ($month10 ?? '0');
+                        $month11 = $value->month == 11 ? ($user->sex == SEX['female'] && $value->total >= TOTAL_DAY_OFF_IN_MONTH ? $value->total + $value->total_absent - DAY_OFF_FREE_ACTIVE : $value->total + $value->total_absent) : ($month11 ?? '0');
+                        $month12 = $value->month == 12 ? ($user->sex == SEX['female'] && $value->total >= TOTAL_DAY_OFF_IN_MONTH ? $value->total + $value->total_absent - DAY_OFF_FREE_ACTIVE : $value->total + $value->total_absent) : ($month12 ?? '0');
+                    }else{
+                        $month1='0';
+                        $month2='0';
+                        $month3='0';
+                        $month4='0';
+                        $month5='0';
+                        $month6='0';
+                        $month7='0';
+                        $month8='0';
+                        $month9='0';
+                        $month10='0';
+                        $month11='0';
+                        $month12='0';
                     }
                 }
             }else{
@@ -341,11 +354,11 @@ class DayOffService extends AbstractService implements IDayOffService
                    'name' => $user->name,
                    'staff_code' => $user->staff_code,
                    'sex' => $user->sex == DEFAULT_VALUE ? 'Nam' : 'Nữ',
-                   'part_time' => $user->contract_type == 2 ? 'V' : '',
+                   'part_time' => $user->contract_type == CONTRACT_TYPES['parttime'] ? 'V' : '',
                    'probation_at' => $user->probation_at ? Carbon::parse($user->probation_at)->format('d-m-Y') : '',
                    'strat_date' => Carbon::parse($user->start_date)->format('d-m-Y'),
                    'remain_day_off_current_year' => $dayOffYearTotal->remain_increment ?? '0',
-                   'remain_day_off_pre_year' => $dayOffPreYear->remain_pre_year ?? '0',
+                   'remain_day_off_pre_year' => !empty($dayOffPreYearTotal) && $dayOffPreYear->remain_pre_year > DEFAULT_VALUE ? $dayOffPreYear->remain_pre_year : '0',
                    'day_off_month_Jan' => $month1,
                    'day_off_month_Feb' => $month2,
                    'day_off_month_Mar' => $month3,
@@ -388,7 +401,7 @@ class DayOffService extends AbstractService implements IDayOffService
             ], [
                 'user_id' => $dayOff->user_id,
                 'year' => date('Y'),
-                'remain' => 1
+                'remain' => REMAIN_DAY_OFF_DEFAULT
             ]);
             $remainDayOffPreYear = RemainDayoff::where('user_id', $dayOff->user_id)->where('year', (int)date('Y') - 1)->first();
             $dayOffCurrentYear = $remainDayOffCurrentYear->remain;
@@ -427,7 +440,7 @@ class DayOffService extends AbstractService implements IDayOffService
             //total day off in month
             $countDayOff = $this->countDayOff($userDayOff->id);
 
-            if ($countDayOff && (int)$countDayOff->total >= 2 && $countDayOff->check_free == DAY_OFF_FREE_DEFAULT) {
+            if ($countDayOff && (int)$countDayOff->total >= TOTAL_DAY_OFF_IN_MONTH && $countDayOff->check_free == DAY_OFF_FREE_DEFAULT) {
                 DayOff::where('user_id', $userDayOff->id)
                     ->whereMonth('start_at', '=', date('m'))
                     ->whereYear('start_at', '=', date('Y'))
@@ -497,11 +510,13 @@ class DayOffService extends AbstractService implements IDayOffService
             DB::raw('YEAR(start_at) year, MONTH(start_at) month'),
             DB::raw('sum(number_off) as total'),
             DB::raw('sum(absent) as total_absent'))
+            ->join('users', 'users.id', '=', 'day_offs.user_id')
             ->groupBy('day_offs.user_id', 'day_offs.check_free', 'year', 'month')
             ->whereIn('day_offs.user_id', $ids)
             ->where('day_offs.status', STATUS_DAY_OFF['active'])
             ->whereMonth('day_offs.start_at', '<=', date('m'))
             ->whereYear('day_offs.start_at', '=', date('Y'))
+            ->whereNull('end_date')
             ->get();
         return $datas;
     }

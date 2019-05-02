@@ -73,7 +73,7 @@ class DayOffExcel implements FromCollection, WithHeadings, ShouldAutoSize, WithE
         $styleArray2 = [
             'font' => [
                 'bold' => true,
-                'size'=>25
+                'size'=>SIZE_TEXT_EXCEL_DAY_OFF
             ],
 
         ];
@@ -83,7 +83,7 @@ class DayOffExcel implements FromCollection, WithHeadings, ShouldAutoSize, WithE
 
             },
             AfterSheet::class => function (AfterSheet $event) use ($styleArray,$styleArray1,$styleArray2) {
-                $count=count($this->data)+2;
+                $count=count($this->data)+NUMBER_COUNT_DAY_OFF;
             $A=['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'];
             foreach ($A as $value){
                 $event->sheet->getStyle($value.'1')->applyFromArray($styleArray);
@@ -91,9 +91,9 @@ class DayOffExcel implements FromCollection, WithHeadings, ShouldAutoSize, WithE
                     $event->sheet->getStyle($value."1:".$value.$i)->applyFromArray($styleArray1);
                 }
             }
-                $event->sheet->insertNewRowBefore(1);
-                $event->sheet->insertNewRowBefore(1);
-                $event->sheet->insertNewRowBefore(1);
+                $event->sheet->insertNewRowBefore(DEFAULT_INSERT_ROW_EXCEL);
+                $event->sheet->insertNewRowBefore(DEFAULT_INSERT_ROW_EXCEL);
+                $event->sheet->insertNewRowBefore(DEFAULT_INSERT_ROW_EXCEL);
                 $event->sheet->setCellValue('G1', 'THỐNG KÊ NGÀY NGHỈ PHÉP TRONG NĂM '.date('Y'))->getStyle('G1')->applyFromArray($styleArray2);
                 $event->sheet->getDelegate()->mergeCells('G1:K1');
             },

@@ -97,11 +97,14 @@
         @endif
     @endcan
     <div class="row">
-        <div class="col-md-7">
+        <div class="col-md-6">
             <h2>Xin phép cá nhân</h2>
         </div>
-
-        <div class="col-md-5 text-right">
+        <div class="col-md-6 text-right">
+            <button onclick="location.href='{{route("day_off")}}?t=1'"
+                    class="btn btn-danger waves-effect waves-light float-right" id="btn-off">
+                Xin nghỉ
+            </button>
             <button type="button"
                     class="d-none d-xl-block btn btn-primary btn-ot waves-effect waves-light float-right"
                     id="btn-late-ot">
@@ -113,10 +116,6 @@
             </button>
             <button type="button" class="btn btn-success btn-late waves-effect waves-light float-right" id="btn-ot">
                 Xin đi muôn
-            </button>
-            <button onclick="location.href='{{route("day_off")}}?t=1'"
-                    class="btn btn-danger waves-effect waves-light float-right" id="btn-off">
-                Xin nghỉ
             </button>
         </div>
     </div>

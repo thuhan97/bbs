@@ -125,16 +125,19 @@ class UserController extends Controller
         if ($list_work_times_calendar) {
             foreach ($list_work_times_calendar->get()->toArray() as $item) {
                 $startDay = $item['start_at'] ? new DateTime($item['start_at']) : '';
+                $endDay = $item['end_at'] ? new DateTime($item['end_at']) : '';
                 $dataStartDay = $item['start_at'];
-                if ($dataStartDay && $dataStartDay != '00:00:00') {
+                $dataEndDay = $item['end_at'];
+                if ($dataStartDay && $dataStartDay != '00:00:00' || $dataEndDay && $dataEndDay != '00:00:00') {
                     $dataStartDay = $startDay->format('H:i');
-                } elseif ($dataStartDay == '00:00:00') {
-                    $dataStartDay = '* * : * *';
+                    $dataEndDay = $endDay->format('H:i');
+                } elseif ($dataStartDay == '00:00:00' || $dataEndDay == '00:00:00') {
+                    $dataStartDay = '**:**';
+                    $dataEndDay = '**:**';
                 } else {
                     $dataStartDay = '';
+                    $dataEndDay = '';
                 }
-                $endDay = $item['end_at'] ? new DateTime($item['end_at']) : '';
-                $dataEndDay = $endDay ? $endDay->format('H:i') : '17:30';
                 $calendarData[] = [
                     'work_day' => $item['work_day'],
                     'start_at' => $dataStartDay,

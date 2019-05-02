@@ -129,9 +129,15 @@ class UserController extends Controller
                 $dataStartDay = $item['start_at'];
                 $dataEndDay = $item['end_at'];
                 if ($dataStartDay && $dataStartDay != '00:00:00' || $dataEndDay && $dataEndDay != '00:00:00') {
-                    $dataStartDay = $startDay->format('H:i');
-                    $dataEndDay = $endDay->format('H:i');
-                } elseif ($dataStartDay == '00:00:00' || $dataEndDay == '00:00:00') {
+                    if ($dataStartDay && $dataEndDay) {
+                        $dataStartDay = $startDay->format('H:i');
+                        $dataEndDay = $endDay->format('H:i');
+                    } elseif ($dataEndDay == null) {
+                        $dataStartDay = $startDay->format('H:i');
+                    } elseif ($dataEndDay == null) {
+                        $dataEndDay = $endDay->format('H:i');
+                    }
+                } elseif ($dataStartDay == '00:00:00' || $dataEndDay == '00:00:00' || $dataStartDay == null || $dataStartDay == '' || $dataEndDay == null || $dataEndDay == '') {
                     $dataStartDay = '**:**';
                     $dataEndDay = '**:**';
                 } else {
@@ -217,7 +223,7 @@ class UserController extends Controller
 
         $datas = $query->where('user_id', Auth::id())
             ->groupBy('work_times_explanation.work_day', 'work_times_explanation.type',
-            'work_times_explanation.ot_type', 'work_times_explanation.note', 'work_times_explanation.user_id', 'ot_times.creator_id')
+                'work_times_explanation.ot_type', 'work_times_explanation.note', 'work_times_explanation.user_id', 'ot_times.creator_id')
             ->orderBy('work_times_explanation.work_day', 'desc')
             ->paginate(PAGINATE_DAY_OFF, ['*'], 'user-page');
 

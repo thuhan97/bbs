@@ -199,10 +199,12 @@ class UserController extends Controller
         $query = WorkTimesExplanation::select(
             'work_times_explanation.work_day', 'work_times_explanation.type',
             'work_times_explanation.ot_type', 'work_times_explanation.note',
-            'work_times_explanation.user_id', 'ot_times.creator_id', 'ot_times.id as id_ot_time')
+            'work_times_explanation.user_id', 'ot_times.creator_id', 'ot_times.id as id_ot_time', 'ot_times.status','users.name as approver','ot_times.approver_id')
             ->leftJoin('ot_times', function ($join) {
                 $join->on('ot_times.creator_id', '=', 'work_times_explanation.user_id')
                     ->on('ot_times.work_day', '=', 'work_times_explanation.work_day');
+            })->leftJoin('users', function ($join) {
+                $join->on('users.id', '=', 'ot_times.approver_id');
             })
             ->whereYear('work_times_explanation.work_day', date('Y'));
         $queryLeader = clone $query;

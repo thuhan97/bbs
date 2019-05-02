@@ -68,4 +68,9 @@ class WorkTimesExplanation extends Model
                 break;
         }
     }
+
+    public function creator()
+    {
+        return $this->belongsTo(User::class, 'user_id', 'id');
+    }
 }

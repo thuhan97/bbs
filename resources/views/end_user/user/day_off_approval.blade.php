@@ -227,8 +227,7 @@
                         @endif
                     </td>
                     <td class="text-center">
-                        <p class=" btn-sm m-0 detail-dayoff
-                            @if($keys ==0) text-primary  @endif" style="cursor: pointer" attr="{{ $record->id }}">Chi
+                        <p class=" btn-sm m-0 detail-dayoff" style="cursor: pointer" attr="{{ $record->id }}">Chi
                             tiết >></p>
                     </td>
 
@@ -449,6 +448,9 @@
                             $('#modal-form').modal('show');
                         }
                     });
+                })
+                $('.detail-dayoff').on('click',function () {
+                    $(this).addClass('text-primary');
                 })
             });
 

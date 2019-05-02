@@ -22,7 +22,7 @@ class DayOffService extends AbstractService implements IDayOffService
     /**
      * DayOffService constructor.
      *
-     * @param \App\Models\DayOff                            $model
+     * @param \App\Models\DayOff $model
      * @param \App\Repositories\Contracts\IDayOffRepository $repository
      */
     public function __construct(DayOff $model, IDayOffRepository $repository)
@@ -35,10 +35,10 @@ class DayOffService extends AbstractService implements IDayOffService
      * Query a list of day off
      *
      * @param Request $request
-     * @param array   $moreConditions
-     * @param array   $fields
-     * @param string  $search
-     * @param int     $perPage
+     * @param array $moreConditions
+     * @param array $fields
+     * @param string $search
+     * @param int $perPage
      *
      * @return mixed
      */
@@ -305,78 +305,55 @@ class DayOffService extends AbstractService implements IDayOffService
             $dayOffYear = RemainDayoff::where('user_id', $user->id)->where('year', date('Y'))->first();
             $dayOffPreYearTotal = $dayOffPreYear->remain ?? DEFAULT_VALUE;
             $dayOffYearTotal = $dayOffYear->remain ?? DEFAULT_VALUE;
+            $totalMonth = [];
             if (count($dayOffMonth)) {
                 foreach ($dayOffMonth as $key => $value) {
                     if ($value->user_id == $user->id) {
-                        $month1 = $value->month == 1 ? ($user->sex == SEX['female'] && $value->total >= TOTAL_DAY_OFF_IN_MONTH ? $value->total + $value->total_absent - DAY_OFF_FREE_ACTIVE : $value->total + $value->total_absent) : ($month1 ?? '0');
-                        $month2 = $value->month == 2 ? ($user->sex == SEX['female'] && $value->total >= TOTAL_DAY_OFF_IN_MONTH ? $value->total + $value->total_absent - DAY_OFF_FREE_ACTIVE : $value->total + $value->total_absent) : ($month2 ?? '0');
-                        $month3 = $value->month == 3 ? ($user->sex == SEX['female'] && $value->total >= TOTAL_DAY_OFF_IN_MONTH ? $value->total + $value->total_absent - DAY_OFF_FREE_ACTIVE : $value->total + $value->total_absent) : ($month3 ?? '0');
-                        $month4 = $value->month == 4 ? ($user->sex == SEX['female'] && $value->total >= TOTAL_DAY_OFF_IN_MONTH ? $value->total + $value->total_absent - DAY_OFF_FREE_ACTIVE : $value->total + $value->total_absent) : ($month4 ?? '0');
-                        $month5 = $value->month == 5 ? ($user->sex == SEX['female'] && $value->total >= TOTAL_DAY_OFF_IN_MONTH ? $value->total + $value->total_absent - DAY_OFF_FREE_ACTIVE : $value->total + $value->total_absent) : ($month5 ?? '0');
-                        $month6 = $value->month == 6 ? ($user->sex == SEX['female'] && $value->total >= TOTAL_DAY_OFF_IN_MONTH ? $value->total + $value->total_absent - DAY_OFF_FREE_ACTIVE : $value->total + $value->total_absent) : ($month6 ?? '0');
-                        $month7 = $value->month == 7 ? ($user->sex == SEX['female'] && $value->total >= TOTAL_DAY_OFF_IN_MONTH ? $value->total + $value->total_absent - DAY_OFF_FREE_ACTIVE : $value->total + $value->total_absent) : ($month7 ?? '0');
-                        $month8 = $value->month == 8 ? ($user->sex == SEX['female'] && $value->total >= TOTAL_DAY_OFF_IN_MONTH ? $value->total + $value->total_absent - DAY_OFF_FREE_ACTIVE : $value->total + $value->total_absent) : ($month8 ?? '0');
-                        $month9 = $value->month == 8 ? ($user->sex == SEX['female'] && $value->total >= TOTAL_DAY_OFF_IN_MONTH ? $value->total + $value->total_absent - DAY_OFF_FREE_ACTIVE : $value->total + $value->total_absent) : ($month9 ?? '0');
-                        $month10 = $value->month == 10 ? ($user->sex == SEX['female'] && $value->total >= TOTAL_DAY_OFF_IN_MONTH ? $value->total + $value->total_absent - DAY_OFF_FREE_ACTIVE : $value->total + $value->total_absent) : ($month10 ?? '0');
-                        $month11 = $value->month == 11 ? ($user->sex == SEX['female'] && $value->total >= TOTAL_DAY_OFF_IN_MONTH ? $value->total + $value->total_absent - DAY_OFF_FREE_ACTIVE : $value->total + $value->total_absent) : ($month11 ?? '0');
-                        $month12 = $value->month == 12 ? ($user->sex == SEX['female'] && $value->total >= TOTAL_DAY_OFF_IN_MONTH ? $value->total + $value->total_absent - DAY_OFF_FREE_ACTIVE : $value->total + $value->total_absent) : ($month12 ?? '0');
-                    }else{
-                        $month1='0';
-                        $month2='0';
-                        $month3='0';
-                        $month4='0';
-                        $month5='0';
-                        $month6='0';
-                        $month7='0';
-                        $month8='0';
-                        $month9='0';
-                        $month10='0';
-                        $month11='0';
-                        $month12='0';
+                        for ($i = 1; $i < 13; $i++) {
+                            $month{$i} = $value->month == $i ? ($user->sex == SEX['female'] && $value->total >= TOTAL_DAY_OFF_IN_MONTH ? $value->total + $value->total_absent - DAY_OFF_FREE_ACTIVE : $value->total + $value->total_absent) : ($month{$i} ?? '0');
+                            array_push($totalMonth, $month{$i});
+                        }
+                    } else {
+                        for ($i = 1; $i < 13; $i++) {
+                            $month{$i} = '0';
+                            array_push($totalMonth, $month{$i});
+                        }
                     }
                 }
-            }else{
-                $month1='0';
-                $month2='0';
-                $month3='0';
-                $month4='0';
-                $month5='0';
-                $month6='0';
-                $month7='0';
-                $month8='0';
-                $month9='0';
-                $month10='0';
-                $month11='0';
-                $month12='0';
+            } else {
+                for ($i = 1; $i < 13; $i++) {
+                    $month{$i} = '0';
+                    array_push($totalMonth, $month{$i});
+                }
             }
-               $result[] = [
-                   'stt' => $keys + 1,
-                   'name' => $user->name,
-                   'staff_code' => $user->staff_code,
-                   'sex' => $user->sex == DEFAULT_VALUE ? 'Nam' : 'Nữ',
-                   'part_time' => $user->contract_type == CONTRACT_TYPES['parttime'] ? 'V' : '',
-                   'probation_at' => $user->probation_at ? Carbon::parse($user->probation_at)->format('d-m-Y') : '',
-                   'strat_date' => Carbon::parse($user->start_date)->format('d-m-Y'),
-                   'remain_day_off_current_year' => $dayOffYearTotal->remain_increment ?? '0',
-                   'remain_day_off_pre_year' => !empty($dayOffPreYearTotal) && $dayOffPreYear->remain_pre_year > DEFAULT_VALUE ? $dayOffPreYear->remain_pre_year : '0',
-                   'day_off_month_Jan' => $month1,
-                   'day_off_month_Feb' => $month2,
-                   'day_off_month_Mar' => $month3,
-                   'day_off_month_Apr' => $month4,
-                   'day_off_month_May' => $month5,
-                   'day_off_month_Jun' => $month6,
-                   'day_off_month_Jul' => $month7,
-                   'day_off_month_Aug' => $month8,
-                   'day_off_month_Sep' => $month9,
-                   'day_off_month_Oct' => $month10,
-                   'day_off_month_Nov' => $month11,
-                   'day_off_month_Dec' => $month12,
-                   'day_off_total' => $month1 + $month3 + $month4 + $month5 + $month6 + $month7 + $month8 + $month9 + $month10 + $month11 + $month1 + $month2,
-                   'day_off_regulation' => '',
-                   'day_off_remain_total' => $dayOffPreYearTotal + $dayOffYearTotal == DEFAULT_VALUE ? '0' : $dayOffPreYearTotal + $dayOffYearTotal,
-                   'day_off_end_year_reset' => $dayOffPreYearTotal == DEFAULT_VALUE ? '0' : $dayOffPreYearTotal,
-                   'day_off_turn_next_year' => $dayOffYearTotal == DEFAULT_VALUE ? '0' : $dayOffYearTotal,
-               ];
+            $result[] = [
+                'stt' => $keys + 1,
+                'name' => $user->name,
+                'staff_code' => $user->staff_code,
+                'sex' => $user->sex == DEFAULT_VALUE ? 'Nam' : 'Nữ',
+                'part_time' => $user->contract_type == CONTRACT_TYPES['parttime'] ? 'V' : '',
+                'probation_at' => $user->probation_at ? Carbon::parse($user->probation_at)->format('d-m-Y') : '',
+                'strat_date' => Carbon::parse($user->start_date)->format('d-m-Y'),
+                'remain_day_off_current_year' => $dayOffYearTotal->remain_increment ?? '0',
+                'remain_day_off_pre_year' => !empty($dayOffPreYearTotal) && $dayOffPreYear->remain_pre_year > DEFAULT_VALUE ? $dayOffPreYear->remain_pre_year : '0',
+                'day_off_month_Jan' => $totalMonth[0],
+                'day_off_month_Feb' => $totalMonth[1],
+                'day_off_month_Mar' => $totalMonth[2],
+                'day_off_month_Apr' => $totalMonth[3],
+                'day_off_month_May' => $totalMonth[4],
+                'day_off_month_Jun' => $totalMonth[5],
+                'day_off_month_Jul' => $totalMonth[6],
+                'day_off_month_Aug' => $totalMonth[7],
+                'day_off_month_Sep' => $totalMonth[8],
+                'day_off_month_Oct' => $totalMonth[9],
+                'day_off_month_Nov' => $totalMonth[10],
+                'day_off_month_Dec' => $totalMonth[11],
+                'day_off_total' => array_sum($totalMonth),
+                'day_off_regulation' => '',
+                'day_off_remain_total' => $dayOffPreYearTotal + $dayOffYearTotal == DEFAULT_VALUE ? '0' : $dayOffPreYearTotal + $dayOffYearTotal,
+                'day_off_end_year_reset' => $dayOffPreYearTotal == DEFAULT_VALUE ? '0' : $dayOffPreYearTotal,
+                'day_off_turn_next_year' => $dayOffYearTotal == DEFAULT_VALUE ? '0' : $dayOffYearTotal,
+            ];
         }
         return $result;
     }

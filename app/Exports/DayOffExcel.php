@@ -84,8 +84,8 @@ class DayOffExcel implements FromCollection, WithHeadings, ShouldAutoSize, WithE
             },
             AfterSheet::class => function (AfterSheet $event) use ($styleArray,$styleArray1,$styleArray2) {
                 $count=count($this->data)+NUMBER_COUNT_DAY_OFF;
-            $A=['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'];
-            foreach ($A as $value){
+            $row=['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'];
+            foreach ($row as $value){
                 $event->sheet->getStyle($value.'1')->applyFromArray($styleArray);
                 for ($i=0 ; $count > $i ; $i++){
                     $event->sheet->getStyle($value."1:".$value.$i)->applyFromArray($styleArray1);

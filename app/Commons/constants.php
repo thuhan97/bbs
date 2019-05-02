@@ -276,8 +276,12 @@ define('REPORT_SEARCH_TYPE', [
 ]);
 
 define('EXPORT_PATHS', [
-    'admin/work_times'
+    'admin/work_times',
+    'admin/over_times'
 ]);
+//define('OVER_TIME_EXPORT_PATHS', [
+//    'admin/over_times'
+//]);
 
 define('LATE_MONEY_CONFIG_FOLDER', 'json_config/');
 define('LATE_MONEY_CONFIG', 'config/late_time.json');
@@ -332,4 +336,12 @@ define('TOTAL_DAY_OFF_IN_MONTH',2);
 define('REMAIN_DAY_OFF_DEFAULT',1);
 define('XLSX_TYPE', '.xlsx');
 define('STATISTICAL_DAY_OFF_NAME', 'Thống kê phép năm');
+define('DAY_OFF_INCREMENT',1);
+define('NEXT_YEAR',1);
+
+define('OT_TYPE', [
+    1 => 'Dự án',
+    2 => 'OT lý do cá nhân',
+]);
+
 

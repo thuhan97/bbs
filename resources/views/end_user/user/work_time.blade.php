@@ -153,20 +153,48 @@
                             dataUserID = el.getElementsByClassName("data-user-id")[0].innerHTML,
                             dataTypeOT = el.getElementsByClassName("data-ot-type")[0].innerHTML;
                     }
+                    switch (true) {
+                        case parseInt(dataTypeOT) === 1:
+                            var projectOT = 'checked';
+                            break;
+                        case parseInt(dataTypeOT) === 2:
+                            var otherOT = 'checked';
+                            break;
+                        default:
+                            var projectOT = '',
+                                otherOT = '';
+                    }
+
+                    function makeMoal() {
+                        calendar.sDay = el.getElementsByClassName("dayNumber")[0].innerHTML;
+                        if (el.getElementsByClassName("data-id")[0]) {
+                            document.getElementById("div-reason").innerHTML =
+                                '<div class="row col-md-12">' +
+                                '<div class="col-md-12 d-flex justify-content-center">' +
+                                '<input hidden name="id" value="' + dataID + '">' +
+                                '<input hidden name="user_id" value="' + dataUserID + '">' +
+                                '<input hidden name="work_day" value="' + dataWorkDay + '">' +
+                                '<textarea class="form-control" name="reason" rows="6" placeholder="Nội dung bạn muốn gửi...">' + dataReason + '</textarea>' +
+                                '</div>' +
+                                '<div class="row col-md-12">' +
+                                '</div>' +
+                                '</div>';
+                        } else {
+                            document.getElementById("div-reason").innerHTML =
+                                '<div class="row col-md-12">' +
+                                '<div class="col-md-12 d-flex justify-content-center">' +
+                                '<input hidden name="work_day" value="' + getDataTime + '">' +
+                                '<textarea class="form-control" name="reason" rows="6" placeholder="Nội dung bạn muốn gửi..."></textarea>' +
+                                '</div>' +
+                                '<div class="row col-md-12">' +
+                                '</div>' +
+                                '</div>';
+                        }
+                    }
+
                     if (parseInt(calendarYM) >= parseInt(currentMY)) {
                         if (timeGetDay.getDay() === 0 || timeGetDay.getDay() === 6 || currentFullTime === fullTime || calendarFullTime === currenFullTime) {
                             if (currentFullTime <= fullTime) {
-                                switch (true) {
-                                    case parseInt(dataTypeOT) === 1:
-                                        var projectOT = 'checked';
-                                        break;
-                                    case parseInt(dataTypeOT) === 2:
-                                        var otherOT = 'checked';
-                                        break;
-                                    default:
-                                        var projectOT = '',
-                                            otherOT = '';
-                                }
                                 if (dataWorkDay) {
                                     var workDay = dataWorkDay,
                                         id = dataID,
@@ -176,6 +204,7 @@
                                         id = '',
                                         dataReason = '';
                                 }
+
                                 document.getElementById("div-reason").innerHTML =
                                     '<div class="row col-md-12">' +
                                     '<div class="offset-5"><h3 class="">Xin OT</h3></div>' +
@@ -191,32 +220,11 @@
                                     '<input hidden name="id" value="' + id + '">' +
                                     '<input hidden name="work_day" value="' + workDay + '">' +
                                     '</div>';
+                            } else {
+                                makeMoal()
                             }
                         } else {
-                            calendar.sDay = el.getElementsByClassName("dayNumber")[0].innerHTML;
-                            if (el.getElementsByClassName("data-id")[0]) {
-                                document.getElementById("div-reason").innerHTML =
-                                    '<div class="row col-md-12">' +
-                                    '<div class="col-md-12 d-flex justify-content-center">' +
-                                    '<input hidden name="id" value="' + dataID + '">' +
-                                    '<input hidden name="user_id" value="' + dataUserID + '">' +
-                                    '<input hidden name="work_day" value="' + dataWorkDay + '">' +
-                                    '<textarea class="form-control" name="reason" rows="6" placeholder="Nội dung bạn muốn gửi...">' + dataReason + '</textarea>' +
-                                    '</div>' +
-                                    '<div class="row col-md-12">' +
-                                    '</div>' +
-                                    '</div>';
-                            } else {
-                                document.getElementById("div-reason").innerHTML =
-                                    '<div class="row col-md-12">' +
-                                    '<div class="col-md-12 d-flex justify-content-center">' +
-                                    '<input hidden name="work_day" value="' + getDataTime + '">' +
-                                    '<textarea class="form-control" name="reason" rows="6" placeholder="Nội dung bạn muốn gửi..."></textarea>' +
-                                    '</div>' +
-                                    '<div class="row col-md-12">' +
-                                    '</div>' +
-                                    '</div>';
-                            }
+                            makeMoal();
                         }
 
                     } else if (currentFullTime <= fullTime) {
@@ -365,6 +373,8 @@
                         month: parseInt(current_month) + 1,
                     },
                     success: (respond) => {
+                        console.log(respond)
+
                         let dataRes = respond.data,
                             dataModal = respond.dataModal;
 

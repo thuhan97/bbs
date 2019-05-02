@@ -125,16 +125,19 @@ class UserController extends Controller
         if ($list_work_times_calendar) {
             foreach ($list_work_times_calendar->get()->toArray() as $item) {
                 $startDay = $item['start_at'] ? new DateTime($item['start_at']) : '';
+                $endDay = $item['end_at'] ? new DateTime($item['end_at']) : '';
                 $dataStartDay = $item['start_at'];
-                if ($dataStartDay && $dataStartDay != '00:00:00') {
+                $dataEndDay = $item['end_at'];
+                if ($dataStartDay && $dataStartDay != '00:00:00' || $dataEndDay && $dataEndDay != '00:00:00') {
                     $dataStartDay = $startDay->format('H:i');
-                } elseif ($dataStartDay == '00:00:00') {
-                    $dataStartDay = '* * : * *';
+                    $dataEndDay = $endDay->format('H:i');
+                } elseif ($dataStartDay == '00:00:00' || $dataEndDay == '00:00:00') {
+                    $dataStartDay = '**:**';
+                    $dataEndDay = '**:**';
                 } else {
                     $dataStartDay = '';
+                    $dataEndDay = '';
                 }
-                $endDay = $item['end_at'] ? new DateTime($item['end_at']) : '';
-                $dataEndDay = $endDay ? $endDay->format('H:i') : '17:30';
                 $calendarData[] = [
                     'work_day' => $item['work_day'],
                     'start_at' => $dataStartDay,
@@ -199,10 +202,12 @@ class UserController extends Controller
         $query = WorkTimesExplanation::select(
             'work_times_explanation.work_day', 'work_times_explanation.type',
             'work_times_explanation.ot_type', 'work_times_explanation.note',
-            'work_times_explanation.user_id', 'ot_times.creator_id', 'ot_times.id as id_ot_time')
+            'work_times_explanation.user_id', 'ot_times.creator_id', 'ot_times.id as id_ot_time', 'ot_times.status','users.name as approver','ot_times.approver_id')
             ->leftJoin('ot_times', function ($join) {
                 $join->on('ot_times.creator_id', '=', 'work_times_explanation.user_id')
                     ->on('ot_times.work_day', '=', 'work_times_explanation.work_day');
+            })->leftJoin('users', function ($join) {
+                $join->on('users.id', '=', 'ot_times.approver_id');
             })
             ->whereYear('work_times_explanation.work_day', date('Y'));
         $queryLeader = clone $query;
@@ -387,7 +392,6 @@ class UserController extends Controller
 
     public function dayOffShow($status)
     {
-
         $dataDayOff = $this->userDayOffService->showList($status);
         return view('end_user.user.day_off_approval', compact(
             'dataDayOff', 'status'

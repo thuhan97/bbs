@@ -32,7 +32,6 @@ class WorkTimeRequest extends FormRequest
             $rules['start_at'] = 'required|date_format:H:i';
             $rules['end_at'] = 'required|after:start_at|date_format:H:i';
         }else {
-            $rules['ot_type'] = 'required|integer|between:1,2';
             $rules['work_day'] = 'required|date';
         }
         return $rules;

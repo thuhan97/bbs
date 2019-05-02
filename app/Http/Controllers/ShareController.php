@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use App\Models\Share;
+use App\Models\Comment;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use App\Http\Requests\ShareRequest;
@@ -45,5 +46,42 @@ class ShareController extends Controller
             flash()->error(__l('share_document_error'));
         }     
         return redirect()->route('list_share_document');             
-    }           
+    }
+
+    public function shareExperience(){
+        $list_experience = Share::where('type','=', SHARE_EXPERIENCE)->orderBy('created_at','desc')->paginate(15);
+        // dd($list_experience);
+        return view('end_user.share.share_experience', compact('list_experience'));
+    }
+
+    public function addExperience(request $request){
+        $content = trim($request->content);
+        if(!empty($content)){
+            $share = new Share;
+            $share->content = $content;
+            $share->creator_id = Auth::user()->id;
+            $share->type = SHARE_EXPERIENCE;
+            if($share->save()){
+                flash()->success(__l('share_experience_successully'));
+            }else{
+                flash()->error(__l('share_experience_error'));
+            }
+        }else{
+            flash()->error(__l('share_experience_error_empty'));
+        }                 
+        return redirect()->route('share_experience');
+    }
+
+    public function addComment(request $request){
+        if(!empty($request)){
+            $commnent = new Comment;
+            $commnent->content = $request->contentComment;
+            $commnent->share_id = $request->share_id;
+            $commnent->creator_id = Auth::user()->id;
+            if($commnent->save()){
+               return view('end_user.share.add_comment', compact('commnent'));
+            }                        
+        }    
+    }    
+
 }

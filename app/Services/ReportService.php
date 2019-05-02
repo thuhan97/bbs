@@ -9,6 +9,7 @@ namespace App\Services;
 
 use App\Models\Config;
 use App\Models\Report;
+use App\Models\UserTeam;
 use App\Repositories\Contracts\IReportRepository;
 use App\Services\Contracts\IReportService;
 use Illuminate\Http\Request;
@@ -38,7 +39,7 @@ class ReportService extends AbstractService implements IReportService
      */
     public function search(Request $request, &$perPage, &$search)
     {
-        $criterias = $request->only('page', 'page_size', 'search', 'type', 'date_from', 'date_to', 'year', 'month');
+        $criterias = $request->only('page', 'page_size', 'search', 'type', 'date_from', 'date_to', 'year', 'month', 'team_id');
 
         $perPage = $criterias['page_size'] ?? REPORT_PAGE_SIZE;
         $search = $criterias['search'] ?? '';
@@ -48,6 +49,7 @@ class ReportService extends AbstractService implements IReportService
                 'week_num',
                 'title',
                 'content',
+                'report_type',
                 'created_at',
                 'updated_at',
             ])
@@ -75,6 +77,11 @@ class ReportService extends AbstractService implements IReportService
         }
         if (!empty($criterias['month'])) {
             $model->where('month', $criterias['month']);
+        }
+        if (isset($criterias['team_id'])) {
+            //get userId
+            $userIds = UserTeam::where('team_id', $criterias['team_id'])->pluck('user_id')->toArray();
+            $model->whereIn('user_id', $userIds);
         }
         return $model->paginate($perPage);
     }

@@ -50,14 +50,14 @@ class ProjectController extends AdminBaseController
 
     public function resourceUpdateValidationData($record)
     {
-        return $this->validationData();
+        return $this->validationData($record);
     }
 
-    public function validationData()
+    public function validationData($record = null)
     {
         return [
             'rules' => [
-                'name' => 'required|max:255',
+                'name' => 'required|max:255|unique:users,email' . ($record ? (',' . $record->id) : ''),
                 'customer' => 'required|max:255',
                 'scale' => 'nullable|numeric|min:1',
                 'start_date' => 'nullable|date',

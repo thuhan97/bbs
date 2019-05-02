@@ -6,7 +6,7 @@
         <!--Grid row-->
         <div class="row">
             <!--Grid column-->
-            <div class="col-md-7 mb-4">
+            <div class="col-xl-7 mb-4">
                 <!--/.Featured Image-->
                 <!--Card-->
                 @if($event)
@@ -74,7 +74,7 @@
             <!--Grid column-->
 
             <!--Grid column-->
-            <div class="d-none d-md-block col-md-5 mb-4">
+            <div class="d-none d-xl-block col-md-5 mb-4">
 
                 <!--Card: Jumbotron-->
                 <div class="card blue-gradient mb-4 wow fadeIn">

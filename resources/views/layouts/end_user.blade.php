@@ -32,7 +32,7 @@
 @include('layouts.partials.frontend.header')
 
 <main id="app" class="pt-md-5">
-    <div class="container-fluid  mt-3 mt-md-5">
+    <div class="container-fluid  mt-3 mt-xl-5">
         @if(View::hasSection('breadcrumbs'))
             @yield('breadcrumbs')
         @endif
@@ -41,7 +41,11 @@
         @yield('content')
     </div>
 </main>
-
+<!-- editor -->
+<script src="{{cdn_asset('/js/tinymce/tinymce.min.js')}}"></script> 
+<script src="{{cdn_asset('/js/end-user-share-experience.js')}}"></script>
+@stack('footer-scripts')
+ 
 <!-- Scripts -->
 <script type="text/javascript" src="{{ cdn_asset('js/mdb.min.js') }}"></script>
 {{--<script type="text/javascript" src="{{ asset('js/mdb.min.js') }}"></script>--}}

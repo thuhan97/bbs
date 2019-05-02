@@ -13,16 +13,16 @@
 @endphp
 @section('content')
     <div class="row">
-        <div class="col-sm-1"></div>
-        <div class="col-sm-10">
+        <div class="col-xl-1"></div>
+        <div class="col-xl-10">
             <form class="mb-4 mb-3" id="formReport">
-                <div class="md-form active-cyan-2 mb-0">
+                <div class="active-cyan-2 mb-0">
                     <div class="row">
-                        <div class="col-sm-2">
+                        <div class="col-6 col-sm-2">
                             {{ Form::select('year', get_years(2), request('year', date('Y')), ['class'=>'mr-1 w-30 browser-default custom-select']) }}
                         </div>
-                        <div class="col-sm-3 col-md-2">
-                            {{ Form::select('month', get_months('Tháng '), request('month', date('n')), ['class'=>'mr-1 mt-1 mt-md-0 w-30 browser-default custom-select']) }}
+                        <div class="col-6 col-sm-3 col-md-2">
+                            {{ Form::select('month', get_months('Tháng '), request('month', date('n')), ['class'=>' mt-md-0 w-30 browser-default custom-select']) }}
                         </div>
                     </div>
                 </div>
@@ -32,18 +32,22 @@
 
     @if($punishes->isNotEmpty())
         <div class="row">
-            <div class="col-sm-1"></div>
-            <div class="col-sm-10">
+            <div class="col-xl-1"></div>
+            <div class="col-xl-10">
                 <div class="row">
                     <div class="col-md-6">
                         <canvas id="pieChartTotal"></canvas>
                         <br/>
-                        <div class="row">
+                        <div class="row d-none d-sm-flex">
                             <div class="col-6 text-right">
-                                <h4>Chưa nộp: <b class="text-danger">{{number_format($unSubmitMoney)}}</b> VNĐ</h4>
+                                <h4>Chưa nộp: <b
+                                            class="text-danger d-xl-inline d-block">{{number_format($unSubmitMoney)}}</b>
+                                    <span class="d-none d-xl-inline"> VNĐ</span></h4>
                             </div>
                             <div class="col-6">
-                                <h4>Đã nộp: <b class="text-success">{{number_format($submitedMoney)}}</b> VNĐ</h4>
+                                <h4>Đã nộp: <b
+                                            class="text-success d-xl-inline d-block">{{number_format($submitedMoney)}}</b>
+                                    <span class="d-none d-xl-inline"> VNĐ</span></h4>
                             </div>
                         </div>
 
@@ -51,12 +55,16 @@
                     <div class="col-md-6">
                         <canvas id="pieChartLate"></canvas>
                         <br/>
-                        <div class="row">
+                        <div class="row d-none d-sm-flex">
                             <div class="col-6 text-right">
-                                <h4>Đi muộn: <b class="text-danger">{{number_format($totalLateMoney)}}</b> VNĐ</h4>
+                                <h4>Đi muộn: <b
+                                            class="text-danger d-xl-inline d-block">{{number_format($totalLateMoney)}}</b>
+                                    <span class="d-none d-xl-inline"> VNĐ</span></h4>
                             </div>
                             <div class="col-6">
-                                <h4>Vi phạm khác: <b class="text-success">{{number_format($otherMoney)}}</b> VNĐ</h4>
+                                <h4>Vi phạm khác: <b
+                                            class="text-primary d-xl-inline d-block">{{number_format($otherMoney)}}</b>
+                                    <span class="d-none d-xl-inline"> VNĐ</span></h4>
                             </div>
                         </div>
                     </div>
@@ -129,8 +137,8 @@
                 labels: ["Chưa nộp phạt", "Đã nộp phạt"],
                 datasets: [{
                     data: ['{{$unSubmitMoney}}', {{$submitedMoney}}],
-                    backgroundColor: ["#F7464A", "#46BFBD"],
-                    hoverBackgroundColor: ["#FF5A5E", "#5AD3D1"]
+                    backgroundColor: ["#F7464A", "#2fbf5a"],
+                    hoverBackgroundColor: ["#FF5A5E", "#6ed38f"]
                 }]
             },
             options: {
@@ -150,8 +158,8 @@
                 labels: ["Phạt đi muộn", "Vi phạm khác"],
                 datasets: [{
                     data: [ {{$totalLateMoney}}, {{$otherMoney}}],
-                    backgroundColor: ["#F7464A", "#46BFBD"],
-                    hoverBackgroundColor: ["#FF5A5E", "#5AD3D1"]
+                    backgroundColor: ["#F7464A", "#507fbf"],
+                    hoverBackgroundColor: ["#FF5A5E", "#7ba3d3"]
                 }]
             },
             options: {

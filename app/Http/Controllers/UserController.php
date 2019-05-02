@@ -253,7 +253,6 @@ class UserController extends Controller
 
     public function dayOff(DayOffRequest $request, $status = null)
     {
-
         $countDayOff = $this->userDayOffService->countDayOffUserLogin();
         $userManager = $this->userService->getUserManager();
         $availableDayLeft = $this->userDayOffService->getDayOffUser(Auth::id());

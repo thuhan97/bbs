@@ -276,11 +276,12 @@ define('REPORT_SEARCH_TYPE', [
 ]);
 
 define('EXPORT_PATHS', [
-    'admin/work_times'
-]);
-define('OVER_TIME_EXPORT_PATHS', [
+    'admin/work_times',
     'admin/over_times'
 ]);
+//define('OVER_TIME_EXPORT_PATHS', [
+//    'admin/over_times'
+//]);
 
 define('LATE_MONEY_CONFIG_FOLDER', 'json_config/');
 define('LATE_MONEY_CONFIG', 'config/late_time.json');
@@ -313,3 +314,7 @@ define('OFF_TIME', '00:00:00');
 define('SWITCH_TIME', '12:00:00');
 define('HAFT_MORNING', '10:00');
 define('HAFT_AFTERNOON', '15:30');
+define('OT_TYPE', [
+    1 => 'Dự án',
+    2 => 'OT lý do cá nhân',
+]);

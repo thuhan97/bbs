@@ -68,10 +68,10 @@
                         <td class="table-text text-center">
                             {{ $record->creator->staff_code ?? '' }}
                         </td>
-                        <td class="table-text">{{ $record->creator->name }}</td>
+                        <td class="table-text">{{ $record->creator->name ?? '' }}</td>
                         <td class="table-text">{{ $record->work_day }}</td>
-                        <td class="table-text">{{ $record->ot_type == 0 ? 'Lý do cá nhân' : 'OT dự án' }}</td>
-                        <td class="table-text">{{ $record->work_time_end_at ?? '**:**:**' }}</td>
+                        <td class="table-text">{{ $record->ot_type == array_search('Dự án', OT_TYPE) ? 'OT dự án' : 'Lý do cá nhân' }}</td>
+                        <td class="table-text">{{ $record->work_time_end_at ?? '**:**' }}</td>
                         <td class="table-text">{{ $record->note }}</td>
                         <td class="table-text"> {{ $record->approver }}</td>
                         <td class="table-text text-center">

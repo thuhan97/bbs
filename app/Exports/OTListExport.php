@@ -58,10 +58,10 @@ class OTListExport implements FromArray, WithHeadings, ShouldAutoSize
             'staff_code' => $explanation->creator->staff_code,
             'creator' => $explanation->creator->name,
             'work_day' => $explanation->work_day,
-            'ot_type' => $explanation->ot_type == 0 ? 'Lý do cá nhân' : 'OT dự án',
-            'work_time_end_at' => $explanation->work_time_end_at ?? '**:**:**',
+            'ot_type' => $explanation->ot_type == array_search('Dự án', OT_TYPE) ? 'OT dự án' : 'Lý do cá nhân',
+            'work_time_end_at' => $explanation->work_time_end_at ?? '**:**',
             'note' => $explanation->note,
-            'status' => $explanation->status == 0 ? 'Chưa duyệt' : 'Đã duyệt',
+            'status' => $explanation->status == array_search('Chưa duyệt', OT_STATUS) ? 'Chưa duyệt' : 'Đã duyệt',
             'approver' => $explanation->approver,
         ];
     }

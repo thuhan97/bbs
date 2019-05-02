@@ -132,8 +132,8 @@ class UserController extends Controller
                     $dataStartDay = $startDay->format('H:i');
                     $dataEndDay = $endDay->format('H:i');
                 } elseif ($dataStartDay == '00:00:00' || $dataEndDay == '00:00:00') {
-                    $dataStartDay = '* * : * *';
-                    $dataEndDay = '* * : * *';
+                    $dataStartDay = '**:**';
+                    $dataEndDay = '**:**';
                 } else {
                     $dataStartDay = '';
                     $dataEndDay = '';

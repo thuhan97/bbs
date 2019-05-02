@@ -44,11 +44,15 @@ class AddDayOffMonth extends Command
             $dayOffRemain=RemainDayoff::where('year', '=', date('Y'))
                 ->where('user_id',$user->id);
             if ($dayOffRemain->first()){
-                $dayOffRemain=$dayOffRemain->increment('remain', ADD_DAY_OFF_MONTH);
+                $dayOffRemain=$dayOffRemain->update([
+                    'remain' => \DB::raw( 'remain + 1' ), // increment
+                    'remain_increment' => \DB::raw( 'remain_increment + 1' ), // increment
+                ]);
             }else{
                 $dayOffRemain=new RemainDayoff();
                 $dayOffRemain->user_id=$user->id;
                 $dayOffRemain->year=date('Y');
+                $dayOffRemain->remain_increment=DAY_OFF_INCREMENT;
                 $dayOffRemain->save();
             }
         }

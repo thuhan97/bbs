@@ -85,7 +85,7 @@
                                 @endcan
 
                             @else
-                                <i class="fas fa-grin-stars fa-2x text-success" title="Đã duyệt"></i>
+                                <i class="fas fa-grin-stars fa-2x text-success" title="{{ $item['approver'] }}"></i>
                             @endif
                         </td>
                     </tr>
@@ -149,7 +149,7 @@
                     @if(is_null($item['id_ot_time']))
                         <i class="fas fa-meh-blank fa-2x text-warning" title="Chưa duyệt"></i>
                     @else
-                        <i class="fas fa-grin-stars fa-2x text-success" title="Đã duyệt"></i>
+                        <i class="fas fa-grin-stars fa-2x text-success" title="{{ $item['approver'] }}"></i>
                     @endif
                 </td>
             </tr>
@@ -284,4 +284,4 @@
     </script>
 @endsection
 
-                        
+

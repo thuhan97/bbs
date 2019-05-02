@@ -545,3 +545,10 @@ th.stt {
     color: white;
     background: green;
 }
+
+.btn-export-over-time{
+    margin: 20px;
+}
+.table-over-time{
+    margin: 20px;
+}

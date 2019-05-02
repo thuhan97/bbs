@@ -97,7 +97,7 @@ class DayOffService extends AbstractService implements IDayOffService
                 ->select('*', DB::raw('DATE_FORMAT(start_at, "%d/%m/%Y (%H:%i)") as start_date'),
                     DB::raw('DATE_FORMAT(end_at, "%d/%m/%Y (%H:%i)") as end_date'),
                     DB::raw('DATE_FORMAT(approver_at, "%d/%m/%Y (%H:%i)") as approver_date'))
-                ->orderBy('id', 'desc')
+                ->orderBy('id', 'DESC')
                 ->paginate(PAGINATE_DAY_OFF),
             'total' => $remainDay->previous_year + $remainDay->current_year,
             'total_previous' => $remainDay->previous_year,
@@ -169,7 +169,7 @@ class DayOffService extends AbstractService implements IDayOffService
     public function showList($status)
     {
         $model = $this->getdata()->whereYear('day_offs.start_at', '=', date('Y'));
-        $data = clone $model->paginate(PAGINATE_DAY_OFF);
+        $data = clone $model->orderBy('id', 'DESC')->paginate(PAGINATE_DAY_OFF);
 
         if ($status != null) {
             $dataDate = $model;
@@ -179,7 +179,7 @@ class DayOffService extends AbstractService implements IDayOffService
         } else {
             $dataDate = $model->whereMonth('day_offs.start_at', '=', date('m'));
         }
-        $dataDate = $dataDate->paginate(PAGINATE_DAY_OFF);
+        $dataDate = $dataDate->orderBy('id', 'DESC')->paginate(PAGINATE_DAY_OFF);
         return [
             'dataDate' => $dataDate,
             'data' => $data,
@@ -265,7 +265,7 @@ class DayOffService extends AbstractService implements IDayOffService
         if ($status < ALL_DAY_OFF) {
             $data = $data->where('status', $status);
         }
-        $data = $data->orderBy('status', 'ASC')->orderBy('start_at', 'DESC')
+        $data = $data->orderBy('id', 'DESC')
             ->paginate(PAGINATE_DAY_OFF);
         return $data;
     }

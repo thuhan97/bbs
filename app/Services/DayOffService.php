@@ -516,7 +516,7 @@ class DayOffService extends AbstractService implements IDayOffService
             ->where('day_offs.status', STATUS_DAY_OFF['active'])
             ->whereMonth('day_offs.start_at', '<=', date('m'))
             ->whereYear('day_offs.start_at', '=', date('Y'))
-            ->whereNull('end_date')
+            ->whereNull('users.end_date')
             ->get();
         return $datas;
     }

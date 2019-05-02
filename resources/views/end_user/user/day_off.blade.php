@@ -170,8 +170,7 @@
                         @endif
                     </td>
                     <td class=" d-none d-md-table-cell text-center">
-                        <p class=" btn-sm m-0 detail-dayoff
-                            @if($keys ==0) text-primary  @endif" style="cursor: pointer" attr="{{ $absence->id }}">Chi
+                        <p class=" btn-sm m-0 detail-dayoff" style="cursor: pointer" attr="{{ $absence->id }}">Chi
                             tiết >></p>
                     </td>
                 </tr>
@@ -563,7 +562,7 @@
                     $('#errors_date').text('vui lòng chọn ngày bắt đầu và ngày kết thúc');
                     return;
                 }
-                if (start > end) {
+                if (start >= end) {
                     $('.btn-send').attr('disabled', 'disabled');
                     $('#errors_date').text('Ngày kết thúc phải lớn hơn hoặc bằng ngày bắt đầu.');
                 } else {
@@ -626,6 +625,10 @@
                         $('#modal-form-detail').modal('show');
                     }
                 });
+            })
+
+            $('.detail-dayoff').on('click',function () {
+                $(this).addClass('text-primary');
             })
 
 

@@ -135,7 +135,7 @@
                         <div class="media mr-lg-3 d-md-flex">
                             <span id="dayoff-option-header-4"
                                   class="d-flex rounded-circle avatar z-depth-1-half mb-3 mx-auto dayoff-header mt-1">
-                                <i class="fas fa-times-circle dayoff-icoin text-danger size-table"></i>
+                                <i class="fas fa-times-circle dayoff-icoin dayoff-icoin-close text-danger size-table"></i>
                             </span>
                             <div class="media-body text-center text-md-left ml-xl-4">
                                 <h1 class="white-text font-weight-bold">{{ $dataDayOff['totalnoActive'] < 10 ? "0".$dataDayOff['totalnoActive'] : $dataDayOff['totalnoActive'] }}</h1>

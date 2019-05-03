@@ -28,7 +28,7 @@ class WorkRegisterController extends AdminBaseController
     ];
     protected $editTitle = 'Sửa thời gian làm việc';
     protected $subTitle = 'Danh sách nhân viên không làm full time';
-    private $ableToRegister = [1, 2, 3];
+    private $ableToRegister = [2, 3];
     private $keys = ['mon_part', 'tue_part', 'wed_part', 'thu_part', 'fri_part', 'sat_part'];
     protected $service;
     /**

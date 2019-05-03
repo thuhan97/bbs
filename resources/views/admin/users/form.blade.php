@@ -26,15 +26,20 @@ if (isset($record->end_date)) {
                         @endif
                     </div>
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-6 {{ $errors->has('sex') ? ' has-error' : '' }} form-group ">
                     <label for="staff_code">Giới tính</label>
-                    {{ Form::select('sex', SEXS, $record->sex, ['class'=>'form-control']) }}
+                    {{ Form::select('sex', SEXS, old('sex', $record->sex ) , ['class'=>'form-control']) }}
+                    @if ($errors->has('sex'))
+                        <span class="help-block">
+                    <strong>{{ $errors->first('sex') }}</strong>
+                </span>
+                    @endif
                 </div>
             </div>
             <!-- /.form-group -->
         </div>
 
-        <div class="col-md-12">
+        <div class="col-md-12 {{ $errors->has('staff_code') ? ' has-error' : '' }}">
             <div class="row">
                 <div class="col-md-6">
                     <div class="form-group margin-b-5 margin-t-5{{ $errors->has('name') ? ' has-error' : '' }}">
@@ -271,7 +276,7 @@ if (isset($record->end_date)) {
     <div class="row">
         <div class="col-md-6">
             <div class="form-group margin-b-5 margin-t-5{{ $errors->has('password') ? ' has-error' : '' }}">
-                <label for="password">Mật khẩu</label>
+                <label for="password">Mật khẩu @if(!isset($record->password)) * @endif</label>
                 <input type="password" class="form-control" name="password" placeholder="Nhập mật khẩu">
 
                 @if ($errors->has('password'))

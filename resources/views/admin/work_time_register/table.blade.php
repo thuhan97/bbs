@@ -88,7 +88,7 @@
                 <?php
                 $firstRecord = $record->workTimeRegisters->first();
                 ?>
-                <td class="text-right">{{ $firstRecord ? $firstRecord->updated_at->format('Y-m-d') : '' }}</td>
+                <td class="text-right">{{ isset($firstRecord->updated_at) ? $firstRecord->updated_at->format('Y-m-d') : '' }}</td>
 
                 <!-- we will also add show, edit, and delete buttons -->
                 <td>

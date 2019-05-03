@@ -71,7 +71,10 @@
                 </td>
                 <td>{{ JOB_TITLES[$record->jobtitle_id] ?? '' }}</td>
                 <td>{{ CONTRACT_TYPES_NAME[$record->contract_type] ?? '' }}</td>
-                @if($record->workTimeRegisters->isNotEmpty())
+                <?php
+                $firstRecord = $record->workTimeRegisters->first();
+                ?>
+                @if(isset($firstRecord->updated_at) && $record->workTimeRegisters->isNotEmpty())
                     @foreach($record->workTimeRegisters as $time)
                         <?php
                         $text = to_work_time_name($time->start_at, $time->end_at, $type);
@@ -85,9 +88,7 @@
                     <td></td>
                     <td></td>
                 @endif
-                <?php
-                $firstRecord = $record->workTimeRegisters->first();
-                ?>
+
                 <td class="text-right">{{ isset($firstRecord->updated_at) ? $firstRecord->updated_at->format('Y-m-d') : '' }}</td>
 
                 <!-- we will also add show, edit, and delete buttons -->

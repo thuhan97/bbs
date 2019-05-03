@@ -408,8 +408,7 @@ class DayOffService extends AbstractService implements IDayOffService
         if ($check) {
             $data = $data->where('day_offs.approver_id', Auth::id())
                 ->where('day_offs.user_id', '<>', Auth::id())
-                ->orderBy('day_offs.status', ASC)
-                ->orderBy('start_at', 'DESC');
+                ->orderBy('day_offs.id', DESC);
             return $data;
         } else {
             $data = $data->where('day_offs.id', $id);

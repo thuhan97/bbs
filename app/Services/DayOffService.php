@@ -93,7 +93,7 @@ class DayOffService extends AbstractService implements IDayOffService
         $remainDay = RemainDayoff::firstOrCreate(['user_id' => $userId]);
         $thisYear = (int)date('Y');
         return [
-            'data' => $model->whereMonth('start_at', date('m'))->whereYear('start_at', $thisYear)
+            'data' => $model->whereYear('start_at', $thisYear)
                 ->select('*', DB::raw('DATE_FORMAT(start_at, "%d/%m/%Y (%H:%i)") as start_date'),
                     DB::raw('DATE_FORMAT(end_at, "%d/%m/%Y (%H:%i)") as end_date'),
                     DB::raw('DATE_FORMAT(approver_at, "%d/%m/%Y (%H:%i)") as approver_date'))
@@ -259,8 +259,6 @@ class DayOffService extends AbstractService implements IDayOffService
         }
         if ($month) {
             $data = $data->whereMonth('start_at', '=', $month);
-        } else {
-            $data = $data->whereMonth('start_at', '=', date('m'));
         }
         if ($status < ALL_DAY_OFF) {
             $data = $data->where('status', $status);

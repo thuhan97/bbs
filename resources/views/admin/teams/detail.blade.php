@@ -1,7 +1,9 @@
 <div class="col-md-5">
     <div class="row">
         <div class="col-md-4">
+            @if($record->banner)
             <img class="w-100" src="{{lfm_thumbnail($record->banner)}}">
+            @endif
         </div>
 
         <div class="col-md-8">
@@ -14,7 +16,6 @@
             <p>Trưởng nhóm: <b>{{ $record->leader->name }}</b></p>
             <p>Ngày tạo: <b>{{ $record->created_at }}</b></p>
             <p>Khẩu hiệu: <b>{{ $record->slogan }}</b></p>
-            <br/>
             <p>Mô tả: </p>
             {!! $record->description !!}
         </div>

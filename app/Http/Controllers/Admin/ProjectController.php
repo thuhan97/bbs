@@ -63,7 +63,9 @@ class ProjectController extends AdminBaseController
                 'start_date' => 'nullable|date',
                 'end_date' => 'nullable|date|after_or_equal:start_date',
             ],
-            'messages' => [],
+            'messages' => [
+                'end_date.after_or_equal'=>'Trường ngày kết thúc phải là một ngày sau ngày bắt đầu.'
+            ],
             'attributes' => [
                 'name' => 'tên dự án',
                 'customer' => 'khách hàng',

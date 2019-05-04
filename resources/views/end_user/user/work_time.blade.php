@@ -226,11 +226,10 @@
                         } else {
                             makeMoal();
                         }
-
-                    } else if (currentFullTime <= fullTime) {
-
                     }
-                    $('.myModal').modal('show');
+                    if (parseInt(calendarYM) >= parseInt(currentMY)) {
+                        $('.myModal').modal('show');
+                    }
                 },
             };
             window.addEventListener("load", function () {
@@ -264,7 +263,6 @@
                 var daysInMth = new Date(calendar.sYear, calendar.sMth + 1, 0).getDate(),
                     startDay = new Date(calendar.sYear, calendar.sMth, 1).getDay(),
                     endDay = new Date(calendar.sYear, calendar.sMth, daysInMth).getDay();
-
                 calendar.data = localStorage.getItem("calendar-" + calendar.sMth + "-" + calendar.sYear);
                 if (calendar.data == null) {
                     localStorage.setItem("calendar-" + calendar.sMth + "-" + calendar.sYear, "{}");
@@ -373,11 +371,8 @@
                         month: parseInt(current_month) + 1,
                     },
                     success: (respond) => {
-                        console.log(respond)
-
                         let dataRes = respond.data,
                             dataModal = respond.dataModal;
-
                         dataRes.forEach(function (data) {
                             let work_day = data.work_day,
                                 work_time = data.start_at + ' - ' + data.end_at;

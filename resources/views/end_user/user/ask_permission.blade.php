@@ -69,21 +69,26 @@
                         </td>
                         <td>{{ $item['note'] ?? '' }}</td>
                         <td class="text-center">
-                            @if(!$item['id_ot_time'])
+                            @if(!$item['work_times_explanation_status'] == array_search('Đã duyệt', OT_STATUS))
                                 @can('manager')
-                                    <form action="{{ route('approved') }}">
+                                    <form action="{{ $item['type'] == array_search('Overtime',WORK_TIME_TYPE) ? route('approvedOT') : route('approved') }}"
+                                          method="post">
+                                        @csrf
+                                        <input type="hidden" name="id"
+                                               value="{{ $item['id'] ? $item['id'] : '' }}">
                                         <input type="hidden" name="user_id"
                                                value="{{ $item['user_id'] ? $item['user_id'] : '' }}">
                                         <input type="hidden" name="reason"
                                                value="{{ $item['note'] ? $item['note'] : '' }}">
                                         <input type="hidden" name="work_day"
                                                value="{{ $item['work_day'] ? $item['work_day'] : '' }}">
+                                        <input type="hidden" name="type"
+                                               value="{{ $item['type'] ? $item['type'] : '' }}">
                                         <button class="btn btn-primary waves-effect waves-light">Phê duyệt</button>
                                     </form>
                                 @else
                                     <i class="fas fa-meh-blank fa-2x text-warning" title="Chưa duyệt"></i>
                                 @endcan
-
                             @else
                                 <i class="fas fa-grin-stars fa-2x text-success" title="{{ $item['approver'] }}"></i>
                             @endif
@@ -146,7 +151,7 @@
                 </td>
                 <td>{{ $item['note'] ?? '' }}</td>
                 <td class="text-center">
-                    @if(is_null($item['id_ot_time']))
+                    @if(!$item['work_times_explanation_status'] == array_search('Đã duyệt', OT_STATUS))
                         <i class="fas fa-meh-blank fa-2x text-warning" title="Chưa duyệt"></i>
                     @else
                         <i class="fas fa-grin-stars fa-2x text-success" title="{{ $item['approver'] }}"></i>
@@ -156,7 +161,7 @@
         @endforeach
         </tbody>
     </table>
-    {{$datas->render('end_user.paginate') }}
+    {{ $datas->render('end_user.paginate') }}
     <div class="modal fade myModal" id="modal-form" tabindex="-1"
          role="dialog" aria-labelledby="myModalLabel"
          aria-hidden="true">
@@ -171,8 +176,8 @@
                     <img src="{{ asset('img/font/gio_lam_viec_popup.png') }}" alt="" width="355px" height="260px">
                 </div>
                 <br>
-                <form action="{{ route('ask_permission.create') }}" method="post">
-                    @csrf
+                <form action="{{ route('ask_permission.create') }}" method="get">
+                    {{--@csrf--}}
                     <div class="d-flex justify-content-center text-area-reason" id="div-reason"></div>
                     <div class="offset-1 select-day">
                         <label class=" text-w-400" for="inputCity">Chọn ngày *</label>
@@ -205,8 +210,8 @@
                     <img src="{{ asset('img/font/gio_lam_viec_popup.png') }}" alt="" width="355px" height="260px">
                 </div>
                 <br>
-                <form action="{{ route('ask_permission.create') }}" method="post">
-                    @csrf
+                <form action="{{ route('ask_permission.create') }}" method="get">
+                    {{--@csrf--}}
                     <div class="row col-md-12">
                         <div class="col-2"></div>
                         <div class="col-md-4 text-center">
@@ -263,22 +268,23 @@
                 currenFullTime = currentYear + '-' + currentMonth + '-' + currentDate;
             $('#work_day').datepicker({format: 'yyyy-mm-dd'});
             $('#work_day_ot').datepicker({format: 'yyyy-mm-dd'});
-            $('.btn-early').on('click', function () {
-                $('#modal-form').modal('show');
-                $(".permission-reason").append("<input name='type' type='text' value='2'>");
-                $('#work_day').datepicker("setDate", date);
-
-            });
             $('.btn-late').on('click', function () {
                 $('#modal-form').modal('show');
                 $(".permission-reason").append("<input name='type' type='text' value='1'>");
+                $(".modal-header").html("<h3 class='mg-center mb-2'>Xin đi muộn</h3>");
                 $('#work_day').datepicker("setDate", currenFullTime);
-
+            });
+            $('.btn-early').on('click', function () {
+                $('#modal-form').modal('show');
+                $(".permission-reason").append("<input name='type' type='text' value='2'>");
+                $(".modal-header").html("<h3 class='mg-center mb-2'>Xin về sớm</h3>");
+                $('#work_day').datepicker("setDate", date);
             });
             $('.btn-ot').on('click', function () {
                 $('#modal-form-ot').modal('show');
                 $(".permission-reason").append("<input name='type' type='text' value='4'>");
-                $('#modal-form-ot').datepicker("setDate", (date));
+                $(".modal-header").html("<h3 class='mg-center mb-2'>Xin OT</h3>");
+                $('#work_day_ot').datepicker("setDate", (date));
             });
         });
     </script>

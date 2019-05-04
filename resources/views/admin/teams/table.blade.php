@@ -10,7 +10,7 @@
             {!! __admin_sortable('name') !!}
         </th>
         <th>Trưởng nhóm</th>
-        <th>Khẩu ngữ</th>
+        <th>Khẩu hiệu</th>
         <th style="width: 120px;">Ngày tạo</th>
         <th style="width: 120px;">Chức năng</th>
         </thead>
@@ -31,7 +31,9 @@
                 <td style="background: {{$record->color}}">
                 </td>
                 <td>
+                    @if($record->banner)
                     <img src="{{lfm_thumbnail($record->banner)}}" width="100">
+                        @endif
                 </td>
                 <td class="table-text">
                     <a href="{{ $showLink }}">{{ $record->name }}</a>

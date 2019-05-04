@@ -272,7 +272,6 @@ class UserController extends Controller
             'approver_at' => now(),
             'work_day' => $request['work_day'],
         ]);
-
         return back()->with('approver_success', '');
     }
     //

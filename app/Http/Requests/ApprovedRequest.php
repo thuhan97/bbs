@@ -27,7 +27,7 @@ class ApprovedRequest extends FormRequest
         return [
             'id' => 'required|integer',
             'type' => 'required|integer|between:0,4',
-            'user_id' => 'required|integer',
+            'user_id' => 'required|integer|exists:users,id',
             'work_day' => 'required|date',
         ];
     }
@@ -37,6 +37,7 @@ class ApprovedRequest extends FormRequest
         return [
             'work_day' => 'Ngày làm việc',
             'type' => 'Hình thức',
+            'user_id' => 'Người làm đơn',
         ];
     }
 }

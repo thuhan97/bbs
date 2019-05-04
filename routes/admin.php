@@ -84,6 +84,9 @@ Route::group([
     Route::post('day_offs/deletes', ['as' => 'day_offs.deletes', 'uses' => 'DayOffController@deletes']);
     Route::get('day_offs/user/{id}', ['as' => 'day_offs.user', 'uses' => 'DayOffController@byUser'])->where(['id' => '\d+']);
     Route::resource('day_offs', 'DayOffController');
+    // Statistical Day Off Excel
+    Route::get('/thong-ke-ngay-nghi', 'DayOffController@statisticalDayOffExcel')->name('statistical-day-off-excel');
+
 
     //report
     Route::resource('report', 'ReportController');

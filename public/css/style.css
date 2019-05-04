@@ -885,3 +885,7 @@ td.blank, .type-1 {
     width: 85%;
     margin: 0 auto;
 }
+
+.mg-center {
+    margin: 0 auto;
+}

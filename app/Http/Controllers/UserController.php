@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\Admin\WorkTimeRequest;
+use App\Http\Requests\ApprovedRequest;
 use App\Http\Requests\AskPermissionRequest;
 use App\Http\Requests\CreateDayOffRequest;
 use App\Http\Requests\DayOffRequest;
@@ -128,10 +129,20 @@ class UserController extends Controller
                 $endDay = $item['end_at'] ? new DateTime($item['end_at']) : '';
                 $dataStartDay = $item['start_at'];
                 $dataEndDay = $item['end_at'];
+
+
                 if ($dataStartDay && $dataStartDay != '00:00:00' || $dataEndDay && $dataEndDay != '00:00:00') {
-                    $dataStartDay = $startDay->format('H:i');
-                    $dataEndDay = $endDay->format('H:i');
-                } elseif ($dataStartDay == '00:00:00' || $dataEndDay == '00:00:00') {
+                    if ($dataStartDay && $dataEndDay) {
+                        $dataStartDay = $startDay->format('H:i');
+                        $dataEndDay = $endDay->format('H:i');
+                    } elseif ($dataEndDay == null || $dataEndDay == '00:00:00') {
+                        $dataEndDay = '**:**';
+                        $dataStartDay = $startDay->format('H:i');
+                    } elseif ($dataStartDay == null || $dataStartDay == '00:00:00') {
+                        $dataStartDay = '**:**';
+                        $dataEndDay = $endDay->format('H:i');
+                    }
+                } elseif ($dataStartDay == '00:00:00' || $dataEndDay == '00:00:00' || $dataStartDay == null || $dataStartDay == '' || $dataEndDay == null || $dataEndDay == '') {
                     $dataStartDay = '**:**';
                     $dataEndDay = '**:**';
                 } else {
@@ -200,9 +211,9 @@ class UserController extends Controller
     public function askPermission()
     {
         $query = WorkTimesExplanation::select(
-            'work_times_explanation.work_day', 'work_times_explanation.type',
-            'work_times_explanation.ot_type', 'work_times_explanation.note',
-            'work_times_explanation.user_id', 'ot_times.creator_id', 'ot_times.id as id_ot_time', 'ot_times.status','users.name as approver','ot_times.approver_id')
+            'work_times_explanation.id', 'work_times_explanation.work_day', 'work_times_explanation.type',
+            'work_times_explanation.ot_type', 'work_times_explanation.note', 'work_times_explanation.status as work_times_explanation_status',
+            'work_times_explanation.user_id', 'ot_times.creator_id', 'ot_times.id as id_ot_time', 'ot_times.status as ot_time_status', 'users.name as approver', 'ot_times.approver_id')
             ->leftJoin('ot_times', function ($join) {
                 $join->on('ot_times.creator_id', '=', 'work_times_explanation.user_id')
                     ->on('ot_times.work_day', '=', 'work_times_explanation.work_day');
@@ -214,13 +225,14 @@ class UserController extends Controller
         $dataLeader = $queryLeader->groupBy('work_times_explanation.work_day', 'work_times_explanation.type',
             'work_times_explanation.ot_type', 'work_times_explanation.note', 'work_times_explanation.user_id', 'ot_times.creator_id')
             ->where('user_id', '!=', Auth::id())
-            ->orderBy('work_times_explanation.work_day', 'desc')
+            ->orderBy('work_times_explanation.status', 'asc')
+            ->orderBy('work_times_explanation.updated_at', 'desc')
             ->paginate(PAGINATE_DAY_OFF, ['*'], 'approver-page');
 
         $datas = $query->where('user_id', Auth::id())
             ->groupBy('work_times_explanation.work_day', 'work_times_explanation.type',
-            'work_times_explanation.ot_type', 'work_times_explanation.note', 'work_times_explanation.user_id', 'ot_times.creator_id')
-            ->orderBy('work_times_explanation.work_day', 'desc')
+                'work_times_explanation.ot_type', 'work_times_explanation.note', 'work_times_explanation.user_id', 'ot_times.creator_id')
+            ->orderBy('work_times_explanation.created_at', 'desc')
             ->paginate(PAGINATE_DAY_OFF, ['*'], 'user-page');
 
         return view('end_user.user.ask_permission', compact('datas', 'dataLeader'));
@@ -237,8 +249,21 @@ class UserController extends Controller
         return back()->with('create_permission_success', '');
     }
 
-    public function approved(Request $request)
+    public function approved(ApprovedRequest $request)
     {
+        $workTimesExplanationID = $request['id'];
+        if ($workTimesExplanationID) {
+            WorkTimesExplanation::where('id', $workTimesExplanationID)->update(['status' => array_search('Đã duyệt', OT_STATUS)]);
+            return back()->with('approver_success', '');
+        }
+    }
+
+    public function approvedOT(ApprovedRequest $request)
+    {
+        $workTimesExplanationID = $request['id'];
+        if ($workTimesExplanationID) {
+            WorkTimesExplanation::where('id', $workTimesExplanationID)->update(['status' => array_search('Đã duyệt', OT_STATUS)]);
+        }
         OverTime::create([
             'creator_id' => $request['user_id'],
             'reason' => $request['reason'],
@@ -249,7 +274,6 @@ class UserController extends Controller
         ]);
         return back()->with('approver_success', '');
     }
-
     //
     //
     //  DAY OFF SECTION

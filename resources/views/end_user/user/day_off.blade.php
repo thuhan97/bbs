@@ -502,7 +502,7 @@
                 },
                 messages: {
                     title: {
-                        required: "Vui lòng vui lòng chọn lý do xin nghỉ",
+                        required: "Vui lòng chọn lý do xin nghỉ",
                         digits: "Vui lòng nhập đúng định dạng số",
                         range: "Vui lòng xem lại lý do xin nghỉ"
                     },

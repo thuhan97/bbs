@@ -105,16 +105,7 @@ class DayOffService extends AbstractService implements IDayOffService
         }
            $datas=$datas ->paginate(PAGINATE_DAY_OFF);
         return [
-<<<<<<< HEAD
             'data' => $datas,
-=======
-            'data' => $model->whereYear('start_at', $thisYear)
-                ->select('*', DB::raw('DATE_FORMAT(start_at, "%d/%m/%Y (%H:%i)") as start_date'),
-                    DB::raw('DATE_FORMAT(end_at, "%d/%m/%Y (%H:%i)") as end_date'),
-                    DB::raw('DATE_FORMAT(approver_at, "%d/%m/%Y (%H:%i)") as approver_date'))
-                ->orderBy('id', 'DESC')
-                ->paginate(PAGINATE_DAY_OFF),
->>>>>>> 08e1218d96c36298ee40110004e3fd24877690e0
             'total' => $remainDay->previous_year + $remainDay->current_year,
             'total_previous' => $remainDay->previous_year,
             'total_current' => $remainDay->current_year,

@@ -12,13 +12,13 @@ if (isset($record->end_date)) {
 ?>
 @if($record->id)
     <div>
-        <span class="btn btn-primary" id="change-info">Đổi Thông Tin</span> <span class="btn btn-primary"
-                                                                                  id="change-pass">Đổi Mật Khẩu</span>
+        <span class="btn btn-primary" id="change-info">Đổi Thông Tin</span>
+        <span class="btn btn-primary" id="change-pass">Đổi Mật Khẩu</span>
         <br>
         <br>
     </div>
 @endif
-<div class="show-i">
+<div class="info-edit">
     <div class="col-md-5">
         <div class="row">
             <div class="col-md-12">
@@ -318,7 +318,7 @@ if (isset($record->end_date)) {
 </div>
 
 
-<div class="row" id="hid-i">
+<div class="row" id="password-edit">
     <div class="col-md-4"></div>
     <div class="col-md-4">
         <div class="col-md-12">
@@ -350,22 +350,22 @@ if (isset($record->end_date)) {
 </div>
 
 <script>
-    $('#hid-i').hide();
+    $('#password-edit').hide();
     $(document).ready(function () {
         $('#change-pass').on('click', function () {
-            $('.show-i').hide();
-            $('#hid-i').show();
+            $('.info-edit').hide();
+            $('#password-edit').show();
         })
         $('#change-info').on('click', function () {
-            $('.show-i').show();
-            $('#hid-i').hide();
+            $('.info-edit').show();
+            $('#password-edit').hide();
         })
     })
 </script>
 @if(($errors->has('password_confirmation') || $errors->has('password')) && $record->id)
     <script>
-        $('.show-i').hide();
-        $('#hid-i').show();
+        $('.info-edit').hide();
+        $('#password-edit').show();
     </script>
 @endif
 <!-- /.col-md-5 -->

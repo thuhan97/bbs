@@ -34,6 +34,18 @@
         </span>
         <br>
     @endif
+    @if ($errors->has('status'))
+        <span class="help-block mb-5 color-red">
+            <strong>{{ $errors->first('status') }}</strong>
+        </span>
+        <br>
+    @endif
+    @if ($errors->has('creator_id'))
+        <span class="help-block mb-5 color-red">
+            <strong>{{ $errors->first('creator_id') }}</strong>
+        </span>
+        <br>
+    @endif
     <?php
     $user = \Illuminate\Support\Facades\Auth::user();
     ?>
@@ -263,7 +275,7 @@
         $(function () {
             var date = new Date(),
                 currentDate = date.getDate() + 1,
-                currentMonth = date.getMonth(),
+                currentMonth = date.getMonth()+1,
                 currentYear = date.getFullYear(),
                 currenFullTime = currentYear + '-' + currentMonth + '-' + currentDate;
             $('#work_day').datepicker({format: 'yyyy-mm-dd'});

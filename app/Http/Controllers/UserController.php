@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\Admin\WorkTimeRequest;
+use App\Http\Requests\ApprovedRequest;
 use App\Http\Requests\AskPermissionRequest;
 use App\Http\Requests\CreateDayOffRequest;
 use App\Http\Requests\DayOffRequest;
@@ -224,8 +225,8 @@ class UserController extends Controller
         $dataLeader = $queryLeader->groupBy('work_times_explanation.work_day', 'work_times_explanation.type',
             'work_times_explanation.ot_type', 'work_times_explanation.note', 'work_times_explanation.user_id', 'ot_times.creator_id')
             ->where('user_id', '!=', Auth::id())
-//            ->orderBy('work_times_explanation.updated_at', 'asc')
             ->orderBy('work_times_explanation.status', 'asc')
+            ->orderBy('work_times_explanation.updated_at', 'desc')
             ->paginate(PAGINATE_DAY_OFF, ['*'], 'approver-page');
 
         $datas = $query->where('user_id', Auth::id())
@@ -248,7 +249,7 @@ class UserController extends Controller
         return back()->with('create_permission_success', '');
     }
 
-    public function approved(Request $request)
+    public function approved(ApprovedRequest $request)
     {
         $workTimesExplanationID = $request['id'];
         if ($workTimesExplanationID) {
@@ -257,7 +258,7 @@ class UserController extends Controller
         }
     }
 
-    public function approvedOT(Request $request)
+    public function approvedOT(ApprovedRequest $request)
     {
         $workTimesExplanationID = $request['id'];
         if ($workTimesExplanationID) {

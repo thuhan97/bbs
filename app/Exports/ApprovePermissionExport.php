@@ -8,7 +8,7 @@ use Maatwebsite\Excel\Concerns\FromArray;
 use Maatwebsite\Excel\Concerns\ShouldAutoSize;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 
-class OTListExport implements FromArray, WithHeadings, ShouldAutoSize
+class ApprovePermissionExport implements FromArray, WithHeadings, ShouldAutoSize
 {
     public function __construct($explanations)
     {
@@ -42,7 +42,7 @@ class OTListExport implements FromArray, WithHeadings, ShouldAutoSize
     {
         $results = [];
         $i = 1;
-        foreach ($this->explanations as $explanation) {
+        foreach ($this->explanations->get() as $explanation) {
             $item = $this->makeRow($explanation, $i++);
             $results[] = $item;
         }
@@ -59,10 +59,10 @@ class OTListExport implements FromArray, WithHeadings, ShouldAutoSize
             'creator' => $explanation->creator->name,
             'work_day' => $explanation->work_day,
             'ot_type' => $explanation->ot_type == array_search('Dự án', OT_TYPE) ? 'OT dự án' : 'Lý do cá nhân',
-            'work_time_end_at' => \App\Helpers\DateTimeHelper::getTimeCheckOut($explanation['user_id'],$explanation['work_day']),
+            'work_time_end_at' => $explanation->work_time_end_at ?? '**:**',
             'note' => $explanation->note,
             'status' => $explanation->status == array_search('Chưa duyệt', OT_STATUS) ? 'Chưa duyệt' : 'Đã duyệt',
-            'approver' => $explanation->approver->name ?? '',
+            'approver' => $explanation->approver,
         ];
     }
 }

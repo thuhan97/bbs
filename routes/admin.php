@@ -65,6 +65,10 @@ Route::group([
     Route::post('over_times/deletes', ['as' => 'over_times.deletes', 'uses' => 'OverTimeController@deletes']);
     Route::resource('over_times', 'OverTimeController');
 
+    // Ask Permission
+    Route::post('approve_permission/deletes', ['as' => 'approve_permission.deletes', 'uses' => 'ApprovePermissionController@deletes']);
+    Route::resource('approve_permission', 'ApprovePermissionController');
+
 
     //feedback
     Route::resource('feedback', 'FeedbackController');

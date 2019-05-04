@@ -277,7 +277,8 @@ define('REPORT_SEARCH_TYPE', [
 
 define('EXPORT_PATHS', [
     'admin/work_times',
-    'admin/over_times'
+    'admin/over_times',
+    'admin/approve_permission'
 ]);
 //define('OVER_TIME_EXPORT_PATHS', [
 //    'admin/over_times'

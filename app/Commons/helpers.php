@@ -8,7 +8,7 @@ if (!function_exists('number_collapse')) {
      * Collapse number
      *
      * @param integer $number
-     * @param string  $separator
+     * @param string $separator
      *
      * @return string
      */
@@ -102,9 +102,9 @@ if (!function_exists('redirect_back_to')) {
      * Get an instance of the redirector.
      *
      * @param string|null $callbackUrl
-     * @param int         $status
-     * @param array       $headers
-     * @param bool        $secure
+     * @param int $status
+     * @param array $headers
+     * @param bool $secure
      *
      * @return \Illuminate\Routing\Redirector|\Illuminate\Http\RedirectResponse
      */
@@ -273,10 +273,10 @@ if (!function_exists('get_years')) {
      * Encode unicode
      *
      * @param integer $num
-     * @param string  $prefix
-     * @param bool    $isDesc
+     * @param string $prefix
+     * @param bool $isDesc
      *
-     * @param bool    $istatic
+     * @param bool $istatic
      *
      * @return array
      */
@@ -304,7 +304,7 @@ if (!function_exists('get_months')) {
      * Get months
      *
      * @param string $prefix
-     * @param bool   $isDesc
+     * @param bool $isDesc
      *
      * @return string
      *
@@ -469,5 +469,4 @@ function checkNumber($number)
         return $explode[0];
     }
 }
-
 

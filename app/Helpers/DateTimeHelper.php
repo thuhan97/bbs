@@ -2,6 +2,7 @@
 
 namespace App\Helpers;
 
+use Carbon\Carbon;
 use DateTime;
 use Illuminate\Validation\ValidationException;
 
@@ -98,4 +99,13 @@ class DateTimeHelper
     {
         return 0;
     }
+
+
+    public static function getTimeCheckOut($id, $day)
+    {
+        $time = \App\Models\WorkTime::where('user_id', $id)->whereDate('work_day', '=', $day)->first()->end_at ?? '';
+
+        return $time;
+    }
+
 }

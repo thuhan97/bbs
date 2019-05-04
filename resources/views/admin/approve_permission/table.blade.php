@@ -37,7 +37,6 @@
 
             </div>
             <!-- END Search -->
-
         </div>
 
         <div class="text-right">
@@ -56,6 +55,9 @@
                 <th style="padding: 15px">Trạng thái phê duyệt</th>
                 </thead>
                 <tbody>
+                @php
+                    $i = 1;
+                @endphp
                 @foreach ($records as $record)
                     <tr>
                         <td class="table-text text-center">
@@ -64,11 +66,11 @@
                         <td class="table-text">{{ $record->creator->name ?? '' }}</td>
                         <td class="table-text">{{ $record->work_day }}</td>
                         <td class="table-text">{{ $record->ot_type == array_search('Dự án', OT_TYPE) ? 'OT dự án' : 'Lý do cá nhân' }}</td>
-                        <td class="table-text">{{ \App\Helpers\DateTimeHelper::getTimeCheckOut($record['user_id'],$record['work_day']) }}</td>
+                        <td class="table-text">{{ $record->work_time_end_at ?? '**:**' }}</td>
                         <td class="table-text">{{ $record->note }}</td>
-                        <td class="table-text"> {{ $record->approver->name ?? '' }}</td>
+                        <td class="table-text"> {{ $record->approver }}</td>
                         <td class="table-text text-center">
-                            @if(!$record['status'] == array_search('Đã duyệt',OT_STATUS))
+                            @if(!$record['status'] == array_search('Đã duyệt', OT_STATUS))
                                 <span class="label label-danger">Chưa duyệt</span>
                             @else
                                 <span class="label label-info">Đã duyệt</span>
@@ -82,6 +84,7 @@
     </div>
 @endsection
 
+{{-- Footer Extras to be Included --}}
 @section('footer-extras')
     @include('admin._resources._list-footer-extras', ['sortByParams' => []])
 @endsection

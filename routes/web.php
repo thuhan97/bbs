@@ -171,8 +171,9 @@ Route::group([
     Route::get('/thoi-gian-lam-viec-api', 'UserController@workTimeAPI')->name('work_time_api');
     Route::get('/ngay-nghi', 'UserController@dayOff')->name('day_off');
     Route::get('xin-phep','UserController@askPermission')->name('ask_permission');
-    Route::post('xin-phep/create','UserController@askPermissionCreate')->name('ask_permission.create');
+    Route::get('xin-phep/create','UserController@askPermissionCreate')->name('ask_permission.create');
     Route::post('phe-duyet-xin-phep','UserController@approved')->name('approved')->middleware('can:manager');
+    Route::post('phe-duyet-xin-phep-ot','UserController@approvedOT')->name('approvedOT')->middleware('can:manager');
    /* Route::post('/ngay-nghi/create-api', 'UserController@dayOffCreate_API')->name('day_off_createAPI');*/
     Route::get('/ngay-nghi/list-approval-api', 'UserController@dayOffListApprovalAPI')->name('day_off_listApprovalAPI');
     Route::get('/phe-duyet-ngay-nghi', 'UserController@dayOffApprove')->name('day_off_approval');

@@ -8,6 +8,9 @@
         <button type="submit" class="btn btn-primary"><i class="fa fa-search"></i></button>
     </div>
 </div>
-<a href="{{ $_createLink }}" class="btn btn-sm btn-primary pull-right">
+<div  class="btn btn-sm btn-primary pull-right" id="btn-submit-excel">
+    <span>Xuất danh sách</span>
+</div>
+<a href="{{ $_createLink }}" class="btn btn-sm btn-primary pull-right mr-1">
     <i class="fa fa-plus"></i> <span>Thêm mới</span>
 </a>

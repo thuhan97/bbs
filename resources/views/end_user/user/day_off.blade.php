@@ -17,7 +17,7 @@
                 {{ Form::select('year', get_years(), $year ?? date('Y') , ['class'=>'yearselect browser-default custom-select w-100 border-0 select_year option-select p-1']) }}
             </div>
             <div class="col-6 col-sm-4 col-xl-2 no-padding-left">
-                {{ Form::select('month', MONTH, $month ?? date('m'), ['class' => 'browser-default custom-select w-100 month option-select','placeholder'=>'Chọn tháng']) }}
+                {{ Form::select('month', MONTH, $month ?? '' , ['class' => 'browser-default custom-select w-100 month option-select','placeholder'=>'Chọn tháng']) }}
             </div>
         </div>
         <div class="d-none d-xl-flex container-fluid col-12 row border-bottom-2 mb-3" style="position: relative;">
@@ -502,7 +502,7 @@
                 },
                 messages: {
                     title: {
-                        required: "Vui lòng vui lòng chọn lý do xin nghỉ",
+                        required: "Vui lòng chọn lý do xin nghỉ",
                         digits: "Vui lòng nhập đúng định dạng số",
                         range: "Vui lòng xem lại lý do xin nghỉ"
                     },

@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Exports\DayOffExcel;
+use App\Helpers\ExcelHelper;
 use App\Http\Requests\Admin\DayOffRequest;
 use App\Models\DayOff;
 use App\Models\RemainDayoff;
@@ -11,6 +13,7 @@ use App\Services\Contracts\IDayOffService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Maatwebsite\Excel\Facades\Excel;
 
 /**
  * DayOffController
@@ -52,7 +55,7 @@ class DayOffController extends AdminBaseController
      * Controller construct
      *
      * @param IDayOffRepository $repository
-     * @param IDayOffService    $service
+     * @param IDayOffService $service
      */
     public function __construct(IDayOffRepository $repository, IDayOffService $service)
     {
@@ -61,26 +64,54 @@ class DayOffController extends AdminBaseController
         parent::__construct();
     }
 
+
     /**
-     * Show the form for creating a new resource.
+     * Display a listing of the resource.
+     *
+     * @param  \Illuminate\Http\Request $request
      *
      * @return \Illuminate\Http\Response
      */
-    public function create(Request $request)
+    public function index(Request $request)
     {
-        $user_id = $request->get('user_id');
-        $this->authorize('create', $this->getResourceModel());
-
-        $class = $this->getResourceModel();
-        return view($this->getResourceCreatePath(), $this->filterCreateViewData([
-            'record' => new $class(),
-            'user_id' => $user_id,
+        $this->authorize('viewList', $this->getResourceModel());
+        $records = $this->searchRecords($request, $perPage, $search);
+        $recordsExcel = $this->getSearchRecords($request,$perPage , $search,true);
+        return view($this->getResourceIndexPath(), $this->filterSearchViewData($request, [
+            'records' => $records,
+            'recordsExcel'=>$recordsExcel,
+            'search' => $search,
             'resourceAlias' => $this->getResourceAlias(),
             'resourceRoutesAlias' => $this->getResourceRoutesAlias(),
             'resourceTitle' => $this->getResourceTitle(),
+            'perPage' => $perPage,
+            'resourceSearchExtend' => $this->resourceSearchExtend,
+            'addVarsForView' => $this->addVarsSearchViewData()
         ]));
     }
 
+
+    public function getSearchRecords(Request $request, $perPage = 15, $search = null,$flag=false)
+    {
+        $model = $this->getResourceModel()::search($search);
+        if ($request->year){
+            $model=$model->whereYear('day_offs.start_at',$request->year);
+        }
+        if ($request->month){
+            $model=$model->whereMonth('day_offs.start_at',$request->month);
+        }
+        if ($request->has('sort')) {
+            $model->orderBy($request->get('sort'), $request->get('is_desc') ? 'asc' : 'desc');
+        } else {
+            $model->orderBy('id', 'desc');
+        }
+        if ($flag){
+            return $model->get();
+        }else{
+            return $model->paginate($perPage);
+        }
+
+    }
     /**
      * @param $id
      *
@@ -140,10 +171,10 @@ class DayOffController extends AdminBaseController
      *
      * @return \Illuminate\Http\Response
      */
-    public function getRedirectAfterSave($record, $request,$isCreate = null)
+    public function getRedirectAfterSave($record, $request, $isCreate = null)
     {
-        if ($record->status == STATUS_DAY_OFF['active']){
-            $this->service->calculateDayOff($request,$record->id);
+        if ($record->status == STATUS_DAY_OFF['active']) {
+            $this->service->calculateDayOff($request, $record->id);
         }
         return redirect(route($this->getResourceRoutesAlias() . '.index'));
     }
@@ -153,6 +184,7 @@ class DayOffController extends AdminBaseController
     {
         return $this->validationData();
     }
+
 
     /**
      * @param Request $request
@@ -167,6 +199,16 @@ class DayOffController extends AdminBaseController
         }
 
         return $values;
+    }
+
+    public function statisticalDayOffExcel(Request $request)
+    {
+        if ($request->ids) {
+            $ids = array_unique($request->ids);
+            $datas = $this->service->statisticalDayOffExcel($ids);
+            return Excel::download(new DayOffExcel($datas), STATISTICAL_DAY_OFF_NAME.XLSX_TYPE);
+
+        }
     }
 
     private function validationData()

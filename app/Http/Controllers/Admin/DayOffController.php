@@ -99,7 +99,6 @@ class DayOffController extends AdminBaseController
             $year = $request->get('year');
             $month = $request->get('month');
            $numberThisYearAndLastYear= $this->service->getDayOffUser($request,$id);
-//           dd($numberThisYearAndLastYear,$remainDayOff);
             return view($this->resourceAlias . '.user', compact('user', 'records', 'search', 'perPage', 'year', 'month', 'numberThisYearAndLastYear','totalDayOfff','totalRemainDayOff'));
         } else {
             flash()->error(__l('user_not_found'));

@@ -651,9 +651,13 @@
     .dayoff-icoin {
         font-size: 27px;
         position: absolute;
-        left: 24px;
+        left: 8px !important;
         top: 6px;
     }
+    .dayoff-icoin-close{
+        left: 6px !important;
+    }
+
 
     .dayoff-cioin-1-2-3 {
         left: 10px !important;
@@ -857,7 +861,7 @@ td.blank, .type-1 {
 }
 
 .day-off-icoi {
-    left: 25px !important;
+    left: 25px ;
 }
 
 

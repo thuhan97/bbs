@@ -87,18 +87,25 @@ class DayOffService extends AbstractService implements IDayOffService
      *
      * @return array
      */
-    public function getDayOffUser($userId)
+    public function getDayOffUser($request,$userId)
     {
         $model = $this->model->where('user_id', $userId);
         $remainDay = RemainDayoff::firstOrCreate(['user_id' => $userId]);
         $thisYear = (int)date('Y');
+        $datas=$model->whereYear('start_at', $thisYear)
+            ->select('*', DB::raw('DATE_FORMAT(start_at, "%d/%m/%Y (%H:%i)") as start_date'),
+                DB::raw('DATE_FORMAT(end_at, "%d/%m/%Y (%H:%i)") as end_date'),
+                DB::raw('DATE_FORMAT(approver_at, "%d/%m/%Y (%H:%i)") as approver_date'))
+            ->orderBy('id', 'DESC');
+        if ($request->month){
+            $datas=$datas->whereMonth('start_at',$request->month);
+        }
+        if ($request->year){
+            $datas=$datas->whereYear('start_at',$request->year);
+        }
+           $datas=$datas->paginate(PAGINATE_DAY_OFF);
         return [
-            'data' => $model->whereYear('start_at', $thisYear)
-                ->select('*', DB::raw('DATE_FORMAT(start_at, "%d/%m/%Y (%H:%i)") as start_date'),
-                    DB::raw('DATE_FORMAT(end_at, "%d/%m/%Y (%H:%i)") as end_date'),
-                    DB::raw('DATE_FORMAT(approver_at, "%d/%m/%Y (%H:%i)") as approver_date'))
-                ->orderBy('id', 'DESC')
-                ->paginate(PAGINATE_DAY_OFF),
+            'data' => $datas,
             'total' => $remainDay->previous_year + $remainDay->current_year,
             'total_previous' => $remainDay->previous_year,
             'total_current' => $remainDay->current_year,
@@ -311,11 +318,6 @@ class DayOffService extends AbstractService implements IDayOffService
                             $month{$i} = $value->month == $i ? ($user->sex == SEX['female'] && $value->total >= TOTAL_DAY_OFF_IN_MONTH ? $value->total + $value->total_absent - DAY_OFF_FREE_ACTIVE : $value->total + $value->total_absent) : ($month{$i} ?? '0');
                             array_push($totalMonth, $month{$i});
                         }
-                    } else {
-                        for ($i = 1; $i < 13; $i++) {
-                            $month{$i} = '0';
-                            array_push($totalMonth, $month{$i});
-                        }
                     }
                 }
             } else {
@@ -324,6 +326,7 @@ class DayOffService extends AbstractService implements IDayOffService
                     array_push($totalMonth, $month{$i});
                 }
             }
+            $newTotalMonth=array_slice($totalMonth,count($totalMonth)-TOTAL_MONTH,count($totalMonth));
             $result[] = [
                 'stt' => $keys + 1,
                 'name' => $user->name,
@@ -334,19 +337,19 @@ class DayOffService extends AbstractService implements IDayOffService
                 'strat_date' => Carbon::parse($user->start_date)->format('d-m-Y'),
                 'remain_day_off_current_year' => $dayOffYearTotal->remain_increment ?? '0',
                 'remain_day_off_pre_year' => !empty($dayOffPreYearTotal) && $dayOffPreYear->remain_pre_year > DEFAULT_VALUE ? $dayOffPreYear->remain_pre_year : '0',
-                'day_off_month_Jan' => $totalMonth[0],
-                'day_off_month_Feb' => $totalMonth[1],
-                'day_off_month_Mar' => $totalMonth[2],
-                'day_off_month_Apr' => $totalMonth[3],
-                'day_off_month_May' => $totalMonth[4],
-                'day_off_month_Jun' => $totalMonth[5],
-                'day_off_month_Jul' => $totalMonth[6],
-                'day_off_month_Aug' => $totalMonth[7],
-                'day_off_month_Sep' => $totalMonth[8],
-                'day_off_month_Oct' => $totalMonth[9],
-                'day_off_month_Nov' => $totalMonth[10],
-                'day_off_month_Dec' => $totalMonth[11],
-                'day_off_total' => array_sum($totalMonth),
+                'day_off_month_Jan' => $newTotalMonth[0],
+                'day_off_month_Feb' => $newTotalMonth[1],
+                'day_off_month_Mar' => $newTotalMonth[2],
+                'day_off_month_Apr' => $newTotalMonth[3],
+                'day_off_month_May' => $newTotalMonth[4],
+                'day_off_month_Jun' => $newTotalMonth[5],
+                'day_off_month_Jul' => $newTotalMonth[6],
+                'day_off_month_Aug' => $newTotalMonth[7],
+                'day_off_month_Sep' => $newTotalMonth[8],
+                'day_off_month_Oct' => $newTotalMonth[9],
+                'day_off_month_Nov' => $newTotalMonth[10],
+                'day_off_month_Dec' => $newTotalMonth[11],
+                'day_off_total' => array_sum($newTotalMonth),
                 'day_off_regulation' => '',
                 'day_off_remain_total' => $dayOffPreYearTotal + $dayOffYearTotal == DEFAULT_VALUE ? '0' : $dayOffPreYearTotal + $dayOffYearTotal,
                 'day_off_end_year_reset' => $dayOffPreYearTotal == DEFAULT_VALUE ? '0' : $dayOffPreYearTotal,
@@ -483,7 +486,7 @@ class DayOffService extends AbstractService implements IDayOffService
         $datas = $this->model::select('day_offs.user_id', 'day_offs.check_free',
             DB::raw('YEAR(start_at) year, MONTH(start_at) month'),
             DB::raw('sum(number_off) as total'),
-            DB::raw('sum(absent) as total_absent'))
+            DB::raw('sum(absent) as total_absfirstOrCreateent'))
             ->join('users', 'users.id', '=', 'day_offs.user_id')
             ->groupBy('day_offs.user_id', 'day_offs.check_free', 'year', 'month')
             ->whereIn('day_offs.user_id', $ids)

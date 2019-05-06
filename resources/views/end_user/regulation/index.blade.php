@@ -23,7 +23,7 @@
             @if($regulations->isNotEmpty())
 
                 <table class="table table-bordered table-hover">
-                    <thead class="stylish-color white-text">
+                    <thead class="grey white-text">
                     <tr>
                         <th style="width: 50px">STT</th>
                         <th>Nội quy/quy định</th>

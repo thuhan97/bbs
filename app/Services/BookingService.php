@@ -43,46 +43,68 @@ class BookingService extends AbstractService implements IBookingService
      *
      * @return collection
      */
+
+     public function getBooking($start, $end){
+        $start=date('Y-m-d',strtotime($start)).' '.date('H:i:s',strtotime('00:00:00'));
+        $end=date('Y-m-d',strtotime($end)).' '.date('H:i:s',strtotime('23:59:59'));
+        $results=[];
+        $bookings=Booking::where('start_date','>=',$start)
+                            ->where('start_date','<=',$end)
+                            ->get();
+        if ($bookings->isNotEmpty()) {
+            foreach ($bookings as $booking) {
+                $results[] = [
+                    'id' => $booking->id,
+                    'title' => $booking->title,
+                    'description' => $booking->content,
+                    'start' => $booking->start_date,
+                    'end' => $booking->end_date,
+                    'textColor'=>'#fff',
+                    'color'=>$booking->color,
+                ];
+            }
+        }
+        return $results;
+    }
+
     public function getBookingRecur($start, $end)
     {
+        $end=date('Y-m-d',strtotime($end));
         $results=[];  
-        // if(date('Y-m-d',strtotime($start))>\Carbon::now()->format('Y-m-d')){
-            $recurs=Recur::all();
-            foreach($recurs as $recur){
-                $startDate=null;
-                $days_repeat= $recur->days_repeat;
-                if($recur->repeat_type==WEEKLY){
-                    $startDate=date('Y-m-d', strtotime( $start.' + '.$days_repeat.' days'));
-                }
-                elseif($recur->repeat_type==MONTHLY){
-                   
-                    $day= self::getDateOfRecurMonthly($start,$end,$days_repeat );
-                    if($day!=null){
-                        $startDate=$day;
-                    }
-                }
-                else if($recur->repeat_type==YEARLY){
-                    $day=self::getDateOfRecurYearly($start,$end, $days_repeat);
-                    if($day!==null)
-                        $startDate=$day;
-
-                }
-                else{
-                    $startDate=$recur->date;
-                }
-                if($startDate!=null){
-                    $results[]=[
-                        // 'id'=>$recur->id,
-                        'title' => $recur->title,
-                        'description' => $recur->content,
-                        'start' => $startDate.' '. $recur->start_time,
-                        'end' => $startDate.' '.$recur->end_time,
-                        'textColor'=>'#fff',
-                        'color'=>$recur->color,
-                    ];
+        $recurs=Recur::where('date','<=',$end)->get();
+        foreach($recurs as $recur){
+            $startDate=null;
+            $days_repeat= $recur->days_repeat;
+            if($recur->repeat_type==WEEKLY){
+                $startDate=date('Y-m-d', strtotime( $start.' + '.$days_repeat.' days'));
+            }
+            elseif($recur->repeat_type==MONTHLY){
+               
+                $day= self::getDateOfRecurMonthly($start,$end,$days_repeat );
+                if($day!=null){
+                    $startDate=$day;
                 }
             }
-        // }
+            else if($recur->repeat_type==YEARLY){
+                $day=self::getDateOfRecurYearly($start,$end, $days_repeat);
+                if($day!==null)
+                    $startDate=$day;
+            }
+            else{
+                 $startDate=$recur->days_repeat;
+            }
+            if($startDate!=null && $startDate>= \Carbon::now()){
+                $results[]=[
+                    'id'=>$recur->id,
+                    'title' => $recur->title,
+                    'description' => $recur->content,
+                    'start' => $startDate.' '. $recur->start_time,
+                    'end' => $startDate.' '.$recur->end_time,
+                    'textColor'=>'#fff',
+                    'color'=>$recur->color,
+                ];
+            }
+        }
         return $results;
     }
 

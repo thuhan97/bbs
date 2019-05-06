@@ -33,7 +33,10 @@ class BookingController extends Controller
 	public function getCalendar(Request $request){
 		$start= $request->start;
 		$end= $request->end;
-		$results=$this->bookingService->getBookingRecur($start,$end);
+		$results1=$this->bookingService->getBooking($start,$end);
+		$results2=$this->bookingService->getBookingRecur($start,$end);
+		// dd($results2);
+		$results=array_merge($results1,$results2);
 
         return $this->respond(['bookings' => $results]);
 	}
@@ -62,13 +65,55 @@ class BookingController extends Controller
            return  response()->json(["errors"=>$validator->errors(),'status'=>422],200);
 
         }else{
-           		$date=null;
-	           	if($request->repeat_type==3) $days_repeat=date('m-d',strtotime($request->days_repeat));
-	            else if($request->repeat_type==2) $days_repeat=(new \Carbon($request->days_repeat))->day;
-	            else if($request->repeat_type==1 ) $days_repeat=(new \Carbon($request->days_repeat))->dayOfWeek;
+        	//
+        			$meetings_id=$request->meetings_id;
+		            $start_time=$request->start_time;
+		            $end_time=$request->end_time;
+		            $days_repeat=$request->days_repeat;
+		            $date=$days_repeat;
+		            $date_month=date('m-d',strtotime($days_repeat));
+		            $day=(new \Carbon($days_repeat))->day;
+		            $dayOfWeek=(new \Carbon($days_repeat))->dayOfWeek;
+
+
+		
+
+		            $recur=Recur::where('repeat_type',0)->where('days_repeat',$date)->where('meetings_id',$meetings_id);;
+					if(count($recur->get())>0) {
+						$recur=$recur->where('start_time','>=',$end_time)->orWhere('end_time','<=',$start_time)->get();
+						if(count($recur)==0) dd('khomng');
+						else dd('trung');
+					}
+					else dd(1);
+
+		            // $recur=Recur::where('meetings_id',$meetings_id)->where('start_time','<=',$start_time)->where('end_time','>=',$start_time)->where('start_time','<=',$end_time)->where('end_time','>=',$end_time);
+		            // if(count($recur->get())>0){
+		            // 	$recur=$recur->where('days_repeat',$date)->orWhere('days_repeat',$date_month)->orWhere('days_repeat',$day)->orWhere('days_repeat',$dayOfWeek);
+		            // 	if(count($recur->get())>0){
+		            // 		// return response()->json(["duplicate"=>'Vui lòng chọn phòng họp khác vì đã trùng.','status'=>422],200);
+		            // 		dd('trùng');
+		            // 	}
+		            // 	else dd('không trùng');
+		            // }
+		            // else{
+		            // 	dd('không trùng');
+		            // }
+
+				// $recur="Select * from recurs where ('repeat_type'=0 AND 'meetings_id'=".$meetings_id .") AND  ('start_time'<=".$start_time."")
+    //     	//
+           		$date=$request->days_repeat;
+	           	if($request->repeat_type==YEARLY) {
+	           		$days_repeat=date('m-d',strtotime($request->days_repeat));
+	           	}
+	            else if($request->repeat_type==MONTHLY) {
+	            		$days_repeat=(new \Carbon($request->days_repeat))->day;
+	            	}
+	            else if($request->repeat_type==WEEKLY) {
+	            	$days_repeat=(new \Carbon($request->days_repeat))->dayOfWeek;
+	            }
 	            else {
-	            	$date=$request->days_repeat;
-	            	$days_repeat=null;
+	            	
+	            	$days_repeat=$request->days_repeat;
 	            }
 	           	$data=[
 	            	'users_id'=>\Auth::user()->id,
@@ -85,6 +130,7 @@ class BookingController extends Controller
 		            'date'=>$date
 	            ]; 
 	            Recur::insert($data) ;
+
            
 
             return response()->json(["success"=>true]);
@@ -92,5 +138,36 @@ class BookingController extends Controller
         }   
 
         
+    }
+
+    public function getBooking(Request $request,$id){
+    	$start_date=$request->start_date;
+    	if($start_date>\Carbon::now()){
+    		$booking = Recur::findOrFail($id);
+    		$participants=explode(",",$booking->participants);
+    		$objects=[];
+    		foreach($participants as $user_id) {
+    			$objects[]=(User::findOrFail($user_id))->name;
+    		}
+    		$meeting=Meeting::findOrFail($booking->meetings_id)->name;
+    		$type=FUTURE;
+    		
+    	}
+    	else{
+    		$booking = Booking::findOrFail($id);
+    		$participants=explode(",",$booking->participants);
+    		$objects=[];
+    		foreach($participants as $user_id) {
+    			$objects[]=(User::findOrFail($user_id))->name;
+    		}
+    		$meeting=Meeting::findOrFail($booking->meetings_id)->name;
+    		$type=PAST;
+    	}
+    	 return response()->json(["booking"=>$booking,"participants"=>$objects,"meeting"=>$meeting,"type"=>$type]);
+    }
+
+    public function deleteBooking(Request $request, $id){
+    		$booking = Recur::where('id',$id)->delete();		
+    	 return response()->json(["messages"=>"success"]);
     }
 }

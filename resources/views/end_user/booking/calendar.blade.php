@@ -43,6 +43,7 @@
                 
                 <div class="modal-body">
                     <h4 class="text-center font-weight-bold ">Đặt lịch họp</h4>
+                    <input type="hidden" name="id" id="id" value="">
                     <input type="hidden" name="_token" id="_token" value="{{ csrf_token() }}" >
                     <input type="hidden" name="color" id="color" value="" >
                     <input type="hidden" name="days_repeat" id="days_repeat" value="">
@@ -77,17 +78,18 @@
                         <div class="col-6 start_time">
                             
                             <label class="ml-3">Thời gian bắt đầu *</label>
-                            <input class="form-control  timepicker "  name="start" id="start_time">
-                           
+                            <div class="  timepicker">
+                                <input class="form-control"  name="start" id="start_time" data-format="hh:mm" data-provide="timepicker"  >
+                            </div>
                         </div>
                         <div class="col-6 mb-1 end_time" >
-                          
                             <label class="ml-3">Thời gian kết thúc *</label>
-                            <input class="form-control  timepicker "   name="end" id="end_time">
-                            
+                            <div class=" bootstrap-timepicker timepicker">
+                                <input class="form-control  timepicker "   name="end" id="end_time" data-format="hh:mm" data-provide="timepicker">
+                            </div>
                         </div>
                     </div>
-                    <div>
+                    <div id="#repeat">
                         <lable class="mr-5">Chọn định kỳ: </lable>
                         <input type="radio" name="repeat_type" id="non_repeat" value="0" checked style="display: none;">
                         <label class="radio-inline">
@@ -121,6 +123,8 @@
         
             <div class="modal-body">
                 <h4 class="text-center font-weight-normal ">Lịch họp</h4>
+                <input type="hidden" name="id" id="id_booking" value="">
+                <input type="hidden" name="start_date" id="start_date" value="">
                 <h6 class="font-weight-normal ">Tiêu đề:</h6>
                 <p id="show-title"></p>
                 
@@ -135,12 +139,42 @@
             </div>
             <div class="modal-footer">
                 <button class="btn btn-primary" id="edit" >Sửa lịch</button>
-                <button class="btn btn-success" id="delete" >Xóa</button>
+                <button class="btn btn-danger" id="deleteMessage" >Xóa</button>
             </div>       
         </div>
     </div>
 </div>
-
+<!-- delete modal -->
+<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        
+        <div class="modal-content" style="width: 450px;padding: 5px;margin-top: 100px;font-size: 13px;">
+            
+            <div class="modal-body">
+                <h6>Bạn có chắc chắn muốn xóa buổi họp này không?</h6>
+            </div>
+            <div class="modal-footer">
+               <button class="btn btn-white" id="cancel"  >Hủy</button>
+                <button class="btn btn-danger" id="delete" >Xóa</button>
+            </div>       
+        </div>
+    </div>
+</div>
+<!-- success modal -->
+<div class="modal fade" id="deleteSuccessModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        
+        <div class="modal-content" style="width: 450px;padding: 5px;margin-top: 100px;font-size: 13px;">
+        
+            <div class="modal-body">
+                <h6 id="message" class="text-center"></h6>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary" id="ok" >OK</button>
+            </div>       
+        </div>
+    </div>
+</div>
 @endsection
 @push('extend-css')
 <style >
@@ -172,6 +206,19 @@
        width: 450px;
        padding: 5px;
        margin-top: 100px;
+        margin-left: 10%;
+    }
+    #deleteModal .modal-content{
+        width: 450px;
+        padding: 5px;
+        margin-top: 300px!important;
+        margin: auto;
+    }
+    #deleteSuccessModal .modal-content{
+        width: 450px;
+        padding: 5px;
+        margin-top: 300px!important;
+        margin: auto;
     }
     select, option{
         font-size: 13px!important;
@@ -267,12 +314,25 @@
 @push('extend-js')
     <link href="{{asset('bootstrap-select/css/bootstrap-select.css')}}" rel="stylesheet" />
     <script src="{{asset('bootstrap-select/js/bootstrap-select.js')}}" type="text/javascript"></script>
-    <link href="{{asset('bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css')}}" rel="stylesheet" />
-    <script src="{{asset('bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js')}}" type="text/javascript"></script>
+    <link href="{{asset('bootstrap-datetimepicker/css/bootstrap-timepicker.min.css')}}" rel="stylesheet" />
+    <script src="{{asset('bootstrap-datetimepicker/js/bootstrap-timepicker.min.js')}}" type="text/javascript"></script>
     <link href="{{ asset('fullcalendar/fullcalendar.min.css') }}" rel="stylesheet">
     <script type="text/javascript" src="{{ asset('js/moment.min.js') }}"></script>
 
     <script type="text/javascript" src="{{ asset('fullcalendar/fullcalendar.min.js') }}"></script>
+    <script type="">
+        $('#start_time').timepicker({
+            // 12 or 24 hour
+              showInputs: false,
+  showMeridian: false 
+            });
+         $('#end_time').timepicker({
+            // 12 or 24 hour
+             showInputs: false,
+  showMeridian: false 
+            });
+
+    </script>
     <script >
         window.addEventListener("load", function () {
     // selectMonths= {"01":"Tháng 1" , "02": "Tháng 2", "03":"Tháng 3", "04":"Tháng 4", "05":"Tháng 5", "06":"Tháng 6", "07": "Tháng 7", "08":"Tháng 8", "09":"Tháng 9","10":"Tháng 10", "11":"Tháng 11", "12":"Tháng 12"};
@@ -384,11 +444,34 @@
                       
                 },
                 eventClick: function(calEvent, jsEvent, view) {
-                    $('#show-title').text(calEvent.title);
-                    $('#show-content').text(calEvent.description);
-                    $('#time').text(moment(calEvent.start).format('HH:mm')+ '-' + moment(calEvent.end).format('HH:mm'));
-                    console.log(calEvent);
-                    $('#showModal').modal();
+                    console.log(calEvent.start);
+                    // 
+                    $.ajax({
+                        url:'get-booking/'+calEvent.id,
+                        data:{'start_date':calEvent.start.format('YYYY-MM-DD HH:mm:00')},
+                        type:'GET',
+                        success:function(data){
+                            $('#id_booking').val(calEvent.id);
+                            $('#start_date').val(calEvent.start.format('YYYY-MM-DD HH:mm:00'));
+                            $('#show-title').text(calEvent.title);
+                            $('#show-content').text(calEvent.description);
+                            $('#show-object').text(data.participants);
+                            $('#show-meeting').text(data.meeting);
+                            $('#time').text(moment(calEvent.start).format('HH:mm')+ '-' + moment(calEvent.end).format('HH:mm'));
+                            if(calEvent.start.format('YYYY-MM-DD HH:mm:00') < (moment().format('YYYY-MM-DD HH:m:s'))){
+                                $('#edit').css('display','none');
+                                $('#deleteMessage').css('display','none');
+                            }
+                            else{
+                                $('#edit').css('display','inline-block');
+                                $('#deleteMessage').css('display','inline-block'); 
+                            }
+                            $('#showModal').modal();
+                        }
+                    });
+                    // 
+
+                    
                 },
             });
         });
@@ -438,11 +521,21 @@
                         if(data.status==422){
                             if(data.errors.participants){
                                 $('.btn-light').css("border","1px solid red");
+                                $('.selectpicker').change(function(){
+                                    $('.btn-light').css("border","1px solid #ccc");
+                                });
+
                             }
                             $.each(data.errors, function (i, error) {
                                 var el = $('#'+i);
                                 el.css("border","1px solid red");
+                                 el.change(function(){
+                                    $(this).css("border","1px solid #ccc    ");
+                                });
                             });
+                            if(isset($data.duplicate)){
+                                $('#meetings_id').css("border","1px solid red");
+                            }
                         }
                         else if(data.success){
                             console.log(data.success)
@@ -452,6 +545,74 @@
             });
         
           });
+
+        $('#edit').click(function(){
+            var id=$('#id_booking').val();
+            $.ajax({
+                url:'get-booking/'+id,
+                data:{'start_date':$('#start_date').val()},
+                type:'GET',
+                success:function(data){
+                    var booking=data.booking;
+                    $('#title').val(booking.title);
+                    $('#content').val(booking.content);
+                    $('#participants').val(booking.participants);
+                    $('.selectpicker').selectpicker('refresh');
+                    $('#meetings_id').val(booking.meetings_id);
+                    $('#start_time').val((booking.start_time.substring(0,5)));
+                    $('#end_time').val(booking.end_time.substring(0,5));
+                    $('#days_repeat').val(booking.date);
+                    (booking.is_notify==0)? $('input[name="is_notify"]').attr('checked', false): $('input[name="is_notify"]').attr('checked', true);
+                   
+                    if(data.type=='PAST'){
+                        $('#repeat').css('display','none');
+                    }
+                    else{
+                       $('input:radio[name="repeat_type"]').filter('[value='+booking.repeat_type+']').attr('checked', true);
+                    }
+                    $('#showModal').modal('hide');
+                    $('#addModal').modal();
+                }
+            });
+        });
+        $('#deleteMessage').click(function(){
+            $('#showModal').modal('hide');
+            $('#deleteModal').modal();
+        });
+
+        $('#delete').click(function(){
+            var id=$('#id_booking').val();
+            $.ajax({
+                url:'delete-booking/'+id,
+                data:{'start_date':$('#start_date').val()},
+                type:'GET',
+                success:function(data){
+                    $('#deleteModal').modal('hide');
+                    $('#message').text('Bạn đã xóa thành công buổi họp!')
+                            $('#deleteSuccessModal').modal();
+                     
+                        
+                      
+                },
+                fail:function(data){
+                    $('#deleteModal').modal('hide');
+                    $('#message').text('Thao tác xóa không thành công!')
+                        $('#deleteSuccessModal').modal();
+                        
+                        
+                     
+                }
+            });
+        });
+        $('#ok').click(function(){
+            $('#deleteSuccessModal').modal('hide');
+            location.reload();
+        });
+        $('#cancel').click(function(){
+            $('#deleteModal').modal('hide');
+            $('#showModal').modal();
+        });
+       
 
     </script>
 @endpush

@@ -103,7 +103,7 @@ class DayOffService extends AbstractService implements IDayOffService
         if ($request->year){
             $datas=$datas->whereYear('start_at',$request->year);
         }
-           $datas=$datas ->paginate(PAGINATE_DAY_OFF);
+           $datas=$datas->paginate(PAGINATE_DAY_OFF);
         return [
             'data' => $datas,
             'total' => $remainDay->previous_year + $remainDay->current_year,
@@ -490,7 +490,7 @@ class DayOffService extends AbstractService implements IDayOffService
         $datas = $this->model::select('day_offs.user_id', 'day_offs.check_free',
             DB::raw('YEAR(start_at) year, MONTH(start_at) month'),
             DB::raw('sum(number_off) as total'),
-            DB::raw('sum(absent) as total_absent'))
+            DB::raw('sum(absent) as total_absfirstOrCreateent'))
             ->join('users', 'users.id', '=', 'day_offs.user_id')
             ->groupBy('day_offs.user_id', 'day_offs.check_free', 'year', 'month')
             ->whereIn('day_offs.user_id', $ids)

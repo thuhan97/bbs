@@ -24,6 +24,18 @@ class WorkTimesExplanation extends Model
         'ot' => 3,
     ];
 
+    public function scopeSearch($query, $searchWorkTimesExplanation)
+    {
+        return $query->where(function ($q) use ($searchWorkTimesExplanation) {
+            $q->orWhere('work_day', 'like', '%' . $searchWorkTimesExplanation . '%')
+                ->orWhere('users.name', 'like', '%' . $searchWorkTimesExplanation . '%')
+                ->orWhere('users.staff_code', 'like', '%' . $searchWorkTimesExplanation . '%');
+        })
+            ->join('users', 'users.id', 'user_id')
+            ->select('work_times_explanation.*')
+            ->orderBy('work_times_explanation.id', 'desc');
+    }
+
     protected $fillable = [
         'id',
         'user_id',
@@ -31,7 +43,12 @@ class WorkTimesExplanation extends Model
         'work_day',
         'type',
         'note',
+        'start_at',
+        'end_at',
         'ot_type',
+        'status',
+        'approver_id',
+
     ];
 
     /**
@@ -72,5 +89,10 @@ class WorkTimesExplanation extends Model
     public function creator()
     {
         return $this->belongsTo(User::class, 'user_id', 'id');
+    }
+
+    public function approver()
+    {
+        return $this->belongsTo(User::class, 'approver_id', 'id');
     }
 }

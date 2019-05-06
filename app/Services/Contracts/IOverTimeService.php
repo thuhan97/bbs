@@ -18,5 +18,5 @@ interface IOverTimeService extends IBaseService
      * @param $explanationType
      * @return mixed
      */
-    public function getListOverTime(Request $request,$explanationType);
+    public function getListOverTime(Request $request);
 }

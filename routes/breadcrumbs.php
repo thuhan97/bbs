@@ -160,6 +160,7 @@ $resources = [
     'day_offs' => 'Quản lý nghỉ phép',
     'work_times' => 'Quản lý làm việc',
     'over_times' => 'Duyệt OT',
+    'approve_permission' => 'Xin phép',
     'work_time_register' => 'Đăng ký thời gian làm việc',
     'projects' => 'Quản lý dự án',
     'devices' => 'Quản lý thiết bị',

@@ -2,6 +2,7 @@
 
 namespace App\Exports;
 
+use App\Helpers\DateTimeHelper;
 use Maatwebsite\Excel\Concerns\FromArray;
 use Maatwebsite\Excel\Concerns\ShouldAutoSize;
 use Maatwebsite\Excel\Concerns\WithHeadings;
@@ -56,7 +57,7 @@ class OTListExport implements FromArray, WithHeadings, ShouldAutoSize
             'creator' => $overTime->creator->name,
             'work_day' => $overTime->work_day,
             'ot_type' => $overTime->ot_type == array_search('Dự án', OT_TYPE) ? 'OT dự án' : 'Lý do cá nhân',
-            'work_time_end_at' => \App\Helpers\DateTimeHelper::getTimeCheckOut($overTime['user_id'],$overTime['work_day']),
+            'work_time_end_at' => DateTimeHelper::getTimeCheckOut($overTime['user_id'],$overTime['work_day']),
             'note' => $overTime->note,
             'status' => $overTime->status == array_search('Chưa duyệt', OT_STATUS) ? 'Chưa duyệt' : 'Đã duyệt',
             'approver' => $overTime->approver->name ?? '',

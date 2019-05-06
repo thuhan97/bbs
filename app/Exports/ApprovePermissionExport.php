@@ -2,6 +2,7 @@
 
 namespace App\Exports;
 
+use App\Helpers\DateTimeHelper;
 use Maatwebsite\Excel\Concerns\FromArray;
 use Maatwebsite\Excel\Concerns\ShouldAutoSize;
 use Maatwebsite\Excel\Concerns\WithHeadings;
@@ -54,7 +55,7 @@ class ApprovePermissionExport implements FromArray, WithHeadings, ShouldAutoSize
             'staff_code' => $approvePermission->creator->staff_code,
             'creator' => $approvePermission->creator->name,
             'work_day' => $approvePermission->work_day,
-            'work_time_end_at' => \App\Helpers\DateTimeHelper::getTimeCheckOut($approvePermission['user_id'],$approvePermission['work_day']),
+            'work_time_end_at' => DateTimeHelper::getTimeCheckOut($approvePermission['user_id'],$approvePermission['work_day']),
             'note' => $approvePermission->note,
             'status' => $approvePermission->status == array_search('Chưa duyệt', OT_STATUS) ? 'Chưa duyệt' : 'Đã duyệt',
             'approver' => $approvePermission->approver->name ?? '',

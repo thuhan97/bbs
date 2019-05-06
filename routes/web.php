@@ -68,7 +68,7 @@ Route::group([
     Route::post('/add_document', 'ShareController@addDocument')->name('add_document');
     // create day off
     Route::post('/ngay-nghi/create-calendar', 'UserController@dayOffCreateCalendar')->name('day_off_create_calendar');
-    Route::post('/ngay-nghi/create-day-off', 'UserController@dayOffCreate')->name('day_off_create');
+    Route::post('/ngay-nghi/create-day-off-vacation', 'UserController@dayOffCreatevacationVacation')->name('day_off_create_vacation');
 
 });
 

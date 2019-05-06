@@ -30,7 +30,7 @@ class CreateDayOffRequest extends FormRequest
                     $query->where('jobtitle_id', '>=', MIN_APPROVE_JOB)->where('status', ACTIVE_STATUS);
                 })
             ],
-            'title' => 'required|integer',
+            'title' => 'nullable|integer',
             'reason' => 'required|max:1000|min:3',
             'start_at' => 'required|after_or_equal:today',
             'end_at' => 'required|after_or_equal:start_at',

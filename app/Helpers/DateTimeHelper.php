@@ -104,7 +104,6 @@ class DateTimeHelper
     public static function getTimeCheckOut($id, $day)
     {
         $time = \App\Models\WorkTime::where('user_id', $id)->whereDate('work_day', '=', $day)->first()->end_at ?? '';
-
         return $time;
     }
 

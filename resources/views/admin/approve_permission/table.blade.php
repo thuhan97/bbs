@@ -48,7 +48,7 @@
                 <th style="padding: 15px">Mã nhân viên</th>
                 <th style="padding: 15px">Tên nhân viên</th>
                 <th style="padding: 15px">Ngày</th>
-                <th style="padding: 15px">Hình thức</th>
+                {{--<th style="padding: 15px">Hình thức</th>--}}
                 <th style="padding: 15px">Giờ rời công ty</th>
                 <th style="padding: 15px">Giải trình</th>
                 <th style="padding: 15px">Người duyệt</th>
@@ -65,12 +65,11 @@
                         </td>
                         <td class="table-text">{{ $record->creator->name ?? '' }}</td>
                         <td class="table-text">{{ $record->work_day }}</td>
-                        <td class="table-text">{{ $record->ot_type == array_search('Dự án', OT_TYPE) ? 'OT dự án' : 'Lý do cá nhân' }}</td>
-                        <td class="table-text">{{ $record->work_time_end_at ?? '**:**' }}</td>
+                        <td class="table-text">{{ \App\Helpers\DateTimeHelper::getTimeCheckOut($record['user_id'],$record['work_day']) }}</td>
                         <td class="table-text">{{ $record->note }}</td>
-                        <td class="table-text"> {{ $record->approver }}</td>
+                        <td class="table-text"> {{ $record->approver->name ?? '' }}</td>
                         <td class="table-text text-center">
-                            @if(!$record['status'] == array_search('Đã duyệt', OT_STATUS))
+                            @if(!$record['status'] == array_search('Đã duyệt',OT_STATUS))
                                 <span class="label label-danger">Chưa duyệt</span>
                             @else
                                 <span class="label label-info">Đã duyệt</span>

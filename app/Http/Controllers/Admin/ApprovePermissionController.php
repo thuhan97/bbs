@@ -4,8 +4,6 @@ namespace App\Http\Controllers\Admin;
 
 use App\Exports\ApprovePermissionExport;
 use App\Models\WorkTimesExplanation;
-use App\Repositories\Contracts\IOverTimeRepository;
-use App\Services\Contracts\IOverTimeService;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
 
@@ -50,56 +48,11 @@ class ApprovePermissionController extends AdminBaseController
     {
         switch ($request->path()) {
             case 'admin/approve_permission':
-                $explanations = $this->getResourceModel()::search($request['search'])->get();
-                return Excel::download(new ApprovePermissionExport($explanations), "over-time.xlsx");
+                $approvePermissions = $this->getResourceModel()::search($request['search'])->get();
+                return Excel::download(new ApprovePermissionExport($approvePermissions), "approve-permission.xlsx");
                 break;
             default:
                 abort(404);
         }
     }
-
-//    public function exportData(Request $request)
-//    {
-//        switch ($request->path()) {
-//            case 'admin/approve_permission':
-//                $explanations = $this->overTimeService->getListOverTime($request, 4);
-//                return Excel::download(new ApprovePermissionExport($explanations), "over-time.xlsx");
-//                break;
-//            default:
-//                abort(404);
-//        }
-//    }
-
-//    public function __construct(IOverTimeRepository $repository, IOverTimeService $overTimeService)
-//    {
-//        $this->repository = $repository;
-////        $this->overTimeService = $overTimeService;
-//        parent::__construct();
-//    }
-
-//    public function getSearchRecords(Request $request, $perPage = 50, $search = null, $paginatorData = [])
-//    {
-//        $query = $this->getSearchModel($request, $paginatorData);
-//
-//        return $query->paginate($perPage)->appends($paginatorData);
-//    }
-//
-//    public function getSearchModel(Request $request, &$paginatorData = [])
-//    {
-//        return $this->overTimeService->getListOverTime($request, array_search('Overtime', WORK_TIME_TYPE));
-//    }
-
-//    public function exportData(Request $request)
-//    {
-//        switch ($request->path()) {
-//            case 'admin/over_times':
-//                $explanations = $this->overTimeService->getListOverTime($request, array_search('Overtime', WORK_TIME_TYPE));
-//                return Excel::download(new OTListExport($explanations), "over-time.xlsx");
-//                break;
-//
-//            default:
-//                abort(404);
-//        }
-//    }
-
 }

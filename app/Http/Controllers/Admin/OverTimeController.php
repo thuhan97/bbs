@@ -48,8 +48,8 @@ class OverTimeController extends AdminBaseController
     {
         switch ($request->path()) {
             case 'admin/over_times':
-                $explanations = $this->getResourceModel()::search($request['search'])->where('type', array_search('Overtime', WORK_TIME_TYPE))->get();
-                return Excel::download(new OTListExport($explanations), "over-time.xlsx");
+                $overTimes = $this->getResourceModel()::search($request['search'])->where('type', array_search('Overtime', WORK_TIME_TYPE))->get();
+                return Excel::download(new OTListExport($overTimes), "over-time.xlsx");
                 break;
             default:
                 abort(404);

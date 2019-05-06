@@ -2,18 +2,15 @@
 
 namespace App\Exports;
 
-use App\Models\WorkTimesExplanation;
-use App\Services\Contracts\IOverTimeService;
 use Maatwebsite\Excel\Concerns\FromArray;
 use Maatwebsite\Excel\Concerns\ShouldAutoSize;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 
 class ApprovePermissionExport implements FromArray, WithHeadings, ShouldAutoSize
 {
-    public function __construct($explanations)
+    public function __construct($approvePermissions)
     {
-        $this->explanations = $explanations;
-        $this->overTimeService = app()->make(IOverTimeService::class);
+        $this->approvePermissions = $approvePermissions;
     }
 
     /**
@@ -26,7 +23,6 @@ class ApprovePermissionExport implements FromArray, WithHeadings, ShouldAutoSize
             'Mã nhân viên',
             'Tên nhân viên',
             'Ngày',
-            'Hình thức',
             'Giờ rời công ty',
             'Giải trình',
             'Trạng thái phê duyệt',
@@ -42,8 +38,8 @@ class ApprovePermissionExport implements FromArray, WithHeadings, ShouldAutoSize
     {
         $results = [];
         $i = 1;
-        foreach ($this->explanations->get() as $explanation) {
-            $item = $this->makeRow($explanation, $i++);
+        foreach ($this->approvePermissions as $approvePermission) {
+            $item = $this->makeRow($approvePermission, $i++);
             $results[] = $item;
         }
         return $results;
@@ -51,18 +47,17 @@ class ApprovePermissionExport implements FromArray, WithHeadings, ShouldAutoSize
 
 
 
-    public function makeRow($explanation, $i)
+    public function makeRow($approvePermission, $i)
     {
         return [
             'stt' => $i++,
-            'staff_code' => $explanation->creator->staff_code,
-            'creator' => $explanation->creator->name,
-            'work_day' => $explanation->work_day,
-            'ot_type' => $explanation->ot_type == array_search('Dự án', OT_TYPE) ? 'OT dự án' : 'Lý do cá nhân',
-            'work_time_end_at' => $explanation->work_time_end_at ?? '**:**',
-            'note' => $explanation->note,
-            'status' => $explanation->status == array_search('Chưa duyệt', OT_STATUS) ? 'Chưa duyệt' : 'Đã duyệt',
-            'approver' => $explanation->approver,
+            'staff_code' => $approvePermission->creator->staff_code,
+            'creator' => $approvePermission->creator->name,
+            'work_day' => $approvePermission->work_day,
+            'work_time_end_at' => \App\Helpers\DateTimeHelper::getTimeCheckOut($approvePermission['user_id'],$approvePermission['work_day']),
+            'note' => $approvePermission->note,
+            'status' => $approvePermission->status == array_search('Chưa duyệt', OT_STATUS) ? 'Chưa duyệt' : 'Đã duyệt',
+            'approver' => $approvePermission->approver->name ?? '',
         ];
     }
 }

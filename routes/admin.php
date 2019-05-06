@@ -94,6 +94,8 @@ Route::group([
     //config
     Route::get('configs', 'ConfigController@index')->name('configs.index');
     Route::post('configs', 'ConfigController@store')->name('configs.store');
+    Route::get('configs-dayoff', 'ConfigController@dayoffCreate')->name('configs.dayoff');
+    Route::get('configs-dayoff-delete', 'ConfigController@dayoffDelete')->name('configs.delete_dayoff');
 
     //post
     Route::post('posts/deletes', ['as' => 'posts.deletes', 'uses' => 'PostController@deletes']);

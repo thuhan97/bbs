@@ -35,6 +35,7 @@ class WorkTime extends Model
     ];
 
     const WORK_TIME_CALENDAR_TYPE = [
+        -2 => 'Nghỉ lễ',
         -1 => 'Không chấm công',
         0 => 'Bình thường',
         1 => 'Đi muộn',
@@ -43,6 +44,7 @@ class WorkTime extends Model
         5 => 'Đi muộn + Overtime',
     ];
     const WORK_TIME_CALENDAR_DISPLAY = [
+        -2 => 'Nghỉ lễ',
         -1 => 'Không chấm công',
         0 => '',
         1 => 'Đi muộn',
@@ -52,6 +54,7 @@ class WorkTime extends Model
     ];
 
     const TYPES = [
+        'calendar_off' => -2,
         'off' => -1,
         'normal' => 0,
         'lately' => 1,

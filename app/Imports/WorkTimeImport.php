@@ -106,6 +106,7 @@ class WorkTimeImport implements ToCollection, WithValidation
     {
         if (!empty($data)) {
             WorkTime::insertAll($data);
+
             $data = [];
         }
     }

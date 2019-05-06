@@ -546,9 +546,14 @@ th.stt {
     background: green;
 }
 
-.btn-export-over-time{
+.btn-export-over-time {
     margin: 20px;
 }
-.table-over-time{
+
+.table-over-time {
     margin: 20px;
+}
+
+.btnDateOffDelete {
+    color: red;
 }

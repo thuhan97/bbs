@@ -101,10 +101,14 @@ class DateTimeHelper
     }
 
 
-    public static function getTimeCheckOut($id, $day)
+    public static function workTime($id, $day)
     {
-        $time = \App\Models\WorkTime::where('user_id', $id)->whereDate('work_day', '=', $day)->first()->end_at ?? '';
-        return $time;
+        $time = \App\Models\WorkTime::where('user_id', $id)->whereDate('work_day', '=', $day)->first();
+        $startAt = $time->start_at ?? '';
+        $endAt = $time->end_at ?? '';
+        return $workTime = [
+            $startAt, $endAt
+        ];
     }
 
 }

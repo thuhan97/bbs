@@ -50,6 +50,7 @@
                 <th style="padding: 15px">Tên nhân viên</th>
                 <th style="padding: 15px">Ngày</th>
                 <th style="padding: 15px">Hình thức</th>
+                <th style="padding: 15px">Giờ đến công ty</th>
                 <th style="padding: 15px">Giờ rời công ty</th>
                 <th style="padding: 15px">Giải trình</th>
                 <th style="padding: 15px">Người duyệt</th>
@@ -64,7 +65,8 @@
                         <td class="table-text">{{ $record->creator->name ?? '' }}</td>
                         <td class="table-text">{{ $record->work_day }}</td>
                         <td class="table-text">{{ $record->ot_type == array_search('Dự án', OT_TYPE) ? 'OT dự án' : 'Lý do cá nhân' }}</td>
-                        <td class="table-text">{{ \App\Helpers\DateTimeHelper::getTimeCheckOut($record['user_id'],$record['work_day']) }}</td>
+                        <td class="table-text">{{ \App\Helpers\DateTimeHelper::workTime($record['user_id'],$record['work_day'])[0] }}</td>
+                        <td class="table-text">{{ \App\Helpers\DateTimeHelper::workTime($record['user_id'],$record['work_day'])[1] }}</td>
                         <td class="table-text">{{ $record->note }}</td>
                         <td class="table-text"> {{ $record->approver->name ?? '' }}</td>
                         <td class="table-text text-center">

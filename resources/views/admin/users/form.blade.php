@@ -42,7 +42,7 @@ if (isset($record->end_date)) {
                                             @endif
                                         </div>
                                     </div>
-                                    <div class="col-md-6 {{ $errors->has('sex') ? ' has-error' : '' }} form-group ">
+                                    <div class="col-md-6 {{ $errors->has('sex') ? ' has-error' : '' }} form-group top-5">
                                         <label for="staff_code">Giới tính</label>
                                         {{ Form::select('sex', SEXS, old('sex', $record->sex ) , ['class'=>'form-control']) }}
                                         @if ($errors->has('sex'))
@@ -173,31 +173,25 @@ if (isset($record->end_date)) {
                                 </div>
                                 <!-- /.form-group -->
                             </div>
-                            <div class="col-md-12">
-                                <div class="form-group margin-b-5 margin-t-5{{ $errors->has('school') ? ' has-error' : '' }}">
-                                    <label for="school">Đại học/cao đẳng</label>
-                                    <input type="text" class="form-control" name="school" placeholder="Đại học/cao đẳng"
-                                           value="{{ old('school', $record->school) }}">
-
-                                    @if ($errors->has('school'))
-                                        <span class="help-block">
-                    <strong>{{ $errors->first('school') }}</strong>
-                </span>
-                                    @endif
-                                </div>
-                                <!-- /.form-group -->
-                            </div>
-                            <div class="col-md-12">
-
-                            </div>
                             <!-- /.col-md-12 -->
 
                         </div>
                     </div>
                     <div class="col-md-7">
                         <div class="row">
+                            <div class="col-md-12 margin-b-5 margin-t-5{{ $errors->has('address') ? ' has-error' : '' }}">
+                                <label for="school">Đại học/cao đẳng</label>
+                                <input type="text" class="form-control" name="school" placeholder="Đại học/cao đẳng"
+                                       value="{{ old('school', $record->school) }}">
+
+                                @if ($errors->has('school'))
+                                    <span class="help-block">
+                    <strong>{{ $errors->first('school') }}</strong>
+                </span>
+                                @endif
+                            </div>
                             <div class="col-md-6">
-                                <div class="form-group margin-b-5 margin-t-5{{ $errors->has('start_date') ? ' has-error' : '' }}">
+                                <div class="form-group margin-b-5 mg-top-10{{ $errors->has('start_date') ? ' has-error' : '' }}">
                                     <label for="start_date">Ngày vào công ty</label>
                                     <div class="input-group date">
                                         <div class="input-group-addon">
@@ -216,7 +210,7 @@ if (isset($record->end_date)) {
                                 </div>
                             </div>
                             <div class="col-md-6">
-                                <div class="form-group margin-b-5 margin-t-5{{ $errors->has('end_date') ? ' has-error' : '' }}">
+                                <div class="form-group margin-b-5 mg-top-10{{ $errors->has('end_date') ? ' has-error' : '' }}">
                                     <label for="end_date">Ngày nghỉ việc</label>
                                     <div class="input-group date">
                                         <div class="input-group-addon">
@@ -263,35 +257,12 @@ if (isset($record->end_date)) {
                                 </div>
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="form-group margin-b-5 margin-t-5{{ $errors->has('current_address') ? ' has-error' : '' }}">
-                                    <label for="current_address">Loại hợp đồng</label>
-                                    {{ Form::select('contract_type', CONTRACT_TYPES_NAME, $record->contract_type ?? 0, ['class'=>'form-control']) }}
 
-                                    @if ($errors->has('current_address'))
-                                        <span class="help-block">
-                    <strong>{{ $errors->first('current_address') }}</strong>
-                </span>
-                                    @endif
-                                </div>
-                                <!-- /.form-group -->
-                            </div>
-
-                            <div class="col-md-6">
-                                <div class="form-group margin-b-5 margin-t-5">
-                                    <label for="status">
-                                        <input type="checkbox" class="square-blue" name="status" id="status"
-                                               value="{{ACTIVE_STATUS}}" {{ old('status', $record->status ?? 1) == 1 ? 'checked' : '' }}>
-                                        Đang làm việc
-                                    </label>
-                                </div>
-                            </div>
-                        </div>
-
-                        <hr/>
                         @if(!$record->id)
-                            <h3>Đổi mật khẩu</h3>
+                            @if($record->id)
+                                <h3>Đổi mật khẩu</h3>
+                                <hr/>
+                            @endif
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="form-group margin-b-5 margin-t-5{{ $errors->has('password') ? ' has-error' : '' }}">
@@ -321,8 +292,34 @@ if (isset($record->end_date)) {
                                 </div>
 
                             </div>
-                    @endif
-                    <!-- /.form-group -->
+                        @endif
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group margin-b-5 margin-t-5{{ $errors->has('current_address') ? ' has-error' : '' }}">
+                                    <label for="current_address">Loại hợp đồng</label>
+                                    {{ Form::select('contract_type', CONTRACT_TYPES_NAME, $record->contract_type ?? 0, ['class'=>'form-control']) }}
+
+                                    @if ($errors->has('current_address'))
+                                        <span class="help-block">
+                    <strong>{{ $errors->first('current_address') }}</strong>
+                </span>
+                                    @endif
+                                </div>
+                                <!-- /.form-group -->
+                            </div>
+
+                            <div class="col-md-6 mg-top-30">
+                                <div class="form-group margin-b-5 margin-t-5">
+                                    <label for="status">
+                                        <span class="pl-2">Đang làm việc</span>
+                                        <input type="checkbox" class="square-blue" name="status" id="status"
+                                               value="{{ACTIVE_STATUS}}" {{ old('status', $record->status ?? ACTIVE_STATUS) == ACTIVE_STATUS ? 'checked' : '' }}>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- /.form-group -->
                     </div>
                 </div>
             </div>

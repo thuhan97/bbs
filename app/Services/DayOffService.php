@@ -87,18 +87,25 @@ class DayOffService extends AbstractService implements IDayOffService
      *
      * @return array
      */
-    public function getDayOffUser($userId)
+    public function getDayOffUser($request,$userId)
     {
         $model = $this->model->where('user_id', $userId);
         $remainDay = RemainDayoff::firstOrCreate(['user_id' => $userId]);
         $thisYear = (int)date('Y');
+        $datas=$model->whereYear('start_at', $thisYear)
+            ->select('*', DB::raw('DATE_FORMAT(start_at, "%d/%m/%Y (%H:%i)") as start_date'),
+                DB::raw('DATE_FORMAT(end_at, "%d/%m/%Y (%H:%i)") as end_date'),
+                DB::raw('DATE_FORMAT(approver_at, "%d/%m/%Y (%H:%i)") as approver_date'))
+            ->orderBy('id', 'DESC');
+        if ($request->month){
+            $datas=$datas->whereMonth('start_at',$request->month);
+        }
+        if ($request->year){
+            $datas=$datas->whereYear('start_at',$request->year);
+        }
+           $datas=$datas->paginate(PAGINATE_DAY_OFF);
         return [
-            'data' => $model->whereYear('start_at', $thisYear)
-                ->select('*', DB::raw('DATE_FORMAT(start_at, "%d/%m/%Y (%H:%i)") as start_date'),
-                    DB::raw('DATE_FORMAT(end_at, "%d/%m/%Y (%H:%i)") as end_date'),
-                    DB::raw('DATE_FORMAT(approver_at, "%d/%m/%Y (%H:%i)") as approver_date'))
-                ->orderBy('id', 'DESC')
-                ->paginate(PAGINATE_DAY_OFF),
+            'data' => $datas,
             'total' => $remainDay->previous_year + $remainDay->current_year,
             'total_previous' => $remainDay->previous_year,
             'total_current' => $remainDay->current_year,
@@ -479,7 +486,7 @@ class DayOffService extends AbstractService implements IDayOffService
         $datas = $this->model::select('day_offs.user_id', 'day_offs.check_free',
             DB::raw('YEAR(start_at) year, MONTH(start_at) month'),
             DB::raw('sum(number_off) as total'),
-            DB::raw('sum(absent) as total_absent'))
+            DB::raw('sum(absent) as total_absfirstOrCreateent'))
             ->join('users', 'users.id', '=', 'day_offs.user_id')
             ->groupBy('day_offs.user_id', 'day_offs.check_free', 'year', 'month')
             ->whereIn('day_offs.user_id', $ids)

@@ -12,6 +12,7 @@ use App\Repositories\Contracts\IDayOffRepository;
 use App\Services\Contracts\IDayOffService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Maatwebsite\Excel\Facades\Excel;
 
 /**
@@ -118,17 +119,18 @@ class DayOffController extends AdminBaseController
      */
     public function byUser(Request $request, $id)
     {
-        $totalDayOfff = $this->service->countDayOff($id, true);
-        $remainDayOff = RemainDayoff::select('remain')->where('user_id', $id)->where('year', date('Y'))->first();
+        $totalDayOfff=$this->service->countDayOff($id,true);
         $user = User::where('id', $id)->first();
         if ($user) {
+            $remainDayOff=RemainDayoff::select('remain')->where('user_id',$id)->where('year',date('Y'))->first()->remain ?? 0;
+            $remainDayOffPreYear=RemainDayoff::select('remain')->where('user_id',$id)->where('year',date('Y')-1)->first()->remain ?? 0;
+            $totalRemainDayOff=$remainDayOff + $remainDayOffPreYear;
             $conditions = ['user_id' => $id];
-
             $records = $this->service->findList($request, $conditions, ['*'], $search, $perPage);
             $year = $request->get('year');
             $month = $request->get('month');
-            $numberThisYearAndLastYear = $this->service->getDayOffUser($id);
-            return view($this->resourceAlias . '.user', compact('user', 'records', 'search', 'perPage', 'year', 'month', 'numberThisYearAndLastYear', 'totalDayOfff', 'remainDayOff'));
+           $numberThisYearAndLastYear= $this->service->getDayOffUser($request,$id);
+            return view($this->resourceAlias . '.user', compact('user', 'records', 'search', 'perPage', 'year', 'month', 'numberThisYearAndLastYear','totalDayOfff','totalRemainDayOff'));
         } else {
             flash()->error(__l('user_not_found'));
             return redirect(route('admin::day_offs.index'));

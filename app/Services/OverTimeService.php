@@ -14,7 +14,7 @@ use Illuminate\Http\Request;
 
 class OverTimeService extends AbstractService implements IOverTimeService
 {
-    public function getListOverTime(Request $request, $explanationType)
+    public function getListOverTime(Request $request)
     {
         $model = WorkTimesExplanation::select(
             'work_times_explanation.id', 'work_times_explanation.work_day', 'work_times_explanation.type',
@@ -34,16 +34,17 @@ class OverTimeService extends AbstractService implements IOverTimeService
                     ->orOn('users.id', '=', 'ot_times.approver_id');
             })
             ->whereYear('work_times_explanation.work_day', date('Y'))
-            ->where('work_times_explanation.type', $explanationType)
+            ->where('work_times_explanation.type', 4)
             ->groupBy('work_times_explanation.work_day', 'work_times_explanation.type',
                 'work_times_explanation.ot_type', 'work_times_explanation.note', 'work_times_explanation.user_id', 'ot_times.creator_id')
-            ->orderBy('work_times_explanation.work_day', 'desc');
+            ->orderBy('work_times_explanation.created_at', 'desc');
 
         if ($request->has('search')) {
             $searchOtTimes = $request->search;
             $userIds = User::search($searchOtTimes)->pluck('id','name')->toArray();
             $model->whereIn('ot_times.creator_id', $userIds)->orWhereIn('ot_times.approver_id', $userIds)
                 ->orWhereIn('work_times_explanation.user_id', $userIds);
+//            dd($model->get());
         }
         return $model;
     }

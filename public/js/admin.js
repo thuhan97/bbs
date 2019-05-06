@@ -19,8 +19,9 @@ $(function () {
     });
 
     $("#exportExcel").click(function () {
-        $("#searchForm").append('<input type="hidden" name="is_export" value="1" />');
+        $("#searchForm").append('<input id="is_export" type="hidden" name="is_export" value="1" />');
         $("#searchForm").submit();
+        $("#is_export").remove();
     });
 });
 

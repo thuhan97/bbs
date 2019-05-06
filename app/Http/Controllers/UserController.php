@@ -284,7 +284,7 @@ class UserController extends Controller
     {
         $countDayOff = $this->userDayOffService->countDayOffUserLogin();
         $userManager = $this->userService->getUserManager();
-        $availableDayLeft = $this->userDayOffService->getDayOffUser(Auth::id());
+        $availableDayLeft = $this->userDayOffService->getDayOffUser( $request,Auth::id());
         $autoShowModal = $request->has('t');
         if (isset($request->status_search) || isset($request->year) || isset($request->month)) {
             $year = $request->year;
@@ -436,8 +436,8 @@ class UserController extends Controller
         return response()->json([
             'data' => $dayOff,
             'numoff' => $numOff ?? null,
-            'approver' => User::findOrFail($dayOff->approver_id)->name,
-            'userdayoff' => User::findOrFail($dayOff->user_id)->name
+            'approver' => User::find($dayOff->approver_id)->name ?? '',
+            'userdayoff' => User::find($dayOff->user_id)->name ?? ''
         ]);
     }
 

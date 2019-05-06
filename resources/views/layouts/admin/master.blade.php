@@ -26,6 +26,9 @@
     <!-- datetimepicker -->
     <link href="{{ cdn_asset('/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css') }}"
           rel="stylesheet" type="text/css">
+    <!-- datetimepicker -->
+    <link href="{{ cdn_asset('/bootstrap-datepicker/css/bootstrap-datePicker.css') }}"
+          rel="stylesheet" type="text/css">
     <!-- timepicker -->
     <link href="{{ cdn_asset('/bootstrap-datetimepicker/css/bootstrap-timepicker.min.css') }}"
           rel="stylesheet" type="text/css">

@@ -373,7 +373,7 @@ if (isset($record->end_date)) {
     <script>
 
         $(function () {
-            myDatePicker($("#birthday, #start_date, #end_date"));
+            $("#birthday, #start_date, #end_date").datepicker();
         })
     </script>
 @endpush

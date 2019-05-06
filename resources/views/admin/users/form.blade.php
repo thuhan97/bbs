@@ -361,7 +361,6 @@ if (isset($record->end_date)) {
         </div>
     </div>
 
-
     @if(($errors->has('password_confirmation') || $errors->has('password')) && $record->id)
         <script>
             $('#btn-change-info , #1a').removeClass('active');
@@ -375,7 +374,8 @@ if (isset($record->end_date)) {
         <script>
 
             $(function () {
-                myDatePicker($("#birthday, #start_date, #end_date"));
+                $("#birthday, #start_date, #end_date").datepicker();
             })
         </script>
     @endpush
+

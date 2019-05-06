@@ -313,7 +313,7 @@ define('LATE_OT_USER', 'Đi làm muộn + OT');
 define('TOTAL_MONTH_IN_YEAR', 12);
 define('OFF_TIME', '00:00:00');
 define('SWITCH_TIME', '12:00:00');
-define('DAY_OFF_MONTH',[
+define('DAY_OFF_MONTH', [
     'day_off_month_Jan' => 1,
     'day_off_month_Feb' => 2,
     'day_off_month_Mar' => 3,
@@ -327,22 +327,28 @@ define('DAY_OFF_MONTH',[
     'day_off_month_Nov' => 11,
     'day_off_month_Dec' => 12,
 ]);
-define('DEFAULT_VALUE',0);
+define('DEFAULT_VALUE', 0);
 define('HAFT_MORNING', '10:00');
 define('HAFT_AFTERNOON', '15:30');
-define('DEFAULT_INSERT_ROW_EXCEL',1);
-define('SIZE_TEXT_EXCEL_DAY_OFF',25);
-define('NUMBER_COUNT_DAY_OFF',2);
-define('TOTAL_DAY_OFF_IN_MONTH',2);
-define('REMAIN_DAY_OFF_DEFAULT',1);
+define('DEFAULT_INSERT_ROW_EXCEL', 1);
+define('SIZE_TEXT_EXCEL_DAY_OFF', 25);
+define('NUMBER_COUNT_DAY_OFF', 2);
+define('TOTAL_DAY_OFF_IN_MONTH', 2);
+define('REMAIN_DAY_OFF_DEFAULT', 1);
 define('XLSX_TYPE', '.xlsx');
 define('STATISTICAL_DAY_OFF_NAME', 'Thống kê phép năm');
-define('DAY_OFF_INCREMENT',1);
-define('NEXT_YEAR',1);
+define('DAY_OFF_INCREMENT', 1);
+define('NEXT_YEAR', 1);
 
 define('OT_TYPE', [
     1 => 'Dự án',
     2 => 'OT lý do cá nhân',
+]);
+
+define('GROUPS', [
+    1 => 'PHP 1',
+    2 => 'PHP 2',
+    3 => 'Mobile',
 ]);
 
 

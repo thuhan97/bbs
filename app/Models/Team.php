@@ -22,6 +22,7 @@ class Team extends Model
     protected $table = 'teams';
 
     protected $fillable = [
+        'group_id',
         'name',
         'leader_id',
         'color',
@@ -52,9 +53,20 @@ class Team extends Model
     public function scopeSearch($query, $searchTerm)
     {
         return $query->where(function ($query) use ($searchTerm) {
-            $query->where('teams.name', 'LIKE', '%' . $searchTerm . '%');
-            $query->orWhere('banner', 'LIKE', '%' . $searchTerm . '%');
-            $query->orWhere('users.name', 'LIKE', '%' . $searchTerm . '%');
+            if (!empty($searchTerm)) {
+                $query->where('teams.name', 'LIKE', '%' . $searchTerm . '%');
+                $query->orWhere('banner', 'LIKE', '%' . $searchTerm . '%');
+                $query->orWhere('users.name', 'LIKE', '%' . $searchTerm . '%');
+
+                //search teams
+
+                $groupIds = array_filter(GROUPS, function ($key) use ($searchTerm) {
+                    return starts_with(mb_strtolower(GROUPS[$key]), mb_strtolower($searchTerm));
+                }, ARRAY_FILTER_USE_KEY);
+                if (!empty($groupIds)) {
+                    $query->orWhereIn('group_id', array_keys($groupIds));
+                }
+            }
         })
             ->select('teams.*')
             ->join('users', 'teams.leader_id', '=', 'users.id');
@@ -74,6 +86,11 @@ class Team extends Model
     public function members()
     {
         return $this->hasManyThrough(User::class, UserTeam::class, 'team_id', 'id', 'id', 'user_id');
+    }
+
+    public function getGroupNameAttribute()
+    {
+        return GROUPS[$this->attributes['group_id']] ?? '';
     }
 
     /**

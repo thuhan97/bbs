@@ -49,11 +49,12 @@
 
 #contactTbl tbody td, #contactTbl tbody th {
     vertical-align: middle;
+    padding: 0.1rem 0.5rem;
 }
 
 #contactTbl .avatar {
-    width: 80px;
-    height: 80px;
+    width: 40px;
+    height: 40px;
 }
 
 .sidebar-fixed {
@@ -654,7 +655,8 @@
         left: 8px !important;
         top: 6px;
     }
-    .dayoff-icoin-close{
+
+    .dayoff-icoin-close {
         left: 6px !important;
     }
 
@@ -861,7 +863,7 @@ td.blank, .type-1 {
 }
 
 .day-off-icoi {
-    left: 25px ;
+    left: 25px;
 }
 
 

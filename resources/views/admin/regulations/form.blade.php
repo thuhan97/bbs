@@ -17,6 +17,29 @@
     </div>
 </div>
 <div class="col-md-7">
+    <div class="row">
+        <div class="col-md-4">
+            <div class="form-group margin-b-5 margin-t-5{{ $errors->has('approve_date') ? ' has-error' : '' }}">
+                <label for="approve_date">Ngày hiệu lực</label>
+                <div class="input-group date">
+                    <div class="input-group-addon">
+                        <i class="fa fa-calendar"></i>
+                    </div>
+                    <input type="text" class="form-control pull-right datepicker" autocomplete="off"
+                           name="approve_date"
+                           value="{{ old('approve_date', $record->approve_date) }}" id="approve_date">
+                </div>
+                @if ($errors->has('approve_date'))
+                    <span class="help-block">
+                                <strong>{{ $errors->first('approve_date') }}</strong>
+                            </span>
+                @endif
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="col-md-7">
     <div class="form-group margin-b-5 margin-t-5">
         <label for="status">
             <input type="checkbox" class="square-blue" name="status" id="status"
@@ -82,6 +105,7 @@
         $(function () {
             myFilemanager($('#lfm'));
             myEditor($("#content"));
+            myDatePicker($("#approve_date"));
             $(document).on("click", ".removeFile", function () {
                 $(this).closest('tr').remove();
             });

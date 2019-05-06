@@ -58,7 +58,7 @@
 }
 
 .sidebar-fixed {
-    height: 100vh;
+    height: 100%;
     width: 270px;
     -webkit-box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
     box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
@@ -66,6 +66,7 @@
     background-color: #fff;
     padding: 1.5rem;
     padding-top: 0;
+    overflow-y: auto;
 }
 
 .sidebar-fixed .list-group .active {
@@ -421,12 +422,6 @@
         height: 120px;
         padding-top: 25px;
         cursor: pointer;
-    }
-}
-
-@media (max-width: 1199.98px) {
-    .sidebar-fixed {
-        display: none;
     }
 }
 
@@ -871,11 +866,17 @@ td.blank, .type-1 {
     #app {
         padding-top: 0rem !important;
     }
+
+
 }
 
 @media (max-width: 768px) {
     .breadcrumb {
         padding: 10px !important;
+    }
+
+    .navbar-light .navbar-brand {
+        margin-right: 0;
     }
 }
 

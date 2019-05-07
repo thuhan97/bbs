@@ -217,7 +217,7 @@ if (isset($record->end_date)) {
                                             <i class="fa fa-calendar"></i>
                                         </div>
                                         <input type="text" class="form-control pull-right datepicker"
-                                               name="end_date" autocomplete="off"
+                                               name="end_date" autocomplete="off" readonly
                                                value="{{ old('end_date', $record->end_date) }}" id="end_date">
                                     </div>
                                     @if ($errors->has('end_date'))

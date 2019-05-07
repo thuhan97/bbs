@@ -31,6 +31,8 @@
             </script>
         @endif
     @endif
+    <i class="fa fa-icon-check"></i>
+
     <div class="row">
         <div class="col-md-4 pr-0 select-month-calendar">
             <form name="dateChooser">
@@ -43,13 +45,13 @@
         </div>
         <div class="col-md-8">
             <div class="row mb-4" id="form-check-time">
-                <button type="button" class="btn btn-danger btn-early-late" id="btn-early-late">Số buổi đi
+                <button type="button" class="btn-early-late" id="btn-early-late">Số buổi đi
                     muộn/sớm:
                 </button>
-                <button type="button" class="btn btn-primary btn-ot" id="btn-ot">Số buổi đi
+                <button type="button" class="btn-ot" id="btn-ot">Số buổi đi
                     OT:
                 </button>
-                <button type="button" class="btn btn-success btn-late-ot" id="btn-late-ot">Số
+                <button type="button" class="btn-late-ot" id="btn-late-ot">Số
                     buổi đi muộn + OT:
                 </button>
             </div>

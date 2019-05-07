@@ -52,17 +52,17 @@
     @can('team-leader')
         @if($dataLeader->isNotEmpty())
             <h1>Danh sách xin phép</h1>
-            <table id="contactTbl" class="table table-striped">
+            <table id="contactTbl" class="table table-striped table-bordered">
                 <colgroup>
                     <col style="">
                     <col style="">
                     <col style="">
                     <col style="">
                 </colgroup>
-                <thead>
+                <thead class="grey lighten-2">
                 <tr>
-                    <th>#</th>
-                    <th>Ngày</th>
+                    <th class="text-center">#</th>
+                    <th class="text-center">Ngày</th>
                     <th>Tên nhân viên</th>
                     <th>Hình thức</th>
                     <th>Nội dung</th>
@@ -73,14 +73,14 @@
                 <tbody>
                 @foreach($dataLeader as $item)
                     <tr>
-                        <th>{{ $increment++ }}</th>
-                        <th>{{ $item['work_day'] ?? '' }}</th>
+                        <th class="text-center">{{ $increment++ }}</th>
+                        <th class="text-center">{{ $item['work_day'] ?? '' }}</th>
                         <th>{{ $item->user->name ?? '' }}</th>
                         <td>
                             {{$item->type_name}}
                         </td>
                         <td>{{ $item['note'] ?? '' }}</td>
-                        <td class="text-center">
+                        <td class="text-center td-approve">
                             @if(!$item['work_times_explanation_status'] == array_search('Đã duyệt', OT_STATUS))
                                 @can('manager')
                                     <form action="{{ $item['type'] == array_search('Overtime',WORK_TIME_TYPE) ? route('approvedOT') : route('approved') }}"
@@ -96,7 +96,7 @@
                                                value="{{ $item['work_day'] ? $item['work_day'] : '' }}">
                                         <input type="hidden" name="type"
                                                value="{{ $item['type'] ? $item['type'] : '' }}">
-                                        <button class="btn btn-primary waves-effect waves-light">Phê duyệt</button>
+                                        <button class="btn-approve">Phê duyệt</button>
                                     </form>
                                 @else
                                     <i class="fas fa-meh-blank fa-2x text-warning" title="Chưa duyệt"></i>
@@ -123,30 +123,30 @@
                 Xin nghỉ
             </button>
             <button type="button"
-                    class="d-none d-xl-block btn btn-primary btn-ot waves-effect waves-light float-right"
+                    class="d-none d-xl-block btn btn-primary approve-btn-ot waves-effect waves-light float-right"
                     id="btn-late-ot">
                 Xin OT
             </button>
             <button type="button"
-                    class="d-none d-xl-block btn btn-warning btn-early waves-effect waves-light float-right"
+                    class="d-none d-xl-block btn btn-warning approve-btn-early waves-effect waves-light float-right"
                     id="btn-early-late">Xin về sớm
             </button>
-            <button type="button" class="btn btn-success btn-late waves-effect waves-light float-right" id="btn-ot">
-                Xin đi muôn
+            <button type="button" class="btn btn-success approve-btn-late waves-effect waves-light float-right" id="btn-late">
+                Xin đi muộn
             </button>
         </div>
     </div>
-    <table id="contactTbl" class="table table-striped">
+    <table id="contactTbl" class="table table-striped table-bordered">
         <colgroup>
             <col style="">
             <col style="">
             <col style="">
             <col style="">
         </colgroup>
-        <thead>
+        <thead class="grey lighten-2">
         <tr>
-            <th>#</th>
-            <th>Ngày</th>
+            <th class="text-center">#</th>
+            <th class="text-center">Ngày</th>
             <th>Hình thức</th>
             <th>Nội dung</th>
             <th class="text-center">Trạng Thái</th>
@@ -156,13 +156,13 @@
 
         @foreach($datas as $increment => $item)
             <tr>
-                <th>{{ $increment+1 }}</th>
-                <th>{{ $item['work_day'] ?? '' }}</th>
+                <th class="text-center">{{ $increment+1 }}</th>
+                <th class="text-center">{{ $item['work_day'] ?? '' }}</th>
                 <td>
                     {{$item->type_name}}
                 </td>
-                <td>{{ $item['note'] ?? '' }}</td>
-                <td class="text-center">
+                <td>{!! $item['note'] ?? '' !!}</td>
+                <td class="text-center td-approve">
                     @if(!$item['work_times_explanation_status'] == array_search('Đã duyệt', OT_STATUS))
                         <i class="fas fa-meh-blank fa-2x text-warning" title="Chưa duyệt"></i>
                     @else
@@ -275,24 +275,24 @@
         $(function () {
             var date = new Date(),
                 currentDate = date.getDate() + 1,
-                currentMonth = date.getMonth()+1,
+                currentMonth = date.getMonth() + 1,
                 currentYear = date.getFullYear(),
                 currenFullTime = currentYear + '-' + currentMonth + '-' + currentDate;
             $('#work_day').datepicker({format: 'yyyy-mm-dd'});
             $('#work_day_ot').datepicker({format: 'yyyy-mm-dd'});
-            $('.btn-late').on('click', function () {
+            $('.approve-btn-late').on('click', function () {
                 $('#modal-form').modal('show');
                 $(".permission-reason").append("<input name='type' type='text' value='1'>");
                 $(".modal-header").html("<h3 class='mg-center mb-2'>Xin đi muộn</h3>");
                 $('#work_day').datepicker("setDate", currenFullTime);
             });
-            $('.btn-early').on('click', function () {
+            $('.approve-btn-early').on('click', function () {
                 $('#modal-form').modal('show');
                 $(".permission-reason").append("<input name='type' type='text' value='2'>");
                 $(".modal-header").html("<h3 class='mg-center mb-2'>Xin về sớm</h3>");
                 $('#work_day').datepicker("setDate", date);
             });
-            $('.btn-ot').on('click', function () {
+            $('.approve-btn-ot').on('click', function () {
                 $('#modal-form-ot').modal('show');
                 $(".permission-reason").append("<input name='type' type='text' value='4'>");
                 $(".modal-header").html("<h3 class='mg-center mb-2'>Xin OT</h3>");

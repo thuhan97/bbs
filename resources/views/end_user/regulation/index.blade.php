@@ -10,8 +10,8 @@
 @endsection
 @section('content')
     <div class="row">
-        <div class="col-md-1"></div>
-        <div class="col-md-10">
+        <div class="col-lg-1"></div>
+        <div class="col-lg-10">
             <!-- Search form -->
             <form class="mb-4">
                 <div class="md-form active-cyan-2 mb-3">
@@ -28,20 +28,24 @@
                         <th style="width: 50px">STT</th>
                         <th>Nội quy/quy định</th>
                         <th style="width: 200px">Ngày bắt đầu hiệu lực</th>
-                        <th style="width: 100px"></th>
+                        <th style="width: 100px">Tải xuống</th>
                     </tr>
                     </thead>
                     <tbody>
                     @foreach($regulations as $idx => $regulation)
                         <tr class="list-reulation">
                             <td class="text-right">
-                                {{$idx + 1}}.
+                                {{$idx + 1}}
                             </td>
                             <td>{{$regulation->name}}</td>
-                            <td>{{$regulation->approve_date}}</td>
-                            <td>
-                                <a class="text-dark"
-                                   href="{{route('regulation_detail', ['id' => $regulation->id])}}">chi tiết >></a>
+                            <td class="text-center">{{$regulation->approve_date}}</td>
+                            <td class="text-center">
+                                @if($regulation->file_path)
+                                    <a class="text-dark" target="_blank"
+                                       href="{{route('regulation_download', ['id' => $regulation->id])}}">
+                                        <i class="fas fa-download"></i>
+                                    </a>
+                                @endif
                             </td>
 
                         </tr>

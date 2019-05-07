@@ -54,31 +54,16 @@
             <div class="form-group margin-b-5 margin-t-5">
                 <label for="image_url">Tải file lên</label>
                 <div class="input-group">
-                    <input id="file_upload" class="form-control" type="text">
+                    <input id="file_path" class="form-control" type="text" name="file_path"
+                           value="{{ old('file_path', $record->file_path) }}">
                     <span class="input-group-btn">
-       <a id="lfm" data-input="file_upload" data-preview="thumbnail" class="btn btn-primary">
-         <i class="fa fa-picture-o"></i> Choose
+
+       <a id="lfm" data-input="file_path" class="btn btn-primary">
+         <i class="fa fa-file-o"></i> Choose
        </a>
      </span>
                 </div>
             </div>
-        </div>
-        <div class="col-md-7" style="margin-top: 36px">
-            <label for="image_url">Danh sách file đính kèm</label>
-
-            <table id="attachTable" class="table table-bordered">
-                <tbody>
-                @foreach($record->regulation_files as $file)
-                    <tr>
-                        <td><a href="{{$file->file_path}}">{{$file->file_path}}</a></td>
-                        <td class="text-center">
-                            <input type="hidden" name="file_path[]" value="{{$file->file_path}}">
-                            <a href="#" class="removeFile">Xóa</a>
-                        </td>
-                    </tr>
-                @endforeach
-                </tbody>
-            </table>
         </div>
     </div>
     <!-- /.form-group -->
@@ -108,18 +93,6 @@
             myDatePicker($("#approve_date"));
             $(document).on("click", ".removeFile", function () {
                 $(this).closest('tr').remove();
-            });
-            $("#file_upload").change(function () {
-                var $row = '<tr>' +
-                    '          <td><a href="' + this.value + '">' + this.value + '</a></td>' +
-                    '          <td>' +
-                    '               <input type="hidden" name="file_path[]" value="' + this.value + '">' +
-                    '               <a href="#" class="removeFile">Xóa</a>' +
-                    '          </td>' +
-                    '      </tr>';
-
-                $("#attachTable tbody").append($row);
-                this.value = null;
             });
         })
     </script>

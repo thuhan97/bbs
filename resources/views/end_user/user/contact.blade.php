@@ -41,8 +41,8 @@
                 <th scope="col">Tên group</th>
                 <th scope="col">Tên team</th>
                 <th scope="col">Chức vụ</th>
-                <th class="text-center" scope="col">Số điện thoại</th>
                 <th scope="col">Email</th>
+                <th class="text-center" scope="col">Số điện thoại</th>
                 {{--<th scope="col">Chi tiết</th>--}}
             </tr>
             </thead>
@@ -63,6 +63,7 @@
                     <td>{{$team->group_name ?? ''}}</td>
                     <td>{{$team->name ?? ''}}</td>
                     <td>{{JOB_TITLES[$user->jobtitle_id] ?? ''}}</td>
+                    <td>{{$user->email}}</td>
                     <td class="text-center">
                         @if($user->phone)
                             <span class="btn-showinfo btn btn-primary btn-sm">
@@ -76,7 +77,6 @@
                             <span>{{__l('updating')}}</span>
                         @endif
                     </td>
-                    <td>{{$user->email}}</td>
                 </tr>
             @endforeach
             </tbody>

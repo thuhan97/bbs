@@ -911,6 +911,9 @@ td.blank, .type-1 {
     left: 25px;
 }
 
+#home .post-item img {
+    max-height: 120px;
+}
 
 @media (min-width: 768px) and (max-width: 1000px) {
     #app {
@@ -918,6 +921,12 @@ td.blank, .type-1 {
     }
 
 
+}
+
+@media (min-width: 576px) {
+    .jumbotron {
+        padding: 2rem;
+    }
 }
 
 @media (max-width: 768px) {
@@ -952,6 +961,6 @@ td.blank, .type-1 {
     color: #6098f2;
 }
 
-.navbar.navbar-light .breadcrumb .nav-item.active>.nav-link:hover, .navbar.navbar-light .navbar-nav .nav-item.active>.nav-link:hover, .navbar.navbar-light .navbar-toggler, .navbar.navbar-light form .md-form .form-control {
+.navbar.navbar-light .breadcrumb .nav-item.active > .nav-link:hover, .navbar.navbar-light .navbar-nav .nav-item.active > .nav-link:hover, .navbar.navbar-light .navbar-toggler, .navbar.navbar-light form .md-form .form-control {
     color: #6098f2;
 }

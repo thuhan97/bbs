@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Models\RemainDayoff;
 use App\Models\User;
 use App\Repositories\Contracts\IUserRepository;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 /**
@@ -160,6 +161,14 @@ class UserController extends AdminBaseController
         if ($isCreate){
             $dayOff=new RemainDayoff();
             $dayOff->user_id=$record->id;
+            $day = Carbon::createFromFormat('m/d/Y', $request->start_date)->day;
+            if ($day >= HALF_MONTH){
+                $dayOff->remain=REMAIN_DAY_OFF_DEFAULT;
+                $dayOff->remain_increment=REMAIN_DAY_OFF_DEFAULT;
+            }else{
+                $dayOff->remain=DEFAULT_VALUE;
+                $dayOff->remain_increment=DEFAULT_VALUE;
+            }
             $dayOff->year=date('Y');
             $dayOff->save();
         }

@@ -13,10 +13,10 @@ if (isset($record->end_date)) {
 @if($record->id)
     <div id="exTab1" class="container">
         <ul class="nav nav-pills">
-            <li class="active" id="btn-change-info">
+            <li class="btn-success active" id="btn-change-info" >
                 <a id="change-info" href="#1a" data-toggle="tab">Đổi thông tin</a>
             </li>
-            <li id="btn-change-pass"><a id="change-pass" href="#2a" data-toggle="tab">Đổi mật khẩu</a>
+            <li class="btn-info" id="btn-change-pass"><a id="change-pass" href="#2a" data-toggle="tab">Đổi mật khẩu</a>
             </li>
         </ul>
         <br>
@@ -330,7 +330,7 @@ if (isset($record->end_date)) {
                         <div class="col-md-12">
                             <div class="form-group margin-b-5 margin-t-5{{ $errors->has('password') ? ' has-error' : '' }}">
                                 <label for="password">Mật khẩu @if(!isset($record->password)) * @endif</label>
-                                <input type="password" class="form-control" name="password" placeholder="Nhập mật khẩu">
+                                <input type="password" class="form-control" @if(isset($record->id)) name="password" @endif placeholder="Nhập mật khẩu">
                                 @if ($errors->has('password'))
                                     <span class="help-block">
                     <strong>{{ $errors->first('password') }}</strong>
@@ -341,7 +341,7 @@ if (isset($record->end_date)) {
                         <div class="col-md-12">
                             <div class="form-group margin-b-5 margin-t-5{{ $errors->has('password_confirmation') ? ' has-error' : '' }}">
                                 <label for="password_confirmation">Xác nhận mật khẩu</label>
-                                <input type="password" class="form-control" name="password_confirmation"
+                                <input type="password" class="form-control" @if(isset($record->id)) name="password_confirmation" @endif
                                        placeholder="Xác nhận mật khẩu">
 
                                 @if ($errors->has('password_confirmation'))

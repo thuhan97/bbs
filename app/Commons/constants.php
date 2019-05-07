@@ -350,5 +350,6 @@ define('GROUPS', [
     2 => 'PHP 2',
     3 => 'Mobile',
 ]);
+define('HALF_MONTH',15);
 
 

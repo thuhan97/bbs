@@ -107,12 +107,6 @@ class UserService extends AbstractService implements IUserService
      */
     public function getUserManager()
     {
-<<<<<<< HEAD
-        return $this->model->where('jobtitle_id', '>=', MIN_APPROVE_JOB)->where('status', ACTIVE_STATUS)->where('id','<>',Auth::id())->pluck('name','id');
-
-=======
-        $userManager = $this->model->where('jobtitle_id', '>=', MIN_APPROVE_JOB)->where('status', ACTIVE_STATUS)->pluck('name', 'id');
-        return $userManager;
->>>>>>> f644cb15a8be6e35a50efde31e03ce9e7e7e6a70
+        return $this->model->where('jobtitle_id', '>=', MIN_APPROVE_JOB)->where('status', ACTIVE_STATUS)->where('id', '<>', Auth::id())->pluck('name', 'id');
     }
 }

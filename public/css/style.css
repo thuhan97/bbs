@@ -790,7 +790,7 @@ td.blank, .type-1 {
     font-weight: bold;
 }
 
-#number_off-error, #title-error, #exampleFormControlTextarea2-error, #approver_id-error {
+#number_off-error, #title-error, #exampleFormControlTextarea2-error, #approver_id-error,#option_check-error {
     color: red;
 }
 

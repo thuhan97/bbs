@@ -390,25 +390,30 @@ class UserController extends Controller
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function dayOffCreatevacationVacation (Request $request) {
-        dd($request->all());
-    }
-    public function dayOffCreate(CreateDayOffRequest $request)
+    public function dayOffCreatevacationVacation (CreateDayOffRequest $request)
     {
-//        dd($request->all());
         $dayOff = new DayOff();
         $dayOff->fill($request->all());
-        if ($request->option_check ==0){
-            $dayOff->start_at=$request->start_at.' 08:00:00';
-            $dayOff->end_at=$request->end_at.' 11:30:00';
-        }elseif ($request->option_check ==0){
-            $dayOff->start_at=$request->start_at.' 13:30:00';
-            $dayOff->end_at=$request->end_at.' 17:30:00';
+        $dayOff->user_id = Auth::id();
+        $dayOff->save();
+        return redirect(route('day_off'))->with('day_off_success', '');
+    }
+
+    public function dayOffCreate(CreateDayOffRequest $request)
+    {
+        $dayOff = new DayOff();
+        $dayOff->fill($request->all());
+        if ($request->option_check == CHECK_TIME_DAY_OFF['AM']){
+            $dayOff->start_at=$request->start_at.DAY_OFF_AM['strat'];
+            $dayOff->end_at=$request->end_at.DAY_OFF_AM['end'];
+        }elseif ($request->option_check == CHECK_TIME_DAY_OFF['PM']){
+            $dayOff->start_at=$request->start_at.DAY_OFF_PM['strat'];
+            $dayOff->end_at=$request->end_at.DAY_OFF_PM['end'];
         }else{
-            $dayOff->start_at=$request->start_at.' 08:00:00';
-            $dayOff->end_at=$request->end_at.' 17:30:00';
+            $dayOff->start_at=$request->start_at.DAY_OFF_FULL['strat'];
+            $dayOff->end_at=$request->end_at.DAY_OFF_FULL['end'];
         }
-        $dayOff->title=1;
+        $dayOff->title=DAY_OFF_TITLE_DEFAULT;
         $dayOff->user_id = Auth::id();
         $dayOff->save();
         return redirect(route('day_off'))->with('day_off_success', '');

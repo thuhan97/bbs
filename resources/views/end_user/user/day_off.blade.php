@@ -142,6 +142,7 @@
                 <th class="text-center">Từ ngày</th>
                 <th class="d-none d-md-table-cell text-center">Tới ngày</th>
                 <th class="text-center">Tiêu đề</th>
+                <th class="text-center">Nội dung</th>
                 <th class="d-none d-md-table-cell text-center">Ngày được duyệt</th>
                 <th class="text-center">Phê duyệt</th>
                 <th class="d-none d-md-table-cell text-center">Xem thêm</th>
@@ -156,8 +157,9 @@
                     </th>
                     <td class="text-center">{{$absence->start_date}}</td>
                     <td class="d-none d-md-table-cell text-center">{{$absence->end_date}}</td>
+                    <td class="text-center">{{ array_key_exists($absence->title, VACATION_FULL) ? VACATION_FULL[$absence->title] : ''  }}</td>
                     <td class="text-center">{{ $absence->reason  }}</td>
-                    <td class="d-none d-md-table-cell text-center">{{!!!$absence->number_off ? 'Đang duyệt' : checkNumber($absence->number_off).' ngày'}}
+                    <td class="d-none d-md-table-cell text-center">{{!!!($absence->number_off || $absence->absent > DEFAULT_VALUE)? 'Đang duyệt' : checkNumber($absence->number_off) + checkNumber($absence->absent).' ngày'}}}
 
                     </td>
                     <td class="text-center">
@@ -251,7 +253,7 @@
         <div class="modal-dialog modal-center" role="document">
             <div class="modal-content" id="bg-img" style="background-image: url({{ asset('img/font/xin_nghi.png') }})">
                 <div class="modal-header text-center border-bottom-0 p-3">
-                    <h4 class="modal-title w-100 font-weight-bold pt-2">ĐƠN XIN NGHỈ</h4>
+                    <h4 class="modal-title w-100 font-weight-bold pt-2">NGHỈ PHÉP</h4>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span class="btn-close-icon" aria-hidden="true">&times;</span>
                     </button>
@@ -259,30 +261,15 @@
                 <div class="modal-body mt-0 pb-0 d-flex justify-content-start ml-3">
                     <div class="custom-control custom-radio">
                         <input type="radio" class="custom-control-input option-dayoff" id="defaultUnchecked" name="defaultExampleRadios" checked value="0">
-                        <label class="custom-control-label" for="defaultUnchecked">Xin nghỉ phép</label>
+                        <label class="custom-control-label" for="defaultUnchecked"><h5>Xin nghỉ phép</h5></label>
                     </div>
 
                     <!-- Default checked -->
-                    <div class="custom-control custom-radio ml-2">
-                        <input type="radio" class="custom-control-input option-dayoff" id="defaultChecked" name="defaultExampleRadios" value="1">
-                        <label class="custom-control-label" for="defaultChecked">Xin nghỉ chế độ</label>
+                    <div class="custom-control custom-radio ml-3">
+                        <input type="radio" class="custom-control-input option-dayoff" id="defaultChecked" name="defaultExampleRadios" value="1" @if(old('title')) checked @endif>
+                        <label class="custom-control-label " for="defaultChecked"><h5>Xin nghỉ chế độ</h5></label>
                     </div>
                 </div>
-                 {{--   <ul class="nav nav-tabs" id="myTab" role="tablist">
-                        <li class="nav-item">
-                            <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home"
-                               aria-selected="true">Home</a>
-                            <input type="radio" name="đâsd" value="1">đâsdasdadsad
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile"
-                               aria-selected="false">Profile</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact"
-                               aria-selected="false">Contact</a>
-                        </li>
-                    </ul>--}}
                     <div class="tab-content p-0" id="myTabContent">
                         <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
                             <form action="{{ route('day_off_create') }}" method="post" id="form_create_day_off">
@@ -305,9 +292,7 @@
                                         <div class="form-group col-sm-6 m-0">
                                             <label class=" text-w-400" for="inputCity">Ngày bắt đầu*</label>
                                             <?php
-
-                                                $autoDate = date('Y/m/d', strtotime('tomorrow'));
-
+                                              $autoDate = date('Y/m/d', strtotime('tomorrow'));
                                             ?>
                                             <input type="text"
                                                    class="form-control select-item {{ $errors->has('start_at') ? ' has-error' : '' }}"
@@ -321,7 +306,7 @@
                                                    class="form-control select-item  {{ $errors->has('end_at') ? ' has-error' : '' }}"
                                                    id="end_date" autocomplete="off" name="end_at"
                                                    value="{{  old('end_at') }}"
-                                                   readonly="readonly">
+                                                   readonly >
                                         </div>
                                         <span id="errors_date" class="text-danger ml-3 "></span>
                                     </div>
@@ -336,28 +321,19 @@
                                         </div>
                                     @endif
                                 </div>
-                                <div class="mb-2">
 
-                                    <label class=" mt-1 text-w-400" for="exampleForm2">Thời gian nghỉ</label>
-                                    <div class="row ml-3">
-                                        <div class="custom-control custom-radio col-sm-4 m-0">
-                                            <input type="radio" class="custom-control-input " id="option-check" name="option_check" checked value="0">
-                                            <label class="custom-control-label" for="option-check">Nghỉ sáng</label>
-
+                                <div class="mb-3">
+                                    <!-- Default input -->
+                                    <label class="text-w-400" for="exampleForm2">Thời gian nghỉ*</label>
+                                    {{ Form::select('option_check', CHECK_TIME_DAY_OFF_NAME,null,['class' => 'form-control my-1 mr-1  browser-default custom-select md-form select-item reason_id check-value','placeholder'=>'Chọn thời gian nghỉ']) }}
+                                    @if ($errors->has('option_check'))
+                                        <div class="">
+                                            <span class="help-block text-danger">{{ $errors->first('option_check') }}</span>
                                         </div>
-                                        <!-- Default input -->
-                                        <div class="custom-control custom-radio col-sm-4 m-0">
-                                            <input type="radio" class="custom-control-input " id="option-check2" name="option_check"  value="1">
-                                            <label class="custom-control-label" for="option-check2">Nghỉ chiều</label>
-
-                                        </div>
-                                        <div class="custom-control custom-radio col-sm-4 m-0">
-                                            <input type="radio" class="custom-control-input " id="option-check3" name="option_check"  value="2">
-                                            <label class="custom-control-label" for="option-check3">Nghỉ cả ngày</label>
-
-                                        </div>
-                                    </div>
+                                    @endif
                                 </div>
+
+
                                 <div class="">
                                     <label class=" mt-1 text-w-400" for="exampleForm2">Người duyệt*</label>
                                     {{ Form::select('approver_id', $userManager, null, ['class' => 'form-control my-1 mr-1 browser-default custom-select md-form select-item mannager_id check-value','placeholder'=>'Chọn người duyệt đơn' ]) }}
@@ -381,7 +357,13 @@
                                 <div class="mb-3">
                                     <!-- Default input -->
                                     <label class="text-w-400" for="exampleForm2">Mục đích xin nghỉ*</label>
-                                    {{ Form::select('title', VACATION,null,['class' => 'form-control my-1 mr-1  browser-default custom-select md-form select-item reason_id check-value','placeholder'=>'Chọn lý do xin nghỉ']) }}
+                                    <?php
+                                        $vacation=VACATION;
+                                        if (\Illuminate\Support\Facades\Auth::user()->sex == SEX['male']){
+                                            (array_pop($vacation));
+                                        }
+                                    ?>
+                                    {{ Form::select('title', $vacation,null,['class' => 'form-control my-1 mr-1  browser-default custom-select md-form select-item reason_id check-value']) }}
                                     @if ($errors->has('title'))
                                         <div class="">
                                             <span class="help-block text-danger">{{ $errors->first('title') }}</span>
@@ -550,6 +532,16 @@
                 $('#modal-form').modal('show');
             });
         </script>
+        @if(old('title'))
+            <script>
+                $(function () {
+                    $('#home').removeClass('active show');
+                    $('#profile').addClass('active show');
+                    $('#defaultChecked').attr('checked');
+                });
+            </script>
+
+            @endif
     @endif
 
     @if(session()->has('day_off_success'))
@@ -582,6 +574,7 @@
             });
             $('form').each(function () {
                 $(this).validate({
+                    ignore: '[readonly]',
                     rules: {
                         title: {
                             required: true,
@@ -608,6 +601,11 @@
                         number_off: {
                             required: true,
                             number: true
+                        },
+                        option_check :{
+                            required: true,
+                            range: [0, 2],
+                            digits: true
                         }
 
                     },
@@ -622,7 +620,7 @@
                             date: "Vui lòng nhập đúng địn dạng ngày tháng"
                         },
                         end_at: {
-                            required: "Vui lòng vui lòng chọn lý do ngày nghỉ",
+                            required: "Vui lòng vui lòng chọn ngày kết thúc",
                             date: "Vui lòng nhập đúng địn dạng ngày tháng"
                         },
                         approver_id: {
@@ -636,6 +634,11 @@
                         number_off: {
                             required: "Vui lòng nhập số ngày dự kiến",
                             number: "Vui lòng nhập đúng định dạng số"
+                        },
+                        option_check: {
+                            required: "Vui lòng chọn thời gian nghỉ",
+                            digits: "Vui lòng nhập đúng định dạng số",
+                            range: "Vui lòng kiểm tra lại thời gian"
                         },
                     }
                 });
@@ -667,6 +670,7 @@
                 format: 'yyyy/mm/dd',
                 hoursDisabled: '0,1,2,3,4,5,6,7,18,19,20,21,22,23',
                 daysOfWeekDisabled: [0, 6],
+                editable: true
             });
 
             $('#end_date,#start_date').on('change', function () {
@@ -692,6 +696,7 @@
                     "1": "Lý do cá nhân",
                     "2": "Nghỉ đám cưới",
                     "3": "Nghỉ đám hiếu",
+                    "4": "Nghỉ thai sản",
                 }
                 $.ajax
                 ({

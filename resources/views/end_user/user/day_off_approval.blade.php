@@ -182,7 +182,8 @@
                 <th class="text-center">Nhân viên</th>
                 <th class="text-center">Từ ngày</th>
                 <th class="text-center d-none d-sm-table-cell">Tới ngày</th>
-                <th class="text-center">Tiêu đề</th>
+                <th class="text-center ">Tiêu đề</th>
+                <th class="text-center">Nội dung</th>
                 <th class="text-center d-none d-sm-table-cell">Ngày nghỉ</th>
                 <th class="text-center">Phê duyệt</th>
                 <th class="text-center d-none d-sm-table-cell">Xem thêm</th>
@@ -206,15 +207,9 @@
                     <td class="text-center d-none d-sm-table-cell">
                         {{$record->end_date}}
                     </td>
-                    <td class="text-center table-title">
-                        @foreach(VACATION as $key => $value)
-                            @if($key == $record->title)
-                                {{ $value }}
-                            @endif
-                        @endforeach
-                    </td>
-                    <td class="text-center d-none d-sm-table-cell">{{!!!$record->number_off ? 'Chưa rõ' : checkNumber($record->number_off)  }}
-                        ngày
+                    <td class="text-center ">{{ array_key_exists($record->title, VACATION_FULL) ? VACATION_FULL[$record->title] : ''  }}</td>
+                    <td class="text-center ">{{ $record->reason  }}</td>
+                    <td class="text-center d-none d-sm-table-cell">{{!!!($record->number_off || $record->absent > DEFAULT_VALUE)? 'Đang duyệt' : checkNumber($record->number_off) + checkNumber($record->absent).' ngày'}}
                     </td>
 
                     <td class="text-center p-0" style="vertical-align: middle;">
@@ -264,7 +259,7 @@
                                 <!-- Default input -->
                                 <label class="text-d-bold" for="exampleForm2">Thời gian được tính:</label>
                                 <strong class="" id="number_off">
-                                </strong> ngày
+                                </strong>
                             </div>
                             <div class="mb-3">
                                 <!-- Default input -->
@@ -406,6 +401,7 @@
                         "1": "Lý do cá nhân",
                         "2": "Nghỉ đám cưới",
                         "3": "Nghỉ đám hiếu",
+                        "4": "Nghỉ thai sản",
                     }
                     $.ajax
                     ({

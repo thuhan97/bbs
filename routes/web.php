@@ -208,6 +208,8 @@ Route::group([
     Route::get('/chia-se-tai-lieu', 'ShareController@listShareDocument')->name('list_share_document');
     Route::get('/download_file_share/{url}', 'ShareController@downloadFileShare');
     Route::post('/add_document', 'ShareController@addDocument')->name('add_document');
+    Route::post('/add_suggestions', 'SuggestionController@addSuggestions')->name('add_suggestions');
+    Route::get('/list_suggestions', 'SuggestionController@listSuggestions')->name('list_suggestions');
     // create day off
     Route::post('/ngay-nghi/create-calendar', 'UserController@dayOffCreateCalendar')->name('day_off_create_calendar');
     Route::post('/ngay-nghi/create-day-off', 'UserController@dayOffCreate')->name('day_off_create');

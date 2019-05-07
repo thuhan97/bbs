@@ -102,6 +102,18 @@
                     <script type='text/javascript'
                             src='https://darksky.net/widget/default/21.0294,105.8544/ca12/en.js?width=100%&height=350&title=JVB Viet Nam&textColor=333333&bgColor=transparent&transparency=true&skyColor=undefined&fontFamily=Times New Roman&customFont=&units=ca&htColor=333333&ltColor=cccccc&displaySum=yes&displayHeader=yes'></script>
                 </div>
+                <div class="card mb-4 wow fadeIn">
+                    <form action="{{ route('add_suggestions') }}" method="post" id="formSuggestions">
+                        @csrf <!-- {{ csrf_field() }} -->
+                        <div class="card-body text-center">
+                            <p class="h5 mb-4 text-gray">Góp ý công ty</p>
+                            <textarea name="suggestions" row="4" style="width: 70%;" id="contentSuggestion"></textarea>  
+                            <div class="pt-3 pb-4 d-flex justify-content-center border-top-0 rounded mb-0">
+                                <button type="button" class="btn btn-primary" onclick="sendSuggestions()">Gửi ngay</button>
+                            </div>                        
+                        </div>
+                    </form>        
+                </div>
             </div>
             <!--Grid column-->
 
@@ -110,3 +122,13 @@
 
     </section>
 @endsection
+<script>
+    function sendSuggestions() {
+        var content = $("#contentSuggestion").val();
+        if(content != ''){
+            $("#formSuggestions").submit();
+        }else{
+            alert('Bạn cần nhập nội dung góp ý!')        
+        }
+    }    
+</script>

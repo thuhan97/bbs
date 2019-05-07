@@ -120,6 +120,11 @@ Breadcrumbs::register('list_share_document', function ($breadcrumbs) {
     $breadcrumbs->parent('home');
     $breadcrumbs->push(__l('list_share_document'), route('list_share_document'));
 });
+// Dashboard > list_suggestions
+Breadcrumbs::register('list_suggestions', function ($breadcrumbs) {
+    $breadcrumbs->parent('home');
+    $breadcrumbs->push(__l('list_suggestions'), route('list_suggestions'));
+});
 // Dashboard > day_off
 Breadcrumbs::register('day_off', function ($breadcrumbs) {
     $breadcrumbs->parent('personal');

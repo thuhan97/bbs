@@ -46,6 +46,7 @@ class RegulationService extends AbstractService implements IRegulationService
             'id',
             'name',
             'approve_date',
+            'file_path',
             'created_at',
             'updated_at',
         ], true);

@@ -16,7 +16,7 @@ class HomeController extends Controller
         $posts = Post::select('id', 'name', 'introduction', 'image_url')
             ->where('status', ACTIVE_STATUS)
             ->orderBy('id', 'desc')
-            ->take(5)
+            ->take(2)
             ->get();
 
         $event = Event::select('id', 'name', 'place', 'event_date', 'event_end_date', 'introduction', 'image_url')

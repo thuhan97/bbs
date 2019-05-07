@@ -13,6 +13,8 @@ class CalendarOff extends Model
 {
     use SoftDeletes;
 
+    const REPEAT = 1;
+
     protected $table = 'calendar_offs';
 
     protected $fillable = [

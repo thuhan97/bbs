@@ -45,29 +45,29 @@ class RegulationController extends AdminBaseController
         parent::__construct();
     }
 
-    /**
-     * @param         $record
-     * @param Request $request
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function getRedirectAfterSave($record, $request,$isCreate = true)
-    {
-        //Delete relate files
-        $record->regulation_files()->delete();
-        $file_paths = $request->get('file_path');
-        if (!empty($file_paths)) {
-
-            $files = [];
-            foreach ($file_paths as $file_path) {
-                $files[] = new RegulationFile([
-                    'file_path' => $file_path
-                ]);
-            }
-            $record->regulation_files()->saveMany($files);
-        }
-
-        //Insert relate files
-        return $this->redirectBackTo(route($this->getResourceRoutesAlias() . '.index'));
-    }
+//    /**
+//     * @param         $record
+//     * @param Request $request
+//     *
+//     * @return \Illuminate\Http\Response
+//     */
+//    public function getRedirectAfterSave($record, $request,$isCreate = true)
+//    {
+//        //Delete relate files
+//        $record->regulation_files()->delete();
+//        $file_paths = $request->get('file_path');
+//        if (!empty($file_paths)) {
+//
+//            $files = [];
+//            foreach ($file_paths as $file_path) {
+//                $files[] = new RegulationFile([
+//                    'file_path' => $file_path
+//                ]);
+//            }
+//            $record->regulation_files()->saveMany($files);
+//        }
+//
+//        //Insert relate files
+//        return $this->redirectBackTo(route($this->getResourceRoutesAlias() . '.index'));
+//    }
 }

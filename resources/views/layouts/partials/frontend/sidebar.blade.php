@@ -1,7 +1,7 @@
 <!-- Sidebar -->
 <div class="sidebar fixed sidebar-fixed position-fixed" id="slide-out">
 
-    <div class="text-center d-none d-lg-block">
+    <div class="text-center ">
         <a href="/" class="logo-wrapper waves-effect">
             <img src="http://jvb-corp.com/img/logo.png" class="img-fluid" alt="">
         </a>

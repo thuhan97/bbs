@@ -63,7 +63,7 @@
                 {{ Form::select('year', get_years(), $year ?? date('Y') , ['class'=>'yearselect browser-default custom-select w-100 border-0 select_year option-select p-1']) }}
             </div>
             <div class="col-6 col-sm-4 col-xl-2 no-padding-left">
-                {{ Form::select('month', MONTH, $month ?? date('m'), ['class' => 'browser-default custom-select w-100 month option-select','placeholder'=>'Chọn tháng']) }}
+                {{ Form::select('month', MONTH, $month ?? '', ['class' => 'browser-default custom-select w-100 month option-select','placeholder'=>'Chọn tháng']) }}
             </div>
         </div>
         <div class="d-none d-xl-flex container-fluid col-12 row border-bottom-2 mb-2" style="position: relative;">
@@ -235,7 +235,7 @@
     {{$getDayOff->render('end_user.paginate') }}
     <!--Table-->
 
-        <form action="{{ route('edit_day_off_detail',['id'=>1]) }}" method="post" id="edit-day-off">
+        <form action="{{ route('edit_day_off_detail') }}" method="post" id="edit-day-off">
             @csrf
             <div class="modal fade modal-open" id="modal-form" tabindex="-1" role="dialog"
                  aria-labelledby="myModalLabel"

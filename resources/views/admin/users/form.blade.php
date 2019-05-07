@@ -13,7 +13,7 @@ if (isset($record->end_date)) {
 @if($record->id)
     <div id="exTab1" class="container">
         <ul class="nav nav-pills">
-            <li class="btn-success active" id="btn-change-info">
+            <li class="btn-success active mr-1" id="btn-change-info">
                 <a id="change-info" href="#1a" data-toggle="tab">Đổi thông tin</a>
             </li>
             <li class="btn-info" id="btn-change-pass"><a id="change-pass" href="#2a" data-toggle="tab">Đổi mật khẩu</a>

@@ -652,7 +652,7 @@
 
             var today = new Date();
             var mon = today.getMonth() + 1;
-            var date = today.getFullYear() + '-' + mon + '-' + today.getDate();
+            var date = today.getFullYear() + '-' + mon+1 + '-' + today.getDate();
 
 
             @if($autoShowModal)
@@ -663,14 +663,12 @@
                 format: 'yyyy/mm/dd',
                 hoursDisabled: '0,1,2,3,4,5,6,7,18,19,20,21,22,23',
                 daysOfWeekDisabled: [0, 6],
-                startDate: date,
             });
 
             $('#end_date,#end_date1').datepicker({
                 format: 'yyyy/mm/dd',
                 hoursDisabled: '0,1,2,3,4,5,6,7,18,19,20,21,22,23',
                 daysOfWeekDisabled: [0, 6],
-                editable: true
             });
 
             $('#end_date,#start_date').on('change', function () {

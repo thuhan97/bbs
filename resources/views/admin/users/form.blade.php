@@ -79,7 +79,7 @@ if (isset($record->end_date)) {
                                                     <i class="fa fa-calendar"></i>
                                                 </div>
                                                 <input type="text" class="form-control pull-right datepicker"
-                                                       name="birthday"
+                                                       name="birthday" data-date-format='yyyy-mm-dd' readonly
                                                        value="{{ old('birthday', $record->birthday) }}" id="birthday">
                                             </div>
                                             @if ($errors->has('birthday'))
@@ -198,7 +198,7 @@ if (isset($record->end_date)) {
                                             <i class="fa fa-calendar"></i>
                                         </div>
                                         <input type="text" autocomplete="off" class="form-control pull-right "
-                                               name="start_date"
+                                               name="start_date" data-date-format='yyyy-mm-dd' readonly
                                                value="{{ old('start_date', $record->start_date) }}" id="start_date">
                                     </div>
                                     @if ($errors->has('start_date'))
@@ -217,7 +217,7 @@ if (isset($record->end_date)) {
                                             <i class="fa fa-calendar"></i>
                                         </div>
                                         <input type="text" class="form-control pull-right datepicker"
-                                               name="end_date" autocomplete="off" readonly
+                                               name="end_date" autocomplete="off" readonly data-date-format='yyyy-mm-dd'
                                                value="{{ old('end_date', $record->end_date) }}" id="end_date">
                                     </div>
                                     @if ($errors->has('end_date'))

@@ -161,7 +161,7 @@ class UserController extends AdminBaseController
         if ($isCreate){
             $dayOff=new RemainDayoff();
             $dayOff->user_id=$record->id;
-            $day = Carbon::createFromFormat('m/d/Y', $request->start_date)->day;
+            $day = Carbon::createFromFormat('Y-m-d', $request->start_date)->day;
             if ($day >= HALF_MONTH){
                 $dayOff->remain=REMAIN_DAY_OFF_DEFAULT;
                 $dayOff->remain_increment=REMAIN_DAY_OFF_DEFAULT;

@@ -201,6 +201,8 @@
 }
 
 .icheckbox_square-blue {
+    margin-left: 7px;
+    margin-bottom: 2px;
     background-position: 0 0;
 }
     .icheckbox_square-blue.hover {

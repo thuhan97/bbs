@@ -455,8 +455,8 @@ class UserController extends Controller
         return response()->json([
             'data' => $dayOff,
             'numoff' => $numOff ?? null,
-            'approver' => User::findOrFail($dayOff->approver_id)->name,
-            'userdayoff' => User::findOrFail($dayOff->user_id)->name
+            'approver' => User::find($dayOff->approver_id)->name ?? '',
+            'userdayoff' => User::find($dayOff->user_id)->name ?? ''
         ]);
     }
 

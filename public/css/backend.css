@@ -112,6 +112,18 @@
     display: inline-block;
 }
 
+.top-5 {
+    top: 5px;
+}
+
+.mg-top-10{
+    margin-top: 10px;
+}
+
+.mg-top-30{
+    margin-top: 30px;
+}
+
 .wrap-img {
     float: left;
     position: relative;
@@ -546,9 +558,14 @@ th.stt {
     background: green;
 }
 
-.btn-export-over-time{
+.btn-export-over-time {
     margin: 20px;
 }
-.table-over-time{
+
+.table-over-time {
     margin: 20px;
+}
+
+.btnDateOffDelete {
+    color: red;
 }

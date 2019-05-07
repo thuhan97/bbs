@@ -65,6 +65,8 @@
             selector: 'textarea',
             paste_data_images: true,
             height: '350px',
-
+            plugins: [
+                "advlist autolink lists charmap preview hr anchor pagebreak",
+            ],
         });</script>
 @endpush

@@ -1,4 +1,7 @@
 $(function () {
+    $(".button-collapse").sideNav();
+// SideNav Scrollbar Initialization
+
     $(".pageSize").change(function () {
         location.href = $(".pageSize option:selected").data('href');
     });

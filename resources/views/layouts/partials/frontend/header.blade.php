@@ -3,7 +3,11 @@
     <!-- Navbar -->
     <nav class="navbar fixed-top navbar-expand-lg navbar-light white scrolling-navbar">
         <div class="container-fluid">
-
+            <div class="float-left d-lg-none">
+                <a href="#" data-activates="slide-out" class="navbar-toggler button-collapse"><i
+                            class="navbar-toggler-icon"></i><span
+                            class="sr-only" aria-hidden="true">Menu</span></a>
+            </div>
             <!-- Brand -->
             <a class="navbar-brand waves-effect" href="/">
                 {{--<img src="http://jvb-corp.com/img/logo.png" class="img-fluid" alt="" width="50">--}}
@@ -13,12 +17,12 @@
             <!-- Collapse -->
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
                     aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
+                <span class="fas fa-grip-horizontal"></span>
             </button>
 
             <!-- Links -->
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav mr-auto">
+                <ul class="navbar-nav mr-auto custom-scrollbar">
                     <li class="d-none d-xl-block nav-item {{ \App\Utils::checkRoute(['work_time']) ? 'active': '' }}">
                         <a href="{{route('work_time')}}" class="nav-link waves-effect">{{__l('work_time')}}
                             <span class="sr-only">(current)</span>

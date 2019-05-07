@@ -7,6 +7,7 @@
 
 namespace App\Services;
 
+use App\Models\CalendarOff;
 use App\Models\Config;
 use App\Models\Punishes;
 use App\Models\User;
@@ -25,6 +26,8 @@ class WorkTimeService extends AbstractService implements IWorkTimeService
     const LATE_UNIT = 1000;
     const LATE_SECON_SUFFIX = ':00'; //00 to 59
 
+    private $calendarOffs;
+
     /**
      * WorkTimeService constructor.
      *
@@ -36,6 +39,8 @@ class WorkTimeService extends AbstractService implements IWorkTimeService
         $this->model = $model;
         $this->repository = $repository;
         $this->config = Config::first();
+        $this->calendarOffs = CalendarOff::all();
+
         $this->users = User::select('id', 'name', 'staff_code', 'contract_type')->with('workTimeRegisters')->get();
 
     }
@@ -196,8 +201,19 @@ class WorkTimeService extends AbstractService implements IWorkTimeService
         if (!$this->config->time_afternoon_go_late_at) throw new \Exception('Chưa cấu hình thời gian thiết lập hệ thống.');
         $addData = false;
         $type = 0;
-        //checkin in week
-        if (($this->config->work_days && in_array($date->format('N'), $this->config->work_days)) || !$this->config->work_days) {
+
+        $check = $this->calendarOffs->where('date_off_from', '>=', $date->format('Y-m-d'))->where('date_off_to', '<=', $date->format('Y-m-d'))->first();
+
+        if ($check) {
+            $type = WorkTime::TYPES['calendar_off'];
+            return [
+                'start_at' => null,
+                'end_at' => null,
+                'note' => WorkTime::WORK_TIME_CALENDAR_DISPLAY[$type] ?? '',
+                'type' => $type,
+            ];
+        } else if (($this->config->work_days && in_array($date->format('N'), $this->config->work_days)) || !$this->config->work_days) {
+            //checkin in week
             //getworktime of user
             if (in_array($user->contract_type, [CONTRACT_TYPES['staff'], CONTRACT_TYPES['staff']])) {
                 $addData = true;

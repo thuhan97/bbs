@@ -31,7 +31,7 @@ return [
     'work_time' => 'Giờ làm việc',
     'list_share_document' => 'Chia sẻ tài liệu',
     'share_experience' => 'Chia sẻ kinh nghiệm',
-    'contact' => 'Danh bạ',
+    'contact' => 'Danh sách nhân viên',
     'day_off' => 'Ngày phép',
     'ask_permission' => 'Xin phép',
     'day_off_approval' => 'Phê duyệt nghỉ phép',
@@ -41,7 +41,7 @@ return [
     'view_detail' => 'Xem chi tiết',
     'list_empty' => 'Không có :name nào!',
     'Search' => 'Nhập từ khóa tìm kiếm',
-    'Search_contact' => 'Nhập tên, mã nhân viên, email, số điện thoại',
+    'Search_contact' => 'Nhập tên, mã nhân viên, group, team, email, số điện thoại',
     'search_with' => 'Tìm kiếm với ":key"',
     'total_user' => ':number nhân viên',
     'total_record' => ':number bản ghi',
@@ -66,4 +66,5 @@ return [
     'edit_day_off_successully' => 'Chỉnh sửa ngày nghỉ thành công',
     'punish_late_money' => 'Phạt đi muộn lần :number (:check_in) tháng :month.',
     'punish_late_money_aio' => 'Phạt đi muộn :number buổi (từ :start_date đến :to_date).',
+    'config_updated' => 'Lưu thiết lập thành công.',
 ];

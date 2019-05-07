@@ -49,15 +49,20 @@
 
 #contactTbl tbody td, #contactTbl tbody th {
     vertical-align: middle;
+    padding: 0.1rem 0.5rem;
+}
+
+#contactTbl .td-approve {
+    padding: 0.8rem 0.5rem;
 }
 
 #contactTbl .avatar {
-    width: 80px;
-    height: 80px;
+    width: 40px;
+    height: 40px;
 }
 
 .sidebar-fixed {
-    height: 100vh;
+    height: 100%;
     width: 270px;
     -webkit-box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
     box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
@@ -65,6 +70,7 @@
     background-color: #fff;
     padding: 1.5rem;
     padding-top: 0;
+    overflow-y: auto;
 }
 
 .sidebar-fixed .list-group .active {
@@ -268,6 +274,52 @@
     padding: 10px;
 }
 
+.btn-early-late {
+    width: 24%;
+    background: red;
+    height: 45px;
+    margin-top: 6px;
+    border: none;
+    border-radius: 4px;
+    color: white;
+}
+
+.btn-ot {
+    width: 18%;
+    background: #4285f4;
+    height: 45px;
+    margin-top: 6px;
+    border: none;
+    border-radius: 4px;
+    color: white;
+    margin-left: 10px;
+}
+
+.btn-late-ot {
+    width: 25%;
+    background: #00c851;
+    height: 45px;
+    margin-top: 6px;
+    border: none;
+    border-radius: 4px;
+    color: white;
+    margin-left: 10px;
+}
+
+.btn-approve {
+    width: 80%;
+    height: 35px;
+    color: white;
+    background: #4285f4;
+    border: none;
+    border-radius: 3px;
+}
+
+.btn-approve:hover {
+    cursor: pointer;
+    background: #659bf2;
+}
+
 .statistic {
     margin: 0;
     margin-bottom: 24px;
@@ -420,12 +472,6 @@
         height: 120px;
         padding-top: 25px;
         cursor: pointer;
-    }
-}
-
-@media (max-width: 1199.98px) {
-    .sidebar-fixed {
-        display: none;
     }
 }
 
@@ -654,7 +700,8 @@
         left: 8px !important;
         top: 6px;
     }
-    .dayoff-icoin-close{
+
+    .dayoff-icoin-close {
         left: 6px !important;
     }
 
@@ -747,7 +794,7 @@ table.calendarTable td {
 }
 
 .dayNumber {
-    font-size: 1.4em;
+    font-size: 1.7em;
     font-weight: bold;
 }
 
@@ -861,7 +908,7 @@ td.blank, .type-1 {
 }
 
 .day-off-icoi {
-    left: 25px ;
+    left: 25px;
 }
 
 
@@ -869,11 +916,17 @@ td.blank, .type-1 {
     #app {
         padding-top: 0rem !important;
     }
+
+
 }
 
 @media (max-width: 768px) {
     .breadcrumb {
         padding: 10px !important;
+    }
+
+    .navbar-light .navbar-brand {
+        margin-right: 0;
     }
 }
 
@@ -888,4 +941,17 @@ td.blank, .type-1 {
 
 .mg-center {
     margin: 0 auto;
+}
+
+.td-approve {
+    padding: 18px 0;
+}
+
+
+.navbar.navbar-light .breadcrumb .nav-item .nav-link:hover, .navbar.navbar-light .navbar-nav .nav-item .nav-link:hover {
+    color: #6098f2;
+}
+
+.navbar.navbar-light .breadcrumb .nav-item.active>.nav-link:hover, .navbar.navbar-light .navbar-nav .nav-item.active>.nav-link:hover, .navbar.navbar-light .navbar-toggler, .navbar.navbar-light form .md-form .form-control {
+    color: #6098f2;
 }

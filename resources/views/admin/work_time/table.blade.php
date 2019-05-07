@@ -57,6 +57,9 @@
                         case -1:
                             $typeClass = 'disable';
                             break;
+                        case -2:
+                            $typeClass = 'info';
+                            break;
                     }
                     ?>
                     @if(isset($typeClass))

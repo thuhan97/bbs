@@ -16,7 +16,22 @@
         </div>
         <div class="col-md-6"></div>
     </div>
+    <div class="row">
+        <div class="col-md-4">
 
+            <div class="form-group margin-b-5 margin-t-5{{ $errors->has('group_id') ? ' has-error' : '' }}">
+                <label for="group_id">Group</label>
+                {{ Form::select('group_id', ['' => 'Chọn group'] + GROUPS, $record->group_id ?? '', ['class' => 'form-control']) }}
+
+                @if ($errors->has('group_id'))
+                    <span class="help-block">
+                    <strong>{{ $errors->first('group_id') }}</strong>
+                </span>
+                @endif
+            </div>
+            <!-- /.form-group -->
+        </div>
+    </div>
     <div class="row">
         <div class="col-md-4">
 

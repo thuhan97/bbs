@@ -1,7 +1,7 @@
 <!-- Sidebar -->
-<div class="sidebar-fixed position-fixed">
+<div class="sidebar fixed sidebar-fixed position-fixed" id="slide-out">
 
-    <div class="text-center">
+    <div class="text-center d-none d-lg-block">
         <a href="/" class="logo-wrapper waves-effect">
             <img src="http://jvb-corp.com/img/logo.png" class="img-fluid" alt="">
         </a>
@@ -28,16 +28,18 @@
             <i class="fas fa-industry mr-3"></i>
             {{__l('Project')}}</a>
 
-{{--        <a href="#" class="list-group-item list-group-item-action waves-effect disabled">--}}
-{{--            <i class="fas fa-building mr-3"></i>--}}
-{{--            Phòng họp</a>--}}
-{{--        <a href="#" class="list-group-item list-group-item-action waves-effect disabled">--}}
-{{--            <i class="fas fa-desktop mr-3"></i>--}}
-{{--            Quản lý thiết bị</a>--}}
-        <a href="{{route('list_share_document')}}" class="list-group-item list-group-item-action waves-effect {{ \App\Utils::checkRoute(['list_share_document']) ? 'active': '' }}">
+        {{--        <a href="#" class="list-group-item list-group-item-action waves-effect disabled">--}}
+        {{--            <i class="fas fa-building mr-3"></i>--}}
+        {{--            Phòng họp</a>--}}
+        {{--        <a href="#" class="list-group-item list-group-item-action waves-effect disabled">--}}
+        {{--            <i class="fas fa-desktop mr-3"></i>--}}
+        {{--            Quản lý thiết bị</a>--}}
+        <a href="{{route('list_share_document')}}"
+           class="list-group-item list-group-item-action waves-effect {{ \App\Utils::checkRoute(['list_share_document']) ? 'active': '' }}">
             <i class="fas fa-file mr-3"></i>
             Chia sẻ tài liệu</a>
-        <a href="{{route('share_experience')}}" class="list-group-item list-group-item-action waves-effect {{ \App\Utils::checkRoute(['share_experience']) ? 'active': '' }}">
+        <a href="{{route('share_experience')}}"
+           class="list-group-item list-group-item-action waves-effect {{ \App\Utils::checkRoute(['share_experience']) ? 'active': '' }}">
             <i class="fas fa-book mr-3"></i>
             Kinh nghiệm làm việc</a>
         <a href="{{route('post')}}"

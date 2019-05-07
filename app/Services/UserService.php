@@ -9,7 +9,9 @@ namespace App\Services;
 
 use App\Events\UserRegistered;
 use App\Models\Potato;
+use App\Models\Team;
 use App\Models\User;
+use App\Models\UserTeam;
 use App\Repositories\Contracts\IUserRepository;
 use App\Repositories\Contracts\IUserTeamRepository;
 use App\Services\Contracts\IPotatoService;
@@ -25,9 +27,9 @@ class UserService extends AbstractService implements IUserService
     /**
      * UserService constructor.
      *
-     * @param \App\Models\User $model
+     * @param \App\Models\User                            $model
      * @param \App\Repositories\Contracts\IUserRepository $repository
-     * @param IUserTeamRepository $userTeamRepository
+     * @param IUserTeamRepository                         $userTeamRepository
      */
     public function __construct(User $model, IUserRepository $repository, IUserTeamRepository $userTeamRepository)
     {
@@ -70,20 +72,32 @@ class UserService extends AbstractService implements IUserService
     /**
      * @param Request $request
      * @param integer $perPage
-     * @param string $search
+     * @param string  $search
      *
      * @return collection
      */
     public function getContact(Request $request, &$perPage, &$search)
     {
-        $criterias = $request->only('page', 'page_size', 'search');
+        $userModels = User::where('status', ACTIVE_STATUS)
+            ->where(function ($q) use ($request) {
+                $search = $request->search;
+                $q->search($search);
+                $teams = Team::search($search)->select('teams.id', 'leader_id')->get();
+                $teamIds = $teams->pluck('id')->toArray();
+                $leaderIds = $teams->pluck('leader_id')->toArray();
 
-        $criterias['orders'] = ['id' => 'asc'];
-        $criterias['status'] = ACTIVE_STATUS;
-        $perPage = $criterias['page_size'] ?? 2000;
-        $search = $criterias['search'] ?? '';
+                if (!empty($teamIds)) {
+                    $userIds = UserTeam::select('user_id')
+                        ->whereIn('team_id', $teamIds)
+                        ->pluck('user_id')->toArray();
 
-        return $this->repository->findBy($criterias, ['*'], true);
+                    $q->orWhereIn('id', $userIds)
+                        ->orWhereIn('id', $leaderIds);
+                }
+
+            });
+
+        return $userModels->get();
     }
 
     /**
@@ -93,7 +107,12 @@ class UserService extends AbstractService implements IUserService
      */
     public function getUserManager()
     {
+<<<<<<< HEAD
         return $this->model->where('jobtitle_id', '>=', MIN_APPROVE_JOB)->where('status', ACTIVE_STATUS)->where('id','<>',Auth::id())->pluck('name','id');
 
+=======
+        $userManager = $this->model->where('jobtitle_id', '>=', MIN_APPROVE_JOB)->where('status', ACTIVE_STATUS)->pluck('name', 'id');
+        return $userManager;
+>>>>>>> f644cb15a8be6e35a50efde31e03ce9e7e7e6a70
     }
 }

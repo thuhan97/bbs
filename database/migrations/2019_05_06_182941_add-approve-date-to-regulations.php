@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddColumnRemainIncrementTableRemianDayoffs extends Migration
+class AddApproveDateToRegulations extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,9 @@ class AddColumnRemainIncrementTableRemianDayoffs extends Migration
      */
     public function up()
     {
-        Schema::table('remain_dayoffs', function (Blueprint $table) {
-            $table->integer('remain_increment')->nullable()->comment('ngày nghỉ tồn năm ngoái');
+        Schema::table('regulations', function (Blueprint $table) {
+            //
+            $table->date('approve_date')->nullable();
         });
     }
 
@@ -25,7 +26,7 @@ class AddColumnRemainIncrementTableRemianDayoffs extends Migration
      */
     public function down()
     {
-        Schema::table('remain_dayoffs', function (Blueprint $table) {
+        Schema::table('regulations', function (Blueprint $table) {
             //
         });
     }

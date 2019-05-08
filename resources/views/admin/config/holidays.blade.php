@@ -91,7 +91,7 @@
                     Tạo ngày làm bù
                 </div>
             </div>
-            <div class="box-body" id="dayoff-zone">
+            <div class="box-body" id="dayadd-zone">
                 <div class="box-text">
                     <div class="row">
                         <div class="col-md-6">
@@ -241,10 +241,10 @@
                             '<td class="text-center"><span class="btnDateAddDelete text-danger"><i class="fa fa-close"></i> </span></td>' +
                             '</tr>');
 
-                        $('#dayoff-zone').find('input').val('');
+                        $('#dayadd-zone').find('input').val('');
                     },
                     error: function () {
-                        $('#date_off_from').focus();
+                        $('#date_add').focus();
                     }
                 })
             });

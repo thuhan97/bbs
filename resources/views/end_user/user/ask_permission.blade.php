@@ -113,25 +113,25 @@
             <br><br><br>
         @endif
     @endcan
-    <div class="row">
+    <div class="row mb-4">
         <div class="col-md-6">
             <h2>Xin phép cá nhân</h2>
         </div>
         <div class="col-md-6 text-right">
             <button onclick="location.href='{{route("day_off")}}?t=1'"
-                    class="btn btn-danger waves-effect waves-light float-right" id="btn-off">
+                    class=" approve-btn-permission waves-effect waves-light float-right" id="btn-off">
                 Xin nghỉ phép
             </button>
             <button type="button"
-                    class="d-none d-xl-block btn btn-primary approve-btn-ot waves-effect waves-light float-right"
+                        class="d-none d-xl-block approve-btn-ot waves-effect waves-light float-right"
                     id="btn-late-ot">
                 Xin OT
             </button>
             <button type="button"
-                    class="d-none d-xl-block btn btn-warning approve-btn-early waves-effect waves-light float-right"
+                    class="d-none d-xl-block approve-btn-early waves-effect waves-light float-right"
                     id="btn-early-late">Xin về sớm
             </button>
-            <button type="button" class="btn btn-success approve-btn-late waves-effect waves-light float-right" id="btn-late">
+            <button type="button" class="approve-btn-late waves-light float-right" id="btn-late">
                 Xin đi muộn
             </button>
         </div>
@@ -177,7 +177,7 @@
     <div class="modal fade myModal" id="modal-form" tabindex="-1"
          role="dialog" aria-labelledby="myModalLabel"
          aria-hidden="true">
-        <div class="modal-dialog modal-center" role="document">
+        <div class="modal-dialog modal-center modal-set-center" role="document">
             <div class="modal-content" id="bg-img" style="background-image: url({{ asset('img/font/xin_nghi.png') }})">
                 <div class="modal-header text-center border-bottom-0 p-3">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">

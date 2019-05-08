@@ -30,12 +30,12 @@ $month = request('month', date('m'));
                     </div>
                 </div>
             @endif
-            <div class="col-6 col-sm-2 col-xl-1">
+            <div class="col-6 col-sm-2 report-select-year">
                 <div class="md-form m-0">
                     {{ Form::select('year', get_years(2), $year, ['class'=>'mr-1 w-30 browser-default custom-select']) }}
                 </div>
             </div>
-            <div class="col-6 col-sm-3 col-md-2 col-xl-1">
+            <div class="col-6 col-sm-3 col-md-2 report-select-year">
                 <div class="md-form m-0">
                     {{ Form::select('month', get_months('Tháng '), $month, ['class'=>'mt-md-0 w-30 browser-default custom-select']) }}
                 </div>

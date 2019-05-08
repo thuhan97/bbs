@@ -20,11 +20,13 @@ class CreateRecursTable extends Migration
             $table->string('participants');
             $table->string('title');
             $table->text('content');
-            $table->tinyInteger('is_notify');
+            $table->date('date');
             $table->time('start_time');
             $table->time('end_time');
             $table->tinyInteger('repeat_type');
             $table->string('days_repeat');
+            $table->string('color');
+            $table->tinyInteger('is_notify');
             $table->timestamps();
 
         });

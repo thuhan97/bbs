@@ -298,10 +298,13 @@ define('PRE_YEAR', 1);
 define('PRE_PRE_YEAR', 2);
 define('XLS_TYPE', '.xls');
 
-
+define('NO_REPEAT',0);
 define('WEEKLY',1);
 define('MONTHLY',2);
 define('YEARLY',3);
+
+define('DUPLICATE',1);
+define('NO_DUPLICATE',0);
 
 define('ADD_DAY_OFF_MONTH', 1);
 define('STT', 'Stt');

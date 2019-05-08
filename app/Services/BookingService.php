@@ -44,12 +44,12 @@ class BookingService extends AbstractService implements IBookingService
      * @return collection
      */
 
-     public function getBooking($start, $end){
-        $start=date('Y-m-d',strtotime($start)).' '.date('H:i:s',strtotime('00:00:00'));
-        $end=date('Y-m-d',strtotime($end)).' '.date('H:i:s',strtotime('23:59:59'));
+     public function getBookings($start, $end){
+        $start=date('Y-m-d',strtotime($start));
+        $end=date('Y-m-d',strtotime($end));
         $results=[];
-        $bookings=Booking::where('start_date','>=',$start)
-                            ->where('start_date','<=',$end)
+        $bookings=Booking::where('date','>=',$start)
+                            ->where('date','<=',$end)
                             ->get();
         if ($bookings->isNotEmpty()) {
             foreach ($bookings as $booking) {
@@ -57,8 +57,8 @@ class BookingService extends AbstractService implements IBookingService
                     'id' => $booking->id,
                     'title' => $booking->title,
                     'description' => $booking->content,
-                    'start' => $booking->start_date,
-                    'end' => $booking->end_date,
+                    'start' => $booking->date.' '.$booking->start_time,
+                    'end' => $booking->date.' '.$booking->end_time,
                     'textColor'=>'#fff',
                     'color'=>$booking->color,
                 ];
@@ -67,7 +67,7 @@ class BookingService extends AbstractService implements IBookingService
         return $results;
     }
 
-    public function getBookingRecur($start, $end)
+    public function getBookingRecurs($start, $end)
     {
         $end=date('Y-m-d',strtotime($end));
         $results=[];  
@@ -92,8 +92,9 @@ class BookingService extends AbstractService implements IBookingService
             }
             else{
                  $startDate=$recur->days_repeat;
+
             }
-            if($startDate!=null && $startDate>= \Carbon::now()){
+            if($startDate!=null && $startDate>$recur->date){
                 $results[]=[
                     'id'=>$recur->id,
                     'title' => $recur->title,

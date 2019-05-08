@@ -227,6 +227,7 @@ Route::group([
     Route::get('/phong-hop','BookingController@calendar')->name('bookings');
     Route::get('/get_calendar','BookingController@getCalendar')->name('getCalendarBooking');
     Route::post('/them-phong-hop','BookingController@booking')->name('booking');
+    Route::post('/sua-phong-hop/{id}','BookingController@update')->name('update_booking');
     Route::get('/get-booking/{id}','BookingController@getBooking')->name('get_booking');
     Route::get('/delete-booking/{id}','BookingController@deleteBooking')->name('delete_booking');
 

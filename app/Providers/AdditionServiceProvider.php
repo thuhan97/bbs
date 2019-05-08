@@ -144,11 +144,8 @@ class AdditionServiceProvider extends ServiceProvider
             IDeviceUserService::class,
             IWorkTimeRegisterService::class,
             IMeetingService::class,
-<<<<<<< HEAD
-            IBookingService::class
-=======
+            IBookingService::class,
             IOverTimeService::class,
->>>>>>> 43ff857cb342f291cf3341221fed5e850fb310de
         ];
     }
 }

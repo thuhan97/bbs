@@ -36,7 +36,7 @@
     </div>
 
     <!-- add booking -->
-    <form name="addBooking" action="{{route('booking')}}" id="addBooking" method="post">
+    <form name="addBooking" action="" id="addBooking" method="post">
         <div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
         <div class="modal-dialog" role="document">
             <div class="modal-content" style="width: 450px;padding: 5px;margin-top: 100px;font-size: 13px;">
@@ -139,7 +139,7 @@
             </div>
             <div class="modal-footer">
                 <button class="btn btn-primary" id="edit" >Sửa lịch</button>
-                <button class="btn btn-danger" id="deleteMessage" >Xóa</button>
+                <button class="btn btn-danger" id="deleteMessage" >Hủy lịch</button>
             </div>       
         </div>
     </div>
@@ -312,6 +312,8 @@
 </style>
 @endpush
 @push('extend-js')
+    <link rel="stylesheet" type="text/css" href="{{asset('mdb/css/bootstrap.css')}}">
+    <script type="text/javascript" src="{{asset('mdb/js/bootstrap.js')}}"></script>
     <link href="{{asset('bootstrap-select/css/bootstrap-select.css')}}" rel="stylesheet" />
     <script src="{{asset('bootstrap-select/js/bootstrap-select.js')}}" type="text/javascript"></script>
     <link href="{{asset('bootstrap-datetimepicker/css/bootstrap-timepicker.min.css')}}" rel="stylesheet" />
@@ -321,15 +323,18 @@
 
     <script type="text/javascript" src="{{ asset('fullcalendar/fullcalendar.min.js') }}"></script>
     <script type="">
+        $(document).ready(function () {
+            $('.selectpicker').selectpicker();
+        });
         $('#start_time').timepicker({
             // 12 or 24 hour
               showInputs: false,
-  showMeridian: false 
+                showMeridian: false 
             });
          $('#end_time').timepicker({
             // 12 or 24 hour
              showInputs: false,
-  showMeridian: false 
+            showMeridian: false 
             });
 
     </script>
@@ -453,19 +458,11 @@
                         success:function(data){
                             $('#id_booking').val(calEvent.id);
                             $('#start_date').val(calEvent.start.format('YYYY-MM-DD HH:mm:00'));
-                            $('#show-title').text(calEvent.title);
-                            $('#show-content').text(calEvent.description);
+                            $('#show-title').text(data.booking.title);
+                            $('#show-content').text(data.booking.content);
                             $('#show-object').text(data.participants);
                             $('#show-meeting').text(data.meeting);
                             $('#time').text(moment(calEvent.start).format('HH:mm')+ '-' + moment(calEvent.end).format('HH:mm'));
-                            if(calEvent.start.format('YYYY-MM-DD HH:mm:00') < (moment().format('YYYY-MM-DD HH:m:s'))){
-                                $('#edit').css('display','none');
-                                $('#deleteMessage').css('display','none');
-                            }
-                            else{
-                                $('#edit').css('display','inline-block');
-                                $('#deleteMessage').css('display','inline-block'); 
-                            }
                             $('#showModal').modal();
                         }
                     });
@@ -480,7 +477,6 @@
             event.preventDefault();
             var repeat_type= $('[name="repeat_type"]:checked').val();
             var days_repeat=$('#days_repeat').val();
-            var url= $('#addBooking').attr('action')
             var participants = [];
             $.each($(".selectpicker option:selected"), function(){            
                 participants.push($(this).val());
@@ -498,6 +494,9 @@
             is_notify= (is_notify)?is_notify:"0"; 
             var _token= $('#_token').val();
             var color= $('#color').val();
+            var id=$('#id').val();
+            if(id>0) var url= '/sua-phong-hop/'+id;
+            else var url='/them-phong-hop';
                 $.ajax({
                     url:url,
                     type:"post",
@@ -517,8 +516,8 @@
                     },
                     
                     success: function(data){
-                        console.log(data)
                         if(data.status==422){
+                            alert("Vui lòng không để trống các trường có viền đỏ!")
                             if(data.errors.participants){
                                 $('.btn-light').css("border","1px solid red");
                                 $('.selectpicker').change(function(){
@@ -532,9 +531,12 @@
                                  el.change(function(){
                                     $(this).css("border","1px solid #ccc    ");
                                 });
-                            });
-                            if(isset($data.duplicate)){
+                            });    
+                        }
+                        else if(data.status==500){
+                            if(data.duplicate){
                                 $('#meetings_id').css("border","1px solid red");
+                                alert("Phòng hoặc thời gian bạn chọn cho cuộc họp đã được đặt, vui lòng chọn lại!");
                             }
                         }
                         else if(data.success){
@@ -554,6 +556,7 @@
                 type:'GET',
                 success:function(data){
                     var booking=data.booking;
+                    $('#id').val(id);
                     $('#title').val(booking.title);
                     $('#content').val(booking.content);
                     $('#participants').val(booking.participants);

@@ -45,19 +45,19 @@ class BookingCommand extends Command
                 $days=$recur->days_repeat;
                 if(($type==WEEKLY &&$days==\Carbon::now()->dayOfWeek) ||
                     ($type==MONTHLY &&$days==\Carbon::now()->day) ||
-                    ($type==YEARLY && $days==\Carbon::now()->format('m-d')))
+                    ($type==YEARLY && $days==\Carbon::now()->format('m-d')) 
                 {
                         $add=true;
-                }
-               
+                } 
                if(isset($add)&&$add==true){
                     $booking=[
                             'title'=>$recur->title,
                             'content'=>$recur->content,
                             'users_id'=>$recur->users_id,
                             'meetings_id'=>$recur->meetings_id,
-                            'start_date'=>\Carbon::now()->format('Y-m-d').' '.$recur->start_time,
-                            'end_date'=>\Carbon::now()->format('Y-m-d').' '.$recur->end_time,
+                            'start_time'=>$recur->start_time,
+                            'end_time'=>$recur->end_time,
+                            'date'=>\Carbon::now()->format('Y-m-d')
                             'participants'=>$recur->participants,
                             'is_notify'=>$recur->is_notify,
                             'color'=>$recur->color,

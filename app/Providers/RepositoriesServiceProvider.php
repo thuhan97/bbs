@@ -26,6 +26,7 @@ use App\Models\UserTeam;
 use App\Models\WorkTime;
 use App\Models\WorkTimeDetail;
 use App\Models\WorkTimeRegister;
+use App\Models\Recur;
 use App\Repositories\ActionDeviceRepository;
 use App\Repositories\AdminRepository;
 use App\Repositories\ConfigRepository;
@@ -53,6 +54,7 @@ use App\Repositories\Contracts\IUserTeamRepository;
 use App\Repositories\Contracts\IWorkTimeDetailRepository;
 use App\Repositories\Contracts\IWorkTimeRegisterRepository;
 use App\Repositories\Contracts\IWorkTimeRepository;
+use App\Repositories\Contracts\IRecurRepository;
 use App\Repositories\DayOffRepository;
 use App\Repositories\DeviceRepository;
 use App\Repositories\DeviceUserRepository;
@@ -74,6 +76,7 @@ use App\Repositories\UserTeamRepository;
 use App\Repositories\WorkTimeDetailRepository;
 use App\Repositories\WorkTimeRegisterRepository;
 use App\Repositories\WorkTimeRepository;
+use App\Repositories\RecurRepository;
 use Illuminate\Support\ServiceProvider;
 
 ##AUTO_INSERT_USE##
@@ -171,6 +174,9 @@ class RepositoriesServiceProvider extends ServiceProvider
         $this->app->bind(IMeetingRepository::class, function () {
             return new MeetingRepository(new Meeting());
         });
+        $this->app->bind(IRecurRepository::class, function () {
+            return new RecurRepository(new Recur());
+        });
     }
 
 
@@ -201,7 +207,8 @@ class RepositoriesServiceProvider extends ServiceProvider
             IUserTeamRepository::class,
             IWorkTimeRegisterRepository::class,
             IProjectRepository::class,
-            IMeetingRepository::class
+            IMeetingRepository::class,
+            IRecurRepository::class
         ];
     }
 }

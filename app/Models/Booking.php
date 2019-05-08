@@ -12,9 +12,11 @@ class Booking extends Model
     	'users_id',
     	'meetings_id',
     	'paticipants',
-    	'start_date',
-    	'end_date',
+    	'start_time',
+    	'end_time',
+        'date',
     	'is_notify',
     	'color',
     ];
+
 }

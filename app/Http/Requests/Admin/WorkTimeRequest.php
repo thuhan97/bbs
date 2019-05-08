@@ -26,9 +26,13 @@ class WorkTimeRequest extends FormRequest
         $datas = $this->request->all();
         $rules = [];
         if (isset($datas['start_at']) || empty($datas)) {
+            $rules['type'] = 'required|integer';
+            $rules['ot_type'] = 'required|integer|between:1,2';
             $rules['work_day'] = 'required|date';
             $rules['start_at'] = 'required|date_format:H:i';
             $rules['end_at'] = 'required|after:start_at|date_format:H:i';
+        }else {
+            $rules['work_day'] = 'required|date';
         }
         return $rules;
     }
@@ -39,6 +43,7 @@ class WorkTimeRequest extends FormRequest
             'work_day' => 'ngày làm việc',
             'start_at' => 'giờ checkin',
             'end_at' => 'giờ checkout',
+            'ot_type' => 'loại OT',
         ];
     }
 

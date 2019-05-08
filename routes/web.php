@@ -31,6 +31,10 @@ Route::group([
     Route::get('/thoi-gian-lam-viec', 'UserController@workTime')->name('work_time');
     Route::get('/thoi-gian-lam-viec-api', 'UserController@workTimeAPI')->name('work_time_api');
     Route::get('/ngay-nghi', 'UserController@dayOff')->name('day_off');
+    Route::get('xin-phep', 'UserController@askPermission')->name('ask_permission');
+    Route::get('xin-phep/create', 'UserController@askPermissionCreate')->name('ask_permission.create');
+    Route::post('phe-duyet-xin-phep', 'UserController@approved')->name('approved')->middleware('can:manager');
+    Route::post('phe-duyet-xin-phep-ot', 'UserController@approvedOT')->name('approvedOT')->middleware('can:manager');
     /* Route::post('/ngay-nghi/create-api', 'UserController@dayOffCreate_API')->name('day_off_createAPI');*/
     Route::get('/ngay-nghi/list-approval-api', 'UserController@dayOffListApprovalAPI')->name('day_off_listApprovalAPI');
     Route::get('/phe-duyet-ngay-nghi', 'UserController@dayOffApprove')->name('day_off_approval');
@@ -48,9 +52,10 @@ Route::group([
     Route::get('/cong-no', 'PunishesController@index')->name('punish');
     Route::get('/noi-quy-quy-dinh', 'RegulationController@index')->name('regulation');
     Route::get('/noi-quy-quy-dinh/{id}', 'RegulationController@detail')->where(['id' => '\d+'])->name('regulation_detail');
-    Route::get('/su-kien', 'EventController@calendar')->name('event');
+    Route::get('/tai-noi-quy-quy-dinh/{id}', 'RegulationController@download')->where(['id' => '\d+'])->name('regulation_download');
+    Route::get('/su-kien', 'EventController@index')->name('event');
     Route::get('/events', 'EventController@getCalendar')->name('getCalendar');
-    Route::get('/danh-sach-su-kien', 'EventController@index')->name('event_list');
+    Route::get('/lich-su-kien', 'EventController@calendar')->name('event_calendar');
     Route::get('/su-kien/{id}', 'EventController@detail')->where(['id' => '\d+'])->name('event_detail');
     Route::post('/dang-ki-su-kien', 'EventAttendanceController@JoinEvent')->name('join_event');
     Route::get('/thong-bao', 'PostController@index')->name('post');
@@ -64,15 +69,23 @@ Route::group([
     Route::get('/du-an/{id}', 'ProjectController@detail')->where(['id' => '\d+'])->name('project_detail');
 
     Route::get('/chia-se-tai-lieu', 'ShareController@listShareDocument')->name('list_share_document');
+    Route::get('/chia-se-kinh-nghiem', 'ShareController@shareExperience')->name('share_experience');
     Route::get('/download_file_share/{url}', 'ShareController@downloadFileShare');
     Route::post('/add_document', 'ShareController@addDocument')->name('add_document');
+    Route::post('/add_experience', 'ShareController@addExperience')->name('add_experience');
+    Route::post('/add_comment', 'ShareController@addComment')->name('add_comment');
+
     // create day off
     Route::post('/ngay-nghi/create-calendar', 'UserController@dayOffCreateCalendar')->name('day_off_create_calendar');
     Route::post('/ngay-nghi/create-day-off', 'UserController@dayOffCreate')->name('day_off_create');
 
 });
 
-Route::group(['prefix' => 'file-manager', 'as' => 'unisharp.lfm.'], function () {
+Route::group([
+    'prefix' => 'file-manager', 'as' => 'unisharp.lfm.',
+    'middleware' => ['auth'],
+
+], function () {
     $namespace = '\\UniSharp\\LaravelFilemanager\\Controllers\\';
     // display main layout
     Route::get('/', [
@@ -152,6 +165,7 @@ Route::group(['prefix' => 'file-manager', 'as' => 'unisharp.lfm.'], function () 
     Route::get('/demo', $namespace . 'DemoController@index');
 });
 
+
 Auth::routes();
 Route::any('logout', 'Auth\LoginController@logout')->name('logout');
 
@@ -221,4 +235,5 @@ Route::group([
 
 
 });
+
 

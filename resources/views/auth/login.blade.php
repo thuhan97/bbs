@@ -12,20 +12,23 @@
 @endsection
 @section('content')
     <div class="container">
+        <div class="d-none d-xl-block">
+            <br/>
+            <br/>
+            <br/>
+        </div>
         <div class="row mt-5">
-            <div class="col-md-3"></div>
-            <div class="col-md-6">
-                <br/>
-                <br/>
-                <br/>
+
+            <div class="col-md-2 col-xl-3"></div>
+            <div class="col-md-8 col-xl-6">
                 @if(Session::has('notification_change_pass'))
                     <div class="d-flex justify-content-center">
                         <div class="alert alert-success">
                             {{ Session::get('notification_change_pass')}}
                         </div>
                     </div>
-                @endif
-                <!-- Material form login -->
+            @endif
+            <!-- Material form login -->
                 <div class="card">
 
                     <h5 class="card-header info-color white-text text-center py-4">
@@ -72,7 +75,7 @@
                             </div>
 
                             <!-- Sign in button -->
-                            <button class="btn btn-outline-info btn-rounded btn-block my-4 waves-effect z-depth-0"
+                            <button class="btn btn-info btn-rounded btn-block my-4 waves-effect z-depth-0"
                                     type="submit">Đăng nhập
                             </button>
                         </form>

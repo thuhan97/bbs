@@ -7,6 +7,7 @@
 
 namespace App\Services;
 
+use App\Models\CalendarOff;
 use App\Models\Config;
 use App\Models\Punishes;
 use App\Models\User;
@@ -25,6 +26,8 @@ class WorkTimeService extends AbstractService implements IWorkTimeService
     const LATE_UNIT = 1000;
     const LATE_SECON_SUFFIX = ':00'; //00 to 59
 
+    private $calendarOffs;
+
     /**
      * WorkTimeService constructor.
      *
@@ -36,6 +39,8 @@ class WorkTimeService extends AbstractService implements IWorkTimeService
         $this->model = $model;
         $this->repository = $repository;
         $this->config = Config::first();
+        $this->calendarOffs = CalendarOff::all();
+
         $this->users = User::select('id', 'name', 'staff_code', 'contract_type')->with('workTimeRegisters')->get();
 
     }
@@ -49,42 +54,21 @@ class WorkTimeService extends AbstractService implements IWorkTimeService
      */
     public function search(Request $request, &$perPage, &$search)
     {
-        $model = $this->model;
-        $year = $request->get('year');
-
-        if ($year) {
-            $model = $model->whereYear('work_day', $year);
-        }
-        $month = $request->get('month');
-        if ($month) {
-            $model = $model->whereMonth('work_day', $month);
-        }
-        $work_day = $request->get('work_day');
-        if ($work_day) {
-            $model = $model->whereDate('work_day', $work_day);
-        }
-        $type = $request->get('type');
-        if ($type != null) {
-            if ($type == WorkTime::TYPES['lately']) {
-                //lately || lately + early || lately + OT
-                $model = $model->whereIn('type', [1, 3, 5]);
-            } else if ($type == WorkTime::TYPES['ot']) {
-                //OT || lately + OT
-                $model = $model->whereIn('type', [4, 5]);
-            } else {
-                $model = $model->where('type', $type);
-            }
-        }
-        $userId = $request->get('user_id');
-        if ($userId) {
-            $model = $model->where('user_id', $userId);
-        }
-        if ($request->has('sort')) {
-            $model->orderBy($request->get('sort'), $request->get('is_desc') ? 'asc' : 'desc');
-        } else {
-            $model->orderBy('id', 'desc');
-        }
+        $model = $this->getSearchModel($request);
         return $model->search($search)->paginate($perPage);
+    }
+
+    /**
+     * @param Request $request
+     * @param         $search
+     *
+     * @return mixed
+     */
+    public function export(Request $request)
+    {
+        $search = $request->search;
+        $model = $this->getSearchModel($request, true);
+        return $model->search($search)->get();
     }
 
     public function deletes($startDate, $endDate)
@@ -117,9 +101,10 @@ class WorkTimeService extends AbstractService implements IWorkTimeService
     public function calculateLateTime($fromDate, $toDate, $userIds = [])
     {
         //read config file
-        $path = storage_path('app/' . LATE_MONEY_CONFIG); // ie: /var/www/laravel/app/storage/json/filename.json
+        $path = storage_path('app/' . $this->config->late_time_rule_json ?? LATE_MONEY_CONFIG); // ie: /var/www/laravel/app/storage/json/filename.json
 
         $configs = collect(json_decode(file_get_contents($path), true)['configs']);
+
         $freeCount = $configs->where('free', true)->count();
         $aioConfigs = $configs->where('aio', '!=', 0);
         $eachConfigs = $configs->where('free', false)->where('aio', 0);
@@ -132,9 +117,11 @@ class WorkTimeService extends AbstractService implements IWorkTimeService
             ])
             ->whereDate('work_day', '>=', $fromDate)
             ->whereDate('work_day', '<=', $toDate);
+
         if (!empty($userIds)) $model->whereIn('id', $userIds);
         $lateList = $model->orderBy('work_day')
             ->get()->groupBy('user_id');
+
         DB::beginTransaction();
         //clear old data
         $punish = Punishes::where('rule_id', LATE_RULE_ID)
@@ -208,11 +195,25 @@ class WorkTimeService extends AbstractService implements IWorkTimeService
      */
     private function getWorkTime($user, $date, $startAt, $endAt)
     {
+        if ($endAt == null && $startAt != null && $startAt > HAFT_AFTERNOON) {
+            [$startAt, $endAt] = [$endAt, $startAt];
+        }
         if (!$this->config->time_afternoon_go_late_at) throw new \Exception('Chưa cấu hình thời gian thiết lập hệ thống.');
         $addData = false;
         $type = 0;
-        //checkin in week
-        if (($this->config->work_days && in_array($date->format('N'), $this->config->work_days)) || !$this->config->work_days) {
+
+        $check = $this->calendarOffs->where('date_off_from', '>=', $date->format('Y-m-d'))->where('date_off_to', '<=', $date->format('Y-m-d'))->first();
+
+        if ($check) {
+            $type = WorkTime::TYPES['calendar_off'];
+            return [
+                'start_at' => null,
+                'end_at' => null,
+                'note' => WorkTime::WORK_TIME_CALENDAR_DISPLAY[$type] ?? '',
+                'type' => $type,
+            ];
+        } else if (($this->config->work_days && in_array($date->format('N'), $this->config->work_days)) || !$this->config->work_days) {
+            //checkin in week
             //getworktime of user
             if (in_array($user->contract_type, [CONTRACT_TYPES['staff'], CONTRACT_TYPES['staff']])) {
                 $addData = true;
@@ -310,5 +311,50 @@ class WorkTimeService extends AbstractService implements IWorkTimeService
             ];
     }
 
+    protected function getSearchModel(Request $request, $forExport = false)
+    {
+        $model = $this->model;
+        $year = $request->get('year');
+
+        if ($year) {
+            $model = $model->whereYear('work_day', $year);
+        }
+        $month = $request->get('month');
+        if ($month) {
+            $model = $model->whereMonth('work_day', $month);
+        }
+        $work_day = $request->get('work_day');
+        if ($work_day) {
+            $model = $model->whereDate('work_day', $work_day);
+        }
+        $type = $request->get('type');
+        if ($type != null) {
+            if ($type == WorkTime::TYPES['lately']) {
+                //lately || lately + early || lately + OT
+                $model = $model->whereIn('type', [1, 3, 5]);
+            } else if ($type == WorkTime::TYPES['ot']) {
+                //OT || lately + OT
+                $model = $model->whereIn('type', [4, 5]);
+            } else {
+                $model = $model->where('type', $type);
+            }
+        }
+        if (!$request->search) {
+            $userId = $request->get('user_id');
+            if ($userId) {
+                $model = $model->where('user_id', $userId);
+            }
+        }
+
+        if ($forExport) {
+            $model->orderBy('user_id')->orderBy('work_day');
+        } else if ($request->has('sort')) {
+            $model->orderBy($request->get('sort'), $request->get('is_desc') ? 'asc' : 'desc');
+        } else {
+            $model->orderBy('work_day', 'desc')->orderBy('user_id');
+        }
+
+        return $model;
+    }
 
 }

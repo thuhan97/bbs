@@ -49,6 +49,11 @@ Breadcrumbs::register('post', function ($breadcrumbs) {
     $breadcrumbs->parent('home');
     $breadcrumbs->push(__l('Post'), route('post'));
 });
+// Home > over_times
+Breadcrumbs::register('over_times', function ($breadcrumbs) {
+    $breadcrumbs->parent('home');
+    $breadcrumbs->push(__l('over_times'), route('over_times'));
+});
 Breadcrumbs::register('post_search', function ($breadcrumbs, $search) {
     $breadcrumbs->parent('post');
     $breadcrumbs->push(__l('search_with', ['key' => $search]), route('post'));
@@ -115,6 +120,11 @@ Breadcrumbs::register('list_share_document', function ($breadcrumbs) {
     $breadcrumbs->parent('home');
     $breadcrumbs->push(__l('list_share_document'), route('list_share_document'));
 });
+// Dashboard > share_experience
+Breadcrumbs::register('share_experience', function ($breadcrumbs) {
+    $breadcrumbs->parent('home');
+    $breadcrumbs->push(__l('share_experience'), route('share_experience'));
+});
 // Dashboard > day_off
 Breadcrumbs::register('day_off', function ($breadcrumbs) {
     $breadcrumbs->parent('personal');
@@ -149,6 +159,8 @@ $resources = [
     'teams' => 'Quản lý nhóm',
     'day_offs' => 'Quản lý nghỉ phép',
     'work_times' => 'Quản lý làm việc',
+    'over_times' => 'Duyệt OT',
+    'approve_permission' => 'Xin phép',
     'work_time_register' => 'Đăng ký thời gian làm việc',
     'projects' => 'Quản lý dự án',
     'devices' => 'Quản lý thiết bị',

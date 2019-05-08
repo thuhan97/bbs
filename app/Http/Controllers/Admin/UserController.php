@@ -48,23 +48,25 @@ class UserController extends AdminBaseController
     {
         return [
             'rules' => [
-                'name' => 'filled|max:255|alpha',
+                'name' => 'filled|max:255',
                 'email' => 'email|unique:users,email',
-                'staff_code' => 'filled|max:10|unique:users,staff_code|alpha',
+                'staff_code' => 'filled|max:10|unique:users,staff_code,NULL,NULL,deleted_at,NULL',
                 'birthday' => 'nullable|date|before:' . date('Y-m-d', strtotime('- 15 years')),
-                'phone' => 'nullable|numeric|digits_between:10,30|unique:users,phone',
-                'id_card' => 'nullable|min:9|max:12|unique:users,id_card|numeric',
-                'password'=>'required|same:password_confirmation',
-                'password_confirmation'=>'required',
+                'phone' => 'required|numeric|digits_between:10,30|unique:users,phone',
+                'id_card' => 'nullable|digits_between:9,12|unique:users,id_card|numeric',
+                'password'=>'required|min:6',
+                'password_confirmation'=>'same:password',
                 'start_date'=>'nullable|date|before_or_equal:today',
-                'end_date'=>"nullable|date|after:start_date"
+                'end_date'=>"nullable|date|after:start_date",
+                'sex'=>"required|digits_between:0,1"
             ],
             'messages' => [],
             'attributes' => [
                 'phone'=>'số điện thoại',
                 'start_date'=>'ngày vào công ty',
                 'end_date'=>'ngày nghỉ việc',
-                'staff_code'=>'mã nhân viên'
+                'staff_code'=>'mã nhân viên',
+                'sex'=>'giới tính'
             ],
             'advanced' => [],
         ];
@@ -75,15 +77,17 @@ class UserController extends AdminBaseController
 
         return [
             'rules' => [
-                'name' => 'required|max:255|alpha',
+                'name' => 'required|max:255',
                 'email' => 'required|email|unique:users,email,' . $record->id,
-                'staff_code' => 'filled|max:10|alpha|unique:users,staff_code,' . $record->id,
+                'staff_code' => 'filled|max:10|unique:users,staff_code,' . $record->id,
                 'birthday' => 'nullable|date|before:' . date('Y-m-d', strtotime('- 15 years')),
                 'phone' => 'nullable|numeric|digits_between:10,30|unique:users,phone,' . $record->id,
-                'id_card' => 'nullable|min:9|numeric|max:12|unique:users,id_card,' . $record->id,
-                'password'=>'nullable|same:password_confirmation',
+                'id_card' => 'nullable|digits_between:9,12|unique:users,id_card,' . $record->id,
+                'password'=>'nullable|min:6',
+                'password_confirmation'=>'same:password',
                 'start_date'=>'nullable|date|before_or_equal:today',
-                'end_date'=>"nullable|date|after:start_date"
+                'end_date'=>"nullable|date|after:start_date",
+                'sex'=>"required|digits_between:0,1"
             ],
             'messages' => [
 
@@ -92,7 +96,8 @@ class UserController extends AdminBaseController
                 'phone'=>'số điện thoại',
                 'start_date'=>'ngày vào công ty',
                 'end_date'=>'ngày nghỉ việc',
-                'staff_code'=>'mã nhân viên'
+                'staff_code'=>'mã nhân viên',
+                'sex'=>'giới tính'
             ],
             'advanced' => [],
         ];
@@ -160,4 +165,15 @@ class UserController extends AdminBaseController
         }
         return $this->redirectBackTo(route($this->getResourceRoutesAlias() . '.index'));
     }
+    public function getValuesToSave(Request $request, $record = null)
+    {
+        if (!$request->password){
+            $request->offsetUnset('password');
+        }
+        if (!isset($request->status)){
+            $request->merge(['status' => '0']);
+        }
+        return $request->only($this->getResourceModel()::getFillableFields());
+    }
+
 }

@@ -45,18 +45,24 @@ class DayOff extends Model
      */
     public function scopeSearch($query, $searchTerm)
     {
-        return $query->where(function ($q) use ($searchTerm) {
-            $q->orWhere('title', 'like', '%' . $searchTerm . '%')
-                ->orWhere('reason', 'like', '%' . $searchTerm . '%')
-                ->orWhere('start_at', 'like', '%' . $searchTerm . '%')
-                ->orWhere('end_at', 'like', '%' . $searchTerm . '%')
-                ->orWhere('users.name', 'like', '%' . $searchTerm . '%')
-                ->orWhere('users.staff_code', 'like', '%' . $searchTerm . '%');
-        })
-            ->join('users', 'users.id', 'user_id')
+        $data= $query->where(function ($q) use ($searchTerm) {
+            if ($searchTerm){
+                $q=$q->orWhere('day_offs.title', 'like', '%' . $searchTerm . '%')
+                    ->orWhere('day_offs.reason', 'like', '%' . $searchTerm . '%')
+                    ->orWhere('day_offs.start_at', 'like', '%' . $searchTerm . '%')
+                    ->orWhere('day_offs.end_at', 'like', '%' . $searchTerm . '%')
+                    ->orWhere('users.name', 'like', '%' . $searchTerm . '%')
+                    ->orWhere('users.staff_code', 'like', '%' . $searchTerm . '%');
+            }
+        });
+        $data=$data->join('users', 'users.id','=','day_offs.user_id')
             ->select('day_offs.*')
             ->orderBy('day_offs.id', 'desc');
+
+        return $data;
+
     }
+
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo

@@ -34,7 +34,7 @@
             <tr>
                 <td><input type="checkbox" name="ids[]" value="{{ $record->id }}" class="square-blue chkDelete"></td>
                 <td class="table-text">
-                    <a href="{{ $userLink }}">{{ $record->user->name }}</a>
+                    <a href="{{ $userLink }}">{{ $record->user->name ?? '' }}</a>
                 </td>
                 <td>
                     @foreach(VACATION as $key => $conetnt)
@@ -80,3 +80,16 @@
         </tbody>
     </table>
 </div>
+
+<form action="{{ route('admin::statistical-day-off-excel') }}" method="get" id="form-excel">
+    @foreach ($recordsExcel as $record)
+        <input type="hidden" name="ids[]" value="{{ $record->user_id }}">
+    @endforeach
+</form>
+<script>
+    $(document).ready(function () {
+        $('#btn-submit-excel').on('click',function () {
+            $('#form-excel').submit();
+        })
+    })
+</script>

@@ -47,7 +47,7 @@ if (count($records) > 0) {
             <h3 class="box-title">{{ $_pageSubtitle }}</h3>
             <!-- Search -->
             <div class="box-tools pull-right">
-                <form class="form" role="form" method="GET" action="{{ $_listLink }}">
+                <form id="searchForm" class="form" role="form" method="GET" action="{{ $_listLink }}">
                     @if( isset($resourceSearchExtend))
                         @include($resourceSearchExtend, ['search' => $search, '$createLink' => $_createLink])
                     @else

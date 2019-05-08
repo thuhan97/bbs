@@ -73,6 +73,12 @@
     'admin::work_times.create',
     'admin::work_times.import',
     'admin::work_times.edit',
+    'admin::over_times.index',
+    'admin::over_times.create',
+    'admin::over_times.edit',
+    'admin::approve_permission.index',
+    'admin::approve_permission.create',
+    'admin::approve_permission.edit',
     'admin::work_time_register.index',
     'admin::work_time_register.create',
     'admin::work_time_register.import',
@@ -90,10 +96,12 @@
             <li><a href="{{ route('admin::day_offs.index') }}"><i class="fa fa-circle"></i> Nghỉ phép</a></li>
             <li><a href="{{ route('admin::work_times.index') }}"><i class="fa fa-circle"></i> Thời gian làm việc</a>
             </li>
-            <li><a href="{{ route('admin::over_times.index') }}"><i class="fa fa-circle"></i> Làm thêm</a></li>
-
-            <li><a href="{{ route('admin::work_time_register.index') }}"><i class="fa fa-circle"></i> Đăng ký lịch làm
-                    việc</a></li>
+            <li><a href="{{ route('admin::over_times.index') }}"><i class="fa fa-circle"></i> Duyệt OT</a>
+            <li><a href="{{ route('admin::approve_permission.index') }}"><i class="fa fa-circle"></i> Xin phép</a>
+            <li>
+                <a href="{{ route('admin::work_time_register.index') }}"><i class="fa fa-circle"></i>
+                    Đăng ký lịch làm việc</a>
+            </li>
             <li><a href="{{ route('admin::work_time_statistic.index') }}"><i class="fa fa-circle"></i> Thống kê</a></li>
         </ul>
     </li>

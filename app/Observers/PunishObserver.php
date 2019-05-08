@@ -27,6 +27,7 @@ class PunishObserver
      */
     public function updating(Punishes $punish)
     {
-        $punish->total_money = $punish->rule->penalize ?? 0;
+        if ($punish->rule)
+            $punish->total_money = $punish->rule->penalize;
     }
 }

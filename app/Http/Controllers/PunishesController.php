@@ -34,7 +34,7 @@ class PunishesController extends Controller
             ->whereMonth('infringe_date', $request->month)
 //            ->whereHas('rule')
             ->orderBy('id', 'desc')
-            ->paginate($perPage);
+            ->get();
 
         return view('end_user.punish.index', compact('punishes', 'perPage'));
     }

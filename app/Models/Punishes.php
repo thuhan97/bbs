@@ -18,7 +18,8 @@ class Punishes extends Model
 
     protected $table = 'punishes';
 
-    protected $primaryKey = 'id';
+    const UNSUBMIT = 0;
+    const SUBMITED = 1;
 
     protected $fillable = [
         'id',

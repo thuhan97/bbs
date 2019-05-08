@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Helpers\DatabaseHelper;
 use App\Http\Requests\PunishRequest;
 use App\Models\Punishes;
 use App\Models\Rules;
@@ -19,6 +18,8 @@ use Illuminate\Support\Facades\DB;
  */
 class PunishesController extends AdminBaseController
 {
+    public $defaultPageSize = 50;
+
     /**
      * @var  string
      */
@@ -55,15 +56,7 @@ class PunishesController extends AdminBaseController
 
     public function getSearchRecords(Request $request, $perPage = 15, $search = null)
     {
-        $year = $request->get('year') ?? date('Y');
-
-        $model = $this->getResourceModel()::search($search);
-
-        $model->whereYear('infringe_date', $year);
-        $month = $request->get('month');
-        if ($month) {
-            $model->whereMonth('infringe_date', $month);
-        }
+        $model = $this->getSearchModel($request, $search);
 
         if ($request->has('sort')) {
             $model->orderBy($request->get('sort'), $request->get('is_desc') ? 'asc' : 'desc');
@@ -157,6 +150,11 @@ class PunishesController extends AdminBaseController
         return $data;
     }
 
+    public function submit(Request $request)
+    {
+
+    }
+
     public function changeSubmitStatus($id)
     {
         $punish = Punishes::find($id);
@@ -169,5 +167,42 @@ class PunishesController extends AdminBaseController
             flash()->error('Không tìm thấy bản ghi!');
         }
         return redirect(route('admin::punishes.index'));
+    }
+
+    public function submits(Request $request)
+    {
+        $this->validate($request, [
+            'ids' => 'required|array'
+        ]);
+        $ids = $request->get('ids');
+        Punishes::whereIn('id', $ids)->update([
+            'is_submit' => Punishes::SUBMITED
+        ]);
+        flash()->success('Cập nhật thành công!');
+
+        return redirect(route('admin::punishes.index'));
+    }
+
+    /**
+     * @param Request $request
+     * @param         $search
+     *
+     * @return mixed
+     */
+    protected function getSearchModel(Request $request, $search)
+    {
+        $year = $request->get('year') ?? date('Y');
+
+        $model = $this->getResourceModel()::search($search);
+        $model->whereYear('infringe_date', $year);
+        $month = $request->get('month');
+        if ($month) {
+            $model->whereMonth('infringe_date', $month);
+        }
+        $is_submit = $request->get('is_submit');
+        if (isset($is_submit)) {
+            $model->where('is_submit', $is_submit);
+        }
+        return $model;
     }
 }

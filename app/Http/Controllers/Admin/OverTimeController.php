@@ -2,48 +2,58 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Controllers\Controller;
-use App\Models\OverTime;
-use App\Repositories\Contracts\IOverTimeRepository;
-use App\Traits\Controllers\ResourceController;
+use App\Exports\OTListExport;
+use App\Models\WorkTimesExplanation;
+use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
 
-/**
- * OverTimeController
- * Author: jvb
- * Date: 2019/01/22 10:50
- */
-class OverTimeController extends Controller
+class OverTimeController extends AdminBaseController
 {
-    use ResourceController;
-
+    //
     /**
      * @var  string
      */
-    protected $resourceAlias = 'admin.overtimes';
-
+    protected $resourceAlias = 'admin.over_times';
     /**
      * @var  string
      */
-    protected $resourceRoutesAlias = 'admin::overtimes';
-
+    protected $resourceRoutesAlias = 'admin::over_times';
     /**
      * Fully qualified class name
      *
      * @var  string
      */
-    protected $resourceModel = OverTime::class;
+    protected $resourceModel = WorkTimesExplanation::class;
+
+    protected $meetingService;
 
     /**
      * @var  string
      */
-    protected $resourceTitle = 'OverTime';
+    protected $resourceTitle = 'Duyệt OT';
 
-    /**
-     * Controller construct
-     */
-    public function __construct(IOverTimeRepository $repository)
+    public function getSearchRecords(Request $request, $perPage = 50, $search = null, $paginatorData = [])
     {
-        $this->repository = $repository;
+        $model = $this->getResourceModel()::search($search)->where('type', array_search('Overtime', WORK_TIME_TYPE));
+        if ($request->has('sort')) {
+            $model->orderBy($request->get('sort'), $request->get('is_desc') ? 'asc' : 'desc');
+        } else {
+            $model->orderBy('id', 'desc');
+        }
+
+        return $model->paginate($perPage);
+    }
+
+    public function exportData(Request $request, $search = null)
+    {
+        switch ($request->path()) {
+            case 'admin/over_times':
+                $overTimes = $this->getResourceModel()::search($request['search'])->where('type', array_search('Overtime', WORK_TIME_TYPE))->get();
+                return Excel::download(new OTListExport($overTimes), "over-time.xlsx");
+                break;
+            default:
+                abort(404);
+        }
     }
 
 }

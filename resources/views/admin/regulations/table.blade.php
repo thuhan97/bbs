@@ -5,6 +5,7 @@
             <col style="">
             <col style="width: 150px">
             <col style="width: 150px">
+            <col style="width: 150px">
             <col style="width: 70px">
         </colgroup>
         <thead>
@@ -14,6 +15,9 @@
         </th>
         <th>Tên
             {!! __admin_sortable('name') !!}
+        </th>
+        <th>Ngày hiệu lực
+            {!! __admin_sortable('approve_date') !!}
         </th>
         <th>Ngày tạo
             {!! __admin_sortable('created_at') !!}
@@ -36,6 +40,7 @@
                 <td class="table-text">
                     <a href="{{ $editLink }}">{{ $record->name }}</a>
                 </td>
+                <td class="text-right">{{ $record->approve_date }}</td>
                 <td class="text-right">{{ $record->created_at->format(DATE_FORMAT) }}</td>
                 <td class="text-right">{{ $record->updated_at->format(DATE_FORMAT) }}</td>
                 <td>

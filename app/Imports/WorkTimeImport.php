@@ -27,6 +27,8 @@ class WorkTimeImport implements ToCollection, WithValidation
     ];
 
     const DEFAULT_END_AT = '17:30';
+    private $startDate;
+    private $endDate;
 
     /**
      * WorkTimeImport constructor.
@@ -42,6 +44,8 @@ class WorkTimeImport implements ToCollection, WithValidation
 
         $this->workTimeService->deletes($startDate, $endDate);
 
+        $this->startDate = $startDate;
+        $this->endDate = $endDate;
     }
 
     /**
@@ -89,8 +93,9 @@ class WorkTimeImport implements ToCollection, WithValidation
             $startAt = $row[self::HEADINGS['start_at']];
             $endAt = $row[self::HEADINGS['end_at']];
             $work_day = \PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($row[self::HEADINGS['date']]);
-
-            return $this->workTimeService->importWorkTime($this->users, $staffCode, $work_day, $startAt, $endAt);
+            if (date_create($this->startDate) <= $work_day && date_create($this->endDate) >= $work_day) {
+                return $this->workTimeService->importWorkTime($this->users, $staffCode, $work_day, $startAt, $endAt);
+            }
         }
     }
 
@@ -101,6 +106,7 @@ class WorkTimeImport implements ToCollection, WithValidation
     {
         if (!empty($data)) {
             WorkTime::insertAll($data);
+
             $data = [];
         }
     }

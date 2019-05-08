@@ -31,6 +31,8 @@
             </script>
         @endif
     @endif
+    <i class="fa fa-icon-check"></i>
+
     <div class="row">
         <div class="col-md-4 pr-0 select-month-calendar">
             <form name="dateChooser">
@@ -43,13 +45,13 @@
         </div>
         <div class="col-md-8">
             <div class="row mb-4" id="form-check-time">
-                <button type="button" class="btn btn-danger btn-early-late" id="btn-early-late">Số buổi đi
+                <button type="button" class="btn-early-late" id="btn-early-late">Số buổi đi
                     muộn/sớm:
                 </button>
-                <button type="button" class="btn btn-primary btn-ot" id="btn-ot">Số buổi đi
+                <button type="button" class="btn-ot" id="btn-ot">Số buổi đi
                     OT:
                 </button>
-                <button type="button" class="btn btn-success btn-late-ot" id="btn-late-ot">Số
+                <button type="button" class="btn-late-ot" id="btn-late-ot">Số
                     buổi đi muộn + OT:
                 </button>
             </div>
@@ -70,6 +72,11 @@
     @if ($errors->has('work_day'))
         <span class="help-block mb-5 color-red">
             <strong>{{ $errors->first('work_day') }}</strong>
+        </span>
+    @endif
+    @if ($errors->has('ot_type'))
+        <span class="help-block mb-5 color-red">
+            <strong>{{ $errors->first('ot_type') }}</strong>
         </span>
     @endif
     <div class="modal fade myModal" id="modal-form" tabindex="-1"
@@ -107,8 +114,10 @@
                 current_year = date.getFullYear(), current_month = date.getMonth(),
                 month = document.getElementById("chooseMonth"),
                 year = document.getElementById("chooseYear");
+            const currentDate = date.getDate();
             const currentMonth = date.getMonth();
             const currentYear = date.getFullYear();
+            const currenFullTime = currentYear + '-' + currentMonth + '-' + currentDate;
 
             var showCalendar = function () {
                 current_year = $("#chooseYear").val();
@@ -134,14 +143,33 @@
                 show: function (el) {
                     let currentMY = parseInt(currentYear) + parseInt(currentMonth),
                         calendarYM = calendar.sYear + calendar.sMth,
-                        getDataTime = el.getAttribute("data-time");
-                    if (parseInt(calendarYM) >= parseInt(currentMY)) {
+                        getDataTime = el.getAttribute("data-time"),
+                        calendarFullTime = el.getAttribute("calendar-time"),
+                        fullTime = new Date(calendarFullTime),
+                        timeGetDay = new Date(getDataTime),
+                        currentFullTime = new Date(currenFullTime);
+                    if (el.getElementsByClassName("data-id")[0]) {
+                        var dataReason = el.getElementsByClassName("data-reason")[0].innerHTML,
+                            dataID = el.getElementsByClassName("data-id")[0].innerHTML,
+                            dataWorkDay = el.getElementsByClassName("data-work-day")[0].innerHTML,
+                            dataUserID = el.getElementsByClassName("data-user-id")[0].innerHTML,
+                            dataTypeOT = el.getElementsByClassName("data-ot-type")[0].innerHTML;
+                    }
+                    switch (true) {
+                        case parseInt(dataTypeOT) === 1:
+                            var projectOT = 'checked';
+                            break;
+                        case parseInt(dataTypeOT) === 2:
+                            var otherOT = 'checked';
+                            break;
+                        default:
+                            var projectOT = '',
+                                otherOT = '';
+                    }
+
+                    function makeMoal() {
                         calendar.sDay = el.getElementsByClassName("dayNumber")[0].innerHTML;
                         if (el.getElementsByClassName("data-id")[0]) {
-                            let dataReason = el.getElementsByClassName("data-reason")[0].innerHTML,
-                                dataID = el.getElementsByClassName("data-id")[0].innerHTML,
-                                dataWorkDay = el.getElementsByClassName("data-work-day")[0].innerHTML,
-                                dataUserID = el.getElementsByClassName("data-user-id")[0].innerHTML;
                             document.getElementById("div-reason").innerHTML =
                                 '<div class="row col-md-12">' +
                                 '<div class="col-md-12 d-flex justify-content-center">' +
@@ -164,6 +192,44 @@
                                 '</div>' +
                                 '</div>';
                         }
+                    }
+
+                    if (parseInt(calendarYM) >= parseInt(currentMY)) {
+                        if (timeGetDay.getDay() === 0 || timeGetDay.getDay() === 6 || currentFullTime === fullTime || calendarFullTime === currenFullTime) {
+                            if (currentFullTime <= fullTime) {
+                                if (dataWorkDay) {
+                                    var workDay = dataWorkDay,
+                                        id = dataID,
+                                        dataReason = dataReason;
+                                } else {
+                                    var workDay = getDataTime,
+                                        id = '',
+                                        dataReason = '';
+                                }
+
+                                document.getElementById("div-reason").innerHTML =
+                                    '<div class="row col-md-12">' +
+                                    '<div class="offset-5"><h3 class="">Xin OT</h3></div>' +
+                                    '<div class="col-md-6 text-center">' +
+                                    ' <input ' + projectOT + ' style="position: relative;opacity: 1;pointer-events: inherit" class="other-ot" type="radio" name="ot_type" id="project-ot" value="1">' +
+                                    '<label for="project-ot">OT dự án</label>' +
+                                    '</div>' +
+                                    '<div class="col-md-6 text-center">' +
+                                    ' <input ' + otherOT + '  style="position: relative;opacity: 1;pointer-events: inherit" class="other-ot" type="radio" name="ot_type" id="other-ot" value="2">' +
+                                    '<label for="other-ot">Lý do cá nhân</label>' +
+                                    '</div>' +
+                                    '<textarea class="form-control mt-4" name="reason" rows="6" placeholder="Nội dung bạn muốn gửi...">' + dataReason + '</textarea>' +
+                                    '<input hidden name="id" value="' + id + '">' +
+                                    '<input hidden name="work_day" value="' + workDay + '">' +
+                                    '</div>';
+                            } else {
+                                makeMoal()
+                            }
+                        } else {
+                            makeMoal();
+                        }
+                    }
+                    if (parseInt(calendarYM) >= parseInt(currentMY)) {
                         $('.myModal').modal('show');
                     }
                 },
@@ -199,7 +265,6 @@
                 var daysInMth = new Date(calendar.sYear, calendar.sMth + 1, 0).getDate(),
                     startDay = new Date(calendar.sYear, calendar.sMth, 1).getDay(),
                     endDay = new Date(calendar.sYear, calendar.sMth, daysInMth).getDay();
-
                 calendar.data = localStorage.getItem("calendar-" + calendar.sMth + "-" + calendar.sYear);
                 if (calendar.data == null) {
                     localStorage.setItem("calendar-" + calendar.sMth + "-" + calendar.sYear, "{}");
@@ -310,7 +375,6 @@
                     success: (respond) => {
                         let dataRes = respond.data,
                             dataModal = respond.dataModal;
-
                         dataRes.forEach(function (data) {
                             let work_day = data.work_day,
                                 work_time = data.start_at + ' - ' + data.end_at;
@@ -326,14 +390,20 @@
                         });
 
                         dataModal.forEach(function (data) {
+                            if (data.note != null) {
+                                var note = data.note;
+                            } else {
+                                var note = '';
+                            }
                             const work_day = data.work_day;
                             $('.calendar-td-body').each(function () {
                                 const data_time = $(this).data('time');
                                 if (data_time === work_day) {
                                     $(this).append('<p class="data-id" hidden>' + data.id + '</p>');
                                     $(this).append('<p class="data-user-id" hidden>' + data.user_id + '</p>');
-                                    $(this).append('<p class="data-reason" hidden>' + data.note + '</p>');
+                                    $(this).append('<p class="data-reason" hidden>' + note + '</p>');
                                     $(this).append('<p class="data-work-day" hidden>' + data.work_day + '</p>');
+                                    $(this).append('<p class="data-ot-type" hidden>' + data.ot_type + '</p>');
                                 }
                             });
                         });

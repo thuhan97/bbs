@@ -1,7 +1,7 @@
 <!-- Sidebar -->
-<div class="sidebar-fixed position-fixed">
+<div class="sidebar fixed sidebar-fixed position-fixed" id="slide-out">
 
-    <div class="text-center">
+    <div class="text-center d-none d-lg-block">
         <a href="/" class="logo-wrapper waves-effect">
             <img src="http://jvb-corp.com/img/logo.png" class="img-fluid" alt="">
         </a>
@@ -21,7 +21,7 @@
 
         <a href="{{route('contact')}}"
            class="list-group-item list-group-item-action waves-effect {{ \App\Utils::checkRoute(['contact']) ? 'active': '' }}">
-            <i class="fas fa-address-book mr-3"></i>{{__l('contact')}}</a>
+            <i class="fas fa-address-book mr-3"></i> {{__l('contact')}}</a>
 
         <a href="{{route('project')}}"
            class="list-group-item list-group-item-action waves-effect {{ \App\Utils::checkRoute(['project', 'project_detail']) ? 'active': '' }}">
@@ -38,16 +38,17 @@
         <a href="{{route('list_share_document')}}" class="list-group-item list-group-item-action waves-effect {{ \App\Utils::checkRoute(['list_share_document']) ? 'active': '' }}">
             <i class="fas fa-file mr-3"></i>
             Chia sẻ tài liệu</a>
-        <a href="#" class="list-group-item list-group-item-action waves-effect disabled">
+        <a href="{{route('share_experience')}}"
+           class="list-group-item list-group-item-action waves-effect {{ \App\Utils::checkRoute(['share_experience']) ? 'active': '' }}">
             <i class="fas fa-book mr-3"></i>
             Kinh nghiệm làm việc</a>
         <a href="{{route('post')}}"
            class="list-group-item list-group-item-action waves-effect {{ \App\Utils::checkRoute(['post', 'post_detail']) ? 'active': '' }}">
-            <i class="fas fa-bell mr-3"></i>{{__l('Post')}}</a>
+            <i class="fas fa-bell mr-3"></i> {{__l('Post')}}</a>
 
         <a href="{{route('event')}}"
            class="list-group-item list-group-item-action waves-effect {{ \App\Utils::checkRoute(['event', 'event_detail']) ? 'active': '' }}">
-            <i class="fas fa-calendar mr-3"></i>{{__l('Event')}}</a>
+            <i class="fas fa-calendar mr-3"></i> {{__l('Event')}}</a>
     </div>
 </div>
 <!-- Sidebar -->

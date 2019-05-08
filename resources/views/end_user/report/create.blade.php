@@ -24,7 +24,7 @@
                     <select id="choose_week" name="choose_week" class="browser-default custom-select w-50">
                         <option value="-1">Báo cáo ngày [{{date('d/m')}}]</option>
                         <option selected value="0">Báo cáo tuần {{get_week_info(0)}}</option>
-                        <option value="-1">Báo cáo tuần {{get_week_info(-1)}}</option>
+                        <option value="1">Báo cáo tuần {{get_week_info(1)}}</option>
                     </select>
                 </div>
                 <label class="mt-3" for="to_ids">Bạn gửi báo cáo cho ai?</label>
@@ -65,6 +65,8 @@
             selector: 'textarea',
             paste_data_images: true,
             height: '350px',
-
+            plugins: [
+                "advlist autolink lists charmap preview hr anchor pagebreak",
+            ],
         });</script>
 @endpush

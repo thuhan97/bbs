@@ -2,7 +2,6 @@
 
 namespace App\Traits\Controllers;
 
-use App\Models\DeviceUser;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Http\Request;
 
@@ -10,28 +9,33 @@ trait ResourceController
 {
     use ResourceHelper;
 
+    public $defaultPageSize = DEFAULT_PAGE_SIZE;
+
     /**
      * Display a listing of the resource.
      *
-     * @param  \Illuminate\Http\Request $request
+     * @param \Illuminate\Http\Request $request
      *
      * @return \Illuminate\Http\Response
      */
     public function index(Request $request)
     {
         $this->authorize('viewList', $this->getResourceModel());
-        $records = $this->searchRecords($request, $perPage, $search);
-
-        return view($this->getResourceIndexPath(), $this->filterSearchViewData($request, [
-            'records' => $records,
-            'search' => $search,
-            'resourceAlias' => $this->getResourceAlias(),
-            'resourceRoutesAlias' => $this->getResourceRoutesAlias(),
-            'resourceTitle' => $this->getResourceTitle(),
-            'perPage' => $perPage,
-            'resourceSearchExtend' => $this->resourceSearchExtend,
-            'addVarsForView' => $this->addVarsSearchViewData()
-        ]));
+        if ($request->has('is_export') && in_array($request->path(), EXPORT_PATHS)) {
+            return $this->exportData($request);
+        } else {
+            $records = $this->searchRecords($request, $perPage, $search);
+            return view($this->getResourceIndexPath(), $this->filterSearchViewData($request, [
+                'records' => $records,
+                'search' => $search,
+                'resourceAlias' => $this->getResourceAlias(),
+                'resourceRoutesAlias' => $this->getResourceRoutesAlias(),
+                'resourceTitle' => $this->getResourceTitle(),
+                'perPage' => $perPage,
+                'resourceSearchExtend' => $this->resourceSearchExtend,
+                'addVarsForView' => $this->addVarsSearchViewData()
+            ]));
+        }
     }
 
     /**
@@ -73,7 +77,7 @@ trait ResourceController
         if ($record = $this->repository->save($this->alterValuesToSave($request, $valuesToSave))) {
             flash()->success('Thêm mới thành công.');
 
-            return $this->getRedirectAfterSave($record, $request,$isCreate = true);
+            return $this->getRedirectAfterSave($record, $request, $isCreate = true);
         } else {
             flash()->info('Thêm mới thất bại.');
         }
@@ -84,7 +88,7 @@ trait ResourceController
     /**
      * Display the specified resource.
      *
-     * @param  int $id
+     * @param int $id
      *
      * @return \Illuminate\Http\Response
      */
@@ -155,7 +159,7 @@ trait ResourceController
 
             flash()->success('Cập nhật thành công.');
 
-            return $this->getRedirectAfterSave($record, $request,$isCreate = false);
+            return $this->getRedirectAfterSave($record, $request, $isCreate = false);
 
         } else {
             flash()->info('Cập nhật thất bại.');
@@ -229,10 +233,11 @@ trait ResourceController
     public function searchRecords(Request $request, &$perPage, &$search)
     {
         $perPage = (int)$request->input('per_page', '');
-        $perPage = (is_numeric($perPage) && $perPage > 0 && $perPage <= 100) ? $perPage : DEFAULT_PAGE_SIZE;
+        $perPage = (is_numeric($perPage) && $perPage > 0 && $perPage <= 100) ? $perPage : $this->defaultPageSize;
+
         $search = $request->input('search', '');
 
-        $records = $this->getSearchRecords($request, $perPage, $search);
+        $records = $this->getSearchRecords($request, $perPage, $search,false);
 
         $records->appends($request->except('page'));
 

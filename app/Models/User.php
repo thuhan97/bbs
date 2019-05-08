@@ -149,6 +149,20 @@ class User extends Authenticatable implements JWTSubject
         return $this->where('status', ACTIVE_STATUS)->where('contract_type', CONTRACT_TYPES['probation']);
     }
 
+    public function team()
+    {
+        if ($this->attributes['jobtitle_id'] == TEAMLEADER_ROLE) {
+            $team = Team::where('leader_id', $this->attributes['id'])->first();
+            if ($team) return $team;
+        }
+        $userTeam = UserTeam::where('user_id', $this->attributes['id'])->orderBy('id', 'desc')->first();
+
+        if ($userTeam) {
+            return Team::where('id', $userTeam->team_id)->first();
+        }
+
+    }
+
     /**
      * Search for course title or subject name
      *
@@ -175,7 +189,7 @@ class User extends Authenticatable implements JWTSubject
 
     public function workTimeRegisters()
     {
-        return $this->hasMany(WorkTimeRegister::class);
+        return $this->hasMany(WorkTimeRegister::class)->where('day', '!=', 7);
     }
 
 }

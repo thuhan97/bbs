@@ -18,6 +18,16 @@ class Config extends Model
 
     protected $table = 'configs';
 
+    public $timestamps = [
+        'morning_start_work_at',
+        'morning_end_work_at',
+        'afternoon_start_work_at',
+        'afternoon_end_work_at',
+        'time_morning_go_late_at',
+        'time_afternoon_go_late_at',
+        'time_ot_early_at',
+    ];
+
     protected $fillable = [
         'name',
         'acronym_name',
@@ -32,6 +42,7 @@ class Config extends Model
         'time_ot_early_at',
         'weekly_report_title',
         'html_weekly_report_template',
+        'late_time_rule_json',
     ];
 
     public function setWorkDaysAttribute($value)

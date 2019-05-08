@@ -81,7 +81,7 @@ class BookingController extends Controller
 		            $recur=Recur::where('repeat_type',0)->where('days_repeat',$date)->where('meetings_id',$meetings_id);;
 					if(count($recur->get())>0) {
 						$recur=$recur->where('start_time','>=',$end_time)->orWhere('end_time','<=',$start_time)->get();
-						if(count($recur)==0) dd('khomng');
+						if(count($recur)==0) dd('khong');
 						else dd('trung');
 					}
 					else dd(1);

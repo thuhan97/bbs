@@ -283,19 +283,19 @@
             $('.approve-btn-late').on('click', function () {
                 $('#modal-form').modal('show');
                 $(".permission-reason").append("<input name='type' type='text' value='1'>");
-                $(".modal-header").html("<h3 class='mg-center mb-2'>Xin đi muộn</h3>");
+                $(".modal-header").html("<h4 class='mg-center mb-2 modal-title w-100 font-weight-bold pt-2'>Xin đi muộn</h4>");
                 $('#work_day').datepicker("setDate", currenFullTime);
             });
             $('.approve-btn-early').on('click', function () {
                 $('#modal-form').modal('show');
                 $(".permission-reason").append("<input name='type' type='text' value='2'>");
-                $(".modal-header").html("<h3 class='mg-center mb-2'>Xin về sớm</h3>");
+                $(".modal-header").html("<h4 class='mg-center mb-2 modal-title w-100 font-weight-bold pt-2'>Xin về sớm</h4>");
                 $('#work_day').datepicker("setDate", date);
             });
             $('.approve-btn-ot').on('click', function () {
                 $('#modal-form-ot').modal('show');
                 $(".permission-reason").append("<input name='type' type='text' value='4'>");
-                $(".modal-header").html("<h3 class='mg-center mb-2'>Xin OT</h3>");
+                $(".modal-header").html("<h4 class='mg-center mb-2 modal-title w-100 font-weight-bold pt-2'>Xin OT</h4>");
                 $('#work_day_ot').datepicker("setDate", (date));
             });
         });

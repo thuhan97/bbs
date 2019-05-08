@@ -1,13 +1,20 @@
+<?php
+$team = \Auth::user()->team();
+
+$logoUrl = $team->banner ?? 'http://jvb-corp.com/img/logo.png';
+$name = $team->name ?? $config->name;
+?>
+
 <!-- Sidebar -->
 <div class="sidebar fixed sidebar-fixed position-fixed" id="slide-out">
 
-    <div class="text-center ">
+    <div class="text-center mb-xl-3">
         <a href="/" class="logo-wrapper waves-effect">
-            <img src="http://jvb-corp.com/img/logo.png" class="img-fluid" alt="">
+            <img src="{{$logoUrl}}" class="img-fluid" alt="">
         </a>
 
         <p><strong class="text-uppercase text-primary">
-                {{$config->name}}
+                {{$name}}
             </strong></p>
     </div>
     <div class="list-group list-group-flush" style="margin: 0 -15px">

@@ -911,6 +911,9 @@ td.blank, .type-1 {
     left: 25px;
 }
 
+#home .post-item {
+}
+
 #home .post-item img {
     max-height: 160px;
 }

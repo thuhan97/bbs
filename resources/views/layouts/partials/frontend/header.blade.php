@@ -1,7 +1,7 @@
 <!--Main Navigation-->
 <header>
     <!-- Navbar -->
-        {{--<nav class="navbar fixed-top navbar-expand-lg navbar-light white scrolling-navbar">--}}
+    {{--<nav class="navbar fixed-top navbar-expand-lg navbar-light white scrolling-navbar">--}}
     <nav class="navbar fixed-top navbar-light white scrolling-navbar navbar-expand-lg">
         <div class="container-fluid">
             <div class="float-left ">
@@ -11,7 +11,6 @@
             </div>
             <!-- Brand -->
             <a class="navbar-brand waves-effect" href="/">
-                {{--<img src="http://jvb-corp.com/img/logo.png" class="img-fluid" alt="" width="50">--}}
                 <strong class="blue-text">BBS</strong>
             </a>
 

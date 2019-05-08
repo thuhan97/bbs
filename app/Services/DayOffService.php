@@ -375,7 +375,7 @@ class DayOffService extends AbstractService implements IDayOffService
         if ($dayOff->title != DAY_OFF_TITLE_DEFAULT && $userDayOff->contract_type == CONTRACT_TYPES['staff']){
             $dayOff->number_off=$request->number_off;
 
-        }else if ($dayOff->title == DAY_OFF_TITLE_DEFAULT&&$userDayOff->contract_type == CONTRACT_TYPES['staff'] && $userDayOff->end_date == null) {
+        }else if ($dayOff->title == DAY_OFF_TITLE_DEFAULT && $userDayOff->contract_type == CONTRACT_TYPES['staff'] && $userDayOff->end_date == null) {
             $dayOff->number_off = $request->number_off;
             // create new if reamin day off curent year = null
             $remainDayOffCurrentYear = RemainDayoff::firstOrCreate([
@@ -384,7 +384,8 @@ class DayOffService extends AbstractService implements IDayOffService
             ], [
                 'user_id' => $dayOff->user_id,
                 'year' => date('Y'),
-                'remain' => REMAIN_DAY_OFF_DEFAULT
+                'remain' => REMAIN_DAY_OFF_DEFAULT,
+                'remain_increment' => DAY_OFF_INCREMENT,
             ]);
             $remainDayOffPreYear = RemainDayoff::where('user_id', $dayOff->user_id)->where('year', (int)date('Y') - 1)->first();
             $dayOffCurrentYear = $remainDayOffCurrentYear->remain;

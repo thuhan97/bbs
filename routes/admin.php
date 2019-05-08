@@ -42,10 +42,8 @@ Route::group([
     Route::post('deviceusers/deletes', ['as' => 'deviceusers.deletes', 'uses' => 'DeviceUserController@deletes']);
     Route::resource('deviceusers', 'DeviceUserController');
 
-
     //ActionDevice
 //    Route::resource('ActionDevice', 'ActionDeviceController');
-
 
     //Device
     Route::post('devices/deletes', ['as' => 'devices.deletes', 'uses' => 'DeviceController@deletes']);
@@ -100,6 +98,8 @@ Route::group([
     Route::post('configs', 'ConfigController@store')->name('configs.store');
     Route::get('configs-dayoff', 'ConfigController@dayoffCreate')->name('configs.dayoff');
     Route::get('configs-dayoff-delete', 'ConfigController@dayoffDelete')->name('configs.delete_dayoff');
+    Route::get('configs-dayadd', 'ConfigController@additionalDateCreate')->name('configs.dayadd');
+    Route::get('configs-dayadd-delete', 'ConfigController@additionalDateDelete')->name('configs.delete_dayadd');
 
     //post
     Route::post('posts/deletes', ['as' => 'posts.deletes', 'uses' => 'PostController@deletes']);

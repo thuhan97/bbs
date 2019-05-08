@@ -3,9 +3,10 @@
 namespace App\Console;
 
 use App\Console\Commands\AddDayOffMonth;
+use App\Console\Commands\HolidayAutoAdd;
 use App\Console\Commands\MoveDayOffEndYear;
-use Illuminate\Console\Scheduling\Schedule;
 use App\Console\Commands\SentMailEvent;
+use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
 class Kernel extends ConsoleKernel
@@ -18,13 +19,14 @@ class Kernel extends ConsoleKernel
     protected $commands = array(
         SentMailEvent::class,
         AddDayOffMonth::class,
-        MoveDayOffEndYear::class
+        MoveDayOffEndYear::class,
+        HolidayAutoAdd::class
     );
 
     /**
      * Define the application's command schedule.
      *
-     * @param  \Illuminate\Console\Scheduling\Schedule $schedule
+     * @param \Illuminate\Console\Scheduling\Schedule $schedule
      *
      * @return void
      */
@@ -34,6 +36,7 @@ class Kernel extends ConsoleKernel
         $schedule->command('command:sent_mail_event')->cron('0 8 * * *');
         $schedule->command('command:add_day_off_moth')->cron('* * 1 * *');
         $schedule->command('command:move_day_off_end_year')->cron('45 23 31 12 *');
+        $schedule->command('command:holiday')->monthly();
     }
 
     /**

@@ -111,4 +111,10 @@ class DateTimeHelper
         ];
     }
 
+    public static function getDateNextYear($date, $format = DATE_FORMAT)
+    {
+        $dateCarbon = Carbon::createFromFormat($format, $date);
+
+        return $dateCarbon->addYear()->format($format);
+    }
 }

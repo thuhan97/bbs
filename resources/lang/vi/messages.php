@@ -67,4 +67,5 @@ return [
     'punish_late_money' => 'Phạt đi muộn lần :number (:check_in) tháng :month.',
     'punish_late_money_aio' => 'Phạt đi muộn :number buổi (từ :start_date đến :to_date).',
     'config_updated' => 'Lưu thiết lập thành công.',
+    'system_no_config_time' => 'Chưa cấu hình thời gian thiết lập hệ thống.',
 ];

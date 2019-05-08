@@ -7,6 +7,7 @@
 
 namespace App\Services;
 
+use App\Models\AdditionalDate;
 use App\Models\CalendarOff;
 use App\Models\Config;
 use App\Models\Punishes;
@@ -40,6 +41,7 @@ class WorkTimeService extends AbstractService implements IWorkTimeService
         $this->repository = $repository;
         $this->config = Config::first();
         $this->calendarOffs = CalendarOff::all();
+        $this->additionalDates = AdditionalDate::all();
 
         $this->users = User::select('id', 'name', 'staff_code', 'contract_type')->with('workTimeRegisters')->get();
 
@@ -198,11 +200,12 @@ class WorkTimeService extends AbstractService implements IWorkTimeService
         if ($endAt == null && $startAt != null && $startAt > HAFT_AFTERNOON) {
             [$startAt, $endAt] = [$endAt, $startAt];
         }
-        if (!$this->config->time_afternoon_go_late_at) throw new \Exception('Chưa cấu hình thời gian thiết lập hệ thống.');
+        if (!$this->config->time_afternoon_go_late_at) throw new \Exception(__l('system_no_config_time'));
         $addData = false;
         $type = 0;
-
-        $check = $this->calendarOffs->where('date_off_from', '>=', $date->format('Y-m-d'))->where('date_off_to', '<=', $date->format('Y-m-d'))->first();
+        $checkIsAdditionalDate = $this->additionalDates->firstWhere('date_add', $date->format(DATE_FORMAT));
+        //
+        $check = !$checkIsAdditionalDate && $this->calendarOffs->where('date_off_from', '>=', $date->format(DATE_FORMAT))->where('date_off_to', '<=', $date->format(DATE_FORMAT))->first();
 
         if ($check) {
             $type = WorkTime::TYPES['calendar_off'];
@@ -212,7 +215,7 @@ class WorkTimeService extends AbstractService implements IWorkTimeService
                 'note' => WorkTime::WORK_TIME_CALENDAR_DISPLAY[$type] ?? '',
                 'type' => $type,
             ];
-        } else if (($this->config->work_days && in_array($date->format('N'), $this->config->work_days)) || !$this->config->work_days) {
+        } else if (($this->config->work_days && in_array($date->format('N'), $this->config->work_days)) || !$this->config->work_days || $checkIsAdditionalDate) {
             //checkin in week
             //getworktime of user
             if (in_array($user->contract_type, [CONTRACT_TYPES['staff'], CONTRACT_TYPES['staff']])) {

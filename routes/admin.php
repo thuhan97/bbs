@@ -28,6 +28,7 @@ Route::group([
     ##AUTO_INSERT_ROUTE##
 
     //punishes
+    Route::post('punishes-submit', ['as' => 'punishes.submit', 'uses' => 'PunishesController@submits']);
     Route::get('punishes/status/{id}', ['as' => 'punishes.status', 'uses' => 'PunishesController@changeSubmitStatus']);
     Route::post('punishes/deletes', ['as' => 'punishes.deletes', 'uses' => 'PunishesController@deletes']);
     Route::resource('punishes', 'PunishesController');
@@ -41,10 +42,8 @@ Route::group([
     Route::post('deviceusers/deletes', ['as' => 'deviceusers.deletes', 'uses' => 'DeviceUserController@deletes']);
     Route::resource('deviceusers', 'DeviceUserController');
 
-
     //ActionDevice
 //    Route::resource('ActionDevice', 'ActionDeviceController');
-
 
     //Device
     Route::post('devices/deletes', ['as' => 'devices.deletes', 'uses' => 'DeviceController@deletes']);
@@ -63,6 +62,10 @@ Route::group([
     //OverTime
     Route::post('over_times/deletes', ['as' => 'over_times.deletes', 'uses' => 'OverTimeController@deletes']);
     Route::resource('over_times', 'OverTimeController');
+
+    // Ask Permission
+    Route::post('approve_permission/deletes', ['as' => 'approve_permission.deletes', 'uses' => 'ApprovePermissionController@deletes']);
+    Route::resource('approve_permission', 'ApprovePermissionController');
 
 
     //feedback
@@ -83,6 +86,9 @@ Route::group([
     Route::post('day_offs/deletes', ['as' => 'day_offs.deletes', 'uses' => 'DayOffController@deletes']);
     Route::get('day_offs/user/{id}', ['as' => 'day_offs.user', 'uses' => 'DayOffController@byUser'])->where(['id' => '\d+']);
     Route::resource('day_offs', 'DayOffController');
+    // Statistical Day Off Excel
+    Route::get('/thong-ke-ngay-nghi', 'DayOffController@statisticalDayOffExcel')->name('statistical-day-off-excel');
+
 
     //report
     Route::resource('report', 'ReportController');
@@ -90,6 +96,10 @@ Route::group([
     //config
     Route::get('configs', 'ConfigController@index')->name('configs.index');
     Route::post('configs', 'ConfigController@store')->name('configs.store');
+    Route::get('configs-dayoff', 'ConfigController@dayoffCreate')->name('configs.dayoff');
+    Route::get('configs-dayoff-delete', 'ConfigController@dayoffDelete')->name('configs.delete_dayoff');
+    Route::get('configs-dayadd', 'ConfigController@additionalDateCreate')->name('configs.dayadd');
+    Route::get('configs-dayadd-delete', 'ConfigController@additionalDateDelete')->name('configs.delete_dayadd');
 
     //post
     Route::post('posts/deletes', ['as' => 'posts.deletes', 'uses' => 'PostController@deletes']);

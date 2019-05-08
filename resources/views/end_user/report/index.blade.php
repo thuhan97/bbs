@@ -1,8 +1,14 @@
 @extends('layouts.end_user')
+
 @section('page-title', __l('Report'))
 @section('breadcrumbs')
     {!! Breadcrumbs::render('report') !!}
 @endsection
+<?php
+$type = request('type', 0);
+$year = request('year', date('Y'));
+$month = request('month', date('m'));
+?>
 @section('content')
     <div class="createReport fixed-action-btn">
         <a href="{{route('create_report')}}" class="btn-floating btn-lg red waves-effect waves-light text-white"
@@ -10,21 +16,46 @@
             <i class="fas fa-pencil-alt"></i>
         </a>
     </div>
-    <form class="mb-4 mb-3" id="formReport">
-        <div class="md-form active-cyan-2 mb-0">
-            <div class="row">
-                <div class="col-sm-2 col-xl-1">
-                    {{ Form::select('year', get_years(2), request('year', date('Y')), ['class'=>'mr-1 w-30 browser-default custom-select']) }}
+    <form class="mb-2 mb-3" id="formReport">
+        <div class="row">
+            <div class="col-12 col-sm-3 col-md-3 col-xl-2 mb-2">
+                <div class="md-form m-0">
+                    {{ Form::select('type', REPORT_SEARCH_TYPE_NAME, $type, ['class'=>'mr-1 mt-md-0 w-30 browser-default custom-select']) }}
                 </div>
-                <div class="col-sm-3 col-md-2 col-xl-1">
-                    {{ Form::select('month', get_months('Tháng '), request('month', date('n')), ['class'=>'mr-1 mt-1 mt-md-0 w-30 browser-default custom-select']) }}
+            </div>
+            @if($type == REPORT_SEARCH_TYPE['team'])
+                <div class="col-12 col-sm-3 col-md-3 col-xl-2 mb-2">
+                    <div class="md-form m-0">
+                        {{ Form::select('team_id', ['' => 'Chọn team'] + $teams, request('team_id'), ['class'=>'mr-1 w-30 browser-default custom-select']) }}
+                    </div>
+                </div>
+            @endif
+            <div class="col-6 col-sm-2 report-select-year">
+                <div class="md-form m-0">
+                    {{ Form::select('year', get_years(2), $year, ['class'=>'mr-1 w-30 browser-default custom-select']) }}
+                </div>
+            </div>
+            <div class="col-6 col-sm-3 col-md-2 report-select-year">
+                <div class="md-form m-0">
+                    {{ Form::select('month', get_months('Tháng '), $month, ['class'=>'mt-md-0 w-30 browser-default custom-select']) }}
                 </div>
             </div>
         </div>
+        @if($type != REPORT_SEARCH_TYPE['private'])
+            <div class="row">
+                <div class="col-12 col-xl-6 mb-2">
+                    <div class="md-form m-0 mt-3">
+                        <input type="text" id="search" name="search" value="{{request('search')}}"
+                               class="form-control">
+                        <label for="search">Nhập từ khóa tìm kiếm</label>
+                    </div>
+                </div>
+            </div>
+        @endif
     </form>
     @if($reports->isNotEmpty())
         <div class="row">
-            <div class="col-md-6">
+            <div class="col-xl-6">
                 <div class="accordion md-accordion" id="report" role="tablist" aria-multiselectable="true">
                     @foreach($reports as $idx => $report)
                         <div class="card">
@@ -36,7 +67,9 @@
                                 >
                                     <h5 class="mb-0">
                                         <i class="fas fa-sticky-note"></i>
-                                        {{$report->title}} <i class="fas fa-angle-down rotate-icon"></i>
+                                        {{$report->getTitle($type, $year, $month)}}
+
+                                        <i class="fas fa-angle-down rotate-icon"></i>
                                     </h5>
                                 </a>
                             </div>

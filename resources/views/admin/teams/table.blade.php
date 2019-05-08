@@ -5,12 +5,15 @@
             <button type="button" class="btn btn-default btn-sm checkbox-toggle"><i class="fa fa-square-o"></i></button>
         </th>
         <th style="width: 15px">Màu</th>
+        <th style="width: 120px">Tên group
+            {!! __admin_sortable('group_id') !!}
+        </th>
         <th style="width: 120px">Ảnh đại diện</th>
         <th>Tên nhóm
             {!! __admin_sortable('name') !!}
         </th>
         <th>Trưởng nhóm</th>
-        <th>Khẩu ngữ</th>
+        <th>Khẩu hiệu</th>
         <th style="width: 120px;">Ngày tạo</th>
         <th style="width: 120px;">Chức năng</th>
         </thead>
@@ -30,8 +33,11 @@
                 <td><input type="checkbox" name="ids[]" value="{{ $record->id }}" class="square-blue chkDelete"></td>
                 <td style="background: {{$record->color}}">
                 </td>
+                <td>{{ $record->group_name }}</td>
                 <td>
-                    <img src="{{lfm_thumbnail($record->banner)}}" width="100">
+                    @if($record->banner)
+                        <img src="{{lfm_thumbnail($record->banner)}}" width="100">
+                    @endif
                 </td>
                 <td class="table-text">
                     <a href="{{ $showLink }}">{{ $record->name }}</a>

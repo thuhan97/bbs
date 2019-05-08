@@ -31,6 +31,8 @@
             </script>
         @endif
     @endif
+    <i class="fa fa-icon-check"></i>
+
     <div class="row">
         <div class="col-md-4 pr-0 select-month-calendar">
             <form name="dateChooser">
@@ -43,13 +45,13 @@
         </div>
         <div class="col-md-8">
             <div class="row mb-4" id="form-check-time">
-                <button type="button" class="btn btn-danger btn-early-late" id="btn-early-late">Số buổi đi
+                <button type="button" class="btn-early-late" id="btn-early-late">Số buổi đi
                     muộn/sớm:
                 </button>
-                <button type="button" class="btn btn-primary btn-ot" id="btn-ot">Số buổi đi
+                <button type="button" class="btn-ot" id="btn-ot">Số buổi đi
                     OT:
                 </button>
-                <button type="button" class="btn btn-success btn-late-ot" id="btn-late-ot">Số
+                <button type="button" class="btn-late-ot" id="btn-late-ot">Số
                     buổi đi muộn + OT:
                 </button>
             </div>
@@ -153,20 +155,48 @@
                             dataUserID = el.getElementsByClassName("data-user-id")[0].innerHTML,
                             dataTypeOT = el.getElementsByClassName("data-ot-type")[0].innerHTML;
                     }
+                    switch (true) {
+                        case parseInt(dataTypeOT) === 1:
+                            var projectOT = 'checked';
+                            break;
+                        case parseInt(dataTypeOT) === 2:
+                            var otherOT = 'checked';
+                            break;
+                        default:
+                            var projectOT = '',
+                                otherOT = '';
+                    }
+
+                    function makeMoal() {
+                        calendar.sDay = el.getElementsByClassName("dayNumber")[0].innerHTML;
+                        if (el.getElementsByClassName("data-id")[0]) {
+                            document.getElementById("div-reason").innerHTML =
+                                '<div class="row col-md-12">' +
+                                '<div class="col-md-12 d-flex justify-content-center">' +
+                                '<input hidden name="id" value="' + dataID + '">' +
+                                '<input hidden name="user_id" value="' + dataUserID + '">' +
+                                '<input hidden name="work_day" value="' + dataWorkDay + '">' +
+                                '<textarea class="form-control" name="reason" rows="6" placeholder="Nội dung bạn muốn gửi...">' + dataReason + '</textarea>' +
+                                '</div>' +
+                                '<div class="row col-md-12">' +
+                                '</div>' +
+                                '</div>';
+                        } else {
+                            document.getElementById("div-reason").innerHTML =
+                                '<div class="row col-md-12">' +
+                                '<div class="col-md-12 d-flex justify-content-center">' +
+                                '<input hidden name="work_day" value="' + getDataTime + '">' +
+                                '<textarea class="form-control" name="reason" rows="6" placeholder="Nội dung bạn muốn gửi..."></textarea>' +
+                                '</div>' +
+                                '<div class="row col-md-12">' +
+                                '</div>' +
+                                '</div>';
+                        }
+                    }
+
                     if (parseInt(calendarYM) >= parseInt(currentMY)) {
                         if (timeGetDay.getDay() === 0 || timeGetDay.getDay() === 6 || currentFullTime === fullTime || calendarFullTime === currenFullTime) {
                             if (currentFullTime <= fullTime) {
-                                switch (true) {
-                                    case parseInt(dataTypeOT) === 1:
-                                        var projectOT = 'checked';
-                                        break;
-                                    case parseInt(dataTypeOT) === 2:
-                                        var otherOT = 'checked';
-                                        break;
-                                    default:
-                                        var projectOT = '',
-                                            otherOT = '';
-                                }
                                 if (dataWorkDay) {
                                     var workDay = dataWorkDay,
                                         id = dataID,
@@ -176,6 +206,7 @@
                                         id = '',
                                         dataReason = '';
                                 }
+
                                 document.getElementById("div-reason").innerHTML =
                                     '<div class="row col-md-12">' +
                                     '<div class="offset-5"><h3 class="">Xin OT</h3></div>' +
@@ -191,38 +222,16 @@
                                     '<input hidden name="id" value="' + id + '">' +
                                     '<input hidden name="work_day" value="' + workDay + '">' +
                                     '</div>';
+                            } else {
+                                makeMoal()
                             }
                         } else {
-                            calendar.sDay = el.getElementsByClassName("dayNumber")[0].innerHTML;
-                            if (el.getElementsByClassName("data-id")[0]) {
-                                document.getElementById("div-reason").innerHTML =
-                                    '<div class="row col-md-12">' +
-                                    '<div class="col-md-12 d-flex justify-content-center">' +
-                                    '<input hidden name="id" value="' + dataID + '">' +
-                                    '<input hidden name="user_id" value="' + dataUserID + '">' +
-                                    '<input hidden name="work_day" value="' + dataWorkDay + '">' +
-                                    '<textarea class="form-control" name="reason" rows="6" placeholder="Nội dung bạn muốn gửi...">' + dataReason + '</textarea>' +
-                                    '</div>' +
-                                    '<div class="row col-md-12">' +
-                                    '</div>' +
-                                    '</div>';
-                            } else {
-                                document.getElementById("div-reason").innerHTML =
-                                    '<div class="row col-md-12">' +
-                                    '<div class="col-md-12 d-flex justify-content-center">' +
-                                    '<input hidden name="work_day" value="' + getDataTime + '">' +
-                                    '<textarea class="form-control" name="reason" rows="6" placeholder="Nội dung bạn muốn gửi..."></textarea>' +
-                                    '</div>' +
-                                    '<div class="row col-md-12">' +
-                                    '</div>' +
-                                    '</div>';
-                            }
+                            makeMoal();
                         }
-
-                    } else if (currentFullTime <= fullTime) {
-
                     }
-                    $('.myModal').modal('show');
+                    if (parseInt(calendarYM) >= parseInt(currentMY)) {
+                        $('.myModal').modal('show');
+                    }
                 },
             };
             window.addEventListener("load", function () {
@@ -256,7 +265,6 @@
                 var daysInMth = new Date(calendar.sYear, calendar.sMth + 1, 0).getDate(),
                     startDay = new Date(calendar.sYear, calendar.sMth, 1).getDay(),
                     endDay = new Date(calendar.sYear, calendar.sMth, daysInMth).getDay();
-
                 calendar.data = localStorage.getItem("calendar-" + calendar.sMth + "-" + calendar.sYear);
                 if (calendar.data == null) {
                     localStorage.setItem("calendar-" + calendar.sMth + "-" + calendar.sYear, "{}");
@@ -367,7 +375,6 @@
                     success: (respond) => {
                         let dataRes = respond.data,
                             dataModal = respond.dataModal;
-
                         dataRes.forEach(function (data) {
                             let work_day = data.work_day,
                                 work_time = data.start_at + ' - ' + data.end_at;

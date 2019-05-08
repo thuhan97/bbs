@@ -30,11 +30,14 @@ class CreateDayOffRequest extends FormRequest
                     $query->where('jobtitle_id', '>=', MIN_APPROVE_JOB)->where('status', ACTIVE_STATUS);
                 })
             ],
-            'title' => 'required|integer',
+            'title' => 'nullable|integer',
             'reason' => 'required|max:1000|min:3',
             'start_at' => 'required|after_or_equal:today',
             'end_at' => 'required|after_or_equal:start_at',
             'status' => 'nullable|integer|between:0,1',
+            'option_check'=>'nullable|digits_between:0,2',
+            'start'=>'nullable|date_format:H:i:s',
+            'end'=>'nullable|date_format:H:i:s',
 
         ];
         if ($this->id) {
@@ -57,7 +60,8 @@ class CreateDayOffRequest extends FormRequest
             'start_at' => 'ngày bắt đầu',
             'end_at' => 'ngày kết thúc',
             'approver_id' => 'người phê duyệt',
-            'number_off'=>'số ngày dự kiến'
+            'number_off'=>'số ngày dự kiến',
+            'option_check'=>'thời gian nghỉ',
         ];
     }
 }

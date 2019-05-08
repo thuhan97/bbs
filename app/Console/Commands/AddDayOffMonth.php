@@ -39,16 +39,21 @@ class AddDayOffMonth extends Command
      */
     public function handle()
     {
-        $users=User::where('contract_type',CONTRACT_TYPES['staff'])->whereNull('end_date')->get();
+        $users=User::whereIn('contract_type',[CONTRACT_TYPES['staff'],CONTRACT_TYPES['probation']])->where('status',ACTIVE_STATUS)->whereNull('end_date')->get();
         foreach ($users as $user){
             $dayOffRemain=RemainDayoff::where('year', '=', date('Y'))
                 ->where('user_id',$user->id);
             if ($dayOffRemain->first()){
-                $dayOffRemain=$dayOffRemain->increment('remain', ADD_DAY_OFF_MONTH);
+                $dayOffRemain=$dayOffRemain->update([
+                    'remain' => \DB::raw( 'remain + 1' ), // increment
+                    'remain_increment' => \DB::raw( 'remain_increment + 1' ), // increment
+                ]);
             }else{
                 $dayOffRemain=new RemainDayoff();
                 $dayOffRemain->user_id=$user->id;
                 $dayOffRemain->year=date('Y');
+                $dayOffRemain->remain=REMAIN_DAY_OFF_DEFAULT;
+                $dayOffRemain->remain_increment=DAY_OFF_INCREMENT;
                 $dayOffRemain->save();
             }
         }

@@ -8,7 +8,7 @@ if (!function_exists('number_collapse')) {
      * Collapse number
      *
      * @param integer $number
-     * @param string  $separator
+     * @param string $separator
      *
      * @return string
      */
@@ -102,9 +102,9 @@ if (!function_exists('redirect_back_to')) {
      * Get an instance of the redirector.
      *
      * @param string|null $callbackUrl
-     * @param int         $status
-     * @param array       $headers
-     * @param bool        $secure
+     * @param int $status
+     * @param array $headers
+     * @param bool $secure
      *
      * @return \Illuminate\Routing\Redirector|\Illuminate\Http\RedirectResponse
      */
@@ -178,7 +178,7 @@ if (!function_exists('get_week_number')) {
      */
     function get_week_number($ddate = null)
     {
-        if ($ddate !== null)
+        if ($ddate == null)
             $ddate = date(DATE_FORMAT);
         $date = new DateTime($ddate);
 
@@ -267,15 +267,16 @@ if (!function_exists('getStartAndEndDateOfMonth')) {
         ];
     }
 }
+
 if (!function_exists('get_years')) {
     /**
      * Encode unicode
      *
      * @param integer $num
-     * @param string  $prefix
-     * @param bool    $isDesc
+     * @param string $prefix
+     * @param bool $isDesc
      *
-     * @param bool    $istatic
+     * @param bool $istatic
      *
      * @return array
      */
@@ -303,7 +304,7 @@ if (!function_exists('get_months')) {
      * Get months
      *
      * @param string $prefix
-     * @param bool   $isDesc
+     * @param bool $isDesc
      *
      * @return string
      *
@@ -415,6 +416,43 @@ if (!function_exists('users')) {
         return ['' => 'Chọn nhân viên'] + $teams;
     }
 }
+if (!function_exists('to_work_time')) {
+    /**
+     *
+     *
+     * @return string
+     */
+    function to_work_time($time)
+    {
+        $times = explode(':', $time);
+        if (count($times) == 3) {
+            return $times[0] . ':' . $times[1];
+        }
+        return $time;
+    }
+}
+if (!function_exists('to_work_time_name')) {
+    /**
+     *
+     *
+     * @return string
+     */
+    function to_work_time_name($startAt, $endAt, &$type = 0)
+    {
+        if ($startAt >= SWITCH_TIME) {
+            $type = 2;
+            return 'Chiều';
+        } else if ($startAt == OFF_TIME) {
+            $type = 0;
+            return 'Nghỉ';
+        } else if ($endAt <= SWITCH_TIME) {
+            $type = 1;
+            return 'Sáng';
+        }
+        $type = 3;
+        return "Cả ngày";
+    }
+}
 
 /**
  * @param $number
@@ -424,6 +462,9 @@ if (!function_exists('users')) {
 
 function checkNumber($number)
 {
+    if (!$number){
+        return 0;
+    }
     $explode = explode('.', $number);
     if ($explode[1] > 0) {
         return $number;

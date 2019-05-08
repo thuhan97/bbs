@@ -29,7 +29,7 @@
     </div>
     <div class="form-group margin-b-5 margin-t-5{{ $errors->has('detail') ? ' has-error' : '' }}">
         <label for="detail">Nội dung chi tiết</label>
-        <textarea class="form-control" name="detail" id="detail" rows="5"
+        <textarea class="form-control" name="detail" id="detail" rows="10"
                   placeholder="Nhập nội dung chi tiết">{{ old('detail', $record->detail) }}</textarea>
 
         @if ($errors->has('detail'))

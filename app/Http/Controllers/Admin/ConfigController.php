@@ -4,8 +4,12 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ConfigRequest;
+use App\Models\AdditionalDate;
+use App\Models\CalendarOff;
 use App\Models\Config;
 use App\Repositories\Contracts\IConfigRepository;
+use Illuminate\Http\Request;
+use Illuminate\Validation\ValidationException;
 
 /**
  * ConfigController
@@ -44,10 +48,13 @@ class ConfigController extends Controller
         $record = Config::firstOrNew([
             'id' => 1
         ]);
-
+        $dayOffs = CalendarOff::all()->sortByDesc('id');
+        $additionalDates = AdditionalDate::all()->sortByDesc('id');
         return view($this->resourceAlias . '._layout', [
             'resourceAlias' => $this->resourceAlias . '.index',
-            'record' => $record
+            'record' => $record,
+            'dayOffs' => $dayOffs,
+            'additionalDates' => $additionalDates,
         ]);
     }
 
@@ -66,8 +73,62 @@ class ConfigController extends Controller
         Config::updateOrCreate([
             'id' => 1
         ], $data);
-        flash()->success('Lưu thiết lập thành công');
+        flash()->success(__l('config_updated'));
         return redirect(route($this->resourceRoutesAlias . '.index'));
     }
 
+    public function dayoffCreate(Request $request)
+    {
+        $this->validate($request, [
+            'date_name' => 'required|max:255',
+            'date_off_from' => 'required|date',
+            'date_off_to' => 'required|date|after_or_equal:date_off_from',
+        ]);
+        $data = $request->only('date_name', 'date_off_from', 'date_off_to', 'is_repeat');
+        //check exists
+        $check = CalendarOff::whereDate('date_off_from', '>=', $data['date_off_from'])->whereDate('date_off_to', '<=', $data['date_off_to'])->exists();
+        if ($check) {
+            $error = ValidationException::withMessages([
+                'date_off_from' => ['Dữ liệu đã tồn tại'],
+            ]);
+            throw $error;
+        }
+
+        $calendarOff = new CalendarOff($data);
+        $calendarOff->save();
+
+        return response()->json($calendarOff);
+    }
+
+    public function dayoffDelete(Request $request)
+    {
+        CalendarOff::where('id', $request->id)->forceDelete();
+    }
+
+    public function additionalDateCreate(Request $request)
+    {
+        $this->validate($request, [
+            'date_name' => 'required|max:255',
+            'date_add' => 'required|date',
+        ]);
+        $data = $request->only('date_name', 'date_add');
+        //check exists
+        $check = AdditionalDate::whereDate('date_add', $data['date_add'])->exists();
+        if ($check) {
+            $error = ValidationException::withMessages([
+                'date_off_from' => ['Dữ liệu đã tồn tại'],
+            ]);
+            throw $error;
+        }
+
+        $calendarOff = new AdditionalDate($data);
+        $calendarOff->save();
+
+        return response()->json($calendarOff);
+    }
+
+    public function additionalDateDelete(Request $request)
+    {
+        AdditionalDate::where('id', $request->id)->forceDelete();
+    }
 }

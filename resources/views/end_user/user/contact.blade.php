@@ -8,8 +8,14 @@
     <!-- Search form -->
     <form class="mb-4">
         <div class="md-form active-cyan-2 mb-3">
-            <input name="search" value="{{old('search', $search)}}" class="form-control" type="text"
-                   placeholder="{{__l('Search_contact')}}" aria-label="Search">
+            <div class="input-group mb-3">
+                <input name="search" value="{{request('search')}}" class="form-control" type="text"
+                       placeholder="{{__l('Search_contact')}}" aria-label="Search">
+                <div class="input-group-prepend">
+                    <button class="btn btn-info" id="inputGroup-sizing-default">Tìm kiếm</button>
+                </div>
+            </div>
+
             <input type="hidden" name="page_size" value="{{$perPage}}">
         </div>
     </form>
@@ -18,7 +24,7 @@
         <table id="contactTbl" class="table table-striped">
             <colgroup>
                 <col style="width: 30px">
-                <col style="width: 120px">
+                <col style="width: 60px">
                 <col style="">
                 <col style="">
                 <col style="">
@@ -32,9 +38,11 @@
                 <th scope="col">Ảnh</th>
                 <th scope="col">Mã nhân viên</th>
                 <th scope="col">Tên nhân viên</th>
-                <th class="text-center" scope="col">Sinh nhật</th>
-                <th class="text-center" scope="col">Số điện thoại</th>
+                <th scope="col">Tên group</th>
+                <th scope="col">Tên team</th>
+                <th scope="col">Chức vụ</th>
                 <th scope="col">Email</th>
+                <th class="text-center" scope="col">Số điện thoại</th>
                 {{--<th scope="col">Chi tiết</th>--}}
             </tr>
             </thead>
@@ -45,27 +53,20 @@
                     <th scope="row">{{$id + 1}}</th>
                     <td class="text-center">
                         <img class="avatar lazy img-fluid z-depth-1 rounded-circle" data-src="{{$user->avatar}}"
-                             src="{{URL_IMAGE_NO_IMAGE}}" onerror="this.src='{{URL_IMAGE_NO_IMAGE}}'" width="80"
-                             height="80">
+                             src="{{URL_IMAGE_NO_IMAGE}}" onerror="this.src='{{URL_IMAGE_NO_IMAGE}}'">
                     </td>
                     <td>{{$user->staff_code}}</td>
+                    <?php
+                    $team = $user->team();
+                    ?>
                     <td>{{$user->name}}</td>
-                    <td class="text-center">
-                        @if($user->birthday)
-                            <?php
-                            $birthDay = date("d/m", strtotime($user->birthday));
-                            ?>
-                            @if($birthDay == date("d/m"))
-                                <i class="fas fa-birthday-cake"></i>
-                            @endif
-                            {{ $birthDay }}
-                        @else
-                            <span>{{__l('updating')}}</span>
-                        @endif
-                    </td>
+                    <td>{{$team->group_name ?? ''}}</td>
+                    <td>{{$team->name ?? ''}}</td>
+                    <td>{{JOB_TITLES[$user->jobtitle_id] ?? ''}}</td>
+                    <td>{{$user->email}}</td>
                     <td class="text-center">
                         @if($user->phone)
-                            <span class="btn-showinfo btn btn-primary">
+                            <span class="btn-showinfo btn btn-primary btn-sm">
                                 <i class="fas fas-eyes"></i>
                                 Xem
                             </span>
@@ -76,7 +77,6 @@
                             <span>{{__l('updating')}}</span>
                         @endif
                     </td>
-                    <td>{{$user->email}}</td>
                 </tr>
             @endforeach
             </tbody>

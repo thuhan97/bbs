@@ -3,7 +3,7 @@
         <div class="col-md-12">
             <div class="form-group margin-b-5 margin-t-5{{ $errors->has('user_id') ? ' has-error' : '' }}">
                 <label for="user_id">Chọn nhân viên *</label>
-                {{ Form::select('user_id', ['' => 'Chọn nhân viên'] +  $request_users, $record->user_id ?? $user_id, $record->user_id ? ['disabled'=>'disabled','class'=>'select2 form-control'] : ['class'=>'select2 form-control']) }}
+                {{ Form::select('user_id', ['' => 'Chọn nhân viên'] +  $request_users, old('user_id',$record->user_id), $record->user_id ? ['disabled'=>'disabled','class'=>'select2 form-control'] : ['class'=>'select2 form-control']) }}
                 @if ($errors->has('user_id'))
                     <span class="help-block">
                     <strong>{{ $errors->first('user_id') }}</strong>
@@ -76,7 +76,7 @@
         <div class="col-md-12">
             <div class="form-group margin-b-5 margin-t-5{{ $errors->has('title') ? ' has-error' : '' }}">
                 <label for="title">Tiêu đề</label>
-                {{ Form::select('title', VACATION, $record->title, ['class' => 'form-control my-1 mr-1 browser-default custom-select md-form select-item']) }}
+                {{ Form::select('title', VACATION_FULL, $record->title, ['class' => 'form-control my-1 mr-1 browser-default custom-select md-form select-item']) }}
                 @if ($errors->has('title'))
                     <span class="help-block">
                     <strong>{{ $errors->first('title') }}</strong>

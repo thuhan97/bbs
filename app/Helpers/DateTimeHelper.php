@@ -2,6 +2,7 @@
 
 namespace App\Helpers;
 
+use Carbon\Carbon;
 use DateTime;
 use Illuminate\Validation\ValidationException;
 
@@ -97,5 +98,23 @@ class DateTimeHelper
     public static function getDayOffNumbers($startAt, $endAt)
     {
         return 0;
+    }
+
+
+    public static function workTime($id, $day)
+    {
+        $time = \App\Models\WorkTime::where('user_id', $id)->whereDate('work_day', '=', $day)->first();
+        $startAt = $time->start_at ?? '';
+        $endAt = $time->end_at ?? '';
+        return $workTime = [
+            $startAt, $endAt
+        ];
+    }
+
+    public static function getDateNextYear($date, $format = DATE_FORMAT)
+    {
+        $dateCarbon = Carbon::createFromFormat($format, $date);
+
+        return $dateCarbon->addYear()->format($format);
     }
 }

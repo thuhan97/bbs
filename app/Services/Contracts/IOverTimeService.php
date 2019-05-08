@@ -2,6 +2,8 @@
 
 namespace App\Services\Contracts;
 
+use Illuminate\Http\Request;
+
 /**
  * IOverTimeService contract
  * Author: jvb
@@ -9,5 +11,12 @@ namespace App\Services\Contracts;
  */
 interface IOverTimeService extends IBaseService
 {
-
+    /**
+     * get over time list
+     *
+     * @param Request $request
+     * @param $explanationType
+     * @return mixed
+     */
+    public function getListOverTime(Request $request);
 }

@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <meta name="robots" content="noindex, nofollow, noarchive">
-
+    <link rel="icon" type="image/png" href="/favicon.png">
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
@@ -25,6 +25,9 @@
     <link href="{{ cdn_asset('/adminlte/plugins/select2/css/select2.min.css') }}" rel="stylesheet" type="text/css">
     <!-- datetimepicker -->
     <link href="{{ cdn_asset('/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css') }}"
+          rel="stylesheet" type="text/css">
+    <!-- datetimepicker -->
+    <link href="{{ cdn_asset('/bootstrap-datepicker/css/bootstrap-datePicker.css') }}"
           rel="stylesheet" type="text/css">
     <!-- timepicker -->
     <link href="{{ cdn_asset('/bootstrap-datetimepicker/css/bootstrap-timepicker.min.css') }}"
@@ -50,7 +53,8 @@
     <![endif]-->
 
     <!-- Google Font -->
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
+    <link rel="stylesheet"
+          href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
     <!-- jQuery 3 -->
     <script src="{{ cdn_asset('/js/jquery.min.js') }}"></script>
     <!-- Moment Js-->
@@ -77,6 +81,7 @@
 @include('layouts.partials.backend.header')
 
 @include('layouts.partials.backend.sidebar')
+@include('layouts.partials.backend.modal')
 
 <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper">
@@ -146,7 +151,6 @@
 <script src="{{ cdn_asset('/js/backend.js?version=' . config('adminlte.version')) }}"></script>
 <script src="{{cdn_asset('/js/tinymce/tinymce.min.js')}}"></script>
 <script src="/vendor/laravel-filemanager/js/lfm.js"></script>
-<script src="{{cdn_asset('/js/admin.js')}}"></script>
 <script type="text/javascript">
     (function ($) {
         if (document.head.querySelector('meta[name="csrf-token"]')) {
@@ -160,7 +164,6 @@
         }
     })(jQuery);
 </script>
-<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css"/>
 <link href="{{ cdn_asset('/adminlte/css/multiselect.css') }}" rel="stylesheet" type="text/css">
 <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/prettify/r298/prettify.min.js"></script>
 <script type="text/javascript" src="{{ cdn_asset('/adminlte/js/multiselect.min.js') }}"></script>
@@ -171,6 +174,7 @@
         $('#undo_redo').multiselect();
     });
 </script>
+<script src="{{cdn_asset('/js/admin.js')}}"></script>
 @yield('footer-extras')
 
 @stack('footer-scripts')

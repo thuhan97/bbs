@@ -50,20 +50,22 @@ class ProjectController extends AdminBaseController
 
     public function resourceUpdateValidationData($record)
     {
-        return $this->validationData();
+        return $this->validationData($record);
     }
 
-    public function validationData()
+    public function validationData($record = null)
     {
         return [
             'rules' => [
-                'name' => 'required|max:255',
+                'name' => 'required|max:255|unique:users,email' . ($record ? (',' . $record->id) : ''),
                 'customer' => 'required|max:255',
                 'scale' => 'nullable|numeric|min:1',
                 'start_date' => 'nullable|date',
                 'end_date' => 'nullable|date|after_or_equal:start_date',
             ],
-            'messages' => [],
+            'messages' => [
+                'end_date.after_or_equal'=>'Trường ngày kết thúc phải là một ngày sau ngày bắt đầu.'
+            ],
             'attributes' => [
                 'name' => 'tên dự án',
                 'customer' => 'khách hàng',

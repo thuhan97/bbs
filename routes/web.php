@@ -74,6 +74,9 @@ Route::group([
     Route::post('/add_document', 'ShareController@addDocument')->name('add_document');
     Route::post('/add_experience', 'ShareController@addExperience')->name('add_experience');
     Route::post('/add_comment', 'ShareController@addComment')->name('add_comment');
+    
+    Route::post('/add_suggestions', 'SuggestionController@addSuggestions')->name('add_suggestions');
+    Route::get('/list_suggestions', 'SuggestionController@listSuggestions')->name('list_suggestions');
 
     // create day off
     Route::post('/ngay-nghi/create-calendar', 'UserController@dayOffCreateCalendar')->name('day_off_create_calendar');
@@ -165,3 +168,4 @@ Route::group([
     ]);
     Route::get('/demo', $namespace . 'DemoController@index');
 });
+

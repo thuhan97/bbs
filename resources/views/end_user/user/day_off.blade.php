@@ -290,24 +290,41 @@
                                 <div class="mb-3">
                                     <div class="row">
                                         <div class="form-group col-sm-6 m-0">
-                                            <label class=" text-w-400" for="inputCity">Ngày bắt đầu*</label>
-                                            <?php
-                                              $autoDate = date('Y/m/d', strtotime('tomorrow'));
-                                            ?>
-                                            <input type="text"
-                                                   class="form-control select-item {{ $errors->has('start_at') ? ' has-error' : '' }}"
-                                                   id="start_date" autocomplete="off" name="start_at"
-                                                   value="{{ old('start_at', $autoDate) }}" readonly="readonly">
+                                            <div class="row">
+                                                <div class="col-sm-7 py-0 pr-0">
+                                                    <label class=" text-w-400" for="inputCity">Ngày bắt đầu*</label>
+                                                    <?php
+                                                    $autoDateStart = date('Y/m/d', strtotime('tomorrow'));
+                                                    ?>
+                                                    <input type="text"
+                                                           class="form-control border-0 select-item {{ $errors->has('start_at') ? ' has-error' : '' }}"
+                                                           id="start_date" autocomplete="off" name="start_at"
+                                                           value="{{ old('start_at', $autoDateStart) }}" readonly="readonly">
+                                                </div>
+                                                <div class="col-sm-4 p-0 mt-2">
+                                                    {{ Form::select('start', CHECK_TIME_DAY_OFF, null, ['class' => 'form-control option-time-day-off browser-default custom-select select-item mannager_id check-value' ]) }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group col-sm-6 m-0">
+                                            <div class="row">
+                                                <div class="col-sm-7 py-0 pr-0">
+                                                    <?php
+                                                    $autoDateEnd = date('Y/m/d', strtotime('tomorrow + 1day'));
+                                                    ?>
+                                                    <label class="text-w-400" for="inputZip">Tới ngày*</label>
+                                                    <input type="text"
+                                                           class="form-control select-item  border-0 {{ $errors->has('end_at') ? ' has-error' : '' }}"
+                                                           id="end_date" autocomplete="off" name="end_at"
+                                                           value="{{  old('end_at',$autoDateEnd) }}"
+                                                           readonly >
+                                                </div>
+                                                <div class="col-sm-4 p-0 mt-2">
+                                                    {{ Form::select('end', CHECK_TIME_DAY_OFF, null, ['class' => 'form-control border-0 option-time-day-off browser-default custom-select select-item mannager_id check-value' ]) }}
+                                                </div>
+                                            </div>
                                         </div>
                                         <!-- Default input -->
-                                        <div class="form-group col-sm-6 m-0">
-                                            <label class="text-w-400" for="inputZip">Tới ngày*</label>
-                                            <input type="text"
-                                                   class="form-control select-item  {{ $errors->has('end_at') ? ' has-error' : '' }}"
-                                                   id="end_date" autocomplete="off" name="end_at"
-                                                   value="{{  old('end_at') }}"
-                                                   readonly >
-                                        </div>
                                         <span id="errors_date" class="text-danger ml-3 "></span>
                                     </div>
                                     @if ($errors->has('start_at'))
@@ -322,7 +339,7 @@
                                     @endif
                                 </div>
 
-                                <div class="mb-3">
+                               {{-- <div class="mb-3">
                                     <!-- Default input -->
                                     <label class="text-w-400" for="exampleForm2">Thời gian nghỉ*</label>
                                     {{ Form::select('option_check', CHECK_TIME_DAY_OFF_NAME,null,['class' => 'form-control my-1 mr-1  browser-default custom-select md-form select-item reason_id check-value','placeholder'=>'Chọn thời gian nghỉ']) }}
@@ -331,11 +348,11 @@
                                             <span class="help-block text-danger">{{ $errors->first('option_check') }}</span>
                                         </div>
                                     @endif
-                                </div>
+                                </div>--}}
 
 
                                 <div class="">
-                                    <label class=" mt-1 text-w-400" for="exampleForm2">Người duyệt*</label>
+                                    <label class="text-w-400" for="exampleForm2">Người duyệt*</label>
                                     {{ Form::select('approver_id', $userManager, null, ['class' => 'form-control my-1 mr-1 browser-default custom-select md-form select-item mannager_id check-value','placeholder'=>'Chọn người duyệt đơn' ]) }}
                                     @if ($errors->has('approver_id'))
                                         <div class="mt-1 ml-3">
@@ -356,7 +373,7 @@
                             <div class="modal-body mx-3 mt-0 pb-0">
                                 <div class="mb-3">
                                     <!-- Default input -->
-                                    <label class="text-w-400" for="exampleForm2">Mục đích xin nghỉ*</label>
+                                    <label class="text-w-400" for="exampleForm2">Chế độ nghỉ*</label>
                                     <?php
                                         $vacation=VACATION;
                                         if (\Illuminate\Support\Facades\Auth::user()->sex == SEX['male']){

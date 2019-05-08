@@ -353,28 +353,11 @@ define('OT_TYPE', [
 ]);
 
 define('CHECK_TIME_DAY_OFF',[
-    'AM'=>0,
-    'PM'=>1,
-    'FULL'=>2
+    '08:00:00'=>'8:00',
+    '12:00:00'=>'12:00',
+    '18:00:00'=>'18:00',
 ]);
 define('DAY_OFF_TITLE_DEFAULT',1);
-define('DAY_OFF_AM',[
-   'strat'=> ' 08:00:00',
-   'end'=> ' 11:30:00'
-]);
-define('DAY_OFF_PM',[
-    'strat'=> ' 13:30:00',
-    'end'=> ' 17:30:00'
-]);
-define('DAY_OFF_FULL',[
-    'strat'=> ' 08:00:00',
-    'end'=> ' 17:30:00'
-]);
-define('CHECK_TIME_DAY_OFF_NAME',[
-    0=>'Nghỉ sáng',
-    1=>'Nghỉ chiều',
-    2=>'Nghỉ cả ngày'
-]);
 define('ARRAY_TITLE_DAYOFF_VACATION_MODE',[2,3,4]);
 
 define('GROUPS', [
@@ -382,6 +365,8 @@ define('GROUPS', [
     2 => 'PHP 2',
     3 => 'Mobile',
 ]);
+define('SPACE', ' ');
+
 
 
 

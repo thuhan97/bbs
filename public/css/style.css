@@ -911,6 +911,9 @@ td.blank, .type-1 {
     left: 25px;
 }
 
+#home .post-item img {
+    max-height: 120px;
+}
 
 @media (min-width: 768px) and (max-width: 1000px) {
     #app {
@@ -918,6 +921,12 @@ td.blank, .type-1 {
     }
 
 
+}
+
+@media (min-width: 576px) {
+    .jumbotron {
+        padding: 2rem;
+    }
 }
 
 @media (max-width: 768px) {

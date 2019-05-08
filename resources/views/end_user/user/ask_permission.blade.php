@@ -120,7 +120,7 @@
         <div class="col-md-6 text-right">
             <button onclick="location.href='{{route("day_off")}}?t=1'"
                     class="btn btn-danger waves-effect waves-light float-right" id="btn-off">
-                Xin nghỉ
+                Xin nghỉ phép
             </button>
             <button type="button"
                     class="d-none d-xl-block btn btn-primary approve-btn-ot waves-effect waves-light float-right"

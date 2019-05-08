@@ -27,6 +27,7 @@ class Regulation extends Model
         'content',
         'status',
         'approve_date',
+        'file_path',
         'created_at',
         'updated_at',
         'deleted_at',

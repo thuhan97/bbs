@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Models\RemainDayoff;
 use App\Models\User;
 use App\Repositories\Contracts\IUserRepository;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 /**
@@ -154,16 +155,6 @@ class UserController extends AdminBaseController
             flash()->error('Không tìm thấy nhân viên');
         }
         return redirect(route('admin::users.index'));
-    }
-    public function getRedirectAfterSave($record, $request, $isCreate = true)
-    {
-        if ($isCreate){
-            $dayOff=new RemainDayoff();
-            $dayOff->user_id=$record->id;
-            $dayOff->year=date('Y');
-            $dayOff->save();
-        }
-        return $this->redirectBackTo(route($this->getResourceRoutesAlias() . '.index'));
     }
     public function getValuesToSave(Request $request, $record = null)
     {

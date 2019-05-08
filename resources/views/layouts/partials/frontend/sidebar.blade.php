@@ -52,9 +52,11 @@ $name = $team->name ?? $config->name;
         <a href="{{route('post')}}"
            class="list-group-item list-group-item-action waves-effect {{ \App\Utils::checkRoute(['post', 'post_detail']) ? 'active': '' }}">
             <i class="fas fa-bell mr-3"></i>{{__l('Post')}}</a> -->
-        <a href="{{route('list_suggestions')}}"
-           class="list-group-item list-group-item-action waves-effect {{ \App\Utils::checkRoute(['list_suggestions']) ? 'active': '' }}">
-            <i class="fas fa-bell mr-3"></i>Đề xuất & góp ý</a>
+        @can('team-leader')
+            <a href="{{route('list_suggestions')}}"
+               class="list-group-item list-group-item-action waves-effect {{ \App\Utils::checkRoute(['list_suggestions']) ? 'active': '' }}">
+                <i class="fas fa-bell mr-3"></i>Đề xuất & góp ý</a>
+        @endcan
         <a href="{{route('event')}}"
            class="list-group-item list-group-item-action waves-effect {{ \App\Utils::checkRoute(['event', 'event_detail']) ? 'active': '' }}">
             <i class="fas fa-calendar mr-3"></i> {{__l('Event')}}</a>

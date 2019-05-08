@@ -63,7 +63,7 @@
                 {{ Form::select('year', get_years(), $year ?? date('Y') , ['class'=>'yearselect browser-default custom-select w-100 border-0 select_year option-select p-1']) }}
             </div>
             <div class="col-6 col-sm-4 col-xl-2 no-padding-left">
-                {{ Form::select('month', MONTH, $month ?? date('m'), ['class' => 'browser-default custom-select w-100 month option-select','placeholder'=>'Chọn tháng']) }}
+                {{ Form::select('month', MONTH, $month ?? '', ['class' => 'browser-default custom-select w-100 month option-select','placeholder'=>'Chọn tháng']) }}
             </div>
         </div>
         <div class="d-none d-xl-flex container-fluid col-12 row border-bottom-2 mb-2" style="position: relative;">
@@ -182,7 +182,8 @@
                 <th class="text-center">Nhân viên</th>
                 <th class="text-center">Từ ngày</th>
                 <th class="text-center d-none d-sm-table-cell">Tới ngày</th>
-                <th class="text-center">Tiêu đề</th>
+                <th class="text-center ">Tiêu đề</th>
+                <th class="text-center">Nội dung</th>
                 <th class="text-center d-none d-sm-table-cell">Ngày nghỉ</th>
                 <th class="text-center">Phê duyệt</th>
                 <th class="text-center d-none d-sm-table-cell">Xem thêm</th>
@@ -206,15 +207,9 @@
                     <td class="text-center d-none d-sm-table-cell">
                         {{$record->end_date}}
                     </td>
-                    <td class="text-center table-title">
-                        @foreach(VACATION as $key => $value)
-                            @if($key == $record->title)
-                                {{ $value }}
-                            @endif
-                        @endforeach
-                    </td>
-                    <td class="text-center d-none d-sm-table-cell">{{!!!$record->number_off ? 'Chưa rõ' : checkNumber($record->number_off)  }}
-                        ngày
+                    <td class="text-center ">{{ array_key_exists($record->title, VACATION_FULL) ? VACATION_FULL[$record->title] : ''  }}</td>
+                    <td class="text-center ">{!! nl2br($record->reason) !!}</td>
+                    <td class="text-center d-none d-sm-table-cell">{{!!!($record->number_off || $record->absent > DEFAULT_VALUE)? 'Đang duyệt' : checkNumber($record->number_off) + checkNumber($record->absent).' ngày'}}
                     </td>
 
                     <td class="text-center p-0" style="vertical-align: middle;">
@@ -240,7 +235,7 @@
     {{$getDayOff->render('end_user.paginate') }}
     <!--Table-->
 
-        <form action="{{ route('edit_day_off_detail',['id'=>1]) }}" method="post" id="edit-day-off">
+        <form action="{{ route('edit_day_off_detail') }}" method="post" id="edit-day-off">
             @csrf
             <div class="modal fade modal-open" id="modal-form" tabindex="-1" role="dialog"
                  aria-labelledby="myModalLabel"
@@ -264,7 +259,7 @@
                                 <!-- Default input -->
                                 <label class="text-d-bold" for="exampleForm2">Thời gian được tính:</label>
                                 <strong class="" id="number_off">
-                                </strong> ngày
+                                </strong>
                             </div>
                             <div class="mb-3">
                                 <!-- Default input -->
@@ -406,6 +401,7 @@
                         "1": "Lý do cá nhân",
                         "2": "Nghỉ đám cưới",
                         "3": "Nghỉ đám hiếu",
+                        "4": "Nghỉ thai sản",
                     }
                     $.ajax
                     ({
@@ -415,7 +411,7 @@
                             $('#user-day-off').html(data.userdayoff);
                             $('#number_off').html(data.data.number_off);
                             $('#strat_end').html(data.data.start_date + ' - ' + data.data.end_date);
-                            $('#reason').html(data.data.reason);
+                            $('#reason').html(data.data.reason.replace(/\n/g, "<br />"));
                             $('#id-delete').val(data.data.id);
                             if (title.hasOwnProperty(data.data.title)) {
                                 $('#title').html(title[data.data.title]);

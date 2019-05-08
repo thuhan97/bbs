@@ -462,6 +462,9 @@ if (!function_exists('to_work_time_name')) {
 
 function checkNumber($number)
 {
+    if (!$number){
+        return 0;
+    }
     $explode = explode('.', $number);
     if ($explode[1] > 0) {
         return $number;

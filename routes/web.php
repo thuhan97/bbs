@@ -46,8 +46,8 @@ Route::group([
     Route::get('/hien-thi-ngay-nghi/{status}', 'UserController@dayOffShow')->name('day_off_show');
     Route::get('/tim-kiem-ngay-nghi/', 'UserController@dayOffSearch')->name('day_off_search');
     Route::get('/chi-tiet-ngay-nghi/{id?}/{check?}', 'UserController@dayOffDetail')->name('day_off_detail');
-    Route::post('/chinh-sua-ngay-nghi/{id}', 'UserController@editDayOffDetail')->name('edit_day_off_detail');
-    Route::post('/xoa-don-xin-nghi/', 'UserController@deleteDayOff')->name('delete_day_off');
+    Route::post('/chinh-sua-ngay-nghi/{id?}', 'UserController@editDayOffDetail')->name('edit_day_off_detail');
+    Route::post('/xoa-don-xin-nghi/', 'UserController@deleteOrCloseDayOff')->name('delete_day_off');
 
     Route::get('/cong-no', 'PunishesController@index')->name('punish');
     Route::get('/noi-quy-quy-dinh', 'RegulationController@index')->name('regulation');
@@ -78,6 +78,7 @@ Route::group([
     // create day off
     Route::post('/ngay-nghi/create-calendar', 'UserController@dayOffCreateCalendar')->name('day_off_create_calendar');
     Route::post('/ngay-nghi/create-day-off', 'UserController@dayOffCreate')->name('day_off_create');
+    Route::post('/ngay-nghi/create-day-off-vacation', 'UserController@dayOffCreatevacationVacation')->name('day_off_create_vacation');
 
 });
 

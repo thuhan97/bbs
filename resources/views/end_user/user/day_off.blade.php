@@ -142,6 +142,7 @@
                 <th class="text-center">Từ ngày</th>
                 <th class="d-none d-md-table-cell text-center">Tới ngày</th>
                 <th class="text-center">Tiêu đề</th>
+                <th class="text-center">Nội dung</th>
                 <th class="d-none d-md-table-cell text-center">Ngày được duyệt</th>
                 <th class="text-center">Phê duyệt</th>
                 <th class="d-none d-md-table-cell text-center">Xem thêm</th>
@@ -156,8 +157,9 @@
                     </th>
                     <td class="text-center">{{$absence->start_date}}</td>
                     <td class="d-none d-md-table-cell text-center">{{$absence->end_date}}</td>
-                    <td class="text-center">{{ $absence->reason  }}</td>
-                    <td class="d-none d-md-table-cell text-center">{{!!!$absence->number_off ? 'Đang duyệt' : checkNumber($absence->number_off).' ngày'}}
+                    <td class="text-center">{{ array_key_exists($absence->title, VACATION_FULL) ? VACATION_FULL[$absence->title] : ''  }}</td>
+                    <td class="text-center">{!! nl2br($absence->reason) !!}</td>
+                    <td class="d-none d-md-table-cell text-center">{{!!!($absence->number_off || $absence->absent > DEFAULT_VALUE)? 'Đang duyệt' : checkNumber($absence->number_off) + checkNumber($absence->absent).' ngày'}}
 
                     </td>
                     <td class="text-center">
@@ -251,98 +253,189 @@
         <div class="modal-dialog modal-center" role="document">
             <div class="modal-content" id="bg-img" style="background-image: url({{ asset('img/font/xin_nghi.png') }})">
                 <div class="modal-header text-center border-bottom-0 p-3">
-                    <h4 class="modal-title w-100 font-weight-bold pt-2">ĐƠN XIN NGHỈ</h4>
+                    <h4 class="modal-title w-100 font-weight-bold pt-2">ĐƠN XIN NGHỈ PHÉP</h4>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span class="btn-close-icon" aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <form action="{{ route('day_off_create') }}" method="post" id="form_create_day_off">
-                    @csrf
-                    <div class="modal-body mx-3 mt-0 pb-0">
-                        <div class="mb-3">
+                <div class="modal-body mt-0 pb-0 d-flex justify-content-start ml-3">
+                    <div class="custom-control custom-radio">
+                        <input type="radio" class="custom-control-input option-dayoff" id="defaultUnchecked" name="defaultExampleRadios" checked value="0">
+                        <label class="custom-control-label" for="defaultUnchecked"><h5>Xin nghỉ phép</h5></label>
+                    </div>
 
-                            <!-- Default input -->
-                            <label class="text-w-400" for="exampleForm2">Mục đích xin nghỉ*</label>
-                            {{ Form::select('title', VACATION,null,['class' => 'form-control my-1 mr-1  browser-default custom-select md-form select-item reason_id check-value','placeholder'=>'Chọn lý do xin nghỉ']) }}
-                            @if ($errors->has('title'))
+                    <!-- Default checked -->
+                    <div class="custom-control custom-radio ml-3">
+                        <input type="radio" class="custom-control-input option-dayoff" id="defaultChecked" name="defaultExampleRadios" value="1" @if(old('title')) checked @endif>
+                        <label class="custom-control-label " for="defaultChecked"><h5>Xin nghỉ chế độ</h5></label>
+                    </div>
+                </div>
+                    <div class="tab-content p-0" id="myTabContent">
+                        <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                            <form action="{{ route('day_off_create') }}" method="post" id="form_create_day_off">
+                                @csrf
+                            <div class="modal-body mx-3 mt-0 pb-0">
+                                <div class="mb-3">
+                                    <label class="text-w-400" for="exampleFormControlTextarea5">Nội dung*</label>
+                                    <textarea
+                                            class="form-control reason_id rounded-0 select-item check-value {{ $errors->has('reason') ? ' has-error' : '' }}"
+                                            id="exampleFormControlTextarea2" rows="3" placeholder="Lý do xin nghỉ..."
+                                            name="reason">{{  old('reason') }}</textarea>
+                                    @if ($errors->has('reason'))
+                                        <div class="mt-1">
+                                            <span class="help-block text-danger">{{ $errors->first('reason') }}</span>
+                                        </div>
+                                    @endif
+                                </div>
+                                <div class="mb-3">
+                                    <div class="row">
+                                        <div class="form-group col-sm-6 m-0">
+                                            <label class=" text-w-400" for="inputCity">Ngày bắt đầu*</label>
+                                            <?php
+                                              $autoDate = date('Y/m/d', strtotime('tomorrow'));
+                                            ?>
+                                            <input type="text"
+                                                   class="form-control select-item {{ $errors->has('start_at') ? ' has-error' : '' }}"
+                                                   id="start_date" autocomplete="off" name="start_at"
+                                                   value="{{ old('start_at', $autoDate) }}" readonly="readonly">
+                                        </div>
+                                        <!-- Default input -->
+                                        <div class="form-group col-sm-6 m-0">
+                                            <label class="text-w-400" for="inputZip">Tới ngày*</label>
+                                            <input type="text"
+                                                   class="form-control select-item  {{ $errors->has('end_at') ? ' has-error' : '' }}"
+                                                   id="end_date" autocomplete="off" name="end_at"
+                                                   value="{{  old('end_at') }}"
+                                                   readonly >
+                                        </div>
+                                        <span id="errors_date" class="text-danger ml-3 "></span>
+                                    </div>
+                                    @if ($errors->has('start_at'))
+                                        <div>
+                                            <span class="help-block text-danger">{{ $errors->first('start_at') }}</span>
+                                        </div>
+                                    @endif
+                                    @if ($errors->has('end_at'))
+                                        <div class="mt-1">
+                                            <span class="help-block text-danger">{{ $errors->first('end_at') }}</span>
+                                        </div>
+                                    @endif
+                                </div>
+
+                                <div class="mb-3">
+                                    <!-- Default input -->
+                                    <label class="text-w-400" for="exampleForm2">Thời gian nghỉ*</label>
+                                    {{ Form::select('option_check', CHECK_TIME_DAY_OFF_NAME,null,['class' => 'form-control my-1 mr-1  browser-default custom-select md-form select-item reason_id check-value','placeholder'=>'Chọn thời gian nghỉ']) }}
+                                    @if ($errors->has('option_check'))
+                                        <div class="">
+                                            <span class="help-block text-danger">{{ $errors->first('option_check') }}</span>
+                                        </div>
+                                    @endif
+                                </div>
+
+
                                 <div class="">
-                                    <span class="help-block text-danger">{{ $errors->first('title') }}</span>
+                                    <label class=" mt-1 text-w-400" for="exampleForm2">Người duyệt*</label>
+                                    {{ Form::select('approver_id', $userManager, null, ['class' => 'form-control my-1 mr-1 browser-default custom-select md-form select-item mannager_id check-value','placeholder'=>'Chọn người duyệt đơn' ]) }}
+                                    @if ($errors->has('approver_id'))
+                                        <div class="mt-1 ml-3">
+                                            <span class="help-block text-danger">{{ $errors->first('approver_id') }}</span>
+                                        </div>
+                                    @endif
                                 </div>
-                            @endif
-                        </div>
-                        <input type="hidden" name="day_off_id" value="">
-                        <div class="mb-3">
-                            <label class="text-w-400" for="exampleFormControlTextarea5">Nội dung*</label>
-                            <textarea
-                                    class="form-control reason_id rounded-0 select-item check-value {{ $errors->has('reason') ? ' has-error' : '' }}"
-                                    id="exampleFormControlTextarea2" rows="3" placeholder="Lý do xin nghỉ..."
-                                    name="reason">{{  old('reason') }}</textarea>
-                            @if ($errors->has('reason'))
-                                <div class="mt-1">
-                                    <span class="help-block text-danger">{{ $errors->first('reason') }}</span>
-                                </div>
-                            @endif
-                        </div>
-                        <div class="mb-2">
-                            <div class="row">
-                                <div class="form-group col-sm-6 m-0">
-                                    <label class=" text-w-400" for="inputCity">Ngày bắt đầu*</label>
-                                    <?php
-                                    $hours = date('H:i');
-                                    if ($hours > '12:00') {
-                                        //tomorrow
-                                        $autoDate = date('Y-m-d 08:00', strtotime('tomorrow'));
-
-                                    } else if ($hours > '07:00') {
-                                        //affternoon
-                                        $autoDate = date('Y-m-d 12:00');
-                                    } else {
-                                        //today
-                                        $autoDate = date('Y-m-d 08:00');
-                                    }
-                                    ?>
-                                    <input type="text"
-                                           class="form-control select-item {{ $errors->has('start_at') ? ' has-error' : '' }}"
-                                           id="start_date" autocomplete="off" name="start_at"
-                                           value="{{ old('start_at', $autoDate) }}" readonly="readonly">
-                                </div>
-                                <!-- Default input -->
-                                <div class="form-group col-sm-6 m-0">
-                                    <label class="text-w-400" for="inputZip">Tới ngày*</label>
-                                    <input type="text"
-                                           class="form-control select-item {{ $errors->has('end_at') ? ' has-error' : '' }}"
-                                           id="end_date" autocomplete="off" name="end_at"
-                                           value="{{  old('end_at') }}"
-                                           readonly="readonly">
-                                </div>
-                                <span id="errors_date" class="text-danger ml-3 "></span>
                             </div>
-                            @if ($errors->has('start_at'))
-                                <div>
-                                    <span class="help-block text-danger">{{ $errors->first('start_at') }}</span>
+                                <div class="pt-3 pb-4 d-flex justify-content-center border-top-0 rounded mb-0"
+                                     id="create_day_off">
+                                    <button class="btn btn-primary">GỬI ĐƠN</button>
                                 </div>
-                            @endif
-                            @if ($errors->has('end_at'))
-                                <div class="mt-1">
-                                    <span class="help-block text-danger">{{ $errors->first('end_at') }}</span>
-                                </div>
-                            @endif
+                            </form>
                         </div>
-                        <div class="">
-                            <label class=" mt-1 text-w-400" for="exampleForm2">Người duyệt*</label>
-                            {{ Form::select('approver_id', $userManager, null, ['class' => 'form-control my-1 mr-1 browser-default custom-select md-form select-item mannager_id check-value','placeholder'=>'Chọn người duyệt đơn' ]) }}
-                            @if ($errors->has('approver_id'))
-                                <div class="mt-1 ml-3">
-                                    <span class="help-block text-danger">{{ $errors->first('approver_id') }}</span>
+                        <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+                            <form action="{{ route('day_off_create_vacation') }}" method="post" id="form_create_day_off_vacation">
+                                @csrf
+                            <div class="modal-body mx-3 mt-0 pb-0">
+                                <div class="mb-3">
+                                    <!-- Default input -->
+                                    <label class="text-w-400" for="exampleForm2">Mục đích xin nghỉ*</label>
+                                    <?php
+                                        $vacation=VACATION;
+                                        if (\Illuminate\Support\Facades\Auth::user()->sex == SEX['male']){
+                                            (array_pop($vacation));
+                                        }
+                                    ?>
+                                    {{ Form::select('title', $vacation,null,['class' => 'form-control my-1 mr-1  browser-default custom-select md-form select-item reason_id check-value']) }}
+                                    @if ($errors->has('title'))
+                                        <div class="">
+                                            <span class="help-block text-danger">{{ $errors->first('title') }}</span>
+                                        </div>
+                                    @endif
                                 </div>
-                            @endif
+                                <input type="hidden" name="day_off_id" value="">
+                                <div class="mb-3">
+                                    <label class="text-w-400" for="exampleFormControlTextarea5">Nội dung*</label>
+                                    <textarea
+                                            class="form-control reason_id rounded-0 select-item check-value {{ $errors->has('reason') ? ' has-error' : '' }}"
+                                            id="exampleFormControlTextarea2" rows="3" placeholder="Lý do xin nghỉ..."
+                                            name="reason">{{  old('reason') }}</textarea>
+                                    @if ($errors->has('reason'))
+                                        <div class="mt-1">
+                                            <span class="help-block text-danger">{{ $errors->first('reason') }}</span>
+                                        </div>
+                                    @endif
+                                </div>
+                                <div class="mb-2">
+                                    <div class="row">
+                                        <div class="form-group col-sm-6 m-0">
+                                            <label class=" text-w-400" for="inputCity">Ngày bắt đầu*</label>
+                                            <?php
+
+                                            $autoDate = date('Y/m/d', strtotime('tomorrow'));
+
+                                            ?>
+                                            <input type="text"
+                                                   class="form-control select-item  {{ $errors->has('start_at') ? ' has-error' : '' }}"
+                                                   id="start_date1" autocomplete="off" name="start_at"
+                                                   value="{{ old('start_at', $autoDate) }}" readonly="readonly">
+                                        </div>
+                                        <!-- Default input -->
+                                        <div class="form-group col-sm-6 m-0">
+                                            <label class="text-w-400" for="inputZip">Tới ngày*</label>
+                                            <input type="text"
+                                                   class="form-control select-item {{ $errors->has('end_at') ? ' has-error' : '' }}"
+                                                   id="end_date1" autocomplete="off" name="end_at"
+                                                   value="{{  old('end_at') }}"
+                                                   readonly="readonly">
+                                        </div>
+                                        <span id="errors_date1" class="text-danger ml-3 "></span>
+                                    </div>
+                                    @if ($errors->has('start_at'))
+                                        <div>
+                                            <span class="help-block text-danger">{{ $errors->first('start_at') }}</span>
+                                        </div>
+                                    @endif
+                                    @if ($errors->has('end_at'))
+                                        <div class="mt-1">
+                                            <span class="help-block text-danger">{{ $errors->first('end_at') }}</span>
+                                        </div>
+                                    @endif
+                                </div>
+                                <div class="">
+                                    <label class=" mt-1 text-w-400" for="exampleForm2">Người duyệt*</label>
+                                    {{ Form::select('approver_id', $userManager, null, ['class' => 'form-control my-1 mr-1 browser-default custom-select md-form select-item mannager_id check-value','placeholder'=>'Chọn người duyệt đơn' ]) }}
+                                    @if ($errors->has('approver_id'))
+                                        <div class="mt-1 ml-3">
+                                            <span class="help-block text-danger">{{ $errors->first('approver_id') }}</span>
+                                        </div>
+                                    @endif
+                                </div>
+                            </div>
+                                <div class="pt-3 pb-4 d-flex justify-content-center border-top-0 rounded mb-0"
+                                     id="create_day_off">
+                                    <button class="btn btn-primary">GỬI ĐƠN</button>
+                                </div>
+                            </form>
                         </div>
                     </div>
-                    <div class="pt-3 pb-4 d-flex justify-content-center border-top-0 rounded mb-0"
-                         id="create_day_off">
-                        <button class="btn btn-primary">GỬI ĐƠN</button>
-                    </div>
-                </form>
             </div>
         </div>
     </div>
@@ -439,6 +532,16 @@
                 $('#modal-form').modal('show');
             });
         </script>
+        @if(old('title'))
+            <script>
+                $(function () {
+                    $('#home').removeClass('active show');
+                    $('#profile').addClass('active show');
+                    $('#defaultChecked').attr('checked');
+                });
+            </script>
+
+            @endif
     @endif
 
     @if(session()->has('day_off_success'))
@@ -469,106 +572,110 @@
             $('.option-select').on('change', function () {
                 $("#form-search").submit();
             });
+            $('form').each(function () {
+                $(this).validate({
+                    ignore: '[readonly]',
+                    rules: {
+                        title: {
+                            required: true,
+                            range: [1, 3],
+                            digits: true
+                        },
+                        start_at: {
+                            required: true,
+                            date: true
+                        },
+                        end_at: {
+                            required: true,
+                            date: true
+                        },
+                        approver_id: {
+                            required: true,
+                            digits: true
+                        },
+                        reason: {
+                            required: true,
+                            maxlength: 100
+                        }
+                        ,
+                        number_off: {
+                            required: true,
+                            number: true
+                        },
+                        option_check :{
+                            required: true,
+                            range: [0, 2],
+                            digits: true
+                        }
 
-            $("#form_create_day_off").validate({
-                rules: {
-                    title: {
-                        required: true,
-                        range: [1, 3],
-                        digits: true
                     },
-                    start_at: {
-                        required: true,
-                        date: true
-                    },
-                    end_at: {
-                        required: true,
-                        date: true
-                    },
-                    approver_id: {
-                        required: true,
-                        digits: true
-                    },
-                    reason: {
-                        required: true,
-                        maxlength: 100
+                    messages: {
+                        title: {
+                            required: "Vui lòng chọn lý do xin nghỉ",
+                            digits: "Vui lòng nhập đúng định dạng số",
+                            range: "Vui lòng xem lại lý do xin nghỉ"
+                        },
+                        start_at: {
+                            required: "Vui lòng vui lòng chọn lý do ngày nghỉ",
+                            date: "Vui lòng nhập đúng địn dạng ngày tháng"
+                        },
+                        end_at: {
+                            required: "Vui lòng vui lòng chọn ngày kết thúc",
+                            date: "Vui lòng nhập đúng địn dạng ngày tháng"
+                        },
+                        approver_id: {
+                            required: "Vui lòng chọn người phê duyệt",
+                            digits: "Vui lòng nhập đúng định dạng số"
+                        },
+                        reason: {
+                            required: "Vui lòng nhập nội dung đơn",
+                            maxlength: "Bạn đã nhập quá 100 kí tự"
+                        },
+                        number_off: {
+                            required: "Vui lòng nhập số ngày dự kiến",
+                            number: "Vui lòng nhập đúng định dạng số"
+                        },
+                        option_check: {
+                            required: "Vui lòng chọn thời gian nghỉ",
+                            digits: "Vui lòng nhập đúng định dạng số",
+                            range: "Vui lòng kiểm tra lại thời gian"
+                        },
                     }
-                    ,
-                    number_off: {
-                        required: true,
-                        number: true
-                    }
-
-                },
-                messages: {
-                    title: {
-                        required: "Vui lòng chọn lý do xin nghỉ",
-                        digits: "Vui lòng nhập đúng định dạng số",
-                        range: "Vui lòng xem lại lý do xin nghỉ"
-                    },
-                    start_at: {
-                        required: "Vui lòng vui lòng chọn lý do ngày nghỉ",
-                        date: "Vui lòng nhập đúng địn dạng ngày tháng"
-                    },
-                    end_at: {
-                        required: "Vui lòng vui lòng chọn lý do ngày nghỉ",
-                        date: "Vui lòng nhập đúng địn dạng ngày tháng"
-                    },
-                    approver_id: {
-                        required: "Vui lòng chọn người phê duyệt",
-                        digits: "Vui lòng nhập đúng định dạng số"
-                    },
-                    reason: {
-                        required: "Vui lòng nhập nội dung đơn",
-                        maxlength: "Bạn đã nhập quá 100 kí tự"
-                    },
-                    number_off: {
-                        required: "Vui lòng nhập số ngày dự kiến",
-                        number: "Vui lòng nhập đúng định dạng số"
-                    },
-                }
+                });
             });
-            var today = new Date();
-            var mon = today.getMonth() + 1;
-            var date = today.getFullYear() + '-' + mon + '-' + today.getDate()
+
+
             $('.show-modal').on('click', function () {
-                /*$('.mannager_id , .reason_id , #start_date , #end_date ').val('');
-                $('.mannager_id,.reason_id').removeAttr('readonly');
-                $('.mannager_id , .reason_id ').removeAttr('disabled');
-                $('#show-record').hide();
-                $('#approve_comment').hide();
-                $('#exampleFormControlTextarea2').text('');
-                $('#create_day_off').html('<button class="btn btn-primary btn-send">GỬI ĐƠN</button>');*/
                 $('#modal-form').modal('show');
             });
+
+
+            var today = new Date();
+            var mon = today.getMonth() + 1;
+            var date = today.getFullYear() + '-' + mon+1 + '-' + today.getDate();
+
 
             @if($autoShowModal)
             $('#modal-form').modal('show');
             @endif
 
-            $('#start_date').datetimepicker({
-                hoursDisabled: '0,1,2,3,4,5,6,7,18,19,20,21,22,23',
-                daysOfWeekDisabled: [0, 6],
-                startDate: date,
-            });
-            $('#end_date').datetimepicker({
+            $('#start_date , #start_date1').datepicker({
+                format: 'yyyy/mm/dd',
                 hoursDisabled: '0,1,2,3,4,5,6,7,18,19,20,21,22,23',
                 daysOfWeekDisabled: [0, 6],
             });
+
+            $('#end_date,#end_date1').datepicker({
+                format: 'yyyy/mm/dd',
+                hoursDisabled: '0,1,2,3,4,5,6,7,18,19,20,21,22,23',
+                daysOfWeekDisabled: [0, 6],
+            });
+
             $('#end_date,#start_date').on('change', function () {
-                var start = $('#start_date').val();
-                var end = $('#end_date').val();
-                if (start == "" || end == "") {
-                    $('#errors_date').text('vui lòng chọn ngày bắt đầu và ngày kết thúc');
-                    return;
-                }
-                if (start >= end) {
-                    $('.btn-send').attr('disabled', 'disabled');
-                    $('#errors_date').text('Ngày kết thúc phải lớn hơn hoặc bằng ngày bắt đầu.');
-                } else {
-                    $('.btn-send').removeAttr('disabled');
-                    $('#errors_date').text('');
-                }
+                checkDate('#start_date','#end_date','#errors_date');
+            })
+            $('#end_date1,#start_date1').on('change', function () {
+                checkDate('#start_date1','#end_date1','#errors_date1');
             })
 
             $('.check-value').on('change', function () {
@@ -587,6 +694,7 @@
                     "1": "Lý do cá nhân",
                     "2": "Nghỉ đám cưới",
                     "3": "Nghỉ đám hiếu",
+                    "4": "Nghỉ thai sản",
                 }
                 $.ajax
                 ({
@@ -596,7 +704,7 @@
                         $('#approver_id').html(data.approver);
                         $('#number_off').html(data.data.number_off);
                         $('#strat_end').html(data.data.start_date + ' - ' + data.data.end_date);
-                        $('#reason').html(data.data.reason);
+                        $('#reason').html(data.data.reason.replace(/\n/g, "<br />"));
                         $('#id-delete').val(data.data.id);
                         if (title.hasOwnProperty(data.data.title)) {
                             $('#title').html(title[data.data.title]);
@@ -631,14 +739,40 @@
                 $(this).addClass('text-primary');
             })
 
+            $('.option-dayoff').on('click',function () {
+                var check=$(this).val();
+                if (check == 1){
+                    $('#home').removeClass('active show');
+                    $('#profile').addClass('active show');
+                }else {
+                    $('#home').addClass('active show');
+                    $('#profile').removeClass('active show');
+                }
+            })
+
 
         });
+
+        function checkDate(start, end, errors) {
+                var start1 = $(start).val();
+                var end1 = $(end).val();
+                if (start1 == "" || end1 == "") {
+                    $(errors).text('vui lòng chọn ngày bắt đầu và ngày kết thúc');
+                    return;
+                }
+                if (start1 > end1) {
+                    $('.btn-send').attr('disabled', 'disabled');
+                    $(errors).text('Ngày kết thúc phải lớn hơn hoặc bằng ngày bắt đầu.');
+                } else {
+                    $('.btn-send').removeAttr('disabled');
+                    $(errors).text('');
+                }
+        }
     </script>
 @endsection
 
 @push('extend-css')
     <link href="{{ cdn_asset('/bootstrap-datepicker/css/bootstrap-datepicker.min.css') }}" rel="stylesheet">
-    <link href="{{ cdn_asset('/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css') }}" rel="stylesheet">
     <style>
         #textareaForm {
             height: 150px;

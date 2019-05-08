@@ -19,6 +19,7 @@ use App\Services\Contracts\IUserService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Auth;
 
 class UserService extends AbstractService implements IUserService
 {
@@ -106,7 +107,6 @@ class UserService extends AbstractService implements IUserService
      */
     public function getUserManager()
     {
-        $userManager = $this->model->where('jobtitle_id', '>=', MIN_APPROVE_JOB)->where('status', ACTIVE_STATUS)->pluck('name', 'id');
-        return $userManager;
+        return $this->model->where('jobtitle_id', '>=', MIN_APPROVE_JOB)->where('status', ACTIVE_STATUS)->where('id', '<>', Auth::id())->pluck('name', 'id');
     }
 }

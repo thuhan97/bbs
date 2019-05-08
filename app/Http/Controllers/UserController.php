@@ -390,11 +390,30 @@ class UserController extends Controller
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function dayOffCreate(createDayOffRequest $request)
+    public function dayOffCreatevacationVacation (CreateDayOffRequest $request)
     {
-
         $dayOff = new DayOff();
         $dayOff->fill($request->all());
+        $dayOff->user_id = Auth::id();
+        $dayOff->save();
+        return redirect(route('day_off'))->with('day_off_success', '');
+    }
+
+    public function dayOffCreate(CreateDayOffRequest $request)
+    {
+        $dayOff = new DayOff();
+        $dayOff->fill($request->all());
+        if ($request->option_check == CHECK_TIME_DAY_OFF['AM']){
+            $dayOff->start_at=$request->start_at.DAY_OFF_AM['strat'];
+            $dayOff->end_at=$request->end_at.DAY_OFF_AM['end'];
+        }elseif ($request->option_check == CHECK_TIME_DAY_OFF['PM']){
+            $dayOff->start_at=$request->start_at.DAY_OFF_PM['strat'];
+            $dayOff->end_at=$request->end_at.DAY_OFF_PM['end'];
+        }else{
+            $dayOff->start_at=$request->start_at.DAY_OFF_FULL['strat'];
+            $dayOff->end_at=$request->end_at.DAY_OFF_FULL['end'];
+        }
+        $dayOff->title=DAY_OFF_TITLE_DEFAULT;
         $dayOff->user_id = Auth::id();
         $dayOff->save();
         return redirect(route('day_off'))->with('day_off_success', '');

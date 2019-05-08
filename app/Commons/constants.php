@@ -88,10 +88,11 @@ define('JOB_TITLES', [
 ]);
 
 define('POSITIONS', [
-    0 => 'Chuyên viên',
+    0 => 'Lập trình viên',
     1 => 'Kỹ sư cầu nối',
     2 => 'Manager',
     3 => 'Giám đốc',
+    4 => 'Chuyên viên',
 ]);
 
 define('SEXS', [
@@ -205,7 +206,7 @@ define('VACATION', [
 ]);
 
 define('VACATION_FULL', [
-    1=>'Lý do cá nhân',
+    1 => 'Lý do cá nhân',
     2 => 'Nghỉ đám cưới',
     3 => 'Nghỉ đám hiếu',
     4 => 'Nghỉ thai sản',
@@ -351,7 +352,6 @@ define('OT_TYPE', [
     1 => 'Dự án',
     2 => 'OT lý do cá nhân',
 ]);
-
 define('CHECK_TIME_DAY_OFF',[
     '08:00:00'=>'8:00',
     '12:00:00'=>'12:00',
@@ -359,11 +359,11 @@ define('CHECK_TIME_DAY_OFF',[
 ]);
 define('DAY_OFF_TITLE_DEFAULT',1);
 define('ARRAY_TITLE_DAYOFF_VACATION_MODE',[2,3,4]);
-
 define('GROUPS', [
     1 => 'PHP 1',
     2 => 'PHP 2',
     3 => 'Mobile',
+    4 => 'Hành chính nhân sự',
 ]);
 define('SPACE', ' ');
 

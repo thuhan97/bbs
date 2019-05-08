@@ -1,13 +1,20 @@
+<?php
+$team = \Auth::user()->team();
+
+$logoUrl = $team->banner ?? 'http://jvb-corp.com/img/logo.png';
+$name = $team->name ?? $config->name;
+?>
+
 <!-- Sidebar -->
 <div class="sidebar fixed sidebar-fixed position-fixed" id="slide-out">
 
-    <div class="text-center ">
+    <div class="text-center mb-xl-3">
         <a href="/" class="logo-wrapper waves-effect">
-            <img src="http://jvb-corp.com/img/logo.png" class="img-fluid" alt="">
+            <img src="{{$logoUrl}}" class="img-fluid" alt="">
         </a>
 
         <p><strong class="text-uppercase text-primary">
-                {{$config->name}}
+                {{$name}}
             </strong></p>
     </div>
     <div class="list-group list-group-flush" style="margin: 0 -15px">
@@ -41,11 +48,15 @@
         <a href="{{route('share_experience')}}"
            class="list-group-item list-group-item-action waves-effect {{ \App\Utils::checkRoute(['share_experience']) ? 'active': '' }}">
             <i class="fas fa-book mr-3"></i>
-            Kinh nghiệm làm việc</a>
+            Kinh nghiệm làm việc</a><!-- 
         <a href="{{route('post')}}"
            class="list-group-item list-group-item-action waves-effect {{ \App\Utils::checkRoute(['post', 'post_detail']) ? 'active': '' }}">
-            <i class="fas fa-bell mr-3"></i> {{__l('Post')}}</a>
-
+            <i class="fas fa-bell mr-3"></i>{{__l('Post')}}</a> -->
+        @can('team-leader')
+            <a href="{{route('list_suggestions')}}"
+               class="list-group-item list-group-item-action waves-effect {{ \App\Utils::checkRoute(['list_suggestions']) ? 'active': '' }}">
+                <i class="fas fa-bell mr-3"></i>Đề xuất & góp ý</a>
+        @endcan
         <a href="{{route('event')}}"
            class="list-group-item list-group-item-action waves-effect {{ \App\Utils::checkRoute(['event', 'event_detail']) ? 'active': '' }}">
             <i class="fas fa-calendar mr-3"></i> {{__l('Event')}}</a>

@@ -50,6 +50,7 @@
 <script type="text/javascript" src="{{ cdn_asset('js/mdb.min.js') }}"></script>
 {{--<script type="text/javascript" src="{{ asset('js/mdb.min.js') }}"></script>--}}
 <script type="text/javascript" src="{{ cdn_asset('js/main.js') }}"></script>
+
 @stack('extend-js')
 </body>
 </html>

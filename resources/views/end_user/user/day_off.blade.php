@@ -253,7 +253,7 @@
         <div class="modal-dialog modal-center" role="document">
             <div class="modal-content" id="bg-img" style="background-image: url({{ asset('img/font/xin_nghi.png') }})">
                 <div class="modal-header text-center border-bottom-0 p-3">
-                    <h4 class="modal-title w-100 font-weight-bold pt-2">ĐƠN XIN NGHỈ PHÉP</h4>
+                    <h4 class="modal-title w-100 font-weight-bold pt-2">XIN NGHỈ PHÉP</h4>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span class="btn-close-icon" aria-hidden="true">&times;</span>
                     </button>

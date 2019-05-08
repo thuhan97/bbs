@@ -958,7 +958,15 @@ td.blank, .type-1, .type-2 {
 .td-approve {
     padding: 18px 0;
 }
-
+.option-time-day-off{
+    height: 38px;
+    margin-left: -3px;
+    margin-top: 23px;
+    background-color: #e9ecef;
+    border: none;
+    opacity: inherit;
+    width: 80px;
+}
 
 .navbar.navbar-light .breadcrumb .nav-item .nav-link:hover, .navbar.navbar-light .navbar-nav .nav-item .nav-link:hover {
     color: #6098f2;
@@ -966,6 +974,10 @@ td.blank, .type-1, .type-2 {
 
 .navbar.navbar-light .breadcrumb .nav-item.active > .nav-link:hover, .navbar.navbar-light .navbar-nav .nav-item.active > .nav-link:hover, .navbar.navbar-light .navbar-toggler, .navbar.navbar-light form .md-form .form-control {
     color: #000;
+}
+
+.no-box-shadow {
+    box-shadow: none;
 }
 
 @media only screen and (min-device-width: 1024px) and (max-device-width: 1366px) and (-webkit-min-device-pixel-ratio: 2) and (orientation: portrait) {

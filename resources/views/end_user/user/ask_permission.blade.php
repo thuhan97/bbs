@@ -114,24 +114,24 @@
         @endif
     @endcan
     <div class="row mb-4">
-        <div class="col-md-6">
+        <div class="col-md-5">
             <h2>Xin phép cá nhân</h2>
         </div>
-        <div class="col-md-6 text-right">
+        <div class="col-md-7 text-right">
             <button onclick="location.href='{{route("day_off")}}?t=1'"
-                    class=" approve-btn-permission waves-effect waves-light float-right" id="btn-off">
+                    class="btn btn-danger no-box-shadow waves-effect waves-light float-right" id="btn-off">
                 Xin nghỉ phép
             </button>
             <button type="button"
-                        class="d-none d-xl-block approve-btn-ot waves-effect waves-light float-right"
+                    class="d-none d-xl-block btn btn-primary no-box-shadow approve-btn-ot waves-effect waves-light float-right"
                     id="btn-late-ot">
                 Xin OT
             </button>
             <button type="button"
-                    class="d-none d-xl-block approve-btn-early waves-effect waves-light float-right"
+                    class="d-none d-xl-block approve-btn-early no-box-shadow btn btn-warning waves-effect waves-light float-right"
                     id="btn-early-late">Xin về sớm
             </button>
-            <button type="button" class="approve-btn-late waves-light float-right" id="btn-late">
+            <button type="button" class="approve-btn-late btn btn-success no-box-shadow waves-light float-right" id="btn-late">
                 Xin đi muộn
             </button>
         </div>

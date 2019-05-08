@@ -284,7 +284,7 @@ class UserController extends Controller
     {
         $countDayOff = $this->userDayOffService->countDayOffUserLogin();
         $userManager = $this->userService->getUserManager();
-        $availableDayLeft = $this->userDayOffService->getDayOffUser( $request,Auth::id());
+        $availableDayLeft = $this->userDayOffService->getDayOffUser($request, Auth::id());
         $autoShowModal = $request->has('t');
         if (isset($request->status_search) || isset($request->year) || isset($request->month)) {
             $year = $request->year;
@@ -390,7 +390,7 @@ class UserController extends Controller
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function dayOffCreatevacationVacation (CreateDayOffRequest $request)
+    public function dayOffCreatevacationVacation(CreateDayOffRequest $request)
     {
         $dayOff = new DayOff();
         $dayOff->fill($request->all());
@@ -403,17 +403,9 @@ class UserController extends Controller
     {
         $dayOff = new DayOff();
         $dayOff->fill($request->all());
-        if ($request->option_check == CHECK_TIME_DAY_OFF['AM']){
-            $dayOff->start_at=$request->start_at.DAY_OFF_AM['strat'];
-            $dayOff->end_at=$request->end_at.DAY_OFF_AM['end'];
-        }elseif ($request->option_check == CHECK_TIME_DAY_OFF['PM']){
-            $dayOff->start_at=$request->start_at.DAY_OFF_PM['strat'];
-            $dayOff->end_at=$request->end_at.DAY_OFF_PM['end'];
-        }else{
-            $dayOff->start_at=$request->start_at.DAY_OFF_FULL['strat'];
-            $dayOff->end_at=$request->end_at.DAY_OFF_FULL['end'];
-        }
-        $dayOff->title=DAY_OFF_TITLE_DEFAULT;
+        $dayOff->start_at = $request->start_at .SPACE. $request->start;
+        $dayOff->end_at = $request->end_at .SPACE. $request->end;
+        $dayOff->title = DAY_OFF_TITLE_DEFAULT;
         $dayOff->user_id = Auth::id();
         $dayOff->save();
         return redirect(route('day_off'))->with('day_off_success', '');

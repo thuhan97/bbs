@@ -88,10 +88,11 @@ define('JOB_TITLES', [
 ]);
 
 define('POSITIONS', [
-    0 => 'Chuyên viên',
+    0 => 'Lập trình viên',
     1 => 'Kỹ sư cầu nối',
     2 => 'Manager',
     3 => 'Giám đốc',
+    4 => 'Chuyên viên',
 ]);
 
 define('SEXS', [
@@ -205,7 +206,7 @@ define('VACATION', [
 ]);
 
 define('VACATION_FULL', [
-    1=>'Lý do cá nhân',
+    1 => 'Lý do cá nhân',
     2 => 'Nghỉ đám cưới',
     3 => 'Nghỉ đám hiếu',
     4 => 'Nghỉ thai sản',
@@ -352,35 +353,36 @@ define('OT_TYPE', [
     2 => 'OT lý do cá nhân',
 ]);
 
-define('CHECK_TIME_DAY_OFF',[
-    'AM'=>0,
-    'PM'=>1,
-    'FULL'=>2
+define('CHECK_TIME_DAY_OFF', [
+    'AM' => 0,
+    'PM' => 1,
+    'FULL' => 2
 ]);
-define('DAY_OFF_TITLE_DEFAULT',1);
-define('DAY_OFF_AM',[
-   'strat'=> ' 08:00:00',
-   'end'=> ' 11:30:00'
+define('DAY_OFF_TITLE_DEFAULT', 1);
+define('DAY_OFF_AM', [
+    'strat' => ' 08:00:00',
+    'end' => ' 11:30:00'
 ]);
-define('DAY_OFF_PM',[
-    'strat'=> ' 13:30:00',
-    'end'=> ' 17:30:00'
+define('DAY_OFF_PM', [
+    'strat' => ' 13:30:00',
+    'end' => ' 17:30:00'
 ]);
-define('DAY_OFF_FULL',[
-    'strat'=> ' 08:00:00',
-    'end'=> ' 17:30:00'
+define('DAY_OFF_FULL', [
+    'strat' => ' 08:00:00',
+    'end' => ' 17:30:00'
 ]);
-define('CHECK_TIME_DAY_OFF_NAME',[
-    0=>'Nghỉ sáng',
-    1=>'Nghỉ chiều',
-    2=>'Nghỉ cả ngày'
+define('CHECK_TIME_DAY_OFF_NAME', [
+    0 => 'Nghỉ sáng',
+    1 => 'Nghỉ chiều',
+    2 => 'Nghỉ cả ngày'
 ]);
-define('ARRAY_TITLE_DAYOFF_VACATION_MODE',[2,3,4]);
+define('ARRAY_TITLE_DAYOFF_VACATION_MODE', [2, 3, 4]);
 
 define('GROUPS', [
     1 => 'PHP 1',
     2 => 'PHP 2',
     3 => 'Mobile',
+    3 => 'Hành chính nhân sự',
 ]);
 
 

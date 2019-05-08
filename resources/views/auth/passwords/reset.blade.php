@@ -26,7 +26,7 @@
                                 </div>
                             </div>
 
-                            <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }} my-5">
+                            <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }} my-3">
                                 <label for="password" class="col-md-4 control-label">Mật khẩu</label>
 
                                 <div class="col-md-12">
@@ -53,7 +53,7 @@
                                     @endif
                                 </div>
                             </div>
-                            <div class="form-group d-flex justify-content-center my-5 pt-3">
+                            <div class="form-group d-flex justify-content-center my-3 pt-3">
                                 <div class="">
                                     <button type="submit" class="btn btn-primary">
                                         Reset mật khẩu

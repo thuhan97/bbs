@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\DB;
 class SuggestionController extends Controller
 {
     public function listSuggestions(){
-        $list_suggestions = Suggestion::where('deleted_at','=', null)->orderBy('created_at','desc')->paginate(15);
+        $list_suggestions = Suggestion::orderBy('created_at','desc')->paginate(15);
         return view('end_user.suggestion.list_suggestion', compact('list_suggestions'));
     }    
 

@@ -1026,8 +1026,27 @@ td.blank, .type-1 {
     color: #6098f2;
 }
 
-.navbar.navbar-light .breadcrumb .nav-item.active > .nav-link:hover, .navbar.navbar-light .navbar-nav .nav-item.active > .nav-link:hover, .navbar.navbar-light .navbar-toggler, .navbar.navbar-light form .md-form .form-control {
-    color: #6098f2;
+.navbar.navbar-light .breadcrumb .nav-item.active>.nav-link:hover, .navbar.navbar-light .navbar-nav .nav-item.active>.nav-link:hover, .navbar.navbar-light .navbar-toggler, .navbar.navbar-light form .md-form .form-control {
+    color: #000;
+}
+
+@media only screen and (min-device-width: 1024px) and (max-device-width: 1366px)  and (orientation: portrait)  {
+    #slide-out{
+        /*transform: translateX(-100%) !important;*/
+        margin-top: 60px;
+    }
+}
+@media only screen and (min-device-width: 768px) and (max-device-width: 1024px)  and (orientation: landscape)  {
+    #slide-out{
+        /*transform: translateX(-100%) !important;*/
+        margin-top: 60px;
+    }
+}
+@media (min-width: 600px){
+    .navbar.scrolling-navbar.top-nav-collapse {
+        padding-top: 10px;
+        padding-bottom: 10px;
+    }
 }
 
 .navbar.navbar-light .breadcrumb .nav-item.active > .nav-link, .navbar.navbar-light .navbar-nav .nav-item.active > .nav-link {

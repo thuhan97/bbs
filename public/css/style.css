@@ -81,11 +81,11 @@
 }
 
 .sidebar-fixed .logo-wrapper {
-    padding: 2.5rem;
+    padding: 2rem;
 }
 
 .sidebar-fixed .logo-wrapper img {
-    max-height: 100px;
+    max-height: 150px;
 }
 
 .pure-material-checkbox {

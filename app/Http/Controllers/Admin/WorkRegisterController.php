@@ -8,7 +8,6 @@ use App\Repositories\Contracts\IUserRepository;
 use App\Repositories\Contracts\IWorkTimeRegisterRepository;
 use App\Services\Contracts\IWorkTimeRegisterService;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Session;
 
 class WorkRegisterController extends AdminBaseController
 {
@@ -29,7 +28,7 @@ class WorkRegisterController extends AdminBaseController
     ];
     protected $editTitle = 'Sửa thời gian làm việc';
     protected $subTitle = 'Danh sách nhân viên không làm full time';
-    private $ableToRegister = [1, 2, 3];
+    private $ableToRegister = [2, 3];
     private $keys = ['mon_part', 'tue_part', 'wed_part', 'thu_part', 'fri_part', 'sat_part'];
     protected $service;
     /**
@@ -62,28 +61,27 @@ class WorkRegisterController extends AdminBaseController
     public function __construct(IWorkTimeRegisterRepository $repository, IWorkTimeRegisterService $service, IUserRepository $userRepository)
     {
         $settings = app('settings')->first();
-
         $this->WORK_PATH = [
-            //morning only
-            0 => [
-                'start_at' => $settings['morning_start_work_at'],
-                'end_at' => $settings['morning_end_work_at']
-            ],
-            //afternoon only
-            1 => [
-                'start_at' => $settings['afternoon_start_work_at'],
-                'end_at' => $settings['afternoon_end_work_at']
-            ],
             //off
-            2 => [
+            0 => [
                 'start_at' => 0,
                 'end_at' => 0
             ],
+            //morning only
+            1 => [
+                'start_at' => to_work_time($settings['morning_start_work_at']),
+                'end_at' => to_work_time($settings['morning_end_work_at'])
+            ],
+            //afternoon only
+            2 => [
+                'start_at' => to_work_time($settings['afternoon_start_work_at']),
+                'end_at' => to_work_time($settings['afternoon_end_work_at'])
+            ],
             //full
             3 => [
-                'start_at' => $settings['morning_start_work_at'],
-                'end_at' => $settings['afternoon_end_work_at']
-            ]
+                'start_at' => to_work_time($settings['morning_start_work_at']),
+                'end_at' => to_work_time($settings['afternoon_end_work_at'])
+            ],
         ];
 
         $this->service = $service;
@@ -146,7 +144,7 @@ class WorkRegisterController extends AdminBaseController
                     'start_at' => $this->WORK_PATH[0]['start_at'],
                     'end_at' => $this->WORK_PATH[0]['end_at'],
                     'user_id' => $id,
-                    'select_type' => self::SELECT_TYPE['DETAIL_TIME_SELECT_TYPE']['value'],
+                    'select_type' => self::SELECT_TYPE['QUICK_SELECT_TYPE']['value'],
                     'day' => $i
                 ];
             }
@@ -175,19 +173,24 @@ class WorkRegisterController extends AdminBaseController
         $payload = $this->repository->findIn('user_id', [$data['id']]);
 
         $payload->each(function ($item) use (&$oldValue) {
-            $oldValue[] = $item->only('start_at', 'end_at');
+            $oldValue[] = [
+                'start_at' => to_work_time($item->start_at),
+                'end_at' => to_work_time($item->end_at),
+            ];
         });
-
         // minimize this later
         foreach ($oldValue as $key => $item) {
-            if ($item == $this->WORK_PATH[3]) {
-                $oldValue[self::SELECT_TYPE['DETAIL_SELECT_TYPE']['name']][PART_OF_THE_DAY[$key]] = 3;
-            } elseif ($item['start_at'] == $this->WORK_PATH[0]['start_at'] && $item['end_at'] == $this->WORK_PATH[0]['end_at']) {
+            if ($item == $this->WORK_PATH[0]) {
                 $oldValue[self::SELECT_TYPE['DETAIL_SELECT_TYPE']['name']][PART_OF_THE_DAY[$key]] = 0;
-            } elseif ($item['start_at'] == '00:00:00' || $item['end_at'] == '00:00:00') {
-                $oldValue[self::SELECT_TYPE['DETAIL_SELECT_TYPE']['name']][PART_OF_THE_DAY[$key]] = 2;
+            } elseif ($item['start_at'] == '00:00' || $item['end_at'] == '00:00') {
+                //Off
+                $oldValue[self::SELECT_TYPE['DETAIL_SELECT_TYPE']['name']][PART_OF_THE_DAY[$key]] = 0;
             } elseif ($item['start_at'] == $this->WORK_PATH[1]['start_at'] && $item['end_at'] == $this->WORK_PATH[1]['end_at']) {
                 $oldValue[self::SELECT_TYPE['DETAIL_SELECT_TYPE']['name']][PART_OF_THE_DAY[$key]] = 1;
+            } elseif ($item['start_at'] == $this->WORK_PATH[2]['start_at'] && $item['end_at'] == $this->WORK_PATH[2]['end_at']) {
+                $oldValue[self::SELECT_TYPE['DETAIL_SELECT_TYPE']['name']][PART_OF_THE_DAY[$key]] = 2;
+            } elseif ($item['start_at'] == $this->WORK_PATH[3]['start_at'] && $item['end_at'] == $this->WORK_PATH[3]['end_at']) {
+                $oldValue[self::SELECT_TYPE['DETAIL_SELECT_TYPE']['name']][PART_OF_THE_DAY[$key]] = 3;
             } else {
                 $oldValue[self::SELECT_TYPE['DETAIL_SELECT_TYPE']['name']][PART_OF_THE_DAY[$key]] = 0;
             }
@@ -195,35 +198,35 @@ class WorkRegisterController extends AdminBaseController
             $oldValue[self::SELECT_TYPE['DETAIL_TIME_SELECT_TYPE']['name']][PART_OF_THE_DAY[$key]] = $item;
         }
 
-        if ($oldValue[0]['start_at'] == $this->WORK_PATH[0]) {
-            $oldValue[self::SELECT_TYPE['QUICK_SELECT_TYPE']['name']] = 0;
-        } else {
+        if ($oldValue[0]['start_at'] == $this->WORK_PATH[3]['start_at']) {
             $oldValue[self::SELECT_TYPE['QUICK_SELECT_TYPE']['name']] = 1;
+        } else {
+            $oldValue[self::SELECT_TYPE['QUICK_SELECT_TYPE']['name']] = 2;
         }
         // ---
 
-        Session::flash('currentId', $payload->first()->select_type);
         $addVarsForView['edit_title'] = $this->editTitle;
         $addVarsForView['edit_target'] = $this->service->findOneUser($data['id'])->name;
         $addVarsForView['old_value'] = collect($oldValue)->except(0, 1, 2, 3, 4, 5)->toArray();
         $addVarsForView['payload'] = $payload;
+        $addVarsForView['currentId'] = $payload->first()->select_type;
 
         return $addVarsForView;
     }
 
     public function update(Request $request, $id)
     {
-        $request->session()->flash('currentId', $request->select_type);
         $record = $this->repository->findOne($id);
 
         $this->authorize('update', $record);
         $this->resourceValidate($request, 'update', $record);
-        $valuesToSave = $this->getValuesToSave($request, $id);
 
-        if ($this->service->update($id, $valuesToSave)) {
+        $valuesToSave = $this->getValuesToSave($request, $record->user_id);
+
+        if ($this->service->update($record->user_id, $valuesToSave)) {
             flash()->success('Cập nhật thành công.');
 
-            return $this->getRedirectAfterSave($record, $request,$isCreate = false);
+            return $this->getRedirectAfterSave($record, $request, $isCreate = false);
         } else {
             flash()->info('Cập nhật thất bại.');
         }
@@ -259,8 +262,8 @@ class WorkRegisterController extends AdminBaseController
 
         foreach (PART_OF_THE_DAY as $item) {
             $validateOptions['rules'][$item . '_part'] = 'nullable|numeric|between:0,3';
-            $validateOptions['rules'][$item . '_start'] = 'nullable|date|date_format:h:i';
-            $validateOptions['rules'][$item . '_end'] = 'nullable|date|date_format:h:i';
+//            $validateOptions['rules'][$item . '_start'] = 'nullable|date';
+//            $validateOptions['rules'][$item . '_end'] = 'nullable|date';
 
             $validateOptions['attributes'][$item . '_start'] = 'từ giờ';
             $validateOptions['attributes'][$item . '_end'] = 'đến giờ';

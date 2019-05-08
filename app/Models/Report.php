@@ -30,6 +30,7 @@ class Report extends Model
         'title',
         'content',
         'status',
+        'report_type',
     ];
 
     /**
@@ -52,5 +53,32 @@ class Report extends Model
     {
         return $query->where('title', 'like', '%' . $searchTerm . '%')
             ->orWhere('content', 'like', '%' . $searchTerm . '%');
+    }
+
+    public function getTitle($type, $year, $month)
+    {
+        if ($type == REPORT_SEARCH_TYPE['private']) {
+            $reportType = $this->attributes['report_type'];
+
+            $title = "Báo cáo " . (REPORT_TYPES[$reportType] ?? '') . " ";
+            if ($reportType == REPORT_TYPE_DAILY) {
+                $title .= date_format(new \DateTime($this->attributes['created_at']), 'Y/m/d');
+            } else {
+                $week = $this->attributes['week_num'];
+
+                $weekDays = getStartAndEndDate($week, $year);
+                $startDate = $weekDays['week_start'];
+                $endDate = $weekDays['week_end'];
+                $title .= $week . ' [' . $startDate . ' - ' . $endDate . ']';
+            }
+
+            return $title;
+
+        } else if ($type == REPORT_SEARCH_TYPE['all']) {
+//get team
+            return $this->attributes['title'];
+        } else {
+            return $this->attributes['title'];
+        }
     }
 }

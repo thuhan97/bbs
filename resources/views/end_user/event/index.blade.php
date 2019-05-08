@@ -20,7 +20,7 @@
         <div class="row mb-3">
             <div class="col-sm-6"></div>
             <div class="col-sm-6 text-right">
-                <a href="{{route('event')}}" class="btn btn-primary waves-effect">
+                <a href="{{route('event_calendar')}}" class="btn btn-primary waves-effect">
                     <i class="fas fa-calendar"></i> Xem lịch
                 </a>
             </div>
@@ -36,8 +36,10 @@
                 <p>
                     {{$event->introduction}}
                 </p>
-                <a href="{{route('event_detail', ['id' => $event->id])}}" class="btn btn-primary btn-lg"
-                   role="button">{{__l('view_detail')}}</a>
+                <div class="text-right">
+                    <a href="{{route('event_detail', ['id' => $event->id])}}" class="btn btn-primary btn-lg"
+                       role="button">{{__l('view_detail')}}</a>
+                </div>
             </div>
         @endforeach
 

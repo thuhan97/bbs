@@ -1,5 +1,6 @@
 <?php
-$currentId = intval(session('currentId'));
+$currentId = request('select_type', $addVarsForView['currentId'] ?? 0);
+
 ?>
 
 <div class="col-md-12">
@@ -94,29 +95,29 @@ $currentId = intval(session('currentId'));
         }
 
         var timeEndCalculate = (e) => {
-            let hour = e.time.hours
-            let minute = e.time.minutes
+            let hour = e.time.hours;
+            let minute = e.time.minutes;
 
-            hour += 5
-            minute += 30
+            hour += 5;
+            minute += 30;
             if (minute >= 60) {
-                minute = minute - 60
-                hour += 1
+                minute = minute - 60;
+                hour += 1;
             }
             if (hour >= 12 && hour <= 13) {
-                return '{{ $config['morning_start_end_at'] }}'
+                return '{{ $config['morning_end_work_at'] }}'
             }
 
-            minute = minute == 0 ? '00' : minute
-            return hour + ':' + minute + ':00'
+            minute = minute == 0 ? '00' : minute;
+            return hour + ':' + minute;
         }
 
-        $('#radio_select_type_{{ $currentId }}').attr('checked', 'checked')
-        toggleClass({{ $currentId }})
+        $('#radio_select_type_{{ $currentId }}').attr('checked', 'checked');
+        toggleClass({{ $currentId }});
         $(document).ready(function () {
             $('.select_type').click(function () {
-                let selectTypeVal = $(this).find('input').val()
-                toggleClass(selectTypeVal)
+                let selectTypeVal = $(this).find('input').val();
+                toggleClass(selectTypeVal);
             })
         })
 
@@ -127,24 +128,24 @@ $currentId = intval(session('currentId'));
                 defaultTime: null,
                 showSeconds: false,
                 timeFormat: 'hh:mm'
-            })
+            });
 
             $('.timepicker').timepicker().on('changeTime.timepicker', function (e) {
-                let str = $(this).attr('name')
-                let selector = str.replace('start', 'end')
-                let endTimeSelector = $('#' + selector)
+                let str = $(this).attr('name');
+                let selector = str.replace('start', 'end');
+                let endTimeSelector = $('#' + selector);
 
                 if (e.time.hours < 8) {
-                    $(this).val('{{ $config['morning_start_work_at'] }}')
-                    endTimeSelector.val('{{ $config['morning_start_end_at'] }}')
+                    $(this).val('{{ $config['morning_start_work_at'] }}');
+                    endTimeSelector.val('{{ $config['morning_end_work_at'] }}');
                     return
                 } else if (e.time.hours >= 13) {
                     $(this).val('{{ $config['afternoon_start_work_at'] }}');
-                    endTimeSelector.val('{{ $config['afternoon_end_work_at'] }}')
+                    endTimeSelector.val('{{ $config['afternoon_end_work_at'] }}');
                     return
                 } else if (e.time.hours <= 13 && e.time.hours >= 12) {
                     $(this).val('{{ $config['afternoon_start_work_at'] }}');
-                    endTimeSelector.val('{{ $config['afternoon_end_work_at'] }}')
+                    endTimeSelector.val('{{ $config['afternoon_end_work_at'] }}');
                     return
                 }
 

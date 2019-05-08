@@ -28,7 +28,7 @@ interface IDayOffService extends IBaseService
      *
      * @return array
      */
-    public function getDayOffUser($userId);
+    public function getDayOffUser($request,$userId);
 
     /**
      * Update the status (from not approved to approved) of a user)
@@ -101,5 +101,10 @@ interface IDayOffService extends IBaseService
      * @return mixed Collection
      */
     public function searchUserLogin($request);
+
+    /**
+     * @return mixed Collection
+     */
+    public function statisticalDayOffExcel($ids);
 
 }

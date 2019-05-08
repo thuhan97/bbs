@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Models\OverTime;
-use App\Models\User;
-use App\Repositories\Contracts\IOverTimeRepository;
+use App\Exports\OTListExport;
+use App\Models\WorkTimesExplanation;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
 
 class OverTimeController extends AdminBaseController
 {
@@ -23,51 +23,37 @@ class OverTimeController extends AdminBaseController
      *
      * @var  string
      */
-    protected $resourceModel = OverTime::class;
+    protected $resourceModel = WorkTimesExplanation::class;
 
     protected $meetingService;
 
     /**
      * @var  string
      */
-    protected $resourceTitle = 'Làm thêm';
+    protected $resourceTitle = 'Duyệt OT';
 
-    public function __construct(IOverTimeRepository $repository)
+    public function getSearchRecords(Request $request, $perPage = 50, $search = null, $paginatorData = [])
     {
-        $this->repository = $repository;
-        parent::__construct();
+        $model = $this->getResourceModel()::search($search)->where('type', array_search('Overtime', WORK_TIME_TYPE));
+        if ($request->has('sort')) {
+            $model->orderBy($request->get('sort'), $request->get('is_desc') ? 'asc' : 'desc');
+        } else {
+            $model->orderBy('id', 'desc');
+        }
+
+        return $model->paginate($perPage);
     }
 
-    public function filterCreateViewData($data = [])
+    public function exportData(Request $request, $search = null)
     {
-        return $this->makeRelationData($data);
+        switch ($request->path()) {
+            case 'admin/over_times':
+                $overTimes = $this->getResourceModel()::search($request['search'])->where('type', array_search('Overtime', WORK_TIME_TYPE))->get();
+                return Excel::download(new OTListExport($overTimes), "over-time.xlsx");
+                break;
+            default:
+                abort(404);
+        }
     }
 
-    public function filterEditViewData($record, $data = [])
-    {
-        return $this->makeRelationData($data);
-    }
-
-    public function create(Request $request)
-    {
-        $user_id = $request->get('user_id');
-        $this->authorize('create', $this->getResourceModel());
-
-        $class = $this->getResourceModel();
-        return view($this->getResourceCreatePath(), $this->filterCreateViewData([
-            'record' => new $class(),
-            'user_id' => $user_id,
-            'resourceAlias' => $this->getResourceAlias(),
-            'resourceRoutesAlias' => $this->getResourceRoutesAlias(),
-            'resourceTitle' => $this->getResourceTitle(),
-        ]));
-    }
-
-    private function makeRelationData($data = [])
-    {
-        $userModel = new User();
-        $data['request_users'] = $userModel->availableUsers()->pluck('name', 'id')->toArray();
-        $data['approver_users'] = $userModel->approverUsers()->pluck('name', 'id')->toArray();
-        return $data;
-    }
 }

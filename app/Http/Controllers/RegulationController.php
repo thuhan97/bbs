@@ -43,4 +43,19 @@ class RegulationController extends Controller
         }
         abort(404);
     }
+
+    /**
+     * @param $id
+     *
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function download($id)
+    {
+        $regulation = $this->service->detail($id);
+
+        if ($regulation && $regulation->file_path) {
+            return redirect($regulation->file_path);
+        }
+        abort(404);
+    }
 }

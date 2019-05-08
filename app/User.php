@@ -100,6 +100,7 @@ class User extends Authenticatable implements JWTSubject
     public function scopeSearch($query, $searchTerm)
     {
         return $query->where('name', 'like', '%' . $searchTerm . '%')
+            ->orWhere('staff_code', 'like', '%' . $searchTerm . '%')
             ->orWhere('email', 'like', '%' . $searchTerm . '%')
             ->orderBy('name');
     }

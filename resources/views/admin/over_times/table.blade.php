@@ -1,63 +1,95 @@
-<div class="table-responsive list-records">
-    <table class="table table-hover table-bordered">
-        <thead>
-        <th style="width: 10px;">
-            <button type="button" class="btn btn-default btn-sm checkbox-toggle"><i class="fa fa-square-o"></i></button>
-        </th>
-        <th>STT</th>
-        <th>Người xin</th>
-        <th>Ngày xin</th>
-        <th>Ghi chú</th>
-        <th>Trạng thái</th>
-        <th>Người duyệt</th>
-        <th>Ngày duyệt</th>
-        <th style="width: 120px;">Chức năng</th>
-        </thead>
-        <tbody>
-        @php
-            $i = 1;
+@extends('layouts.admin.master')
+{{-- Breadcrumbs --}}
+@section('breadcrumbs')
+    {!! Breadcrumbs::render($resourceRoutesAlias) !!}
+@endsection
 
-        @endphp
-        @foreach ($records as $record)
-            <?php
-            $tableCounter++;
-            $editLink = route($resourceRoutesAlias . '.edit', $record->id);
-            $showLink = route($resourceRoutesAlias . '.show', $record->id);
-            $deleteLink = route($resourceRoutesAlias . '.destroy', $record->id);
-            $formId = 'formDeleteModel_' . $record->id;
-            ?>
-            <tr>
-                <td><input type="checkbox" name="ids[]" value="{{ $record->id }}" class="square-blue chkDelete"></td>
-                <td>
-                    {{ $i++ }}
-                </td>
-                <td class="table-text">
-                    <a href="{{ $showLink }}">{{ $record->creator->name ?? '' }}</a>
-                </td>
-                <td>{{ $record->work_day }}</td>
-                <td>{{ $record->reason }}</td>
-                <td>{{ $record->status == 0 ? 'Chưa duyệt' : 'Đã duyệt' }}</td>
-                <td>{{ $record->approver->name ?? '' }}</td>
-                <td>{{ date(DATE_FORMAT, strtotime($record->approver_at)) }}</td>
-                <td>
-                    <div class="btn-group">
-                        <a href="{{ $showLink }}" class="btn btn-info btn-sm"><i class="fa fa-eye"></i></a>
-                        <a href="{{ $editLink }}" class="btn btn-info btn-sm"><i class="fa fa-edit"></i></a>
-                        <a href="#" class="btn btn-danger btn-sm btnOpenerModalConfirmModelDelete"
-                           data-form-id="{{ $formId }}"><i class="fa fa-trash-o"></i></a>
-                    </div>
+{{-- Page Title --}}
+@section('page-title', $_pageTitle)
 
-                    <!-- Delete Record Form -->
-                    <form id="{{ $formId }}" action="{{ $deleteLink }}" method="POST"
-                          style="display: none;" class="hidden form-inline">
-                        {{ csrf_field() }}
-                        {{ method_field('DELETE') }}
-                        <button type="submit" class="btn btn-danger">Delete</button>
-                    </form>
-                </td>
+{{-- Page Subtitle --}}
+@section('page-subtitle', $_pageSubtitle)
 
-            </tr>
-        @endforeach
-        </tbody>
-    </table>
-</div>
+{{-- Header Extras to be Included --}}
+@section('head-extras')
+    @parent
+@endsection
+
+@section('content')
+    <div class="box box-info">
+        <div class="box-header with-border">
+            <h3 class="box-title">{{ $_pageSubtitle }}</h3>
+            <!-- Search -->
+            <div class="box-tools pull-right">
+                <form id="searchForm" class="form" role="form" method="GET" action="{{ $_listLink }}">
+                    @if( isset($resourceSearchExtend))
+                        @include($resourceSearchExtend, ['search' => $search, '$createLink' => $_createLink])
+                    @else
+                        <div class="input-group input-group-sm margin-r-5 pull-left" style="width: 200px;">
+                            <input type="text" name="search" class="form-control" value="{{ $search }}"
+                                   placeholder="Search...">
+                            <div class="input-group-btn">
+                                <button type="submit" class="btn btn-primary"><i class="fa fa-search"></i></button>
+                            </div>
+                        </div>
+                    @endif
+                </form>
+
+            </div>
+            <!-- END Search -->
+
+        </div>
+
+        <div class="text-right">
+            <button class="btn btn-primary btn-export-over-time" id="exportExcel">Xuất file excel</button>
+        </div>
+        <div class="table-responsive list-records table-over-time">
+            <table class="table table-hover table-bordered">
+                <thead>
+                <th style="padding: 15px">Mã nhân viên</th>
+                <th style="padding: 15px">Tên nhân viên</th>
+                <th style="padding: 15px">Ngày</th>
+                <th style="padding: 15px">Hình thức</th>
+                <th style="padding: 15px">Giờ đến công ty</th>
+                <th style="padding: 15px">Giờ rời công ty</th>
+                <th style="padding: 15px">Giải trình</th>
+                <th style="padding: 15px">Người duyệt</th>
+                <th style="padding: 15px">Trạng thái phê duyệt</th>
+                </thead>
+                <tbody>
+                @foreach ($records as $record)
+                    <tr>
+                        <td class="table-text text-center">
+                            {{ $record->creator->staff_code ?? '' }}
+                        </td>
+                        <td class="table-text">{{ $record->creator->name ?? '' }}</td>
+                        <td class="table-text">{{ $record->work_day }}</td>
+                        <td class="table-text">{{ $record->ot_type == array_search('Dự án', OT_TYPE) ? 'OT dự án' : 'Lý do cá nhân' }}</td>
+                        <td class="table-text">{{ \App\Helpers\DateTimeHelper::workTime($record['user_id'],$record['work_day'])[0] }}</td>
+                        <td class="table-text">{{ \App\Helpers\DateTimeHelper::workTime($record['user_id'],$record['work_day'])[1] }}</td>
+                        <td class="table-text">{{ $record->note }}</td>
+                        <td class="table-text"> {{ $record->approver->name ?? '' }}</td>
+                        <td class="table-text text-center">
+                            @if(!$record['status'] == array_search('Đã duyệt',OT_STATUS))
+                                <span class="label label-danger">Chưa duyệt</span>
+                            @else
+                                <span class="label label-info">Đã duyệt</span>
+                            @endif
+                        </td>
+                    </tr>
+                @endforeach
+                </tbody>
+            </table>
+        </div>
+    </div>
+@endsection
+
+@section('footer-extras')
+    @include('admin._resources._list-footer-extras', ['sortByParams' => []])
+@endsection
+
+@push('footer-scripts')
+    <script>
+
+    </script>
+@endpush

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\CreateReportRequest;
 use App\Models\Report;
+use App\Models\Team;
 use App\Repositories\Contracts\IReportRepository;
 use App\Services\Contracts\IReportService;
 use App\Traits\RESTActions;
@@ -33,8 +34,9 @@ class ReportController extends Controller
         if (!$request->has('month'))
             $request->merge(['month' => date('n')]);
         $reports = $this->service->search($request, $perPage, $search);
+        $teams = Team::pluck('name', 'id')->toArray();
 
-        return view('end_user.report.index', compact('reports', 'search', 'perPage', 'data'));
+        return view('end_user.report.index', compact('reports', 'search', 'perPage', 'data', 'teams'));
     }
 
     /**
@@ -42,7 +44,6 @@ class ReportController extends Controller
      */
     public function create()
     {
-        $week_number = get_week_number();
 //        $report = Report::where([
 //            'user_id' => Auth::id(),
 //            'year' => date('Y'),
@@ -88,21 +89,25 @@ class ReportController extends Controller
     {
         $data = $request->only('status', 'choose_week', 'to_ids', 'content', 'is_new');
         $choose_week = $data['choose_week'];
+        $reportType = REPORT_TYPE_WEEKLY;
         if ($choose_week < 0) {
             $choose_week = 0;
+            $reportType = REPORT_TYPE_DAILY;
         }
         get_week_info($choose_week, $week_number);
-
         $data['title'] = $this->service->getReportTitle($data['choose_week']);
+
         $data['week_num'] = $week_number;
         $data['user_id'] = Auth::id();
         $data['month'] = getMonthFormWeek($week_number);
+
         $report = Report::updateOrCreate([
             'user_id' => Auth::id(),
             'year' => date('Y'),
             'month' => $data['month'],
             'week_num' => $week_number,
             'title' => $data['title'],
+            'report_type' => $reportType,
         ], $data);
         if ($report) {
             if (!$data['is_new']) {

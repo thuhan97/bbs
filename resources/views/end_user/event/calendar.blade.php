@@ -18,7 +18,7 @@
     <div class="row mb-3">
         <div class="col-sm-6"></div>
         <div class="col-sm-6 text-right">
-            <a href="{{route('event_list')}}" class="btn btn-primary waves-effect">
+            <a href="{{route('event')}}" class="btn btn-primary waves-effect">
                 <i class="fas fa-list"></i> Xem danh sách
             </a>
         </div>

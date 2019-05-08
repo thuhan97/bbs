@@ -16,7 +16,6 @@ class OverTime extends Model
 {
     use Notifiable, FillableFields, OrderableTrait, SearchLikeTrait;
 
-
     protected $table = 'ot_times';
 
     protected $fillable = [

@@ -124,6 +124,11 @@ Breadcrumbs::register('list_share_document', function ($breadcrumbs) {
 Breadcrumbs::register('list_suggestions', function ($breadcrumbs) {
     $breadcrumbs->parent('home');
     $breadcrumbs->push(__l('list_suggestions'), route('list_suggestions'));
+});    
+// Dashboard > share_experience
+Breadcrumbs::register('share_experience', function ($breadcrumbs) {
+    $breadcrumbs->parent('home');
+    $breadcrumbs->push(__l('share_experience'), route('share_experience'));
 });
 // Dashboard > day_off
 Breadcrumbs::register('day_off', function ($breadcrumbs) {
@@ -159,7 +164,8 @@ $resources = [
     'teams' => 'Quản lý nhóm',
     'day_offs' => 'Quản lý nghỉ phép',
     'work_times' => 'Quản lý làm việc',
-    'over_times' => 'Làm thêm',
+    'over_times' => 'Duyệt OT',
+    'approve_permission' => 'Xin phép',
     'work_time_register' => 'Đăng ký thời gian làm việc',
     'projects' => 'Quản lý dự án',
     'devices' => 'Quản lý thiết bị',

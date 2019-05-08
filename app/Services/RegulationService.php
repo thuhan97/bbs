@@ -45,6 +45,8 @@ class RegulationService extends AbstractService implements IRegulationService
         return $this->repository->findBy($criterias, [
             'id',
             'name',
+            'approve_date',
+            'file_path',
             'created_at',
             'updated_at',
         ], true);

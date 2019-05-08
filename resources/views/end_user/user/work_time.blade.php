@@ -34,7 +34,7 @@
     <i class="fa fa-icon-check"></i>
 
     <div class="row">
-        <div class="col-md-4 pr-0 select-month-calendar">
+        <div class="col-xl-3 col-md-4 pr-0 select-month-calendar">
             <form name="dateChooser">
                 <select id="chooseYear" class="w-22 mr-1 browser-default form-control float-left chooseYear"
                         name="chooseYear"></select>

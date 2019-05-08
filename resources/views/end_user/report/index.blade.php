@@ -10,8 +10,8 @@ $year = request('year', date('Y'));
 $month = request('month', date('m'));
 ?>
 @section('content')
-    <div class="createReport fixed-action-btn">
-        <a href="{{route('create_report')}}" class="btn-floating btn-lg red waves-effect waves-light text-white"
+    <div class=" fixed-action-btn">
+        <a href="#" onclick="location.href='{{route('create_report')}}'" class="btn-floating btn-lg red waves-effect waves-light text-white"
            title="Tạo báo cáo">
             <i class="fas fa-pencil-alt"></i>
         </a>

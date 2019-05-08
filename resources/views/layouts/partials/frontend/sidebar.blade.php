@@ -55,7 +55,7 @@ $name = $team->name ?? $config->name;
         @can('team-leader')
             <a href="{{route('list_suggestions')}}"
                class="list-group-item list-group-item-action waves-effect {{ \App\Utils::checkRoute(['list_suggestions']) ? 'active': '' }}">
-                <i class="fas fa-bell mr-3"></i>Đề xuất & góp ý</a>
+                <i class="fas fa-lightbulb mr-3"></i>Đề xuất & góp ý</a>
         @endcan
         <a href="{{route('event')}}"
            class="list-group-item list-group-item-action waves-effect {{ \App\Utils::checkRoute(['event', 'event_detail']) ? 'active': '' }}">

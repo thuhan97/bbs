@@ -382,7 +382,7 @@ define('GROUPS', [
     1 => 'PHP 1',
     2 => 'PHP 2',
     3 => 'Mobile',
-    3 => 'Hành chính nhân sự',
+    4 => 'Hành chính nhân sự',
 ]);
 
 

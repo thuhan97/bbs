@@ -798,7 +798,7 @@ table.calendarTable td {
     font-weight: bold;
 }
 
-td.blank, .type-1 {
+td.blank, .type-1, .type-2 {
     opacity: 0.4;
 }
 

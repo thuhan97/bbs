@@ -39,7 +39,7 @@ class AddDayOffMonth extends Command
      */
     public function handle()
     {
-        $users=User::where('status',ACTIVE_STATUS)->whereNull('end_date')->get();
+        $users=User::whereIn('contract_type',[CONTRACT_TYPES['staff'],CONTRACT_TYPES['probation']])->where('status',ACTIVE_STATUS)->whereNull('end_date')->get();
         foreach ($users as $user){
             $dayOffRemain=RemainDayoff::where('year', '=', date('Y'))
                 ->where('user_id',$user->id);

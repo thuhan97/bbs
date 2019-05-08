@@ -156,24 +156,6 @@ class UserController extends AdminBaseController
         }
         return redirect(route('admin::users.index'));
     }
-    public function getRedirectAfterSave($record, $request, $isCreate = true)
-    {
-        if ($isCreate){
-            $dayOff=new RemainDayoff();
-            $dayOff->user_id=$record->id;
-            $day = Carbon::createFromFormat('Y-m-d', $request->start_date)->day;
-            if ($day >= HALF_MONTH){
-                $dayOff->remain=REMAIN_DAY_OFF_DEFAULT;
-                $dayOff->remain_increment=REMAIN_DAY_OFF_DEFAULT;
-            }else{
-                $dayOff->remain=DEFAULT_VALUE;
-                $dayOff->remain_increment=DEFAULT_VALUE;
-            }
-            $dayOff->year=date('Y');
-            $dayOff->save();
-        }
-        return $this->redirectBackTo(route($this->getResourceRoutesAlias() . '.index'));
-    }
     public function getValuesToSave(Request $request, $record = null)
     {
         if (!$request->password){

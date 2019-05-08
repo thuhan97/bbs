@@ -13,10 +13,10 @@ if (isset($record->end_date)) {
 @if($record->id)
     <div id="exTab1" class="container">
         <ul class="nav nav-pills">
-            <li class="active" id="btn-change-info">
+            <li class="btn-success active mr-1" id="btn-change-info">
                 <a id="change-info" href="#1a" data-toggle="tab">Đổi thông tin</a>
             </li>
-            <li id="btn-change-pass"><a id="change-pass" href="#2a" data-toggle="tab">Đổi mật khẩu</a>
+            <li class="btn-info" id="btn-change-pass"><a id="change-pass" href="#2a" data-toggle="tab">Đổi mật khẩu</a>
             </li>
         </ul>
         <br>
@@ -79,7 +79,7 @@ if (isset($record->end_date)) {
                                                     <i class="fa fa-calendar"></i>
                                                 </div>
                                                 <input type="text" class="form-control pull-right datepicker"
-                                                       name="birthday"
+                                                       name="birthday" data-date-format='yyyy-mm-dd' readonly
                                                        value="{{ old('birthday', $record->birthday) }}" id="birthday">
                                             </div>
                                             @if ($errors->has('birthday'))
@@ -177,7 +177,7 @@ if (isset($record->end_date)) {
 
                         </div>
                     </div>
-                    <div class="col-md-7">
+                    <div class="col-md-6">
                         <div class="row">
                             <div class="col-md-12 margin-b-5 margin-t-5{{ $errors->has('address') ? ' has-error' : '' }}">
                                 <label for="school">Đại học/cao đẳng</label>
@@ -198,7 +198,7 @@ if (isset($record->end_date)) {
                                             <i class="fa fa-calendar"></i>
                                         </div>
                                         <input type="text" autocomplete="off" class="form-control pull-right "
-                                               name="start_date"
+                                               name="start_date" data-date-format='yyyy-mm-dd' readonly
                                                value="{{ old('start_date', $record->start_date) }}" id="start_date">
                                     </div>
                                     @if ($errors->has('start_date'))
@@ -217,7 +217,7 @@ if (isset($record->end_date)) {
                                             <i class="fa fa-calendar"></i>
                                         </div>
                                         <input type="text" class="form-control pull-right datepicker"
-                                               name="end_date" autocomplete="off" readonly
+                                               name="end_date" autocomplete="off" readonly data-date-format='yyyy-mm-dd'
                                                value="{{ old('end_date', $record->end_date) }}" id="end_date">
                                     </div>
                                     @if ($errors->has('end_date'))
@@ -330,7 +330,8 @@ if (isset($record->end_date)) {
                         <div class="col-md-12">
                             <div class="form-group margin-b-5 margin-t-5{{ $errors->has('password') ? ' has-error' : '' }}">
                                 <label for="password">Mật khẩu @if(!isset($record->password)) * @endif</label>
-                                <input type="password" class="form-control" name="password" placeholder="Nhập mật khẩu">
+                                <input type="password" class="form-control" @if(isset($record->id)) name="password"
+                                       @endif placeholder="Nhập mật khẩu">
                                 @if ($errors->has('password'))
                                     <span class="help-block">
                     <strong>{{ $errors->first('password') }}</strong>
@@ -341,7 +342,8 @@ if (isset($record->end_date)) {
                         <div class="col-md-12">
                             <div class="form-group margin-b-5 margin-t-5{{ $errors->has('password_confirmation') ? ' has-error' : '' }}">
                                 <label for="password_confirmation">Xác nhận mật khẩu</label>
-                                <input type="password" class="form-control" name="password_confirmation"
+                                <input type="password" class="form-control"
+                                       @if(isset($record->id)) name="password_confirmation" @endif
                                        placeholder="Xác nhận mật khẩu">
 
                                 @if ($errors->has('password_confirmation'))

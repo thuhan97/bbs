@@ -158,7 +158,7 @@
                     <td class="text-center">{{$absence->start_date}}</td>
                     <td class="d-none d-md-table-cell text-center">{{$absence->end_date}}</td>
                     <td class="text-center">{{ array_key_exists($absence->title, VACATION_FULL) ? VACATION_FULL[$absence->title] : ''  }}</td>
-                    <td class="text-center">{{ $absence->reason  }}</td>
+                    <td class="text-center">{!! nl2br($absence->reason) !!}</td>
                     <td class="d-none d-md-table-cell text-center">{{!!!($absence->number_off || $absence->absent > DEFAULT_VALUE)? 'Đang duyệt' : checkNumber($absence->number_off) + checkNumber($absence->absent).' ngày'}}
 
                     </td>
@@ -704,7 +704,7 @@
                         $('#approver_id').html(data.approver);
                         $('#number_off').html(data.data.number_off);
                         $('#strat_end').html(data.data.start_date + ' - ' + data.data.end_date);
-                        $('#reason').html(data.data.reason);
+                        $('#reason').html(data.data.reason.replace(/\n/g, "<br />"));
                         $('#id-delete').val(data.data.id);
                         if (title.hasOwnProperty(data.data.title)) {
                             $('#title').html(title[data.data.title]);

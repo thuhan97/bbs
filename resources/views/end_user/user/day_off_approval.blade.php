@@ -208,7 +208,7 @@
                         {{$record->end_date}}
                     </td>
                     <td class="text-center ">{{ array_key_exists($record->title, VACATION_FULL) ? VACATION_FULL[$record->title] : ''  }}</td>
-                    <td class="text-center ">{{ $record->reason  }}</td>
+                    <td class="text-center ">{!! nl2br($record->reason) !!}</td>
                     <td class="text-center d-none d-sm-table-cell">{{!!!($record->number_off || $record->absent > DEFAULT_VALUE)? 'Đang duyệt' : checkNumber($record->number_off) + checkNumber($record->absent).' ngày'}}
                     </td>
 
@@ -411,7 +411,7 @@
                             $('#user-day-off').html(data.userdayoff);
                             $('#number_off').html(data.data.number_off);
                             $('#strat_end').html(data.data.start_date + ' - ' + data.data.end_date);
-                            $('#reason').html(data.data.reason);
+                            $('#reason').html(data.data.reason.replace(/\n/g, "<br />"));
                             $('#id-delete').val(data.data.id);
                             if (title.hasOwnProperty(data.data.title)) {
                                 $('#title').html(title[data.data.title]);

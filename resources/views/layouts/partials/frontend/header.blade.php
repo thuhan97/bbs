@@ -1,9 +1,10 @@
 <!--Main Navigation-->
 <header>
     <!-- Navbar -->
-    <nav class="navbar fixed-top navbar-expand-lg navbar-light white scrolling-navbar">
+        {{--<nav class="navbar fixed-top navbar-expand-lg navbar-light white scrolling-navbar">--}}
+    <nav class="navbar fixed-top navbar-light white scrolling-navbar">
         <div class="container-fluid">
-            <div class="float-left d-lg-none">
+            <div class="float-left ">
                 <a href="#" data-activates="slide-out" class="navbar-toggler button-collapse"><i
                             class="navbar-toggler-icon"></i><span
                             class="sr-only" aria-hidden="true">Menu</span></a>
@@ -17,7 +18,8 @@
             <!-- Collapse -->
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
                     aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="fas fa-grip-horizontal"></span>
+                {{--<span class="fas fa-grip-horizontal"></span>--}}
+                <span class="far fa-address-card"></span>
             </button>
 
             <!-- Links -->

@@ -5,7 +5,7 @@
         <div class="col-md-5">
             <div class="row pagination-row">
                 <div class="col-md-3">
-                    <select id="pageSize" name="page_size" class="pageSize form-control">
+                    <select id="pageSize" name="page_size" class="pageSize form-control select-normal">
                         @foreach(PAGE_LIST as $item)
                             <option @if($item == $perPage) selected
                                     @endif data-href="{{ str_replace('page', 'page_size', $records->url($item)) }}">{{$item}}</option>

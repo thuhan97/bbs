@@ -81,6 +81,11 @@ Breadcrumbs::register('project_detail', function ($breadcrumbs, $project) {
     $breadcrumbs->push($project->name, route('project_detail', ['id' => $project->id]));
 
 });
+Breadcrumbs::register('project_create', function ($breadcrumbs) {
+    $breadcrumbs->parent('project');
+    $breadcrumbs->push(__l('create_project'), route('create_project'));
+
+});
 //Home > Meeting Room
 Breadcrumbs::register('meetings', function ($breadcrumbs) {
     $breadcrumbs->parent('home');
@@ -124,7 +129,7 @@ Breadcrumbs::register('list_share_document', function ($breadcrumbs) {
 Breadcrumbs::register('list_suggestions', function ($breadcrumbs) {
     $breadcrumbs->parent('home');
     $breadcrumbs->push(__l('list_suggestions'), route('list_suggestions'));
-});    
+});
 // Dashboard > share_experience
 Breadcrumbs::register('share_experience', function ($breadcrumbs) {
     $breadcrumbs->parent('home');

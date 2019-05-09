@@ -5,6 +5,15 @@
     {!! Breadcrumbs::render('project') !!}
 @endsection
 @section('content')
+    @can('team-leader')
+        <div class=" fixed-action-btn">
+            <a href="#" onclick="location.href='{{route('create_project')}}'"
+               class="btn-floating btn-lg red waves-effect waves-light text-white"
+               title="Tạo dự án">
+                <i class="fas fa-plus"></i>
+            </a>
+        </div>
+    @endcan
     <!-- Search form -->
     <form class="mb-4">
         <div class="md-form active-cyan-2 mb-3">
@@ -36,24 +45,21 @@
                 <th>Tên</th>
 
                 <th>Khách hàng</th>
-                <th>Loại dự án</th>
-                <th>Leader dự án</th>
-                <th>Bắt đầu</th>
-                <th>Kết thúc</th>
+                <th>Leader</th>
+                <th class="text-center">Bắt đầu</th>
+                <th class="text-center">Kết thúc</th>
                 <th>Trạng thái</th>
-                <th>Chi tiết</th>
+                <th></th>
             </tr>
             </thead>
             <tbody>
 
-            @foreach($projects as $row)
+            @foreach($projects as $id => $row)
                 <tr>
-                    <th>{{$row->id}}</th>
+                    <th>{{ $id + 1 }}</th>
                     <td>{{$row->name}}</td>
-
                     <td>{{$row->customer}}</td>
-                    <td>{{PROJECT_TYPE[$row->project_type]}}</td>
-                    <td>{{$row->leader->name}}</td>
+                    <td>{{$row->leader->name ?? 'Đang cập nhật'}}</td>
                     <td class="text-center">
                         {{$row->start_date}}
                     </td>
@@ -61,8 +67,11 @@
                         {{$row->end_date}}
                     </td>
                     <td>{{STATUS_PROJECT[$row->status]}}</td>
-                    <td><a href="{{route('project_detail', ['id' => $row->id])}}"
-                           class="btn btn-primary">{{__l('view_detail')}}</a></td>
+                    <td class="text-center">
+                        <a href="{{route('project_detail', ['id' => $row->id])}}"
+                           class="btn btn-info">Xem
+                        </a>
+                    </td>
                 </tr>
             @endforeach
             </tbody>
@@ -73,10 +82,4 @@
     @else
         <h2>{{__l('list_empty', ['name'=>'dự án'])}}</h2>
     @endif
-    <script>
-        // $( "#search" ).keyup(function() {
-        //   alert( "Handler for .keyup() called." );
-        // });
-    </script>
-
 @endsection

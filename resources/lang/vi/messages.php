@@ -25,6 +25,7 @@ return [
     'Report_create' => 'Tạo báo cáo',
     'Home' => 'Trang chủ',
     'Project' => 'Dự án',
+    'create_project' => 'Tạo mới dự án',
     'change_password' => 'Đổi mật khẩu',
     'personal_brief' => 'Hồ sơ cá nhân',
     'regulation' => 'Nội quy/Quy định',
@@ -71,4 +72,5 @@ return [
     'punish_late_money_aio' => 'Phạt đi muộn :number buổi (từ :start_date đến :to_date).',
     'config_updated' => 'Lưu thiết lập thành công.',
     'system_no_config_time' => 'Chưa cấu hình thời gian thiết lập hệ thống.',
+    'project_add_successully' => 'Thêm mới dự án thành công.',
 ];

@@ -194,13 +194,13 @@ class UserController extends Controller
         $workDay = $request['work_day'];
         $otType = $request['ot_type'];
         if ($id) {
-            WorkTimesExplanation::where('user_id', Auth::id())->where('work_day', $workDay)->update(['note' => $reason, 'ot_type' => $otType]);
+            WorkTimesExplanation::where('user_id', Auth::id())->where('work_day', $workDay)->update(['note' => $reason, 'ot_type' => $otType,'type'=>$request['type']]);
             return back()->with('day_off_success', '');
         } else {
             WorkTimesExplanation::create([
                 'user_id' => Auth::id(),
                 'work_day' => $request['work_day'],
-                'type' => array_search('Đi muộn', WORK_TIME_TYPE),
+                'type' => $request['type'],
                 'ot_type' => $otType,
                 'note' => $reason
             ]);
@@ -213,7 +213,7 @@ class UserController extends Controller
         $query = WorkTimesExplanation::select(
             'work_times_explanation.id', 'work_times_explanation.work_day', 'work_times_explanation.type',
             'work_times_explanation.ot_type', 'work_times_explanation.note', 'work_times_explanation.status as work_times_explanation_status',
-            'work_times_explanation.user_id', 'ot_times.creator_id', 'ot_times.id as id_ot_time', 'ot_times.status as ot_time_status', 'users.name as approver', 'ot_times.approver_id')
+            'work_times_explanation.user_id', 'work_times_explanation.approver_id as wt_approver_id', 'work_times_explanation.reason_reject', 'ot_times.creator_id', 'ot_times.id as id_ot_time', 'ot_times.status as ot_time_status', 'users.name as approver')
             ->leftJoin('ot_times', function ($join) {
                 $join->on('ot_times.creator_id', '=', 'work_times_explanation.user_id')
                     ->on('ot_times.work_day', '=', 'work_times_explanation.work_day');
@@ -247,6 +247,20 @@ class UserController extends Controller
             'note' => $request['note'],
         ]);
         return back()->with('create_permission_success', '');
+    }
+
+    public function reject(Request $request)
+    {
+        $explanationID = $request['work_time_explanation_id'];
+        if ($explanationID) {
+            WorkTimesExplanation::where('id', $explanationID)->update(
+                [
+                    'status' => array_search('Từ chối', OT_STATUS),
+                    'reason_reject' => $request['reason_reject'],
+                    'approver_id' => Auth::id(),
+                ]);
+            return back()->with('approver_success', '');
+        }
     }
 
     public function approved(ApprovedRequest $request)
@@ -403,8 +417,8 @@ class UserController extends Controller
     {
         $dayOff = new DayOff();
         $dayOff->fill($request->all());
-        $dayOff->start_at = $request->start_at .SPACE. $request->start;
-        $dayOff->end_at = $request->end_at .SPACE. $request->end;
+        $dayOff->start_at = $request->start_at . SPACE . $request->start;
+        $dayOff->end_at = $request->end_at . SPACE . $request->end;
         $dayOff->title = DAY_OFF_TITLE_DEFAULT;
         $dayOff->user_id = Auth::id();
         $dayOff->save();

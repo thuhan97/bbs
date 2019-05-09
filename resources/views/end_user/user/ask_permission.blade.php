@@ -66,7 +66,8 @@
                     <th>Tên nhân viên</th>
                     <th>Hình thức</th>
                     <th>Nội dung</th>
-                    <th class="text-center">Trạng Thái</th>
+                    <th>Nội dung từ chối</th>
+                    <th class="text-center" style="width: 10%;">Trạng Thái</th>
                 </tr>
                 </thead>
                 <?php $increment = 1; ?>
@@ -79,10 +80,11 @@
                         <td>
                             {{$item->type_name}}
                         </td>
-                        <td>{{ $item['note'] ?? '' }}</td>
+                        <td>{!! $item['note'] ?? '' !!}</td>
+                        <td>{!! $item['reason_reject'] ?? '' !!}</td>
                         <td class="text-center td-approve">
-                            @if(!$item['work_times_explanation_status'] == array_search('Đã duyệt', OT_STATUS))
-                                @can('manager')
+                            @can('manager')
+                            @if($item['work_times_explanation_status'] == array_search('Chưa duyệt', OT_STATUS))
                                     <form action="{{ $item['type'] == array_search('Overtime',WORK_TIME_TYPE) ? route('approvedOT') : route('approved') }}"
                                           method="post">
                                         @csrf
@@ -96,14 +98,15 @@
                                                value="{{ $item['work_day'] ? $item['work_day'] : '' }}">
                                         <input type="hidden" name="type"
                                                value="{{ $item['type'] ? $item['type'] : '' }}">
-                                        <button class="btn-approve">Phê duyệt</button>
+                                        <button class="btn-approve float-left"><i class="fas fa-check-circle"></i></button>
                                     </form>
-                                @else
-                                    <i class="fas fa-meh-blank fa-2x text-warning" title="Chưa duyệt"></i>
-                                @endcan
-                            @else
-                                <i class="fas fa-grin-stars fa-2x text-success" title="{{ $item['approver'] }}"></i>
-                            @endif
+                                    <button class="btn-reject float-right" data-id="{{ $item['id'] ? $item['id'] : '' }}"><i class="fas fa-times"></i></button>
+                                @elseif($item['work_times_explanation_status'] == array_search('Đã duyệt', OT_STATUS))
+                                    <i class="fas fa-grin-stars fa-2x text-success" title="{{ $item['approver'] }}"></i>
+                                    @elseif($item['work_times_explanation_status'] == array_search('Từ chối', OT_STATUS))
+                                    <i class="fas fa-meh-blank fa-2x text-danger" title="{{ \App\Helpers\DateTimeHelper::getApprover($item['wt_approver_id'])  }}"></i>
+                                @endif
+                            @endcan
                         </td>
                     </tr>
                 @endforeach
@@ -131,7 +134,8 @@
                     class="d-none d-xl-block approve-btn-early no-box-shadow btn btn-warning waves-effect waves-light float-right"
                     id="btn-early-late">Xin về sớm
             </button>
-            <button type="button" class="approve-btn-late btn btn-success no-box-shadow waves-light float-right" id="btn-late">
+            <button type="button" class="approve-btn-late btn btn-success no-box-shadow waves-light float-right"
+                    id="btn-late">
                 Xin đi muộn
             </button>
         </div>
@@ -149,6 +153,7 @@
             <th class="text-center">Ngày</th>
             <th>Hình thức</th>
             <th>Nội dung</th>
+            <th>Nội dung từ chối</th>
             <th class="text-center">Trạng Thái</th>
         </tr>
         </thead>
@@ -159,14 +164,30 @@
                 <th class="text-center">{{ $increment+1 }}</th>
                 <th class="text-center">{{ $item['work_day'] ?? '' }}</th>
                 <td>
-                    {{$item->type_name}}
+                    {{--{{$item->type_name}}aaa--}}
+                    @if($item['type'] == 0)
+                        Bình thường
+                    @elseif($item['type'] == 1)
+                        Đi muộn
+                    @elseif($item['type'] == 2)
+                        Về sớm
+                    @elseif($item['type'] == 4)
+                        @if($item['ot_type'] == 1)
+                            OT dự án
+                        @elseif($item['ot_type'] == 2)
+                            OT cá nhân
+                        @endif
+                    @endif
                 </td>
                 <td>{!! $item['note'] ?? '' !!}</td>
+                <td>{!! $item['reason_reject'] ?? '' !!}</td>
                 <td class="text-center td-approve">
-                    @if(!$item['work_times_explanation_status'] == array_search('Đã duyệt', OT_STATUS))
-                        <i class="fas fa-meh-blank fa-2x text-warning" title="Chưa duyệt"></i>
-                    @else
+                    @if($item['work_times_explanation_status'] == array_search('Đã duyệt', OT_STATUS))
                         <i class="fas fa-grin-stars fa-2x text-success" title="{{ $item['approver'] }}"></i>
+                    @elseif($item['work_times_explanation_status'] == array_search('Chưa duyệt', OT_STATUS))
+                        <i class="fas fa-meh-blank fa-2x text-warning" title="Chưa duyệt"></i>
+                    @elseif($item['work_times_explanation_status'] == array_search('Từ chối', OT_STATUS))
+                        <i class="fas fa-meh-blank fa-2x text-danger" title="{{ \App\Helpers\DateTimeHelper::getApprover($item['wt_approver_id'])  }}"></i>
                     @endif
                 </td>
             </tr>
@@ -174,6 +195,33 @@
         </tbody>
     </table>
     {{ $datas->render('end_user.paginate') }}
+    <div class="modal fade reject" id="modal-reject" tabindex="-1"
+         role="dialog" aria-labelledby="myModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog modal-center modal-set-center" role="document">
+            <div class="modal-content" id="bg-img" style="background-image: url({{ asset('img/font/xin_nghi.png') }})">
+                <div class="modal-header text-center border-bottom-0 p-3">
+                    <h4 class='mg-center mb-2 modal-title w-100 font-weight-bold pt-2 mg-left-10'>Lý do</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span class="btn-close-icon" aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="d-flex justify-content-center">
+                    <img src="{{ asset('img/font/gio_lam_viec_popup.png') }}" alt="" width="355px" height="260px">
+                </div>
+                <br>
+                <form action="{{ route('reject') }}" method="post">
+                    @csrf
+                    <div class="d-flex justify-content-center text-area-reason" id="div-reason"></div>
+                    <textarea class="form-control permission-reason" name="reason_reject" cols="48" rows="6"
+                              placeholder="Nhập lý do ..."></textarea>
+                    <div class="pt-3 pb-4 d-flex justify-content-center border-top-0 rounded mb-0">
+                        <button class="btn btn-primary btn-send">GỬI ĐƠN</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
     <div class="modal fade myModal" id="modal-form" tabindex="-1"
          role="dialog" aria-labelledby="myModalLabel"
          aria-hidden="true">
@@ -237,33 +285,34 @@
                             <label for="other-ot">Lý do cá nhân</label>
                         </div>
                     </div>
-                    <div class="select-day">
-                        <div class="container-fluid">
-                            <div class="row">
-                                <div class="col-2"></div>
-                                <div class="col-4">
-                                    <label for="inputCity">Chọn ngày *</label>
-                                </div>
-                                <div class="col-4">
-                                    <input type="text"
-                                           class="form-control select-item {{ $errors->has('work_day') ? ' has-error' : '' }}"
-                                           id="work_day_ot" autocomplete="off" name="work_day"
-                                           value="{{ old('work_day', date('Y-m-d')) }}"
-                                           readonly="readonly">
-                                </div>
-                            </div>
-                        </div>
-
-                    </div>
-                    <br>
-                    <textarea class="form-control permission-reason" name="note" cols="48" rows="6"
-                              placeholder="Nhập lý do ..."></textarea>
-                    <div class="pt-3 pb-4 d-flex justify-content-center border-top-0 rounded mb-0">
-                        <button class="btn btn-primary btn-send">GỬI ĐƠN</button>
-                    </div>
-                </form>
             </div>
+            <div class="select-day">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-2"></div>
+                        <div class="col-4">
+                            <label for="inputCity">Chọn ngày *</label>
+                        </div>
+                        <div class="col-4">
+                            <input type="text"
+                                   class="form-control select-item {{ $errors->has('work_day') ? ' has-error' : '' }}"
+                                   id="work_day_ot" autocomplete="off" name="work_day"
+                                   value="{{ old('work_day', date('Y-m-d')) }}"
+                                   readonly="readonly">
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <br>
+            <textarea class="form-control permission-reason" name="note" cols="48" rows="6"
+                      placeholder="Nhập lý do ..."></textarea>
+            <div class="pt-3 pb-4 d-flex justify-content-center border-top-0 rounded mb-0">
+                <button class="btn btn-primary btn-send">GỬI ĐƠN</button>
+            </div>
+            </form>
         </div>
+    </div>
     </div>
     @push('extend-css')
         <link href="{{ cdn_asset('/bootstrap-datepicker/css/bootstrap-datepicker.min.css') }}" rel="stylesheet">
@@ -297,6 +346,14 @@
                 $(".permission-reason").append("<input name='type' type='text' value='4'>");
                 $(".modal-header").html("<h4 class='mg-center mb-2 modal-title w-100 font-weight-bold pt-2'>Xin OT</h4>");
                 $('#work_day_ot').datepicker("setDate", (date));
+            });
+            $('.btn-reject').on('click', function () {
+                $('#modal-reject').modal('show');
+                let explanation = $(this).data("id");
+                $(".permission-reason").append("<input name='work_time_explanation_id' type='hidden' value='" + explanation + "'>");
+                // $(".permission-reason").append("<input name='type' type='text' value='4'>");
+                // $(".modal-header").html("<h4 class='mg-center mb-2 modal-title w-100 font-weight-bold pt-2'>Xin OT</h4>");
+                // $('#work_day_ot').datepicker("setDate", (date));
             });
         });
     </script>

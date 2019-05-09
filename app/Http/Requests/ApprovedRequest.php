@@ -24,6 +24,7 @@ class ApprovedRequest extends FormRequest
      */
     public function rules()
     {
+        dd(111);
         return [
             'id' => 'required|integer',
             'type' => 'required|integer|between:0,4',

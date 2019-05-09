@@ -252,6 +252,7 @@ define('WORK_TIME_TYPE', [
     4 => 'Overtime',
 ]);
 define('OT_STATUS', [
+    -1 => 'Từ chối',
     0 => ' Chưa duyệt',
     1 => 'Đã duyệt'
 ]);

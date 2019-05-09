@@ -34,6 +34,7 @@ Route::group([
     Route::get('xin-phep', 'UserController@askPermission')->name('ask_permission');
     Route::get('xin-phep/create', 'UserController@askPermissionCreate')->name('ask_permission.create');
     Route::post('phe-duyet-xin-phep', 'UserController@approved')->name('approved')->middleware('can:manager');
+    Route::post('tu-choi-xin-phep', 'UserController@reject')->name('reject')->middleware('can:manager');
     Route::post('phe-duyet-xin-phep-ot', 'UserController@approvedOT')->name('approvedOT')->middleware('can:manager');
     /* Route::post('/ngay-nghi/create-api', 'UserController@dayOffCreate_API')->name('day_off_createAPI');*/
     Route::get('/ngay-nghi/list-approval-api', 'UserController@dayOffListApprovalAPI')->name('day_off_listApprovalAPI');
@@ -74,7 +75,7 @@ Route::group([
     Route::post('/add_document', 'ShareController@addDocument')->name('add_document');
     Route::post('/add_experience', 'ShareController@addExperience')->name('add_experience');
     Route::post('/add_comment', 'ShareController@addComment')->name('add_comment');
-    
+
     Route::post('/add_suggestions', 'SuggestionController@addSuggestions')->name('add_suggestions');
     Route::get('/list_suggestions', 'SuggestionController@listSuggestions')->name('list_suggestions');
 

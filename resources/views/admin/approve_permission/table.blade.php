@@ -52,8 +52,9 @@
                 <th style="padding: 15px">Giờ rời công ty</th>
                 <th style="padding: 15px">Giờ đến công ty</th>
                 <th style="padding: 15px">Giải trình</th>
+                <th style="padding: 15px">Nội dung từ chối</th>
                 <th style="padding: 15px">Người duyệt</th>
-                <th style="padding: 15px">Trạng thái phê duyệt</th>
+                <th style="padding: 15px;">Trạng thái phê duyệt</th>
                 </thead>
                 <tbody>
                 @php
@@ -68,13 +69,16 @@
                         <td class="table-text">{{ $record->work_day }}</td>
                         <td class="table-text">{{ \App\Helpers\DateTimeHelper::workTime($record['user_id'],$record['work_day'])[0] }}</td>
                         <td class="table-text">{{ \App\Helpers\DateTimeHelper::workTime($record['user_id'],$record['work_day'])[1] }}</td>
-                        <td class="table-text">{{ $record->note }}</td>
+                        <td class="table-text">{!! $record->note !!} </td>
+                        <td class="table-text">{!! $record->reason_reject !!} </td>
                         <td class="table-text"> {{ $record->approver->name ?? '' }}</td>
                         <td class="table-text text-center">
-                            @if(!$record['status'] == array_search('Đã duyệt',OT_STATUS))
-                                <span class="label label-danger">Chưa duyệt</span>
-                            @else
+                            @if($record['status'] == array_search('Đã duyệt',OT_STATUS))
                                 <span class="label label-info">Đã duyệt</span>
+                            @elseif($record['status'] == array_search('Chưa duyệt',OT_STATUS))
+                                <span class="label label-warning">Chưa duyệt</span>
+                            @elseif($record['status'] == array_search('Từ chối',OT_STATUS))
+                                <span class="label label-danger">Từ chối</span>
                             @endif
                         </td>
                     </tr>

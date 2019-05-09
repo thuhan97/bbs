@@ -199,7 +199,6 @@ class BookingController extends Controller
     		'start_time'=>$start_time,
     		'end_time'=>$end_time,
     	];
-    	$booking=Recur::where($condition2)->get();
     	$booking=(count(Booking::where($condition1)->get())>0)?(Booking::where($condition1)->first()):(Recur::where($condition2)->first());
     	$participants=explode(",",$booking->participants);
     		$objects=[];
@@ -229,8 +228,7 @@ class BookingController extends Controller
 	    		'start_time'=>$start_time,
 	    		'end_time'=>$end_time,
 	    	];
-    	$booking=(Booking::where($condition1)->get())?Booking::where($condition1)->first():Recur::where($condition2)->first();
-    	dd($booking);
+	    	$booking=(count(Booking::where($condition1)->get())>0)?(Booking::where($condition1)->first()):(Recur::where($condition2)->first());
     	$booking->delete();
     	 return response()->json(["messages"=>"success"]);
     }

@@ -43,19 +43,30 @@ class AddDayOffMonth extends Command
         foreach ($users as $user){
             $dayOffRemain=RemainDayoff::where('year', '=', date('Y'))
                 ->where('user_id',$user->id);
+
             if ($dayOffRemain->first()){
-                $dayOffRemain=$dayOffRemain->update([
+                $data=[
                     'remain' => \DB::raw( 'remain + 1' ), // increment
                     'remain_increment' => \DB::raw( 'remain_increment + 1' ), // increment
-                ]);
+                    'day_off_free_female' => DEFAULT_VALUE,
+                ];
+                if ($user->sex == SEX['female']){
+                    $data['day_off_free_female']=REMAIN_DAY_OFF_DEFAULT;
+                }
+                $dayOffRemain=$dayOffRemain->update($data);
+
             }else{
-                $dayOffRemain=new RemainDayoff();
+                $dayOffRemain=new \App\Models\RemainDayoff();
                 $dayOffRemain->user_id=$user->id;
                 $dayOffRemain->year=date('Y');
+                if ($user->sex == SEX['female']){
+                    $dayOffRemain->day_off_free_female=REMAIN_DAY_OFF_DEFAULT;
+                }
                 $dayOffRemain->remain=REMAIN_DAY_OFF_DEFAULT;
                 $dayOffRemain->remain_increment=DAY_OFF_INCREMENT;
                 $dayOffRemain->save();
             }
+
         }
 
     }

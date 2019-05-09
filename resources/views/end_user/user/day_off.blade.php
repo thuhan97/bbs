@@ -10,6 +10,11 @@
            $record = session()->get('data');
        }
        $dataDayOff= $dayOff ?? $availableDayLeft['data'];
+
+    header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
+    header("Cache-Control: post-check=0, pre-check=0", false);
+    header("Pragma: no-cache");
+    ?>
     @endphp
     <form action="{{ route('day_off') }}" method="get" id="form-search">
         <div class="row mb-3">
@@ -108,11 +113,12 @@
         </div>
         <div class="">
             <div class="row">
-                <div class="col-sm-8 col-md-8">
+                <div class="col-sm-4 col-md-4">
 
                 </div>
-                <div class="col-sm-4 text-right col-md-4">
+                <div class="col-sm-8 text-right col-md-8">
                     <div class="row">
+                        <div class="col-sm-2"></div>
                         <div class="col-12 col-sm-6">
                             <?php
                             $user = \Illuminate\Support\Facades\Auth::user();
@@ -123,7 +129,7 @@
                                 </a>
                             @endif
                         </div>
-                        <div class="d-none d-sm-block col-sm-6">
+                        <div class="d-none d-sm-block col-sm-4">
            <span class=" btn-secondary" id="btn-select">
             {{ Form::select('status_search', SHOW_DAY_OFFF, $statusSearch ?? ALL_DAY_OFF, ['class' => 'browser-default custom-select mt-2 w-100 month option-select select-search','placeholder'=>'']) }}
         </span>
@@ -302,7 +308,7 @@
                                                            value="{{ old('start_at', $autoDateStart) }}" readonly="readonly">
                                                 </div>
                                                 <div class="col-sm-4 p-0 mt-2">
-                                                    {{ Form::select('start', CHECK_TIME_DAY_OFF, null, ['class' => 'form-control option-time-day-off browser-default custom-select select-item mannager_id check-value' ]) }}
+                                                    {{ Form::select('start', CHECK_TIME_DAY_OFF, null, ['class' => 'form-control option-time-day-off browser-default custom-select select-item mannager_id check-value time-start' ]) }}
                                                 </div>
                                             </div>
                                         </div>
@@ -320,7 +326,7 @@
                                                            readonly >
                                                 </div>
                                                 <div class="col-sm-4 p-0 mt-2">
-                                                    {{ Form::select('end', CHECK_TIME_DAY_OFF, null, ['class' => 'form-control border-0 option-time-day-off browser-default custom-select select-item mannager_id check-value' ]) }}
+                                                    {{ Form::select('end', CHECK_TIME_DAY_OFF, null, ['class' => 'form-control border-0 option-time-day-off browser-default custom-select select-item mannager_id check-value time-end' ]) }}
                                                 </div>
                                             </div>
                                         </div>
@@ -363,7 +369,7 @@
                             </div>
                                 <div class="pt-3 pb-4 d-flex justify-content-center border-top-0 rounded mb-0"
                                      id="create_day_off">
-                                    <button class="btn btn-primary">GỬI ĐƠN</button>
+                                    <button class="btn btn-primary" id="btn-send">GỬI ĐƠN</button>
                                 </div>
                             </form>
                         </div>
@@ -448,7 +454,7 @@
                             </div>
                                 <div class="pt-3 pb-4 d-flex justify-content-center border-top-0 rounded mb-0"
                                      id="create_day_off">
-                                    <button class="btn btn-primary">GỬI ĐƠN</button>
+                                    <button class="btn btn-primary" id="btn-send-day-off">GỬI ĐƠN</button>
                                 </div>
                             </form>
                         </div>
@@ -688,11 +694,11 @@
                 daysOfWeekDisabled: [0, 6],
             });
 
-            $('#end_date,#start_date').on('change', function () {
-                checkDate('#start_date','#end_date','#errors_date');
+            $('#end_date,#start_date,.time-start,.time-end').on('change', function () {
+                checkDate('#start_date','#end_date','#errors_date',true,'#btn-send');
             })
             $('#end_date1,#start_date1').on('change', function () {
-                checkDate('#start_date1','#end_date1','#errors_date1');
+                checkDate('#start_date1','#end_date1','#errors_date1',false,'#btn-send-day-off');
             })
 
             $('.check-value').on('change', function () {
@@ -770,7 +776,7 @@
 
         });
 
-        function checkDate(start, end, errors) {
+        function checkDate(start, end, errors ,check,btn) {
                 var start1 = $(start).val();
                 var end1 = $(end).val();
                 if (start1 == "" || end1 == "") {
@@ -778,10 +784,21 @@
                     return;
                 }
                 if (start1 > end1) {
-                    $('.btn-send').attr('disabled', 'disabled');
+                    $(btn).attr('disabled', 'disabled');
                     $(errors).text('Ngày kết thúc phải lớn hơn hoặc bằng ngày bắt đầu.');
+                }else if(start1 == end1 && check==true){
+                    var timeStrat = new Date("November 13, 2013 " + $('.time-start').val()).getTime();
+                    var timeEnd = new Date("November 13, 2013 " + $('.time-end').val()).getTime();
+                    if (timeStrat >= timeEnd){
+                        $(btn).attr('disabled', 'disabled');
+                        $(errors).text('Giờ kết thúc phải lớn hơn giờ bắt đầu.');
+                    } else{
+                        $(btn).removeAttr('disabled');
+                        $(errors).text('');
+                    }
+
                 } else {
-                    $('.btn-send').removeAttr('disabled');
+                    $(btn).removeAttr('disabled');
                     $(errors).text('');
                 }
         }

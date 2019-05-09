@@ -30,10 +30,10 @@ Route::group([
     Route::post('/doi-mat-khau', 'UserController@updatePassword')->name('update_password');
     Route::get('/thoi-gian-lam-viec', 'UserController@workTime')->name('work_time');
     Route::get('/thoi-gian-lam-viec-api', 'UserController@workTimeAPI')->name('work_time_api');
-    Route::get('/ngay-nghi', 'UserController@dayOff')->name('day_off');
+    Route::get('/ngay-nghi', 'UserController@dayOff')->name('day_off')->middleware('delete.cache');
     Route::get('xin-phep', 'UserController@askPermission')->name('ask_permission');
     Route::get('xin-phep/create', 'UserController@askPermissionCreate')->name('ask_permission.create');
-    Route::post('phe-duyet-xin-phep', 'UserController@approved')->name('approved')->middleware('can:manager');
+    Route::post('phe-duyet-xin-phep', 'UserController@approved')->name('approved')->middleware(['can:manager','delete.cache']);
     Route::post('phe-duyet-xin-phep-ot', 'UserController@approvedOT')->name('approvedOT')->middleware('can:manager');
     /* Route::post('/ngay-nghi/create-api', 'UserController@dayOffCreate_API')->name('day_off_createAPI');*/
     Route::get('/ngay-nghi/list-approval-api', 'UserController@dayOffListApprovalAPI')->name('day_off_listApprovalAPI');

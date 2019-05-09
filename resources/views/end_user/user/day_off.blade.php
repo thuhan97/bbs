@@ -86,7 +86,7 @@
             </span>
             </div>
             <div class="col-sm-3 col-md-6 col-lg-3 position-relative pr-0 show-modal">
-            <span class="card bg-danger border-radius-2">
+            <span class="card bg-danger border-radius-2" style="cursor: pointer">
                 <div class="card-body  row d-flex justify-content-center px-0 ml-xxxl-1">
                     <div class="media d-md-flex">
                             <span id="dayoff-option-header-4"
@@ -265,7 +265,7 @@
                     </div>
 
                     <!-- Default checked -->
-                    <div class="custom-control custom-radio ml-3">
+                    <div class="custom-control custom-radio ml-5">
                         <input type="radio" class="custom-control-input option-dayoff" id="defaultChecked" name="defaultExampleRadios" value="1" @if(old('title')) checked @endif>
                         <label class="custom-control-label " for="defaultChecked"><h5>Xin nghỉ chế độ</h5></label>
                     </div>
@@ -276,7 +276,7 @@
                                 @csrf
                             <div class="modal-body mx-3 mt-0 pb-0">
                                 <div class="mb-3">
-                                    <label class="text-w-400" for="exampleFormControlTextarea5">Nội dung*</label>
+                                    <label class="text-w-400" for="exampleFormControlTextarea5">Nội dung <span class="text-danger">*</span></label>
                                     <textarea
                                             class="form-control reason_id rounded-0 select-item check-value {{ $errors->has('reason') ? ' has-error' : '' }}"
                                             id="exampleFormControlTextarea2" rows="3" placeholder="Lý do xin nghỉ..."
@@ -292,7 +292,7 @@
                                         <div class="form-group col-sm-6 m-0">
                                             <div class="row">
                                                 <div class="col-sm-7 py-0 pr-0">
-                                                    <label class=" text-w-400" for="inputCity">Ngày bắt đầu*</label>
+                                                    <label class=" text-w-400" for="inputCity">Ngày bắt đầu<span class="text-danger">*</span></label>
                                                     <?php
                                                     $autoDateStart = date('Y/m/d', strtotime('tomorrow'));
                                                     ?>
@@ -312,7 +312,7 @@
                                                     <?php
                                                     $autoDateEnd = date('Y/m/d', strtotime('tomorrow + 1day'));
                                                     ?>
-                                                    <label class="text-w-400" for="inputZip">Tới ngày*</label>
+                                                    <label class="text-w-400" for="inputZip">Tới ngày<span class="text-danger">*</span></label>
                                                     <input type="text"
                                                            class="form-control select-item  border-0 {{ $errors->has('end_at') ? ' has-error' : '' }}"
                                                            id="end_date" autocomplete="off" name="end_at"
@@ -352,7 +352,7 @@
 
 
                                 <div class="">
-                                    <label class="text-w-400" for="exampleForm2">Người duyệt*</label>
+                                    <label class="text-w-400" for="exampleForm2">Người duyệt<span class="text-danger">*</span></label>
                                     {{ Form::select('approver_id', $userManager, null, ['class' => 'form-control my-1 mr-1 browser-default custom-select md-form select-item mannager_id check-value','placeholder'=>'Chọn người duyệt đơn' ]) }}
                                     @if ($errors->has('approver_id'))
                                         <div class="mt-1 ml-3">
@@ -373,7 +373,7 @@
                             <div class="modal-body mx-3 mt-0 pb-0">
                                 <div class="mb-3">
                                     <!-- Default input -->
-                                    <label class="text-w-400" for="exampleForm2">Chế độ nghỉ*</label>
+                                    <label class="text-w-400" for="exampleForm2">Chế độ nghỉ<span class="text-danger">*</span></label>
                                     <?php
                                         $vacation=VACATION;
                                         if (\Illuminate\Support\Facades\Auth::user()->sex == SEX['male']){
@@ -389,7 +389,7 @@
                                 </div>
                                 <input type="hidden" name="day_off_id" value="">
                                 <div class="mb-3">
-                                    <label class="text-w-400" for="exampleFormControlTextarea5">Nội dung*</label>
+                                    <label class="text-w-400" for="exampleFormControlTextarea5">Nội dung<span class="text-danger">*</span></label>
                                     <textarea
                                             class="form-control reason_id rounded-0 select-item check-value {{ $errors->has('reason') ? ' has-error' : '' }}"
                                             id="exampleFormControlTextarea2" rows="3" placeholder="Lý do xin nghỉ..."
@@ -403,7 +403,7 @@
                                 <div class="mb-2">
                                     <div class="row">
                                         <div class="form-group col-sm-6 m-0">
-                                            <label class=" text-w-400" for="inputCity">Ngày bắt đầu*</label>
+                                            <label class=" text-w-400" for="inputCity">Ngày bắt đầu<span class="text-danger">*</span></label>
                                             <?php
 
                                             $autoDate = date('Y/m/d', strtotime('tomorrow'));
@@ -416,7 +416,7 @@
                                         </div>
                                         <!-- Default input -->
                                         <div class="form-group col-sm-6 m-0">
-                                            <label class="text-w-400" for="inputZip">Tới ngày*</label>
+                                            <label class="text-w-400" for="inputZip">Tới ngày<span class="text-danger">*</span></label>
                                             <input type="text"
                                                    class="form-control select-item {{ $errors->has('end_at') ? ' has-error' : '' }}"
                                                    id="end_date1" autocomplete="off" name="end_at"
@@ -437,7 +437,7 @@
                                     @endif
                                 </div>
                                 <div class="">
-                                    <label class=" mt-1 text-w-400" for="exampleForm2">Người duyệt*</label>
+                                    <label class=" mt-1 text-w-400" for="exampleForm2">Người duyệt<span class="text-danger">*</span></label>
                                     {{ Form::select('approver_id', $userManager, null, ['class' => 'form-control my-1 mr-1 browser-default custom-select md-form select-item mannager_id check-value','placeholder'=>'Chọn người duyệt đơn' ]) }}
                                     @if ($errors->has('approver_id'))
                                         <div class="mt-1 ml-3">

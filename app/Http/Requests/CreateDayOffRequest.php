@@ -32,7 +32,7 @@ class CreateDayOffRequest extends FormRequest
             ],
             'title' => 'nullable|integer',
             'reason' => 'required|max:1000|min:3',
-            'start_at' => 'required|after_or_equal:today',
+            'start_at' => 'required|date',
             'end_at' => 'required|after_or_equal:start_at',
             'status' => 'nullable|integer|between:0,1',
             'option_check'=>'nullable|digits_between:0,2',
@@ -48,7 +48,6 @@ class CreateDayOffRequest extends FormRequest
     public function messages()
     {
         return [
-            'start_at.after_or_equal' => 'Ngày bắt đầu phải lớn hơn hoặc bằng ngày hiện tại.',
             'end_at.after_or_equal' => 'Ngày kết thúc phải lớn hơn hoặc bằng ngày bắt đầu.'
         ];
     }

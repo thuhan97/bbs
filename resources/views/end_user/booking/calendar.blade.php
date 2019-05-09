@@ -450,10 +450,16 @@
                 },
                 eventClick: function(calEvent, jsEvent, view) {
                     console.log(calEvent.start);
-                    // 
+                    var data={
+                            'id':calEvent.id,
+                            'meetings_id':calEvent.description,
+                            'start_time':calEvent.start.format('HH:mm:00'),
+                            'end_time':calEvent.end.format('HH:mm:00'),
+                            'date':calEvent.start.format('YYYY-MM-DD' ),
+                        };
                     $.ajax({
-                        url:'get-booking/'+calEvent.id,
-                        data:{'start_date':calEvent.start.format('YYYY-MM-DD HH:mm:00')},
+                        url:'/get-booking',
+                        data:data,
                         type:'GET',
                         success:function(data){
                             $('#id_booking').val(calEvent.id);
@@ -464,11 +470,52 @@
                             $('#show-meeting').text(data.meeting);
                             $('#time').text(moment(calEvent.start).format('HH:mm')+ '-' + moment(calEvent.end).format('HH:mm'));
                             $('#showModal').modal();
-                        }
-                    });
-                    // 
+                            $('#edit').click(function(){
+                                        var booking=data.booking;
+                                        $('#id').val(booking.id);
+                                        $('#title').val(booking.title);
+                                        $('#content').val(booking.content);
+                                        $('#participants').val(booking.participants);
+                                        $('.selectpicker').selectpicker('refresh');
+                                        $('#meetings_id').val(booking.meetings_id);
+                                        $('#start_time').val((booking.start_time.substring(0,5)));
+                                        $('#end_time').val(booking.end_time.substring(0,5));
+                                        $('#days_repeat').val(booking.date);
+                                        (booking.is_notify==0)? $('input[name="is_notify"]').attr('checked', false): $('input[name="is_notify"]').attr('checked', true);
+                                       
+                                        if(data.type=='PAST'){
+                                            $('#repeat').css('display','none');
+                                        }
+                                        else{
+                                           $('input:radio[name="repeat_type"]').filter('[value='+booking.repeat_type+']').attr('checked', true);
+                                        }
+                                        $('#showModal').modal('hide');
+                                        $('#addModal').modal();
+                            });
 
-                    
+                            // delete
+                            $('#delete').click(function(){
+                                $.ajax({
+                                    url:'delete-booking',
+                                    data:data,
+                                    type:'GET',
+                                    success:function(data){
+                                        $('#deleteModal').modal('hide');
+                                        $('#message').text('Bạn đã xóa thành công buổi họp!')
+                                                $('#deleteSuccessModal').modal();      
+                                    },
+                                    fail:function(data){
+                                        $('#deleteModal').modal('hide');
+                                        $('#message').text('Thao tác xóa không thành công!')
+                                            $('#deleteSuccessModal').modal();
+                                            
+                                            
+                                         
+                                    }
+                                });
+                             });
+                        }
+                    });      
                 },
             });
         });
@@ -548,65 +595,13 @@
         
           });
 
-        $('#edit').click(function(){
-            var id=$('#id_booking').val();
-            $.ajax({
-                url:'get-booking/'+id,
-                data:{'start_date':$('#start_date').val()},
-                type:'GET',
-                success:function(data){
-                    var booking=data.booking;
-                    $('#id').val(id);
-                    $('#title').val(booking.title);
-                    $('#content').val(booking.content);
-                    $('#participants').val(booking.participants);
-                    $('.selectpicker').selectpicker('refresh');
-                    $('#meetings_id').val(booking.meetings_id);
-                    $('#start_time').val((booking.start_time.substring(0,5)));
-                    $('#end_time').val(booking.end_time.substring(0,5));
-                    $('#days_repeat').val(booking.date);
-                    (booking.is_notify==0)? $('input[name="is_notify"]').attr('checked', false): $('input[name="is_notify"]').attr('checked', true);
-                   
-                    if(data.type=='PAST'){
-                        $('#repeat').css('display','none');
-                    }
-                    else{
-                       $('input:radio[name="repeat_type"]').filter('[value='+booking.repeat_type+']').attr('checked', true);
-                    }
-                    $('#showModal').modal('hide');
-                    $('#addModal').modal();
-                }
-            });
-        });
+        
         $('#deleteMessage').click(function(){
             $('#showModal').modal('hide');
             $('#deleteModal').modal();
         });
 
-        $('#delete').click(function(){
-            var id=$('#id_booking').val();
-            $.ajax({
-                url:'delete-booking/'+id,
-                data:{'start_date':$('#start_date').val()},
-                type:'GET',
-                success:function(data){
-                    $('#deleteModal').modal('hide');
-                    $('#message').text('Bạn đã xóa thành công buổi họp!')
-                            $('#deleteSuccessModal').modal();
-                     
-                        
-                      
-                },
-                fail:function(data){
-                    $('#deleteModal').modal('hide');
-                    $('#message').text('Thao tác xóa không thành công!')
-                        $('#deleteSuccessModal').modal();
-                        
-                        
-                     
-                }
-            });
-        });
+        
         $('#ok').click(function(){
             $('#deleteSuccessModal').modal('hide');
             location.reload();

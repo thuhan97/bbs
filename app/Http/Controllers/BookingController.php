@@ -111,7 +111,7 @@ class BookingController extends Controller
         
     }
 
-    public function update(Request $request ,$id){
+    public function update(Request $request,$id){
     	 $rules=[
             'title'=>'required',
             'content'=>'required',
@@ -180,19 +180,58 @@ class BookingController extends Controller
         }   
     }
 
-    public function getBooking(Request $request,$id){
-    	$booking=(Recur::find($id))?Recur::find($id):Booking::find($id);
+    public function getBooking(Request $request){
+    	$id=$request->id;
+    	$meetings_id=$request->meetings_id;
+    	$start_time=$request->start_time;
+    	$end_time=$request->end_time;
+    	$date=$request->date;
+    	$condition1=[
+    		'id'=>$id,
+    		'meetings_id'=>$meetings_id,
+    		'start_time'=>$start_time,
+    		'end_time'=>$end_time,
+    		'date'=>$date
+    	];
+    	$condition2=[
+    		'id'=>$id,
+    		'meetings_id'=>$meetings_id,
+    		'start_time'=>$start_time,
+    		'end_time'=>$end_time,
+    	];
+    	$booking=Recur::where($condition2)->get();
+    	$booking=(count(Booking::where($condition1)->get())>0)?(Booking::where($condition1)->first()):(Recur::where($condition2)->first());
     	$participants=explode(",",$booking->participants);
     		$objects=[];
     		foreach($participants as $user_id) {
     			$objects[]=(User::find($user_id))->name;
     		}
-    		$meeting=Meeting::find($booking->meetings_id)->name;
+    		$meeting=Meeting::find($meetings_id)->name;
     	 return response()->json(["booking"=>$booking,"participants"=>$objects,"meeting"=>$meeting]);
     }
 
-    public function deleteBooking(Request $request, $id){
-    		$booking = Recur::where('id',$id)->delete();	
+    public function deleteBooking(Request $request){
+    		$id=$request->id;
+	    	$meetings_id=$request->meetings_id;
+	    	$start_time=$request->start_time;
+	    	$end_time=$request->end_time;
+	    	$date=$request->date;
+	    	$condition1=[
+	    		'id'=>$id,
+	    		'meetings_id'=>$meetings_id,
+	    		'start_time'=>$start_time,
+	    		'end_time'=>$end_time,
+	    		'date'=>$date
+	    	];
+	    	$condition2=[
+	    		'id'=>$id,
+	    		'meetings_id'=>$meetings_id,
+	    		'start_time'=>$start_time,
+	    		'end_time'=>$end_time,
+	    	];
+    	$booking=(Booking::where($condition1)->get())?Booking::where($condition1)->first():Recur::where($condition2)->first();
+    	dd($booking);
+    	$booking->delete();
     	 return response()->json(["messages"=>"success"]);
     }
 

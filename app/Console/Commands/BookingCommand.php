@@ -39,17 +39,16 @@ class BookingCommand extends Command
      */
     public function handle()
     {
-         $recurs= Recur::all();
+         $recurs= Recur::where('date'<=\Carbon::now()->format('Y-m-d'));
             foreach ($recurs as $recur) {
                 $type=$recur->repeat_type;
                 $days=$recur->days_repeat;
                 if(($type==WEEKLY &&$days==\Carbon::now()->dayOfWeek) ||
                     ($type==MONTHLY &&$days==\Carbon::now()->day) ||
-                    ($type==YEARLY && $days==\Carbon::now()->format('m-d')) 
-                {
-                        $add=true;
-                } 
-               if(isset($add)&&$add==true){
+                    ($type==YEARLY && $days==\Carbon::now()->format('m-d')))
+                        $add=1;
+    
+               if(isset($add)&&$add==1){
                     $booking=[
                             'title'=>$recur->title,
                             'content'=>$recur->content,
@@ -57,7 +56,7 @@ class BookingCommand extends Command
                             'meetings_id'=>$recur->meetings_id,
                             'start_time'=>$recur->start_time,
                             'end_time'=>$recur->end_time,
-                            'date'=>\Carbon::now()->format('Y-m-d')
+                            'date'=>\Carbon::now()->format('Y-m-d'),
                             'participants'=>$recur->participants,
                             'is_notify'=>$recur->is_notify,
                             'color'=>$recur->color,

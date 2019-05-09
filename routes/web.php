@@ -228,8 +228,8 @@ Route::group([
     Route::get('/get_calendar','BookingController@getCalendar')->name('getCalendarBooking');
     Route::post('/them-phong-hop','BookingController@booking')->name('booking');
     Route::post('/sua-phong-hop/{id}','BookingController@update')->name('update_booking');
-    Route::get('/get-booking/{id}','BookingController@getBooking')->name('get_booking');
-    Route::get('/delete-booking/{id}','BookingController@deleteBooking')->name('delete_booking');
+    Route::get('/get-booking','BookingController@getBooking')->name('get_booking');
+    Route::get('/delete-booking','BookingController@deleteBooking')->name('delete_booking');
 
     Route::post('/ngay-nghi/create-calendar', 'UserController@dayOffCreateCalendar')->name('day_off_create_calendar');
     Route::post('/ngay-nghi/create-day-off', 'UserController@dayOffCreate')->name('day_off_create');

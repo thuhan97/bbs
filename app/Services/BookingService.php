@@ -56,7 +56,7 @@ class BookingService extends AbstractService implements IBookingService
                 $results[] = [
                     'id' => $booking->id,
                     'title' => $booking->title,
-                    'description' => $booking->content,
+                    'description' => $booking->meetings_id,
                     'start' => $booking->date.' '.$booking->start_time,
                     'end' => $booking->date.' '.$booking->end_time,
                     'textColor'=>'#fff',
@@ -94,11 +94,11 @@ class BookingService extends AbstractService implements IBookingService
                  $startDate=$recur->days_repeat;
 
             }
-            if($startDate!=null && $startDate>$recur->date){
+            if($startDate!=null && $startDate>$recur->date&& $startDate> \Carbon::now()->format('Y-m-d')){
                 $results[]=[
                     'id'=>$recur->id,
                     'title' => $recur->title,
-                    'description' => $recur->content,
+                    'description' => $recur->meetings_id,
                     'start' => $startDate.' '. $recur->start_time,
                     'end' => $startDate.' '.$recur->end_time,
                     'textColor'=>'#fff',

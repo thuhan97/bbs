@@ -203,7 +203,17 @@
                         if (el.getElementsByClassName("data-id")[0]) {
                             document.getElementById("div-reason").innerHTML =
                                 '<div class="row col-md-12">' +
+                                '<div class="row col-md-12">' +
                                 '<div class="col-md-12 d-flex justify-content-center">' +
+                                '<div class="user col-md-4 pl-0 pr-0 text-center">' +
+                                '    <label for="late">Xin đi muộn </label>' +
+                                '    <input ' + data_late + ' type="radio" id="late" class="user-radio2 radio-modal-work-time" name="explanation_type" value="1"  style="position: relative;opacity: 1;pointer-events: inherit"/>' +
+                                '</div>' +
+                                '<div class="user col-md-4 pl-0 pr-0 text-center">' +
+                                '    <label for="early">Xin về sớm </label>' +
+                                '    <input ' + data_early + ' id="early" type="radio" class="user-radio3 radio-modal-work-time"  name="explanation_type" value="2"  style="position: relative;opacity: 1;pointer-events: inherit"/>' +
+                                '</div>' +
+                                '</div>' +
                                 '<input hidden name="id" value="' + dataID + '">' +
                                 '<input hidden name="user_id" value="' + dataUserID + '">' +
                                 '<input hidden name="work_day" value="' + dataWorkDay + '">' +
@@ -215,7 +225,17 @@
                         } else {
                             document.getElementById("div-reason").innerHTML =
                                 '<div class="row col-md-12">' +
+                                '<div class="row col-md-12">' +
                                 '<div class="col-md-12 d-flex justify-content-center">' +
+                                '<div class="user col-md-4 pl-0 pr-0 text-center">' +
+                                '    <label for="late">Xin đi muộn </label>' +
+                                '    <input ' + data_late + ' type="radio" id="late" class="user-radio2 radio-modal-work-time" name="explanation_type" value="1"  style="position: relative;opacity: 1;pointer-events: inherit"/>' +
+                                '</div>' +
+                                '<div class="user col-md-4 pl-0 pr-0 text-center">' +
+                                '    <label for="early">Xin về sớm </label>' +
+                                '    <input ' + data_early + ' id="early" type="radio" class="user-radio3 radio-modal-work-time"  name="explanation_type" value="2"  style="position: relative;opacity: 1;pointer-events: inherit"/>' +
+                                '</div>' +
+                                '</div>' +
                                 '<input hidden name="work_day" value="' + getDataTime + '">' +
                                 '<input hidden name="type" value="1">' +
                                 '<textarea class="form-control" name="reason" rows="6" placeholder="Nội dung bạn muốn gửi..."></textarea>' +

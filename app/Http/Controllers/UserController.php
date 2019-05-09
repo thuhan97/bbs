@@ -193,14 +193,15 @@ class UserController extends Controller
         $reason = $request['reason'];
         $workDay = $request['work_day'];
         $otType = $request['ot_type'];
+        $explanationType = $request['explanation_type'];
         if ($id) {
-            WorkTimesExplanation::where('user_id', Auth::id())->where('work_day', $workDay)->update(['note' => $reason, 'ot_type' => $otType,'type'=>$request['type']]);
+            WorkTimesExplanation::where('user_id', Auth::id())->where('work_day', $workDay)->update(['note' => $reason, 'ot_type' => $otType, 'type' => $explanationType]);
             return back()->with('day_off_success', '');
         } else {
             WorkTimesExplanation::create([
                 'user_id' => Auth::id(),
                 'work_day' => $request['work_day'],
-                'type' => $request['type'],
+                'type' => $explanationType,
                 'ot_type' => $otType,
                 'note' => $reason
             ]);

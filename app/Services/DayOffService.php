@@ -87,23 +87,23 @@ class DayOffService extends AbstractService implements IDayOffService
      *
      * @return array
      */
-    public function getDayOffUser($request,$userId)
+    public function getDayOffUser($request, $userId)
     {
         $model = $this->model->where('user_id', $userId);
         $remainDay = RemainDayoff::firstOrCreate(['user_id' => $userId]);
         $thisYear = (int)date('Y');
-        $datas=$model->whereYear('start_at', $thisYear)
+        $datas = $model->whereYear('start_at', $thisYear)
             ->select('*', DB::raw('DATE_FORMAT(start_at, "%d/%m/%Y (%H:%i)") as start_date'),
                 DB::raw('DATE_FORMAT(end_at, "%d/%m/%Y (%H:%i)") as end_date'),
                 DB::raw('DATE_FORMAT(approver_at, "%d/%m/%Y (%H:%i)") as approver_date'))
             ->orderBy('id', 'DESC');
-        if ($request->month){
-            $datas=$datas->whereMonth('start_at',$request->month);
+        if ($request->month) {
+            $datas = $datas->whereMonth('start_at', $request->month);
         }
-        if ($request->year){
-            $datas=$datas->whereYear('start_at',$request->year);
+        if ($request->year) {
+            $datas = $datas->whereYear('start_at', $request->year);
         }
-           $datas=$datas->paginate(PAGINATE_DAY_OFF);
+        $datas = $datas->paginate(PAGINATE_DAY_OFF);
         return [
             'data' => $datas,
             'total' => $remainDay->previous_year + $remainDay->current_year,
@@ -240,7 +240,7 @@ class DayOffService extends AbstractService implements IDayOffService
             $data = $this->model::groupBy('user_id', 'check_free')
                 ->select('user_id', 'check_free', DB::raw('sum(number_off) as total'))
                 ->where('user_id', $id)
-                ->where('title','=', DAY_OFF_TITLE_DEFAULT)
+                ->where('title', '=', DAY_OFF_TITLE_DEFAULT)
                 ->where('status', STATUS_DAY_OFF['active'])
                 ->whereMonth('day_offs.start_at', '=', date('m'))
                 ->whereYear('day_offs.start_at', '=', date('Y'))->first();
@@ -306,7 +306,7 @@ class DayOffService extends AbstractService implements IDayOffService
         $users = User::whereIn('id', $ids)->whereNull('end_date')->get();
         $dayOffMonth = $this->statisticalDayOff($ids);
         foreach ($users as $keys => $user) {
-            $vacationMode= $this->statisticalVacationModeDayOff($user->id);
+            $vacationMode = $this->statisticalVacationModeDayOff($user->id);
             $dayOffPreYear = RemainDayoff::where('user_id', $user->id)->where('year', date('Y') - PRE_YEAR)->first();
             $dayOffYear = RemainDayoff::where('user_id', $user->id)->where('year', date('Y'))->first();
             $dayOffPreYearTotal = $dayOffPreYear->remain ?? DEFAULT_VALUE;
@@ -327,7 +327,7 @@ class DayOffService extends AbstractService implements IDayOffService
                     array_push($totalMonth, $month{$i});
                 }
             }
-            $newTotalMonth=array_slice($totalMonth,count($totalMonth)-TOTAL_MONTH,count($totalMonth));
+            $newTotalMonth = array_slice($totalMonth, count($totalMonth) - TOTAL_MONTH, count($totalMonth));
             $result[] = [
                 'stt' => $keys + 1,
                 'name' => $user->name,
@@ -351,7 +351,7 @@ class DayOffService extends AbstractService implements IDayOffService
                 'day_off_month_Nov' => $newTotalMonth[10],
                 'day_off_month_Dec' => $newTotalMonth[11],
                 'day_off_total' => array_sum($newTotalMonth),
-                'day_off_regulation' =>  $vacationMode->total ?? '0',
+                'day_off_regulation' => $vacationMode->total ?? '0',
                 'day_off_remain_total' => $dayOffPreYearTotal + $dayOffYearTotal == DEFAULT_VALUE ? '0' : $dayOffPreYearTotal + $dayOffYearTotal,
                 'day_off_end_year_reset' => $dayOffPreYearTotal == DEFAULT_VALUE ? '0' : $dayOffPreYearTotal,
                 'day_off_turn_next_year' => $dayOffYearTotal == DEFAULT_VALUE ? '0' : $dayOffYearTotal,
@@ -372,66 +372,60 @@ class DayOffService extends AbstractService implements IDayOffService
         $dayOff->approve_comment = $request->approve_comment;
         $dayOff->status = STATUS_DAY_OFF['active'];
         // user create day off = staff -> check remain day off table
-        if ($dayOff->title != DAY_OFF_TITLE_DEFAULT && $userDayOff->contract_type == CONTRACT_TYPES['staff']){
-            $dayOff->number_off=$request->number_off;
+        if ($dayOff->title != DAY_OFF_TITLE_DEFAULT && $userDayOff->contract_type == CONTRACT_TYPES['staff']) {
+            $dayOff->number_off = $request->number_off;
 
-        }else if ($dayOff->title == DAY_OFF_TITLE_DEFAULT && $userDayOff->contract_type == CONTRACT_TYPES['staff'] && $userDayOff->end_date == null) {
+        } else if ($dayOff->title == DAY_OFF_TITLE_DEFAULT && $userDayOff->contract_type == CONTRACT_TYPES['staff'] && $userDayOff->end_date == null) {
             $dayOff->number_off = $request->number_off;
             // create new if reamin day off curent year = null
-            $remainDayOffCurrentYear = RemainDayoff::where('user_id', $dayOff->user_id)->where('year',date('Y'))->first();
+            $remainDayOffCurrentYear = RemainDayoff::where('user_id', $dayOff->user_id)->where('year', date('Y'))->first();
 
             $remainDayOffPreYear = RemainDayoff::where('user_id', $dayOff->user_id)->where('year', (int)date('Y') - 1)->first();
+            // day off exist pre year
             $dayOffCurrentYear = $remainDayOffCurrentYear->remain ?? 0;
+
+            // check day off free user = female
             $dayOffFreeCurrentYear = $remainDayOffCurrentYear->day_off_free_female ?? 0;
+
+           // day off exist Current year
             $dayOffPreYear = $remainDayOffPreYear ? $remainDayOffPreYear->remain : DAY_OFF_DEFAULT;
 
-            if ($dayOffPreYear + $dayOffFreeCurrentYear >= $request->number_off) {
-                if ($dayOffFreeCurrentYear >= $request->number_off){
-                    $remainDayOffPreYear->remain = $dayOffPreYear - $request->number_off;
-                }else{
-
-                }
-                $remainDayOffPreYear->remain = $dayOffPreYear - $request->number_off;
-                $remainDayOffPreYear->save();
-
-            } elseif ($dayOffCurrentYear + $dayOffPreYear >= $request->number_off) {
-                if ($remainDayOffPreYear) {
-                    $remainDayOffPreYear->remain = DAY_OFF_DEFAULT;
-                    $remainDayOffPreYear->save();
-                }
-                $remainDayOffCurrentYear->remain = $dayOffCurrentYear + $dayOffPreYear - $request->number_off;
+            if ($dayOffFreeCurrentYear >= $request->number_off) {
+                $remainDayOffCurrentYear->day_off_free_female = $dayOffFreeCurrentYear - $request->number_off;
                 $remainDayOffCurrentYear->save();
-
             } else {
-                if ($remainDayOffPreYear) {
-                    $remainDayOffPreYear->remain = DAY_OFF_DEFAULT;
+                if ($dayOffPreYear + $dayOffFreeCurrentYear >= $request->number_off) {
+                    $remainDayOffPreYear->remain = $dayOffPreYear + $dayOffFreeCurrentYear - $request->number_off;
                     $remainDayOffPreYear->save();
-                }
-                $remainDayOffCurrentYear->remain = DAY_OFF_DEFAULT;
-                $dayOff->absent = $request->number_off - ($dayOffCurrentYear + $dayOffPreYear);
-                $dayOff->number_off = $request->number_off - $dayOff->absent;
+
+                } elseif ($dayOffCurrentYear + $dayOffPreYear + $dayOffFreeCurrentYear >= $request->number_off) {
+                    if ($remainDayOffPreYear) {
+                        $remainDayOffPreYear->remain = DAY_OFF_DEFAULT;
+                        $remainDayOffPreYear->save();
+                    }
+                    $remainDayOffCurrentYear->remain = $dayOffCurrentYear + $dayOffPreYear + $dayOffFreeCurrentYear - $request->number_off;
+                    $remainDayOffCurrentYear->save();
+
+                } else {
+                    if ($remainDayOffPreYear) {
+                        $remainDayOffPreYear->remain = DAY_OFF_DEFAULT;
+                        $remainDayOffPreYear->save();
+                    }
+                    $remainDayOffCurrentYear->remain = DAY_OFF_DEFAULT;
+                    $dayOff->absent = $request->number_off - ($dayOffCurrentYear + $dayOffPreYear + $dayOffFreeCurrentYear);
+                    $dayOff->number_off = $request->number_off - $dayOff->absent;
+                    $remainDayOffCurrentYear->save();
+                };
+
+                $remainDayOffCurrentYear->day_off_free_female = DEFAULT_VALUE;
                 $remainDayOffCurrentYear->save();
-            };
+            }
         } else {
             // user create day off != staff -> insert column absent table day off = total number off
             $dayOff->absent = $request->number_off;
         }
         $dayOff->save();
 
-        // check if female && sum day off in month >=2 && check_free =0 -> +1 column remain table day off
-        if ($userDayOff->sex == SEX['female'] && $userDayOff->contract_type == CONTRACT_TYPES['staff']) {
-
-            //total day off in month
-            $countDayOff = $this->countDayOff($userDayOff->id);
-            if ($countDayOff && (int)$countDayOff->total >= TOTAL_DAY_OFF_IN_MONTH && $countDayOff->check_free == DAY_OFF_FREE_DEFAULT) {
-                DayOff::where('user_id', $userDayOff->id)
-                    ->whereMonth('start_at', '=', date('m'))
-                    ->whereYear('start_at', '=', date('Y'))
-                    ->update(['check_free' => DAY_OFF_FREE_ACTIVE]);
-                $remainDayOffPreYear->remain = $remainDayOffPreYear->remain + DAY_OFF_FREE_ACTIVE;
-                $remainDayOffCurrentYear->save();
-            }
-        }
     }
 
     /**
@@ -498,7 +492,7 @@ class DayOffService extends AbstractService implements IDayOffService
             ->whereYear('day_offs.start_at', '=', date('Y'))
             ->whereNull('users.end_date')
             ->whereIn('day_offs.title', ARRAY_TITLE_DAYOFF_VACATION_MODE)
-             ->first();
+            ->first();
 
     }
 

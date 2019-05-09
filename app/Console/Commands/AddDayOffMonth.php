@@ -47,7 +47,13 @@ class AddDayOffMonth extends Command
                 $dayOffRemain=$dayOffRemain->update([
                     'remain' => \DB::raw( 'remain + 1' ), // increment
                     'remain_increment' => \DB::raw( 'remain_increment + 1' ), // increment
+                    'day_off_free_female' => REMAIN_DAY_OFF_DEFAULT,
                 ]);
+                if ($user->sex == SEX['female'] && $user->contract_type == CONTRACT_TYPES['staff']){
+                    $dayOffRemain=$dayOffRemain->update([
+                        'day_off_free_female' => REMAIN_DAY_OFF_DEFAULT, // increment
+                    ]);
+                }
             }else{
                 $dayOffRemain=new RemainDayoff();
                 $dayOffRemain->user_id=$user->id;

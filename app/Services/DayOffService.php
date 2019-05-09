@@ -378,20 +378,19 @@ class DayOffService extends AbstractService implements IDayOffService
         }else if ($dayOff->title == DAY_OFF_TITLE_DEFAULT && $userDayOff->contract_type == CONTRACT_TYPES['staff'] && $userDayOff->end_date == null) {
             $dayOff->number_off = $request->number_off;
             // create new if reamin day off curent year = null
-            $remainDayOffCurrentYear = RemainDayoff::firstOrCreate([
-                'user_id' => $dayOff->user_id,
-                'year' => date('Y')
-            ], [
-                'user_id' => $dayOff->user_id,
-                'year' => date('Y'),
-                'remain' => REMAIN_DAY_OFF_DEFAULT,
-                'remain_increment' => DAY_OFF_INCREMENT,
-            ]);
+            $remainDayOffCurrentYear = RemainDayoff::where('user_id', $dayOff->user_id)->where('year',date('Y'))->first();
+
             $remainDayOffPreYear = RemainDayoff::where('user_id', $dayOff->user_id)->where('year', (int)date('Y') - 1)->first();
-            $dayOffCurrentYear = $remainDayOffCurrentYear->remain;
+            $dayOffCurrentYear = $remainDayOffCurrentYear->remain ?? 0;
+            $dayOffFreeCurrentYear = $remainDayOffCurrentYear->day_off_free_female ?? 0;
             $dayOffPreYear = $remainDayOffPreYear ? $remainDayOffPreYear->remain : DAY_OFF_DEFAULT;
 
-            if ($dayOffPreYear >= $request->number_off) {
+            if ($dayOffPreYear + $dayOffFreeCurrentYear >= $request->number_off) {
+                if ($dayOffFreeCurrentYear >= $request->number_off){
+                    $remainDayOffPreYear->remain = $dayOffPreYear - $request->number_off;
+                }else{
+
+                }
                 $remainDayOffPreYear->remain = $dayOffPreYear - $request->number_off;
                 $remainDayOffPreYear->save();
 

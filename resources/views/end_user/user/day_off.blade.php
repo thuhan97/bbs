@@ -597,7 +597,7 @@
                     rules: {
                         title: {
                             required: true,
-                            range: [1, 3],
+                            range: [1, 4],
                             digits: true
                         },
                         start_at: {

@@ -13,7 +13,7 @@
                    style="{{COLOR_STATUS_PROJECT[$project->status]}}"> {{STATUS_PROJECT[$project->status]}}</i>
             </div>
             <div class="row mt-4">
-                <div class="col-md-4">
+                <div class="col-md-4 text-center">
                     <img src="{{$project->image_url}}" class="img-fluid z-depth-1">
                 </div>
                 <div class="col-md-8">

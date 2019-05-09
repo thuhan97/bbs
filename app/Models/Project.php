@@ -69,17 +69,15 @@ class Project extends Model
      */
     public function scopeSearch($query, $searchTerm)
     {
-        return $query->where(function ($query) use ($searchTerm) {
-            $query->orWhere('projects.name', 'LIKE', '%' . $searchTerm . '%');
-            $query->orWhere('users.name', 'LIKE', '%' . $searchTerm . '%');
-            $query->orWhere('customer', 'LIKE', '%' . $searchTerm . '%');
-            $query->orWhere('scale', 'LIKE', '%' . $searchTerm . '%');
-            $query->orWhere('technical', 'LIKE', '%' . $searchTerm . '%');
-            $query->orWhere('tools', 'LIKE', '%' . $searchTerm . '%');
-            $query->orWhere('description', 'LIKE', '%' . $searchTerm . '%');
-        })
-            ->select('projects.*')
-            ->join('users', 'projects.leader_id', '=', 'users.id');
+        return $query->where('projects.name', 'LIKE', '%' . $searchTerm . '%')
+            ->orWhere('customer', 'LIKE', '%' . $searchTerm . '%')
+            ->orWhere('scale', 'LIKE', '%' . $searchTerm . '%')
+            ->orWhere('technical', 'LIKE', '%' . $searchTerm . '%')
+            ->orWhere('tools', 'LIKE', '%' . $searchTerm . '%')
+            ->orWhere('description', 'LIKE', '%' . $searchTerm . '%')
+            ->orWhereHas('leader', function ($query) use ($searchTerm) {
+                $query->search($searchTerm);
+            });
     }
 
     public function leader()

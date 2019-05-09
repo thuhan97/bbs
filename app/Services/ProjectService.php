@@ -27,8 +27,6 @@ class ProjectService extends AbstractService implements IProjectService
             'id' => $id,
         ]);
         return $project;
-
-
     }
 
     /**
@@ -40,7 +38,6 @@ class ProjectService extends AbstractService implements IProjectService
      */
     public function search(Request $request, &$perPage, &$search)
     {
-
         $criterias = $request->only('page', 'page_size', 'search');
         $perPage = $criterias['page_size'] ?? DEFAULT_PAGE_SIZE;
         $search = $criterias['search'] ?? '';

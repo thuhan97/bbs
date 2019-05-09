@@ -27,9 +27,7 @@
                             </div>
                         </div>
                     @endforeach
-
                 </div>
-
                 <!--Grid row-->
                 <div class="row my-4 ">
                     <!--Grid column-->

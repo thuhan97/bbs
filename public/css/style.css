@@ -26,6 +26,10 @@
     border: none;
 }
 
+.select-normal {
+    display: block !important;
+}
+
 #nav_bar_avatar {
     padding: 0;
 }

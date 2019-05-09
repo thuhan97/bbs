@@ -293,6 +293,7 @@ define('EXPORT_PATHS', [
 //]);
 
 define('LATE_MONEY_CONFIG_FOLDER', 'json_config/');
+define('PROJECT_IMAGE_FOLDER', 'projects');
 define('LATE_MONEY_CONFIG', 'config/late_time.json');
 define('LATE_RULE_ID', 0);
 
@@ -352,13 +353,13 @@ define('OT_TYPE', [
     1 => 'Dự án',
     2 => 'OT lý do cá nhân',
 ]);
-define('CHECK_TIME_DAY_OFF',[
-    '08:00:00'=>'8:00',
-    '12:00:00'=>'12:00',
-    '18:00:00'=>'18:00',
+define('CHECK_TIME_DAY_OFF', [
+    '08:00:00' => '8:00',
+    '12:00:00' => '12:00',
+    '18:00:00' => '18:00',
 ]);
-define('DAY_OFF_TITLE_DEFAULT',1);
-define('ARRAY_TITLE_DAYOFF_VACATION_MODE',[2,3,4]);
+define('DAY_OFF_TITLE_DEFAULT', 1);
+define('ARRAY_TITLE_DAYOFF_VACATION_MODE', [2, 3, 4]);
 define('GROUPS', [
     1 => 'PHP 1',
     2 => 'PHP 2',

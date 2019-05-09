@@ -12,10 +12,7 @@
     <title>{{ config('app.name', 'BBS') }} @hasSection('page-title') | @yield('page-title') @endif</title>
 
     <!-- Styles -->
-    <link href="{{ cdn_asset('mdb/css/bootstrap.min.css') }}" rel="stylesheet">
-    {{--<link href="{{ cdn_asset('mdb/css/mdb.min.css') }}" rel="stylesheet">--}}
     <link href="{{ cdn_asset('css/complied.css') }}" rel="stylesheet">
-    <link href="{{ cdn_asset('css/mdb.min.css') }}" rel="stylesheet">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css"
           integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
     <link href="{{ cdn_asset('css/style.css') }}" rel="stylesheet">

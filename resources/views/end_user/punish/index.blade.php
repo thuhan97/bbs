@@ -17,7 +17,7 @@
             <form class="mb-4 mb-3" id="formReport">
                 <div class="active-cyan-2 mb-0">
                     <div class="row">
-                        <div class="col-6 col-sm-2">
+                        <div class="col-6 col-sm-2 ">
                             {{ Form::select('year', get_years(2), request('year', date('Y')), ['class'=>'mr-1 w-30 browser-default custom-select']) }}
                         </div>
                         <div class="col-6 col-sm-3 col-md-2">

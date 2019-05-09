@@ -1,14 +1,14 @@
 <?php
 $team = \Auth::user()->team();
 
-$logoUrl = $team->banner ?? 'http://jvb-corp.com/img/logo.png';
+$logoUrl = lfm_thumbnail($team->banner) ?? 'http://jvb-corp.com/img/logo.png';
 $name = $team->name ?? $config->name;
 ?>
 
 <!-- Sidebar -->
 <div class="sidebar fixed sidebar-fixed position-fixed" id="slide-out">
 
-    <div class="text-center mb-xl-3">
+    <div class="text-center mb-xl-4">
         <a href="/" class="logo-wrapper waves-effect">
             <img src="{{$logoUrl}}" class="img-fluid" alt="">
         </a>

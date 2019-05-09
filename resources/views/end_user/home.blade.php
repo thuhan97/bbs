@@ -12,15 +12,15 @@
                                 <div class="row mb-3">
                                     <div class="col-sm-5 text-center">
                                         <img class=""
-                                             src="{{lfm_thumbnail($post->image_url)}}"
+                                             src="{{$post->image_url}}"
                                              alt="{{$post->name}}" width="100%">
 
                                     </div>
-                                    <div class="col-sm-7">
-                                        <div class="media-body p-3"
+                                    <div class="col-sm-7" style="padding-left: 0">
+                                        <div class="media-body p-1"
                                              onclick="localtion.href='{{route('post_detail', ['id' => $post->id])}}'">
-                                            <h4 class="mt-0 mb-3 font-weight-bold">{{$post->name}}</h4>
-                                            {{str_limit(strip_tags(nl2br($post->introduction) ), 150) }}
+                                            <h4 class="mt-0 mb-1 font-weight-bold elipsis-line line-2 fix-2">{{$post->name}}</h4>
+                                            <p class="elipsis-line line-3 fix-3 m-0">{{str_limit(strip_tags(nl2br($post->introduction) ), 150) }}</p>
                                         </div>
                                     </div>
                                 </div>

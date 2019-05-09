@@ -87,7 +87,7 @@ Route::group([
 
 Route::group([
     'prefix' => 'file-manager', 'as' => 'unisharp.lfm.',
-    'middleware' => ['auth'],
+//    'middleware' => ['auth'],
 
 ], function () {
     $namespace = '\\UniSharp\\LaravelFilemanager\\Controllers\\';

@@ -358,6 +358,11 @@ define('CHECK_TIME_DAY_OFF', [
     '12:00:00' => '12:00',
     '18:00:00' => '18:00',
 ]);
+define('CHECK_TIME_DAY_OFF_USABLE', [
+    '08:00:00' => '00:00:00',
+    '12:00:00' => '12:00:00',
+    '18:00:00' => '24:00:00',
+]);
 define('DAY_OFF_TITLE_DEFAULT', 1);
 define('ARRAY_TITLE_DAYOFF_VACATION_MODE', [2, 3, 4]);
 define('GROUPS', [

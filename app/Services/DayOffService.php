@@ -7,6 +7,8 @@
 
 namespace App\Services;
 
+use App\Models\AdditionalDate;
+use App\Models\CalendarOff;
 use App\Models\DayOff;
 use App\Models\RemainDayoff;
 use App\Models\User;
@@ -387,7 +389,7 @@ class DayOffService extends AbstractService implements IDayOffService
             // check day off free user = female
             $dayOffFreeCurrentYear = $remainDayOffCurrentYear->day_off_free_female ?? 0;
 
-           // day off exist Current year
+            // day off exist Current year
             $dayOffPreYear = $remainDayOffPreYear ? $remainDayOffPreYear->remain : DAY_OFF_DEFAULT;
 
             if ($dayOffFreeCurrentYear >= $request->number_off) {
@@ -428,6 +430,48 @@ class DayOffService extends AbstractService implements IDayOffService
 
     }
 
+
+    public function checkDateUsable($startDate, $endDate, $startTime, $endTime)
+    {
+
+        $start = array_key_exists($startTime, CHECK_TIME_DAY_OFF_USABLE) ? CHECK_TIME_DAY_OFF_USABLE[$startTime] : '';
+        $end = array_key_exists($endTime, CHECK_TIME_DAY_OFF_USABLE) ? CHECK_TIME_DAY_OFF_USABLE[$endTime] : '';
+        return $end;
+        $from = Carbon::createFromFormat('Y/m/d H:i:s', $startDate . ' ' . $start);
+        $to = Carbon::createFromFormat('Y/m/d H:i:s', $endDate . ' ' . $end);
+        if (strtotime($from) > strtotime($to)){
+            return false;
+        }
+        $day = $to->diffInHours($from) / 24;
+        $numberDate = $to->diffInDays($from) + 1;
+        $total = [];
+        $check = 0;
+        for ($i = 0; $i < $numberDate; $i++) {
+            $convertDay = Carbon::createFromFormat('Y/m/d H:i:s', $startDate . ' ' . $start)->addDay($i)->format('D');
+            if ($convertDay == "Sun" || $convertDay == "Sat") {
+                array_push($total, $i);
+            }
+        }
+        $addDate = AdditionalDate::whereYear('date_add', date('Y'))->get();
+        foreach ($addDate as $value) {
+            $date = Carbon::createFromFormat('Y-m-d', $value->date_add);
+            if (strtotime($from) <= strtotime($date)) {
+                $check++;
+            }
+        }
+        $calender = CalendarOff::whereYear('date_off_from', date('Y'))->get();
+        foreach ($calender as $value) {
+            $numCalenderOffEnd = Carbon::createFromFormat('Y-m-d', $value->date_off_from);
+
+            if (strtotime($from) <= strtotime($numCalenderOffEnd)) {
+                $numCalenderOffStart = Carbon::createFromFormat('Y-m-d', $value->date_off_to);
+                $numCalenderDay = $numCalenderOffStart->diffInDays($numCalenderOffEnd);
+                $check = $check - $numCalenderDay;
+            }
+        }
+        return $countTotal = $day - count($total) + $check;
+    }
+
     /**
      * @param integer $month
      * @param Boolean $check
@@ -449,9 +493,7 @@ class DayOffService extends AbstractService implements IDayOffService
             ->get();
         foreach ($data as $key => $value) {
             $total = $total + $value->total + $value->total_absent;
-            if ($user->sex == SEX['female'] && $value->check_free == DAY_OFF_FREE_DEFAULT && $user->contract_type == CONTRACT_TYPES['staff']) {
-                $total = $total - DAY_OFF_FREE_ACTIVE;
-            }
+           
         }
         return $total;
     }

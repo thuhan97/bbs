@@ -704,6 +704,19 @@
 
             $('#end_date,#start_date,.time-start,.time-end').on('change', function () {
                 checkDate('#start_date', '#end_date', '#errors_date', true, '#btn-send');
+                var dateStart=$('#start_date').val();
+                var dateEnd =$('#end_date').val();
+                var timeStart= $('.time-start').val();
+                var timeEnd = $('.time-end').val();
+                $.ajax
+                ({
+                    'url': '{{ route('check-usable-day-offf') }}',
+                    'type': 'get',
+                    'data': {'start_date':dateStart  , 'end_date': dateEnd,'start_time':timeStart  , 'end_time': timeEnd, },
+                    success: function (data) {
+                        console.log(data);
+                    }
+                });
             })
             $('#end_date1,#start_date1').on('change', function () {
                 checkDate('#start_date1', '#end_date1', '#errors_date1', false, '#btn-send-day-off');

@@ -1,5 +1,4 @@
-<br/>
-<hr/>
+
 <br/>
 <div class="mb-4 wow fadeIn">
     <!-- Card -->

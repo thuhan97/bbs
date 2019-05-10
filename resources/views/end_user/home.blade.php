@@ -66,6 +66,8 @@
                                href="{{route('event')}}" role="button"> Xem tất cả sự kiện</a>
 
                             <br/>
+                            <br/>
+                            <hr/>
                     @endif
                     @include('elements.feedback')
                     <!--Card-->

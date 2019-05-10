@@ -451,7 +451,7 @@ class DayOffService extends AbstractService implements IDayOffService
         $checkAdditional = DEFAULT_VALUE;
         for ($i = DEFAULT_VALUE; $i < $numberDate; $i++) {
             $convertDay = Carbon::createFromFormat(DATE_FORMAT_DAY_OFF, $startDate . ' ' . $start)->addDay($i)->format('D');
-            if ($convertDay == "Sun" || $convertDay == "Sat") {
+            if ($convertDay ==  SUN || $convertDay == SAT) {
                 array_push($total, $i);
             }
         }

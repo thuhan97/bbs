@@ -24,6 +24,7 @@ class WorkTimeRequest extends FormRequest
     public function rules()
     {
         $datas = $this->request->all();
+//        dd($datas);
         $rules = [];
         if (isset($datas['start_at']) || empty($datas)) {
             $rules['type'] = 'required|integer|between:1,4';
@@ -33,6 +34,7 @@ class WorkTimeRequest extends FormRequest
             $rules['end_at'] = 'required|after:start_at|date_format:H:i';
         }else {
             $rules['work_day'] = 'required|date';
+//            $rules['explanation_type'] = 'required|integer|between:1,4';
         }
         return $rules;
     }
@@ -44,6 +46,7 @@ class WorkTimeRequest extends FormRequest
             'start_at' => 'giờ checkin',
             'end_at' => 'giờ checkout',
             'ot_type' => 'loại OT',
+            'explanation_type' => 'hình thức',
         ];
     }
 

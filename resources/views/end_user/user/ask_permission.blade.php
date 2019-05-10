@@ -144,9 +144,9 @@
                     id="btn-late-ot">
                 Xin OT
             </button>
-            <button type="button"
-                    class="d-none d-xl-block approve-btn-early no-box-shadow btn btn-warning waves-effect waves-light float-right"
-                    id="btn-early-late">Xin về sớm
+            <button type="button" class="approve-btn-early btn btn-warning no-box-shadow waves-light float-right"
+                    id="btn-late">
+                Xin về sớm
             </button>
             <button type="button" class="approve-btn-late btn btn-danger no-box-shadow waves-light float-right"
                     id="btn-late">
@@ -245,6 +245,41 @@
             <div class="modal-content" id="bg-img" style="background-image: url({{ asset('img/font/xin_nghi.png') }})">
                 <div class="modal-header text-center border-bottom-0 p-3">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span class="btn-close-icon" aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="d-flex justify-content-center">
+                    <img src="{{ asset('img/font/gio_lam_viec_popup.png') }}" alt="" width="355px" height="260px">
+                </div>
+                <br>
+                <form action="{{ route('ask_permission.create') }}" method="get">
+                    {{--@csrf--}}
+                    <div class="d-flex justify-content-center text-area-reason" id="div-reason"></div>
+                    <div class="offset-1 select-day">
+                        <div class="row col-12 option-permission"></div>
+                        <label class=" text-w-400" for="inputCity">Chọn ngày *</label>
+                        <input style="width: 43%;" type="text"
+                               class="form-control select-item {{ $errors->has('work_day') ? ' has-error' : '' }}"
+                               id="work-day-late" autocomplete="off" name="work_day" value="{{  old('work_day') }}"
+                               readonly="readonly">
+                    </div>
+                    <br>
+                    <textarea class="form-control permission-reason-late" name="note" cols="48" rows="6"
+                              placeholder="Nhập lý do ..."></textarea>
+                    <div class="pt-3 pb-4 d-flex justify-content-center border-top-0 rounded mb-0">
+                        <button class="btn btn-primary btn-send">GỬI ĐƠN</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="modal-early" tabindex="-1"
+         role="dialog" aria-labelledby="myModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog modal-center modal-set-center" role="document">
+            <div class="modal-content" id="bg-img" style="background-image: url({{ asset('img/font/xin_nghi.png') }})">
+                <div class="modal-header text-center border-bottom-0 p-3">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span class="btn-close-icon" aria-hidden="true">&times;</span>
                     </button>
                 </div>
@@ -256,14 +291,15 @@
                     {{--@csrf--}}
                     <div class="d-flex justify-content-center text-area-reason" id="div-reason"></div>
                     <div class="offset-1 select-day">
+                        <div class="row col-12 option-permission"></div>
                         <label class=" text-w-400" for="inputCity">Chọn ngày *</label>
                         <input style="width: 43%;" type="text"
                                class="form-control select-item {{ $errors->has('work_day') ? ' has-error' : '' }}"
-                               id="work_day" autocomplete="off" name="work_day" value="{{  old('work_day') }}"
+                               id="work-day-early" autocomplete="off" name="work_day" value="{{  old('work_day') }}"
                                readonly="readonly">
                     </div>
                     <br>
-                    <textarea class="form-control permission-reason" name="note" cols="48" rows="6"
+                    <textarea class="form-control permission-reason-early" name="note" cols="48" rows="6"
                               placeholder="Nhập lý do ..."></textarea>
                     <div class="pt-3 pb-4 d-flex justify-content-center border-top-0 rounded mb-0">
                         <button class="btn btn-primary btn-send">GỬI ĐƠN</button>
@@ -292,7 +328,7 @@
                         <div class="col-2"></div>
                         <div class="col-md-4 text-center">
                             <input style="position: relative;opacity: 1;pointer-events: inherit" class="other-ot"
-                                   type="radio" name="ot_type" id="project-ot"
+                                   type="radio" name="ot_type" id="project-ot" checked
                                    value="1" {{--{{ $workTimeExplanation['ot_type'] == 1 ? "checked" : '' }}--}}>
                             <label for="project-ot">OT dự án</label>
                         </div>
@@ -345,19 +381,34 @@
                 currentMonth = date.getMonth() + 1,
                 currentYear = date.getFullYear(),
                 currenFullTime = currentYear + '-' + currentMonth + '-' + currentDate;
-            $('#work_day').datepicker({format: 'yyyy-mm-dd'});
             $('#work_day_ot').datepicker({format: 'yyyy-mm-dd'});
+            $('#work-day-early').datepicker({format: 'yyyy-mm-dd'});
+            $('#work-day-late').datepicker({format: 'yyyy-mm-dd'});
+            $('#work-day-late').datepicker({format: 'yyyy-mm-dd'});
             $('.approve-btn-late').on('click', function () {
+                $(".permission-reason").empty();
                 $('#modal-form').modal('show');
-                $(".permission-reason").append("<input name='type' type='text' value='1'>");
+                $(".permission-reason-late").append("<input name='type' type='text' value='1'>");
                 $(".modal-header").html("<h4 class='mg-center mb-2 modal-title w-100 font-weight-bold pt-2'>Xin đi muộn</h4>");
-                $('#work_day').datepicker("setDate", currenFullTime);
+                // $('#work_day').datepicker("setDate", currenFullTime);
+                $('#work-day-late').datepicker("setDate", date);
             });
+
+            $('#permission-late').on('click',function () {
+                $('#work_day').datepicker("setDate", date);
+            });
+            $('#permission-early').on('click',function () {
+                $('#work_day').datepicker("setDate", date);
+            });
+
+
             $('.approve-btn-early').on('click', function () {
-                $('#modal-form').modal('show');
+                $('#modal-early').modal('show');
+                $(".permission-reason-late").empty();
+                $(".permission-reason").empty();
                 $(".permission-reason").append("<input name='type' type='text' value='2'>");
                 $(".modal-header").html("<h4 class='mg-center mb-2 modal-title w-100 font-weight-bold pt-2'>Xin về sớm</h4>");
-                $('#work_day').datepicker("setDate", date);
+                $('#work-day-early').datepicker("setDate", date);
             });
             $('.approve-btn-ot').on('click', function () {
                 $('#modal-form-ot').modal('show');
@@ -369,36 +420,90 @@
                 $('#modal-reject').modal('show');
                 let explanation = $(this).data("id");
                 $(".permission-reason").append("<input name='work_time_explanation_id' type='hidden' value='" + explanation + "'>");
-                // $(".permission-reason").append("<input name='type' type='text' value='4'>");
-                // $(".modal-header").html("<h4 class='mg-center mb-2 modal-title w-100 font-weight-bold pt-2'>Xin OT</h4>");
-                // $('#work_day_ot').datepicker("setDate", (date));
             });
 
             $('#work_day_ot').on('change', function () {
-                let data = $(this).val();
-                // $('.permission-reason').append('22zxczxcxc22');
+                let data = $(this).val(),
+                    type = 4;
                 $.ajax({
                     url: '{{ route('ask_permission.ot') }}',
                     type: 'GET',
                     dataType: 'JSON',
                     data: {
                         'data': data,
+                        'type': type,
                     },
                     success: function (respond) {
-                        console.log()
                         var note = respond.note ? respond.note : '',
                             otType = respond.ot_type;
                         $('.permission-reason').text(note);
                         if (otType) {
                             if (otType === 1){
-                                $('#project-ot').attr( 'checked', 'checked' )
+                                $('#project-ot').prop( 'checked', true)
+                                $('#other-ot').prop( 'checked', false )
                             }else if (otType === 2){
-                                $('#other-ot').attr( 'checked', 'checked' )
+                                $('#other-ot').prop( 'checked', true)
+                                $('#project-ot').prop( 'checked', false)
                             }
                         }
                     }
                 });
-                // $('.append-textarea').remove();
+            });
+
+            $('#work-day-late').on('change', function () {
+                let data = $(this).val(),
+                    type = 1;
+                $.ajax({
+                    url: '{{ route('ask_permission.ot') }}',
+                    type: 'GET',
+                    dataType: 'JSON',
+                    data: {
+                        'data': data,
+                        'type': type,
+                    },
+                    success: function (respond) {
+                        var note = respond.note ? respond.note : '',
+                            otType = respond.ot_type;
+                        $('.permission-reason-late').text(note);
+                        if (otType) {
+                            if (otType === 1){
+                                $('#project-ot').prop( 'checked', true)
+                                $('#other-ot').prop( 'checked', false )
+                            }else if (otType === 2){
+                                $('#other-ot').prop( 'checked', true)
+                                $('#project-ot').prop( 'checked', false)
+                            }
+                        }
+                    }
+                });
+            });
+
+            $('#work-day-early').on('change', function () {
+                let data = $(this).val(),
+                    type = 2;
+                $.ajax({
+                    url: '{{ route('ask_permission.ot') }}',
+                    type: 'GET',
+                    dataType: 'JSON',
+                    data: {
+                        'data': data,
+                        'type': type,
+                    },
+                    success: function (respond) {
+                        var note = respond.note ? respond.note : '',
+                            otType = respond.ot_type;
+                        $('.permission-reason-early').text(note);
+                        if (otType) {
+                            if (otType === 1){
+                                $('#project-ot').prop( 'checked', true)
+                                $('#other-ot').prop( 'checked', false )
+                            }else if (otType === 2){
+                                $('#other-ot').prop( 'checked', true)
+                                $('#project-ot').prop( 'checked', false)
+                            }
+                        }
+                    }
+                });
             });
         });
     </script>

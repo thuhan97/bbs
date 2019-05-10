@@ -988,7 +988,7 @@ td.blank, .type-1, .type-2 {
     }
 }
 
-.permission-reason {
+.permission-reason, .permission-reason-late-ot, .permission-reason-late, .permission-reason-early {
     width: 85%;
     margin: 0 auto;
 }
@@ -996,6 +996,7 @@ td.blank, .type-1, .type-2 {
 .mg-center {
     margin: 0 auto;
 }
+
 .mg-left-10 {
     margin-left: 10%;
 }

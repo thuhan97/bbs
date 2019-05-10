@@ -195,8 +195,9 @@ class UserController extends Controller
         $workDay = $request['work_day'];
         $otType = $request['ot_type'];
         $explanationType = $request['explanation_type'];
-        if ($id) {
-            WorkTimesExplanation::where('user_id', Auth::id())->where('work_day', $workDay)->update(['note' => $reason, 'ot_type' => $otType, 'type' => $explanationType]);
+        $workTimeExplanation =  WorkTimesExplanation::where('user_id', Auth::id())->where('work_day', $workDay)->where('type',$explanationType)->first();
+        if ($workTimeExplanation) {
+            $workTimeExplanation->update(['note' => $reason, 'ot_type' => $otType, 'type' => $explanationType]);
             return back()->with('day_off_success', '');
         } else {
             WorkTimesExplanation::create([
@@ -242,6 +243,23 @@ class UserController extends Controller
 
     public function askPermissionCreate(AskPermissionRequest $request)
     {
+        $workTimeExplanation = WorkTimesExplanation::where('user_id', Auth::id())->where('work_day', $request['work_day'])->where('type',$request['type'])->first();
+        if ($workTimeExplanation) {
+            $workTimeExplanation->update(['ot_type' => $request['ot_type'], 'note' => $request['note'], 'work_day' => $request['work_day']]);
+        } else {
+            WorkTimesExplanation::create([
+                'user_id' => Auth::id(),
+                'work_day' => $request['work_day'],
+                'type' => $request['type'],
+                'ot_type' => $request['ot_type'],
+                'note' => $request['note'],
+            ]);
+        }
+        return back()->with('create_permission_success', '');
+    }
+
+    public function askPermissionEarly(Request $request)
+    {
         $workTimeExplanation = WorkTimesExplanation::where('user_id', Auth::id())->where('work_day', $request['work_day'])->first();
         if ($workTimeExplanation) {
             $workTimeExplanation->update(['ot_type' => $request['ot_type'], 'note' => $request['note'], 'work_day' => $request['work_day']]);
@@ -259,7 +277,7 @@ class UserController extends Controller
 
     public function askPermissionOT(Request $request)
     {
-        $workTimeExplanation = WorkTimesExplanation::where('user_id', Auth::id())->where('work_day', $request['data'])->where('type',array_search('Overtime',WORK_TIME_TYPE))->first();
+        $workTimeExplanation = WorkTimesExplanation::where('user_id', Auth::id())->where('work_day', $request['data'])->where('type',$request['type'])->first();
         if ($workTimeExplanation) {
             return $workTimeExplanation;
         } else {

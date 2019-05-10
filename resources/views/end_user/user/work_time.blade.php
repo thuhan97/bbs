@@ -48,8 +48,7 @@
                     <button type="button" class="btn btn-danger no-box-shadow mt-0" id="btn-early-late">Số buổi đi
                         muộn/sớm:
                     </button>
-                    <button type="button" class="btn btn-primary no-box-shadow mt-0" id="btn-ot">Số buổi đi
-                        OT:
+                    <button type="button" class="btn btn-primary no-box-shadow mt-0" id="btn-ot">Số buổi OT:
                     </button>
                     <button type="button" class="btn btn-success no-box-shadow mt-0" id="btn-late-ot">Số
                         buổi đi muộn + OT:
@@ -79,6 +78,11 @@
     @if ($errors->has('ot_type'))
         <span class="help-block mb-5 color-red">
             <strong>{{ $errors->first('ot_type') }}</strong>
+        </span>
+    @endif
+    @if ($errors->has('explanation_type'))
+        <span class="help-block mb-5 color-red">
+            <strong>{{ $errors->first('explanation_type') }}</strong>
         </span>
     @endif
     <div class="modal fade myModal" id="modal-form" tabindex="-1"
@@ -266,15 +270,15 @@
                                     '<input type="hidden" name="work_day" value="' + getDataTime + '">' +
                                     '<div class="user col-md-4 pl-0 pr-0 text-center">' +
                                     '    <label for="late">Xin đi muộn </label>' +
-                                    '    <input ' + data_late + ' type="radio" id="late" class="user-radio2 radio-modal-work-time" checked name="type" value="1"  style="position: relative;opacity: 1;pointer-events: inherit"/>' +
+                                    '    <input ' + data_late + ' type="radio" id="late" class="user-radio2 radio-modal-work-time" checked name="explanation_type" value="1"  style="position: relative;opacity: 1;pointer-events: inherit"/>' +
                                     '</div>' +
                                     '<div class="user col-md-4 pl-0 pr-0 text-center">' +
                                     '    <label for="early">Xin về sớm </label>' +
-                                    '    <input ' + data_early + ' id="early" type="radio" class="user-radio3 radio-modal-work-time"  name="type" value="2"  style="position: relative;opacity: 1;pointer-events: inherit"/>' +
+                                    '    <input ' + data_early + ' id="early" type="radio" class="user-radio3 radio-modal-work-time"  name="explanation_type" value="2"  style="position: relative;opacity: 1;pointer-events: inherit"/>' +
                                     '</div>' +
                                     '<div class="user col-md-4 pl-0 pr-0 text-center">' +
                                     '    <label for="ot">Xin OT</label>' +
-                                    '    <input ' + data_ot + ' type="radio" id="ot" class="user-radio1 radio-modal-work-time" name="type" value="4"  style="position: relative;opacity: 1;pointer-events: inherit"/>' +
+                                    '    <input ' + data_ot + ' type="radio" id="ot" class="user-radio1 radio-modal-work-time" name="explanation_type" value="4"  style="position: relative;opacity: 1;pointer-events: inherit"/>' +
                                     '</div>' +
                                     '<textarea class="form-control mt-4" name="reason" rows="6" placeholder="Nội dung bạn muốn gửi...">' + dataReason + '</textarea>'
                                 '</div>';
@@ -487,7 +491,7 @@
                             type_5 = $('#calendar .data-type-5').length,
                             earlyLate = type_1 + type_2;
                         $("#btn-early-late").text('Số buổi đi muộn/sớm: ' + earlyLate);
-                        $("#btn-ot").text('Số buổi đi OT: ' + type_4);
+                        $("#btn-ot").text('Số buổi OT: ' + type_4);
                         $("#btn-late-ot").text('Số buổi đi muộn + OT: ' + type_5);
                     },
                     error: (data) => {

@@ -33,6 +33,7 @@ Route::group([
     Route::get('/ngay-nghi', 'UserController@dayOff')->name('day_off')->middleware('delete.cache');
     Route::get('xin-phep', 'UserController@askPermission')->name('ask_permission');
     Route::get('xin-phep/create', 'UserController@askPermissionCreate')->name('ask_permission.create');
+    Route::get('xin-phep/early', 'UserController@askPermissionEarly')->name('ask_permission.early');
     Route::get('xin-phep/ot', 'UserController@askPermissionOT')->name('ask_permission.ot');
     Route::post('phe-duyet-xin-phep', 'UserController@approved')->name('approved')->middleware('can:manager');
     Route::post('tu-choi-xin-phep', 'UserController@reject')->name('reject')->middleware('can:manager');

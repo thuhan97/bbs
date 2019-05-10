@@ -311,6 +311,7 @@
                                     <label for="inputCity">Chọn ngày *</label>
                                 </div>
                                 <div class="col-4">
+                                    <input type="hidden" value="4" name="type">
                                     <input type="hidden" value="{{ $workTimeExplanation['id'] }}">
                                     <input type="text"
                                            class="form-control select-item {{ $errors->has('work_day') ? ' has-error' : '' }}"

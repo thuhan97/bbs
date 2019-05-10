@@ -1,3 +1,7 @@
+.text-blue {
+    color: blue !important;
+}
+
 .no-padding-left {
     padding-left: 0 !important;
 }
@@ -996,6 +1000,7 @@ td.blank, .type-1, .type-2 {
 .mg-center {
     margin: 0 auto;
 }
+
 .mg-left-10 {
     margin-left: 10%;
 }
@@ -1281,3 +1286,9 @@ td.blank, .type-1, .type-2 {
 }
 
 
+#punish {
+}
+
+#punish .punish-counter {
+    font-size: 50px;
+}

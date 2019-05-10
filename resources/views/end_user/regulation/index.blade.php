@@ -36,7 +36,9 @@
                             <td class="text-right">
                                 {{$idx + 1}}
                             </td>
-                            <td>{{$regulation->name}}</td>
+                            <td>
+                                <a href="{{route('regulation_detail', ['id' => $regulation->id])}}">{{$regulation->name}}</a>
+                            </td>
                             <td class="text-center">{{$regulation->approve_date}}</td>
                             <td class="text-center">
                                 @if($regulation->file_path)

@@ -53,8 +53,8 @@
                     $team = $user->team();
                     ?>
                     <td>{{$user->name}}</td>
-                    <td>{{$team->group_name ?? ''}}</td>
-                    <td>{{$team->name ?? ''}}</td>
+                    <td onclick="location.href='{{route('contact', ['search' => $team->group_name ?? ''])}}'">{{$team->group_name ?? ''}}</td>
+                    <td onclick="location.href='{{route('contact', ['search' => $team->name ?? ''])}}'">{{$team->name ?? ''}}</td>
                     <td>{{JOB_TITLES[$user->jobtitle_id] ?? ''}}</td>
                     <td>{{$user->email}}</td>
                     <td class="text-center">

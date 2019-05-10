@@ -1,5 +1,5 @@
 <div class="input-group">
-    <input name="search" value="{{old('search', $search)}}" class="form-control" type="text"
+    <input name="search" value="{{request('search', $search)}}" class="form-control" type="text"
            placeholder="{{$text}}" aria-label="Search">
 
     <div class="input-group-prepend">

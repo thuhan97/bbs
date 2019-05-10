@@ -84,7 +84,7 @@
                         <td>{!! $item['reason_reject'] ?? '' !!}</td>
                         <td class="text-center td-approve">
                             @can('manager')
-                            @if($item['work_times_explanation_status'] == array_search('Chưa duyệt', OT_STATUS))
+                                @if($item['work_times_explanation_status'] == array_search('Chưa duyệt', OT_STATUS))
                                     <form action="{{ $item['type'] == array_search('Overtime',WORK_TIME_TYPE) ? route('approvedOT') : route('approved') }}"
                                           method="post">
                                         @csrf
@@ -98,13 +98,17 @@
                                                value="{{ $item['work_day'] ? $item['work_day'] : '' }}">
                                         <input type="hidden" name="type"
                                                value="{{ $item['type'] ? $item['type'] : '' }}">
-                                        <button class="btn-approve float-left"><i class="fas fa-check-circle"></i></button>
+                                        <button class="btn-approve float-left"><i class="fas fa-check-circle"></i>
+                                        </button>
                                     </form>
-                                    <button class="btn-reject float-right" data-id="{{ $item['id'] ? $item['id'] : '' }}"><i class="fas fa-times"></i></button>
+                                    <button class="btn-reject float-right"
+                                            data-id="{{ $item['id'] ? $item['id'] : '' }}"><i class="fas fa-times"></i>
+                                    </button>
                                 @elseif($item['work_times_explanation_status'] == array_search('Đã duyệt', OT_STATUS))
                                     <i class="fas fa-grin-stars fa-2x text-success" title="{{ $item['approver'] }}"></i>
-                                    @elseif($item['work_times_explanation_status'] == array_search('Từ chối', OT_STATUS))
-                                    <i class="fas fa-meh-blank fa-2x text-danger" title="{{ \App\Helpers\DateTimeHelper::getApprover($item['wt_approver_id'])  }}"></i>
+                                @elseif($item['work_times_explanation_status'] == array_search('Từ chối', OT_STATUS))
+                                    <i class="fas fa-meh-blank fa-2x text-danger"
+                                       title="{{ \App\Helpers\DateTimeHelper::getApprover($item['wt_approver_id'])  }}"></i>
                                 @endif
                             @endcan
                         </td>
@@ -117,12 +121,12 @@
         @endif
     @endcan
     <div class="row mb-4">
-        <div class="col-md-5">
+        <div class="col-md-4">
             <h2>Xin phép cá nhân</h2>
         </div>
-        <div class="col-md-7 text-right">
+        <div class="col-md-8 text-right">
             <button onclick="location.href='{{route("day_off")}}?t=1'"
-                    class="btn btn-danger no-box-shadow waves-effect waves-light float-right" id="btn-off">
+                    class="btn btn-success no-box-shadow waves-effect waves-light float-right" id="btn-off">
                 Xin nghỉ phép
             </button>
             <button type="button"
@@ -134,7 +138,7 @@
                     class="d-none d-xl-block approve-btn-early no-box-shadow btn btn-warning waves-effect waves-light float-right"
                     id="btn-early-late">Xin về sớm
             </button>
-            <button type="button" class="approve-btn-late btn btn-success no-box-shadow waves-light float-right"
+            <button type="button" class="approve-btn-late btn btn-danger no-box-shadow waves-light float-right"
                     id="btn-late">
                 Xin đi muộn
             </button>
@@ -187,7 +191,8 @@
                     @elseif($item['work_times_explanation_status'] == array_search('Chưa duyệt', OT_STATUS))
                         <i class="fas fa-meh-blank fa-2x text-warning" title="Chưa duyệt"></i>
                     @elseif($item['work_times_explanation_status'] == array_search('Từ chối', OT_STATUS))
-                        <i class="fas fa-meh-blank fa-2x text-danger" title="{{ \App\Helpers\DateTimeHelper::getApprover($item['wt_approver_id'])  }}"></i>
+                        <i class="fas fa-meh-blank fa-2x text-danger"
+                           title="{{ \App\Helpers\DateTimeHelper::getApprover($item['wt_approver_id'])  }}"></i>
                     @endif
                 </td>
             </tr>
@@ -271,48 +276,47 @@
                 </div>
                 <br>
                 <form action="{{ route('ask_permission.create') }}" method="get">
-                    {{--@csrf--}}
+                    <div class="d-flex justify-content-center text-area-reason" id="div-reason"></div>
                     <div class="row col-md-12">
                         <div class="col-2"></div>
                         <div class="col-md-4 text-center">
                             <input style="position: relative;opacity: 1;pointer-events: inherit" class="other-ot"
-                                   type="radio" name="ot_type" id="project-ot" value="1">
+                                   type="radio" name="ot_type" id="project-ot" value="1" {{ $dateNow['ot_type'] == 1 ? "checked" : '' }}>
                             <label for="project-ot">OT dự án</label>
                         </div>
                         <div class="col-md-4 text-center">
                             <input style="position: relative;opacity: 1;pointer-events: inherit" class="other-ot"
-                                   type="radio" name="ot_type" id="other-ot" value="2">
+                                   type="radio" name="ot_type" id="other-ot" value="2" {{ $dateNow['ot_type'] == 2 ? "checked" : '' }}>
                             <label for="other-ot">Lý do cá nhân</label>
                         </div>
                     </div>
-            </div>
-            <div class="select-day">
-                <div class="container-fluid">
-                    <div class="row">
-                        <div class="col-2"></div>
-                        <div class="col-4">
-                            <label for="inputCity">Chọn ngày *</label>
-                        </div>
-                        <div class="col-4">
-                            <input type="text"
-                                   class="form-control select-item {{ $errors->has('work_day') ? ' has-error' : '' }}"
-                                   id="work_day_ot" autocomplete="off" name="work_day"
-                                   value="{{ old('work_day', date('Y-m-d')) }}"
-                                   readonly="readonly">
+                    <div class="select-day">
+                        <div class="container-fluid">
+                            <div class="row">
+                                <div class="col-2"></div>
+                                <div class="col-4">
+                                    <label for="inputCity">Chọn ngày *</label>
+                                </div>
+                                <div class="col-4">
+                                    <input type="hidden" value="{{ $dateNow['id'] }}">
+                                    <input type="text"
+                                           class="form-control select-item {{ $errors->has('work_day') ? ' has-error' : '' }}"
+                                           id="work_day_ot" autocomplete="off" name="work_day"
+                                           value="{{ old('work_day', date('Y-m-d')) }}"
+                                           readonly="readonly">
+                                </div>
+                            </div>
                         </div>
                     </div>
-                </div>
-
+                    <br>
+                    <textarea class="form-control permission-reason" name="note" cols="48" rows="6"
+                              placeholder="Nhập lý do ...">{!! $dateNow['note']  !!}</textarea>
+                    <div class="pt-3 pb-4 d-flex justify-content-center border-top-0 rounded mb-0">
+                        <button class="btn btn-primary btn-send">GỬI ĐƠN</button>
+                    </div>
+                </form>
             </div>
-            <br>
-            <textarea class="form-control permission-reason" name="note" cols="48" rows="6"
-                      placeholder="Nhập lý do ..."></textarea>
-            <div class="pt-3 pb-4 d-flex justify-content-center border-top-0 rounded mb-0">
-                <button class="btn btn-primary btn-send">GỬI ĐƠN</button>
-            </div>
-            </form>
         </div>
-    </div>
     </div>
     @push('extend-css')
         <link href="{{ cdn_asset('/bootstrap-datepicker/css/bootstrap-datepicker.min.css') }}" rel="stylesheet">

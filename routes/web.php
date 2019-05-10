@@ -30,7 +30,7 @@ Route::group([
     Route::post('/doi-mat-khau', 'UserController@updatePassword')->name('update_password');
     Route::get('/thoi-gian-lam-viec', 'UserController@workTime')->name('work_time');
     Route::get('/thoi-gian-lam-viec-api', 'UserController@workTimeAPI')->name('work_time_api');
-    Route::get('/ngay-nghi', 'UserController@dayOff')->name('day_off');
+    Route::get('/ngay-nghi', 'UserController@dayOff')->name('day_off')->middleware('delete.cache');
     Route::get('xin-phep', 'UserController@askPermission')->name('ask_permission');
     Route::get('xin-phep/create', 'UserController@askPermissionCreate')->name('ask_permission.create');
     Route::post('phe-duyet-xin-phep', 'UserController@approved')->name('approved')->middleware('can:manager');
@@ -88,7 +88,7 @@ Route::group([
 
 Route::group([
     'prefix' => 'file-manager', 'as' => 'unisharp.lfm.',
-    'middleware' => ['auth'],
+//    'middleware' => ['auth'],
 
 ], function () {
     $namespace = '\\UniSharp\\LaravelFilemanager\\Controllers\\';

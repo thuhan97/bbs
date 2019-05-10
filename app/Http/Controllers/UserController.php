@@ -17,6 +17,7 @@ use App\Repositories\Contracts\IDayOffRepository;
 use App\Services\Contracts\IDayOffService;
 use App\Services\Contracts\IUserService;
 use App\Transformers\DayOffTransformer;
+use Carbon\Carbon;
 use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -235,18 +236,24 @@ class UserController extends Controller
                 'work_times_explanation.ot_type', 'work_times_explanation.note', 'work_times_explanation.user_id', 'ot_times.creator_id')
             ->orderBy('work_times_explanation.created_at', 'desc')
             ->paginate(PAGINATE_DAY_OFF, ['*'], 'user-page');
-
-        return view('end_user.user.ask_permission', compact('datas', 'dataLeader'));
+        $dateNow = WorkTimesExplanation::where('user_id', Auth::id())->where('work_day', date('Y-m-d'))->first();
+        return view('end_user.user.ask_permission', compact('datas', 'dataLeader', 'dateNow'));
     }
 
     public function askPermissionCreate(AskPermissionRequest $request)
     {
-        WorkTimesExplanation::create([
-            'user_id' => Auth::id(),
-            'work_day' => $request['work_day'],
-            'type' => $request['type'],
-            'note' => $request['note'],
-        ]);
+        $query = WorkTimesExplanation::where('user_id', Auth::id())->where('work_day', $request['work_day'])->first();
+        if ($query) {
+            $query->update(['ot_type' => $request['ot_type'], 'note' => $request['note'], 'work_day' => $request['work_day']]);
+        } else {
+            WorkTimesExplanation::create([
+                'user_id' => Auth::id(),
+                'work_day' => $request['work_day'],
+                'type' => $request['type'],
+                'ot_type' => $request['ot_type'],
+                'note' => $request['note'],
+            ]);
+        }
         return back()->with('create_permission_success', '');
     }
 

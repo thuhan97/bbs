@@ -27,6 +27,7 @@ class ApprovePermissionExport implements FromArray, WithHeadings, ShouldAutoSize
             'Giờ đến công ty',
             'Giờ rời công ty',
             'Giải trình',
+            'Nội dung từ chối',
             'Trạng thái phê duyệt',
             'Người duyệt',
         ];
@@ -59,6 +60,7 @@ class ApprovePermissionExport implements FromArray, WithHeadings, ShouldAutoSize
             'work_time_start_at' => DateTimeHelper::workTime($approvePermission['user_id'],$approvePermission['work_day'])[0],
             'work_time_end_at' => DateTimeHelper::workTime($approvePermission['user_id'],$approvePermission['work_day'])[1],
             'note' => $approvePermission->note,
+            'reason_reject' => $approvePermission->reason_reject,
             'status' => $approvePermission->status == array_search('Chưa duyệt', OT_STATUS) ? 'Chưa duyệt' : 'Đã duyệt',
             'approver' => $approvePermission->approver->name ?? '',
         ];

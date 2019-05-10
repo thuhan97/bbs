@@ -266,7 +266,7 @@
                                     '<input type="hidden" name="work_day" value="' + getDataTime + '">' +
                                     '<div class="user col-md-4 pl-0 pr-0 text-center">' +
                                     '    <label for="late">Xin đi muộn </label>' +
-                                    '    <input ' + data_late + ' type="radio" id="late" class="user-radio2 radio-modal-work-time" name="type" value="1"  style="position: relative;opacity: 1;pointer-events: inherit"/>' +
+                                    '    <input ' + data_late + ' type="radio" id="late" class="user-radio2 radio-modal-work-time" checked name="type" value="1"  style="position: relative;opacity: 1;pointer-events: inherit"/>' +
                                     '</div>' +
                                     '<div class="user col-md-4 pl-0 pr-0 text-center">' +
                                     '    <label for="early">Xin về sớm </label>' +

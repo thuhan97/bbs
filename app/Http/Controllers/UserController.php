@@ -259,7 +259,7 @@ class UserController extends Controller
 
     public function askPermissionOT(Request $request)
     {
-        $workTimeExplanation = WorkTimesExplanation::where('user_id', Auth::id())->where('work_day', $request['data'])->first();
+        $workTimeExplanation = WorkTimesExplanation::where('user_id', Auth::id())->where('work_day', $request['data'])->where('type',array_search('Overtime',WORK_TIME_TYPE))->first();
         if ($workTimeExplanation) {
             return $workTimeExplanation;
         } else {

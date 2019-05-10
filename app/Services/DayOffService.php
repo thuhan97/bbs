@@ -436,38 +436,38 @@ class DayOffService extends AbstractService implements IDayOffService
 
         $start = array_key_exists($startTime, CHECK_TIME_DAY_OFF_USABLE) ? CHECK_TIME_DAY_OFF_USABLE[$startTime] : '';
         $end = array_key_exists($endTime, CHECK_TIME_DAY_OFF_USABLE) ? CHECK_TIME_DAY_OFF_USABLE[$endTime] : '';
-        $from = Carbon::createFromFormat('Y/m/d H:i:s', $startDate . ' ' . $start);
-        $to = Carbon::createFromFormat('Y/m/d H:i:s', $endDate . ' ' . $end);
+        $from = Carbon::createFromFormat(DATE_FORMAT_DAY_OFF, $startDate . ' ' . $start);
+        $to = Carbon::createFromFormat(DATE_FORMAT_DAY_OFF, $endDate . ' ' . $end);
         if (strtotime($from) > strtotime($to)){
             return false;
         }
         $day = $to->diffInHours($from) / HOURS_OF_DAY;
 
-        if ($day > REMAIN_DAY_OFF_DEFAULT && $endTime == "18:00:00"){
+        if ($day > REMAIN_DAY_OFF_DEFAULT && $endTime == CHECK_TIME_DAY_OFF){
             $day=$day - REMAIN_DAY_OFF_DEFAULT;
         }
         $numberDate = $to->diffInDays($from);
         $total = [];
         $checkAdditional = DEFAULT_VALUE;
         for ($i = DEFAULT_VALUE; $i < $numberDate; $i++) {
-            $convertDay = Carbon::createFromFormat('Y/m/d H:i:s', $startDate . ' ' . $start)->addDay($i)->format('D');
+            $convertDay = Carbon::createFromFormat(DATE_FORMAT_DAY_OFF, $startDate . ' ' . $start)->addDay($i)->format('D');
             if ($convertDay == "Sun" || $convertDay == "Sat") {
                 array_push($total, $i);
             }
         }
         $addDate = AdditionalDate::whereYear('date_add', date('Y'))->get();
         foreach ($addDate as $value) {
-            $date = Carbon::createFromFormat('Y-m-d', $value->date_add);
+            $date = Carbon::createFromFormat(DATE_FORMAT, $value->date_add);
             if (strtotime($from) <= strtotime($date)) {
                 $checkAdditional=$checkAdditional + REMAIN_DAY_OFF_DEFAULT;
             }
         }
         $calender = CalendarOff::whereYear('date_off_from', date('Y'))->get();
         foreach ($calender as $value) {
-            $numCalenderOffEnd = Carbon::createFromFormat('Y-m-d', $value->date_off_from);
+            $numCalenderOffEnd = Carbon::createFromFormat(DATE_FORMAT, $value->date_off_from);
 
             if (strtotime($from) <= strtotime($numCalenderOffEnd)) {
-                $numCalenderOffStart = Carbon::createFromFormat('Y-m-d', $value->date_off_to);
+                $numCalenderOffStart = Carbon::createFromFormat(DATE_FORMAT, $value->date_off_to);
                 $numCalenderDay = $numCalenderOffStart->diffInDays($numCalenderOffEnd);
                 $day = $day - $numCalenderDay;
             }

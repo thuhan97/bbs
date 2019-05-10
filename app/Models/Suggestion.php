@@ -23,6 +23,22 @@ class Suggestion extends Model
      */
     public function user()
     {
-        return $this->belongsTo('App\Models\User','creator_id','id');
+        return $this->belongsTo('App\Models\User', 'creator_id', 'id');
+    }
+
+    /**
+     * Search for course title or subject name
+     *
+     * @param $query
+     * @param $searchTerm
+     *
+     * @return mixed
+     */
+    public function scopeSearch($query, $searchTerm)
+    {
+        return $query->where('content', 'like', '%' . $searchTerm . '%')
+            ->orWhereHas('user', function ($query) use ($searchTerm) {
+                $query->search($searchTerm);
+            });
     }
 }

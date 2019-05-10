@@ -27,17 +27,17 @@
         </div>
         @foreach($events as $event)
             <div class="jumbotron mb-3 {{$event->event_status_class}}">
-                <h2 class="h1-responsive">{{$event->event_status_name .$event->name}}</h2>
+                <h2 class="h1-responsive"><strong> {{$event->event_status_name .$event->name}}</strong></h2>
                 <p class="lead">{{__l('event_time')}}: <strong
-                            class="text-info text-uppercase"><i>{{ $event->event_date}}</i></strong></p>
+                            class="text-danger text-uppercase"><i>{{ $event->event_date}}</i></strong></p>
                 <p class="lead">{{__l('event_place')}}: <strong
-                            class="text-info text-uppercase"><i>{{ $event->place}}</i></strong></p>
+                            class="text-danger text-uppercase"><i>{{ $event->place}}</i></strong></p>
                 <hr class="my-2">
                 <p>
                     {{$event->introduction}}
                 </p>
-                <div class="text-right">
-                    <a href="{{route('event_detail', ['id' => $event->id])}}" class="btn btn-primary btn-lg"
+                <div class="">
+                    <a href="{{route('event_detail', ['id' => $event->id])}}" class="btn btn-warning btn-lg"
                        role="button">{{__l('view_detail')}}</a>
                 </div>
             </div>

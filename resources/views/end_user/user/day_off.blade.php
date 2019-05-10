@@ -160,7 +160,7 @@
                     <td class="d-none d-md-table-cell text-center">{{$absence->end_date}}</td>
                     <td class="text-center">{{ array_key_exists($absence->title, VACATION_FULL) ? VACATION_FULL[$absence->title] : ''  }}</td>
                     <td class="text-center">{!! nl2br($absence->reason) !!}</td>
-                    <td class="d-none d-md-table-cell text-center">{{!!!($absence->number_off || $absence->absent > DEFAULT_VALUE)? 'Đang duyệt' : checkNumber($absence->number_off) + checkNumber($absence->absent).' ngày'}}
+                    <td class="d-none d-md-table-cell text-center">{{!!!($absence->number_off || $absence->absent > DEFAULT_VALUE)? ($absence->status != STATUS_DAY_OFF['noActive'] ? 'Đang duyệt' : '') : checkNumber($absence->number_off) + checkNumber($absence->absent).' ngày'}}
 
                     </td>
                     <td class="text-center">

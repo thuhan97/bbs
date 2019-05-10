@@ -87,6 +87,7 @@
         <div class="modal-dialog modal-center modal-set-center" role="document">
             <div class="modal-content" id="bg-img" style="background-image: url({{ asset('img/font/xin_nghi.png') }})">
                 <div class="modal-header text-center border-bottom-0 p-3">
+                    <h4 class='mg-center mg-left-10 modal-title w-100 font-weight-bold pt-2'>Xin phép</h4>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span class="btn-close-icon" aria-hidden="true">&times;</span>
                     </button>
@@ -155,18 +156,46 @@
                             dataID = el.getElementsByClassName("data-id")[0].innerHTML,
                             dataWorkDay = el.getElementsByClassName("data-work-day")[0].innerHTML,
                             dataUserID = el.getElementsByClassName("data-user-id")[0].innerHTML,
-                            dataTypeOT = el.getElementsByClassName("data-ot-type")[0].innerHTML;
-                    }
-                    switch (true) {
-                        case parseInt(dataTypeOT) === 1:
-                            var projectOT = 'checked';
-                            break;
-                        case parseInt(dataTypeOT) === 2:
-                            var otherOT = 'checked';
-                            break;
-                        default:
-                            var projectOT = '',
-                                otherOT = '';
+                            dataType = el.getElementsByClassName("data-type")[0].innerHTML;
+                        dataTypeOT = el.getElementsByClassName("data-ot-type")[0].innerHTML;
+                        switch (true) {
+                            case parseInt(dataTypeOT) === 1:
+                                var projectOT = 'selected';
+                                var otherOT = '';
+                                break;
+                            case parseInt(dataTypeOT) === 2:
+                                var otherOT = 'selected';
+                                var projectOT = '';
+                                break;
+                            default:
+                                var projectOT = '',
+                                    otherOT = '';
+                        }
+
+                        switch (true) {
+                            case parseInt(dataType) === 1:
+                                var data_nomal = '',
+                                    data_late = 'checked',
+                                    data_early = '',
+                                    data_ot = '';
+                                break;
+                            case parseInt(dataType) === 2:
+                                var data_nomal = '',
+                                    data_late = '',
+                                    data_early = 'checked';
+                                ot = '';
+                                break;
+                            case parseInt(dataType) === 4:
+                                var data_nomal = '';
+                                data_late = '',
+                                    data_early = '',
+                                    data_ot = 'checked';
+                                break;
+                            default:
+                                var late = '',
+                                    early = '',
+                                    ot = '';
+                        }
                     }
 
                     function makeMoal() {
@@ -174,7 +203,17 @@
                         if (el.getElementsByClassName("data-id")[0]) {
                             document.getElementById("div-reason").innerHTML =
                                 '<div class="row col-md-12">' +
+                                '<div class="row col-md-12">' +
                                 '<div class="col-md-12 d-flex justify-content-center">' +
+                                '<div class="user col-md-4 pl-0 pr-0 text-center">' +
+                                '    <label for="late">Xin đi muộn </label>' +
+                                '    <input ' + data_late + ' type="radio" id="late" class="user-radio2 radio-modal-work-time" name="explanation_type" value="1"  style="position: relative;opacity: 1;pointer-events: inherit"/>' +
+                                '</div>' +
+                                '<div class="user col-md-4 pl-0 pr-0 text-center">' +
+                                '    <label for="early">Xin về sớm </label>' +
+                                '    <input ' + data_early + ' id="early" type="radio" class="user-radio3 radio-modal-work-time"  name="explanation_type" value="2"  style="position: relative;opacity: 1;pointer-events: inherit"/>' +
+                                '</div>' +
+                                '</div>' +
                                 '<input hidden name="id" value="' + dataID + '">' +
                                 '<input hidden name="user_id" value="' + dataUserID + '">' +
                                 '<input hidden name="work_day" value="' + dataWorkDay + '">' +
@@ -186,8 +225,19 @@
                         } else {
                             document.getElementById("div-reason").innerHTML =
                                 '<div class="row col-md-12">' +
+                                '<div class="row col-md-12">' +
                                 '<div class="col-md-12 d-flex justify-content-center">' +
+                                '<div class="user col-md-4 pl-0 pr-0 text-center">' +
+                                '    <label for="late">Xin đi muộn </label>' +
+                                '    <input ' + data_late + ' type="radio" id="late" class="user-radio2 radio-modal-work-time" name="explanation_type" value="1"  style="position: relative;opacity: 1;pointer-events: inherit"/>' +
+                                '</div>' +
+                                '<div class="user col-md-4 pl-0 pr-0 text-center">' +
+                                '    <label for="early">Xin về sớm </label>' +
+                                '    <input ' + data_early + ' id="early" type="radio" class="user-radio3 radio-modal-work-time"  name="explanation_type" value="2"  style="position: relative;opacity: 1;pointer-events: inherit"/>' +
+                                '</div>' +
+                                '</div>' +
                                 '<input hidden name="work_day" value="' + getDataTime + '">' +
+                                '<input hidden name="type" value="1">' +
                                 '<textarea class="form-control" name="reason" rows="6" placeholder="Nội dung bạn muốn gửi..."></textarea>' +
                                 '</div>' +
                                 '<div class="row col-md-12">' +
@@ -200,30 +250,50 @@
                         if (timeGetDay.getDay() === 0 || timeGetDay.getDay() === 6 || currentFullTime === fullTime || calendarFullTime === currenFullTime) {
                             if (currentFullTime <= fullTime) {
                                 if (dataWorkDay) {
+
                                     var workDay = dataWorkDay,
                                         id = dataID,
                                         dataReason = dataReason;
                                 } else {
                                     var workDay = getDataTime,
                                         id = '',
-                                        dataReason = '';
+                                        dataReason = '',
+                                        dataID = '';
                                 }
-
                                 document.getElementById("div-reason").innerHTML =
                                     '<div class="row col-md-12">' +
-                                    '<div class="offset-5"><h3 class="">Xin OT</h3></div>' +
-                                    '<div class="col-md-6 text-center">' +
-                                    ' <input ' + projectOT + ' style="position: relative;opacity: 1;pointer-events: inherit" class="other-ot" type="radio" name="ot_type" id="project-ot" value="1">' +
-                                    '<label for="project-ot">OT dự án</label>' +
+                                    '<input hidden name="id" value="' + dataID + '">' +
+                                    '<input type="hidden" name="work_day" value="' + getDataTime + '">' +
+                                    '<div class="user col-md-4 pl-0 pr-0 text-center">' +
+                                    '    <label for="late">Xin đi muộn </label>' +
+                                    '    <input ' + data_late + ' type="radio" id="late" class="user-radio2 radio-modal-work-time" checked name="type" value="1"  style="position: relative;opacity: 1;pointer-events: inherit"/>' +
                                     '</div>' +
-                                    '<div class="col-md-6 text-center">' +
-                                    ' <input ' + otherOT + '  style="position: relative;opacity: 1;pointer-events: inherit" class="other-ot" type="radio" name="ot_type" id="other-ot" value="2">' +
-                                    '<label for="other-ot">Lý do cá nhân</label>' +
+                                    '<div class="user col-md-4 pl-0 pr-0 text-center">' +
+                                    '    <label for="early">Xin về sớm </label>' +
+                                    '    <input ' + data_early + ' id="early" type="radio" class="user-radio3 radio-modal-work-time"  name="type" value="2"  style="position: relative;opacity: 1;pointer-events: inherit"/>' +
                                     '</div>' +
-                                    '<textarea class="form-control mt-4" name="reason" rows="6" placeholder="Nội dung bạn muốn gửi...">' + dataReason + '</textarea>' +
-                                    '<input hidden name="id" value="' + id + '">' +
-                                    '<input hidden name="work_day" value="' + workDay + '">' +
-                                    '</div>';
+                                    '<div class="user col-md-4 pl-0 pr-0 text-center">' +
+                                    '    <label for="ot">Xin OT</label>' +
+                                    '    <input ' + data_ot + ' type="radio" id="ot" class="user-radio1 radio-modal-work-time" name="type" value="4"  style="position: relative;opacity: 1;pointer-events: inherit"/>' +
+                                    '</div>' +
+                                    '<textarea class="form-control mt-4" name="reason" rows="6" placeholder="Nội dung bạn muốn gửi...">' + dataReason + '</textarea>'
+                                '</div>';
+                                $('.user-radio3').change(function () {
+                                    $('.user .demo').remove();
+                                });
+                                $('.user-radio2').change(function () {
+                                    $('.user .demo').remove();
+                                });
+                                $('.user-radio1').change(function () {
+                                    $('.user .demo').remove();
+                                    $('.user-radio1:checked').parent().append('' +
+                                        '<div class="demo"><select class="browser-default form-control float-left w-95"\n' +
+                                        'name="ot_type"><option value="1" ' + projectOT + '>OT dự án</option><option value="2" ' + otherOT + '>OT cá nhân</option></select></div>');
+                                });
+                                $('.user-radio1:checked').parent().append('' +
+                                    '<div class="demo"><select class="browser-default form-control float-left w-95"\n' +
+                                    'name="ot_type"><option value="1" ' + projectOT + '>OT dự án</option><option value="2" ' + otherOT + '>OT cá nhân</option></select></div>');
+
                             } else {
                                 makeMoal()
                             }
@@ -237,6 +307,7 @@
                 },
             };
             window.addEventListener("load", function () {
+
                 nowYear = parseInt(currentYear);
 
                 for (var i = 0; i < 12; i++) {
@@ -406,6 +477,7 @@
                                     $(this).append('<p class="data-reason" hidden>' + note + '</p>');
                                     $(this).append('<p class="data-work-day" hidden>' + data.work_day + '</p>');
                                     $(this).append('<p class="data-ot-type" hidden>' + data.ot_type + '</p>');
+                                    $(this).append('<p class="data-type" hidden>' + data.type + '</p>');
                                 }
                             });
                         });

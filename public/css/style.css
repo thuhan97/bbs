@@ -18,6 +18,10 @@
     width: 73%;
 }
 
+.w-95 {
+    width: 95%;
+}
+
 .w-90 {
     width: 90%;
 }
@@ -308,17 +312,31 @@
 }
 
 .btn-approve {
-    width: 80%;
+    width: 43%;
     height: 35px;
     color: white;
-    background: #4285f4;
+    background: #00c851;
     border: none;
     border-radius: 3px;
 }
 
 .btn-approve:hover {
     cursor: pointer;
-    background: #659bf2;
+    background: #36d174;
+}
+
+.btn-reject {
+    width: 43%;
+    height: 35px;
+    color: white;
+    background: #ff3547;
+    border: none;
+    border-radius: 3px;
+}
+
+.btn-reject:hover {
+    cursor: pointer;
+    background: #fc717d;
 }
 
 .statistic {
@@ -978,6 +996,9 @@ td.blank, .type-1, .type-2 {
 .mg-center {
     margin: 0 auto;
 }
+.mg-left-10 {
+    margin-left: 10%;
+}
 
 .td-approve {
     padding: 18px 0;
@@ -1259,3 +1280,5 @@ td.blank, .type-1, .type-2 {
         margin-left: 91.666667%;
     }
 }
+
+

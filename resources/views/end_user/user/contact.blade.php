@@ -8,14 +8,7 @@
     <!-- Search form -->
     <form class="mb-4">
         <div class="md-form active-cyan-2 mb-3">
-            <div class="input-group mb-3">
-                <input name="search" value="{{request('search')}}" class="form-control" type="text"
-                       placeholder="{{__l('Search_contact')}}" aria-label="Search">
-                <div class="input-group-prepend">
-                    <button class="btn btn-info" id="inputGroup-sizing-default">Tìm kiếm</button>
-                </div>
-            </div>
-
+            @include('layouts.partials.frontend.search-input', ['search' => $search, 'text' => __l('Search_contact')])
             <input type="hidden" name="page_size" value="{{$perPage}}">
         </div>
     </form>

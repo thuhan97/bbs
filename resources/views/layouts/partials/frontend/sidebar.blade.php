@@ -48,7 +48,7 @@ $name = $team->name ?? $config->name;
         <a href="{{route('share_experience')}}"
            class="list-group-item list-group-item-action waves-effect {{ \App\Utils::checkRoute(['share_experience']) ? 'active': '' }}">
             <i class="fas fa-book mr-3"></i>
-            Kinh nghiệm làm việc</a><!-- 
+            Kinh nghiệm làm việc</a><!--
         <a href="{{route('post')}}"
            class="list-group-item list-group-item-action waves-effect {{ \App\Utils::checkRoute(['post', 'post_detail']) ? 'active': '' }}">
             <i class="fas fa-bell mr-3"></i>{{__l('Post')}}</a> -->

@@ -95,4 +95,9 @@ class WorkTimesExplanation extends Model
     {
         return $this->belongsTo(User::class, 'approver_id', 'id');
     }
+
+    public function workTimeApprover()
+    {
+        return $this->belongsTo(User::class, 'approver_id', 'id');
+    }
 }

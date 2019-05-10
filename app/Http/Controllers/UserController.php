@@ -482,10 +482,10 @@ class UserController extends Controller
         }
     }
     public function checkUsable(Request $request){
-        $dayOffPreYear = RemainDayoff::where('user_id', Auth::id())->where('year', date('Y') - PRE_YEAR)->first()->remain ?? 0;
+        $dayOffPreYear = RemainDayoff::where('user_id', Auth::id())->where('year', date('Y') - PRE_YEAR)->first()->remain ?? DEFAULT_VALUE;
         $dayOffYear = RemainDayoff::where('user_id', Auth::id())->where('year', date('Y'))->first();
-        $remainDayoffCurrentYear=$dayOffYear->remain ?? 0;
-        $DayoffFrreCurrentYear=$dayOffYear->day_off_free_female ?? 0;
+        $remainDayoffCurrentYear=$dayOffYear->remain ?? DEFAULT_VALUE;
+        $DayoffFrreCurrentYear=$dayOffYear->day_off_free_female ?? DEFAULT_VALUE;
         $numOff= $this->userDayOffService->checkDateUsable($request->start_date,$request->end_date,$request->start_time,$request->end_time);
         if(!$numOff){
             return response()->json([
@@ -494,7 +494,7 @@ class UserController extends Controller
             ]);
         }
         elseif ( $numOff >($dayOffPreYear + $remainDayoffCurrentYear + $DayoffFrreCurrentYear) ){
-            $absent=$numOff - $dayOffPreYear + $remainDayoffCurrentYear + $DayoffFrreCurrentYear;
+            $absent=$numOff - ($dayOffPreYear + $remainDayoffCurrentYear + $DayoffFrreCurrentYear);
             return response()->json([
                 'check'=>true,
                 'absent' => $absent

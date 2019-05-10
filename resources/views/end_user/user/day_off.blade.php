@@ -53,7 +53,7 @@
                                 <i class="fas fa-calendar-times dayoff-icoin text-success day-off-icoi"></i>
                             </span>
                         <div class="media-body text-center text-md-left ml-xl-4">
-                            <h1 class="white-text font-weight-bold">{{ $countDayOff['previous_year'] }}</h1>
+                            <h1 class="white-text font-weight-bold">{{ $countDayOff['previous_year'] + DEFAULT_VALUE }}</h1>
                             <p class="card-subtitle text-white-50 text-size-table">Ngày sắp hết hạn</p>
                             <p class="card-title text-uppercase font-weight-bold card-text white-text text-size-header-1">
                                 CUỐI NĂM HỦY</p>
@@ -75,7 +75,7 @@
                                 <i class="fas fa-calendar-check dayoff-icoin text-warning day-off-icoi"></i>
                             </span>
                         <div class="media-body text-center text-md-left ml-xl-4">
-                            <h1 class="white-text font-weight-bold ">{{ $countDayOff['total'] }}</h1>
+                            <h1 class="white-text font-weight-bold ">{{ $countDayOff['total'] + DEFAULT_VALUE  }}</h1>
                             <p class="card-subtitle text-white-50 text-size-table">Ngày đã nghỉ</p>
                             <p class="card-title text-uppercase font-weight-bold card-text white-text text-size-header-1">
                                 TRONG NĂM {{date('Y')}}</p>
@@ -96,7 +96,7 @@
                             </span>
                         <div class="media-body text-center text-md-left ml-xl-4">
                             <h1 class="white-text font-weight-bold">Đơn</h1>
-                            <p class="card-subtitle text-white-50 text-size-table">Đơn xin</p>
+                            <p class="card-subtitle text-white-50 text-size-table">&nbsp;</p>
                             <p class="card-title text-uppercase font-weight-bold card-text white-text text-size-header-1">
                                 XIN NGHỈ / NGHỈ PHÉP</p>
                         </div>
@@ -254,10 +254,13 @@
         <div class="modal-dialog modal-center" role="document">
             <div class="modal-content" id="bg-img" style="background-image: url({{ asset('img/font/xin_nghi.png') }})">
                 <div class="modal-header text-center border-bottom-0 p-3">
-                    <h4 class="modal-title w-100 font-weight-bold pt-2">XIN NGHỈ PHÉP</h4>
+                    <h4 class="modal-title w-100 font-weight-bold pt-2 ml-5">XIN NGHỈ PHÉP</h4>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span class="btn-close-icon" aria-hidden="true">&times;</span>
                     </button>
+                </div>
+                <div class="modal-header text-center border-bottom-0 p-3">
+                    <h6 class="modal-title w-100 font-weight-bold text-danger" id="usable-check"></h6>
                 </div>
                 <div class="modal-body mt-0 pb-0 d-flex justify-content-start ml-3">
                     <div class="custom-control custom-radio">
@@ -714,7 +717,12 @@
                     'type': 'get',
                     'data': {'start_date':dateStart  , 'end_date': dateEnd,'start_time':timeStart  , 'end_time': timeEnd, },
                     success: function (data) {
-                        console.log(data);
+                        // console.log(data);
+                        if(data.check){
+                                $('#usable-check').text('Bạn sẽ bị tính ' + data.absent + ' ngày nghỉ không phép vì ngày phép còn lại không đủ.' )
+                        }else {
+                            $('#usable-check').text(' ')
+                        };
                     }
                 });
             })
@@ -786,6 +794,8 @@
             $('.option-dayoff').on('click', function () {
                 var check = $(this).val();
                 if (check == 1) {
+                    $('#usable-check').text(' ')
+                    $('#home').removeClass('active show');
                     $('#home').removeClass('active show');
                     $('#profile').addClass('active show');
                 } else {

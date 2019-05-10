@@ -372,6 +372,9 @@ define('GROUPS', [
     4 => 'Hành chính nhân sự',
 ]);
 define('SPACE', ' ');
+define('HOURS_OF_DAY', 24);
+define('TOTAL_COUNT_DAY_OFF', 10);
+
 
 
 

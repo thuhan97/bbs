@@ -7,8 +7,10 @@
 @section('content')
     <?php
     if (isset($dayOffSearch)) {
+
         $getDayOff = $dayOffSearch['data'];
     } elseif (isset($status)) {
+
         $getDayOff = $dataDayOff['dataDate'];
     } else {
         $getDayOff = $dataDayOff['data'];

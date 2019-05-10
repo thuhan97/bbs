@@ -67,6 +67,8 @@ Route::group([
     Route::post('/tao-bao-cao', 'ReportController@saveReport')->name('save_report');
     Route::get('/bao-cao/{id}', 'ReportController@detail')->where(['id' => '\d+'])->name('report_detail');
     Route::get('/du-an', 'ProjectController@index')->name('project');
+    Route::get('/tao-du-an', 'ProjectController@create')->name('create_project');
+    Route::post('/tao-du-an', 'ProjectController@store')->name('store_project')->middleware('can:team-leader');
     Route::get('/du-an/{id}', 'ProjectController@detail')->where(['id' => '\d+'])->name('project_detail');
 
     Route::get('/chia-se-tai-lieu', 'ShareController@listShareDocument')->name('list_share_document');

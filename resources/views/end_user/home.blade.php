@@ -10,15 +10,18 @@
                         <div class="col-md-6">
                             <div class="post-item grey lighten-4">
                                 <div class="row mb-3">
-                                    <div class="col-sm-5 text-center">
-                                        <img class=""
-                                             src="{{$post->image_url}}"
-                                             alt="{{$post->name}}" width="100%">
+                                    <div class="col-sm-5 text-center view overlay">
+                                        <a href="{{route('post_detail', ['id' => $post->id])}}">
+                                            <img class=""
+                                                 src="{{$post->image_url}}"
+                                                 alt="{{$post->name}}" width="100%">
+                                            <div class="mask rgba-white-slight"></div>
 
+                                        </a>
                                     </div>
                                     <div class="col-sm-7" style="padding-left: 0">
                                         <div class="media-body p-1"
-                                             onclick="localtion.href='{{route('post_detail', ['id' => $post->id])}}'">
+                                             onclick="location.href='{{route('post_detail', ['id' => $post->id])}}'">
                                             <h4 class="mt-0 mb-1 font-weight-bold elipsis-line line-2 fix-2">{{$post->name}}</h4>
                                             <p class="elipsis-line line-3 fix-3 m-0">{{str_limit(strip_tags(nl2br($post->introduction) ), 150) }}</p>
                                         </div>
@@ -27,9 +30,8 @@
                             </div>
                         </div>
                     @endforeach
-
                 </div>
-
+                <div class="text-right"><a href="{{route('post')}}">Xem thêm thông báo >></a> </div>
                 <!--Grid row-->
                 <div class="row my-4 ">
                     <!--Grid column-->

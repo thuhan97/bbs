@@ -387,13 +387,7 @@
                                     <!-- Default input -->
                                     <label class="text-w-400" for="exampleForm2">Chế độ nghỉ<span
                                                 class="text-danger">*</span></label>
-                                    <?php
-                                    $vacation = VACATION;
-                                    if (\Illuminate\Support\Facades\Auth::user()->sex == SEX['male']) {
-                                        (array_pop($vacation));
-                                    }
-                                    ?>
-                                    {{ Form::select('title', $vacation,null,['class' => 'form-control my-1 mr-1  browser-default custom-select md-form select-item reason_id check-value']) }}
+                                    {{ Form::select('title', VACATION,null,['class' => 'form-control my-1 mr-1  browser-default custom-select md-form select-item reason_id check-value']) }}
                                     @if ($errors->has('title'))
                                         <div class="">
                                             <span class="help-block text-danger">{{ $errors->first('title') }}</span>

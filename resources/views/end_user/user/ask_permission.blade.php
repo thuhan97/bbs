@@ -21,6 +21,15 @@
                 button: "Đóng",
             });
         </script>
+    @elseif(session()->has('reject_success'))
+        <script>
+            swal({
+                title: "Thông báo!",
+                text: "Bạn đã từ chối thành công!",
+                icon: "success",
+                button: "Đóng",
+            });
+        </script>
     @endif
     @if ($errors->has('work_day'))
         <span class="help-block mb-5 color-red">
@@ -105,10 +114,11 @@
                                             data-id="{{ $item['id'] ? $item['id'] : '' }}"><i class="fas fa-times"></i>
                                     </button>
                                 @elseif($item['work_times_explanation_status'] == array_search('Đã duyệt', OT_STATUS))
-                                    <i class="fas fa-grin-stars fa-2x text-success" title="{{ $item['approver'] }}"></i>
+                                    <i class="fas fa-grin-stars fa-2x text-success"
+                                       title="{{ $item->workTimeApprover->name ?? '' }}"></i>
                                 @elseif($item['work_times_explanation_status'] == array_search('Từ chối', OT_STATUS))
                                     <i class="fas fa-meh-blank fa-2x text-danger"
-                                       title="{{ \App\Helpers\DateTimeHelper::getApprover($item['wt_approver_id'])  }}"></i>
+                                       title="{{ $item->workTimeApprover->name ?? '' }}"></i>
                                 @endif
                             @endcan
                         </td>
@@ -187,12 +197,13 @@
                 <td>{!! $item['reason_reject'] ?? '' !!}</td>
                 <td class="text-center td-approve">
                     @if($item['work_times_explanation_status'] == array_search('Đã duyệt', OT_STATUS))
-                        <i class="fas fa-grin-stars fa-2x text-success" title="{{ $item['approver'] }}"></i>
+                        <i class="fas fa-grin-stars fa-2x text-success"
+                           title="{{ $item->workTimeApprover->name ?? '' }}"></i>
                     @elseif($item['work_times_explanation_status'] == array_search('Chưa duyệt', OT_STATUS))
                         <i class="fas fa-meh-blank fa-2x text-warning" title="Chưa duyệt"></i>
                     @elseif($item['work_times_explanation_status'] == array_search('Từ chối', OT_STATUS))
                         <i class="fas fa-meh-blank fa-2x text-danger"
-                           title="{{ \App\Helpers\DateTimeHelper::getApprover($item['wt_approver_id'])  }}"></i>
+                           title="{{ $item->workTimeApprover->name ?? ''  }}"></i>
                     @endif
                 </td>
             </tr>
@@ -281,24 +292,26 @@
                         <div class="col-2"></div>
                         <div class="col-md-4 text-center">
                             <input style="position: relative;opacity: 1;pointer-events: inherit" class="other-ot"
-                                   type="radio" name="ot_type" id="project-ot" value="1" {{ $dateNow['ot_type'] == 1 ? "checked" : '' }}>
+                                   type="radio" name="ot_type" id="project-ot"
+                                   value="1" {{--{{ $workTimeExplanation['ot_type'] == 1 ? "checked" : '' }}--}}>
                             <label for="project-ot">OT dự án</label>
                         </div>
                         <div class="col-md-4 text-center">
                             <input style="position: relative;opacity: 1;pointer-events: inherit" class="other-ot"
-                                   type="radio" name="ot_type" id="other-ot" value="2" {{ $dateNow['ot_type'] == 2 ? "checked" : '' }}>
+                                   type="radio" name="ot_type" id="other-ot"
+                                   value="2"{{-- {{ $workTimeExplanation['ot_type'] == 2 ? "checked" : '' }}--}}>
                             <label for="other-ot">Lý do cá nhân</label>
                         </div>
                     </div>
                     <div class="select-day">
                         <div class="container-fluid">
-                            <div class="row">
+                            <div class="row append-textarea">
                                 <div class="col-2"></div>
                                 <div class="col-4">
                                     <label for="inputCity">Chọn ngày *</label>
                                 </div>
                                 <div class="col-4">
-                                    <input type="hidden" value="{{ $dateNow['id'] }}">
+                                    <input type="hidden" value="{{ $workTimeExplanation['id'] }}">
                                     <input type="text"
                                            class="form-control select-item {{ $errors->has('work_day') ? ' has-error' : '' }}"
                                            id="work_day_ot" autocomplete="off" name="work_day"
@@ -310,7 +323,7 @@
                     </div>
                     <br>
                     <textarea class="form-control permission-reason" name="note" cols="48" rows="6"
-                              placeholder="Nhập lý do ...">{!! $dateNow['note']  !!}</textarea>
+                              placeholder="Nhập lý do ...">{{--{!! $workTimeExplanation['note']  !!}--}}</textarea>
                     <div class="pt-3 pb-4 d-flex justify-content-center border-top-0 rounded mb-0">
                         <button class="btn btn-primary btn-send">GỬI ĐƠN</button>
                     </div>
@@ -358,6 +371,33 @@
                 // $(".permission-reason").append("<input name='type' type='text' value='4'>");
                 // $(".modal-header").html("<h4 class='mg-center mb-2 modal-title w-100 font-weight-bold pt-2'>Xin OT</h4>");
                 // $('#work_day_ot').datepicker("setDate", (date));
+            });
+
+            $('#work_day_ot').on('change', function () {
+                let data = $(this).val();
+                // $('.permission-reason').append('22zxczxcxc22');
+                $.ajax({
+                    url: '{{ route('ask_permission.ot') }}',
+                    type: 'GET',
+                    dataType: 'JSON',
+                    data: {
+                        'data': data,
+                    },
+                    success: function (respond) {
+                        console.log()
+                        var note = respond.note ? respond.note : '',
+                            otType = respond.ot_type;
+                        $('.permission-reason').text(note);
+                        if (otType) {
+                            if (otType === 1){
+                                $('#project-ot').attr( 'checked', 'checked' )
+                            }else if (otType === 2){
+                                $('#other-ot').attr( 'checked', 'checked' )
+                            }
+                        }
+                    }
+                });
+                // $('.append-textarea').remove();
             });
         });
     </script>

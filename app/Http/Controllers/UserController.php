@@ -215,7 +215,7 @@ class UserController extends Controller
         $query = WorkTimesExplanation::select(
             'work_times_explanation.id', 'work_times_explanation.work_day', 'work_times_explanation.type',
             'work_times_explanation.ot_type', 'work_times_explanation.note', 'work_times_explanation.status as work_times_explanation_status',
-            'work_times_explanation.user_id', 'work_times_explanation.approver_id as wt_approver_id', 'work_times_explanation.reason_reject', 'ot_times.creator_id', 'ot_times.id as id_ot_time', 'ot_times.status as ot_time_status', 'users.name as approver')
+            'work_times_explanation.user_id', 'work_times_explanation.approver_id', 'work_times_explanation.reason_reject', 'ot_times.creator_id', 'ot_times.id as id_ot_time', 'ot_times.status as ot_time_status', 'users.name as approver')
             ->leftJoin('ot_times', function ($join) {
                 $join->on('ot_times.creator_id', '=', 'work_times_explanation.user_id')
                     ->on('ot_times.work_day', '=', 'work_times_explanation.work_day');
@@ -236,15 +236,15 @@ class UserController extends Controller
                 'work_times_explanation.ot_type', 'work_times_explanation.note', 'work_times_explanation.user_id', 'ot_times.creator_id')
             ->orderBy('work_times_explanation.created_at', 'desc')
             ->paginate(PAGINATE_DAY_OFF, ['*'], 'user-page');
-        $dateNow = WorkTimesExplanation::where('user_id', Auth::id())->where('work_day', date('Y-m-d'))->first();
-        return view('end_user.user.ask_permission', compact('datas', 'dataLeader', 'dateNow'));
+        $workTimeExplanation = WorkTimesExplanation::where('user_id', Auth::id())->where('work_day', date('Y-m-d'))->first();
+        return view('end_user.user.ask_permission', compact('datas', 'dataLeader', 'workTimeExplanation'));
     }
 
     public function askPermissionCreate(AskPermissionRequest $request)
     {
-        $query = WorkTimesExplanation::where('user_id', Auth::id())->where('work_day', $request['work_day'])->first();
-        if ($query) {
-            $query->update(['ot_type' => $request['ot_type'], 'note' => $request['note'], 'work_day' => $request['work_day']]);
+        $workTimeExplanation = WorkTimesExplanation::where('user_id', Auth::id())->where('work_day', $request['work_day'])->first();
+        if ($workTimeExplanation) {
+            $workTimeExplanation->update(['ot_type' => $request['ot_type'], 'note' => $request['note'], 'work_day' => $request['work_day']]);
         } else {
             WorkTimesExplanation::create([
                 'user_id' => Auth::id(),
@@ -257,6 +257,16 @@ class UserController extends Controller
         return back()->with('create_permission_success', '');
     }
 
+    public function askPermissionOT(Request $request)
+    {
+        $workTimeExplanation = WorkTimesExplanation::where('user_id', Auth::id())->where('work_day', $request['data'])->first();
+        if ($workTimeExplanation) {
+            return $workTimeExplanation;
+        } else {
+            return 0;
+        }
+    }
+
     public function reject(Request $request)
     {
         $explanationID = $request['work_time_explanation_id'];
@@ -267,7 +277,7 @@ class UserController extends Controller
                     'reason_reject' => $request['reason_reject'],
                     'approver_id' => Auth::id(),
                 ]);
-            return back()->with('approver_success', '');
+            return back()->with('reject_success', '');
         }
     }
 

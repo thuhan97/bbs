@@ -117,9 +117,4 @@ class DateTimeHelper
 
         return $dateCarbon->addYear()->format($format);
     }
-
-    public static function getApprover($id)
-    {
-       return \App\Models\User::where('id', $id)->first()->name ?? '';
-    }
 }

@@ -486,7 +486,7 @@ class UserController extends Controller
         $dayOffYear = RemainDayoff::where('user_id', Auth::id())->where('year', date('Y'))->first();
         $remainDayoffCurrentYear=$dayOffYear->remain ?? 0;
         $DayoffFrreCurrentYear=$dayOffYear->day_off_free_female ?? 0;
-        return $this->userDayOffService->checkDateUsable($request->start_date,$request->end_date,$request->start_time,$request->end_time);
+        $numOff= $this->userDayOffService->checkDateUsable($request->start_date,$request->end_date,$request->start_time,$request->end_time);
         if(!$numOff){
             return response()->json([
                 'check'=>false,

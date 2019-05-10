@@ -436,7 +436,6 @@ class DayOffService extends AbstractService implements IDayOffService
 
         $start = array_key_exists($startTime, CHECK_TIME_DAY_OFF_USABLE) ? CHECK_TIME_DAY_OFF_USABLE[$startTime] : '';
         $end = array_key_exists($endTime, CHECK_TIME_DAY_OFF_USABLE) ? CHECK_TIME_DAY_OFF_USABLE[$endTime] : '';
-        return $end;
         $from = Carbon::createFromFormat('Y/m/d H:i:s', $startDate . ' ' . $start);
         $to = Carbon::createFromFormat('Y/m/d H:i:s', $endDate . ' ' . $end);
         if (strtotime($from) > strtotime($to)){

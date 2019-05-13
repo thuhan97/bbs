@@ -28,6 +28,13 @@ class ReportController extends Controller
      */
     public function index(Request $request)
     {
+        $user = Auth::user();
+        $team = $user->team();
+        if ($team) {
+            $teamId = $team->id;
+        } else {
+            $teamId = 0;
+        }
         $data = $request->all();
         if (!$request->has('year'))
             $request->merge(['year' => date('Y')]);
@@ -36,7 +43,7 @@ class ReportController extends Controller
         $reports = $this->service->search($request, $perPage, $search);
         $teams = Team::pluck('name', 'id')->toArray();
 
-        return view('end_user.report.index', compact('reports', 'search', 'perPage', 'data', 'teams'));
+        return view('end_user.report.index', compact('reports', 'search', 'perPage', 'data', 'teams', 'teamId'));
     }
 
     /**

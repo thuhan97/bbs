@@ -18,7 +18,6 @@
         </a>
     </div>
     <div class="row">
-        <div class="col-xxl-1"></div>
         <div class="col-xxl-10">
             <form class="mb-4">
                 <div class="md-form active-cyan-2 mb-3">

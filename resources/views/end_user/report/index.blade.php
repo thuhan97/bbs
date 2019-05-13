@@ -5,9 +5,15 @@
     {!! Breadcrumbs::render('report') !!}
 @endsection
 <?php
-$type = request('type', 0);
 $year = request('year', date('Y'));
 $month = request('month', date('m'));
+if ($teamId != 0) {
+    $reportType = 2;
+} else {
+    $reportType = 1;
+}
+$type = request('type', $reportType);
+
 ?>
 @section('content')
     <div class=" fixed-action-btn">
@@ -27,7 +33,7 @@ $month = request('month', date('m'));
             @if($type == REPORT_SEARCH_TYPE['team'])
                 <div class="col-12 col-sm-3 col-md-3 col-xl-2 mb-2">
                     <div class="md-form m-0">
-                        {{ Form::select('team_id', ['' => 'Chọn team'] + $teams, request('team_id'), ['class'=>'mr-1 w-30 browser-default custom-select']) }}
+                        {{ Form::select('team_id', ['' => 'Chọn team'] + $teams, request('team_id', $teamId), ['class'=>'mr-1 w-30 browser-default custom-select']) }}
                     </div>
                 </div>
             @endif

@@ -8,10 +8,15 @@
     {!! Breadcrumbs::render('share_experience') !!}
 @endsection
 @section('content')
+<link rel="stylesheet" href="{{URL::asset('css/share_experience.css')}}">
 
 <div class="col-md-7">
     <div class="content">
         <div class="tab-pane active">
+            <div class="divAddButton">
+                <button type="button" class="btn btn-danger button-exp button-add">ĐĂNG BÀI</button>
+                <button type="button" class="btn btn-danger button-exp button-hidden" style="display: none;">ẨN ĐĂNG BÀI</button>
+            </div>
             <form action="{{ route('add_experience') }}" method="post" id="formExp" enctype="multipart/form-data">
                 @csrf <!-- {{ csrf_field() }} -->
                 <div class="form-group margin-b-5 margin-t-5">
@@ -35,7 +40,7 @@
                             <div calss="content-posts">
                                 <p><?php echo $experience->content; ?></p>   
                             </div>
-                            <div class="like-comment border-top-buttom">
+<!--                             <div class="like-comment border-top-buttom">
                                 <i class="far fa-heart"></i> 15 <a>Thích</a> &nbsp   
                                 <i class="far fa-comment"></i> 15 <a class="form-comment1">Bình luận</a>
                             </div>
@@ -49,8 +54,8 @@
                                             <button type="button" class="btn btn-light button-send"><i class="fa fa-paper-plane" aria-hidden="true"></i></button>
                                         </div>
                                 </div>
-                            </form>    
-                            <div class="form-group">
+                            </form>   -->  
+<!--                             <div class="form-group">
                                 <a>Xem các bình luận trước ...</a>
                             </div>
                             <div class="comment form-group">
@@ -87,58 +92,13 @@
                                         </div>                                      
                                     </div>   
                                 </div>  
-                            </div>                           
+                            </div>  -->                          
                         </div>
                     </div>
                 @endforeach    
         </div>
     </div>
 </div>
-
-<script> 
-
-    $("#buttonExperience").click(function(){
-        var content = $("#editorContainer_ifr").contents().find("body").text();
-        if(content.trim() != ''){
-            $('#formExp').submit();
-        }
-    });
-
-    $(".form-comment2").click(function(){
-        $( this ).closest(".info-user-comment").find(".content-form-comment2").css('display','flex').find(".input-comment2").focus();
-    });
-
-    $(".form-comment1").click(function(){
-        $( this ).closest(".content-share-experience").find(".input-comment1").focus();
-    });
-
-    $( ".button-send" ).click(function() {
-        var contentComment = $(this).closest( "form" ).find("input.input-comment").val();
-        var share_id = $(this).closest( "form" ).find("input.share_id").val();
-        // console.log(contentComment);
-        // console.log(share_id);
-        if(contentComment.trim() != ''){
-            $.ajax({
-                url : "/add_comment",
-                type : "post",
-                dataType:"html",
-                data : {
-                    contentComment : contentComment,
-                    share_id : share_id
-                },
-                headers:
-                {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                },                     
-                success : function (response){
-                    console.log(response);
-                    $(".contentajax").html(response);
-                }
-            })
-        }    
-    });      
-
-</script>
 
 @endsection
 
@@ -149,51 +109,3 @@
         })
     </script>
 @endpush
-
-<style>
-.content-share-experience{
-    width: 100%;
-}
-.posts{
-    border-bottom: 2px solid #dee2e6f7;
-    margin-bottom: 20px;    
-}    
-.button-send{
-    margin-top: 0px !important;
-}
-.like-comment{
-    margin-bottom: 5px;
-}
-.border-top-buttom{
-    border-top: 1px solid #dee2e66b;
-    border-bottom: 1px solid #dee2e66b;
-    padding:5px 0px;
-}
-.userImage {
-    width:40px;
-    /*height:100%;*/
-    float:left;
-    /*position: absolute;*/
-}
-.userImage img {
-    width:40px;
-    border-radius:50%;
-}
-.info-user-post p {
-    margin:0;
-}
-.info-user-comment p {
-    margin:0;
-}
-.info-user-comment{
-    padding-left: 0px !important;
-}
-.reply{
-    font-size:14px;
-}
-.sub-text {
-    color:#aaa;
-    font-family:verdana;
-    font-size:11px;
-}   
-</style>

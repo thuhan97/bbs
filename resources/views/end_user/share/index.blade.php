@@ -12,14 +12,12 @@
 @section('content')
     <link rel="stylesheet" href="{{URL::asset('css/list_share_document.css')}}">
     <div class="createReport fixed-action-btn">
-        <a href="#" class="btn-floating btn-lg red waves-effect waves-light text-white"
-           title="Chia sẻ" data-target="#feedback" data-toggle="modal">
+        <a href="#" class="button-add btn-lg red waves-effect waves-light text-white" title="Chia sẻ" data-target="#feedback" data-toggle="modal">
             <i class="fa fa-plus" aria-hidden="true"></i>
         </a>
     </div>
     <div class="row">
-        <div class="col-xxl-1"></div>
-        <div class="col-xxl-10">
+        <div class="container-fluid  mt-3 mt-xl-5">
             <form class="mb-4">
                 <div class="md-form active-cyan-2 mb-3">
                     @include('layouts.partials.frontend.search-input', ['search' => $search, 'text' => __l('Search')])
@@ -40,9 +38,9 @@
                         <th>
                             Ngày tải lên
                         </th>
-                        <th>
+<!--                         <th>
                             Định dạng
-                        </th>
+                        </th> -->
                         <th>
                             Tải ngay
                         </th>
@@ -51,7 +49,7 @@
                     <tbody>
                     @foreach($list_document as $document)
                         <?php
-                        $ext = pathinfo($document->file, PATHINFO_EXTENSION);
+                        // $ext = pathinfo($document->file, PATHINFO_EXTENSION);
                         ?>
                         <tr>
                             <td>
@@ -63,13 +61,13 @@
                             <td class="center">
                                 {{$document->created_at}}
                             </td>
-                            <?php
+<!--                             <?php
                             $ext = pathinfo($document->file, PATHINFO_EXTENSION);
                             ?>
                             <td class="center">
                                 <i class="<?php echo isset(ICONS_TYPES_FILES[$ext]) ? ICONS_TYPES_FILES[$ext] : ''; ?>"
                                    aria-hidden="true"></i>
-                            </td>
+                            </td> -->
                             <td class="center">
                                 <a href="/download_file_share/{{$document->id}}" target="_blank">
                                     <i class="fa fa-download" aria-hidden="true" style="color: #4285f4;"></i>

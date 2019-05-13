@@ -12,12 +12,26 @@
        $dataDayOff= $dayOff ?? $availableDayLeft['data'];
     @endphp
     <form action="{{ route('day_off') }}" method="get" id="form-search">
-        <div class="row mb-3">
-            <div class="col-6 col-sm-2 col-xl-1 no-padding-right">
-                {{ Form::select('year', get_years(), $year ?? date('Y') , ['class'=>'yearselect browser-default custom-select w-100 border-0 select_year option-select p-1']) }}
+        <div class="row mb-3 ml-1">
+            <div class="col-sm-4 col-xl-2 pr-3">
+                <label class=" text-w-400" for="">Từ ngày</label>
+                <input type="text"
+                       class="form-control border-0 select-item"
+                       id="search_start_at" autocomplete="off" name="search_start_at"
+                       value="{{  $searchStratDate ?? ''  }}"
+                       readonly="readonly">
             </div>
-            <div class="col-6 col-sm-4 col-xl-2 no-padding-left">
-                {{ Form::select('month', MONTH, $month ?? '' , ['class' => 'browser-default custom-select w-100 month option-select','placeholder'=>'Chọn tháng']) }}
+            <div class="col-sm-4 col-xl-2 no-padding-left">
+                <label class="text-w-400" for="inputZip">Tới ngày</label>
+                <input type="text"
+                       class="form-control select-item  border-0 "
+                       id="search_end_at" autocomplete="off" name="search_end_at"
+                       value="{{ $searchEndDate ?? ''}}"
+                       readonly>
+            </div>
+            <div class="col-sm-2 col-xl-1 no-padding-left">
+                <label class=" text-w-400" for="inputCity"> &nbsp;</label>
+                <button class="form-control select-item  border-0 btn-secondary" id="result-search"><i class="fas fa-search"></i></button>
             </div>
         </div>
         <div class="d-none d-xl-flex container-fluid col-12 row border-bottom-2 mb-3" style="position: relative;">
@@ -321,7 +335,7 @@
                                                     <?php
                                                     $autoDateEnd = date('Y/m/d', strtotime('tomorrow + 1day'));
                                                     ?>
-                                                    <label class="text-w-400" for="inputZip">Tới ngày<span
+                                                    <label class="text-w-400" for="inputZip">Ngày kết thúc<span
                                                                 class="text-danger">*</span></label>
                                                     <input type="text"
                                                            class="form-control select-item  border-0 {{ $errors->has('end_at') ? ' has-error' : '' }}"
@@ -425,7 +439,7 @@
                                         </div>
                                         <!-- Default input -->
                                         <div class="form-group col-sm-6 m-0">
-                                            <label class="text-w-400" for="inputZip">Tới ngày<span
+                                            <label class="text-w-400" for="inputZip">Ngày kết thúc<span
                                                         class="text-danger">*</span></label>
                                             <input type="text"
                                                    class="form-control select-item {{ $errors->has('end_at') ? ' has-error' : '' }}"
@@ -600,6 +614,9 @@
             $('.option-select').on('change', function () {
                 $("#form-search").submit();
             });
+            $('#result-search').on('click', function () {
+                $("#form-search").submit();
+            });
             $('form').each(function () {
                 $(this).validate({
                     ignore: '[readonly]',
@@ -677,7 +694,6 @@
                 $('#modal-form').modal('show');
             });
 
-
             var today = new Date();
             var mon = today.getMonth() + 1;
             var date = today.getFullYear() + '-' + mon + 1 + '-' + today.getDate();
@@ -687,6 +703,7 @@
             $('#modal-form').modal('show');
             @endif
 
+            $('#search_start_at , #search_end_at').datepicker({format: 'yyyy/mm/dd',orientation: 'bottom'});
             $('#start_date , #start_date1').datepicker({
                 format: 'yyyy/mm/dd',
                 hoursDisabled: '0,1,2,3,4,5,6,7,18,19,20,21,22,23',
@@ -797,8 +814,6 @@
                     $('#profile').removeClass('active show');
                 }
             })
-
-
         });
 
         function checkDate(start, end, errors, check, btn) {

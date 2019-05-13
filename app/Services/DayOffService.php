@@ -200,18 +200,16 @@ class DayOffService extends AbstractService implements IDayOffService
         ];
     }
 
-    public function getDataSearch($year, $month, $status, $search = null)
+    public function getDataSearch($start,$end,$status,$search=null)
     {
-
         $data = $this->getdata();
-        if ($year) {
-            $data = $data->whereYear('day_offs.start_at', '=', $year);
-        } else {
-            $data = $data->whereYear('day_offs.start_at', '=', date('Y'));
+        if ($start) {
+            $data = $data->whereDate('start_at', '>=',  date('Y-m-d',strtotime($start)));
         }
-        if ($month) {
-            $data = $data->whereMonth('day_offs.start_at', '=', $month);
+        if ($end) {
+            $data = $data->whereDate('start_at', '<=',date('Y-m-d',strtotime($end)));
         }
+
         if ($search) {
             $data = $data->Where('users.name', 'like', '%' . $search . '%');
 
@@ -255,19 +253,17 @@ class DayOffService extends AbstractService implements IDayOffService
      *
      * @return collection
      */
-    public function searchStatus($year, $month, $status)
+    public function searchStatus($start, $end, $status)
     {
         $data = DayOff::select('*', DB::raw('DATE_FORMAT(start_at, "%d/%m/%Y (%H:%i)") as start_date'),
             DB::raw('DATE_FORMAT(end_at, "%d/%m/%Y (%H:%i)") as end_date'),
             DB::raw('DATE_FORMAT(approver_at, "%d/%m/%Y (%H:%i)") as approver_date'))
             ->where('user_id', Auth::id());
-        if ($year) {
-            $data = $data->whereYear('start_at', '=', $year);
-        } else {
-            $data = $data->whereYear('start_at', '=', date('Y'));
+        if ($start) {
+            $data = $data->whereDate('start_at', '>=',  date('Y-m-d',strtotime($start)));
         }
-        if ($month) {
-            $data = $data->whereMonth('start_at', '=', $month);
+        if ($end) {
+            $data = $data->whereDate('start_at', '<=',date('Y-m-d',strtotime($end)));
         }
         if ($status < ALL_DAY_OFF) {
             $data = $data->where('status', $status);

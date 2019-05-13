@@ -448,7 +448,6 @@ class UserController extends Controller
 
     public function dayOffSearch(Request $request)
     {
-//        dd($request->all());
         $start = $request->search_start_at;
         $end = $request->search_end_at;
         $status = $request->status;

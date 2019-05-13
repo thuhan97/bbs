@@ -1,4 +1,5 @@
 <div class="text-right">
+    <span class="btn btn-warning btn-table" id="exportExcelGrid">Xuất bảng chấm công</span>
     <span class="btn btn-primary btn-table" id="exportExcel">Xuất file excel</span>
 </div>
 <div class="table-responsive list-records">
@@ -93,3 +94,18 @@
         </tbody>
     </table>
 </div>
+
+@push('footer-scripts')
+    <script>
+        $(function () {
+            $("#exportExcelGrid").click(function () {
+                $("#searchForm").append('<input id="is_export" type="hidden" name="is_export" value="1" />');
+                $("#searchForm").append('<input id="is_grid" type="hidden" name="is_grid" value="1" />');
+                $("#searchForm").submit();
+                $("#is_export").remove();
+                $("#is_grid").remove();
+            });
+        })
+
+    </script>
+@endpush

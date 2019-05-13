@@ -17,7 +17,6 @@
             <button type="button" class="btn btn-default btn-sm checkbox-toggle"><i class="fa fa-square-o "></i>
             </button>
         </th>
-        <th>ID</th>
         <th>Ảnh thông báo</th>
         <th>Tên thông báo
             {!! __admin_sortable('name') !!}
@@ -43,9 +42,6 @@
             ?>
             <tr>
                 <td><input type="checkbox" name="ids[]" value="{{ $record->id }}" class="square-blue chkDelete"></td>
-                <td>
-                    <a href="{{ $editLink }}">{{ $record->id }}</a>
-                </td>
                 <td class="text-center">
                     <img src="{{lfm_thumbnail($record->image_url)}}" width="100">
                 </td>

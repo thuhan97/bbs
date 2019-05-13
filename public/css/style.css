@@ -1012,11 +1012,12 @@ td.blank, .type-1, .type-2 {
 .option-time-day-off {
     height: 38px;
     margin-left: -3px;
-    margin-top: 23px;
+    margin-top: 24px;
     background-color: #e9ecef;
     border: none;
     opacity: inherit;
     width: 80px;
+    border: 1px solid #e9ecef;
 }
 
 .navbar.navbar-light .breadcrumb .nav-item .nav-link:hover, .navbar.navbar-light .navbar-nav .nav-item .nav-link:hover {

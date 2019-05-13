@@ -110,7 +110,7 @@ class WorkRegisterController extends AdminBaseController
 
     public function getSearchRecords(Request $request, $perPage = 15, $search = null)
     {
-        $model = User::whereIn('contract_type', $this->ableToRegister);
+        $model = User::whereIn('contract_type', $this->ableToRegister)->orWhere('is_remote', IS_REMOTE_STAFF);
         if ($request->has('sort')) {
             $model->orderBy($request->get('sort'), $request->get('is_desc') ? 'asc' : 'desc');
         } else {

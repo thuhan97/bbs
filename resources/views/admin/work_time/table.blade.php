@@ -4,18 +4,22 @@
 <div class="table-responsive list-records">
     <table class="table table-hover table-bordered">
         <thead>
-        <th style="width: 30px">
-            <button type="button" class="btn btn-default btn-sm checkbox-toggle"><i class="fa fa-square-o"></i></button>
-        </th>
-        <th style="width: 150px">Ngày
-            {{__admin_sortable('work_day')}}
-        </th>
-        <th>Nhân viên</th>
-        <th style="width: 150px">Checkin</th>
-        <th style="width: 150px">Checkout</th>
-        <th style="width: 200px">Chú thích</th>
-        <th>Giải trình</th>
-        <th style="width: 100px">Chức năng</th>
+        <tr>
+            <th style="width: 30px">
+                <button type="button" class="btn btn-default btn-sm checkbox-toggle"><i class="fa fa-square-o"></i>
+                </button>
+            </th>
+            <th style="width: 130px">Ngày
+                {{__admin_sortable('work_day')}}
+            </th>
+            <th style="width: 150px">Nhân viên</th>
+            <th style="width: 90px">Checkin</th>
+            <th style="width: 90px">Checkout</th>
+            <th style="width: 90px">Tính công</th>
+            <th>Chú thích</th>
+            <th>Giải trình</th>
+            <th style="width: 100px">Chức năng</th>
+        </tr>
         </thead>
         <tbody>
         @foreach ($records as $record)
@@ -41,6 +45,7 @@
                 </td>
                 <td class="text-right">{{ $record->start_at }}</td>
                 <td class="text-right">{{ $record->end_at }}</td>
+                <td class="text-right">{{ $record->cost }}</td>
                 <td>
                     <?php
                     switch ($record->type) {
@@ -66,7 +71,7 @@
                         <span class="label label-{{$typeClass}}">{{ $record->note }}</span>
                     @endif
                 </td>
-                <td class="w-20">{{ $record->explanation($record->work_day)->note ?? '' }}</td>
+                <td>{{ $record->explanation($record->work_day)->note ?? '' }}</td>
                 <td>
                     <div class="btn-group">
                         <a href="{{ $editLink }}" class="btn btn-info btn-sm"><i class="fa fa-edit"></i></a>

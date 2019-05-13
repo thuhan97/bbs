@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use App\Models\RemainDayoff;
+use App\Models\User;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
 
@@ -20,7 +21,7 @@ class AddDayOffFree extends Command
      *
      * @var string
      */
-    protected $description = 'plus monthly holidays';
+    protected $description = 'add one day off free if female and staff';
 
     /**
      * Create a new command instance.
@@ -43,19 +44,10 @@ class AddDayOffFree extends Command
         foreach ($users as $user){
             $dayOffRemain=RemainDayoff::where('year', '=', date('Y'))
                 ->where('user_id',$user->id);
-
             if ($dayOffRemain->first()){
                 $data=['day_off_free_female' => REMAIN_DAY_OFF_DEFAULT];
                 $dayOffRemain=$dayOffRemain->update($data);
 
-            }else{
-                $dayOffRemain=new \App\Models\RemainDayoff();
-                $dayOffRemain->user_id=$user->id;
-                $dayOffRemain->year=date('Y');
-                $dayOffRemain->day_off_free_female=REMAIN_DAY_OFF_DEFAULT;
-                $dayOffRemain->remain=REMAIN_DAY_OFF_DEFAULT;
-                $dayOffRemain->remain_increment=DAY_OFF_INCREMENT;
-                $dayOffRemain->save();
             }
 
         }

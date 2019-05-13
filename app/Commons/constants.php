@@ -369,6 +369,7 @@ define('GROUPS', [
     4 => 'Hành chính nhân sự',
 ]);
 define('SPACE', ' ');
+define('HALF_MONTH',15);
 
 
 

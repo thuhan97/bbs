@@ -2,6 +2,7 @@
 
 namespace App\Console;
 
+use App\Console\Commands\AddDayOffFree;
 use App\Console\Commands\AddDayOffMonth;
 use App\Console\Commands\HolidayAutoAdd;
 use App\Console\Commands\MoveDayOffEndYear;
@@ -20,7 +21,8 @@ class Kernel extends ConsoleKernel
         SentMailEvent::class,
         AddDayOffMonth::class,
         MoveDayOffEndYear::class,
-        HolidayAutoAdd::class
+        HolidayAutoAdd::class,
+        AddDayOffFree::class,
     );
 
     /**
@@ -36,6 +38,7 @@ class Kernel extends ConsoleKernel
         $schedule->command('command:sent_mail_event')->cron('0 8 * * *');
         $schedule->command('command:add_day_off_moth')->cron('59 23 15 * *');
         $schedule->command('command:move_day_off_end_year')->cron('45 23 31 12 *');
+        $schedule->command('command:add_day_off_free')->cron('* * 1 * *');
         $schedule->command('command:holiday')->monthly();
     }
 

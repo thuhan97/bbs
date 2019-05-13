@@ -611,6 +611,9 @@
     <script type="text/javascript">
 
         $(document).ready(function () {
+
+            checkUsable();
+
             $('.option-select').on('change', function () {
                 $("#form-search").submit();
             });
@@ -717,25 +720,7 @@
             });
 
             $('#end_date,#start_date,.time-start,.time-end').on('change', function () {
-                checkDate('#start_date', '#end_date', '#errors_date', true, '#btn-send');
-                var dateStart=$('#start_date').val();
-                var dateEnd =$('#end_date').val();
-                var timeStart= $('.time-start').val();
-                var timeEnd = $('.time-end').val();
-                $.ajax
-                ({
-                    'url': '{{ route('check-usable-day-offf') }}',
-                    'type': 'get',
-                    'data': {'start_date':dateStart  , 'end_date': dateEnd,'start_time':timeStart  , 'end_time': timeEnd, },
-                    success: function (data) {
-                        // console.log(data);
-                        if(data.check){
-                                $('#usable-check').text('Bạn sẽ bị tính ' + data.absent + ' ngày nghỉ không phép vì ngày phép còn lại không đủ.' )
-                        }else {
-                            $('#usable-check').text(' ')
-                        };
-                    }
-                });
+                checkUsable();
             })
             $('#end_date1,#start_date1').on('change', function () {
                 checkDate('#start_date1', '#end_date1', '#errors_date1', false, '#btn-send-day-off');
@@ -815,6 +800,27 @@
                 }
             })
         });
+        function checkUsable() {
+            checkDate('#start_date', '#end_date', '#errors_date', true, '#btn-send');
+            var dateStart=$('#start_date').val();
+            var dateEnd =$('#end_date').val();
+            var timeStart= $('.time-start').val();
+            var timeEnd = $('.time-end').val();
+            $.ajax
+            ({
+                'url': '{{ route('check-usable-day-offf') }}',
+                'type': 'get',
+                'data': {'start_date':dateStart  , 'end_date': dateEnd,'start_time':timeStart  , 'end_time': timeEnd, },
+                success: function (data) {
+                    // console.log(data);
+                    if(data.check){
+                        $('#usable-check').text('Bạn sẽ bị tính ' + data.absent + ' ngày nghỉ không phép vì ngày phép còn lại không đủ.' )
+                    }else {
+                        $('#usable-check').text(' ')
+                    };
+                }
+            });
+        }
 
         function checkDate(start, end, errors, check, btn) {
             var start1 = $(start).val();

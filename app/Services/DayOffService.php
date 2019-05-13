@@ -454,16 +454,16 @@ class DayOffService extends AbstractService implements IDayOffService
         $addDate = AdditionalDate::whereYear('date_add', date('Y'))->get();
         foreach ($addDate as $value) {
             $date = Carbon::createFromFormat(DATE_FORMAT, $value->date_add);
-            if (strtotime($from) <= strtotime($date)) {
+            if (strtotime($from) <= strtotime($date) && strtotime($to) >= strtotime($date)) {
                 $checkAdditional=$checkAdditional + REMAIN_DAY_OFF_DEFAULT;
             }
         }
         $calender = CalendarOff::all();
         foreach ($calender as $value) {
-            $numCalenderOffEnd = Carbon::createFromFormat(DATE_FORMAT, $value->date_off_from);
-            if (strtotime($from) <= strtotime($numCalenderOffEnd)) {
-                $numCalenderOffStart = Carbon::createFromFormat(DATE_FORMAT, $value->date_off_to);
-                $numCalenderDay = $numCalenderOffStart->diffInDays($numCalenderOffEnd);
+            $numCalenderOffStart = Carbon::createFromFormat(DATE_FORMAT, $value->date_off_from);
+            $numCalenderOffEnd = Carbon::createFromFormat(DATE_FORMAT, $value->date_off_to);
+            if (strtotime($from) <= strtotime($numCalenderOffStart) &&  strtotime($to) >= strtotime($numCalenderOffEnd)) {
+                $numCalenderDay = $numCalenderOffEnd->diffInDays($numCalenderOffStart);
                 $day = $day - $numCalenderDay;
             }
         }

@@ -202,10 +202,10 @@
                         {{$record->user->name}}
                     </td>
                     <td class="text-center">
-                        {{$record->start_date}}
+                        {{ $record->title != DAY_OFF_TITLE_DEFAULT ? \App\Helpers\DateTimeHelper::checkTileDayOffGetDate($record->start_at) : $record->start_date  }}
                     </td>
                     <td class="text-center d-none d-sm-table-cell">
-                        {{$record->end_date}}
+                        {{ $record->title != DAY_OFF_TITLE_DEFAULT ? \App\Helpers\DateTimeHelper::checkTileDayOffGetDate($record->end_at) : $record->end_date  }}
                     </td>
                     <td class="text-center ">{{ array_key_exists($record->title, VACATION_FULL) ? VACATION_FULL[$record->title] : ''  }}</td>
                     <td class="text-center ">{!! nl2br($record->reason) !!}</td>

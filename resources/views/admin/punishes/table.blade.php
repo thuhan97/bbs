@@ -15,7 +15,7 @@
         <colgroup>
             <col style="width: 30px">
             <col style="width: 120px">
-            <col style="width: 120px">
+            <col style="width: 180px">
             <col style="">
             <col style="width: 120px">
             <col style="">

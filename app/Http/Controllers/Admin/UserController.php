@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Models\DayOff;
 use App\Models\RemainDayoff;
 use App\Models\User;
 use App\Repositories\Contracts\IUserRepository;
@@ -155,6 +156,32 @@ class UserController extends AdminBaseController
             flash()->error('Không tìm thấy nhân viên');
         }
         return redirect(route('admin::users.index'));
+    }
+    public function getRedirectAfterSave($record, $request, $isCreate = true)
+    {
+        if ($isCreate){
+            $dayOff=new RemainDayoff();
+            $dayOff->user_id=$record->id;
+            $day = Carbon::createFromFormat('Y-m-d', $request->start_date)->day;
+            if ($day <= HALF_MONTH && $record->sex == SEX['female'] && $record->contract_type == CONTRACT_TYPES['staff'] && $record->status == ACTIVE_STATUS){
+                $dayOff->day_off_free_female = REMAIN_DAY_OFF_DEFAULT;
+            }else{
+                $dayOff->day_off_free_female = DEFAULT_VALUE;
+            }
+            $dayOff->remain=DEFAULT_VALUE;
+            $dayOff->remain_increment=DEFAULT_VALUE;
+            $dayOff->year=date('Y');
+            $dayOff->save();
+        }else{
+            $dayOff=RemainDayoff::where('user_id',$record->id)->where('year',date('Y'))->first();
+            $day = (int)date('d');
+            if ($day <= HALF_MONTH && $record->sex == SEX['female'] && $record->contract_type == CONTRACT_TYPES['staff'] && $record->status == ACTIVE_STATUS && $dayOff->check_add_free == DEFAULT_VALUE){
+                $dayOff->day_off_free_female = REMAIN_DAY_OFF_DEFAULT;
+                $dayOff->check_add_free = REMAIN_DAY_OFF_DEFAULT;
+            }
+            $dayOff->save();
+        }
+        return $this->redirectBackTo(route($this->getResourceRoutesAlias() . '.index'));
     }
     public function getValuesToSave(Request $request, $record = null)
     {

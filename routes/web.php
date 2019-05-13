@@ -87,6 +87,7 @@ Route::group([
     Route::post('/ngay-nghi/create-calendar', 'UserController@dayOffCreateCalendar')->name('day_off_create_calendar');
     Route::post('/ngay-nghi/create-day-off', 'UserController@dayOffCreate')->name('day_off_create');
     Route::post('/ngay-nghi/create-day-off-vacation', 'UserController@dayOffCreatevacationVacation')->name('day_off_create_vacation');
+    Route::get('/kiem-tra-ngay-phep-con-lai', 'UserController@checkUsable')->name('check-usable-day-offf');
 
 });
 

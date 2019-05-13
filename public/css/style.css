@@ -1041,6 +1041,9 @@ td.blank, .type-1, .type-2 {
         padding-left: 270px;
     }
 }
+.ui-datepicker{
+    margin-top: 0px;
+}
 
 @media only screen and (min-device-width: 1024px) and (max-device-width: 1366px) and (-webkit-min-device-pixel-ratio: 2) and (orientation: landscape) {
     #slide-out {

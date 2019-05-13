@@ -318,13 +318,13 @@ class UserController extends Controller
         $userManager = $this->userService->getUserManager();
         $availableDayLeft = $this->userDayOffService->getDayOffUser($request, Auth::id());
         $autoShowModal = $request->has('t');
-        if (isset($request->status_search) || isset($request->year) || isset($request->month)) {
-            $year = $request->year;
-            $month = $request->month;
+        if (isset($request->status_search) || isset($request->search_end_at) || isset($request->search_start_at)) {
+            $searchStratDate = $request->search_start_at;
+            $searchEndDate = $request->search_end_at;
             $statusSearch = $request->status_search;
 
-            $dayOff = $this->userDayOffService->searchStatus($year, $month, $statusSearch);
-            return view('end_user.user.day_off', compact('availableDayLeft', 'userManager', 'dayOff', 'statusSearch', 'countDayOff', 'year', 'month', 'autoShowModal'));
+            $dayOff = $this->userDayOffService->searchStatus($searchStratDate, $searchEndDate, $statusSearch);
+            return view('end_user.user.day_off', compact('availableDayLeft', 'userManager', 'dayOff', 'statusSearch', 'countDayOff', 'searchEndDate', 'searchStratDate', 'autoShowModal'));
         }
         return view('end_user.user.day_off', compact('availableDayLeft', 'userManager', 'countDayOff', 'autoShowModal'));
     }
@@ -445,15 +445,15 @@ class UserController extends Controller
 
     public function dayOffSearch(Request $request)
     {
-        $year = $request->year;
-        $month = $request->month;
+//        dd($request->all());
+        $start = $request->search_start_at;
+        $end = $request->search_end_at;
         $status = $request->status;
         $search = $request->search;
-
         $dataDayOff = $this->userDayOffService->showList(null);
-        $dayOffSearch = $this->userDayOffService->getDataSearch($year, $month, $status, $search);
+        $dayOffSearch = $this->userDayOffService->getDataSearch($start, $end, $status, $search);
         return view('end_user.user.day_off_approval', compact(
-            'dataDayOff', 'dayOffSearch', 'year', 'month', 'status', 'search'
+            'dataDayOff', 'dayOffSearch', 'start', 'end', 'status', 'search'
         ));
     }
 

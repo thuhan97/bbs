@@ -319,7 +319,7 @@ class UserController extends Controller
     {
         $countDayOff = $this->userDayOffService->countDayOffUserLogin();
         $userManager = $this->userService->getUserManager();
-        $availableDayLeft = $this->userDayOffService->getDayOffUser($request, Auth::id());
+        $availableDayLeft = $this->userDayOffService->getDayOffUser($request, Auth::id(),true);
         $autoShowModal = $request->has('t');
         if (isset($request->status_search) || isset($request->search_end_at) || isset($request->search_start_at)) {
             $searchStratDate = $request->search_start_at;

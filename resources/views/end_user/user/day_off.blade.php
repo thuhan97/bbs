@@ -10,6 +10,8 @@
            $record = session()->get('data');
        }
        $dataDayOff= $dayOff ?? $availableDayLeft['data'];
+        $searchStart = date((date('Y')-1).'/01/01', strtotime('tomorrow + 1day'));
+        $searchEnd = date('Y/m/d');
     @endphp
     <form action="{{ route('day_off') }}" method="get" id="form-search">
         <div class="row mb-3 ml-1">
@@ -18,7 +20,7 @@
                 <input type="text"
                        class="form-control border-0 select-item"
                        id="search_start_at" autocomplete="off" name="search_start_at"
-                       value="{{  $searchStratDate ?? ''  }}"
+                       value="{{  $searchStratDate ?? $searchStart  }}"
                        readonly="readonly">
             </div>
             <div class="col-sm-4 col-xl-2 no-padding-left">
@@ -26,7 +28,7 @@
                 <input type="text"
                        class="form-control select-item  border-0 "
                        id="search_end_at" autocomplete="off" name="search_end_at"
-                       value="{{ $searchEndDate ?? ''}}"
+                       value="{{ $searchEndDate ?? $searchEnd}}"
                        readonly>
             </div>
             <div class="col-sm-2 col-xl-1 no-padding-left">

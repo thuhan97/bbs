@@ -28,7 +28,7 @@ interface IDayOffService extends IBaseService
      *
      * @return array
      */
-    public function getDayOffUser($request,$userId);
+    public function getDayOffUser($request,$userId,$check=false);
 
     /**
      * Update the status (from not approved to approved) of a user)

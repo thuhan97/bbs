@@ -25,6 +25,8 @@
     if (session()->has('manager')) {
         $manager = session()->get('manager');
     }
+    $searchStart = date((date('Y')-1).'/01/01', strtotime('tomorrow + 1day'));
+    $searchEnd = date('Y/m/d');
     ?>
     @if(session()->has('success'))
         <script>
@@ -72,7 +74,7 @@
                 <input type="text"
                        class="form-control border-0 select-item"
                        id="search_start_at" autocomplete="off" name="search_start_at"
-                       value="{{  $start ?? ''  }}"
+                       value="{{  $start ?? $searchStart  }}"
                        readonly="readonly">
             </div>
             <div class="col-sm-4 col-xl-2 no-padding-left">
@@ -80,7 +82,7 @@
                 <input type="text"
                        class="form-control select-item  border-0 "
                        id="search_end_at" autocomplete="off" name="search_end_at"
-                       value="{{ $end ?? ''}}"
+                       value="{{ $end ?? $searchEnd}}"
                        readonly>
             </div>
             <div class="col-sm-2 col-xl-2 no-padding-left">

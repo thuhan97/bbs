@@ -89,16 +89,20 @@ class DayOffService extends AbstractService implements IDayOffService
      *
      * @return array
      */
-    public function getDayOffUser($request, $userId)
+    public function getDayOffUser($request, $userId,$check=true)
     {
         $model = $this->model->where('user_id', $userId);
         $remainDay = RemainDayoff::firstOrCreate(['user_id' => $userId]);
         $thisYear = (int)date('Y');
-        $datas = $model->whereYear('start_at', $thisYear)
-            ->select('*', DB::raw('DATE_FORMAT(start_at, "%d/%m/%Y (%H:%i)") as start_date'),
+        $datas = $model->select('*', DB::raw('DATE_FORMAT(start_at, "%d/%m/%Y (%H:%i)") as start_date'),
                 DB::raw('DATE_FORMAT(end_at, "%d/%m/%Y (%H:%i)") as end_date'),
                 DB::raw('DATE_FORMAT(approver_at, "%d/%m/%Y (%H:%i)") as approver_date'))
             ->orderBy('id', 'DESC');
+        if ($check){
+            $datas = $datas->whereDate('start_at', '>=',  date('Y')-PRE_YEAR . '-m-d')->whereDate('start_at', '<=',date('Y-m-d'));
+        }else{
+            $datas=$datas->whereYear('start_at', $thisYear);
+        }
         if ($request->month) {
             $datas = $datas->whereMonth('start_at', $request->month);
         }
@@ -191,7 +195,7 @@ class DayOffService extends AbstractService implements IDayOffService
         $dataDate = $dataDate->orderBy('id', 'DESC')->paginate(PAGINATE_DAY_OFF);
         return [
             'dataDate' => $dataDate,
-            'data' =>  $this->getdata()->whereYear('day_offs.start_at', '=', date('Y'))->orderBy('id', 'DESC')->paginate(PAGINATE_DAY_OFF),
+            'data' =>  $this->getdata()->whereDate('start_at', '>=',  date('Y')-PRE_YEAR . '-m-d')->whereDate('start_at', '<=',date('Y-m-d'))->orderBy('id', 'DESC')->paginate(PAGINATE_DAY_OFF),
             'total' => $data->count(),
             'totalActive' => $data->where('status', STATUS_DAY_OFF['active'])->count(),
             'totalAbide' => $data->where('status', STATUS_DAY_OFF['abide'])->count(),

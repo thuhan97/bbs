@@ -374,13 +374,14 @@ define('GROUPS', [
     4 => 'Hành chính nhân sự',
 ]);
 define('SPACE', ' ');
+define('HALF_MONTH',15);
+
 define('HOURS_OF_DAY', 24);
 define('TOTAL_COUNT_DAY_OFF', 10);
 define('DATE_FORMAT_DAY_OFF', 'Y/m/d H:i:s');
 define('CHECK_TIME_DAY_OFF', '18:00:00');
 define('SUN', 'Sun');
 define('SAT', 'Sat');
-
 
 
 

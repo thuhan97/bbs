@@ -173,7 +173,7 @@ class UserController extends AdminBaseController
             $dayOff->year=date('Y');
             $dayOff->save();
         }else{
-            $dayOff=DayOff::where('user_id',$record->id)->where('year',date('Y'))->first();
+            $dayOff=RemainDayoff::where('user_id',$record->id)->where('year',date('Y'))->first();
             $day = (int)date('d');
             if ($day <= HALF_MONTH && $record->sex == SEX['female'] && $record->contract_type == CONTRACT_TYPES['staff'] && $record->status == ACTIVE_STATUS){
                 $dayOff->day_off_free_female = REMAIN_DAY_OFF_DEFAULT;

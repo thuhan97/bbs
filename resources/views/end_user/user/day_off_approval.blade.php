@@ -76,7 +76,7 @@
                                 <i class="fas fa-clipboard-list dayoff-icoin text-primary dayoff-cioin-1-2-3"></i>
                             </span>
                             <div class="media-body text-center text-md-left ml-xl-4">
-                                <h1 class="white-text font-weight-bold">{{ $dataDayOff['total'] < 10 ? "0".$dataDayOff['total'] : $dataDayOff['total'] }}</h1>
+                                <h1 class="white-text font-weight-bold">{{ $dataDayOff['total'] < TOTAL_COUNT_DAY_OFF ? ($dataDayOff['total'] == DEFAULT_VALUE ? $dataDayOff['total']: "0".$dataDayOff['total'])  : $dataDayOff['total'] }}</h1>
                                 <p class="card-subtitle text-white-50 text-size-table">Tổng đơn xin nghỉ</p>
                                 <p class="card-title text-uppercase font-weight-bold card-text white-text text-size-header">
                                     TRONG NĂM {{date('Y')}}</p>
@@ -97,7 +97,7 @@
                                 <i class="fas fa-clipboard-check dayoff-icoin text-success dayoff-cioin-1-2-3"></i>
                             </span>
                             <div class="media-body text-center text-md-left ml-xl-4">
-                                <h1 class="white-text font-weight-bold">{{ $dataDayOff['totalActive'] < 10 ? "0".$dataDayOff['totalActive'] : $dataDayOff['totalActive'] }}</h1>
+                                <h1 class="white-text font-weight-bold">{{ $dataDayOff['totalActive'] < TOTAL_COUNT_DAY_OFF ?  ($dataDayOff['totalActive'] == DEFAULT_VALUE ? $dataDayOff['totalActive']: "0".$dataDayOff['totalActive']) : $dataDayOff['totalActive'] }}</h1>
                                 <p class="card-subtitle text-white-50 text-size-table">Đơn xin nghỉ</p>
                                 <p class="card-title text-uppercase font-weight-bold card-text white-text text-size-header">
                                     ĐÃ DUYỆT</p>
@@ -118,7 +118,7 @@
                                <i class="fas fa-clipboard dayoff-icoin text-warning dayoff-cioin-1-2-3"></i>
                             </span>
                             <div class="media-body text-center text-md-left ml-xl-4">
-                                <h1 class="white-text font-weight-bold ">{{ $dataDayOff['totalAbide'] < 10 ? "0".$dataDayOff['totalAbide'] : $dataDayOff['totalAbide'] }}</h1>
+                                <h1 class="white-text font-weight-bold ">{{ $dataDayOff['totalAbide'] < TOTAL_COUNT_DAY_OFF ? ($dataDayOff['totalAbide'] == DEFAULT_VALUE ? $dataDayOff['totalAbide']: "0".$dataDayOff['totalAbide']) : $dataDayOff['totalAbide'] }}</h1>
                                 <p class="card-subtitle text-white-50 text-size-table">Đơn xin nghỉ</p>
                                 <p class="card-title text-uppercase font-weight-bold card-text white-text text-size-header">
                                     CHỜ DUYỆT</p>
@@ -138,7 +138,7 @@
                                 <i class="fas fa-times-circle dayoff-icoin dayoff-icoin-close text-danger size-table"></i>
                             </span>
                             <div class="media-body text-center text-md-left ml-xl-4">
-                                <h1 class="white-text font-weight-bold">{{ $dataDayOff['totalnoActive'] < 10 ? "0".$dataDayOff['totalnoActive'] : $dataDayOff['totalnoActive'] }}</h1>
+                                <h1 class="white-text font-weight-bold">{{ $dataDayOff['totalnoActive'] < TOTAL_COUNT_DAY_OFF ? ($dataDayOff['totalnoActive'] == DEFAULT_VALUE ? $dataDayOff['totalnoActive']: "0".$dataDayOff['totalnoActive']) : $dataDayOff['totalnoActive'] }}</h1>
                                 <p class="card-subtitle text-white-50 text-size-table">Đơn xin nghỉ</p>
                                 <p class="card-title text-uppercase font-weight-bold card-text white-text text-size-header">
                                     KHÔNG DUYỆT</p>

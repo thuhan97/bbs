@@ -360,6 +360,11 @@ define('CHECK_TIME_DAY_OFF', [
     '12:00:00' => '12:00',
     '18:00:00' => '18:00',
 ]);
+define('CHECK_TIME_DAY_OFF_USABLE', [
+    '08:00:00' => '00:00:00',
+    '12:00:00' => '12:00:00',
+    '18:00:00' => '24:00:00',
+]);
 define('DAY_OFF_TITLE_DEFAULT', 1);
 define('ARRAY_TITLE_DAYOFF_VACATION_MODE', [2, 3, 4]);
 define('GROUPS', [
@@ -370,6 +375,14 @@ define('GROUPS', [
 ]);
 define('SPACE', ' ');
 define('HALF_MONTH',15);
+
+define('HOURS_OF_DAY', 24);
+define('TOTAL_COUNT_DAY_OFF', 10);
+define('DATE_FORMAT_DAY_OFF', 'Y/m/d H:i:s');
+define('CHECK_TIME_DAY_OFF', '18:00:00');
+define('SUN', 'Sun');
+define('SAT', 'Sat');
+
 
 
 

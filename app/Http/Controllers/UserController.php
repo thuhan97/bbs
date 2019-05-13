@@ -8,8 +8,11 @@ use App\Http\Requests\AskPermissionRequest;
 use App\Http\Requests\CreateDayOffRequest;
 use App\Http\Requests\DayOffRequest;
 use App\Http\Requests\ProfileRequest;
+use App\Models\AdditionalDate;
+use App\Models\CalendarOff;
 use App\Models\DayOff;
 use App\Models\OverTime;
+use App\Models\RemainDayoff;
 use App\Models\User;
 use App\Models\WorkTime;
 use App\Models\WorkTimesExplanation;
@@ -449,7 +452,6 @@ class UserController extends Controller
         $month = $request->month;
         $status = $request->status;
         $search = $request->search;
-
         $dataDayOff = $this->userDayOffService->showList(null);
         $dayOffSearch = $this->userDayOffService->getDataSearch($year, $month, $status, $search);
         return view('end_user.user.day_off_approval', compact(
@@ -509,5 +511,31 @@ class UserController extends Controller
         } else {
             abort(404);
         }
+    }
+    public function checkUsable(Request $request){
+        $dayOffPreYear = RemainDayoff::where('user_id', Auth::id())->where('year', date('Y') - PRE_YEAR)->first()->remain ?? DEFAULT_VALUE;
+        $dayOffYear = RemainDayoff::where('user_id', Auth::id())->where('year', date('Y'))->first();
+        $remainDayoffCurrentYear=$dayOffYear->remain ?? DEFAULT_VALUE;
+        $DayoffFrreCurrentYear=$dayOffYear->day_off_free_female ?? DEFAULT_VALUE;
+        $numOff= $this->userDayOffService->checkDateUsable($request->start_date,$request->end_date,$request->start_time,$request->end_time);
+        if(!$numOff){
+            return response()->json([
+                'check'=>false,
+
+            ]);
+        }
+        elseif ( $numOff >($dayOffPreYear + $remainDayoffCurrentYear + $DayoffFrreCurrentYear) ){
+            $absent=$numOff - ($dayOffPreYear + $remainDayoffCurrentYear + $DayoffFrreCurrentYear);
+            return response()->json([
+                'check'=>true,
+                'absent' => $absent
+            ]);
+        }else{
+            return response()->json([
+                'check'=>false,
+
+            ]);
+        }
+
     }
 }

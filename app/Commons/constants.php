@@ -42,6 +42,7 @@ define('UPLOAD_PATH', '/uploads');
 define('URL_IMAGE_AVATAR', UPLOAD_PATH . '/avatar/');
 define('URL_IMAGE_PROJECT', 'adminlte/img/projects_img/');
 
+define('IS_REMOTE_STAFF', 1);
 define('ACTIVE_STATUS', 1);
 define('ACTIVE_NOTIFY', 1);
 
@@ -339,6 +340,10 @@ define('DAY_OFF_MONTH', [
     'day_off_month_Dec' => 12,
 ]);
 define('DEFAULT_VALUE', 0);
+define('WORKTIME_COST_OFF', 0);
+define('WORKTIME_COST_HAFT', 0.5);
+define('WORKTIME_COST_FULL', 1);
+define('HAFT_HOUR', '12:00');
 define('HAFT_MORNING', '10:00');
 define('HAFT_AFTERNOON', '15:30');
 define('DEFAULT_INSERT_ROW_EXCEL', 1);
@@ -379,7 +384,7 @@ define('HALF_MONTH',15);
 define('HOURS_OF_DAY', 24);
 define('TOTAL_COUNT_DAY_OFF', 10);
 define('DATE_FORMAT_DAY_OFF', 'Y/m/d H:i:s');
-define('CHECK_TIME_DAY_OFF', '18:00:00');
+
 define('SUN', 'Sun');
 define('SAT', 'Sat');
 

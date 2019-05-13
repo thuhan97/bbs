@@ -12,13 +12,12 @@
     @endif
     <form method="post" action="{{route('save_profile')}}" enctype="multipart/form-data">
         @csrf
-        <!-- <i class="fas fa-camera-retro"></i> fa-camera-retro -->
-        <div class=" container mb-3" style="width: 70%;">
+        <div class=" container mb-3">
             <div class="row">
                 <div class="col-md-7">
-                    <h4 class="text-left title-profile bold">Hồ sơ cá nhân</h4>
+                    <h3 class="text-left title-profile bold">Hồ sơ cá nhân</h3>
                 </div>
-                <div class="col-md-5">
+                <div class="col-md-5" style="padding-right: 0">
                     <div class="float-right">
                         <button class="btn btn-primary float-right save  hidden " type="submit"><i
                                     class="fa fa-save mr-1"></i>
@@ -35,7 +34,7 @@
 
         </div>
         <div class="clearfix"></div>
-        <div class="container profile" style="width: 70%;">
+        <div class="container profile" style="">
             <div class="row">
 
                 <div class="col-md-6 float-left">
@@ -94,12 +93,12 @@
                 </div>
             </div>
             <div class="clearfix"></div>
-            <div class="row" style="margin-top: 20px;">
+            <div class="row">
                 <div class="col-md-12">
                     <div class="index-profile">Lý lịch</div>
-                    <div class="form-group row">
+                    <div class="form-group row mt-3">
                         <!-- Material input -->
-                        <label for="inputEmail3MD" class="col-sm-3 col-form-label">Địa chỉ thường trú</label>
+                        <label for="inputEmail3MD" class="col-sm-3 col-form-label">Nguyên quán</label>
                         <div class="col-sm-9">
                             <div class="md-form mt-0">
                                 <input type="text" name="address" class="form-control " id="inputEmail3MD"
@@ -142,7 +141,7 @@
                     </div>
                 </div>
             </div>
-            <div class="row" style="margin-top: 20px;">
+            <div class="row">
                 <div class="col-md-12">
                     <div class="index-profile">Học vấn (Đại học, Cao Đẳng, ...)</div>
                     <div class="md-form ">
@@ -154,7 +153,7 @@
                 </div>
             </div>
 
-            <div class="row" style="margin-top: 20px;">
+            <div class="row">
                 <div class="col-md-12">
                     <div class="index-profile">Tài khoản</div>
                     <div class="form-group row mt-3">
@@ -192,7 +191,7 @@
                     </div>
                 </div>
             </div>
-            <div class="row" style="margin-top: 20px;">
+            <div class="row">
                 <div class="col-md-12">
                     <div class="index-profile">Kỹ năng</div>
                     <div class="md-form mt-0 ">
@@ -203,7 +202,7 @@
                     </div>
                 </div>
             </div>
-            <div class="row" style="margin-top: 20px;">
+            <div class="row">
                 <div class="col-md-12">
                     <div class="index-profile">Mục tiêu tương lai</div>
                     <div class="md-form mt-0">
@@ -213,7 +212,7 @@
                     </div>
                 </div>
             </div>
-            <div class="row" style="margin-top: 20px;">
+            <div class="row">
                 <div class="col-md-12">
                     <div class="index-profile">Sở thích</div>
                     <div class="md-form mt-0">
@@ -223,7 +222,7 @@
                     </div>
                 </div>
             </div>
-            <div class="row" style="margin-top: 20px;">
+            <div class="row">
                 <div class="col-md-12">
                     <div class="index-profile">Ngoại ngữ</div>
                     <div class="md-form mt-0">
@@ -237,7 +236,7 @@
             <p><span class="required">Ghi chú: (*) là trường bắt buộc.</span></p>
         </div>
         <div class="clearfix"></div>
-        <div class="container" style="width:70%;">
+        <div class="container">
             <div class="row float-right">
                 <button class="btn btn-primary float-right save  hidden " type="submit"><i class="fa fa-save mr-1"></i>
                     Lưu
@@ -283,4 +282,15 @@
     </script>
 @endsection
 
-                        
+@push('extend-css')
+    <style>
+        table.table td, table.table th {
+            padding-top: 0.5rem;
+            padding-bottom: 0.5rem;
+        }
+
+        .form-group, .md-form {
+            margin-bottom: 0.5rem;
+        }
+    </style>
+@endpush

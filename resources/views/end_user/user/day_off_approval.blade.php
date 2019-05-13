@@ -58,12 +58,45 @@
     @endif
     <form action="{{ route('day_off_search') }}" method="get" id="form-search">
         <div id="user-login" attr="{{ \Illuminate\Support\Facades\Auth::user()->name }}"></div>
-        <div class="row mb-3">
+       {{-- <div class="row mb-3">
             <div class="col-6 col-sm-2 col-xl-1 no-padding-right">
                 {{ Form::select('year', get_years(), $year ?? date('Y') , ['class'=>'yearselect browser-default custom-select w-100 border-0 select_year option-select p-1']) }}
             </div>
             <div class="col-6 col-sm-4 col-xl-2 no-padding-left">
                 {{ Form::select('month', MONTH, $month ?? '', ['class' => 'browser-default custom-select w-100 month option-select','placeholder'=>'Chọn tháng']) }}
+            </div>
+        </div>--}}
+        <div class="row mb-3 ml-1">
+            <div class="col-sm-4 col-xl-2 pr-3">
+                <label class=" text-w-400" for="">Từ ngày</label>
+                <input type="text"
+                       class="form-control border-0 select-item"
+                       id="search_start_at" autocomplete="off" name="search_start_at"
+                       value="{{  $start ?? ''  }}"
+                       readonly="readonly">
+            </div>
+            <div class="col-sm-4 col-xl-2 no-padding-left">
+                <label class="text-w-400" for="inputZip">Tới ngày</label>
+                <input type="text"
+                       class="form-control select-item  border-0 "
+                       id="search_end_at" autocomplete="off" name="search_end_at"
+                       value="{{ $end ?? ''}}"
+                       readonly>
+            </div>
+            <div class="col-sm-2 col-xl-2 no-padding-left">
+                <label class=" text-w-400" for="inputCity"> &nbsp;</label>
+                <div class="input-group">
+                    <input type="text" class="form-control search-day-off border-radius-1"
+                           placeholder="Tìm tên nhân viên"
+                           name="search" id="content-search" value="{{ $search ?? '' }}">
+                </div>
+            </div>
+
+
+
+            <div class="col-sm-2 col-xl-1 no-padding-left">
+                <label class=" text-w-400" for="inputCity"> &nbsp;</label>
+                <button class="form-control select-item  border-0 btn-secondary" id="result-search"><i class="fas fa-search"></i></button>
             </div>
         </div>
         <div class="d-none d-xl-flex container-fluid col-12 row border-bottom-2 mb-2" style="position: relative;">
@@ -153,18 +186,6 @@
         <div class="row">
             <div class="col-sm-8 col-md-4"></div>
             <div class="col-7 col-sm-2 col-md-4">
-                <div class="input-group">
-                    <input type="text" class="form-control search-day-off border-radius-1"
-                           placeholder="Tìm tên nhân viên"
-                           name="search" id="content-search" value="{{ $search ?? '' }}">
-                    <div class="input-group-append">
-                        <button class="btn btn-md btn-default m-0 py-2 z-depth-0 waves-effect form-control border-radius-1"
-                                type="submit"
-                                id="btnSearch">
-                            <i class="fas fa-search color-search"></i>
-                        </button>
-                    </div>
-                </div>
             </div>
             <div class="col-5 col-sm-2 col-md-4">
                 {{ Form::select('status', SHOW_DAY_OFFF, $status ?? ALL_DAY_OFF, ['class' => 'browser-default custom-select w-100 search-day-off border-radius-1 option-select']) }}
@@ -202,14 +223,15 @@
                         {{$record->user->name}}
                     </td>
                     <td class="text-center">
-                        {{$record->start_date}}
+                        {{ $record->title != DAY_OFF_TITLE_DEFAULT ? \App\Helpers\DateTimeHelper::checkTileDayOffGetDate($record->start_at) : $record->start_date  }}
                     </td>
                     <td class="text-center d-none d-sm-table-cell">
-                        {{$record->end_date}}
+                        {{ $record->title != DAY_OFF_TITLE_DEFAULT ? \App\Helpers\DateTimeHelper::checkTileDayOffGetDate($record->end_at) : $record->end_date  }}
                     </td>
                     <td class="text-center ">{{ array_key_exists($record->title, VACATION_FULL) ? VACATION_FULL[$record->title] : ''  }}</td>
                     <td class="text-center ">{!! nl2br($record->reason) !!}</td>
-                    <td class="text-center d-none d-sm-table-cell">{{!!!($record->number_off || $record->absent > DEFAULT_VALUE)? 'Đang duyệt' : checkNumber($record->number_off) + checkNumber($record->absent).' ngày'}}
+                    <td class="text-center d-none d-sm-table-cell">
+                        {{!!!($record->number_off || $record->absent > DEFAULT_VALUE)? ($record->status != STATUS_DAY_OFF['noActive'] ? 'Đang duyệt' : '') : checkNumber($record->number_off) + checkNumber($record->absent).' ngày'}}
                     </td>
 
                     <td class="text-center p-0" style="vertical-align: middle;">
@@ -352,7 +374,9 @@
                 $('.option-select').on('change', function () {
                     $("#form-search").submit();
                 });
-
+                $('#result-search').on('click', function () {
+                    $("#form-search").submit();
+                });
                 $("#edit-day-off").validate({
                     rules: {
                         number_off: {
@@ -378,7 +402,7 @@
                     }
                 });
 
-
+                $('#search_start_at , #search_end_at').datepicker({format: 'yyyy/mm/dd',orientation: 'bottom'});
                 $('#start_date').datetimepicker({
                     hoursDisabled: '0,1,2,3,4,5,6,7,18,19,20,21,22,23',
                     daysOfWeekDisabled: [0, 6],

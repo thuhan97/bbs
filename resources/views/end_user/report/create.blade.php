@@ -22,7 +22,13 @@
                 <label for="choose_week">Hình thức báo cáo</label>
                 <div class="md-form mt-1 mb-0">
                     <select id="choose_week" name="choose_week" class="browser-default custom-select w-50">
-                        <option value="-1">Báo cáo ngày [{{date('d/m')}}]</option>
+                        <option value="{{date('d/m')}}">Báo cáo ngày [{{date('d/m')}}]</option>
+                        <option value="{{date('d/m', strtotime('- 1 days'))}}">Báo cáo ngày
+                            [{{date('d/m', strtotime('- 1 days'))}}]
+                        </option>
+                        <option value="{{date('d/m', strtotime('- 2 days'))}}">Báo cáo ngày
+                            [{{date('d/m', strtotime('- 2 days'))}}]
+                        </option>
                         <option selected value="0">Báo cáo tuần {{get_week_info(0)}}</option>
                         <option value="1">Báo cáo tuần {{get_week_info(1)}}</option>
                     </select>

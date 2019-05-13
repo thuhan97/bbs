@@ -230,7 +230,8 @@
                     </td>
                     <td class="text-center ">{{ array_key_exists($record->title, VACATION_FULL) ? VACATION_FULL[$record->title] : ''  }}</td>
                     <td class="text-center ">{!! nl2br($record->reason) !!}</td>
-                    <td class="text-center d-none d-sm-table-cell">{{!!!($record->number_off || $record->absent > DEFAULT_VALUE)? 'Đang duyệt' : checkNumber($record->number_off) + checkNumber($record->absent).' ngày'}}
+                    <td class="text-center d-none d-sm-table-cell">
+                        {{!!!($record->number_off || $record->absent > DEFAULT_VALUE)? ($record->status != STATUS_DAY_OFF['noActive'] ? 'Đang duyệt' : '') : checkNumber($record->number_off) + checkNumber($record->absent).' ngày'}}
                     </td>
 
                     <td class="text-center p-0" style="vertical-align: middle;">

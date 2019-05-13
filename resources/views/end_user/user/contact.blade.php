@@ -8,14 +8,7 @@
     <!-- Search form -->
     <form class="mb-4">
         <div class="md-form active-cyan-2 mb-3">
-            <div class="input-group mb-3">
-                <input name="search" value="{{request('search')}}" class="form-control" type="text"
-                       placeholder="{{__l('Search_contact')}}" aria-label="Search">
-                <div class="input-group-prepend">
-                    <button class="btn btn-info" id="inputGroup-sizing-default">Tìm kiếm</button>
-                </div>
-            </div>
-
+            @include('layouts.partials.frontend.search-input', ['search' => $search, 'text' => __l('Search_contact')])
             <input type="hidden" name="page_size" value="{{$perPage}}">
         </div>
     </form>
@@ -60,8 +53,8 @@
                     $team = $user->team();
                     ?>
                     <td>{{$user->name}}</td>
-                    <td>{{$team->group_name ?? ''}}</td>
-                    <td>{{$team->name ?? ''}}</td>
+                    <td onclick="location.href='{{route('contact', ['search' => $team->group_name ?? ''])}}'">{{$team->group_name ?? ''}}</td>
+                    <td onclick="location.href='{{route('contact', ['search' => $team->name ?? ''])}}'">{{$team->name ?? ''}}</td>
                     <td>{{JOB_TITLES[$user->jobtitle_id] ?? ''}}</td>
                     <td>{{$user->email}}</td>
                     <td class="text-center">

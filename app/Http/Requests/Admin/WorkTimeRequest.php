@@ -23,17 +23,17 @@ class WorkTimeRequest extends FormRequest
      */
     public function rules()
     {
-        $datas = $this->request->all();
+        $datas = \request()->all();
         $rules = [];
         if (isset($datas['start_at']) || empty($datas)) {
-            $rules['type'] = 'required|integer|between:1,4';
-            $rules['ot_type'] = 'required|integer|between:1,2';
+            $rules['type'] = 'required|integer';
             $rules['work_day'] = 'required|date';
-            $rules['start_at'] = 'required|date_format:H:i';
-            $rules['end_at'] = 'required|after:start_at|date_format:H:i';
-        }else {
+            $rules['start_at'] = 'required';
+            $rules['end_at'] = 'required';
+        } else {
             $rules['work_day'] = 'required|date';
         }
+
         return $rules;
     }
 

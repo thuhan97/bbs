@@ -15,8 +15,7 @@
             <!-- Search form -->
             <form class="mb-4">
                 <div class="md-form active-cyan-2 mb-3">
-                    <input name="search" value="{{old('search', $search)}}" class="form-control" type="text"
-                           placeholder="{{__l('Search')}}" aria-label="Search">
+                    @include('layouts.partials.frontend.search-input', ['search' => $search, 'text' => __l('Search')])
                     <input type="hidden" name="page_size" value="{{$perPage}}">
                 </div>
             </form>
@@ -37,7 +36,9 @@
                             <td class="text-right">
                                 {{$idx + 1}}
                             </td>
-                            <td>{{$regulation->name}}</td>
+                            <td>
+                                <a href="{{route('regulation_detail', ['id' => $regulation->id])}}">{{$regulation->name}}</a>
+                            </td>
                             <td class="text-center">{{$regulation->approve_date}}</td>
                             <td class="text-center">
                                 @if($regulation->file_path)

@@ -8,10 +8,16 @@ use Illuminate\Support\Facades\Auth;
 
 class SuggestionController extends Controller
 {
-    public function listSuggestions()
+    public function listSuggestions(Request $request)
     {
-        $list_suggestions = Suggestion::orderBy('id', 'desc')->paginate(15);
-        return view('end_user.suggestion.list_suggestion', compact('list_suggestions'));
+        $search = $request->get('search');
+        $perPage = $request->get('page_size', DEFAULT_PAGE_SIZE);
+
+        $list_suggestions = Suggestion::search($search)
+            ->orderBy('id', 'desc')
+            ->paginate($perPage);
+
+        return view('end_user.suggestion.list_suggestion', compact('list_suggestions', 'search', 'perPage'));
     }
 
     public function addSuggestions(request $request)

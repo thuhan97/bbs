@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Event;
 use App\Models\Post;
 use App\Models\Project;
+use App\Models\Punishes;
 
 class HomeController extends Controller
 {
@@ -33,7 +34,8 @@ class HomeController extends Controller
             ->take(10)
             ->get();
 
-        return view('end_user.home', compact('posts', 'event', 'projects'));
+        $totalPunish = Punishes::whereDate('infringe_date', '>=', date('Y-m-01'))->sum('total_money');
+        return view('end_user.home', compact('posts', 'event', 'projects', 'totalPunish'));
     }
 
 

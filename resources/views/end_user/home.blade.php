@@ -31,7 +31,7 @@
                         </div>
                     @endforeach
                 </div>
-                <div class="text-right"><a href="{{route('post')}}">Xem thêm thông báo >></a> </div>
+                <div class="text-right"><a href="{{route('post')}}">Xem thêm thông báo >></a></div>
                 <!--Grid row-->
                 <div class="row my-4 ">
                     <!--Grid column-->
@@ -40,16 +40,21 @@
                         <!--Card-->
                         @if($event)
                             <h4 class="text-d-bold">
-                                Sự kiện sắp diễn ra - {{ $event->name }}
+                                <a href="{{route('event_detail', ['id' => $event->id])}}">
+                                    Sự kiện sắp diễn ra - {{ $event->name }}
+                                </a>
                             </h4>
                             <div class="mb-3">
                                 Thời gian: {{$event->event_date}}@if($event->place) - địa điểm: {{$event->place}}
                                 , @endif
                             </div>
                             <div class="mb-3 text-center">
-                                <img src="{{$event->image_url}}" class="img-fluid m-auto my-5" alt="{{ $event->name }}">
+                                <a href="{{route('event_detail', ['id' => $event->id])}}">
+                                    <img src="{{$event->image_url}}" class="img-fluid m-auto my-5"
+                                         alt="{{ $event->name }}">
+                                </a>
                             </div>
-                            <strong class="mt-3">{!! nl2br($event->introduction)  !!}</strong>
+                            <strong class="mt-4">{!! nl2br($event->introduction)  !!}</strong>
 
                             <hr>
 
@@ -60,8 +65,9 @@
                             <a class="btn btn-primary waves-effect waves-light" style="margin-left: 0px"
                                href="{{route('event')}}" role="button"> Xem tất cả sự kiện</a>
 
+                            <hr/>
                     @endif
-
+                    @include('elements.feedback')
                     <!--Card-->
                         <!--/.Card-->
                     </div>
@@ -69,6 +75,8 @@
 
                     <!--Grid column-->
                     <div class="col-xl-4 mb-4">
+                        @include('elements.punish')
+
                         <ul class="list-group">
                             <li class="list-group-item active text-center">
                                 <strong class="text-uppercase">Dự án mới</strong>
@@ -83,45 +91,7 @@
                                 </li>
                             @endforeach
                         </ul>
-                        <br/>
-                        <div class="card mb-4 wow fadeIn">
-                            <!-- Card -->
-                            <div class="card">
 
-                                <div class="view overlay">
-                                    <img class="card-img-top"
-                                         src="http://jvb-corp.com/img/homepage/u_home_bg.jpg"
-                                         alt="Đề xuất, góp ý">
-                                    <a href="#!">
-                                        <div class="mask rgba-white-slight"></div>
-                                    </a>
-                                </div>
-
-                                <!-- Card content -->
-                                <div class="card-body">
-
-                                    <!-- Title -->
-                                    <h4 class="card-title text-uppercase">Góp ý công ty</h4>
-
-                                    <!-- Card -->
-                                    <form action="{{ route('add_suggestions') }}" method="post">
-                                        @csrf
-                                        <div class="text-center">
-                                            <textarea name="suggestions" rows="5" style="width: 100%"
-                                                      placeholder="Rất mong nhận được ý kiến đóng góp hoặc đề xuất của bạn đến công ty!"
-                                                      required></textarea>
-                                        </div>
-                                        <div class="pt-3 pb-4 d-flex border-top-0 rounded mb-0">
-                                            <button type="submit" class="btn btn-primary">Gửi ngay
-                                            </button>
-                                        </div>
-                                    </form>
-
-                                </div>
-
-                            </div>
-
-                        </div>
                     </div>
 
                 </div>

@@ -53,7 +53,7 @@
                                 <i class="fas fa-calendar-times dayoff-icoin text-success day-off-icoi"></i>
                             </span>
                         <div class="media-body text-center text-md-left ml-xl-4">
-                            <h1 class="white-text font-weight-bold">{{ $countDayOff['previous_year'] }}</h1>
+                            <h1 class="white-text font-weight-bold">{{ $countDayOff['previous_year'] + DEFAULT_VALUE }}</h1>
                             <p class="card-subtitle text-white-50 text-size-table">Ngày sắp hết hạn</p>
                             <p class="card-title text-uppercase font-weight-bold card-text white-text text-size-header-1">
                                 CUỐI NĂM HỦY</p>
@@ -75,7 +75,7 @@
                                 <i class="fas fa-calendar-check dayoff-icoin text-warning day-off-icoi"></i>
                             </span>
                         <div class="media-body text-center text-md-left ml-xl-4">
-                            <h1 class="white-text font-weight-bold ">{{ $countDayOff['total'] }}</h1>
+                            <h1 class="white-text font-weight-bold ">{{ $countDayOff['total'] + DEFAULT_VALUE  }}</h1>
                             <p class="card-subtitle text-white-50 text-size-table">Ngày đã nghỉ</p>
                             <p class="card-title text-uppercase font-weight-bold card-text white-text text-size-header-1">
                                 TRONG NĂM {{date('Y')}}</p>
@@ -96,7 +96,7 @@
                             </span>
                         <div class="media-body text-center text-md-left ml-xl-4">
                             <h1 class="white-text font-weight-bold">Đơn</h1>
-                            <p class="card-subtitle text-white-50 text-size-table">Đơn xin</p>
+                            <p class="card-subtitle text-white-50 text-size-table">&nbsp;</p>
                             <p class="card-title text-uppercase font-weight-bold card-text white-text text-size-header-1">
                                 XIN NGHỈ / NGHỈ PHÉP</p>
                         </div>
@@ -160,7 +160,7 @@
                     <td class="d-none d-md-table-cell text-center">{{$absence->end_date}}</td>
                     <td class="text-center">{{ array_key_exists($absence->title, VACATION_FULL) ? VACATION_FULL[$absence->title] : ''  }}</td>
                     <td class="text-center">{!! nl2br($absence->reason) !!}</td>
-                    <td class="d-none d-md-table-cell text-center">{{!!!($absence->number_off || $absence->absent > DEFAULT_VALUE)? 'Đang duyệt' : checkNumber($absence->number_off) + checkNumber($absence->absent).' ngày'}}
+                    <td class="d-none d-md-table-cell text-center">{{!!!($absence->number_off || $absence->absent > DEFAULT_VALUE)? ($absence->status != STATUS_DAY_OFF['noActive'] ? 'Đang duyệt' : '') : checkNumber($absence->number_off) + checkNumber($absence->absent).' ngày'}}
 
                     </td>
                     <td class="text-center">
@@ -254,10 +254,13 @@
         <div class="modal-dialog modal-center" role="document">
             <div class="modal-content" id="bg-img" style="background-image: url({{ asset('img/font/xin_nghi.png') }})">
                 <div class="modal-header text-center border-bottom-0 p-3">
-                    <h4 class="modal-title w-100 font-weight-bold pt-2">XIN NGHỈ PHÉP</h4>
+                    <h4 class="modal-title w-100 font-weight-bold pt-2 ml-5">XIN NGHỈ PHÉP</h4>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span class="btn-close-icon" aria-hidden="true">&times;</span>
                     </button>
+                </div>
+                <div class="modal-header text-center border-bottom-0 p-3">
+                    <h6 class="modal-title w-100 font-weight-bold text-danger" id="usable-check"></h6>
                 </div>
                 <div class="modal-body mt-0 pb-0 d-flex justify-content-start ml-3">
                     <div class="custom-control custom-radio">
@@ -384,13 +387,7 @@
                                     <!-- Default input -->
                                     <label class="text-w-400" for="exampleForm2">Chế độ nghỉ<span
                                                 class="text-danger">*</span></label>
-                                    <?php
-                                    $vacation = VACATION;
-                                    if (\Illuminate\Support\Facades\Auth::user()->sex == SEX['male']) {
-                                        (array_pop($vacation));
-                                    }
-                                    ?>
-                                    {{ Form::select('title', $vacation,null,['class' => 'form-control my-1 mr-1  browser-default custom-select md-form select-item reason_id check-value']) }}
+                                    {{ Form::select('title', VACATION,null,['class' => 'form-control my-1 mr-1  browser-default custom-select md-form select-item reason_id check-value']) }}
                                     @if ($errors->has('title'))
                                         <div class="">
                                             <span class="help-block text-danger">{{ $errors->first('title') }}</span>
@@ -704,6 +701,24 @@
 
             $('#end_date,#start_date,.time-start,.time-end').on('change', function () {
                 checkDate('#start_date', '#end_date', '#errors_date', true, '#btn-send');
+                var dateStart=$('#start_date').val();
+                var dateEnd =$('#end_date').val();
+                var timeStart= $('.time-start').val();
+                var timeEnd = $('.time-end').val();
+                $.ajax
+                ({
+                    'url': '{{ route('check-usable-day-offf') }}',
+                    'type': 'get',
+                    'data': {'start_date':dateStart  , 'end_date': dateEnd,'start_time':timeStart  , 'end_time': timeEnd, },
+                    success: function (data) {
+                        // console.log(data);
+                        if(data.check){
+                                $('#usable-check').text('Bạn sẽ bị tính ' + data.absent + ' ngày nghỉ không phép vì ngày phép còn lại không đủ.' )
+                        }else {
+                            $('#usable-check').text(' ')
+                        };
+                    }
+                });
             })
             $('#end_date1,#start_date1').on('change', function () {
                 checkDate('#start_date1', '#end_date1', '#errors_date1', false, '#btn-send-day-off');
@@ -773,6 +788,8 @@
             $('.option-dayoff').on('click', function () {
                 var check = $(this).val();
                 if (check == 1) {
+                    $('#usable-check').text(' ')
+                    $('#home').removeClass('active show');
                     $('#home').removeClass('active show');
                     $('#profile').addClass('active show');
                 } else {

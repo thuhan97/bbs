@@ -37,11 +37,7 @@
                     <a href="{{ $userLink }}">{{ $record->user->name ?? '' }}</a>
                 </td>
                 <td>
-                    @foreach(VACATION as $key => $conetnt)
-                        @if($key == $record->title)
-                            {{ $conetnt }}
-                        @endif
-                    @endforeach
+                    {{ array_key_exists($record->title,VACATION_FULL) ? VACATION_FULL[$record->title] : '' }}
                 </td>
                 <td class="text-right">{{ $record->start_at }}</td>
                 <td class="text-right">{{ $record->end_at }}</td>

@@ -10,80 +10,83 @@
     {!! Breadcrumbs::render('list_share_document') !!}
 @endsection
 @section('content')
-    <link rel="stylesheet" href="{{URL::asset('css/list_share_document.css')}}">
-    <div class="createReport fixed-action-btn">
-        <a href="#" class="btn-floating btn-lg red waves-effect waves-light text-white"
-           title="Chia sẻ" data-target="#feedback" data-toggle="modal">
-            <i class="fa fa-plus" aria-hidden="true"></i>
-        </a>
-    </div>
-    <div class="row">
-        <div class="col-xxl-10">
-            <form class="mb-4">
-                <div class="md-form active-cyan-2 mb-3">
-                    @include('layouts.partials.frontend.search-input', ['search' => $search, 'text' => __l('Search')])
-                    <input type="hidden" name="page_size" value="{{$perPage}}">
-                </div>
-            </form>
+    <div class="container-fluid">
 
-            @if($list_document->isNotEmpty())
-                <table class="table table-bordered">
-                    <thead>
-                    <tr>
-                        <th>
-                            Nội dung tài liệu chia sẻ
-                        </th>
-                        <th>
-                            Người đăng
-                        </th>
-                        <th>
-                            Ngày tải lên
-                        </th>
-                        <th>
-                            Định dạng
-                        </th>
-                        <th>
-                            Tải ngay
-                        </th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    @foreach($list_document as $document)
-                        <?php
-                        $ext = pathinfo($document->file, PATHINFO_EXTENSION);
-                        ?>
+        <link rel="stylesheet" href="{{URL::asset('css/list_share_document.css')}}">
+        <div class="createReport fixed-action-btn">
+            <a href="#" class="btn-floating btn-lg red waves-effect waves-light text-white"
+               title="Chia sẻ" data-target="#feedback" data-toggle="modal">
+                <i class="fa fa-plus" aria-hidden="true"></i>
+            </a>
+        </div>
+        <div class="row">
+            <div class="col-xxl-10">
+                <form class="mb-4">
+                    <div class="md-form active-cyan-2 mb-3">
+                        @include('layouts.partials.frontend.search-input', ['search' => $search, 'text' => __l('Search')])
+                        <input type="hidden" name="page_size" value="{{$perPage}}">
+                    </div>
+                </form>
+
+                @if($list_document->isNotEmpty())
+                    <table class="table table-bordered">
+                        <thead>
                         <tr>
-                            <td>
-                                {{$document->name}}
-                            </td>
-                            <td class="center">
-                                <?php echo isset($document->user->name) ? $document->user->name : ''; ?>
-                            </td>
-                            <td class="center">
-                                {{$document->created_at}}
-                            </td>
+                            <th>
+                                Nội dung tài liệu chia sẻ
+                            </th>
+                            <th>
+                                Người đăng
+                            </th>
+                            <th>
+                                Ngày tải lên
+                            </th>
+                            <th>
+                                Định dạng
+                            </th>
+                            <th>
+                                Tải ngay
+                            </th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        @foreach($list_document as $document)
                             <?php
                             $ext = pathinfo($document->file, PATHINFO_EXTENSION);
                             ?>
-                            <td class="center">
-                                <i class="<?php echo isset(ICONS_TYPES_FILES[$ext]) ? ICONS_TYPES_FILES[$ext] : ''; ?>"
-                                   aria-hidden="true"></i>
-                            </td>
-                            <td class="center">
-                                <a href="/download_file_share/{{$document->id}}" target="_blank">
-                                    <i class="fa fa-download" aria-hidden="true" style="color: #4285f4;"></i>
-                                </a>
-                            </td>
-                        </tr>
-                    @endforeach
-                    </tbody>
-                </table>
-                <div class="row">
-                    {{ $list_document->links() }}
-                </div>
-            @else
-                <h2>{{__l('list_empty', ['name'=>'chia sẻ tài liệu'])}}</h2>
-            @endif
+                            <tr>
+                                <td>
+                                    {{$document->name}}
+                                </td>
+                                <td class="center">
+                                    <?php echo isset($document->user->name) ? $document->user->name : ''; ?>
+                                </td>
+                                <td class="center">
+                                    {{$document->created_at}}
+                                </td>
+                                <?php
+                                $ext = pathinfo($document->file, PATHINFO_EXTENSION);
+                                ?>
+                                <td class="center">
+                                    <i class="<?php echo isset(ICONS_TYPES_FILES[$ext]) ? ICONS_TYPES_FILES[$ext] : ''; ?>"
+                                       aria-hidden="true"></i>
+                                </td>
+                                <td class="center">
+                                    <a href="/download_file_share/{{$document->id}}" target="_blank">
+                                        <i class="fa fa-download" aria-hidden="true" style="color: #4285f4;"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                        @endforeach
+                        </tbody>
+                    </table>
+                    <div class="row">
+                        {{ $list_document->links() }}
+                    </div>
+                @else
+                    <h2>{{__l('list_empty', ['name'=>'chia sẻ tài liệu'])}}</h2>
+                @endif
+            </div>
         </div>
     </div>
 

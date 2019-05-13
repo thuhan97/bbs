@@ -156,8 +156,8 @@
                     <th class="d-none d-md-table-cell text-center" scope="row">
                         {!! ((($dataDayOff->currentPage()*PAGINATE_DAY_OFF)-PAGINATE_DAY_OFF)+1)+$keys !!}
                     </th>
-                    <td class="text-center">{{$absence->start_date}}</td>
-                    <td class="d-none d-md-table-cell text-center">{{$absence->end_date}}</td>
+                    <td class="text-center">{{ $absence->title != DAY_OFF_TITLE_DEFAULT ? \App\Helpers\DateTimeHelper::checkTileDayOffGetDate($absence->start_at) : $absence->start_date  }}</td>
+                    <td class="d-none d-md-table-cell text-center">{{ $absence->title != DAY_OFF_TITLE_DEFAULT ? \App\Helpers\DateTimeHelper::checkTileDayOffGetDate($absence->end_at) : $absence->end_date  }}</td>
                     <td class="text-center">{{ array_key_exists($absence->title, VACATION_FULL) ? VACATION_FULL[$absence->title] : ''  }}</td>
                     <td class="text-center">{!! nl2br($absence->reason) !!}</td>
                     <td class="d-none d-md-table-cell text-center">{{!!!($absence->number_off || $absence->absent > DEFAULT_VALUE)? ($absence->status != STATUS_DAY_OFF['noActive'] ? 'Đang duyệt' : '') : checkNumber($absence->number_off) + checkNumber($absence->absent).' ngày'}}

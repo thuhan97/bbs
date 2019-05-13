@@ -77,7 +77,105 @@ $teams = \App\Models\Team::select('id', 'name', 'color')->withCount('members')->
         <!-- ./col -->
     </div>
     <div class="row">
-        <div class="col-md-4">
+        <div class="col-md-12">
+            <div class="box">
+                <div class="box-header with-border">
+                    <h3 class="box-title">Thông tin tiền phạt</h3>
+
+                    <div class="box-tools pull-right">
+                        <button type="button" class="btn btn-box-tool" data-widget="collapse"><i
+                                    class="fa fa-minus"></i>
+                        </button>
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-box-tool dropdown-toggle" data-toggle="dropdown">
+                                <i class="fa fa-wrench"></i></button>
+                            <ul class="dropdown-menu" role="menu">
+                                <li><a href="{{route('admin::index', ['type' => 1])}}">Tuần này</a></li>
+                                <li><a href="{{route('admin::index', ['type' => 2])}}">Tháng này</a></li>
+                                <li><a href="{{route('admin::index', ['type' => 3])}}">Năm nay</a></li>
+                                <li><a href="{{route('admin::index', ['type' => 4])}}">Năm trước</a></li>
+                            </ul>
+                        </div>
+                        <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i>
+                        </button>
+                    </div>
+                </div>
+                <!-- /.box-header -->
+                <div class="box-body">
+                    <p class="text-center">
+                        @php
+                            switch (request('type')){
+                                case 1:
+                                    $punishText = 'Tiền phạt tuần này';
+                                    break;
+                                case 2:
+                                    $punishText = 'Tiền phạt tháng này';
+                                    break;
+                                case 3:
+                                    $punishText = 'Tiền phạt năm nay';
+                                    break;
+                                case 4:
+                                    $punishText = 'Tiền phạt năm trước';
+                                    break;
+                                default:
+                                    $punishText = 'Tiền phạt 6 tháng gần nhất';
+                                    break;
+                            }
+                        @endphp
+                        <strong>{{$punishText}}</strong>
+                    </p>
+
+                    <div class="chart">
+                        <!-- Sales Chart Canvas -->
+                        <canvas id="punishChart" style="height: 180px; width: 703px;" width="703"
+                                height="180"></canvas>
+                    </div>
+                </div>
+                <!-- ./box-body -->
+                <div class="box-footer">
+                    <div class="row">
+                        <div class="col-sm-3 col-xs-6">
+                            <div class="description-block border-right">
+                                <h5 class="description-header">$35,210.43</h5>
+                                <span class="description-text">Phạt đi muộn</span>
+                            </div>
+                            <!-- /.description-block -->
+                        </div>
+                        <!-- /.col -->
+                        <div class="col-sm-3 col-xs-6">
+                            <div class="description-block border-right">
+                                <h5 class="description-header">$10,390.90</h5>
+                                <span class="description-text">Gửi báo cáo tuần</span>
+                            </div>
+                            <!-- /.description-block -->
+                        </div>
+                        <!-- /.col -->
+                        <div class="col-sm-3 col-xs-6">
+                            <div class="description-block border-right">
+                                <h5 class="description-header">$24,813.53</h5>
+                                <span class="description-text">Tổng tiền phạt</span>
+                            </div>
+                            <!-- /.description-block -->
+                        </div>
+                        <!-- /.col -->
+                        <div class="col-sm-3 col-xs-6">
+                            <div class="description-block">
+                                <h5 class="description-header">1200</h5>
+                                <span class="description-text">Đã thu</span>
+                            </div>
+                            <!-- /.description-block -->
+                        </div>
+                    </div>
+                    <!-- /.row -->
+                </div>
+                <!-- /.box-footer -->
+            </div>
+            <!-- /.box -->
+        </div>
+        <!-- /.col -->
+    </div>
+    <div class="row">
+        <div class="col-sm-6 col-lg-4">
             <!-- USERS LIST -->
             <div class="box box-danger">
                 <div class="box-header with-border">
@@ -118,7 +216,7 @@ $teams = \App\Models\Team::select('id', 'name', 'color')->withCount('members')->
             </div>
             <!--/.box -->
         </div>
-        <div class="col-md-4">
+        <div class="col-sm-6 col-lg-4">
             <div class="box box-default">
                 <div class="box-header with-border">
                     <h3 class="box-title">Teams</h3>
@@ -170,7 +268,7 @@ $teams = \App\Models\Team::select('id', 'name', 'color')->withCount('members')->
                 <!-- /.footer -->
             </div>
         </div>
-        <div class="col-md-4">
+        <div class="col-sm-6 col-lg-4">
             <div class="box box-primary">
                 <div class="box-header with-border">
                     <h3 class="box-title">Sự kiện</h3>
@@ -216,6 +314,32 @@ $teams = \App\Models\Team::select('id', 'name', 'color')->withCount('members')->
 
 @push('footer-scripts')
     <script>
+        window.punishChartData = {
+            labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+            datasets: [
+                {
+                    label: 'Electronics',
+                    fillColor: 'rgb(210, 214, 222)',
+                    strokeColor: 'rgb(210, 214, 222)',
+                    pointColor: 'rgb(210, 214, 222)',
+                    pointStrokeColor: '#c1c7d1',
+                    pointHighlightFill: '#fff',
+                    pointHighlightStroke: 'rgb(220,220,220)',
+                    data: [65, 59, 80, 81, 56, 55, 40]
+                },
+                {
+                    label: 'Digital Goods',
+                    fillColor: 'rgba(60,141,188,0.9)',
+                    strokeColor: 'rgba(60,141,188,0.8)',
+                    pointColor: '#3b8bba',
+                    pointStrokeColor: 'rgba(60,141,188,1)',
+                    pointHighlightFill: '#fff',
+                    pointHighlightStroke: 'rgba(60,141,188,1)',
+                    data: [28, 48, 40, 19, 86, 27, 90]
+                }
+            ]
+        };
+
         window.PieData = [
                 @foreach($teams as $team)
             {

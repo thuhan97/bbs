@@ -24,6 +24,7 @@ class WorkTime extends Model
         'start_at',
         'end_at',
         'type',
+        'cost',
         'note',
     ];
 

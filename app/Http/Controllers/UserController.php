@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Admin\WorkTimePermissionRequest;
 use App\Http\Requests\Admin\WorkTimeRequest;
 use App\Http\Requests\ApprovedRequest;
 use App\Http\Requests\AskPermissionRequest;
@@ -195,7 +196,7 @@ class UserController extends Controller
         $workDay = $request['work_day'];
         $otType = $request['ot_type'];
         $explanationType = $request['explanation_type'];
-        $workTimeExplanation =  WorkTimesExplanation::where('user_id', Auth::id())->where('work_day', $workDay)->where('type',$explanationType)->first();
+        $workTimeExplanation = WorkTimesExplanation::where('user_id', Auth::id())->where('work_day', $workDay)->where('type', $explanationType)->first();
         if ($workTimeExplanation) {
             $workTimeExplanation->update(['note' => $reason, 'ot_type' => $otType, 'type' => $explanationType]);
             return back()->with('day_off_success', '');
@@ -205,6 +206,42 @@ class UserController extends Controller
                 'work_day' => $request['work_day'],
                 'type' => $explanationType,
                 'ot_type' => $otType,
+                'note' => $reason
+            ]);
+            return back()->with('day_off_success', 'day_off_success');
+        }
+    }
+
+    public function workTimeDetailAskPermission(Request $request)
+    {
+        if ($request->has('explanationOtType')) {
+            $workTimeExplanation = WorkTimesExplanation::where('user_id', Auth::id())->where('work_day', $request['work_day'])->where('type', 4)->where('ot_type', $request['explanationOtType'])->first();
+        } else {
+            $workTimeExplanation = WorkTimesExplanation::where('user_id', Auth::id())->where('work_day', $request['work_day'])->where('type', $request['explanationType'])->first();
+        }
+        if ($workTimeExplanation) {
+            return $workTimeExplanation;
+        }
+        return 0;
+    }
+
+    public function workTimeAskPermission(WorkTimePermissionRequest $request)
+    {
+        $explanationType = $request['explanation_ot_type'];
+        $reason = $request['reason'];
+        $workDay = $request['work_day'];
+        if ($request->has('LateOTEarly')) {
+            $workTimeExplanation = WorkTimesExplanation::where('user_id', Auth::id())->where('work_day', $workDay)->where('type', $request['explanation_type'])->first();
+        }
+        if ($workTimeExplanation) {
+            $workTimeExplanation->update(['note' => $reason, 'ot_type' => $explanationType, 'type' => $request['explanation_type']]);
+            return back()->with('day_off_success', '');
+        } else {
+            WorkTimesExplanation::create([
+                'user_id' => Auth::id(),
+                'work_day' => $request['work_day'],
+                'ot_type' => $explanationType,
+                'type' => $request['explanation_type'],
                 'note' => $reason
             ]);
             return back()->with('day_off_success', 'day_off_success');
@@ -243,7 +280,7 @@ class UserController extends Controller
 
     public function askPermissionCreate(AskPermissionRequest $request)
     {
-        $workTimeExplanation = WorkTimesExplanation::where('user_id', Auth::id())->where('work_day', $request['work_day'])->where('type',$request['type'])->first();
+        $workTimeExplanation = WorkTimesExplanation::where('user_id', Auth::id())->where('work_day', $request['work_day'])->where('type', $request['type'])->first();
         if ($workTimeExplanation) {
             $workTimeExplanation->update(['ot_type' => $request['ot_type'], 'note' => $request['note'], 'work_day' => $request['work_day']]);
         } else {
@@ -277,7 +314,7 @@ class UserController extends Controller
 
     public function askPermissionOT(Request $request)
     {
-        $workTimeExplanation = WorkTimesExplanation::where('user_id', Auth::id())->where('work_day', $request['data'])->where('type',$request['type'])->first();
+        $workTimeExplanation = WorkTimesExplanation::where('user_id', Auth::id())->where('work_day', $request['data'])->where('type', $request['type'])->first();
         if ($workTimeExplanation) {
             return $workTimeExplanation;
         } else {

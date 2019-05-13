@@ -287,7 +287,7 @@
                     <img src="{{ asset('img/font/gio_lam_viec_popup.png') }}" alt="" width="355px" height="260px">
                 </div>
                 <br>
-                <form action="{{ route('ask_permission.create') }}" method="get">
+                <form action="{{ route('work_time.ask_permission') }}" method="get">
                     {{--@csrf--}}
                     <div class="d-flex justify-content-center text-area-reason" id="div-reason"></div>
                     <div class="offset-1 select-day">
@@ -322,7 +322,7 @@
                     <img src="{{ asset('img/font/gio_lam_viec_popup.png') }}" alt="" width="355px" height="260px">
                 </div>
                 <br>
-                <form action="{{ route('ask_permission.create') }}" method="get">
+                <form action="{{ route('work_time.ask_permission') }}" method="get">
                     <div class="d-flex justify-content-center text-area-reason" id="div-reason"></div>
                     <div class="row col-md-12">
                         <div class="col-2"></div>

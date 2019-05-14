@@ -313,21 +313,16 @@ class DayOffService extends AbstractService implements IDayOffService
             if (count($dayOffMonth)) {
                 foreach ($dayOffMonth as $key => $value) {
                     if ($value->user_id == $user->id) {
-                        for ($i = 1; $i < 13; $i++) {
-                            $month{$i} = $value->month == $i ? ($user->sex == SEX['female'] && $value->total >= TOTAL_DAY_OFF_IN_MONTH ? $value->total + $value->total_absent - DAY_OFF_FREE_ACTIVE : $value->total + $value->total_absent) : ($month{$i} ?? '0');
-                            array_push($totalMonth, $month{$i});
+                        for ($i = JANUARY ; $i <= DECEMBER; $i++) {
+                            if ($value->month == $i) {
+                                $totalMonth{$i} = $value->total;
+                            }
                         }
                     }
                 }
-            } else {
-                for ($i = 1; $i < 13; $i++) {
-                    $month{$i} = '0';
-                    array_push($totalMonth, $month{$i});
-                }
             }
-            $newTotalMonth = array_slice($totalMonth, count($totalMonth) - TOTAL_MONTH, count($totalMonth));
             $result[] = [
-                'stt' => $keys + 1,
+                'stt' => $keys + DAY_OFF_INCREMENT,
                 'name' => $user->name,
                 'staff_code' => $user->staff_code,
                 'sex' => $user->sex == DEFAULT_VALUE ? 'Nam' : 'Nữ',
@@ -336,27 +331,26 @@ class DayOffService extends AbstractService implements IDayOffService
                 'strat_date' => Carbon::parse($user->start_date)->format('d-m-Y'),
                 'remain_day_off_current_year' => $dayOffYearTotal->remain_increment ?? '0',
                 'remain_day_off_pre_year' => !empty($dayOffPreYearTotal) && $dayOffPreYear->remain_pre_year > DEFAULT_VALUE ? $dayOffPreYear->remain_pre_year : '0',
-                'day_off_month_Jan' => $newTotalMonth[0],
-                'day_off_month_Feb' => $newTotalMonth[1],
-                'day_off_month_Mar' => $newTotalMonth[2],
-                'day_off_month_Apr' => $newTotalMonth[3],
-                'day_off_month_May' => $newTotalMonth[4],
-                'day_off_month_Jun' => $newTotalMonth[5],
-                'day_off_month_Jul' => $newTotalMonth[6],
-                'day_off_month_Aug' => $newTotalMonth[7],
-                'day_off_month_Sep' => $newTotalMonth[8],
-                'day_off_month_Oct' => $newTotalMonth[9],
-                'day_off_month_Nov' => $newTotalMonth[10],
-                'day_off_month_Dec' => $newTotalMonth[11],
-                'day_off_total' => array_sum($newTotalMonth),
+                'day_off_month_Jan' => $totalMonth[1] ?? '0',
+                'day_off_month_Feb' => $totalMonth[2] ?? '0',
+                'day_off_month_Mar' => $totalMonth[3] ?? '0',
+                'day_off_month_Apr' => $totalMonth[4] ?? '0',
+                'day_off_month_May' => $totalMonth[5] ?? '0',
+                'day_off_month_Jun' => $totalMonth[6] ?? '0',
+                'day_off_month_Jul' => $totalMonth[7] ?? '0',
+                'day_off_month_Aug' => $totalMonth[8] ?? '0',
+                'day_off_month_Sep' => $totalMonth[9] ?? '0',
+                'day_off_month_Oct' => $totalMonth[10] ?? '0',
+                'day_off_month_Nov' => $totalMonth[11] ?? '0',
+                'day_off_month_Dec' => $totalMonth[12] ?? '0',
+                'day_off_total' => array_sum($totalMonth),
                 'day_off_regulation' => $vacationMode->total ?? '0',
                 'day_off_remain_total' => $dayOffPreYearTotal + $dayOffYearTotal == DEFAULT_VALUE ? '0' : $dayOffPreYearTotal + $dayOffYearTotal,
                 'day_off_end_year_reset' => $dayOffPreYearTotal == DEFAULT_VALUE ? '0' : $dayOffPreYearTotal,
                 'day_off_turn_next_year' => $dayOffYearTotal == DEFAULT_VALUE ? '0' : $dayOffYearTotal,
             ];
-        }
 
-        return $result;
+        }  return $result;
     }
 
     public function calculateDayOff($request, $id)

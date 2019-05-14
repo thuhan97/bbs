@@ -99,7 +99,7 @@ class DayOffService extends AbstractService implements IDayOffService
                 DB::raw('DATE_FORMAT(approver_at, "%d/%m/%Y (%H:%i)") as approver_date'))
             ->orderBy('id', 'DESC');
         if ($check){
-            $datas = $datas->whereDate('start_at', '>=',  date('Y')-PRE_YEAR . '-m-d')->whereDate('start_at', '<=',date('Y-m-d'));
+            $datas = $datas->whereDate('start_at', '>=',  date('Y')-PRE_YEAR . '-m-d');
         }else{
             $datas=$datas->whereYear('start_at', $thisYear);
         }
@@ -195,7 +195,7 @@ class DayOffService extends AbstractService implements IDayOffService
         $dataDate = $dataDate->orderBy('id', 'DESC')->paginate(PAGINATE_DAY_OFF);
         return [
             'dataDate' => $dataDate,
-            'data' =>  $this->getdata()->whereDate('start_at', '>=',  date('Y')-PRE_YEAR . '-m-d')->whereDate('start_at', '<=',date('Y-m-d'))->orderBy('id', 'DESC')->paginate(PAGINATE_DAY_OFF),
+            'data' =>  $this->getdata()->whereDate('start_at', '>=',  date('Y')-PRE_YEAR . '-m-d')->orderBy('id', 'DESC')->paginate(PAGINATE_DAY_OFF),
             'total' => $data->count(),
             'totalActive' => $data->where('status', STATUS_DAY_OFF['active'])->count(),
             'totalAbide' => $data->where('status', STATUS_DAY_OFF['abide'])->count(),

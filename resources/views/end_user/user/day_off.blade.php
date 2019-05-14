@@ -11,7 +11,7 @@
        }
        $dataDayOff= $dayOff ?? $availableDayLeft['data'];
         $searchStart = date((date('Y')-1).'/01/01', strtotime('tomorrow + 1day'));
-        $searchEnd = date('Y/m/d');
+
     @endphp
     <form action="{{ route('day_off') }}" method="get" id="form-search">
         <div class="row mb-3 ml-1">
@@ -28,7 +28,7 @@
                 <input type="text"
                        class="form-control select-item  border-0 "
                        id="search_end_at" autocomplete="off" name="search_end_at"
-                       value="{{ $searchEndDate ?? $searchEnd}}"
+                       value="{{ $searchEndDate ?? ''}}"
                        readonly>
             </div>
             <div class="col-sm-2 col-xl-1 no-padding-left">
@@ -129,8 +129,8 @@
                 </div>
                 <div class="col-sm-8 text-right col-md-8">
                     <div class="row">
-                        <div class="col-md-5"></div>
-                        <div class="col-md-3 col-12">
+                        <div class="col-md-4"></div>
+                        <div class="col-md-4 col-12">
                             <?php
                             $user = \Illuminate\Support\Facades\Auth::user();
                             ?>
@@ -145,7 +145,7 @@
                         </div>
                         <div class="d-none d-sm-block col-sm-4">
            <span class=" btn-secondary" id="btn-select">
-            {{ Form::select('status_search', SHOW_DAY_OFFF, $statusSearch ?? ALL_DAY_OFF, ['class' => 'browser-default custom-select mt-2 w-100 month option-select select-search','placeholder'=>'']) }}
+            {{ Form::select('status_search', SHOW_DAY_OFFF, $statusSearch ?? ALL_DAY_OFF, ['class' => 'browser-default custom-select mt-1 w-100 month option-select','placeholder'=>'']) }}
         </span>
                         </div>
                     </div>

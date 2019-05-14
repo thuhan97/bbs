@@ -341,6 +341,7 @@
                                     other = ''
                                 }
 
+                                
                                 $('.wt-textarea-reason').text(project);
                                 $('.wt-textarea-reason').text(other);
                             }

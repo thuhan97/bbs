@@ -233,7 +233,7 @@ class UserController extends Controller
         $explanationOTType = $request['explanation_ot_type'];
         $reason = $request['reason'];
         $workDay = $request['work_day'];
-        if ($request->has('LateOTEarly') || $request->has('explanation_ot_type')) {
+        if ($request->has('fullOption') || $request->has('explanation_ot_type')) {
             $workTimeExplanation = WorkTimesExplanation::where('user_id', Auth::id())->where('work_day', $workDay)->where('type', $request['explanation_type'])->first();
         }else {
             $workTimeExplanation = WorkTimesExplanation::where('user_id', Auth::id())->where('work_day', $workDay)->where('ot_type', $explanationOTType)->first();

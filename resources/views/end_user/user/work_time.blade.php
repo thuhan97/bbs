@@ -264,7 +264,7 @@
                             document.getElementById("div-reason").innerHTML =
                                 '<div class="row col-md-12">' +
                                 '<input hidden name="id" value="' + dataID + '">' +
-                                '<input hidden name="LateOTEarly" value="' + dataID + '">' +
+                                '<input hidden name="fullOption" value="' + dataID + '">' +
                                 '<input type="hidden" class="work_day" name="work_day" value="' + getDataTime + '">' +
                                 '<div class="user col-md-4 pl-0 pr-0 text-center">' +
                                 '    <label for="late">Xin đi muộn </label>' +

@@ -258,6 +258,12 @@ define('OT_STATUS', [
     1 => 'Đã duyệt',
     2 => 'Từ chối',
 ]);
+
+define('WORK_TIME_OT_STATUS', [
+    ' Chưa duyệt' => 0,
+    'Đã duyệt' => 1
+]);
+
 define('PUNISH_SUBMIT', [
     'new' => 0,
     'submitted' => 1

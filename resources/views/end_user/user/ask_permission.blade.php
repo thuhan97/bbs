@@ -13,24 +13,6 @@
                     button: "Đóng",
                 });
             </script>
-        @elseif(session()->has('approver_success'))
-            <script>
-                swal({
-                    title: "Thông báo!",
-                    text: "Bạn đã duyệt đơn thành công!",
-                    icon: "success",
-                    button: "Đóng",
-                });
-            </script>
-        @elseif(session()->has('reject_success'))
-            <script>
-                swal({
-                    title: "Thông báo!",
-                    text: "Bạn đã từ chối thành công!",
-                    icon: "success",
-                    button: "Đóng",
-                });
-            </script>
         @else
             <script>
                 swal({
@@ -48,6 +30,16 @@
                 title: "Thông báo!",
                 text: "Đơn đã được phê duyệt!",
                 icon: "error",
+                button: "Đóng",
+            });
+        </script>
+    @endif
+    @if(session()->has('approver_success') || session()->has('reject_success'))
+        <script>
+            swal({
+                title: "Thông báo!",
+                text: "Bạn đã duyệt đơn thành công!",
+                icon: "success",
                 button: "Đóng",
             });
         </script>
@@ -82,9 +74,6 @@
         </span>
         <br>
     @endif
-    <?php
-    $user = \Illuminate\Support\Facades\Auth::user();
-    ?>
     @can('team-leader')
         @if($dataLeader->isNotEmpty())
             <h1>Danh sách xin phép</h1>
@@ -110,7 +99,7 @@
                 <tbody>
                 @foreach($dataLeader as $item)
                     <tr>
-                        <th class="text-center">{{ $increment++ }}</th>
+                        <th class="text-center" style="padding: 15px;">{{ $increment++ }}</th>
                         <th class="text-center">{{ $item['work_day'] ?? '' }}</th>
                         <th>{{ $item->user->name ?? '' }}</th>
                         <td>
@@ -144,7 +133,7 @@
                                     <i class="fas fa-grin-stars fa-2x text-success"
                                        title="{{ $item->workTimeApprover->name ?? '' }}"></i>
                                 @elseif($item['work_times_explanation_status'] == array_search('Từ chối', OT_STATUS))
-                                    <i class="fas fa-meh-blank fa-2x text-danger"
+                                    <i class="fas fa-frown fa-2x text-danger"
                                        title="{{ $item->workTimeApprover->name ?? '' }}"></i>
                                 @endif
                             @endcan
@@ -229,7 +218,7 @@
                     @elseif($item['work_times_explanation_status'] == array_search('Chưa duyệt', OT_STATUS))
                         <i class="fas fa-meh-blank fa-2x text-warning" title="Chưa duyệt"></i>
                     @elseif($item['work_times_explanation_status'] == array_search('Từ chối', OT_STATUS))
-                        <i class="fas fa-meh-blank fa-2x text-danger"
+                        <i class="fas fa-frown fa-2x text-danger"
                            title="{{ $item->workTimeApprover->name ?? ''  }}"></i>
                     @endif
                 </td>

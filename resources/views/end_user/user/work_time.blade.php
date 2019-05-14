@@ -201,6 +201,7 @@
                                 '</div>' +
                                 '<input type="hidden" name="work_day" class="work_day" value="' + dataWorkDay + '">' +
                                 '<input hidden name="explanation_type" value="4">' +
+                                '<input hidden name="status" value="" class="wt-status">' +
                                 '<textarea class="form-control wt-textarea-reason" name="reason" rows="6" placeholder="Nội dung bạn muốn gửi..."></textarea>' +
                                 '</div>';
                         } else {
@@ -320,11 +321,12 @@
                                 }
                                 if (respond.status === 1) {
                                     $('.title-wt-modal-approve').text('Đơn đã được duyệt');
-                                    $('.wt-textarea-reason,.btn-send-permission').prop('disabled',true)
+                                    $('.wt-textarea-reason,.btn-send-permission').prop('disabled',true);
                                 } else {
                                     $('.title-wt-modal-approve').text('Xin phép');
-                                    $('.wt-textarea-reason,.btn-send-permission').prop('disabled', false)
+                                    $('.wt-textarea-reason,.btn-send-permission').prop('disabled', false);
                                 }
+                                $('.wt-status').attr('value',respond.status);
                                 $('.wt-textarea-reason').text(project);
                                 $('.wt-textarea-reason').text(other);
                             }

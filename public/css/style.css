@@ -1302,3 +1302,7 @@ td.blank, .type-1, .type-2 {
 .table-detail-day-off{
     padding: 0.4rem !important;
 }
+
+.pd-15 {
+    padding: 15px;
+}

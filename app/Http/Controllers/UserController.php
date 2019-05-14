@@ -214,9 +214,9 @@ class UserController extends Controller
     public function workTimeDetailAskPermission(Request $request)
     {
         if ($request->has('explanationOtType')) {
-            $workTimeExplanation = $this->getWorkTimeExplanation($request['work_day'])->where('type', array_search('Overtime', WORK_TIME_TYPE))->where('ot_type', $request['explanationOtType'])->first();
+            $workTimeExplanation = $this->getWorkTimeExplanation($request['work_day'])->whereIn('status', array_values(WORK_TIME_OT_STATUS))->where('type', array_search('Overtime', WORK_TIME_TYPE))->where('ot_type', $request['explanationOtType'])->first();
         } else {
-            $workTimeExplanation = $this->getWorkTimeExplanation($request['work_day'])->where('type', $request['explanationType'])->first();
+            $workTimeExplanation = $this->getWorkTimeExplanation($request['work_day'])->whereIn('status', array_values(WORK_TIME_OT_STATUS))->where('type', $request['explanationType'])->first();
         }
         if ($workTimeExplanation) {
             return $workTimeExplanation;
@@ -229,9 +229,10 @@ class UserController extends Controller
         $explanationOTType = $request['explanation_ot_type'];
         $reason = $request['reason'];
         $workDay = $request['work_day'];
-        if ($request->has('fullOption') && $request['status'] == 1) {
+        if ($request->has('status') && $request['status'] == 0 || is_null($request['status'])) {
             if ($request->has('fullOption') || $request->has('explanation_ot_type')) {
-                $workTimeExplanation = $this->getWorkTimeExplanation($workDay)->where('status', array_search(' Chưa duyệt', OT_STATUS))->where('type', $request['explanation_type'])->first();
+//                dd($request->all());
+                $workTimeExplanation = $this->getWorkTimeExplanation($workDay)->where('status', '!=',1)->where('status', '!=',2)->where('type', $request['explanation_type'])->first();
             } else {
                 $workTimeExplanation = $this->getWorkTimeExplanation($workDay)->where('ot_type', $explanationOTType)->first();
             }
@@ -285,8 +286,8 @@ class UserController extends Controller
 
     public function askPermissionCreate(AskPermissionRequest $request)
     {
-        if ($request->has('permission_status') && $request['permission_status'] == array_search(' Chưa duyệt',OT_STATUS)) {
-            $workTimeExplanation = $this->getWorkTimeExplanation($request['work_day'])->where('status', array_search(' Chưa duyệt',OT_STATUS))->where('type', $request['permission_type'])->first();
+        if ($request->has('permission_status') && $request['permission_status'] == array_search(' Chưa duyệt', OT_STATUS)) {
+            $workTimeExplanation = $this->getWorkTimeExplanation($request['work_day'])->where('status', array_search(' Chưa duyệt', OT_STATUS))->where('type', $request['permission_type'])->first();
             if ($workTimeExplanation) {
                 $workTimeExplanation->update(['ot_type' => $request['ot_type'], 'note' => $request['note'], 'work_day' => $request['work_day']]);
             } else {
@@ -349,7 +350,7 @@ class UserController extends Controller
     {
         $workTimesExplanationID = $request['id'];
         if ($workTimesExplanationID) {
-            WorkTimesExplanation::where('id', $workTimesExplanationID)->update(['status' => array_search('Đã duyệt', OT_STATUS)]);
+            WorkTimesExplanation::where('id', $workTimesExplanationID)->update(['status' => array_search('Đã duyệt', OT_STATUS), 'approver_id' => Auth::id()]);
             return back()->with('approver_success', '');
         }
     }
@@ -358,7 +359,7 @@ class UserController extends Controller
     {
         $workTimesExplanationID = $request['id'];
         if ($workTimesExplanationID) {
-            WorkTimesExplanation::where('id', $workTimesExplanationID)->update(['status' => array_search('Đã duyệt', OT_STATUS)]);
+            WorkTimesExplanation::where('id', $workTimesExplanationID)->update(['status' => array_search('Đã duyệt', OT_STATUS), 'approver_id' => Auth::id()]);
         }
         OverTime::create([
             'creator_id' => $request['user_id'],

@@ -73,4 +73,8 @@ return [
     'config_updated' => 'Lưu thiết lập thành công.',
     'system_no_config_time' => 'Chưa cấu hình thời gian thiết lập hệ thống.',
     'project_add_successully' => 'Thêm mới dự án thành công.',
+    'share_experience_successully_deleted' => 'Xóa chia sẻ kinh nghiệm thành công',
+    'share_experience_error_deleted' => 'Xóa chia sẻ kinh nghiệm thất bại',
+    'share_experience_successully_edit' => 'Sửa chia sẻ kinh nghiệm thành công',
+    'share_experience_error_edit' => 'Sửa chia sẻ kinh nghiệm thất bại',    
 ];

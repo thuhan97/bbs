@@ -51,4 +51,10 @@
 }
 p{
 	margin:0px !important;
-}  
+}
+.fa-ellipsis-h{
+	float: right;
+} 
+.content-posts{
+	margin-bottom: 30px;
+}

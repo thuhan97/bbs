@@ -1,5 +1,5 @@
 function sendAbsenceForm() {
-    var name = $("#titleDocoment").val();
+    var name = $("#titleDocument").val();
     var file = $("#inputFile").val();
     if(name != '' && file != ''){
         $("#formDocument").submit();

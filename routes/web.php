@@ -78,6 +78,9 @@ Route::group([
     Route::get('/download_file_share/{url}', 'ShareController@downloadFileShare');
     Route::post('/add_document', 'ShareController@addDocument')->name('add_document');
     Route::post('/add_experience', 'ShareController@addExperience')->name('add_experience');
+    Route::get('/deleted_experience/{id}', 'ShareController@deletedExperience')->name('deleted_experience');
+    Route::get('/edit_experience/{id}', 'ShareController@editExperience')->name('edit_experience');
+    Route::post('/save_edit_experience', 'ShareController@saveEditExperience')->name('save_edit_experience');
     Route::post('/add_comment', 'ShareController@addComment')->name('add_comment');
 
     Route::post('/add_suggestions', 'SuggestionController@addSuggestions')->name('add_suggestions');

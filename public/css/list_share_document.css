@@ -51,3 +51,13 @@ th, .center{
 #ErrorMessaging{
     margin: 5px 0px 0px 0px;
 } 
+.button-add {
+  width: 61.1px;
+  height: 61.1px;
+  border-radius: 50%;         
+}
+.fa-plus {
+  font-size: 1.625rem;
+  line-height: 48px;
+  padding-left: 3px;
+}

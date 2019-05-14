@@ -46,3 +46,48 @@ window.myEditor = function ($selector, height) {
         tinymce.init(editorConfig);
     })
 }
+
+$("#buttonExperience").click(function(){
+    var content = $("#editorContainer_ifr").contents().find("body").text();
+    if(content.trim() != ''){
+        $('#formExp').submit();
+    }
+});
+
+$(".button-exp").click(function() {
+    $( "#formExp" ).toggle();
+    $( ".button-add" ).toggle();
+    $( ".button-hidden" ).toggle();
+});
+
+$(".form-comment2").click(function(){
+    $( this ).closest(".info-user-comment").find(".content-form-comment2").css('display','flex').find(".input-comment2").focus();
+});
+
+$(".form-comment1").click(function(){
+    $( this ).closest(".content-share-experience").find(".input-comment1").focus();
+});
+
+$( ".button-send" ).click(function() {
+    var contentComment = $(this).closest( "form" ).find("input.input-comment").val();
+    var share_id = $(this).closest( "form" ).find("input.share_id").val();
+    if(contentComment.trim() != ''){
+        $.ajax({
+            url : "/add_comment",
+            type : "post",
+            dataType:"html",
+            data : {
+                contentComment : contentComment,
+                share_id : share_id
+            },
+            headers:
+            {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },                     
+            success : function (response){
+                console.log(response);
+                $(".contentajax").html(response);
+            }
+        })
+    }    
+}); 

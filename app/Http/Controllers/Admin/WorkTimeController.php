@@ -227,8 +227,13 @@ class WorkTimeController extends AdminBaseController
         switch ($request->path()) {
             case 'admin/work_times':
                 $date = date('-ymd');
-                $records = $this->sevice->export($request);
-                return Excel::download(new WorkTimeAllExport($records), "worktimes$date.xlsx");
+                if ($request->has('is_grid')) {
+
+                } else {
+                    $records = $this->sevice->export($request);
+                    return Excel::download(new WorkTimeAllExport($records), "worktimes$date.xlsx");
+                }
+
                 break;
 
             default:

@@ -285,7 +285,6 @@ class UserController extends Controller
 
     public function askPermissionCreate(AskPermissionRequest $request)
     {
-//        dd($request->all());
         if ($request->has('permission_status') && $request['permission_status'] == array_search(' Chưa duyệt',OT_STATUS)) {
             $workTimeExplanation = $this->getWorkTimeExplanation($request['work_day'])->where('status', array_search(' Chưa duyệt',OT_STATUS))->where('type', $request['permission_type'])->first();
             if ($workTimeExplanation) {

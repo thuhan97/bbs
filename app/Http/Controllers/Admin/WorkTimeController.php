@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Events\CaculateLateTimeEvent;
 use App\Exports\WorkTimeAllExport;
+use App\Exports\WorkTimeGridExport;
 use App\Http\Requests\Admin\WorkTimeImportRequest;
 use App\Http\Requests\Admin\WorkTimeRequest;
 use App\Imports\WorkTimeImport;
@@ -228,10 +229,12 @@ class WorkTimeController extends AdminBaseController
             case 'admin/work_times':
                 $date = date('-ymd');
                 if ($request->has('is_grid')) {
+                    $records = $this->sevice->export($request);
 
+                    return Excel::download(new WorkTimeGridExport($records), "bang-cham-cong$date.xlsx");
                 } else {
                     $records = $this->sevice->export($request);
-                    return Excel::download(new WorkTimeAllExport($records), "worktimes$date.xlsx");
+                    return Excel::download(new WorkTimeAllExport($records), "thoi-gian-lam-viec$date.xlsx");
                 }
 
                 break;

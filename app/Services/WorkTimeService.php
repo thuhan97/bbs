@@ -43,7 +43,7 @@ class WorkTimeService extends AbstractService implements IWorkTimeService
         $this->calendarOffs = CalendarOff::all();
         $this->additionalDates = AdditionalDate::all();
 
-        $this->users = User::select('id', 'name', 'staff_code', 'contract_type')->with('workTimeRegisters')->get();
+        $this->users = User::select('id', 'name', 'staff_code', 'contract_type', 'is_remote')->with('workTimeRegisters')->get();
 
     }
 
@@ -94,6 +94,90 @@ class WorkTimeService extends AbstractService implements IWorkTimeService
     }
 
     /**
+     * @param $user
+     * @param $date
+     * @param $startAt
+     * @param $endAt
+     *
+     * @return array
+     * @throws \Exception
+     */
+    private function getWorkTime($user, $date, $startAt, $endAt)
+    {
+        if ($endAt == null && $startAt != null && $startAt > HAFT_AFTERNOON) {
+            [$startAt, $endAt] = [$endAt, $startAt];
+        }
+        if (!$this->config->time_afternoon_go_late_at) throw new \Exception(__l('system_no_config_time'));
+        $addData = false;
+        $type = 0;
+        $cost = 0;
+        $checkIsAdditionalDate = $this->additionalDates->firstWhere('date_add', $date->format(DATE_FORMAT));
+        //
+        $check = !$checkIsAdditionalDate && $this->calendarOffs->where('date_off_from', '>=', $date->format(DATE_FORMAT))->where('date_off_to', '<=', $date->format(DATE_FORMAT))->first();
+        $notes = [];
+        if ($check) {
+            $type = WorkTime::TYPES['calendar_off'];
+            return [
+                'start_at' => null,
+                'end_at' => null,
+                'note' => WorkTime::WORK_TIME_CALENDAR_DISPLAY[$type] ?? '',
+                'type' => $type,
+                'cost' => WORKTIME_COST_OFF,
+            ];
+        } else if (($this->config->work_days && in_array($date->format('N'), $this->config->work_days)) || !$this->config->work_days || $checkIsAdditionalDate) {
+            //checkin in week
+            //getworktime of user
+            if (!$user->is_remote && in_array($user->contract_type, [CONTRACT_TYPES['staff'], CONTRACT_TYPES['probation']])) {
+                $addData = true;
+                //check day is off
+                if ($startAt == null && $endAt == null) {
+                    $type = WorkTime::TYPES['off'];
+                    $notes[] = __('worktimes.no_info');
+
+                } else {
+                    list($cost, $type, $notes) = $this->getCostWorkTime($user, $startAt, $endAt);
+                }
+            } else {
+                //check dayoff partime or internship
+                $workTime = $user->workTimeRegisters->firstWhere('day', (int)$date->format('N') + 1);
+                if ($workTime) {
+                    //no register
+                    if (!($workTime->start_at == OFF_TIME)) {
+                        $addData = true;
+                        if ($startAt == null && $endAt == null) {
+                            $type = WorkTime::TYPES['off'];
+                            $notes[] = __('worktimes.no_info');
+                        } else {
+                            if ($workTime->end_at <= SWITCH_TIME) {
+                                list($cost, $type, $notes) = $this->getCostWorkTime($user, $startAt, $endAt, -1);
+                            } else if ($workTime->start_at >= SWITCH_TIME) { //afternoon only
+                                list($cost, $type, $notes) = $this->getCostWorkTime($user, $startAt, $endAt, 1);
+                            } else {
+                                list($cost, $type, $notes) = $this->getCostWorkTime($user, $startAt, $endAt);
+                            }
+                        }
+                    }
+                }
+            }
+        } else {
+            if ($startAt != null || $endAt != null) {
+                $addData = true;
+                $notes[] = __('worktimes.ot_weekend');
+
+                $type += WorkTime::TYPES['ot'];
+            }
+        }
+        if ($addData)
+            return [
+                'start_at' => $startAt,
+                'end_at' => $endAt,
+                'note' => implode(', ', $notes),
+                'type' => $type,
+                'cost' => $cost,
+            ];
+    }
+
+    /**
      * @param       $fromDate
      * @param       $toDate
      * @param array $userIds
@@ -120,7 +204,8 @@ class WorkTimeService extends AbstractService implements IWorkTimeService
             ->whereDate('work_day', '>=', $fromDate)
             ->whereDate('work_day', '<=', $toDate);
 
-        if (!empty($userIds)) $model->whereIn('id', $userIds);
+        if (!empty($userIds)) $model->whereIn('user_id', $userIds);
+
         $lateList = $model->orderBy('work_day')
             ->get()->groupBy('user_id');
 
@@ -130,12 +215,13 @@ class WorkTimeService extends AbstractService implements IWorkTimeService
             ->whereDate('infringe_date', '>=', $fromDate)
             ->whereDate('infringe_date', '<=', $toDate);
         if (!empty($userIds))
-            $punish->whereIn('id', $userIds);
+            $punish->whereIn('user_id', $userIds);
 
         $punish->forceDelete();
         $addPunishes = [];
         //caculate
         foreach ($lateList as $user_id => $workTimes) {
+
             $lateCount = $workTimes->count();
             if ($lateCount > $freeCount) {
                 //start caculate
@@ -189,131 +275,6 @@ class WorkTimeService extends AbstractService implements IWorkTimeService
         DB::commit();
     }
 
-    /**
-     * @param $startAt
-     * @param $endAt
-     *
-     * @return array
-     */
-    private function getWorkTime($user, $date, $startAt, $endAt)
-    {
-        if ($endAt == null && $startAt != null && $startAt > HAFT_AFTERNOON) {
-            [$startAt, $endAt] = [$endAt, $startAt];
-        }
-        if (!$this->config->time_afternoon_go_late_at) throw new \Exception(__l('system_no_config_time'));
-        $addData = false;
-        $type = 0;
-        $checkIsAdditionalDate = $this->additionalDates->firstWhere('date_add', $date->format(DATE_FORMAT));
-        //
-        $check = !$checkIsAdditionalDate && $this->calendarOffs->where('date_off_from', '>=', $date->format(DATE_FORMAT))->where('date_off_to', '<=', $date->format(DATE_FORMAT))->first();
-
-        if ($check) {
-            $type = WorkTime::TYPES['calendar_off'];
-            return [
-                'start_at' => null,
-                'end_at' => null,
-                'note' => WorkTime::WORK_TIME_CALENDAR_DISPLAY[$type] ?? '',
-                'type' => $type,
-            ];
-        } else if (($this->config->work_days && in_array($date->format('N'), $this->config->work_days)) || !$this->config->work_days || $checkIsAdditionalDate) {
-            //checkin in week
-            //getworktime of user
-            if (in_array($user->contract_type, [CONTRACT_TYPES['staff'], CONTRACT_TYPES['staff']])) {
-                $addData = true;
-                //check day is off
-                if ($startAt == null && $endAt == null) {
-                    $type = WorkTime::TYPES['off'];
-                } else {
-                    if ($startAt) {
-                        if ($startAt >= $this->config->time_afternoon_go_late_at) {
-                            $type += WorkTime::TYPES['lately'];
-                        } else if ($startAt >= $this->config->time_morning_go_late_at) {
-                            $type += WorkTime::TYPES['lately'];
-                        }
-                    }
-                    if ($endAt) {
-                        if ($endAt <= $this->config->morning_end_work_at) {
-                            $type += WorkTime::TYPES['early'];
-                        } else if ($endAt <= $this->config->afternoon_end_work_at) {
-                            $type += WorkTime::TYPES['early'];
-                        } else if ($this->config->time_ot_early_at && $endAt >= $this->config->time_ot_early_at) {
-                            $type += WorkTime::TYPES['ot'];
-                        }
-                    }
-                }
-            } else {
-                //check dayoff partime or internship
-                $workTime = $user->workTimeRegisters->firstWhere('day', (int)$date->format('N') + 1);
-                if ($workTime) {
-                    //no register
-                    if (!($workTime->start_at == OFF_TIME)) {
-                        $addData = true;
-                        if ($startAt == null && $endAt == null) {
-                            $type = WorkTime::TYPES['off'];
-                        } else {
-                            if ($workTime->end_at <= SWITCH_TIME) {
-                                //morning only. No OT, check morning lately and morning early
-                                if ($startAt) {
-                                    if ($startAt >= $this->config->time_morning_go_late_at) {
-                                        $type += WorkTime::TYPES['lately'];
-                                    }
-                                }
-                                if ($endAt) {
-                                    if ($endAt <= $this->config->morning_end_work_at) {
-                                        $type += WorkTime::TYPES['early'];
-                                    }
-                                }
-                            } else if ($workTime->start_at >= SWITCH_TIME) { //afternoon only
-                                if ($startAt) {
-                                    if ($this->config->time_ot_early_at && $startAt >= $this->config->time_afternoon_go_late_at) {
-                                        $type += WorkTime::TYPES['lately'];
-                                    }
-                                }
-                                if ($endAt) {
-                                    if ($endAt <= $this->config->afternoon_end_work_at) {
-                                        $type += WorkTime::TYPES['early'];
-                                    } else if ($endAt >= $this->config->time_ot_early_at) {
-                                        $type += WorkTime::TYPES['ot'];
-                                    }
-                                }
-                            } else {
-                                if ($startAt) {
-                                    if ($startAt >= $this->config->time_afternoon_go_late_at) {
-                                        $type += WorkTime::TYPES['lately'];
-                                    } else if ($startAt >= $this->config->time_morning_go_late_at) {
-                                        $type += WorkTime::TYPES['lately'];
-                                    }
-                                }
-                                if ($endAt) {
-                                    if ($endAt <= $this->config->morning_end_work_at) {
-                                        $type += WorkTime::TYPES['early'];
-                                    } else if ($endAt <= $this->config->afternoon_end_work_at) {
-                                        $type += WorkTime::TYPES['early'];
-                                    } else if ($endAt >= $this->config->time_ot_early_at) {
-                                        $type += WorkTime::TYPES['ot'];
-                                    }
-                                }
-                            }
-
-                        }
-                    }
-                }
-            }
-        } else {
-            if ($startAt != null || $endAt != null) {
-                $addData = true;
-                $type += WorkTime::TYPES['ot'];
-            }
-        }
-        if ($addData)
-            return [
-                'start_at' => $startAt,
-                'end_at' => $endAt,
-                'note' => WorkTime::WORK_TIME_CALENDAR_DISPLAY[$type] ?? '',
-                'type' => $type,
-            ];
-    }
-
     protected function getSearchModel(Request $request, $forExport = false)
     {
         $model = $this->model;
@@ -342,11 +303,9 @@ class WorkTimeService extends AbstractService implements IWorkTimeService
                 $model = $model->where('type', $type);
             }
         }
-        if (!$request->search) {
-            $userId = $request->get('user_id');
-            if ($userId) {
-                $model = $model->where('user_id', $userId);
-            }
+        $userId = $request->get('user_id');
+        if ($userId) {
+            $model = $model->where('user_id', $userId);
         }
 
         if ($forExport) {
@@ -358,6 +317,99 @@ class WorkTimeService extends AbstractService implements IWorkTimeService
         }
 
         return $model;
+    }
+
+    /**
+     * @param     $user
+     * @param     $startAt
+     * @param     $endAt
+     * @param int $typeCheck : 0: full, -1: morning; 1: afternoon
+     *
+     * @return array
+     */
+    private function getCostWorkTime($user, $startAt, $endAt, $typeCheck = 0)
+    {
+        $type = 0;
+        $notes = [];
+        if ($startAt) {
+            $startAt .= ':00';
+            //check đi muộn quá nửa buổi chiều -> nghỉ ngày
+            if ($typeCheck >= 0) {
+                if ($startAt >= HAFT_AFTERNOON) {
+                    $type = WorkTime::TYPES['off'];
+                    $notes[] = __('worktimes.off');
+                    $notes[] = __('worktimes.late_over_haft_afternoon');
+                } //check đi muộn buổi chiều
+                else if ($startAt >= $this->config->time_afternoon_go_late_at) {
+                    $type += WorkTime::TYPES['lately'];
+                    $notes[] = __('worktimes.lately_afternoon');
+                } //Chấm công buổi chiều, nghỉ sáng
+                else if ($startAt >= HAFT_HOUR) {
+                    if ($typeCheck == 0)
+                        $notes[] = __('worktimes.off_morning');
+                }
+            }
+            if ($typeCheck <= 0 && $startAt < HAFT_HOUR) {
+                //check đi muộn quá nửa buổi sáng -> nghỉ sáng
+                if ($startAt >= HAFT_MORNING) {
+                    $notes[] = __('worktimes.late_over_haft_morning');
+                } else if ($startAt >= $this->config->time_morning_go_late_at) {
+                    $type += WorkTime::TYPES['lately'];
+                    $notes[] = __('worktimes.lately_morning');
+                }
+            }
+        }
+
+        if ($endAt && $type != WorkTime::TYPES['off']) {
+            $endAt .= ':00';
+
+            if ($typeCheck >= 0 && $startAt > HAFT_HOUR) {
+                if ($endAt < HAFT_AFTERNOON) {
+                    $notes[] = __('worktimes.early_over_haft_afternoon');
+                    if ($typeCheck > 0) {
+                        $type = WorkTime::TYPES['off'];
+                    }
+                } else if ($endAt < $this->config->afternoon_end_work_at) {
+
+                    $type += WorkTime::TYPES['early'];
+                    $notes[] = __('worktimes.early_afternoon');
+                }
+
+            }
+            if ($typeCheck <= 0) {
+                if ($endAt < $this->config->morning_end_work_at) {
+                    $type += WorkTime::TYPES['early'];
+                    $notes[] = __('worktimes.early_morning');
+
+                } else if ($endAt < HAFT_MORNING) {
+                    $notes[] = __('worktimes.early_over_haft_morning');
+                    if ($typeCheck < 0) {
+                        $type = WorkTime::TYPES['off'];
+                    }
+                }
+            }
+
+            if ($this->config->time_ot_early_at && $endAt >= $this->config->time_ot_early_at) {
+                $type += WorkTime::TYPES['ot'];
+                $notes[] = __('worktimes.ot');
+            }
+
+        }
+//cost
+        $cost = 0;
+        if ($typeCheck <= 0) {
+            if (($startAt == null || $startAt <= HAFT_MORNING) && ($endAt == null || $endAt >= HAFT_MORNING)) {
+                $cost += 0.5;
+            }
+        }
+        if ($typeCheck >= 0) {
+
+            if (($startAt == null || $startAt <= HAFT_AFTERNOON) && ($endAt == null || $endAt >= HAFT_AFTERNOON)) {
+                $cost += 0.5;
+            }
+        }
+
+        return [$cost, $type, $notes];
     }
 
 }

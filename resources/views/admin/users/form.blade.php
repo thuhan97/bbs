@@ -173,8 +173,16 @@ if (isset($record->end_date)) {
                                 </div>
                                 <!-- /.form-group -->
                             </div>
-                            <!-- /.col-md-12 -->
-
+                            <div class="col-md-12">
+                                <!-- /.col-md-12 -->
+                                <div class="form-group margin-b-5 margin-t-5">
+                                    <label for="is_remote">
+                                        <span class="pl-2">Làm remote/lịch làm việc riêng</span>
+                                        <input type="checkbox" class="square-blue" name="is_remote" id="is_remote"
+                                               value="{{IS_REMOTE_STAFF}}" {{ old('is_remote', $record->is_remote) == IS_REMOTE_STAFF ? 'checked' : '' }}>
+                                    </label>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div class="col-md-6">

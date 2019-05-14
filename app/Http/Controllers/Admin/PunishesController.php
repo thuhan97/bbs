@@ -58,6 +58,14 @@ class PunishesController extends AdminBaseController
     {
         $model = $this->getSearchModel($request, $search);
 
+        $rule_id = $request->get('rule_id');
+        if (!empty($rule_id)) {
+            $model = $model->where('rule_id', $rule_id);
+        }
+        $user_id = $request->get('user_id');
+        if (!empty($user_id)) {
+            $model = $model->where('user_id', $user_id);
+        }
         if ($request->has('sort')) {
             $model->orderBy($request->get('sort'), $request->get('is_desc') ? 'asc' : 'desc');
         } else {

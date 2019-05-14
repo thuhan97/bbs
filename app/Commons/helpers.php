@@ -8,7 +8,7 @@ if (!function_exists('number_collapse')) {
      * Collapse number
      *
      * @param integer $number
-     * @param string $separator
+     * @param string  $separator
      *
      * @return string
      */
@@ -102,9 +102,9 @@ if (!function_exists('redirect_back_to')) {
      * Get an instance of the redirector.
      *
      * @param string|null $callbackUrl
-     * @param int $status
-     * @param array $headers
-     * @param bool $secure
+     * @param int         $status
+     * @param array       $headers
+     * @param bool        $secure
      *
      * @return \Illuminate\Routing\Redirector|\Illuminate\Http\RedirectResponse
      */
@@ -255,6 +255,7 @@ if (!function_exists('getStartAndEndDate')) {
         return $ret;
     }
 }
+
 if (!function_exists('getStartAndEndDateOfMonth')) {
     function getStartAndEndDateOfMonth($month, $year)
     {
@@ -273,10 +274,10 @@ if (!function_exists('get_years')) {
      * Encode unicode
      *
      * @param integer $num
-     * @param string $prefix
-     * @param bool $isDesc
+     * @param string  $prefix
+     * @param bool    $isDesc
      *
-     * @param bool $istatic
+     * @param bool    $istatic
      *
      * @return array
      */
@@ -304,7 +305,7 @@ if (!function_exists('get_months')) {
      * Get months
      *
      * @param string $prefix
-     * @param bool $isDesc
+     * @param bool   $isDesc
      *
      * @return string
      *
@@ -404,6 +405,7 @@ if (!function_exists('team')) {
         return ['' => 'Chọn team'] + $teams;
     }
 }
+
 if (!function_exists('users')) {
     /**
      * get all users
@@ -416,6 +418,7 @@ if (!function_exists('users')) {
         return ['' => 'Chọn nhân viên'] + $teams;
     }
 }
+
 if (!function_exists('to_work_time')) {
     /**
      *
@@ -429,6 +432,54 @@ if (!function_exists('to_work_time')) {
             return $times[0] . ':' . $times[1];
         }
         return $time;
+    }
+}
+if (!function_exists('get_date_list')) {
+    /**
+     *
+     *
+     * @param        $startDate
+     * @param        $endDate
+     * @param string $format
+     *
+     * @return array
+     */
+    function get_date_list($startDate, $endDate, $format = DATE_FORMAT)
+    {
+        $results = [];
+        try {
+            $period = new DatePeriod(
+                new DateTime($startDate),
+                new DateInterval('P1D'),
+                new DateTime($endDate)
+            );
+
+            foreach ($period as $key => $value) {
+                $results[] = $value->format($format);
+            }
+            $results[] = (new DateTime($endDate))->format($format);
+        } catch (Exception $e) {
+        }
+        return $results;
+    }
+}
+if (!function_exists('get_day_name')) {
+    /**
+     *
+     *
+     * @param      $date
+     * @param bool $isShort
+     *
+     * @return string
+     */
+    function get_day_name($date, $isShort = false)
+    {
+        $day = date_format(date_create($date), 'N') + 1;
+        if ($isShort) {
+            return $day == 8 ? 'CN' : ('T' . $day);
+        } else {
+            return $day == 8 ? 'Chủ nhật' : ('Thứ ' . $day);
+        }
     }
 }
 if (!function_exists('to_work_time_name')) {
@@ -454,22 +505,49 @@ if (!function_exists('to_work_time_name')) {
     }
 }
 
-/**
- * @param $number
- *
- * @return number
- */
+if (!function_exists('checkNumber')) {
 
-function checkNumber($number)
-{
-    if (!$number){
-        return 0;
+    /**
+     * @param $number
+     *
+     * @return number
+     */
+
+    function checkNumber($number)
+    {
+        if (!$number) {
+            return 0;
+        }
+        $explode = explode('.', $number);
+        if ($explode[1] > 0) {
+            return $number;
+        } else {
+            return $explode[0];
+        }
     }
-    $explode = explode('.', $number);
-    if ($explode[1] > 0) {
-        return $number;
-    } else {
-        return $explode[0];
+}
+
+if (!function_exists('get_punish_image')) {
+
+    /**
+     * @param $number
+     *
+     * @return number
+     */
+
+    function get_punish_image($number)
+    {
+        $unit = 1000;
+        //10M
+        if ($number > 10000 * $unit) {
+            return '/img/pigs/pig-4.jpg';
+        } else if ($number > 5000 * $unit) {
+            return '/img/pigs/pig-3.jpg';
+        } else if ($number > 2000 * $unit) {
+            return '/img/pigs/pig-2.jpg';
+        } else {
+            return '/img/pigs/pig-1.jpg';
+        }
     }
 }
 

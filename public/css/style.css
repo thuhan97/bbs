@@ -851,10 +851,10 @@ td.blank, .type-1, .type-2 {
     color: #ffffff !important;
 }
 
-.data-type-5 {
-    background-color: #01c851 !important;
-    color: #ffffff !important;
-}
+/*.data-type-5 {*/
+    /*background-color: #01c851 !important;*/
+    /*color: #ffffff !important;*/
+/*}*/
 
 .text-d-bold {
     font-weight: bold;
@@ -992,7 +992,7 @@ td.blank, .type-1, .type-2 {
     }
 }
 
-.permission-reason {
+.permission-reason, .permission-reason-late-ot, .permission-reason-late, .permission-reason-early, .permission-reason-ot {
     width: 85%;
     margin: 0 auto;
 }
@@ -1012,11 +1012,12 @@ td.blank, .type-1, .type-2 {
 .option-time-day-off {
     height: 38px;
     margin-left: -3px;
-    margin-top: 23px;
+    margin-top: 24px;
     background-color: #e9ecef;
     border: none;
     opacity: inherit;
     width: 80px;
+    border: 1px solid #e9ecef;
 }
 
 .navbar.navbar-light .breadcrumb .nav-item .nav-link:hover, .navbar.navbar-light .navbar-nav .nav-item .nav-link:hover {
@@ -1041,6 +1042,9 @@ td.blank, .type-1, .type-2 {
         padding-left: 270px;
     }
 }
+.ui-datepicker{
+    margin-top: 0px;
+}
 
 @media only screen and (min-device-width: 1024px) and (max-device-width: 1366px) and (-webkit-min-device-pixel-ratio: 2) and (orientation: landscape) {
     #slide-out {
@@ -1060,7 +1064,7 @@ td.blank, .type-1, .type-2 {
     }
 }
 
-@media (min-width: 1280px) {
+@media (min-width: 1199px) {
     #slide-out {
         transform: translateX(0%) !important;
     }
@@ -1291,4 +1295,11 @@ td.blank, .type-1, .type-2 {
 
 #punish .punish-counter {
     font-size: 50px;
+}
+#btn-detail-day-off{
+    border-radius: 5px;
+    font-size: 12px;
+}
+.table-detail-day-off{
+    padding: 0.4rem !important;
 }

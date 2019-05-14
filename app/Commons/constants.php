@@ -42,6 +42,7 @@ define('UPLOAD_PATH', '/uploads');
 define('URL_IMAGE_AVATAR', UPLOAD_PATH . '/avatar/');
 define('URL_IMAGE_PROJECT', 'adminlte/img/projects_img/');
 
+define('IS_REMOTE_STAFF', 1);
 define('ACTIVE_STATUS', 1);
 define('ACTIVE_NOTIFY', 1);
 
@@ -196,7 +197,7 @@ define('ICONS_TYPES_FILES', [
     'sql' => 'far fa-file-code',
 ]);
 
-define('SHARE_DUCOMMENT', 2);
+define('SHARE_DOCUMENT', 2);
 define('SHARE_EXPERIENCE', 1);
 
 define('VACATION', [
@@ -339,6 +340,10 @@ define('DAY_OFF_MONTH', [
     'day_off_month_Dec' => 12,
 ]);
 define('DEFAULT_VALUE', 0);
+define('WORKTIME_COST_OFF', 0);
+define('WORKTIME_COST_HAFT', 0.5);
+define('WORKTIME_COST_FULL', 1);
+define('HAFT_HOUR', '12:00');
 define('HAFT_MORNING', '10:00');
 define('HAFT_AFTERNOON', '15:30');
 define('DEFAULT_INSERT_ROW_EXCEL', 1);
@@ -360,6 +365,11 @@ define('CHECK_TIME_DAY_OFF', [
     '12:00:00' => '12:00',
     '18:00:00' => '18:00',
 ]);
+define('CHECK_TIME_DAY_OFF_USABLE', [
+    '08:00:00' => '00:00:00',
+    '12:00:00' => '12:00:00',
+    '18:00:00' => '24:00:00',
+]);
 define('DAY_OFF_TITLE_DEFAULT', 1);
 define('ARRAY_TITLE_DAYOFF_VACATION_MODE', [2, 3, 4]);
 define('GROUPS', [
@@ -369,6 +379,18 @@ define('GROUPS', [
     4 => 'Hành chính nhân sự',
 ]);
 define('SPACE', ' ');
+define('HALF_MONTH',15);
+
+define('HOURS_OF_DAY', 24);
+define('TOTAL_COUNT_DAY_OFF', 10);
+define('DATE_FORMAT_DAY_OFF', 'Y/m/d H:i:s');
+
+define('SUN', 'Sun');
+define('SAT', 'Sat');
+
+define('JANUARY',1);
+define('DECEMBER',12);
+
 
 
 

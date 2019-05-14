@@ -33,10 +33,31 @@ class ReportController extends Controller
             $request->merge(['year' => date('Y')]);
         if (!$request->has('month'))
             $request->merge(['month' => date('n')]);
+
+        if (!$request->has('team_id')) {
+            $user = Auth::user();
+            $team = $user->team();
+            if ($team) {
+                $teamId = $team->id;
+
+                if (!$request->has('type')) {
+                    $request->merge(['type' => 2]);
+                    $request->merge(['team_id' => $teamId]);
+
+                }
+            } else {
+                $teamId = 0;
+            }
+
+        } else {
+            $teamId = $request->get('team_id');
+        }
+
         $reports = $this->service->search($request, $perPage, $search);
+
         $teams = Team::pluck('name', 'id')->toArray();
 
-        return view('end_user.report.index', compact('reports', 'search', 'perPage', 'data', 'teams'));
+        return view('end_user.report.index', compact('reports', 'search', 'perPage', 'data', 'teams', 'teamId'));
     }
 
     /**
@@ -90,11 +111,14 @@ class ReportController extends Controller
         $data = $request->only('status', 'choose_week', 'to_ids', 'content', 'is_new');
         $choose_week = $data['choose_week'];
         $reportType = REPORT_TYPE_WEEKLY;
-        if ($choose_week < 0) {
+        if ($choose_week == 0 || $choose_week == 1) {
+            get_week_info($choose_week, $week_number);
+        } else {
             $choose_week = 0;
             $reportType = REPORT_TYPE_DAILY;
+            $week_number = get_week_number($choose_week);
         }
-        get_week_info($choose_week, $week_number);
+
         $data['title'] = $this->service->getReportTitle($data['choose_week']);
 
         $data['week_num'] = $week_number;

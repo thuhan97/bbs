@@ -30,10 +30,16 @@ Route::group([
     Route::post('/doi-mat-khau', 'UserController@updatePassword')->name('update_password');
     Route::get('/thoi-gian-lam-viec', 'UserController@workTime')->name('work_time');
     Route::get('/thoi-gian-lam-viec-api', 'UserController@workTimeAPI')->name('work_time_api');
+//    Route::post('/ngay-nghi/create-calendar', 'UserController@dayOffCreateCalendar')->name('day_off_create_calendar');
+    Route::post('/thoi-gian-lam-viec/xin-phep', 'UserController@workTimeAskPermission')->name('work_time.ask_permission');
+//    Route::post('/thoi-gian-lam-viec/xin-phep-ot', 'UserController@workTimeAskPermissionOT')->name('work_time.ask_permission_ot');
+    Route::post('/thoi-gian-lam-viec/xin-phep-ve-som', 'UserController@workTimeAskPermissionEarly')->name('work_time.ask_permission_early');
+    Route::get('/thoi-gian-lam-viec/xin-di-muon', 'UserController@workTimeDetailAskPermission')->name('work_time.detail_ask_permission');
     Route::get('/ngay-nghi', 'UserController@dayOff')->name('day_off')->middleware('delete.cache');
     Route::get('xin-phep', 'UserController@askPermission')->name('ask_permission');
-    Route::get('xin-phep/create', 'UserController@askPermissionCreate')->name('ask_permission.create');
+    Route::get('xin-phep/early', 'UserController@askPermissionEarly')->name('ask_permission.early');
     Route::get('xin-phep/ot', 'UserController@askPermissionOT')->name('ask_permission.ot');
+    Route::get('xin-phep/create', 'UserController@askPermissionCreate')->name('ask_permission.create');
     Route::post('phe-duyet-xin-phep', 'UserController@approved')->name('approved')->middleware('can:manager');
     Route::post('tu-choi-xin-phep', 'UserController@reject')->name('reject')->middleware('can:manager');
     Route::post('phe-duyet-xin-phep-ot', 'UserController@approvedOT')->name('approvedOT')->middleware('can:manager');
@@ -78,6 +84,9 @@ Route::group([
     Route::get('/download_file_share/{url}', 'ShareController@downloadFileShare');
     Route::post('/add_document', 'ShareController@addDocument')->name('add_document');
     Route::post('/add_experience', 'ShareController@addExperience')->name('add_experience');
+    Route::get('/deleted_experience/{id}', 'ShareController@deletedExperience')->name('deleted_experience');
+    Route::get('/edit_experience/{id}', 'ShareController@editExperience')->name('edit_experience');
+    Route::post('/save_edit_experience', 'ShareController@saveEditExperience')->name('save_edit_experience');
     Route::post('/add_comment', 'ShareController@addComment')->name('add_comment');
 
     Route::post('/add_suggestions', 'SuggestionController@addSuggestions')->name('add_suggestions');
@@ -85,8 +94,10 @@ Route::group([
 
     // create day off
     Route::post('/ngay-nghi/create-calendar', 'UserController@dayOffCreateCalendar')->name('day_off_create_calendar');
+    Route::post('/ngay-nghi/create-calendar', 'UserController@dayOffCreateCalendar1')->name('day_off_create_calendar1');
     Route::post('/ngay-nghi/create-day-off', 'UserController@dayOffCreate')->name('day_off_create');
     Route::post('/ngay-nghi/create-day-off-vacation', 'UserController@dayOffCreatevacationVacation')->name('day_off_create_vacation');
+    Route::get('/kiem-tra-ngay-phep-con-lai', 'UserController@checkUsable')->name('check-usable-day-offf');
 
 });
 

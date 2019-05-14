@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Admin\WorkTimePermissionRequest;
 use App\Http\Requests\Admin\WorkTimeRequest;
 use App\Http\Requests\ApprovedRequest;
 use App\Http\Requests\AskPermissionRequest;
@@ -10,6 +11,7 @@ use App\Http\Requests\DayOffRequest;
 use App\Http\Requests\ProfileRequest;
 use App\Models\DayOff;
 use App\Models\OverTime;
+use App\Models\RemainDayoff;
 use App\Models\User;
 use App\Models\WorkTime;
 use App\Models\WorkTimesExplanation;
@@ -17,7 +19,6 @@ use App\Repositories\Contracts\IDayOffRepository;
 use App\Services\Contracts\IDayOffService;
 use App\Services\Contracts\IUserService;
 use App\Transformers\DayOffTransformer;
-use Carbon\Carbon;
 use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -164,12 +165,13 @@ class UserController extends Controller
         if (isset($explanation_calendar)) {
             foreach ($explanation_calendar->get()->toArray() as $item) {
                 $calendarDataModal[] = [
+                    'id' => $item['id'],
                     'work_day' => $item['work_day'],
                     'type' => $item['type'],
                     'ot_type' => $item['ot_type'],
+                    'status' => $item['status'],
                     'note' => $item['note'],
                     'user_id' => $item['user_id'],
-                    'id' => $item['id'],
                 ];
             }
         }
@@ -190,13 +192,12 @@ class UserController extends Controller
      */
     public function dayOffCreateCalendar(WorkTimeRequest $request)
     {
-        $id = $request['id'];
         $reason = $request['reason'];
-        $workDay = $request['work_day'];
         $otType = $request['ot_type'];
         $explanationType = $request['explanation_type'];
-        if ($id) {
-            WorkTimesExplanation::where('user_id', Auth::id())->where('work_day', $workDay)->update(['note' => $reason, 'ot_type' => $otType, 'type' => $explanationType]);
+        $workTimeExplanation = $this->getWorkTimeExplanation($request['work_day'])->where('type', $explanationType)->first();
+        if ($workTimeExplanation) {
+            $workTimeExplanation->update(['note' => $reason, 'ot_type' => $otType, 'type' => $explanationType]);
             return back()->with('day_off_success', '');
         } else {
             WorkTimesExplanation::create([
@@ -207,6 +208,48 @@ class UserController extends Controller
                 'note' => $reason
             ]);
             return back()->with('day_off_success', 'day_off_success');
+        }
+    }
+
+    public function workTimeDetailAskPermission(Request $request)
+    {
+        if ($request->has('explanationOtType')) {
+            $workTimeExplanation = $this->getWorkTimeExplanation($request['work_day'])->where('type', array_search('Overtime', WORK_TIME_TYPE))->where('ot_type', $request['explanationOtType'])->first();
+        } else {
+            $workTimeExplanation = $this->getWorkTimeExplanation($request['work_day'])->where('type', $request['explanationType'])->first();
+        }
+        if ($workTimeExplanation) {
+            return $workTimeExplanation;
+        }
+        return 0;
+    }
+
+    public function workTimeAskPermission(WorkTimePermissionRequest $request)
+    {
+        $explanationOTType = $request['explanation_ot_type'];
+        $reason = $request['reason'];
+        $workDay = $request['work_day'];
+        if ($request->has('fullOption') && $request['status'] == 1) {
+            if ($request->has('fullOption') || $request->has('explanation_ot_type')) {
+                $workTimeExplanation = $this->getWorkTimeExplanation($workDay)->where('status', array_search(' Chưa duyệt', OT_STATUS))->where('type', $request['explanation_type'])->first();
+            } else {
+                $workTimeExplanation = $this->getWorkTimeExplanation($workDay)->where('ot_type', $explanationOTType)->first();
+            }
+            if ($workTimeExplanation) {
+                $workTimeExplanation->update(['note' => $reason, 'ot_type' => $explanationOTType, 'type' => $request['explanation_type']]);
+                return back()->with('day_off_success', '');
+            } else {
+                WorkTimesExplanation::create([
+                    'user_id' => Auth::id(),
+                    'work_day' => $request['work_day'],
+                    'ot_type' => $explanationOTType,
+                    'type' => $request['explanation_type'],
+                    'note' => $reason
+                ]);
+                return back()->with('day_off_success', 'day_off_success');
+            }
+        } else {
+            return back()->with('permission_error', '');
         }
     }
 
@@ -242,7 +285,28 @@ class UserController extends Controller
 
     public function askPermissionCreate(AskPermissionRequest $request)
     {
-        $workTimeExplanation = WorkTimesExplanation::where('user_id', Auth::id())->where('work_day', $request['work_day'])->first();
+        if ($request->has('permission_status') && $request['permission_status'] == array_search(' Chưa duyệt',OT_STATUS)) {
+            $workTimeExplanation = $this->getWorkTimeExplanation($request['work_day'])->where('status', array_search(' Chưa duyệt',OT_STATUS))->where('type', $request['permission_type'])->first();
+            if ($workTimeExplanation) {
+                $workTimeExplanation->update(['ot_type' => $request['ot_type'], 'note' => $request['note'], 'work_day' => $request['work_day']]);
+            } else {
+                WorkTimesExplanation::create([
+                    'user_id' => Auth::id(),
+                    'work_day' => $request['work_day'],
+                    'type' => $request['permission_type'],
+                    'ot_type' => $request['ot_type'],
+                    'note' => $request['note'],
+                ]);
+            }
+            return back()->with('create_permission_success', 'create_permission_success');
+        } else {
+            return back()->with('permission_error', '');
+        }
+    }
+
+    public function askPermissionEarly(Request $request)
+    {
+        $workTimeExplanation = $this->getWorkTimeExplanation($request['work_day'])->first();
         if ($workTimeExplanation) {
             $workTimeExplanation->update(['ot_type' => $request['ot_type'], 'note' => $request['note'], 'work_day' => $request['work_day']]);
         } else {
@@ -259,7 +323,7 @@ class UserController extends Controller
 
     public function askPermissionOT(Request $request)
     {
-        $workTimeExplanation = WorkTimesExplanation::where('user_id', Auth::id())->where('work_day', $request['data'])->where('type',array_search('Overtime',WORK_TIME_TYPE))->first();
+        $workTimeExplanation = $this->getWorkTimeExplanation($request['data'])->where('type', $request['type'])->first();
         if ($workTimeExplanation) {
             return $workTimeExplanation;
         } else {
@@ -316,15 +380,15 @@ class UserController extends Controller
     {
         $countDayOff = $this->userDayOffService->countDayOffUserLogin();
         $userManager = $this->userService->getUserManager();
-        $availableDayLeft = $this->userDayOffService->getDayOffUser($request, Auth::id());
+        $availableDayLeft = $this->userDayOffService->getDayOffUser($request, Auth::id(), true);
         $autoShowModal = $request->has('t');
-        if (isset($request->status_search) || isset($request->year) || isset($request->month)) {
-            $year = $request->year;
-            $month = $request->month;
+        if (isset($request->status_search) || isset($request->search_end_at) || isset($request->search_start_at)) {
+            $searchStratDate = $request->search_start_at;
+            $searchEndDate = $request->search_end_at;
             $statusSearch = $request->status_search;
 
-            $dayOff = $this->userDayOffService->searchStatus($year, $month, $statusSearch);
-            return view('end_user.user.day_off', compact('availableDayLeft', 'userManager', 'dayOff', 'statusSearch', 'countDayOff', 'year', 'month', 'autoShowModal'));
+            $dayOff = $this->userDayOffService->searchStatus($searchStratDate, $searchEndDate, $statusSearch);
+            return view('end_user.user.day_off', compact('availableDayLeft', 'userManager', 'dayOff', 'statusSearch', 'countDayOff', 'searchEndDate', 'searchStratDate', 'autoShowModal'));
         }
         return view('end_user.user.day_off', compact('availableDayLeft', 'userManager', 'countDayOff', 'autoShowModal'));
     }
@@ -445,15 +509,14 @@ class UserController extends Controller
 
     public function dayOffSearch(Request $request)
     {
-        $year = $request->year;
-        $month = $request->month;
+        $start = $request->search_start_at;
+        $end = $request->search_end_at;
         $status = $request->status;
         $search = $request->search;
-
         $dataDayOff = $this->userDayOffService->showList(null);
-        $dayOffSearch = $this->userDayOffService->getDataSearch($year, $month, $status, $search);
+        $dayOffSearch = $this->userDayOffService->getDataSearch($start, $end, $status, $search);
         return view('end_user.user.day_off_approval', compact(
-            'dataDayOff', 'dayOffSearch', 'year', 'month', 'status', 'search'
+            'dataDayOff', 'dayOffSearch', 'start', 'end', 'status', 'search'
         ));
     }
 
@@ -509,5 +572,37 @@ class UserController extends Controller
         } else {
             abort(404);
         }
+    }
+
+    public function checkUsable(Request $request)
+    {
+        $dayOffPreYear = RemainDayoff::where('user_id', Auth::id())->where('year', date('Y') - PRE_YEAR)->first()->remain ?? DEFAULT_VALUE;
+        $dayOffYear = RemainDayoff::where('user_id', Auth::id())->where('year', date('Y'))->first();
+        $remainDayoffCurrentYear = $dayOffYear->remain ?? DEFAULT_VALUE;
+        $DayoffFrreCurrentYear = $dayOffYear->day_off_free_female ?? DEFAULT_VALUE;
+        $numOff = $this->userDayOffService->checkDateUsable($request->start_date, $request->end_date, $request->start_time, $request->end_time);
+        if (!$numOff) {
+            return response()->json([
+                'check' => false,
+
+            ]);
+        } elseif ($numOff > ($dayOffPreYear + $remainDayoffCurrentYear + $DayoffFrreCurrentYear)) {
+            $absent = $numOff - ($dayOffPreYear + $remainDayoffCurrentYear + $DayoffFrreCurrentYear);
+            return response()->json([
+                'check' => true,
+                'absent' => $absent
+            ]);
+        } else {
+            return response()->json([
+                'check' => false,
+
+            ]);
+        }
+
+    }
+
+    private function getWorkTimeExplanation($work_day)
+    {
+        return WorkTimesExplanation::where('user_id', Auth::id())->where('work_day', $work_day);
     }
 }

@@ -10,14 +10,30 @@
            $record = session()->get('data');
        }
        $dataDayOff= $dayOff ?? $availableDayLeft['data'];
+        $searchStart = date((date('Y')-1).'/01/01', strtotime('tomorrow + 1day'));
+
     @endphp
     <form action="{{ route('day_off') }}" method="get" id="form-search">
-        <div class="row mb-3">
-            <div class="col-6 col-sm-2 col-xl-1 no-padding-right">
-                {{ Form::select('year', get_years(), $year ?? date('Y') , ['class'=>'yearselect browser-default custom-select w-100 border-0 select_year option-select p-1']) }}
+        <div class="row mb-3 ml-1">
+            <div class="col-sm-4 col-xl-2 pr-3 pl-0">
+                <label class=" text-w-400" for="">Từ ngày</label>
+                <input type="text"
+                       class="form-control border-0 select-item"
+                       id="search_start_at" autocomplete="off" name="search_start_at"
+                       value="{{  $searchStratDate ?? $searchStart  }}"
+                       readonly="readonly">
             </div>
-            <div class="col-6 col-sm-4 col-xl-2 no-padding-left">
-                {{ Form::select('month', MONTH, $month ?? '' , ['class' => 'browser-default custom-select w-100 month option-select','placeholder'=>'Chọn tháng']) }}
+            <div class="col-sm-4 col-xl-2 no-padding-left">
+                <label class="text-w-400" for="inputZip">Tới ngày</label>
+                <input type="text"
+                       class="form-control select-item  border-0 "
+                       id="search_end_at" autocomplete="off" name="search_end_at"
+                       value="{{ $searchEndDate ?? ''}}"
+                       readonly>
+            </div>
+            <div class="col-sm-2 col-xl-1 no-padding-left">
+                <label class=" text-w-400" for="inputCity"> &nbsp;</label>
+                <button class="form-control select-item  border-0 btn-secondary" id="result-search"><i class="fas fa-search"></i></button>
             </div>
         </div>
         <div class="d-none d-xl-flex container-fluid col-12 row border-bottom-2 mb-3" style="position: relative;">
@@ -53,7 +69,7 @@
                                 <i class="fas fa-calendar-times dayoff-icoin text-success day-off-icoi"></i>
                             </span>
                         <div class="media-body text-center text-md-left ml-xl-4">
-                            <h1 class="white-text font-weight-bold">{{ $countDayOff['previous_year'] }}</h1>
+                            <h1 class="white-text font-weight-bold">{{ $countDayOff['previous_year'] + DEFAULT_VALUE }}</h1>
                             <p class="card-subtitle text-white-50 text-size-table">Ngày sắp hết hạn</p>
                             <p class="card-title text-uppercase font-weight-bold card-text white-text text-size-header-1">
                                 CUỐI NĂM HỦY</p>
@@ -75,7 +91,7 @@
                                 <i class="fas fa-calendar-check dayoff-icoin text-warning day-off-icoi"></i>
                             </span>
                         <div class="media-body text-center text-md-left ml-xl-4">
-                            <h1 class="white-text font-weight-bold ">{{ $countDayOff['total'] }}</h1>
+                            <h1 class="white-text font-weight-bold ">{{ $countDayOff['total'] + DEFAULT_VALUE  }}</h1>
                             <p class="card-subtitle text-white-50 text-size-table">Ngày đã nghỉ</p>
                             <p class="card-title text-uppercase font-weight-bold card-text white-text text-size-header-1">
                                 TRONG NĂM {{date('Y')}}</p>
@@ -96,7 +112,7 @@
                             </span>
                         <div class="media-body text-center text-md-left ml-xl-4">
                             <h1 class="white-text font-weight-bold">Đơn</h1>
-                            <p class="card-subtitle text-white-50 text-size-table">Đơn xin</p>
+                            <p class="card-subtitle text-white-50 text-size-table">&nbsp;</p>
                             <p class="card-title text-uppercase font-weight-bold card-text white-text text-size-header-1">
                                 XIN NGHỈ / NGHỈ PHÉP</p>
                         </div>
@@ -113,20 +129,23 @@
                 </div>
                 <div class="col-sm-8 text-right col-md-8">
                     <div class="row">
-                        <div class="col-sm-2"></div>
-                        <div class="col-12 col-sm-6">
+                        <div class="col-md-4"></div>
+                        <div class="col-md-4 col-12">
                             <?php
                             $user = \Illuminate\Support\Facades\Auth::user();
                             ?>
                             @if($user->jobtitle_id >= \App\Models\Report::MIN_APPROVE_JOBTITLE)
-                                <a href="{{route('day_off_approval')}}" class="btn btn-primary" type="button">
-                                    {{__l('day_off_approval')}}
-                                </a>
+                                <div class="pl-1">
+                                    <a href="{{route('day_off_approval')}}" id="btn-detail-day-off" class="btn btn-primary form-control w-100 waves-effect waves-light mx-0" type="button">
+                                        {{__l('day_off_approval')}}
+                                    </a>
+                                </div>
+
                             @endif
                         </div>
                         <div class="d-none d-sm-block col-sm-4">
            <span class=" btn-secondary" id="btn-select">
-            {{ Form::select('status_search', SHOW_DAY_OFFF, $statusSearch ?? ALL_DAY_OFF, ['class' => 'browser-default custom-select mt-2 w-100 month option-select select-search','placeholder'=>'']) }}
+            {{ Form::select('status_search', SHOW_DAY_OFFF, $statusSearch ?? ALL_DAY_OFF, ['class' => 'browser-default custom-select mt-1 w-100 month option-select','placeholder'=>'']) }}
         </span>
                         </div>
                     </div>
@@ -156,8 +175,8 @@
                     <th class="d-none d-md-table-cell text-center" scope="row">
                         {!! ((($dataDayOff->currentPage()*PAGINATE_DAY_OFF)-PAGINATE_DAY_OFF)+1)+$keys !!}
                     </th>
-                    <td class="text-center">{{$absence->start_date}}</td>
-                    <td class="d-none d-md-table-cell text-center">{{$absence->end_date}}</td>
+                    <td class="text-center">{{ $absence->title != DAY_OFF_TITLE_DEFAULT ? \App\Helpers\DateTimeHelper::checkTileDayOffGetDate($absence->start_at) : $absence->start_date  }}</td>
+                    <td class="d-none d-md-table-cell text-center">{{ $absence->title != DAY_OFF_TITLE_DEFAULT ? \App\Helpers\DateTimeHelper::checkTileDayOffGetDate($absence->end_at) : $absence->end_date  }}</td>
                     <td class="text-center">{{ array_key_exists($absence->title, VACATION_FULL) ? VACATION_FULL[$absence->title] : ''  }}</td>
                     <td class="text-center">{!! nl2br($absence->reason) !!}</td>
                     <td class="d-none d-md-table-cell text-center">{{!!!($absence->number_off || $absence->absent > DEFAULT_VALUE)? ($absence->status != STATUS_DAY_OFF['noActive'] ? 'Đang duyệt' : '') : checkNumber($absence->number_off) + checkNumber($absence->absent).' ngày'}}
@@ -254,10 +273,13 @@
         <div class="modal-dialog modal-center" role="document">
             <div class="modal-content" id="bg-img" style="background-image: url({{ asset('img/font/xin_nghi.png') }})">
                 <div class="modal-header text-center border-bottom-0 p-3">
-                    <h4 class="modal-title w-100 font-weight-bold pt-2">XIN NGHỈ PHÉP</h4>
+                    <h4 class="modal-title w-100 font-weight-bold pt-2 ml-5">XIN NGHỈ PHÉP</h4>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span class="btn-close-icon" aria-hidden="true">&times;</span>
                     </button>
+                </div>
+                <div class="modal-header text-center border-bottom-0 p-3">
+                    <h6 class="modal-title w-100 font-weight-bold text-danger" id="usable-check"></h6>
                 </div>
                 <div class="modal-body mt-0 pb-0 d-flex justify-content-start ml-3">
                     <div class="custom-control custom-radio">
@@ -318,7 +340,7 @@
                                                     <?php
                                                     $autoDateEnd = date('Y/m/d', strtotime('tomorrow + 1day'));
                                                     ?>
-                                                    <label class="text-w-400" for="inputZip">Tới ngày<span
+                                                    <label class="text-w-400" for="inputZip">Ngày kết thúc<span
                                                                 class="text-danger">*</span></label>
                                                     <input type="text"
                                                            class="form-control select-item  border-0 {{ $errors->has('end_at') ? ' has-error' : '' }}"
@@ -384,13 +406,7 @@
                                     <!-- Default input -->
                                     <label class="text-w-400" for="exampleForm2">Chế độ nghỉ<span
                                                 class="text-danger">*</span></label>
-                                    <?php
-                                    $vacation = VACATION;
-                                    if (\Illuminate\Support\Facades\Auth::user()->sex == SEX['male']) {
-                                        (array_pop($vacation));
-                                    }
-                                    ?>
-                                    {{ Form::select('title', $vacation,null,['class' => 'form-control my-1 mr-1  browser-default custom-select md-form select-item reason_id check-value']) }}
+                                    {{ Form::select('title', VACATION,null,['class' => 'form-control my-1 mr-1  browser-default custom-select md-form select-item reason_id check-value']) }}
                                     @if ($errors->has('title'))
                                         <div class="">
                                             <span class="help-block text-danger">{{ $errors->first('title') }}</span>
@@ -428,7 +444,7 @@
                                         </div>
                                         <!-- Default input -->
                                         <div class="form-group col-sm-6 m-0">
-                                            <label class="text-w-400" for="inputZip">Tới ngày<span
+                                            <label class="text-w-400" for="inputZip">Ngày kết thúc<span
                                                         class="text-danger">*</span></label>
                                             <input type="text"
                                                    class="form-control select-item {{ $errors->has('end_at') ? ' has-error' : '' }}"
@@ -600,7 +616,13 @@
     <script type="text/javascript">
 
         $(document).ready(function () {
+
+            checkUsable();
+
             $('.option-select').on('change', function () {
+                $("#form-search").submit();
+            });
+            $('#result-search').on('click', function () {
                 $("#form-search").submit();
             });
             $('form').each(function () {
@@ -680,7 +702,6 @@
                 $('#modal-form').modal('show');
             });
 
-
             var today = new Date();
             var mon = today.getMonth() + 1;
             var date = today.getFullYear() + '-' + mon + 1 + '-' + today.getDate();
@@ -690,6 +711,7 @@
             $('#modal-form').modal('show');
             @endif
 
+            $('#search_start_at , #search_end_at').datepicker({format: 'yyyy/mm/dd',orientation: 'bottom'});
             $('#start_date , #start_date1').datepicker({
                 format: 'yyyy/mm/dd',
                 hoursDisabled: '0,1,2,3,4,5,6,7,18,19,20,21,22,23',
@@ -703,7 +725,7 @@
             });
 
             $('#end_date,#start_date,.time-start,.time-end').on('change', function () {
-                checkDate('#start_date', '#end_date', '#errors_date', true, '#btn-send');
+                checkUsable();
             })
             $('#end_date1,#start_date1').on('change', function () {
                 checkDate('#start_date1', '#end_date1', '#errors_date1', false, '#btn-send-day-off');
@@ -773,6 +795,8 @@
             $('.option-dayoff').on('click', function () {
                 var check = $(this).val();
                 if (check == 1) {
+                    $('#usable-check').text(' ')
+                    $('#home').removeClass('active show');
                     $('#home').removeClass('active show');
                     $('#profile').addClass('active show');
                 } else {
@@ -780,9 +804,28 @@
                     $('#profile').removeClass('active show');
                 }
             })
-
-
         });
+        function checkUsable() {
+            checkDate('#start_date', '#end_date', '#errors_date', true, '#btn-send');
+            var dateStart=$('#start_date').val();
+            var dateEnd =$('#end_date').val();
+            var timeStart= $('.time-start').val();
+            var timeEnd = $('.time-end').val();
+            $.ajax
+            ({
+                'url': '{{ route('check-usable-day-offf') }}',
+                'type': 'get',
+                'data': {'start_date':dateStart  , 'end_date': dateEnd,'start_time':timeStart  , 'end_time': timeEnd, },
+                success: function (data) {
+                    // console.log(data);
+                    if(data.check){
+                        $('#usable-check').text('Bạn sẽ bị tính ' + data.absent + ' ngày nghỉ không phép vì ngày phép còn lại không đủ.' )
+                    }else {
+                        $('#usable-check').text(' ')
+                    };
+                }
+            });
+        }
 
         function checkDate(start, end, errors, check, btn) {
             var start1 = $(start).val();

@@ -4,6 +4,8 @@
     {{ Form::select('year', get_years(), request('year'), ['class'=>'mr-1 w-22 form-control']) }}
     {{ Form::select('month', get_months(), request('month'), ['class'=>'mr-1 w-22 form-control']) }}
     {{ Form::select('is_submit', ['' => 'Trạng thái'] + PUNISH_SUBMIT_NAME, request('is_submit'), ['class'=>'w-22 form-control']) }}
+    <input type="hidden" name="user_id" value="{{request('user_id')}}">
+    <input type="hidden" name="rule_id" value="{{request('rule_id')}}">
 
     <div class="input-group-btn">
         <button type="submit" class="btn btn-primary"><i class="fa fa-search"></i></button>

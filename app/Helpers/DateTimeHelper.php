@@ -117,4 +117,7 @@ class DateTimeHelper
 
         return $dateCarbon->addYear()->format($format);
     }
+    public static function checkTileDayOffGetDate($date){
+        return Carbon::createFromFormat(DATE_TIME_FORMAT,$date)->format('d/m/Y');
+    }
 }

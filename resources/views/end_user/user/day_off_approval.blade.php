@@ -26,7 +26,6 @@
         $manager = session()->get('manager');
     }
     $searchStart = date((date('Y')-1).'/01/01', strtotime('tomorrow + 1day'));
-    $searchEnd = date('Y/m/d');
     ?>
     @if(session()->has('success'))
         <script>
@@ -82,7 +81,7 @@
                 <input type="text"
                        class="form-control select-item  border-0 "
                        id="search_end_at" autocomplete="off" name="search_end_at"
-                       value="{{ $end ?? $searchEnd}}"
+                       value="{{ $end ?? ''}}"
                        readonly>
             </div>
             <div class="col-sm-2 col-xl-2 no-padding-left">
@@ -203,14 +202,14 @@
             <thead class="grey lighten-2">
             <tr>
                 <th class="text-center d-none d-md-table-cell">STT</th>
-                <th class="text-center table-detail-day-off">Nhân viên</th>
-                <th class="text-center table-detail-day-off">Từ ngày</th>
+                <th class="text-center ">Nhân viên</th>
+                <th class="text-center ">Từ ngày</th>
                 <th class="text-center d-none d-sm-table-cell">Tới ngày</th>
-                <th class="text-center table-detail-day-off">Tiêu đề</th>
-                <th class="text-center table-detail-day-off">Nội dung</th>
-                <th class="text-center d-none d-sm-table-cell">Ngày nghỉ</th>
-                <th class="text-center" table-detail-day-off>Phê duyệt</th>
-                <th class="text-center d-none d-sm-table-cell">Xem thêm</th>
+                <th class="text-center ">Tiêu đề</th>
+                <th class="text-center ">Nội dung</th>
+                <th class="text-center d-none d-sm-table-cell ">Ngày nghỉ</th>
+                <th class="text-center " >Phê duyệt</th>
+                <th class="text-center d-none d-sm-table-cell ">Xem thêm</th>
             </tr>
             </thead>
             <!--Table head-->
@@ -222,10 +221,10 @@
                         {!! ((($getDayOff->currentPage()*PAGINATE_DAY_OFF)-PAGINATE_DAY_OFF)+1)+$keys !!}
                     </th>
 
-                    <td class="text-center table-name table-detail-day-off">
+                    <td class="text-center table-name ">
                         {{$record->user->name}}
                     </td>
-                    <td class="text-center table-detail-day-off">
+                    <td class="text-center ">
                         {{ $record->title != DAY_OFF_TITLE_DEFAULT ? \App\Helpers\DateTimeHelper::checkTileDayOffGetDate($record->start_at) : $record->start_date  }}
                     </td>
                     <td class="text-center d-none d-sm-table-cell">

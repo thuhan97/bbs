@@ -166,19 +166,19 @@
                             dataUserID = el.getElementsByClassName("data-user-id")[0].innerHTML,
                             dataType = el.getElementsByClassName("data-type")[0].innerHTML;
                         dataTypeOT = el.getElementsByClassName("data-ot-type")[0].innerHTML;
-                        switch (true) {
-                            case parseInt(dataTypeOT) === 1:
-                                var projectOT = 'selected';
-                                var otherOT = '';
-                                break;
-                            case parseInt(dataTypeOT) === 2:
-                                var otherOT = 'selected';
-                                var projectOT = '';
-                                break;
-                            default:
-                                var projectOT = '',
-                                    otherOT = '';
-                        }
+                        // switch (true) {
+                        //     case parseInt(dataTypeOT) === 1:
+                        //         var projectOT = 'selected';
+                        //         var otherOT = '';
+                        //         break;
+                        //     case parseInt(dataTypeOT) === 2:
+                        //         var otherOT = 'selected';
+                        //         var projectOT = '';
+                        //         break;
+                        //     default:
+                        //         var projectOT = '',
+                        //             otherOT = '';
+                        // }
 
                         switch (true) {
                             case parseInt(dataType) === 1:
@@ -210,14 +210,9 @@
                         calendar.sDay = el.getElementsByClassName("dayNumber")[0].innerHTML;
                         if (el.getElementsByClassName("data-id")[0]) {
                             document.getElementById("div-reason").innerHTML =
-                                '<div class="row col-md-12">' +
                                 '<div class="row col-md-12 append-reason">' +
                                 '<div class="col-md-12 d-flex justify-content-center">' +
                                 '<div class="user col-md-4 pl-0 pr-0 text-center">' +
-                                '    <select class="user-radio2 radio-modal-work-time wt-input-late">' +
-                                '       <option value="1" name="type">Đi muộn OT dự án </option>' +
-                                '       <option value="2" name="type">Về Sớm</option>' +
-                                '   </select>' +
                                 '    <label for="ot-project" class="wt-input-late">OT dự án </label>' +
                                 '    <input type="radio" id="ot-project" class="user-radio2 radio-modal-work-time wt-input-late" name="explanation_ot_type" value="1"  style="position: relative;opacity: 1;pointer-events: inherit"/>' +
                                 '</div>' +
@@ -226,14 +221,9 @@
                                 '    <input id="ot-other" type="radio" class="user-radio3 radio-modal-work-time"  name="explanation_ot_type" value="2"  style="position: relative;opacity: 1;pointer-events: inherit"/>' +
                                 '</div>' +
                                 '</div>' +
-                                // '<input hidden name="id" value="' + dataID + '">' +
-                                // '<input hidden name="user_id" value="' + dataUserID + '">' +
                                 '<input type="hidden" name="work_day" class="work_day" value="' + dataWorkDay + '">' +
                                 '<input hidden name="explanation_type" value="4">' +
                                 '<textarea class="form-control wt-textarea-reason" name="reason" rows="6" placeholder="Nội dung bạn muốn gửi..."></textarea>' +
-                                '</div>' +
-                                '<div class="row col-md-12">' +
-                                '</div>' +
                                 '</div>';
                         } else {
                             document.getElementById("div-reason").innerHTML =
@@ -252,8 +242,6 @@
                                 '<input type="hidden" name="work_day" class="work_day" value="' + getDataTime + '">' +
                                 '<textarea class="form-control wt-textarea-reason" name="reason" rows="6" placeholder="Nội dung bạn muốn gửi..."></textarea>' +
                                 '<input hidden name="explanation_type" value="4">' +
-                                // '<div class="append-reason"></div>' +
-                                // '<textarea class="form-control" name="reason" rows="6" placeholder="Nội dung bạn muốn gửi..."></textarea>' +
                                 '</div>' +
                                 '<div class="row col-md-12">' +
                                 '</div>' +
@@ -262,118 +250,101 @@
                     }
 
                     if (parseInt(calendarYM) >= parseInt(currentMY)) {
-                            if (currentFullTime <= fullTime) {
-                                if (dataWorkDay) {
-                                    var workDay = dataWorkDay,
-                                        id = dataID,
-                                        dataReason = dataReason;
-                                } else {
-                                    var workDay = getDataTime,
-                                        id = '',
-                                        dataReason = '',
-                                        dataID = '';
-                                }
-                                document.getElementById("div-reason").innerHTML =
-                                    '<div class="row col-md-12">' +
-                                    '<input hidden name="id" value="' + dataID + '">' +
-                                    '<input hidden name="LateOTEarly" value="' + dataID + '">' +
-                                    '<input type="hidden" class="work_day" name="work_day" value="' + getDataTime + '">' +
-                                    '<div class="user col-md-4 pl-0 pr-0 text-center">' +
-                                    '    <label for="late">Xin đi muộn </label>' +
-                                    '    <input type="radio" id="late" class="user-radio2 radio-modal-work-time" name="explanation_type" value="1"  style="position: relative;opacity: 1;pointer-events: inherit"/>' +
-                                    '</div>' +
-                                    '<div class="user col-md-4 pl-0 pr-0 text-center">' +
-                                    '    <label for="early">Xin về sớm </label>' +
-                                    '    <input  id="early" type="radio" class="user-radio3 radio-modal-work-time"  name="explanation_type" value="2"  style="position: relative;opacity: 1;pointer-events: inherit"/>' +
-                                    '</div>' +
-                                    '<div class="user col-md-4 pl-0 pr-0 text-center">' +
-                                    '    <label for="ot">Xin OT</label>' +
-                                    '    <input type="radio" id="ot" class="user-radio1 radio-modal-work-time" name="explanation_type" value="4"  style="position: relative;opacity: 1;pointer-events: inherit"/>' +
-                                    '</div>' +
-                                    '<textarea class="form-control mt-4 wt-textarea-reason" name="reason" rows="6" placeholder="Nội dung bạn muốn gửi..."></textarea>' +
-                                    '</div>';
-
-                                $('.user-radio3').change(function () {
-                                    $('.user .demo').remove();
-                                });
-                                $('.user-radio2').change(function () {
-                                    $('.user .demo').remove();
-                                });
-                                $('.user-radio1').change(function () {
-                                    $('.user .demo').remove();
-                                    $('.user-radio1:checked').parent().append('' +
-                                        '<div class="demo"><select class="browser-default form-control float-left w-95 explanation_ot_type"\n' +
-                                        'name="explanation_ot_type"><option value="" ' + projectOT + '>select<option value="1" ' + projectOT + '>OT dự án</option><option value="2" ' + otherOT + '>OT cá nhân</option></select></div>');
-                                    $(".explanation_ot_type").on('change',function () {
-                                        var explanationOtType = $(this).val(),
-                                            work_day = $('.work_day').val();
-                                        $.ajax({
-                                            url: '{{ route('work_time.detail_ask_permission') }}',
-                                            type: 'GET',
-                                            dataType: 'JSON',
-                                            data: {
-                                                'work_day': work_day,
-                                                'explanationOtType': explanationOtType,
-                                            },
-                                            success: function (respond) {
-                                                if (respond.note || respond.type === 4) {
-                                                    var note = respond.note
-                                                } else {
-                                                    note = ''
-                                                }
-                                                $('.wt-textarea-reason').text(note)
-                                            }
-                                        });
-                                    })
-                                });
+                        if (currentFullTime <= fullTime) {
+                            if (dataWorkDay) {
+                                var workDay = dataWorkDay,
+                                    id = dataID,
+                                    dataReason = dataReason;
                             } else {
-                                makeMoal()
+                                var workDay = getDataTime,
+                                    id = '',
+                                    dataReason = '',
+                                    dataID = '';
                             }
-                    }
-                    $('#ot-project').on('click', function () {
-                        var lateWorkDay = $('.work_day').val(),
-                            explanationType = $(this).val();
-                        $.ajax({
-                            url: '{{ route('work_time.detail_ask_permission') }}',
-                            type: 'GET',
-                            dataType: 'JSON',
-                            data: {
-                                'work_day': lateWorkDay,
-                                'explanationType': explanationType,
-                            },
-                            success: function (respond) {
-                                if (respond.note || respond.type === 4 && respond.ot_type === 1) {
-                                    var note = respond.note
-                                } else {
-                                    note = ''
-                                }
-                                $('.wt-textarea-reason').text(note)
-                            }
-                        });
-                        $('.wt-early-reason').remove()
-                    });
+                            document.getElementById("div-reason").innerHTML =
+                                '<div class="row col-md-12">' +
+                                '<input hidden name="id" value="' + dataID + '">' +
+                                '<input hidden name="LateOTEarly" value="' + dataID + '">' +
+                                '<input type="hidden" class="work_day" name="work_day" value="' + getDataTime + '">' +
+                                '<div class="user col-md-4 pl-0 pr-0 text-center">' +
+                                '    <label for="late">Xin đi muộn </label>' +
+                                '    <input type="radio" id="late" class="user-radio2 radio-modal-work-time" name="explanation_type" value="1"  style="position: relative;opacity: 1;pointer-events: inherit"/>' +
+                                '</div>' +
+                                '<div class="user col-md-4 pl-0 pr-0 text-center">' +
+                                '    <label for="early">Xin về sớm </label>' +
+                                '    <input  id="early" type="radio" class="user-radio3 radio-modal-work-time"  name="explanation_type" value="2"  style="position: relative;opacity: 1;pointer-events: inherit"/>' +
+                                '</div>' +
+                                '<div class="user col-md-4 pl-0 pr-0 text-center">' +
+                                '    <label for="ot">Xin OT</label>' +
+                                '    <input type="radio" id="ot" class="user-radio1 radio-modal-work-time" name="explanation_type" value="4"  style="position: relative;opacity: 1;pointer-events: inherit"/>' +
+                                '</div>' +
+                                '<textarea class="form-control mt-4 wt-textarea-reason" name="reason" rows="6" placeholder="Nội dung bạn muốn gửi..."></textarea>' +
+                                '</div>';
 
-                    $('#ot-other').on('click', function () {
+                            $('.user-radio3').change(function () {
+                                $('.user .demo').remove();
+                            });
+                            $('.user-radio2').change(function () {
+                                $('.user .demo').remove();
+                            });
+                            $('.user-radio1').change(function () {
+                                $('.user .demo').remove();
+                                $('.user-radio1:checked').parent().append('' +
+                                    '<div class="demo"><select class="browser-default form-control float-left w-95 explanation_ot_type"\n' +
+                                    'name="explanation_ot_type"><option value="">Select<option value="1">OT dự án</option><option value="2">OT cá nhân</option></select></div>');
+                                $(".explanation_ot_type").on('change', function () {
+                                    var explanationOtType = $(this).val(),
+                                        work_day = $('.work_day').val();
+                                    $.ajax({
+                                        url: '{{ route('work_time.detail_ask_permission') }}',
+                                        type: 'GET',
+                                        dataType: 'JSON',
+                                        data: {
+                                            'work_day': work_day,
+                                            'explanationOtType': explanationOtType,
+                                        },
+                                        success: function (respond) {
+                                            if (respond.note || respond.type === 4) {
+                                                var note = respond.note
+                                            } else {
+                                                note = ''
+                                            }
+                                            $('.wt-textarea-reason').text(note)
+                                        }
+                                    });
+                                })
+                            });
+                        } else {
+                            makeMoal()
+                        }
+                    }
+                    $('#ot-project,#ot-other').on('click', function () {
                         var lateWorkDay = $('.work_day').val(),
-                            explanationType = $(this).val();
+                            explanationOtType = $(this).val();
                         $.ajax({
                             url: '{{ route('work_time.detail_ask_permission') }}',
                             type: 'GET',
                             dataType: 'JSON',
                             data: {
                                 'work_day': lateWorkDay,
-                                'explanationType': explanationType,
+                                'explanationOtType': explanationOtType,
                             },
                             success: function (respond) {
-                                if (respond.note ||respond.type === 4 && respond.ot_type === 2) {
-                                    var note = respond.note
+                                if (respond.note || respond.type === 4 && respond.ot_type === 2) {
+                                    var project = respond.note
                                 } else {
-                                    note = ''
+                                    project = ''
                                 }
-                                $('.wt-textarea-reason').text(note)
+                                if (respond.note || respond.type === 4 && respond.ot_type === 2) {
+                                    var other = respond.note
+                                } else {
+                                    other = ''
+                                }
+
+                                $('.wt-textarea-reason').text(project);
+                                $('.wt-textarea-reason').text(other);
                             }
                         });
-                        $('.wt-late-reason').remove()
                     });
 
                     $('#late,#early').on('click', function () {
@@ -388,7 +359,7 @@
                                 'explanationType': explanationType,
                             },
                             success: function (respond) {
-                                if (respond.note ||respond.type === 4 && respond.ot_type === 2) {
+                                if (respond.note || respond.type === 4 && respond.ot_type === 2) {
                                     var note = respond.note
                                 } else {
                                     note = ''

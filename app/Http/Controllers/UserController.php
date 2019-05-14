@@ -218,7 +218,7 @@ class UserController extends Controller
     public function workTimeDetailAskPermission(Request $request)
     {
         if ($request->has('explanationOtType')) {
-            $workTimeExplanation = WorkTimesExplanation::where('user_id', Auth::id())->where('work_day', $request['work_day'])->where('type', 4)->where('ot_type', $request['explanationOtType'])->first();
+            $workTimeExplanation = WorkTimesExplanation::where('user_id', Auth::id())->where('work_day', $request['work_day'])->where('type', array_search('Overtime',WORK_TIME_TYPE))->where('ot_type', $request['explanationOtType'])->first();
         } else {
             $workTimeExplanation = WorkTimesExplanation::where('user_id', Auth::id())->where('work_day', $request['work_day'])->where('type', $request['explanationType'])->first();
         }
@@ -230,20 +230,23 @@ class UserController extends Controller
 
     public function workTimeAskPermission(WorkTimePermissionRequest $request)
     {
-        $explanationType = $request['explanation_ot_type'];
+        $explanationOTType = $request['explanation_ot_type'];
         $reason = $request['reason'];
         $workDay = $request['work_day'];
-        if ($request->has('LateOTEarly')) {
+        if ($request->has('LateOTEarly') || $request->has('explanation_ot_type')) {
             $workTimeExplanation = WorkTimesExplanation::where('user_id', Auth::id())->where('work_day', $workDay)->where('type', $request['explanation_type'])->first();
+        }else {
+            $workTimeExplanation = WorkTimesExplanation::where('user_id', Auth::id())->where('work_day', $workDay)->where('ot_type', $explanationOTType)->first();
+            dd($workTimeExplanation);
         }
         if ($workTimeExplanation) {
-            $workTimeExplanation->update(['note' => $reason, 'ot_type' => $explanationType, 'type' => $request['explanation_type']]);
+            $workTimeExplanation->update(['note' => $reason, 'ot_type' => $explanationOTType, 'type' => $request['explanation_type']]);
             return back()->with('day_off_success', '');
         } else {
             WorkTimesExplanation::create([
                 'user_id' => Auth::id(),
                 'work_day' => $request['work_day'],
-                'ot_type' => $explanationType,
+                'ot_type' => $explanationOTType,
                 'type' => $request['explanation_type'],
                 'note' => $reason
             ]);

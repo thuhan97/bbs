@@ -32,12 +32,14 @@ Route::group([
     Route::get('/thoi-gian-lam-viec-api', 'UserController@workTimeAPI')->name('work_time_api');
 //    Route::post('/ngay-nghi/create-calendar', 'UserController@dayOffCreateCalendar')->name('day_off_create_calendar');
     Route::post('/thoi-gian-lam-viec/xin-phep', 'UserController@workTimeAskPermission')->name('work_time.ask_permission');
+//    Route::post('/thoi-gian-lam-viec/xin-phep-ot', 'UserController@workTimeAskPermissionOT')->name('work_time.ask_permission_ot');
+    Route::post('/thoi-gian-lam-viec/xin-phep-ve-som', 'UserController@workTimeAskPermissionEarly')->name('work_time.ask_permission_early');
     Route::get('/thoi-gian-lam-viec/xin-di-muon', 'UserController@workTimeDetailAskPermission')->name('work_time.detail_ask_permission');
     Route::get('/ngay-nghi', 'UserController@dayOff')->name('day_off')->middleware('delete.cache');
     Route::get('xin-phep', 'UserController@askPermission')->name('ask_permission');
-    Route::get('xin-phep/create', 'UserController@askPermissionCreate')->name('ask_permission.create');
     Route::get('xin-phep/early', 'UserController@askPermissionEarly')->name('ask_permission.early');
     Route::get('xin-phep/ot', 'UserController@askPermissionOT')->name('ask_permission.ot');
+    Route::get('xin-phep/create', 'UserController@askPermissionCreate')->name('ask_permission.create');
     Route::post('phe-duyet-xin-phep', 'UserController@approved')->name('approved')->middleware('can:manager');
     Route::post('tu-choi-xin-phep', 'UserController@reject')->name('reject')->middleware('can:manager');
     Route::post('phe-duyet-xin-phep-ot', 'UserController@approvedOT')->name('approvedOT')->middleware('can:manager');

@@ -24,17 +24,40 @@ class AskPermissionRequest extends FormRequest
      */
     public function rules()
     {
-        return [
-            'work_day' => 'required|date',
-            'type' => 'required|between:1,4|integer',
-        ];
+        $rules = [];
+        if ($this->request->has('permission_late')) {
+            $rules['permission_type'] = [
+                'required',
+                'integer',
+                Rule::in(array_search('Đi muộn',WORK_TIME_TYPE))
+            ];
+        }
+
+        if ($this->request->has('permission_early')) {
+            $rules['permission_type'] = [
+                'required',
+                'integer',
+                Rule::in(array_search('Về Sớm',WORK_TIME_TYPE))
+            ];
+        }
+
+        if ($this->request->has('permission_ot')) {
+            $rules['permission_type'] = [
+                'required',
+                'integer',
+                Rule::in(array_search('Overtime',WORK_TIME_TYPE))
+            ];
+        }
+        $rules['work_day'] = 'required|date';
+        $rules['note'] = 'required';
+        return $rules;
     }
 
     public function attributes()
     {
         return [
             'title' => 'Ngày xin phép',
-            'type' => 'Hình thức',
+            'permission_type' => 'Hình thức',
         ];
     }
 }

@@ -111,7 +111,7 @@
         <div class="modal-dialog modal-center modal-set-center" role="document">
             <div class="modal-content" id="bg-img" style="background-image: url({{ asset('img/font/xin_nghi.png') }})">
                 <div class="modal-header text-center border-bottom-0 p-3">
-                    <h4 class='mg-center mg-left-10 modal-title w-100 font-weight-bold pt-2'>Xin phép</h4>
+                    <h4 class='mg-center mg-left-10 modal-title w-100 font-weight-bold pt-2 title-wt-modal-approve'>Xin phép</h4>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span class="btn-close-icon" aria-hidden="true">&times;</span>
                     </button>
@@ -319,8 +319,10 @@
                                     other = ''
                                 }
                                 if (respond.status === 1) {
+                                    $('.title-wt-modal-approve').text('Đơn đã được duyệt');
                                     $('.wt-textarea-reason,.btn-send-permission').prop('disabled',true)
                                 } else {
+                                    $('.title-wt-modal-approve').text('Xin phép');
                                     $('.wt-textarea-reason,.btn-send-permission').prop('disabled', false)
                                 }
                                 $('.wt-textarea-reason').text(project);

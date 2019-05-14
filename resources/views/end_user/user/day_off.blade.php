@@ -15,7 +15,7 @@
     @endphp
     <form action="{{ route('day_off') }}" method="get" id="form-search">
         <div class="row mb-3 ml-1">
-            <div class="col-sm-4 col-xl-2 pr-3">
+            <div class="col-sm-4 col-xl-2 pr-3 pl-0">
                 <label class=" text-w-400" for="">Từ ngày</label>
                 <input type="text"
                        class="form-control border-0 select-item"
@@ -129,15 +129,18 @@
                 </div>
                 <div class="col-sm-8 text-right col-md-8">
                     <div class="row">
-                        <div class="col-sm-2"></div>
-                        <div class="col-12 col-sm-6">
+                        <div class="col-md-5"></div>
+                        <div class="col-md-3 col-12">
                             <?php
                             $user = \Illuminate\Support\Facades\Auth::user();
                             ?>
                             @if($user->jobtitle_id >= \App\Models\Report::MIN_APPROVE_JOBTITLE)
-                                <a href="{{route('day_off_approval')}}" class="btn btn-primary" type="button">
-                                    {{__l('day_off_approval')}}
-                                </a>
+                                <div class="pl-1">
+                                    <a href="{{route('day_off_approval')}}" id="btn-detail-day-off" class="btn btn-primary form-control w-100 waves-effect waves-light mx-0" type="button">
+                                        {{__l('day_off_approval')}}
+                                    </a>
+                                </div>
+
                             @endif
                         </div>
                         <div class="d-none d-sm-block col-sm-4">

@@ -26,7 +26,6 @@ class WorkTimePermissionRequest extends FormRequest
 //        dd($this->request->all());
         $rules = [];
         if (isset($this->request->explanation_ot_type)){
-            dd(1);
             $rules['explanation_ot_type'] = 'required|integer|between:1,2';
         }
         $rules['explanation_type'] = 'required|integer|between:1,4';

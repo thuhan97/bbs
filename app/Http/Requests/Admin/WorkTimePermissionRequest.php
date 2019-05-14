@@ -40,13 +40,14 @@ class WorkTimePermissionRequest extends FormRequest
             'explanation_type' => 'hình thức',
             'work_day' => 'ngày làm việc',
             'reason' => 'lý do',
+            'status' => 'trạng thái',
         ];
     }
 
     public function messages()
     {
         return [
-            'end_at.after' => 'Trường :attribute phải lớn hơn giờ checkin'
+            'end_at.after' => 'Trường :attribute phải lớn hơn giờ checkin',
         ];
     }
 }

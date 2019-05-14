@@ -50,6 +50,14 @@
                     <hr/>
                     <table class="table table-borderless ">
                         <tr>
+                            <td>Chức vụ:</td>
+                            <td>{{ array_key_exists($user->position_id,POSITIONS) ? POSITIONS[ $user->position_id ] : '' }} </td>
+                        </tr>
+                        <tr>
+                            <td>Team:</td>
+                            <td>{{ $user->team()->name ?? ''}} </td>
+                        </tr>
+                        <tr>
                             <td>Ngày sinh:</td>
                             <td>{{$user->birthday}} </td>
                         </tr>

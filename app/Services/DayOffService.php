@@ -350,7 +350,8 @@ class DayOffService extends AbstractService implements IDayOffService
                 'day_off_turn_next_year' => $dayOffYearTotal == DEFAULT_VALUE ? '0' : $dayOffYearTotal,
             ];
 
-        }  return $result;
+        } 
+        return $result;
     }
 
     public function calculateDayOff($request, $id)

@@ -851,10 +851,10 @@ td.blank, .type-1, .type-2 {
     color: #ffffff !important;
 }
 
-.data-type-5 {
-    background-color: #01c851 !important;
-    color: #ffffff !important;
-}
+/*.data-type-5 {*/
+    /*background-color: #01c851 !important;*/
+    /*color: #ffffff !important;*/
+/*}*/
 
 .text-d-bold {
     font-weight: bold;
@@ -992,7 +992,7 @@ td.blank, .type-1, .type-2 {
     }
 }
 
-.permission-reason {
+.permission-reason, .permission-reason-late-ot, .permission-reason-late, .permission-reason-early {
     width: 85%;
     margin: 0 auto;
 }

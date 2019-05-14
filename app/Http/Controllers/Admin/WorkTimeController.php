@@ -232,12 +232,12 @@ class WorkTimeController extends AdminBaseController
                 if ($request->has('is_grid')) {
                     $records = $this->sevice->export($request);
 
-                    return Excel::download(new WorkTimeGridExport($records), "bang-cham-cong$date.xlsx");
+                    return Excel::download(new WorkTimeGridExport($records, $request), "bang-cham-cong$date.xlsx");
                 } else if ($request->has('is_lately')) {
                     $request->merge(['type' => WorkTime::TYPES['lately']]);
                     $records = $this->sevice->export($request);
 
-                    return Excel::download(new LatelyGridExport($records), "danh-sach-di-muon$date.xlsx");
+                    return Excel::download(new LatelyGridExport($records, $request), "danh-sach-di-muon$date.xlsx");
                 } else {
                     $records = $this->sevice->export($request);
                     return Excel::download(new WorkTimeAllExport($records), "thoi-gian-lam-viec$date.xlsx");

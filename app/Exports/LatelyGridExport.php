@@ -5,6 +5,7 @@ namespace App\Exports;
 use App\Models\Config;
 use App\Models\Punishes;
 use App\User;
+use Illuminate\Http\Request;
 use Maatwebsite\Excel\Concerns\FromArray;
 
 class LatelyGridExport implements FromArray
@@ -26,18 +27,25 @@ class LatelyGridExport implements FromArray
      *
      * @param $records
      */
-    public function __construct($records)
+    public function __construct($records, Request $request)
     {
         $this->config = Config::first();
         $this->records = $records;
         $this->firstDate = $records->min('work_day');
         $this->lastDate = $records->max('work_day');
 
-        $this->users = User::select('id', 'staff_code', 'name')
-            ->where('status', ACTIVE_STATUS)
-            ->orderBy('contract_type')
-            ->orderBy('id')
-            ->get();
+        $userModel = User::select('id', 'staff_code', 'name')
+            ->where('status', ACTIVE_STATUS);
+        if ($request->has('user_id')) {
+            $this->users = $userModel
+                ->where('id', $request->get('user_id'))
+                ->get();
+        } else {
+            $this->users = $userModel
+                ->orderBy('contract_type')
+                ->orderBy('id')
+                ->get();
+        }
         $this->punishes = Punishes::where('infringe_date', '>=', $this->firstDate)
             ->where('infringe_date', '<=', $this->lastDate)
             ->where('rule_id', LATE_RULE_ID)
@@ -107,14 +115,15 @@ class LatelyGridExport implements FromArray
             $results[] = $userData;
             $rowNum++;
         }
-        $lastRow = ['', '', 'Tổng'];
-        foreach ($this->dateLists as $date) {
-            $lastRow[] = $this->records->whereIn('user_id', $userIds)
-                ->where('work_day', $date)->count();
+        if ($this->users->count() > 1) {
+            $lastRow = ['', '', 'Tổng'];
+            foreach ($this->dateLists as $date) {
+                $lastRow[] = $this->records->whereIn('user_id', $userIds)
+                    ->where('work_day', $date)->count();
+            }
+            $lastRow[] = '';
+            $results[] = $lastRow;
         }
-        $lastRow[] = '';
-        $results[] = $lastRow;
-
         $this->importList = $results;
     }
 
@@ -123,7 +132,7 @@ class LatelyGridExport implements FromArray
      */
     public function array(): array
     {
-        return $this->headings + $this->importList;
+        return array_merge($this->headings, $this->importList);
     }
 
     private function subMinute($from, $to)

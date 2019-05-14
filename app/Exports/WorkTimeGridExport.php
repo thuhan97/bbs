@@ -3,6 +3,7 @@
 namespace App\Exports;
 
 use App\User;
+use Illuminate\Http\Request;
 use Maatwebsite\Excel\Concerns\FromArray;
 
 class WorkTimeGridExport implements FromArray
@@ -23,13 +24,20 @@ class WorkTimeGridExport implements FromArray
      *
      * @param $records
      */
-    public function __construct($records)
+    public function __construct($records, Request $request)
     {
-        $this->users = User::select('id', 'staff_code', 'name')
-            ->where('status', ACTIVE_STATUS)
-            ->orderBy('contract_type')
-            ->orderBy('id')
-            ->get();
+        $userModel = User::select('id', 'staff_code', 'name')
+            ->where('status', ACTIVE_STATUS);
+        if ($request->has('user_id')) {
+            $this->users = $userModel
+                ->where('id', $request->get('user_id'))
+                ->get();
+        } else {
+            $this->users = $userModel
+                ->orderBy('contract_type')
+                ->orderBy('id')
+                ->get();
+        }
 
         $this->records = $records;
         $this->firstDate = $records->min('work_day');
@@ -65,6 +73,7 @@ class WorkTimeGridExport implements FromArray
         $rowNum = 1;
         foreach ($this->users as $user) {
             $workTimes = $this->records->where('user_id', $user->id);
+
             $userIds[] = $user->id;
             $userData = [
                 $rowNum++,
@@ -81,19 +90,22 @@ class WorkTimeGridExport implements FromArray
                     $userData[] = '';
                 }
             }
+
             $userData[] = $workTimes->sum('cost');
             $results[] = $userData;
             $rowNum++;
         }
-        $lastRow = ['', '', 'Tổng'];
-        foreach ($this->dateLists as $date) {
-            $lastRow[] = $this->records->whereIn('user_id', $userIds)
-                ->where('cost', '>', 0)
-                ->where('work_day', $date)->count();
-        }
-        $lastRow[] = '';
-        $results[] = $lastRow;
 
+        if ($this->users->count() > 1) {
+            $lastRow = ['', '', 'Tổng'];
+            foreach ($this->dateLists as $date) {
+                $lastRow[] = $this->records->whereIn('user_id', $userIds)
+                    ->where('cost', '>', 0)
+                    ->where('work_day', $date)->count();
+            }
+            $lastRow[] = '';
+            $results[] = $lastRow;
+        }
         $this->importList = $results;
     }
 
@@ -102,6 +114,6 @@ class WorkTimeGridExport implements FromArray
      */
     public function array(): array
     {
-        return $this->headings + $this->importList;
+        return array_merge($this->headings, $this->importList);
     }
 }

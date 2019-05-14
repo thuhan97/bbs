@@ -387,10 +387,10 @@
                         </div>
                     </div>
                     <br>
-                    <textarea class="form-control permission-reason" name="note" cols="48" rows="6"
+                    <textarea class="form-control permission-reason-ot" name="note" cols="48" rows="6"
                               placeholder="Nhập lý do ..."></textarea>
                     <div class="pt-3 pb-4 d-flex justify-content-center border-top-0 rounded mb-0">
-                        <button class="btn btn-primary btn-send">GỬI ĐƠN</button>
+                        <button class="btn btn-primary btn-send btn-permission-ot">GỬI ĐƠN</button>
                     </div>
                 </form>
             </div>
@@ -414,7 +414,7 @@
                 $(".permission-reason").empty();
                 $('#modal-form').modal('show');
                 $(".permission-reason-late").append("<input name='type' type='text' value='1'>");
-                $(".modal-header").html("<h4 class='mg-center mb-2 modal-title w-100 font-weight-bold pt-2'>Xin đi muộn</h4>");
+                $(".modal-header").html("<h4 class='mg-center mb-2 modal-title w-100 font-weight-bold pt-2 header-permission-late'>Xin đi muộn</h4>");
                 // $('#work_day').datepicker("setDate", currenFullTime);
                 $('#work-day-late').datepicker("setDate", date);
             });
@@ -424,13 +424,13 @@
                 $(".permission-reason-late").empty();
                 $(".permission-reason").empty();
                 $(".permission-reason").append("<input name='type' type='text' value='2'>");
-                $(".modal-header").html("<h4 class='mg-center mb-2 modal-title w-100 font-weight-bold pt-2'>Xin về sớm</h4>");
+                $(".modal-header").html("<h4 class='mg-center mb-2 modal-title w-100 font-weight-bold pt-2 header-permission-early'>Xin về sớm</h4>");
                 $('#work-day-early').datepicker("setDate", date);
             });
             $('.approve-btn-ot').on('click', function () {
                 $('#modal-form-ot').modal('show');
                 $(".permission-reason").append("<input name='type' type='text' value='4'>");
-                $(".modal-header").html("<h4 class='mg-center mb-2 modal-title w-100 font-weight-bold pt-2'>Xin OT</h4>");
+                $(".modal-header").html("<h4 class='mg-center mb-2 modal-title w-100 font-weight-bold pt-2 header-permission-ot'>Xin OT</h4>");
                 $('#work_day_ot').datepicker("setDate", (date));
             });
             $('.btn-reject').on('click', function () {
@@ -463,17 +463,19 @@
                         $('.permission-reason-late').text(note);
                         if (otType) {
                             if (otType === 1) {
-                                $('#project-ot').prop('checked', true)
-                                $('#other-ot').prop('checked', false)
+                                $('#project-ot').prop('checked', true);
+                                $('#other-ot').prop('checked', false);
                             } else if (otType === 2) {
-                                $('#other-ot').prop('checked', true)
-                                $('#project-ot').prop('checked', false)
+                                $('#other-ot').prop('checked', true);
+                                $('#project-ot').prop('checked', false);
                             }
                         }
 
                         if (respond.status === 1) {
+                            $('.header-permission-late').text('Đơn đã được duyệt');
                             $('.permission-reason-late,.btn-permission-late').prop('disabled', true);
                         } else {
+                            $('.header-permission-late').text('Xin đi muộn');
                             $('.permission-reason-late,.btn-permission-late').prop('disabled', false);
                         }
                     }
@@ -508,8 +510,10 @@
                         }
 
                         if (respond.status === 1) {
+                            $('.header-permission-early').text('Đơn đã được duyệt');
                             $('.permission-reason-early,.btn-permission-early').prop('disabled', true);
                         } else {
+                            $('.header-permission-early').text('Xin về sớm');
                             $('.permission-reason-early,.btn-permission-early').prop('disabled', false);
                         }
                     }
@@ -533,7 +537,7 @@
                         workDayOT.append("<input name='permission_status' type='hidden' value='" + respond.status + "'>");
                         var note = respond.note ? respond.note : '',
                             otType = respond.ot_type;
-                        $('.permission-reason').text(note);
+                        $('.permission-reason-ot').text(note);
                         if (otType) {
                             if (otType === 1) {
                                 $('#project-ot').prop('checked', true)
@@ -542,6 +546,14 @@
                                 $('#other-ot').prop('checked', true)
                                 $('#project-ot').prop('checked', false)
                             }
+                        }
+
+                        if (respond.status === 1) {
+                            $('.header-permission-ot').text('Đơn đã được duyệt');
+                            $('.permission-reason-ot,.btn-permission-ot').prop('disabled', true);
+                        } else {
+                            $('.header-permission-ot').text('Xin OT');
+                            $('.permission-reason-ot,.btn-permission-ot').prop('disabled', false);
                         }
                     }
                 });

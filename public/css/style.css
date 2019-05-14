@@ -992,7 +992,7 @@ td.blank, .type-1, .type-2 {
     }
 }
 
-.permission-reason, .permission-reason-late-ot, .permission-reason-late, .permission-reason-early {
+.permission-reason, .permission-reason-late-ot, .permission-reason-late, .permission-reason-early, .permission-reason-ot {
     width: 85%;
     margin: 0 auto;
 }

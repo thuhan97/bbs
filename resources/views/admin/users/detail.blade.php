@@ -33,7 +33,7 @@ $defaultStaffCode = "J" . str_pad((\App\Models\User::max('id') + 1), 3, '0', STR
                     </div>
                 </div>
             </div>
-
+@dd($record)
 
         </div>
         <!-- /.col-md-12 -->

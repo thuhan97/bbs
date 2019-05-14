@@ -10,7 +10,7 @@
 @section('content')
 <link rel="stylesheet" href="{{URL::asset('css/share_experience.css')}}">
 
-<div class="col-md-7">
+<div class="col-md-8">
     <div class="content">
         <div class="tab-pane active">
             <div class="divAddButton">
@@ -34,10 +34,21 @@
                               <img data-src="{{$experience->user->avatar}}" src="{{URL_IMAGE_NO_IMAGE}}" onerror="this.src='{{URL_IMAGE_NO_IMAGE}}'" />
                             </div>
                             <div class="info-user-post">
-                                <p class=""><?php echo isset($experience->user->name) ? $experience->user->name : ''; ?></p>
+                                <p class="">
+                                    <?php echo isset($experience->user->name) ? $experience->user->name : ''; ?>
+                                    @if($experience->user->id == Auth::user()->id)
+                                        <div class="dropdown">
+                                            <i class="fa fa-ellipsis-h" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></i>
+                                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                                <a class="dropdown-item" href="{{ route('edit_experience', $experience->id) }}">sửa chia sẻ kinh ngiệm</a>
+                                                <a class="dropdown-item" href="{{ route('deleted_experience', $experience->id) }}">Xóa chia sẻ kinh ngiệm</a>
+                                            </div>                                            
+                                        </div>
+                                    @endif
+                                </p>
                                 <span class="date sub-text">{{date_format($experience->created_at,"Y-m-d")}}</span>
                             </div>
-                            <div calss="content-posts">
+                            <div class="content-posts">
                                 <p><?php echo $experience->content; ?></p>   
                             </div>
 <!--                             <div class="like-comment border-top-buttom">

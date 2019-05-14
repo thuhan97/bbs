@@ -197,7 +197,7 @@ define('ICONS_TYPES_FILES', [
     'sql' => 'far fa-file-code',
 ]);
 
-define('SHARE_DUCOMMENT', 2);
+define('SHARE_DOCUMENT', 2);
 define('SHARE_EXPERIENCE', 1);
 
 define('VACATION', [

@@ -58,3 +58,6 @@ p{
 .content-posts{
 	margin-bottom: 30px;
 }
+.posts:last-child {
+  border-bottom: none;
+}

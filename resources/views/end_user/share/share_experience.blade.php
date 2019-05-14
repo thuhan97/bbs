@@ -31,7 +31,7 @@
                     <div class="posts row">            
                         <div class="content-share-experience col-md-12">
                             <div class="userImage">
-                              <img data-src="{{$experience->user->avatar}}" src="{{URL_IMAGE_NO_IMAGE}}" onerror="this.src='{{URL_IMAGE_NO_IMAGE}}'" />
+                              <img src="{{$experience->user->avatar}}" onerror="this.src='{{URL_IMAGE_NO_IMAGE}}'" alt="avatar image" />
                             </div>
                             <div class="info-user-post">
                                 <p class="">
@@ -40,8 +40,8 @@
                                         <div class="dropdown">
                                             <i class="fa fa-ellipsis-h" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></i>
                                             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                                <a class="dropdown-item" href="{{ route('edit_experience', $experience->id) }}">sửa chia sẻ kinh ngiệm</a>
-                                                <a class="dropdown-item" href="{{ route('deleted_experience', $experience->id) }}">Xóa chia sẻ kinh ngiệm</a>
+                                                <a class="dropdown-item" href="{{ route('edit_experience', $experience->id) }}">Sửa bài viết</a>
+                                                <a class="dropdown-item" href="{{ route('deleted_experience', $experience->id) }}">Xóa bài viết</a>
                                             </div>                                            
                                         </div>
                                     @endif

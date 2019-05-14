@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Events\CaculateLateTimeEvent;
+use App\Exports\LatelyGridExport;
 use App\Exports\WorkTimeAllExport;
 use App\Exports\WorkTimeGridExport;
 use App\Http\Requests\Admin\WorkTimeImportRequest;
@@ -232,6 +233,11 @@ class WorkTimeController extends AdminBaseController
                     $records = $this->sevice->export($request);
 
                     return Excel::download(new WorkTimeGridExport($records), "bang-cham-cong$date.xlsx");
+                } else if ($request->has('is_lately')) {
+                    $request->merge(['type' => WorkTime::TYPES['lately']]);
+                    $records = $this->sevice->export($request);
+
+                    return Excel::download(new LatelyGridExport($records), "danh-sach-di-muon$date.xlsx");
                 } else {
                     $records = $this->sevice->export($request);
                     return Excel::download(new WorkTimeAllExport($records), "thoi-gian-lam-viec$date.xlsx");

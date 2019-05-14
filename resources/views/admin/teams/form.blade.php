@@ -4,7 +4,7 @@
             <div class="form-group margin-b-5 margin-t-5{{ $errors->has('name') ? ' has-error' : '' }}">
                 <label for="name">Tên nhóm *</label>
                 <input type="text" class="form-control" name="name" placeholder="Tên nhóm"
-                       value="{{ old('name', $record->name) }}" required>
+                       value="{!! old('name', $record->name) !!} " required>
 
                 @if ($errors->has('name'))
                     <span class="help-block">

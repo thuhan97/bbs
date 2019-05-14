@@ -41,7 +41,7 @@
                     @endif
                 </td>
                 <td class="table-text">
-                    <a href="{{ $showLink }}">{{ $record->name }}</a>
+                    <a href="{{ $showLink }}">{!! $record->name !!} </a>
                 </td>
                 <td>{{ $record->leader->name}}</td>
                 <td class="text-center">{{ $record->members->count() + 1 }}</td>

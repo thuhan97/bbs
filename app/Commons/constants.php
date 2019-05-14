@@ -388,6 +388,9 @@ define('DATE_FORMAT_DAY_OFF', 'Y/m/d H:i:s');
 define('SUN', 'Sun');
 define('SAT', 'Sat');
 
+define('JANUARY',1);
+define('DECEMBER',12);
+
 
 
 

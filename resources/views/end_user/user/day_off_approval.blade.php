@@ -68,8 +68,8 @@
                 {{ Form::select('month', MONTH, $month ?? '', ['class' => 'browser-default custom-select w-100 month option-select','placeholder'=>'Chọn tháng']) }}
             </div>
         </div>--}}
-        <div class="row mb-3 ml-1">
-            <div class="col-sm-4 col-xl-2 pr-3">
+        <div class="row mb-1 ml-1">
+            <div class="col-sm-4 col-xl-2 pr-3 pl-0 mb-2">
                 <label class=" text-w-400" for="">Từ ngày</label>
                 <input type="text"
                        class="form-control border-0 select-item"
@@ -93,9 +93,6 @@
                            name="search" id="content-search" value="{{ $search ?? '' }}">
                 </div>
             </div>
-
-
-
             <div class="col-sm-2 col-xl-1 no-padding-left">
                 <label class=" text-w-400" for="inputCity"> &nbsp;</label>
                 <button class="form-control select-item  border-0 btn-secondary" id="result-search"><i class="fas fa-search"></i></button>
@@ -189,26 +186,30 @@
             <div class="col-sm-8 col-md-4"></div>
             <div class="col-7 col-sm-2 col-md-4">
             </div>
-            <div class="col-5 col-sm-2 col-md-4">
+            <div class="col-12 col-md-4">
+            <div class="pl-1">
                 {{ Form::select('status', SHOW_DAY_OFFF, $status ?? ALL_DAY_OFF, ['class' => 'browser-default custom-select w-100 search-day-off border-radius-1 option-select']) }}
+
+            </div>
+
             </div>
         </div>
     </form>
     <br>
     <div class="d-flex flex-column">
         <!--Table-->
-        <table id="tablePreview" class="table">
+        <table id="tablePreview" class="table ">
             <!--Table head-->
             <thead class="grey lighten-2">
             <tr>
                 <th class="text-center d-none d-md-table-cell">STT</th>
-                <th class="text-center">Nhân viên</th>
-                <th class="text-center">Từ ngày</th>
+                <th class="text-center table-detail-day-off">Nhân viên</th>
+                <th class="text-center table-detail-day-off">Từ ngày</th>
                 <th class="text-center d-none d-sm-table-cell">Tới ngày</th>
-                <th class="text-center ">Tiêu đề</th>
-                <th class="text-center">Nội dung</th>
+                <th class="text-center table-detail-day-off">Tiêu đề</th>
+                <th class="text-center table-detail-day-off">Nội dung</th>
                 <th class="text-center d-none d-sm-table-cell">Ngày nghỉ</th>
-                <th class="text-center">Phê duyệt</th>
+                <th class="text-center" table-detail-day-off>Phê duyệt</th>
                 <th class="text-center d-none d-sm-table-cell">Xem thêm</th>
             </tr>
             </thead>
@@ -221,10 +222,10 @@
                         {!! ((($getDayOff->currentPage()*PAGINATE_DAY_OFF)-PAGINATE_DAY_OFF)+1)+$keys !!}
                     </th>
 
-                    <td class="text-center table-name">
+                    <td class="text-center table-name table-detail-day-off">
                         {{$record->user->name}}
                     </td>
-                    <td class="text-center">
+                    <td class="text-center table-detail-day-off">
                         {{ $record->title != DAY_OFF_TITLE_DEFAULT ? \App\Helpers\DateTimeHelper::checkTileDayOffGetDate($record->start_at) : $record->start_date  }}
                     </td>
                     <td class="text-center d-none d-sm-table-cell">
@@ -245,7 +246,7 @@
                             <i class="fas fa-frown fa-2x text-danger"></i>
                         @endif
                     </td>
-                    <td class="text-center">
+                    <td class="text-center d-none d-sm-table-cell">
                         <p class=" btn-sm m-0 detail-dayoff" style="cursor: pointer" attr="{{ $record->id }}">Chi
                             tiết >></p>
                     </td>

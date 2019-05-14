@@ -2,13 +2,13 @@
     <table class="table table-hover table-bordered">
         <colgroup>
             <col style="width: 30px">
-            <col style="">
-            <col style="">
+            <col style="width: 200px">
             <col style="">
             <col style="width: 120px">
-            <col style="width: 100px">
+            <col style="width: 120px">
+            <col style="width: 120px">
             <col style="width: 70px">
-            <col style="width: 70px">
+            <col style="width: 120px">
         </colgroup>
         <thead class="eventTable">
         <th style="width: 10px;">
@@ -28,7 +28,7 @@
             {!! __admin_sortable('created_at') !!}
         </th>
         <th>Trạng thái</th>
-        <th style="width: 100px;">Chức năng</th>
+        <th>Chức năng</th>
         </thead>
         <tbody>
         @foreach ($records as $record)
@@ -43,7 +43,7 @@
                 <td class="table-text">
                     <a href="{{ $editLink }}">{{ $record->name }}</a>
                 </td>
-                <td>{{ $record->introduction }}</td>
+                <td>{{ str_limit($record->introduction) }}</td>
                 <td>{{ $record->event_date }}</td>
                 <td>{{ $record->place }}</td>
                 <td class="text-right">{{ $record->created_at->format(DATE_FORMAT) }}</td>
@@ -54,7 +54,7 @@
             @endif
 
             <!-- we will also add show, edit, and delete buttons -->
-                <td style="width: 10%;">
+                <td>
                     <div class="btn-group">
                         <a href="{{ route("admin::events.detailEvent",['id'=>$record->id]) }}"
                            class="btn btn-success btn-sm"><i

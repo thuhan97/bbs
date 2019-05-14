@@ -334,6 +334,7 @@ class WorkTimeService extends AbstractService implements IWorkTimeService
         $type = 0;
         $notes = [];
         if ($startAt) {
+            $startAt .= ':00';
             //check đi muộn quá nửa buổi chiều -> nghỉ ngày
             if ($typeCheck >= 0) {
                 if ($startAt >= HAFT_AFTERNOON) {
@@ -350,7 +351,6 @@ class WorkTimeService extends AbstractService implements IWorkTimeService
                         $notes[] = __('worktimes.off_morning');
                 }
             }
-
             if ($typeCheck <= 0 && $startAt < HAFT_HOUR) {
                 //check đi muộn quá nửa buổi sáng -> nghỉ sáng
                 if ($startAt >= HAFT_MORNING) {
@@ -363,6 +363,8 @@ class WorkTimeService extends AbstractService implements IWorkTimeService
         }
 
         if ($endAt && $type != WorkTime::TYPES['off']) {
+            $endAt .= ':00';
+
             if ($typeCheck >= 0 && $startAt > HAFT_HOUR) {
                 if ($endAt < HAFT_AFTERNOON) {
                     $notes[] = __('worktimes.early_over_haft_afternoon');
@@ -400,8 +402,6 @@ class WorkTimeService extends AbstractService implements IWorkTimeService
         if ($typeCheck <= 0) {
             if (($startAt == null || $startAt <= HAFT_MORNING) && ($endAt == null || $endAt >= HAFT_MORNING)) {
                 $cost += 0.5;
-            } else {
-//                dd($startAt, $endAt, $cost, $typeCheck);
             }
         }
         if ($typeCheck >= 0) {

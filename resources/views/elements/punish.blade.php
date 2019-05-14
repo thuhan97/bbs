@@ -3,7 +3,7 @@
     <div class="card text-center" id="punish">
         <!-- Card content -->
         <div class="card-body red lighten-5">
-            <h4 class="card-title text-uppercase">Tiền phạt tháng {{date('m')}}</h4>
+            <h4 class="card-title text-uppercase">Tổng tiền phạt công ty tháng {{date('m')}}</h4>
             <div class="bold punish-counter" data-count="{{$totalPunish}}">0</div>
         </div>
     </div>

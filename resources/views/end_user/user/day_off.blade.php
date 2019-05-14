@@ -10,14 +10,30 @@
            $record = session()->get('data');
        }
        $dataDayOff= $dayOff ?? $availableDayLeft['data'];
+        $searchStart = date((date('Y')-1).'/01/01', strtotime('tomorrow + 1day'));
+        $searchEnd = date('Y/m/d');
     @endphp
     <form action="{{ route('day_off') }}" method="get" id="form-search">
-        <div class="row mb-3">
-            <div class="col-6 col-sm-2 col-xl-1 no-padding-right">
-                {{ Form::select('year', get_years(), $year ?? date('Y') , ['class'=>'yearselect browser-default custom-select w-100 border-0 select_year option-select p-1']) }}
+        <div class="row mb-3 ml-1">
+            <div class="col-sm-4 col-xl-2 pr-3">
+                <label class=" text-w-400" for="">Từ ngày</label>
+                <input type="text"
+                       class="form-control border-0 select-item"
+                       id="search_start_at" autocomplete="off" name="search_start_at"
+                       value="{{  $searchStratDate ?? $searchStart  }}"
+                       readonly="readonly">
             </div>
-            <div class="col-6 col-sm-4 col-xl-2 no-padding-left">
-                {{ Form::select('month', MONTH, $month ?? '' , ['class' => 'browser-default custom-select w-100 month option-select','placeholder'=>'Chọn tháng']) }}
+            <div class="col-sm-4 col-xl-2 no-padding-left">
+                <label class="text-w-400" for="inputZip">Tới ngày</label>
+                <input type="text"
+                       class="form-control select-item  border-0 "
+                       id="search_end_at" autocomplete="off" name="search_end_at"
+                       value="{{ $searchEndDate ?? $searchEnd}}"
+                       readonly>
+            </div>
+            <div class="col-sm-2 col-xl-1 no-padding-left">
+                <label class=" text-w-400" for="inputCity"> &nbsp;</label>
+                <button class="form-control select-item  border-0 btn-secondary" id="result-search"><i class="fas fa-search"></i></button>
             </div>
         </div>
         <div class="d-none d-xl-flex container-fluid col-12 row border-bottom-2 mb-3" style="position: relative;">
@@ -156,8 +172,8 @@
                     <th class="d-none d-md-table-cell text-center" scope="row">
                         {!! ((($dataDayOff->currentPage()*PAGINATE_DAY_OFF)-PAGINATE_DAY_OFF)+1)+$keys !!}
                     </th>
-                    <td class="text-center">{{$absence->start_date}}</td>
-                    <td class="d-none d-md-table-cell text-center">{{$absence->end_date}}</td>
+                    <td class="text-center">{{ $absence->title != DAY_OFF_TITLE_DEFAULT ? \App\Helpers\DateTimeHelper::checkTileDayOffGetDate($absence->start_at) : $absence->start_date  }}</td>
+                    <td class="d-none d-md-table-cell text-center">{{ $absence->title != DAY_OFF_TITLE_DEFAULT ? \App\Helpers\DateTimeHelper::checkTileDayOffGetDate($absence->end_at) : $absence->end_date  }}</td>
                     <td class="text-center">{{ array_key_exists($absence->title, VACATION_FULL) ? VACATION_FULL[$absence->title] : ''  }}</td>
                     <td class="text-center">{!! nl2br($absence->reason) !!}</td>
                     <td class="d-none d-md-table-cell text-center">{{!!!($absence->number_off || $absence->absent > DEFAULT_VALUE)? ($absence->status != STATUS_DAY_OFF['noActive'] ? 'Đang duyệt' : '') : checkNumber($absence->number_off) + checkNumber($absence->absent).' ngày'}}
@@ -321,7 +337,7 @@
                                                     <?php
                                                     $autoDateEnd = date('Y/m/d', strtotime('tomorrow + 1day'));
                                                     ?>
-                                                    <label class="text-w-400" for="inputZip">Tới ngày<span
+                                                    <label class="text-w-400" for="inputZip">Ngày kết thúc<span
                                                                 class="text-danger">*</span></label>
                                                     <input type="text"
                                                            class="form-control select-item  border-0 {{ $errors->has('end_at') ? ' has-error' : '' }}"
@@ -425,7 +441,7 @@
                                         </div>
                                         <!-- Default input -->
                                         <div class="form-group col-sm-6 m-0">
-                                            <label class="text-w-400" for="inputZip">Tới ngày<span
+                                            <label class="text-w-400" for="inputZip">Ngày kết thúc<span
                                                         class="text-danger">*</span></label>
                                             <input type="text"
                                                    class="form-control select-item {{ $errors->has('end_at') ? ' has-error' : '' }}"
@@ -597,7 +613,13 @@
     <script type="text/javascript">
 
         $(document).ready(function () {
+
+            checkUsable();
+
             $('.option-select').on('change', function () {
+                $("#form-search").submit();
+            });
+            $('#result-search').on('click', function () {
                 $("#form-search").submit();
             });
             $('form').each(function () {
@@ -677,7 +699,6 @@
                 $('#modal-form').modal('show');
             });
 
-
             var today = new Date();
             var mon = today.getMonth() + 1;
             var date = today.getFullYear() + '-' + mon + 1 + '-' + today.getDate();
@@ -687,6 +708,7 @@
             $('#modal-form').modal('show');
             @endif
 
+            $('#search_start_at , #search_end_at').datepicker({format: 'yyyy/mm/dd',orientation: 'bottom'});
             $('#start_date , #start_date1').datepicker({
                 format: 'yyyy/mm/dd',
                 hoursDisabled: '0,1,2,3,4,5,6,7,18,19,20,21,22,23',
@@ -700,25 +722,7 @@
             });
 
             $('#end_date,#start_date,.time-start,.time-end').on('change', function () {
-                checkDate('#start_date', '#end_date', '#errors_date', true, '#btn-send');
-                var dateStart=$('#start_date').val();
-                var dateEnd =$('#end_date').val();
-                var timeStart= $('.time-start').val();
-                var timeEnd = $('.time-end').val();
-                $.ajax
-                ({
-                    'url': '{{ route('check-usable-day-offf') }}',
-                    'type': 'get',
-                    'data': {'start_date':dateStart  , 'end_date': dateEnd,'start_time':timeStart  , 'end_time': timeEnd, },
-                    success: function (data) {
-                        // console.log(data);
-                        if(data.check){
-                                $('#usable-check').text('Bạn sẽ bị tính ' + data.absent + ' ngày nghỉ không phép vì ngày phép còn lại không đủ.' )
-                        }else {
-                            $('#usable-check').text(' ')
-                        };
-                    }
-                });
+                checkUsable();
             })
             $('#end_date1,#start_date1').on('change', function () {
                 checkDate('#start_date1', '#end_date1', '#errors_date1', false, '#btn-send-day-off');
@@ -797,9 +801,28 @@
                     $('#profile').removeClass('active show');
                 }
             })
-
-
         });
+        function checkUsable() {
+            checkDate('#start_date', '#end_date', '#errors_date', true, '#btn-send');
+            var dateStart=$('#start_date').val();
+            var dateEnd =$('#end_date').val();
+            var timeStart= $('.time-start').val();
+            var timeEnd = $('.time-end').val();
+            $.ajax
+            ({
+                'url': '{{ route('check-usable-day-offf') }}',
+                'type': 'get',
+                'data': {'start_date':dateStart  , 'end_date': dateEnd,'start_time':timeStart  , 'end_time': timeEnd, },
+                success: function (data) {
+                    // console.log(data);
+                    if(data.check){
+                        $('#usable-check').text('Bạn sẽ bị tính ' + data.absent + ' ngày nghỉ không phép vì ngày phép còn lại không đủ.' )
+                    }else {
+                        $('#usable-check').text(' ')
+                    };
+                }
+            });
+        }
 
         function checkDate(start, end, errors, check, btn) {
             var start1 = $(start).val();

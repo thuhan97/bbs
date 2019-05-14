@@ -9,6 +9,7 @@ namespace App\Services;
 
 use App\Models\Config;
 use App\Models\Report;
+use App\Models\Team;
 use App\Models\UserTeam;
 use App\Repositories\Contracts\IReportRepository;
 use App\Services\Contracts\IReportService;
@@ -58,6 +59,7 @@ class ReportService extends AbstractService implements IReportService
             ])
             ->search($search)
             ->orderBy('id', 'desc');
+
         //default private
         $type = $request->get('type', 0);
 
@@ -81,7 +83,9 @@ class ReportService extends AbstractService implements IReportService
         if (isset($criterias['team_id'])) {
             //get userId
             $userIds = UserTeam::where('team_id', $criterias['team_id'])->pluck('user_id')->toArray();
-            $model->whereIn('user_id', $userIds);
+            $team = Team::find($criterias['team_id']);
+            $leaderId = $team->leader_id ?? 0;
+            $model->whereIn('user_id', $userIds)->orWhere('user_id', $leaderId);
         }
         return $model->paginate($perPage);
     }
@@ -126,14 +130,14 @@ class ReportService extends AbstractService implements IReportService
      */
     public function getReportTitle($type)
     {
-        if ($type == -1) {
-            return "Báo cáo ngày [" . date(DATE_FORMAT_SLASH) . "]";
-        } else {
+        if ($type == 0 || $type == 1) {
             $config = Config::firstOrNew(['id' => 1]);
 
             $template = $config->weekly_report_title;
 
             return $this->generateTitle($template, $type);
+        } else {
+            return "Báo cáo ngày [" . $type . "]: " . Auth::user()->name;
         }
     }
 

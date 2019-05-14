@@ -24,12 +24,18 @@ class CreateReportRequest extends FormRequest
      */
     public function rules()
     {
-        return [
-            'choose_week' => 'required|numeric|min:-1|max:1',
+        $chooseWeek = [0, 1];
+        $chooseWeek[] = date('d/m');
+        $chooseWeek[] = date('d/m', strtotime('- 1 days'));
+        $chooseWeek[] = date('d/m', strtotime('- 2 days'));
+        $rules = [
+            'choose_week' => 'required|in:' . implode(',', $chooseWeek),
             'status' => 'required|numeric|min:0|max:2',
             'to_ids' => 'required',
             'content' => 'required',
         ];
+
+        return $rules;
     }
 
     public function attributes()

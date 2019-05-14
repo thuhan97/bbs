@@ -122,5 +122,9 @@ class TeamController extends AdminBaseController
         }
         return redirect()->action('Admin\TeamController@manageMember', ['id' => $request->id]);
     }
+    public function getRedirectAfterSave($record, $request, $isCreate = null)
+    {
+        return  redirect()->route($this->getResourceRoutesAlias() . '.index');
+    }
 
 }

@@ -74,6 +74,18 @@
         </span>
         <br>
     @endif
+    @if ($errors->has('reason_reject'))
+        <span class="help-block mb-5 color-red">
+            <strong>{{ $errors->first('reason_reject') }}</strong>
+        </span>
+        <br>
+    @endif
+    @if ($errors->has('work_time_explanation_id'))
+        <span class="help-block mb-5 color-red">
+            <strong>{{ $errors->first('work_time_explanation_id') }}</strong>
+        </span>
+        <br>
+    @endif
     @can('team-leader')
         @if($dataLeader->isNotEmpty())
             <h1>Danh sách xin phép</h1>

@@ -29,27 +29,37 @@ class AskPermissionRequest extends FormRequest
             $rules['permission_type'] = [
                 'required',
                 'integer',
-                Rule::in(array_search('Đi muộn',WORK_TIME_TYPE))
+                Rule::in(array_search('Đi muộn', WORK_TIME_TYPE))
             ];
+            $rules['work_day'] = 'required|date';
+            $rules['note'] = 'required';
         }
 
         if ($this->request->has('permission_early')) {
             $rules['permission_type'] = [
                 'required',
                 'integer',
-                Rule::in(array_search('Về Sớm',WORK_TIME_TYPE))
+                Rule::in(array_search('Về Sớm', WORK_TIME_TYPE))
             ];
+            $rules['work_day'] = 'required|date';
+            $rules['note'] = 'required';
         }
 
         if ($this->request->has('permission_ot')) {
             $rules['permission_type'] = [
                 'required',
                 'integer',
-                Rule::in(array_search('Overtime',WORK_TIME_TYPE))
+                Rule::in(array_search('Overtime', WORK_TIME_TYPE))
             ];
+            $rules['work_day'] = 'required|date';
+            $rules['note'] = 'required';
         }
-        $rules['work_day'] = 'required|date';
-        $rules['note'] = 'required';
+
+        if ($this->has('work_time_explanation_id')) {
+            $rules['work_time_explanation_id'] = 'required|integer';
+            $rules['reason_reject'] = 'required';
+        }
+
         return $rules;
     }
 
@@ -58,6 +68,8 @@ class AskPermissionRequest extends FormRequest
         return [
             'title' => 'Ngày xin phép',
             'permission_type' => 'Hình thức',
+            'work_time_explanation_id' => 'id',
+            'reason_reject' => 'lý do',
         ];
     }
 }

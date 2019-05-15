@@ -324,7 +324,7 @@ class UserController extends Controller
 
     public function askPermissionOT(Request $request)
     {
-        $workTimeExplanation = $this->getWorkTimeExplanation($request['data'])->where('type', $request['type'])->first();
+        $workTimeExplanation = $this->getWorkTimeExplanation($request['data'])->where('type', $request['type'])->where('status','!=',2)->first();
         if ($workTimeExplanation) {
             return $workTimeExplanation;
         } else {
@@ -332,7 +332,7 @@ class UserController extends Controller
         }
     }
 
-    public function reject(Request $request)
+    public function reject(AskPermissionRequest $request)
     {
         $explanationID = $request['work_time_explanation_id'];
         if ($explanationID) {

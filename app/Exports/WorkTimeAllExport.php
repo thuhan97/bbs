@@ -7,8 +7,7 @@ use App\Models\WorkTimesExplanation;
 use Maatwebsite\Excel\Concerns\FromArray;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 
-class WorkTimeAllExport implements FromArray
-    , WithHeadings
+class WorkTimeAllExport implements FromArray, WithHeadings
 {
     private $records;
 

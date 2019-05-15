@@ -1,5 +1,7 @@
 <div class="text-right">
-    <span class="btn btn-warning btn-table" id="exportExcelGrid">Xuất bảng chấm công</span>
+    <span class="btn btn-warning btn-table" style="margin-right: 0" id="exportExcelGrid">Xuất bảng chấm công</span>
+    <span class="btn btn-danger btn-table" style="margin-right: 0"
+          id="exportExcelLatelyGrid">Xuất danh sách đi muộn</span>
     <span class="btn btn-primary btn-table" id="exportExcel">Xuất file excel</span>
 </div>
 <div class="table-responsive list-records">
@@ -104,6 +106,13 @@
                 $("#searchForm").submit();
                 $("#is_export").remove();
                 $("#is_grid").remove();
+            });
+            $("#exportExcelLatelyGrid").click(function () {
+                $("#searchForm").append('<input id="is_export" type="hidden" name="is_export" value="1" />');
+                $("#searchForm").append('<input id="is_lately" type="hidden" name="is_lately" value="1" />');
+                $("#searchForm").submit();
+                $("#is_export").remove();
+                $("#is_lately").remove();
             });
         })
 

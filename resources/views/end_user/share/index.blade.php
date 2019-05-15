@@ -105,13 +105,13 @@
                 @csrf <!-- {{ csrf_field() }} -->
                     <div class="modal-body">
                         <div id="contentCreateForm">
-                            <label class="ml-3 text-w-400" for="titleDocoment">Tiêu đề tài liệu *</label>
-                            <input type="text" required id="titleDocoment" class="form-control mb-3"
-                                   name="titleDocoment"
+                            <label class="ml-3 text-w-400" for="titleDocument">Tiêu đề tài liệu *</label>
+                            <input type="text" required id="titleDocument" class="form-control mb-3"
+                                   name="titleDocument"
                                    placeholder="Tiêu liệu bạn muốn chia sẻ " autocomplete="off">
                             <label class="ml-3 text-w-400" for="titleForm">Upload file và chia sẻ file *</label>
                             <div class="inputDnD">
-                                <input type="file" required name="fileDocoment"
+                                <input type="file" required name="fileDocument"
                                        class="form-control-file text-primary font-weight-bold" id="inputFile"
                                        onchange="readUrl(this)" data-title="NHẤP CHUỘT HOẶC KÉO THẢ FILE VÀO ĐÂY">
                             </div>

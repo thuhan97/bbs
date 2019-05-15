@@ -87,6 +87,7 @@ class LatelyGridExport extends WTGridExport implements FromArray
                     ->where('work_day', $date)->count();
             }
             $lastRow[] = '';
+            $lastRow[] = $this->punishes->sum('total_money');
             $results[] = $lastRow;
         }
         $this->importList = $results;

@@ -927,7 +927,7 @@ td.blank, .type-1, .type-2 {
 }
 
 .select-search {
-    height: 42px;
+    height: 48px;
 }
 
 .day-off-icoi {
@@ -1297,9 +1297,16 @@ td.blank, .type-1, .type-2 {
     font-size: 50px;
 }
 #btn-detail-day-off{
-    border-radius: 5px;
-    font-size: 12px;
+    border-radius: 3px;
 }
 .table-detail-day-off{
     padding: 0.4rem !important;
+}
+@media (max-width: 575px) {
+    #btn-detail-day-off{
+        width: 99%;
+        height: 36px;
+        line-height: 11px;
+    }
+
 }

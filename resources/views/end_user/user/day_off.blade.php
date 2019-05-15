@@ -129,24 +129,21 @@
                 </div>
                 <div class="col-sm-8 text-right col-md-8">
                     <div class="row">
-                        <div class="col-md-4"></div>
-                        <div class="col-md-4 col-12">
-                            <?php
-                            $user = \Illuminate\Support\Facades\Auth::user();
-                            ?>
-                            @if($user->jobtitle_id >= \App\Models\Report::MIN_APPROVE_JOBTITLE)
-                                <div class="pl-1">
-                                    <a href="{{route('day_off_approval')}}" id="btn-detail-day-off" class="btn btn-primary form-control w-100 waves-effect waves-light mx-0" type="button">
+                        <div class="col-lg-2"></div>
+                        <div class="col-12 col-lg-6">
+                            <div class="pr-1">
+                                <?php
+                                $user = \Illuminate\Support\Facades\Auth::user();
+                                ?>
+                                @if($user->jobtitle_id >= \App\Models\Report::MIN_APPROVE_JOBTITLE)
+                                    <a href="{{route('day_off_approval')}}" class="btn btn-primary" id="btn-detail-day-off" type="button">
                                         {{__l('day_off_approval')}}
                                     </a>
-                                </div>
-
-                            @endif
+                                @endif
+                            </div>
                         </div>
                         <div class="d-none d-sm-block col-sm-4">
-           <span class=" btn-secondary" id="btn-select">
-            {{ Form::select('status_search', SHOW_DAY_OFFF, $statusSearch ?? ALL_DAY_OFF, ['class' => 'browser-default custom-select mt-1 w-100 month option-select','placeholder'=>'']) }}
-        </span>
+                            {{ Form::select('status_search', SHOW_DAY_OFFF, $statusSearch ?? ALL_DAY_OFF, ['class' => 'browser-default custom-select w-100 month option-select select-search','placeholder'=>'']) }}
                         </div>
                     </div>
                 </div>

@@ -2,23 +2,11 @@
 
 namespace App\Exports;
 
-use App\User;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Concerns\FromArray;
 
-class WorkTimeGridExport implements FromArray
+class WorkTimeGridExport extends WTGridExport implements FromArray
 {
-    private $records;
-    private $firstDate;
-    private $lastDate;
-    /**
-     * @var array
-     */
-    private $dateLists;
-
-    private $headings;
-    private $importList;
-
     /**
      * WorkTimeGridExport constructor.
      *
@@ -26,29 +14,10 @@ class WorkTimeGridExport implements FromArray
      */
     public function __construct($records, Request $request)
     {
-        $userModel = User::select('id', 'staff_code', 'name')
-            ->where('status', ACTIVE_STATUS);
-        if ($request->has('user_id')) {
-            $this->users = $userModel
-                ->where('id', $request->get('user_id'))
-                ->get();
-        } else {
-            $this->users = $userModel
-                ->orderBy('contract_type')
-                ->orderBy('id')
-                ->get();
-        }
-
-        $this->records = $records;
-        $this->firstDate = $records->min('work_day');
-        $this->lastDate = $records->max('work_day');
-        $this->dateLists = get_date_list($this->firstDate, $this->lastDate);
-
-        $this->getHeadings();
-        $this->getList();
+        parent::__construct($records, $request);
     }
 
-    private function getHeadings()
+    protected function getHeadings(): void
     {
         $row1 = ['', '', 'Thứ'];
         foreach ($this->dateLists as $date) {
@@ -66,7 +35,7 @@ class WorkTimeGridExport implements FromArray
         $this->headings = $headings;
     }
 
-    private function getList()
+    protected function getList(): void
     {
         $results = [];
         $userIds = [];

@@ -4,29 +4,50 @@
 @endsection
 @section('content')
     @if(session()->has('create_permission_success'))
+        @if(session()->get('day_off_success') != '')
+            <script>
+                swal({
+                    title: "Thông báo!",
+                    text: "Bạn đã gửi đơn thành công!",
+                    icon: "success",
+                    button: "Đóng",
+                });
+            </script>
+        @elseif(session()->has('approver_success'))
+            <script>
+                swal({
+                    title: "Thông báo!",
+                    text: "Bạn đã duyệt đơn thành công!",
+                    icon: "success",
+                    button: "Đóng",
+                });
+            </script>
+        @elseif(session()->has('reject_success'))
+            <script>
+                swal({
+                    title: "Thông báo!",
+                    text: "Bạn đã từ chối thành công!",
+                    icon: "success",
+                    button: "Đóng",
+                });
+            </script>
+        @else
+            <script>
+                swal({
+                    title: "Thông báo!",
+                    text: "Bạn đã sửa đơn thành công!",
+                    icon: "success",
+                    button: "Đóng",
+                });
+            </script>
+        @endif
+    @endif
+    @if(session()->has('permission_error'))
         <script>
             swal({
                 title: "Thông báo!",
-                text: "Bạn đã gửi đơn thành công!",
-                icon: "success",
-                button: "Đóng",
-            });
-        </script>
-    @elseif(session()->has('approver_success'))
-        <script>
-            swal({
-                title: "Thông báo!",
-                text: "Bạn đã duyệt đơn thành công!",
-                icon: "success",
-                button: "Đóng",
-            });
-        </script>
-    @elseif(session()->has('reject_success'))
-        <script>
-            swal({
-                title: "Thông báo!",
-                text: "Bạn đã từ chối thành công!",
-                icon: "success",
+                text: "Đơn đã được phê duyệt!",
+                icon: "error",
                 button: "Đóng",
             });
         </script>
@@ -40,6 +61,12 @@
     @if ($errors->has('type'))
         <span class="help-block mb-5 color-red">
             <strong>{{ $errors->first('type') }}</strong>
+        </span>
+        <br>
+    @endif
+    @if ($errors->has('permission_type'))
+        <span class="help-block mb-5 color-red">
+            <strong>{{ $errors->first('permission_type') }}</strong>
         </span>
         <br>
     @endif
@@ -253,10 +280,11 @@
                 </div>
                 <br>
                 <form action="{{ route('ask_permission.create') }}" method="get">
-                    {{--@csrf--}}
                     <div class="d-flex justify-content-center text-area-reason" id="div-reason"></div>
                     <div class="offset-1 select-day">
                         <div class="row col-12 option-permission"></div>
+                        <input name='permission_late' type='hidden'>
+                        <input name='permission_type' type='hidden' value="1">
                         <label class=" text-w-400" for="inputCity">Chọn ngày *</label>
                         <input style="width: 43%;" type="text"
                                class="form-control select-item {{ $errors->has('work_day') ? ' has-error' : '' }}"
@@ -267,7 +295,7 @@
                     <textarea class="form-control permission-reason-late" name="note" cols="48" rows="6"
                               placeholder="Nhập lý do ..."></textarea>
                     <div class="pt-3 pb-4 d-flex justify-content-center border-top-0 rounded mb-0">
-                        <button class="btn btn-primary btn-send">GỬI ĐƠN</button>
+                        <button class="btn btn-primary btn-send btn-permission-late">GỬI ĐƠN</button>
                     </div>
                 </form>
             </div>
@@ -287,11 +315,13 @@
                     <img src="{{ asset('img/font/gio_lam_viec_popup.png') }}" alt="" width="355px" height="260px">
                 </div>
                 <br>
-                <form action="{{ route('work_time.ask_permission') }}" method="get">
+                <form action="{{ route('ask_permission.create') }}" method="get">
                     {{--@csrf--}}
                     <div class="d-flex justify-content-center text-area-reason" id="div-reason"></div>
                     <div class="offset-1 select-day">
                         <div class="row col-12 option-permission"></div>
+                        <input name='permission_early' type='hidden'>
+                        <input name='permission_type' type='hidden' value="2">
                         <label class=" text-w-400" for="inputCity">Chọn ngày *</label>
                         <input style="width: 43%;" type="text"
                                class="form-control select-item {{ $errors->has('work_day') ? ' has-error' : '' }}"
@@ -302,7 +332,7 @@
                     <textarea class="form-control permission-reason-early" name="note" cols="48" rows="6"
                               placeholder="Nhập lý do ..."></textarea>
                     <div class="pt-3 pb-4 d-flex justify-content-center border-top-0 rounded mb-0">
-                        <button class="btn btn-primary btn-send">GỬI ĐƠN</button>
+                        <button class="btn btn-primary btn-send btn-permission-early">GỬI ĐƠN</button>
                     </div>
                 </form>
             </div>
@@ -322,20 +352,18 @@
                     <img src="{{ asset('img/font/gio_lam_viec_popup.png') }}" alt="" width="355px" height="260px">
                 </div>
                 <br>
-                <form action="{{ route('work_time.ask_permission') }}" method="get">
+                <form action="{{ route('ask_permission.create') }}" method="get">
                     <div class="d-flex justify-content-center text-area-reason" id="div-reason"></div>
                     <div class="row col-md-12">
                         <div class="col-2"></div>
                         <div class="col-md-4 text-center">
                             <input style="position: relative;opacity: 1;pointer-events: inherit" class="other-ot"
-                                   type="radio" name="ot_type" id="project-ot" checked
-                                   value="1" {{--{{ $workTimeExplanation['ot_type'] == 1 ? "checked" : '' }}--}}>
+                                   type="radio" name="ot_type" id="project-ot" checked value="1">
                             <label for="project-ot">OT dự án</label>
                         </div>
                         <div class="col-md-4 text-center">
                             <input style="position: relative;opacity: 1;pointer-events: inherit" class="other-ot"
-                                   type="radio" name="ot_type" id="other-ot"
-                                   value="2"{{-- {{ $workTimeExplanation['ot_type'] == 2 ? "checked" : '' }}--}}>
+                                   type="radio" name="ot_type" id="other-ot" value="2">
                             <label for="other-ot">Lý do cá nhân</label>
                         </div>
                     </div>
@@ -347,8 +375,8 @@
                                     <label for="inputCity">Chọn ngày *</label>
                                 </div>
                                 <div class="col-4">
-                                    <input type="hidden" value="4" name="type">
-                                    <input type="hidden" value="{{ $workTimeExplanation['id'] }}">
+                                    <input type="hidden" name="permission_ot">
+                                    <input type="hidden" value="4" name="permission_type">
                                     <input type="text"
                                            class="form-control select-item {{ $errors->has('work_day') ? ' has-error' : '' }}"
                                            id="work_day_ot" autocomplete="off" name="work_day"
@@ -359,10 +387,10 @@
                         </div>
                     </div>
                     <br>
-                    <textarea class="form-control permission-reason" name="note" cols="48" rows="6"
-                              placeholder="Nhập lý do ...">{{--{!! $workTimeExplanation['note']  !!}--}}</textarea>
+                    <textarea class="form-control permission-reason-ot" name="note" cols="48" rows="6"
+                              placeholder="Nhập lý do ..."></textarea>
                     <div class="pt-3 pb-4 d-flex justify-content-center border-top-0 rounded mb-0">
-                        <button class="btn btn-primary btn-send">GỬI ĐƠN</button>
+                        <button class="btn btn-primary btn-send btn-permission-ot">GỬI ĐƠN</button>
                     </div>
                 </form>
             </div>
@@ -381,39 +409,28 @@
                 currentMonth = date.getMonth() + 1,
                 currentYear = date.getFullYear(),
                 currenFullTime = currentYear + '-' + currentMonth + '-' + currentDate;
-            $('#work_day_ot').datepicker({format: 'yyyy-mm-dd'});
-            $('#work-day-early').datepicker({format: 'yyyy-mm-dd'});
-            $('#work-day-late').datepicker({format: 'yyyy-mm-dd'});
-            $('#work-day-late').datepicker({format: 'yyyy-mm-dd'});
+            $('#work-day-late,#work-day-early,#work_day_ot').datepicker({format: 'yyyy-mm-dd'});
             $('.approve-btn-late').on('click', function () {
                 $(".permission-reason").empty();
                 $('#modal-form').modal('show');
                 $(".permission-reason-late").append("<input name='type' type='text' value='1'>");
-                $(".modal-header").html("<h4 class='mg-center mb-2 modal-title w-100 font-weight-bold pt-2'>Xin đi muộn</h4>");
+                $(".modal-header").html("<h4 class='mg-center mb-2 modal-title w-100 font-weight-bold pt-2 header-permission-late'>Xin đi muộn</h4>");
                 // $('#work_day').datepicker("setDate", currenFullTime);
                 $('#work-day-late').datepicker("setDate", date);
             });
-
-            $('#permission-late').on('click',function () {
-                $('#work_day').datepicker("setDate", date);
-            });
-            $('#permission-early').on('click',function () {
-                $('#work_day').datepicker("setDate", date);
-            });
-
 
             $('.approve-btn-early').on('click', function () {
                 $('#modal-early').modal('show');
                 $(".permission-reason-late").empty();
                 $(".permission-reason").empty();
                 $(".permission-reason").append("<input name='type' type='text' value='2'>");
-                $(".modal-header").html("<h4 class='mg-center mb-2 modal-title w-100 font-weight-bold pt-2'>Xin về sớm</h4>");
+                $(".modal-header").html("<h4 class='mg-center mb-2 modal-title w-100 font-weight-bold pt-2 header-permission-early'>Xin về sớm</h4>");
                 $('#work-day-early').datepicker("setDate", date);
             });
             $('.approve-btn-ot').on('click', function () {
                 $('#modal-form-ot').modal('show');
                 $(".permission-reason").append("<input name='type' type='text' value='4'>");
-                $(".modal-header").html("<h4 class='mg-center mb-2 modal-title w-100 font-weight-bold pt-2'>Xin OT</h4>");
+                $(".modal-header").html("<h4 class='mg-center mb-2 modal-title w-100 font-weight-bold pt-2 header-permission-ot'>Xin OT</h4>");
                 $('#work_day_ot').datepicker("setDate", (date));
             });
             $('.btn-reject').on('click', function () {
@@ -422,37 +439,10 @@
                 $(".permission-reason").append("<input name='work_time_explanation_id' type='hidden' value='" + explanation + "'>");
             });
 
-            $('#work_day_ot').on('change', function () {
-                let data = $(this).val(),
-                    type = 4;
-                $.ajax({
-                    url: '{{ route('ask_permission.ot') }}',
-                    type: 'GET',
-                    dataType: 'JSON',
-                    data: {
-                        'data': data,
-                        'type': type,
-                    },
-                    success: function (respond) {
-                        var note = respond.note ? respond.note : '',
-                            otType = respond.ot_type;
-                        $('.permission-reason').text(note);
-                        if (otType) {
-                            if (otType === 1){
-                                $('#project-ot').prop( 'checked', true)
-                                $('#other-ot').prop( 'checked', false )
-                            }else if (otType === 2){
-                                $('#other-ot').prop( 'checked', true)
-                                $('#project-ot').prop( 'checked', false)
-                            }
-                        }
-                    }
-                });
-            });
-
             $('#work-day-late').on('change', function () {
-                let data = $(this).val(),
-                    type = 1;
+                var data = $(this).val(),
+                    type = 1,
+                    workDayLate = $(this);
                 $.ajax({
                     url: '{{ route('ask_permission.ot') }}',
                     type: 'GET',
@@ -462,25 +452,40 @@
                         'type': type,
                     },
                     success: function (respond) {
+                        if (respond === 0) {
+                            var status = 0;
+                        } else {
+                            var status = respond.status;
+                        }
+                        workDayLate.append("<input name='permission_status' type='hidden' value='" + status + "'>");
                         var note = respond.note ? respond.note : '',
                             otType = respond.ot_type;
                         $('.permission-reason-late').text(note);
                         if (otType) {
-                            if (otType === 1){
-                                $('#project-ot').prop( 'checked', true)
-                                $('#other-ot').prop( 'checked', false )
-                            }else if (otType === 2){
-                                $('#other-ot').prop( 'checked', true)
-                                $('#project-ot').prop( 'checked', false)
+                            if (otType === 1) {
+                                $('#project-ot').prop('checked', true);
+                                $('#other-ot').prop('checked', false);
+                            } else if (otType === 2) {
+                                $('#other-ot').prop('checked', true);
+                                $('#project-ot').prop('checked', false);
                             }
+                        }
+
+                        if (respond.status === 1) {
+                            $('.header-permission-late').text('Đơn đã được duyệt');
+                            $('.permission-reason-late,.btn-permission-late').prop('disabled', true);
+                        } else {
+                            $('.header-permission-late').text('Xin đi muộn');
+                            $('.permission-reason-late,.btn-permission-late').prop('disabled', false);
                         }
                     }
                 });
             });
 
             $('#work-day-early').on('change', function () {
-                let data = $(this).val(),
-                    type = 2;
+                var data = $(this).val(),
+                    type = 2,
+                    workDayLate = $(this);
                 $.ajax({
                     url: '{{ route('ask_permission.ot') }}',
                     type: 'GET',
@@ -490,17 +495,65 @@
                         'type': type,
                     },
                     success: function (respond) {
+                        workDayLate.append("<input name='permission_status' type='hidden' value='" + respond.status + "'>");
                         var note = respond.note ? respond.note : '',
                             otType = respond.ot_type;
                         $('.permission-reason-early').text(note);
                         if (otType) {
-                            if (otType === 1){
-                                $('#project-ot').prop( 'checked', true)
-                                $('#other-ot').prop( 'checked', false )
-                            }else if (otType === 2){
-                                $('#other-ot').prop( 'checked', true)
-                                $('#project-ot').prop( 'checked', false)
+                            if (otType === 1) {
+                                $('#project-ot').prop('checked', true)
+                                $('#other-ot').prop('checked', false)
+                            } else if (otType === 2) {
+                                $('#other-ot').prop('checked', true)
+                                $('#project-ot').prop('checked', false)
                             }
+                        }
+
+                        if (respond.status === 1) {
+                            $('.header-permission-early').text('Đơn đã được duyệt');
+                            $('.permission-reason-early,.btn-permission-early').prop('disabled', true);
+                        } else {
+                            $('.header-permission-early').text('Xin về sớm');
+                            $('.permission-reason-early,.btn-permission-early').prop('disabled', false);
+                        }
+                    }
+                });
+            });
+
+            $('#work_day_ot').on('change', function () {
+                let data = $(this).val(),
+                    type = 4,
+                    workDayOT = $(this);
+
+                $.ajax({
+                    url: '{{ route('ask_permission.ot') }}',
+                    type: 'GET',
+                    dataType: 'JSON',
+                    data: {
+                        'data': data,
+                        'type': type,
+                    },
+                    success: function (respond) {
+                        workDayOT.append("<input name='permission_status' type='hidden' value='" + respond.status + "'>");
+                        var note = respond.note ? respond.note : '',
+                            otType = respond.ot_type;
+                        $('.permission-reason-ot').text(note);
+                        if (otType) {
+                            if (otType === 1) {
+                                $('#project-ot').prop('checked', true)
+                                $('#other-ot').prop('checked', false)
+                            } else if (otType === 2) {
+                                $('#other-ot').prop('checked', true)
+                                $('#project-ot').prop('checked', false)
+                            }
+                        }
+
+                        if (respond.status === 1) {
+                            $('.header-permission-ot').text('Đơn đã được duyệt');
+                            $('.permission-reason-ot,.btn-permission-ot').prop('disabled', true);
+                        } else {
+                            $('.header-permission-ot').text('Xin OT');
+                            $('.permission-reason-ot,.btn-permission-ot').prop('disabled', false);
                         }
                     }
                 });

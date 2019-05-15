@@ -114,13 +114,19 @@ class TeamController extends AdminBaseController
             ->where('user_id', '<>', $record->leader_id)
             ->delete();
         $users_id_add = $request->to;
-        foreach ($users_id_add as $user_id) {
-            $user_team = new UserTeam;
-            $user_team->team_id = $request->id;
-            $user_team->user_id = $user_id;
-            $user_team->save();
+        if ($users_id_add){
+            foreach ($users_id_add as $user_id) {
+                $user_team = new UserTeam;
+                $user_team->team_id = $request->id;
+                $user_team->user_id = $user_id;
+                $user_team->save();
+            }
         }
         return redirect()->action('Admin\TeamController@manageMember', ['id' => $request->id]);
+    }
+    public function getRedirectAfterSave($record, $request, $isCreate = null)
+    {
+        return  redirect()->route($this->getResourceRoutesAlias() . '.index');
     }
 
 }

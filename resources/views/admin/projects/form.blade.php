@@ -17,7 +17,7 @@
                 <div class="col-md-6">
                     <div class="form-group margin-b-5 margin-t-5{{ $errors->has('customer') ? ' has-error' : '' }}">
                         <label for="customer">Khách hàng *</label>
-                        <input type="text" class="form-control" name="customer" placeholder="Tên dự án"
+                        <input type="text" class="form-control" name="customer" placeholder="Tên khách hàng"
                                value="{{ old('customer', $record->customer) }}" required>
 
                         @if ($errors->has('customer'))

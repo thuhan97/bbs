@@ -165,12 +165,13 @@ class UserController extends Controller
         if (isset($explanation_calendar)) {
             foreach ($explanation_calendar->get()->toArray() as $item) {
                 $calendarDataModal[] = [
+                    'id' => $item['id'],
                     'work_day' => $item['work_day'],
                     'type' => $item['type'],
                     'ot_type' => $item['ot_type'],
+                    'status' => $item['status'],
                     'note' => $item['note'],
                     'user_id' => $item['user_id'],
-                    'id' => $item['id'],
                 ];
             }
         }
@@ -228,23 +229,27 @@ class UserController extends Controller
         $explanationOTType = $request['explanation_ot_type'];
         $reason = $request['reason'];
         $workDay = $request['work_day'];
-        if ($request->has('fullOption') || $request->has('explanation_ot_type')) {
-            $workTimeExplanation = $this->getWorkTimeExplanation($workDay)->where('type', $request['explanation_type'])->first();
+        if ($request->has('fullOption') && $request['status'] == 1) {
+            if ($request->has('fullOption') || $request->has('explanation_ot_type')) {
+                $workTimeExplanation = $this->getWorkTimeExplanation($workDay)->where('status', array_search(' Chưa duyệt', OT_STATUS))->where('type', $request['explanation_type'])->first();
+            } else {
+                $workTimeExplanation = $this->getWorkTimeExplanation($workDay)->where('ot_type', $explanationOTType)->first();
+            }
+            if ($workTimeExplanation) {
+                $workTimeExplanation->update(['note' => $reason, 'ot_type' => $explanationOTType, 'type' => $request['explanation_type']]);
+                return back()->with('day_off_success', '');
+            } else {
+                WorkTimesExplanation::create([
+                    'user_id' => Auth::id(),
+                    'work_day' => $request['work_day'],
+                    'ot_type' => $explanationOTType,
+                    'type' => $request['explanation_type'],
+                    'note' => $reason
+                ]);
+                return back()->with('day_off_success', 'day_off_success');
+            }
         } else {
-            $workTimeExplanation = $this->getWorkTimeExplanation($workDay)->where('ot_type', $explanationOTType)->first();
-        }
-        if ($workTimeExplanation) {
-            $workTimeExplanation->update(['note' => $reason, 'ot_type' => $explanationOTType, 'type' => $request['explanation_type']]);
-            return back()->with('day_off_success', '');
-        } else {
-            WorkTimesExplanation::create([
-                'user_id' => Auth::id(),
-                'work_day' => $request['work_day'],
-                'ot_type' => $explanationOTType,
-                'type' => $request['explanation_type'],
-                'note' => $reason
-            ]);
-            return back()->with('day_off_success', 'day_off_success');
+            return back()->with('permission_error', '');
         }
     }
 
@@ -280,19 +285,23 @@ class UserController extends Controller
 
     public function askPermissionCreate(AskPermissionRequest $request)
     {
-        $workTimeExplanation = $this->getWorkTimeExplanation($request['work_day'])->where('type', $request['type'])->first();
-        if ($workTimeExplanation) {
-            $workTimeExplanation->update(['ot_type' => $request['ot_type'], 'note' => $request['note'], 'work_day' => $request['work_day']]);
+        if ($request->has('permission_status') && $request['permission_status'] == array_search(' Chưa duyệt',OT_STATUS)) {
+            $workTimeExplanation = $this->getWorkTimeExplanation($request['work_day'])->where('status', array_search(' Chưa duyệt',OT_STATUS))->where('type', $request['permission_type'])->first();
+            if ($workTimeExplanation) {
+                $workTimeExplanation->update(['ot_type' => $request['ot_type'], 'note' => $request['note'], 'work_day' => $request['work_day']]);
+            } else {
+                WorkTimesExplanation::create([
+                    'user_id' => Auth::id(),
+                    'work_day' => $request['work_day'],
+                    'type' => $request['permission_type'],
+                    'ot_type' => $request['ot_type'],
+                    'note' => $request['note'],
+                ]);
+            }
+            return back()->with('create_permission_success', 'create_permission_success');
         } else {
-            WorkTimesExplanation::create([
-                'user_id' => Auth::id(),
-                'work_day' => $request['work_day'],
-                'type' => $request['type'],
-                'ot_type' => $request['ot_type'],
-                'note' => $request['note'],
-            ]);
+            return back()->with('permission_error', '');
         }
-        return back()->with('create_permission_success', '');
     }
 
     public function askPermissionEarly(Request $request)

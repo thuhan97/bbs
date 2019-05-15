@@ -10,6 +10,16 @@
     {!! Breadcrumbs::render('work_time') !!}
 @endsection
 @section('content')
+    @if(session()->has('permission_error'))
+        <script>
+            swal({
+                title: "Thông báo!",
+                text: "Đơn đã được phê duyệt!",
+                icon: "error",
+                button: "Đóng",
+            });
+        </script>
+    @endif
     @if(session()->has('day_off_success'))
         @if(session()->get('day_off_success') != '')
             <script>
@@ -58,6 +68,12 @@
         </div>
     </form>
 
+    @if ($errors->has('status'))
+        <span class="help-block mb-5 color-red">
+            <strong>{{ $errors->first('status') }}</strong>
+        </span>
+        <br>
+    @endif
     @if ($errors->has('type'))
         <span class="help-block mb-5 color-red">
             <strong>{{ $errors->first('type') }}</strong>
@@ -95,7 +111,7 @@
         <div class="modal-dialog modal-center modal-set-center" role="document">
             <div class="modal-content" id="bg-img" style="background-image: url({{ asset('img/font/xin_nghi.png') }})">
                 <div class="modal-header text-center border-bottom-0 p-3">
-                    <h4 class='mg-center mg-left-10 modal-title w-100 font-weight-bold pt-2'>Xin phép</h4>
+                    <h4 class='mg-center mg-left-10 modal-title w-100 font-weight-bold pt-2 title-wt-modal-approve'>Xin phép</h4>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span class="btn-close-icon" aria-hidden="true">&times;</span>
                     </button>
@@ -109,7 +125,7 @@
                     <div class="d-flex justify-content-center text-area-reason" id="div-reason"></div>
                     <div id="event"></div>
                     <div class="pt-3 pb-4 d-flex justify-content-center border-top-0 rounded mb-0">
-                        <button class="btn btn-primary btn-send">GỬI ĐƠN</button>
+                        <button class="btn btn-primary btn-send btn-send-permission">GỬI ĐƠN</button>
                     </div>
                 </form>
             </div>
@@ -166,47 +182,9 @@
                             dataUserID = el.getElementsByClassName("data-user-id")[0].innerHTML,
                             dataType = el.getElementsByClassName("data-type")[0].innerHTML;
                         dataTypeOT = el.getElementsByClassName("data-ot-type")[0].innerHTML;
-                        // switch (true) {
-                        //     case parseInt(dataTypeOT) === 1:
-                        //         var projectOT = 'selected';
-                        //         var otherOT = '';
-                        //         break;
-                        //     case parseInt(dataTypeOT) === 2:
-                        //         var otherOT = 'selected';
-                        //         var projectOT = '';
-                        //         break;
-                        //     default:
-                        //         var projectOT = '',
-                        //             otherOT = '';
-                        // }
-
-                        switch (true) {
-                            case parseInt(dataType) === 1:
-                                var data_nomal = '',
-                                    data_late = 'checked',
-                                    data_early = '',
-                                    data_ot = '';
-                                break;
-                            case parseInt(dataType) === 2:
-                                var data_nomal = '',
-                                    data_late = '',
-                                    data_early = 'checked';
-                                ot = '';
-                                break;
-                            case parseInt(dataType) === 4:
-                                var data_nomal = '';
-                                data_late = '',
-                                    data_early = '',
-                                    data_ot = 'checked';
-                                break;
-                            default:
-                                var late = '',
-                                    early = '',
-                                    ot = '';
-                        }
                     }
 
-                    function makeMoal() {
+                    function makeModal() {
                         calendar.sDay = el.getElementsByClassName("dayNumber")[0].innerHTML;
                         if (el.getElementsByClassName("data-id")[0]) {
                             document.getElementById("div-reason").innerHTML =
@@ -315,7 +293,7 @@
                                 })
                             });
                         } else {
-                            makeMoal()
+                            makeModal()
                         }
                     }
                     $('#ot-project,#ot-other').on('click', function () {
@@ -340,8 +318,13 @@
                                 } else {
                                     other = ''
                                 }
-
-                                
+                                if (respond.status === 1) {
+                                    $('.title-wt-modal-approve').text('Đơn đã được duyệt');
+                                    $('.wt-textarea-reason,.btn-send-permission').prop('disabled',true)
+                                } else {
+                                    $('.title-wt-modal-approve').text('Xin phép');
+                                    $('.wt-textarea-reason,.btn-send-permission').prop('disabled', false)
+                                }
                                 $('.wt-textarea-reason').text(project);
                                 $('.wt-textarea-reason').text(other);
                             }
@@ -547,6 +530,7 @@
                                     $(this).append('<p class="data-work-day" hidden>' + data.work_day + '</p>');
                                     $(this).append('<p class="data-ot-type" hidden>' + data.ot_type + '</p>');
                                     $(this).append('<p class="data-type" hidden>' + data.type + '</p>');
+                                    $(this).append('<p class="data-status" hidden>' + data.status + '</p>');
                                 }
                             });
                         });

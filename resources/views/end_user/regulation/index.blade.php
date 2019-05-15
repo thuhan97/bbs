@@ -10,7 +10,7 @@
 @endsection
 @section('content')
     <div class="row">
-        <div class="col-lg-10">
+        <div class="col-12 col-xxl-10">
             <!-- Search form -->
             <form class="mb-4">
                 <div class="md-form active-cyan-2 mb-3">

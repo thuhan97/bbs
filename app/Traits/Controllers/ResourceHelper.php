@@ -213,7 +213,7 @@ trait ResourceHelper
      */
     public function getRedirectAfterSave($record, $request, $isCreate = null)
     {
-        return $this->redirectBackTo(route($this->getResourceRoutesAlias() . '.index'));
+        return redirect()->route($this->getResourceRoutesAlias() . '.index');
     }
 
     /**

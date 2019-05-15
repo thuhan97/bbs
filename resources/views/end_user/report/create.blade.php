@@ -34,6 +34,7 @@
                     </select>
                 </div>
                 <label class="mt-3" for="to_ids">Bạn gửi báo cáo cho ai?</label>
+                <div class="chips chips-placeholder"></div>
                 <div class="md-form mt-1 mb-0">
                     <input type="text" id="to_ids" name="to_ids" class="form-control"
                            value="{{old('to_ids', $report->to_ids)}}"
@@ -66,6 +67,8 @@
     <script>
         $(document).ready(function () {
 //            $('.mdb-select').materialSelect();
+            $('.chips').materialChip('data');
+            $('.chips').materialChip('options');
         });
         tinymce.init({
             selector: 'textarea',

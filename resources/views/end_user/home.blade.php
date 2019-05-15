@@ -84,9 +84,9 @@
                             <li class="list-group-item grey lighten-4">
                                 <strong><a class="text-black"
                                            href="{{route('project_detail', ['id' => $project->id])}}">{{$project->name}}</a></strong>
-                                <p>
-                                    Kỹ thuật sử dụng: {{$project->technical}}
-                                </p>
+                                <div>
+                                    {!! nl2br($project->technical) !!}
+                                </div>
                             </li>
                         @endforeach
                     </ul>

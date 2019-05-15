@@ -31,6 +31,7 @@ class OverTime extends Model
         'start_at',
         'end_at',
         'ot_type',
+        'project_name',
     ];
 
     public function scopeSearch($query, $searchOtTimes)

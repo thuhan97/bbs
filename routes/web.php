@@ -35,6 +35,7 @@ Route::group([
 //    Route::post('/thoi-gian-lam-viec/xin-phep-ot', 'UserController@workTimeAskPermissionOT')->name('work_time.ask_permission_ot');
     Route::post('/thoi-gian-lam-viec/xin-phep-ve-som', 'UserController@workTimeAskPermissionEarly')->name('work_time.ask_permission_early');
     Route::get('/thoi-gian-lam-viec/xin-di-muon', 'UserController@workTimeDetailAskPermission')->name('work_time.detail_ask_permission');
+    Route::get('/thoi-gian-lam-viec/du-an', 'UserController@workTimeGetProject')->name('work_time.get_project');
     Route::get('/ngay-nghi', 'UserController@dayOff')->name('day_off')->middleware('delete.cache');
     Route::get('xin-phep', 'UserController@askPermission')->name('ask_permission');
     Route::get('xin-phep/early', 'UserController@askPermissionEarly')->name('ask_permission.early');

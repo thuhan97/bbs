@@ -86,6 +86,170 @@
         </span>
         <br>
     @endif
+    <div class="row mb-4">
+        <div class="col-md-4">
+            <h2>Xin phép cá nhân</h2>
+        </div>
+        <div class="col-md-8 text-right">
+            <button onclick="location.href='{{route("day_off")}}?t=1'"
+                    class="btn btn-success no-box-shadow waves-effect waves-light float-right" id="btn-off">
+                Xin nghỉ phép
+            </button>
+            <button type="button"
+                    class="d-none d-xl-block btn btn-primary no-box-shadow approve-btn-ot waves-effect waves-light float-right"
+                    id="btn-late-ot">
+                Xin OT
+            </button>
+            <button type="button" class="approve-btn-early btn btn-warning no-box-shadow waves-light float-right"
+                    id="btn-late">
+                Xin về sớm
+            </button>
+            <button type="button" class="approve-btn-late btn btn-danger no-box-shadow waves-light float-right"
+                    id="btn-late">
+                Xin đi muộn
+            </button>
+        </div>
+    </div>
+    <!-- Nav tabs -->
+    <ul class="nav nav-tabs md-tabs nav-justified primary-color" role="tablist">
+        <li class="nav-item">
+            <a class="nav-link active" data-toggle="tab" href="#panel555" role="tab">Xin phép</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" data-toggle="tab" href="#panel666" role="tab">Xin OT</a>
+        </li>
+    </ul>
+    <!-- Nav tabs -->
+
+    <!-- Tab panels -->
+    <div class="tab-content">
+        <!-- Panel 1 -->
+        <div class="tab-pane fade in show active" id="panel555" role="tabpanel">
+            <table id="contactTbl" class="table table-striped table-bordered">
+                <colgroup>
+                    <col style="">
+                    <col style="">
+                    <col style="">
+                    <col style="">
+                </colgroup>
+                <thead class="grey lighten-2">
+                <tr>
+                    <th class="text-center">#</th>
+                    <th class="text-center">Ngày</th>
+                    <th>Hình thức</th>
+                    <th>Nội dung</th>
+                    <th>Nội dung từ chối</th>
+                    <th class="text-center">Trạng Thái</th>
+                </tr>
+                </thead>
+                <tbody>
+
+                @foreach($askPermission as $increment => $item)
+                    <tr>
+                        <th class="text-center">{{ $increment+1 }}</th>
+                        <th class="text-center">{{ $item['work_day'] ?? '' }}</th>
+                        <td>
+                            {{--{{$item->type_name}}aaa--}}
+                            @if($item['type'] == 0)
+                                Bình thường
+                            @elseif($item['type'] == 1)
+                                Đi muộn
+                            @elseif($item['type'] == 2)
+                                Về sớm
+                            @elseif($item['type'] == 4)
+                                @if($item['ot_type'] == 1)
+                                    OT dự án
+                                @elseif($item['ot_type'] == 2)
+                                    OT cá nhân
+                                @endif
+                            @endif
+                        </td>
+                        <td>{!! $item['note'] ?? '' !!}</td>
+                        <td>{!! $item['reason_reject'] ?? '' !!}</td>
+                        <td class="text-center td-approve">
+                            @if($item['work_times_explanation_status'] == array_search('Đã duyệt', OT_STATUS))
+                                <i class="fas fa-grin-stars fa-2x text-success"
+                                   title="{{ $item->workTimeApprover->name ?? '' }}"></i>
+                            @elseif($item['work_times_explanation_status'] == array_search('Chưa duyệt', OT_STATUS))
+                                <i class="fas fa-meh-blank fa-2x text-warning" title="Chưa duyệt"></i>
+                            @elseif($item['work_times_explanation_status'] == array_search('Từ chối', OT_STATUS))
+                                <i class="fas fa-frown fa-2x text-danger"
+                                   title="{{ $item->workTimeApprover->name ?? ''  }}"></i>
+                            @endif
+                        </td>
+                    </tr>
+                @endforeach
+                </tbody>
+            </table>
+        </div>
+        <!-- Panel 1 -->
+
+        <!-- Panel 2 -->
+        <div class="tab-pane fade" id="panel666" role="tabpanel">
+
+            <table id="contactTbl" class="table table-striped table-bordered">
+                <colgroup>
+                    <col style="">
+                    <col style="">
+                    <col style="">
+                    <col style="">
+                </colgroup>
+                <thead class="grey lighten-2">
+                <tr>
+                    <th class="text-center">#</th>
+                    <th class="text-center">Ngày</th>
+                    <th>Hình thức</th>
+                    <th>Nội dung</th>
+                    <th>Nội dung từ chối</th>
+                    <th class="text-center">Trạng Thái</th>
+                </tr>
+                </thead>
+                <tbody>
+
+                @foreach($otTimes as $increment => $item)
+                    <tr>
+                        <th class="text-center">{{ $increment+1 }}</th>
+                        <th class="text-center">{{ $item['work_day'] ?? '' }}</th>
+                        <td>
+                            {{--{{$item->type_name}}aaa--}}
+                            @if($item['type'] == 0)
+                                Bình thường
+                            @elseif($item['type'] == 1)
+                                Đi muộn
+                            @elseif($item['type'] == 2)
+                                Về sớm
+                            @elseif($item['type'] == 4)
+                                @if($item['ot_type'] == 1)
+                                    OT dự án
+                                @elseif($item['ot_type'] == 2)
+                                    OT cá nhân
+                                @endif
+                            @endif
+                        </td>
+                        <td>{!! $item['note'] ?? '' !!}</td>
+                        <td>{!! $item['reason_reject'] ?? '' !!}</td>
+                        <td class="text-center td-approve">
+                            @if($item['work_times_explanation_status'] == array_search('Đã duyệt', OT_STATUS))
+                                <i class="fas fa-grin-stars fa-2x text-success"
+                                   title="{{ $item->workTimeApprover->name ?? '' }}"></i>
+                            @elseif($item['work_times_explanation_status'] == array_search('Chưa duyệt', OT_STATUS))
+                                <i class="fas fa-meh-blank fa-2x text-warning" title="Chưa duyệt"></i>
+                            @elseif($item['work_times_explanation_status'] == array_search('Từ chối', OT_STATUS))
+                                <i class="fas fa-frown fa-2x text-danger"
+                                   title="{{ $item->workTimeApprover->name ?? ''  }}"></i>
+                            @endif
+                        </td>
+                    </tr>
+                @endforeach
+                </tbody>
+            </table>
+
+        </div>
+        <!-- Panel 2 -->
+
+    </div>
+    <!-- Tab panels -->
+
     @can('team-leader')
         @if($dataLeader->isNotEmpty())
             <h1>Danh sách xin phép</h1>
@@ -111,7 +275,7 @@
                 <tbody>
                 @foreach($dataLeader as $item)
                     <tr>
-                        <th class="text-center" style="padding: 15px;">{{ $increment++ }}</th>
+                        <th class="text-center">{{ $increment++ }}</th>
                         <th class="text-center">{{ $item['work_day'] ?? '' }}</th>
                         <th>{{ $item->user->name ?? '' }}</th>
                         <td>
@@ -145,7 +309,7 @@
                                     <i class="fas fa-grin-stars fa-2x text-success"
                                        title="{{ $item->workTimeApprover->name ?? '' }}"></i>
                                 @elseif($item['work_times_explanation_status'] == array_search('Từ chối', OT_STATUS))
-                                    <i class="fas fa-frown fa-2x text-danger"
+                                    <i class="fas fa-meh-blank fa-2x text-danger"
                                        title="{{ $item->workTimeApprover->name ?? '' }}"></i>
                                 @endif
                             @endcan
@@ -158,87 +322,82 @@
             <br><br><br>
         @endif
     @endcan
-    <div class="row mb-4">
-        <div class="col-md-4">
-            <h2>Xin phép cá nhân</h2>
-        </div>
-        <div class="col-md-8 text-right">
-            <button onclick="location.href='{{route("day_off")}}?t=1'"
-                    class="btn btn-success no-box-shadow waves-effect waves-light float-right" id="btn-off">
-                Xin nghỉ phép
-            </button>
-            <button type="button"
-                    class="d-none d-xl-block btn btn-primary no-box-shadow approve-btn-ot waves-effect waves-light float-right"
-                    id="btn-late-ot">
-                Xin OT
-            </button>
-            <button type="button" class="approve-btn-early btn btn-warning no-box-shadow waves-light float-right"
-                    id="btn-late">
-                Xin về sớm
-            </button>
-            <button type="button" class="approve-btn-late btn btn-danger no-box-shadow waves-light float-right"
-                    id="btn-late">
-                Xin đi muộn
-            </button>
-        </div>
-    </div>
-    <table id="contactTbl" class="table table-striped table-bordered">
-        <colgroup>
-            <col style="">
-            <col style="">
-            <col style="">
-            <col style="">
-        </colgroup>
-        <thead class="grey lighten-2">
-        <tr>
-            <th class="text-center">#</th>
-            <th class="text-center">Ngày</th>
-            <th>Hình thức</th>
-            <th>Nội dung</th>
-            <th>Nội dung từ chối</th>
-            <th class="text-center">Trạng Thái</th>
-        </tr>
-        </thead>
-        <tbody>
 
-        @foreach($datas as $increment => $item)
-            <tr>
-                <th class="text-center">{{ $increment+1 }}</th>
-                <th class="text-center">{{ $item['work_day'] ?? '' }}</th>
-                <td>
-                    {{--{{$item->type_name}}aaa--}}
-                    @if($item['type'] == 0)
-                        Bình thường
-                    @elseif($item['type'] == 1)
-                        Đi muộn
-                    @elseif($item['type'] == 2)
-                        Về sớm
-                    @elseif($item['type'] == 4)
-                        @if($item['ot_type'] == 1)
-                            OT dự án
-                        @elseif($item['ot_type'] == 2)
-                            OT cá nhân
-                        @endif
-                    @endif
-                </td>
-                <td>{!! $item['note'] ?? '' !!}</td>
-                <td>{!! $item['reason_reject'] ?? '' !!}</td>
-                <td class="text-center td-approve">
-                    @if($item['work_times_explanation_status'] == array_search('Đã duyệt', OT_STATUS))
-                        <i class="fas fa-grin-stars fa-2x text-success"
-                           title="{{ $item->workTimeApprover->name ?? '' }}"></i>
-                    @elseif($item['work_times_explanation_status'] == array_search('Chưa duyệt', OT_STATUS))
-                        <i class="fas fa-meh-blank fa-2x text-warning" title="Chưa duyệt"></i>
-                    @elseif($item['work_times_explanation_status'] == array_search('Từ chối', OT_STATUS))
-                        <i class="fas fa-frown fa-2x text-danger"
-                           title="{{ $item->workTimeApprover->name ?? ''  }}"></i>
-                    @endif
-                </td>
-            </tr>
-        @endforeach
-        </tbody>
-    </table>
-    {{ $datas->render('end_user.paginate') }}
+    {{--@can('team-leader')--}}
+        {{--@if($dataLeader->isNotEmpty())--}}
+            {{--<h1>Danh sách xin phép</h1>--}}
+            {{--<table id="contactTbl" class="table table-striped table-bordered">--}}
+                {{--<colgroup>--}}
+                    {{--<col style="">--}}
+                    {{--<col style="">--}}
+                    {{--<col style="">--}}
+                    {{--<col style="">--}}
+                {{--</colgroup>--}}
+                {{--<thead class="grey lighten-2">--}}
+                {{--<tr>--}}
+                    {{--<th class="text-center">#</th>--}}
+                    {{--<th class="text-center">Ngày</th>--}}
+                    {{--<th>Tên nhân viên</th>--}}
+                    {{--<th>Hình thức</th>--}}
+                    {{--<th>Nội dung</th>--}}
+                    {{--<th>Nội dung từ chối</th>--}}
+                    {{--<th class="text-center" style="width: 10%;">Trạng Thái</th>--}}
+                {{--</tr>--}}
+                {{--</thead>--}}
+                {{--<?php $increment = 1; ?>--}}
+                {{--<tbody>--}}
+                {{--@foreach($dataLeader as $item)--}}
+                    {{--<tr>--}}
+                        {{--<th class="text-center" style="padding: 15px;">{{ $increment++ }}</th>--}}
+                        {{--<th class="text-center">{{ $item['work_day'] ?? '' }}</th>--}}
+                        {{--<th>{{ $item->user->name ?? '' }}</th>--}}
+                        {{--<td>--}}
+                            {{--{{$item->type_name}}--}}
+                        {{--</td>--}}
+                        {{--<td>{!! $item['note'] ?? '' !!}</td>--}}
+                        {{--<td>{!! $item['reason_reject'] ?? '' !!}</td>--}}
+                        {{--<td class="text-center td-approve">--}}
+                            {{--@can('manager')--}}
+                                {{--@if($item['work_times_explanation_status'] == array_search('Chưa duyệt', OT_STATUS))--}}
+                                    {{--<form action="{{ $item['type'] == array_search('Overtime',WORK_TIME_TYPE) ? route('approvedOT') : route('approved') }}"--}}
+                                          {{--method="post">--}}
+                                        {{--@csrf--}}
+                                        {{--<input type="hidden" name="id"--}}
+                                               {{--value="{{ $item['id'] ? $item['id'] : '' }}">--}}
+                                        {{--<input type="hidden" name="user_id"--}}
+                                               {{--value="{{ $item['user_id'] ? $item['user_id'] : '' }}">--}}
+                                        {{--<input type="hidden" name="reason"--}}
+                                               {{--value="{{ $item['note'] ? $item['note'] : '' }}">--}}
+                                        {{--<input type="hidden" name="work_day"--}}
+                                               {{--value="{{ $item['work_day'] ? $item['work_day'] : '' }}">--}}
+                                        {{--<input type="hidden" name="type"--}}
+                                               {{--value="{{ $item['type'] ? $item['type'] : '' }}">--}}
+                                        {{--<button class="btn-approve float-left"><i class="fas fa-check-circle"></i>--}}
+                                        {{--</button>--}}
+                                    {{--</form>--}}
+                                    {{--<button class="btn-reject float-right"--}}
+                                            {{--data-id="{{ $item['id'] ? $item['id'] : '' }}"><i class="fas fa-times"></i>--}}
+                                    {{--</button>--}}
+                                {{--@elseif($item['work_times_explanation_status'] == array_search('Đã duyệt', OT_STATUS))--}}
+                                    {{--<i class="fas fa-grin-stars fa-2x text-success"--}}
+                                       {{--title="{{ $item->workTimeApprover->name ?? '' }}"></i>--}}
+                                {{--@elseif($item['work_times_explanation_status'] == array_search('Từ chối', OT_STATUS))--}}
+                                    {{--<i class="fas fa-frown fa-2x text-danger"--}}
+                                       {{--title="{{ $item->workTimeApprover->name ?? '' }}"></i>--}}
+                                {{--@endif--}}
+                            {{--@endcan--}}
+                        {{--</td>--}}
+                    {{--</tr>--}}
+                {{--@endforeach--}}
+                {{--</tbody>--}}
+            {{--</table>--}}
+            {{--{{$dataLeader->render('end_user.paginate') }}--}}
+            {{--<br><br><br>--}}
+        {{--@endif--}}
+    {{--@endcan--}}
+
+
+    {{--{{ $datas->render('end_user.paginate') }}--}}
     <div class="modal fade reject" id="modal-reject" tabindex="-1"
          role="dialog" aria-labelledby="myModalLabel"
          aria-hidden="true">

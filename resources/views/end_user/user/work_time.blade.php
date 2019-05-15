@@ -20,8 +20,8 @@
             });
         </script>
     @endif
-    @if(session()->has('day_off_success'))
-        @if(session()->get('day_off_success') != '')
+    @if(session()->has('wt_permission_success'))
+        @if(session()->get('wt_permission_success') != '')
             <script>
                 swal({
                     title: "Thông báo!",
@@ -231,19 +231,27 @@
                         }
                         document.getElementById("div-reason").innerHTML =
                             '<div class="row col-md-12 append-reason">' +
-                            '<div class="col-md-12 d-flex justify-content-center">' +
-                            '<div class="user col-md-4 pl-0 pr-0 text-center">' +
+                            '<div class="col-md-12 d-flex justify-content-center row">' +
+                            '<div class="row col-12">' +
+                            '<div class="user col-md-6 pl-0 pr-0 text-center">' +
                             '    <input type="radio" id="ot-project" class="user-radio2 radio-modal-work-time" name="ot_type" value="1"  style="position: relative;opacity: 1;pointer-events: inherit"/>' +
-                            '    <label for="ot-project">OT Dự án </label>' +
+                            '    <label for="ot-project">OT Dự ánNN </label>' +
                             '</div>' +
-                            '<div class="user col-md-4 pl-0 pr-0 text-center">' +
+                            '<div class="user col-md-6 pl-0 pr-0 text-center">' +
                             '    <input id="ot-other" type="radio" class="user-radio3 radio-modal-work-time"  name="ot_type" value="2"  style="position: relative;opacity: 1;pointer-events: inherit"/>' +
                             '    <label for="ot-other">OT Cá nhân </label>' +
                             '</div>' +
                             '</div>' +
+                            // '<div class="col-md-12">' +
+                                '<div class="col-12">'+
+                            '   <select class="browser-default form-control project_name" name="project_name">' +
+                            '       <option value="0">Chọn dự án</option>' +
+                            '   </select>' +
+                            '</div>' +
+                            '</div>' +
                             '        <div class="col-md-6">\n' +
                             '            <div class="form-group margin-b-5 margin-t-5">\n' +
-                            '                <label for="start_at">Thời gian kết thúc *</label>\n' +
+                            '                <label for="start_at">Thời gian bắt đầu *</label>\n' +
                             '                <div class="input-group date">\n' +
                             '                    <input type="time" class="form-control pull-right" autocomplete="off"\n' +
                             '                           name="start_at"\n' +
@@ -254,7 +262,7 @@
                             '        </div>\n' +
                             '        <div class="col-md-6">\n' +
                             '            <div class="form-group margin-b-5 margin-t-5">\n' +
-                            '                <label for="end_at">Thời gian bắt đầu *</label>\n' +
+                            '                <label for="end_at">Thời gian kết thúc *</label>\n' +
                             '                <div class="input-group date">\n' +
                             '                    <input type="time" class="form-control pull-right"\n' +
                             '                           name="end_at" autocomplete="off"\n' +
@@ -285,20 +293,52 @@
                                 '<input hidden name="id" value="' + dataID + '">' +
                                 '<input hidden name="fullOption" value="' + dataID + '">' +
                                 '<input type="hidden" class="work_day" name="work_day" value="' + getDataTime + '">' +
-                                '<div class="user col-md-4 pl-0 pr-0 text-center">' +
-                                '    <label for="late">Xin đi muộn </label>' +
+                                '<div class="user col-md-4 pl-0 pr-0 mb-3 text-center">' +
                                 '    <input type="radio" id="late" class="user-radio2 radio-modal-work-time" name="explanation_type" value="1"  style="position: relative;opacity: 1;pointer-events: inherit"/>' +
+                                '    <label for="late">Xin đi muộn </label>' +
                                 '</div>' +
                                 '<div class="user col-md-4 pl-0 pr-0 text-center">' +
-                                '    <label for="early">Xin về sớm </label>' +
                                 '    <input  id="early" type="radio" class="user-radio3 radio-modal-work-time"  name="explanation_type" value="2"  style="position: relative;opacity: 1;pointer-events: inherit"/>' +
+                                '    <label for="early">Xin về sớm </label>' +
                                 '</div>' +
-                                '<div class="user col-md-12 pl-0 pr-0">' +
-                                '   <div class="user col-md-4 pl-2 pr-0">' +
-                                '       <label for="ot">Xin OT</label>' +
+                                '   <div class="user col-md-4 pl-2 pr-0 text-center">' +
                                 '       <input type="radio" id="ot" class="user-radio1 radio-modal-work-time" name="explanation_type" value="4"  style="position: relative;opacity: 1;pointer-events: inherit"/>' +
+                                '       <label for="ot">Xin OT</label>' +
                                 '   </div>' +
+                                '<div class="user col-md-6 mb-4">' +
+                                '   <select class="browser-default form-control float-left w-95 ot_type" name="ot_type">' +
+                                '       <option value="">Loại OT</option>' +
+                                '       <option value="1">OT dự án</option>' +
+                                '       <option value="2">OT cá nhân</option>' +
+                                '   </select>' +
                                 '</div>' +
+                                '<div class="user col-md-6">' +
+                                '   <select class="browser-default form-control float-left w-95 project_name" name="project_name">' +
+                                '       <option value="0">Chọn dự án</option>' +
+                                '   </select>' +
+                                '</div>' +
+                                '        <div class="col-md-6">\n' +
+                                '            <div class="form-group margin-b-5 margin-t-5">\n' +
+                                '                <label for="start_at">Thời gian bắt đầu *</label>\n' +
+                                '                <div class="input-group date">\n' +
+                                '                    <input type="time" class="form-control pull-right" autocomplete="off"\n' +
+                                '                           name="start_at"\n' +
+                                '                           value=""\n' +
+                                '                           id="start_at">\n' +
+                                '                </div>\n' +
+                                '            </div>\n' +
+                                '        </div>\n' +
+                                '        <div class="col-md-6">\n' +
+                                '            <div class="form-group margin-b-5 margin-t-5">\n' +
+                                '                <label for="end_at">Thời gian kết thúc *</label>\n' +
+                                '                <div class="input-group date">\n' +
+                                '                    <input type="time" class="form-control pull-right"\n' +
+                                '                           name="end_at" autocomplete="off"\n' +
+                                '                           value=""\n' +
+                                '                           id="end_at">\n' +
+                                '                </div>\n' +
+                                '            </div>\n' +
+                                '        </div>\n' +
                                 '<textarea class="form-control mt-4 wt-textarea-reason" name="reason" rows="6" placeholder="Nội dung bạn muốn gửi..."></textarea>' +
                                 '</div>';
 
@@ -309,10 +349,29 @@
                                 $('.user .demo').remove();
                             });
                             $('.user-radio1').change(function () {
+                                $.ajax({
+                                    url: '{{ route('work_time.get_project') }}',
+                                    type: 'GET',
+                                    dataType: 'JSON',
+                                    data: {
+                                        // 'work_day': lateWorkDay,
+                                        // 'explanationType': explanationType,
+                                    },
+                                    success: function (responds) {
+                                        responds.forEach(function (element) {
+                                            console.log(element);
+                                            $('.project_name').append('<option value=' + element.id + '>' + element.name + '</option>');
+                                        });
+                                    }
+                                });
                                 $('.user .demo').remove();
-                                $('.user-radio1:checked').parent().append('' +
-                                    '<div class="demo"><select class="browser-default form-control float-left w-95 ot_type"\n' +
-                                    'name="ot_type"><option value="">Select<option value="1">OT dự án</option><option value="2">OT cá nhân</option></select></div>');
+
+                                if ($('.ot:checked')) {
+                                    $('.ot_type, .project_name,#start_at,#end_at').prop('disabled', false);
+                                } else {
+                                    $('.ot_type, .project_name,#start_at,#end_at').prop('disabled', true);
+                                }
+
                                 $(".ot_type").on('change', function () {
                                     var explanationOtType = $(this).val(),
                                         work_day = $('.work_day').val();
@@ -342,11 +401,23 @@
                                     });
                                 })
                             });
+
+                            $('.ot_type, .project_name,#start_at,#end_at').prop('disabled', true);
                         } else {
                             makeModal()
                         }
                     }
+                    $('.project_name,#start_at,#end_at').prop('disabled', true);
                     $('#ot-project,#ot-other').on('click', function () {
+                        var otThis = $(this);
+                        if(otThis.attr('id') === 'ot-other') {
+                            $('.project_name').empty()
+                            $('.project_name').prop('disabled',true)
+                            $('#start_at,#end_at').prop('disabled',false)
+                        } else if (otThis.attr('id') === 'ot-project') {
+                            $('.project_name,#start_at,#end_at').prop('disabled',false)
+                        }
+                        // $('.project_name,#start_at,#end_at').prop('disabled', false);
                         var lateWorkDay = $('.work_day').val(),
                             explanationOtType = $(this).val();
                         $.ajax({
@@ -358,6 +429,18 @@
                                 'explanationOtType': explanationOtType,
                             },
                             success: function (respond) {
+                                console.log(respond)
+                                if (respond.project) {
+                                    var projectName = respond.project
+                                }else {
+                                    var projectName = respond;
+                                }
+                                projectName.forEach(function (element) {
+                                    if (otThis.attr('id') === 'ot-project') {
+                                        $('.project_name').append('<option value="'+ element.name +'">' + element.name + '</option>');
+                                    }
+                                    });
+
                                 if (respond.note || respond.type === 4 && respond.ot_type === 2) {
                                     var project = respond.note
                                 } else {
@@ -402,6 +485,9 @@
                                 $('.wt-textarea-reason').text(note)
                             }
                         });
+
+                        $('.ot_type, .project_name,#start_at,#end_at').prop('disabled', true);
+                        $('.project_name option[value!="0"]').remove();
                         $('.wt-late-reason').remove()
                     });
 

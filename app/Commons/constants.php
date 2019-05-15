@@ -360,6 +360,7 @@ define('OT_TYPE', [
     1 => 'Dự án',
     2 => 'OT lý do cá nhân',
 ]);
+define('CHECK_TIME_DAY_OFF_END_DATE','18:00:00');
 define('CHECK_TIME_DAY_OFF', [
     '08:00:00' => '8:00',
     '12:00:00' => '12:00',

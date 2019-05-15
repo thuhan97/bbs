@@ -438,7 +438,7 @@ class DayOffService extends AbstractService implements IDayOffService
         }
         $day = $to->diffInHours($from) / HOURS_OF_DAY;
 
-        if ($day > REMAIN_DAY_OFF_DEFAULT && $endTime == CHECK_TIME_DAY_OFF){
+        if ($day > REMAIN_DAY_OFF_DEFAULT && $endTime == CHECK_TIME_DAY_OFF_END_DATE){
             $day=$day - REMAIN_DAY_OFF_DEFAULT;
         }
         $numberDate = $to->diffInDays($from);

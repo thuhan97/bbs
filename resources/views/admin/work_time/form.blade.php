@@ -1,25 +1,44 @@
 <div class="col-md-7">
-    @if($record)
-        <input type="hidden" class="form-control pull-right"
-               name="user_id" autocomplete="off"
-               value="{{ old('user_id', $record->user_id ?? '') }}">
-    @else
-        <div class="form-group margin-b-5 margin-t-5{{ $errors->has('user_id') ? ' has-error' : '' }}">
-            <label for="user_id">Chọn nhân viên *</label>
-            {{ Form::select('user_id', ['' => 'Chọn nhân viên'] +  $request_users, $record->user_id, ['class'=>'select2 form-control']) }}
-            @if ($errors->has('user_id'))
-                <span class="help-block">
+    <div class="row">
+        <div class="col-md-6">
+            @if($record->id)
+                <input type="hidden" class="form-control pull-right"
+                       name="id" autocomplete="off"
+                       value="{{ $record->id }}">
+                <input type="hidden"
+                       class="form-control pull-right"
+                       name="user_id"
+                       autocomplete="off"
+                       value="{{ old('user_id', $record->user_id ?? '') }}">
+                Nhân viên: <strong>{{$record->user->staff_code ?? ''}} - {{$record->user->name ?? ''}}</strong>
+                <br/>
+            @else
+                <div class="form-group margin-b-5 margin-t-5{{ $errors->has('user_id') ? ' has-error' : '' }}">
+                    <label for="user_id">Chọn nhân viên *</label>
+                    {{ Form::select('user_id', ['' => 'Chọn nhân viên'] +  $request_users, $record->user_id, ['class'=>'select2 form-control']) }}
+                    @if ($errors->has('user_id'))
+                        <span class="help-block">
                     <strong>{{ $errors->first('user_id') }}</strong>
                 </span>
+                    @endif
+                </div>
             @endif
         </div>
-    @endif
+    </div>
+
     <div class="row">
         <div class="col-md-6">
             <div class="form-group margin-b-5 margin-t-5{{ $errors->has('work_day') ? ' has-error' : '' }}">
                 <label for="work_day">Ngày làm việc *</label>
-                <input type="date" class="form-control" name="work_day" placeholder="Ngày làm việc"
-                       value="{{ old('work_day', $record->work_day ?? date(DATE_FORMAT)) }}" required>
+                <input type="text" class="form-control" name="work_day" placeholder="Ngày làm việc" id="work_day"
+                       value="{{ old('work_day', $record->work_day ?? date(DATE_FORMAT)) }}"
+                       @if($record->id)
+                       readonly
+                       @else
+                       required
+                        @endif
+                >
+
 
                 @if ($errors->has('work_day'))
                     <span class="help-block">
@@ -28,15 +47,22 @@
                 @endif
             </div>
         </div>
-        <div class="col-md-6">
+        <div class="col-md-3">
             <div class="form-group margin-b-5 margin-t-5{{ $errors->has('type') ? ' has-error' : '' }}">
                 <label for="type">Phân loại</label>
-                {{ Form::select('type', \App\Models\WorkTime::WORK_TIME_CALENDAR_TYPE, $record->type, ['class'=>'form-control']) }}
+                {{ Form::select('type', ['' => ''] + \App\Models\WorkTime::WORK_TIME_CALENDAR_TYPE, $record->type, ['class'=>'form-control', 'disabled']) }}
                 @if ($errors->has('type'))
                     <span class="help-block">
                     <strong>{{ $errors->first('type') }}</strong>
                 </span>
                 @endif
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="form-group margin-b-5 margin-t-5">
+                <label for="work_day">Tính công</label>
+                <input type="text" class="form-control"
+                       value="{{ $record->cost }}" disabled>
             </div>
         </div>
     </div>
@@ -49,7 +75,7 @@
                     <div class="input-group-addon">
                         <i class="fa fa-calendar"></i>
                     </div>
-                    <input type="time" class="form-control pull-right" autocomplete="off"
+                    <input type="text" class="form-control pull-right" autocomplete="off"
                            name="start_at"
                            value="{{ old('start_at', $record->start_at ?? ($config->morning_start_work_at ?? '8:00')) }}"
                            id="start_at">
@@ -68,10 +94,11 @@
                     <div class="input-group-addon">
                         <i class="fa fa-calendar"></i>
                     </div>
-                    <input type="time" class="form-control pull-right"
+                    <input type="text" class="form-control pull-right"
                            name="end_at" autocomplete="off"
                            value="{{ old('end_at', $record->end_at ?? ($config->afternoon_end_work_at ?? '17:30')) }}"
                            id="end_at">
+
                 </div>
                 @if ($errors->has('end_at'))
                     <span class="help-block">
@@ -108,6 +135,13 @@
 <!-- /.col-md-7 -->
 @push('footer-scripts')
     <script>
+        $(function () {
+            myDatePicker($("#work_day"));
+            $("#start_at, #end_at").timepicker({
+                format: 'LT',
+                showMeridian: false
+            });
+        })
 
     </script>
 @endpush

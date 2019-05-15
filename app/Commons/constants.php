@@ -360,17 +360,11 @@ define('OT_TYPE', [
     1 => 'Dự án',
     2 => 'OT lý do cá nhân',
 ]);
+define('CHECK_TIME_DAY_OFF_START_DATE','8:00:00');
+define('CHECK_TIME_DAY_OFF_HALT_DATE','12:00:00');
 define('CHECK_TIME_DAY_OFF_END_DATE','18:00:00');
-define('CHECK_TIME_DAY_OFF', [
-    '08:00:00' => '8:00',
-    '12:00:00' => '12:00',
-    '18:00:00' => '18:00',
-]);
-define('CHECK_TIME_DAY_OFF_USABLE', [
-    '08:00:00' => '00:00:00',
-    '12:00:00' => '12:00:00',
-    '18:00:00' => '24:00:00',
-]);
+define('CHECK_TIME_DAY_OFF', ['AM','PM']);
+define('CHECK_TIME_DAY_OFF_USABLE', ['00:00:00', '24:00:00']);
 define('DAY_OFF_TITLE_DEFAULT', 1);
 define('ARRAY_TITLE_DAYOFF_VACATION_MODE', [2, 3, 4]);
 define('GROUPS', [
@@ -391,6 +385,7 @@ define('SAT', 'Sat');
 
 define('JANUARY',1);
 define('DECEMBER',12);
+define('INT_HALT_DATE',12);
 
 
 

@@ -321,12 +321,12 @@
                                                     <label class=" text-w-400" for="inputCity">Ngày bắt đầu<span
                                                                 class="text-danger">*</span></label>
                                                     <?php
-                                                    $autoDateStart = date('Y/m/d', strtotime('tomorrow'));
+                                                    $autoDate = date('Y/m/d', strtotime('tomorrow'));
                                                     ?>
                                                     <input type="text"
                                                            class="form-control border-0 select-item {{ $errors->has('start_at') ? ' has-error' : '' }}"
                                                            id="start_date" autocomplete="off" name="start_at"
-                                                           value="{{ old('start_at', $autoDateStart) }}"
+                                                           value="{{ old('start_at', $autoDate) }}"
                                                            readonly="readonly">
                                                 </div>
                                                 <div class="col-sm-4 p-0 mt-2">
@@ -345,11 +345,11 @@
                                                     <input type="text"
                                                            class="form-control select-item  border-0 {{ $errors->has('end_at') ? ' has-error' : '' }}"
                                                            id="end_date" autocomplete="off" name="end_at"
-                                                           value="{{  old('end_at',$autoDateEnd) }}"
+                                                           value="{{  old('end_at',$autoDate) }}"
                                                            readonly>
                                                 </div>
                                                 <div class="col-sm-4 p-0 mt-2">
-                                                    {{ Form::select('end', CHECK_TIME_DAY_OFF, null, ['class' => 'form-control border-0 option-time-day-off browser-default custom-select select-item mannager_id check-value time-end' ]) }}
+                                                    {{ Form::select('end', CHECK_TIME_DAY_OFF, REMAIN_DAY_OFF_DEFAULT , ['class' => 'form-control border-0 option-time-day-off browser-default custom-select select-item mannager_id check-value time-end' ]) }}
                                                 </div>
                                             </div>
                                         </div>
@@ -823,6 +823,7 @@
                     }else {
                         $('#usable-check').text(' ')
                     };
+
                 }
             });
         }
@@ -838,9 +839,12 @@
                 $(btn).attr('disabled', 'disabled');
                 $(errors).text('Ngày kết thúc phải lớn hơn hoặc bằng ngày bắt đầu.');
             } else if (start1 == end1 && check == true) {
-                var timeStrat = new Date("November 13, 2013 " + $('.time-start').val()).getTime();
-                var timeEnd = new Date("November 13, 2013 " + $('.time-end').val()).getTime();
-                if (timeStrat >= timeEnd) {
+                var checkTimeStart=$('.time-start').val() == 0 ? ' 8:00:00' : ' 18:00:00';
+                var checkTimeEnd=$('.time-end').val() == 0 ? ' 8:00:00' : ' 18:00:00';
+                var timeStrat = new Date("November 13, 2013 " + checkTimeStart).getTime();
+                var timeEnd = new Date("November 13, 2013 " + checkTimeEnd ).getTime();
+                // alert(timeEnd)
+                if (timeStrat > timeEnd) {
                     $(btn).attr('disabled', 'disabled');
                     $(errors).text('Giờ kết thúc phải lớn hơn giờ bắt đầu.');
                 } else {

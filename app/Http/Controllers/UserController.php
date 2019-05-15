@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\DateTimeHelper;
 use App\Http\Requests\Admin\WorkTimePermissionRequest;
 use App\Http\Requests\Admin\WorkTimeRequest;
 use App\Http\Requests\ApprovedRequest;
@@ -226,26 +227,30 @@ class UserController extends Controller
 
     public function workTimeAskPermission(WorkTimePermissionRequest $request)
     {
-        $explanationOTType = $request['explanation_ot_type'];
+        $minute = DateTimeHelper::getMinutesBetweenTwoTime($request['start_at'], $request['end_at']);
+        $otType = $request['ot_type'];
         $reason = $request['reason'];
         $workDay = $request['work_day'];
         if ($request->has('status') && $request['status'] == 0 || is_null($request['status'])) {
             if ($request->has('fullOption') || $request->has('explanation_ot_type')) {
-//                dd($request->all());
-                $workTimeExplanation = $this->getWorkTimeExplanation($workDay)->where('status', '!=',1)->where('status', '!=',2)->where('type', $request['explanation_type'])->first();
+//                $workTimeExplanation = $this->getWorkTimeExplanation($workDay)->where('status', '!=',1)->where('status', '!=',2)->where('type', $request['explanation_type'])->first();
+                $workTimeExplanation = OverTime::where('creator_id', Auth::id())->where('work_day', $workDay)->where('status', '!=', 2)->first();
             } else {
-                $workTimeExplanation = $this->getWorkTimeExplanation($workDay)->where('ot_type', $explanationOTType)->first();
+                $workTimeExplanation = $this->getWorkTimeExplanation($workDay)->where('ot_type', $otType)->first();
             }
             if ($workTimeExplanation) {
-                $workTimeExplanation->update(['note' => $reason, 'ot_type' => $explanationOTType, 'type' => $request['explanation_type']]);
+                $workTimeExplanation->update(['reason' => $reason, 'minute' => $minute, 'ot_type' => $otType]);
                 return back()->with('day_off_success', '');
             } else {
-                WorkTimesExplanation::create([
-                    'user_id' => Auth::id(),
+                OverTime::create([
+                    'creator_id' => Auth::id(),
+                    'minute' => $minute,
                     'work_day' => $request['work_day'],
-                    'ot_type' => $explanationOTType,
-                    'type' => $request['explanation_type'],
-                    'note' => $reason
+                    'status' => 0,
+                    'reason' => $reason,
+                    'start_at' => $request['start_at'],
+                    'end_at' => $request['end_at'],
+                    'ot_type' => $otType,
                 ]);
                 return back()->with('day_off_success', 'day_off_success');
             }
@@ -324,7 +329,7 @@ class UserController extends Controller
 
     public function askPermissionOT(Request $request)
     {
-        $workTimeExplanation = $this->getWorkTimeExplanation($request['data'])->where('type', $request['type'])->where('status','!=',2)->first();
+        $workTimeExplanation = $this->getWorkTimeExplanation($request['data'])->where('type', $request['type'])->where('status', '!=', 2)->first();
         if ($workTimeExplanation) {
             return $workTimeExplanation;
         } else {

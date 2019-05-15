@@ -25,9 +25,9 @@ class WorkTimePermissionRequest extends FormRequest
     {
         $rules = [];
         if ($this->request->has('explanation_ot_type')){
-            $rules['explanation_ot_type'] = 'required|integer|between:1,2';
+//            $rules['explanation_ot_type'] = 'required|integer|between:1,2';
         }
-        $rules['explanation_type'] = 'required|integer|between:1,4';
+//        $rules['explanation_type'] = 'required|integer|between:1,4';
         $rules['work_day'] = 'required|date';
         $rules['reason'] = 'required';
         return $rules;

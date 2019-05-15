@@ -95,9 +95,9 @@
             <strong>{{ $errors->first('explanation_type') }}</strong>
         </span>
     @endif
-    @if ($errors->has('explanation_ot_type'))
+    @if ($errors->has('ot_type'))
         <span class="help-block mb-5 color-red">
-            <strong>{{ $errors->first('explanation_ot_type') }}</strong>
+            <strong>{{ $errors->first('ot_type') }}</strong>
         </span>
     @endif
     @if ($errors->has('reason'))
@@ -111,7 +111,8 @@
         <div class="modal-dialog modal-center modal-set-center" role="document">
             <div class="modal-content" id="bg-img" style="background-image: url({{ asset('img/font/xin_nghi.png') }})">
                 <div class="modal-header text-center border-bottom-0 p-3">
-                    <h4 class='mg-center mg-left-10 modal-title w-100 font-weight-bold pt-2 title-wt-modal-approve'>Xin phép</h4>
+                    <h4 class='mg-center mg-left-10 modal-title w-100 font-weight-bold pt-2 title-wt-modal-approve'>Xin
+                        phép</h4>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span class="btn-close-icon" aria-hidden="true">&times;</span>
                     </button>
@@ -192,40 +193,79 @@
                                 '<div class="col-md-12 d-flex justify-content-center">' +
                                 '<div class="user col-md-4 pl-0 pr-0 text-center">' +
                                 '    <label for="ot-project" class="wt-input-late">OT dự án </label>' +
-                                '    <input type="radio" id="ot-project" class="user-radio2 radio-modal-work-time wt-input-late" name="explanation_ot_type" value="1"  style="position: relative;opacity: 1;pointer-events: inherit"/>' +
+                                '    <input type="radio" id="ot-project" class="user-radio2 radio-modal-work-time wt-input-late" name="ot_type" value="1"  style="position: relative;opacity: 1;pointer-events: inherit"/>' +
                                 '</div>' +
                                 '<div class="user col-md-4 pl-0 pr-0 text-center">' +
                                 '    <label for="ot-other">OT cá nhân </label>' +
-                                '    <input id="ot-other" type="radio" class="user-radio3 radio-modal-work-time"  name="explanation_ot_type" value="2"  style="position: relative;opacity: 1;pointer-events: inherit"/>' +
+                                '    <input id="ot-other" type="radio" class="user-radio3 radio-modal-work-time"  name="ot_type" value="2"  style="position: relative;opacity: 1;pointer-events: inherit"/>' +
                                 '</div>' +
                                 '</div>' +
+                                '        <div class="col-md-6">\n' +
+                                '            <div class="form-group margin-b-5 margin-t-5">\n' +
+                                '                <label for="start_at">Thời gian kết thúc *</label>\n' +
+                                '                <div class="input-group date">\n' +
+                                '                    <input type="time" class="form-control pull-right" autocomplete="off"\n' +
+                                '                           name="start_at"\n' +
+                                '                           value=""\n' +
+                                '                           id="start_at">\n' +
+                                '                </div>\n' +
+                                '            </div>\n' +
+                                '        </div>\n' +
+                                '        <div class="col-md-6">\n' +
+                                '            <div class="form-group margin-b-5 margin-t-5">\n' +
+                                '                <label for="end_at">Thời gian bắt đầu *</label>\n' +
+                                '                <div class="input-group date">\n' +
+                                '                    <input type="time" class="form-control pull-right"\n' +
+                                '                           name="end_at" autocomplete="off"\n' +
+                                '                           value=""\n' +
+                                '                           id="end_at">\n' +
+                                '                </div>\n' +
+                                '            </div>\n' +
+                                '        </div>\n' +
                                 '<input type="hidden" name="work_day" class="work_day" value="' + dataWorkDay + '">' +
                                 '<input hidden name="explanation_type" value="4">' +
                                 '<input hidden name="status" value="" class="wt-status">' +
                                 '<textarea class="form-control wt-textarea-reason" name="reason" rows="6" placeholder="Nội dung bạn muốn gửi..."></textarea>' +
                                 '</div>';
                         } else {
-                            document.getElementById("div-reason").innerHTML =
-                                '<div class="row col-md-12 append-reason">' +
-                                '<div class="row col-md-12 ">' +
-                                '<div class="col-md-12 d-flex justify-content-center">' +
-                                '<div class="user col-md-4 pl-0 pr-0 text-center">' +
-                                '    <label for="ot-project">OT dự án </label>' +
-                                '    <input type="radio" id="ot-project" class="user-radio2 radio-modal-work-time" name="explanation_ot_type" value="1"  style="position: relative;opacity: 1;pointer-events: inherit"/>' +
-                                '</div>' +
-                                '<div class="user col-md-4 pl-0 pr-0 text-center">' +
-                                '    <label for="ot-other">OT cá nhân </label>' +
-                                '    <input id="ot-other" type="radio" class="user-radio3 radio-modal-work-time"  name="explanation_ot_type" value="2"  style="position: relative;opacity: 1;pointer-events: inherit"/>' +
-                                '</div>' +
-                                '</div>' +
-                                '<input type="hidden" name="work_day" class="work_day" value="' + getDataTime + '">' +
-                                '<textarea class="form-control wt-textarea-reason" name="reason" rows="6" placeholder="Nội dung bạn muốn gửi..."></textarea>' +
-                                '<input hidden name="explanation_type" value="4">' +
-                                '</div>' +
-                                '<div class="row col-md-12">' +
-                                '</div>' +
-                                '</div>';
                         }
+                        document.getElementById("div-reason").innerHTML =
+                            '<div class="row col-md-12 append-reason">' +
+                            '<div class="col-md-12 d-flex justify-content-center">' +
+                            '<div class="user col-md-4 pl-0 pr-0 text-center">' +
+                            '    <input type="radio" id="ot-project" class="user-radio2 radio-modal-work-time" name="ot_type" value="1"  style="position: relative;opacity: 1;pointer-events: inherit"/>' +
+                            '    <label for="ot-project">OT Dự án </label>' +
+                            '</div>' +
+                            '<div class="user col-md-4 pl-0 pr-0 text-center">' +
+                            '    <input id="ot-other" type="radio" class="user-radio3 radio-modal-work-time"  name="ot_type" value="2"  style="position: relative;opacity: 1;pointer-events: inherit"/>' +
+                            '    <label for="ot-other">OT Cá nhân </label>' +
+                            '</div>' +
+                            '</div>' +
+                            '        <div class="col-md-6">\n' +
+                            '            <div class="form-group margin-b-5 margin-t-5">\n' +
+                            '                <label for="start_at">Thời gian kết thúc *</label>\n' +
+                            '                <div class="input-group date">\n' +
+                            '                    <input type="time" class="form-control pull-right" autocomplete="off"\n' +
+                            '                           name="start_at"\n' +
+                            '                           value=""\n' +
+                            '                           id="start_at">\n' +
+                            '                </div>\n' +
+                            '            </div>\n' +
+                            '        </div>\n' +
+                            '        <div class="col-md-6">\n' +
+                            '            <div class="form-group margin-b-5 margin-t-5">\n' +
+                            '                <label for="end_at">Thời gian bắt đầu *</label>\n' +
+                            '                <div class="input-group date">\n' +
+                            '                    <input type="time" class="form-control pull-right"\n' +
+                            '                           name="end_at" autocomplete="off"\n' +
+                            '                           value=""\n' +
+                            '                           id="end_at">\n' +
+                            '                </div>\n' +
+                            '            </div>\n' +
+                            '        </div>\n' +
+                            '<input type="hidden" name="work_day" class="work_day" value="' + getDataTime + '">' +
+                            '<textarea class="form-control wt-textarea-reason" name="reason" rows="6" placeholder="Nội dung bạn muốn gửi..."></textarea>' +
+                            '</div>';
                     }
 
                     if (parseInt(calendarYM) >= parseInt(currentMY)) {
@@ -253,9 +293,11 @@
                                 '    <label for="early">Xin về sớm </label>' +
                                 '    <input  id="early" type="radio" class="user-radio3 radio-modal-work-time"  name="explanation_type" value="2"  style="position: relative;opacity: 1;pointer-events: inherit"/>' +
                                 '</div>' +
-                                '<div class="user col-md-4 pl-0 pr-0 text-center">' +
-                                '    <label for="ot">Xin OT</label>' +
-                                '    <input type="radio" id="ot" class="user-radio1 radio-modal-work-time" name="explanation_type" value="4"  style="position: relative;opacity: 1;pointer-events: inherit"/>' +
+                                '<div class="user col-md-12 pl-0 pr-0">' +
+                                '   <div class="user col-md-4 pl-2 pr-0">' +
+                                '       <label for="ot">Xin OT</label>' +
+                                '       <input type="radio" id="ot" class="user-radio1 radio-modal-work-time" name="explanation_type" value="4"  style="position: relative;opacity: 1;pointer-events: inherit"/>' +
+                                '   </div>' +
                                 '</div>' +
                                 '<textarea class="form-control mt-4 wt-textarea-reason" name="reason" rows="6" placeholder="Nội dung bạn muốn gửi..."></textarea>' +
                                 '</div>';
@@ -269,9 +311,9 @@
                             $('.user-radio1').change(function () {
                                 $('.user .demo').remove();
                                 $('.user-radio1:checked').parent().append('' +
-                                    '<div class="demo"><select class="browser-default form-control float-left w-95 explanation_ot_type"\n' +
-                                    'name="explanation_ot_type"><option value="">Select<option value="1">OT dự án</option><option value="2">OT cá nhân</option></select></div>');
-                                $(".explanation_ot_type").on('change', function () {
+                                    '<div class="demo"><select class="browser-default form-control float-left w-95 ot_type"\n' +
+                                    'name="ot_type"><option value="">Select<option value="1">OT dự án</option><option value="2">OT cá nhân</option></select></div>');
+                                $(".ot_type").on('change', function () {
                                     var explanationOtType = $(this).val(),
                                         work_day = $('.work_day').val();
                                     $.ajax({
@@ -290,7 +332,7 @@
                                             }
                                             if (respond.status === 1) {
                                                 $('.title-wt-modal-approve').text('Đơn đã được duyệt');
-                                                $('.wt-textarea-reason,.btn-send-permission').prop('disabled',true);
+                                                $('.wt-textarea-reason,.btn-send-permission').prop('disabled', true);
                                             } else {
                                                 $('.title-wt-modal-approve').text('Xin phép');
                                                 $('.wt-textarea-reason,.btn-send-permission').prop('disabled', false);
@@ -328,12 +370,12 @@
                                 }
                                 if (respond.status === 1) {
                                     $('.title-wt-modal-approve').text('Đơn đã được duyệt');
-                                    $('.wt-textarea-reason,.btn-send-permission').prop('disabled',true);
+                                    $('.wt-textarea-reason,.btn-send-permission').prop('disabled', true);
                                 } else {
                                     $('.title-wt-modal-approve').text('Xin phép');
                                     $('.wt-textarea-reason,.btn-send-permission').prop('disabled', false);
                                 }
-                                $('.wt-status').attr('value',respond.status);
+                                $('.wt-status').attr('value', respond.status);
                                 $('.wt-textarea-reason').text(project);
                                 $('.wt-textarea-reason').text(other);
                             }
@@ -561,4 +603,11 @@
             };
         })
     </script>
+@endpush
+@push('extend-css')
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/timepicker/1.3.5/jquery.timepicker.min.css">
+@endpush
+
+@push('extend-js')
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/timepicker/1.3.5/jquery.timepicker.min.js"></script>
 @endpush

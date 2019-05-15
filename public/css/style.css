@@ -1303,3 +1303,10 @@ td.blank, .type-1, .type-2 {
 .table-detail-day-off{
     padding: 0.4rem !important;
 }
+.calendar-search{
+    top: 8px;
+    right: 5px;
+    font-size: 23px;
+    z-index: 0;
+    color: darkgrey;
+}

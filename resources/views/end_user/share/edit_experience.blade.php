@@ -4,10 +4,10 @@
 <div class="col-md-8">
     <div class="content">
         <div class="tab-pane active">
-            <form action="{{ route('save_edit_experience') }}" method="post" id="formExp" enctype="multipart/form-data">
+            <form action="{{ route('save_edit_experience') }}" method="post" id="formAddExperience" enctype="multipart/form-data">
                 @csrf <!-- {{ csrf_field() }} -->
                 <div class="form-group margin-b-5 margin-t-5">
-                    <label for="acronym_name">Kinh nghiệm làm việc*</label>
+                    <h2 for="acronym_name"><strong>Kinh nghiệm làm việc</strong></h2><br />
                     <input value="{{$experience->id}}" type="hidden" name="id">
                     <textarea class="form-control" id="editorContainer" name="content" placeholder="Viết kinh nghiệm bạn muốn chia sẻ ...">{{$experience->content}}</textarea>
                 </div>

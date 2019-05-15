@@ -36,4 +36,19 @@ class SuggestionController extends Controller
         }
         return redirect()->route('default');
     }
+
+    public function approveSuggestion(request $request)
+    {
+        if (!empty($request)) {
+            $suggestion = Suggestion::findOrFail($request->data);
+            if ($request->data_status == 0) {
+                $suggestion->status = 1;
+            } else {
+                $suggestion->status = 0;
+            }
+            if($suggestion->update()){
+                return $suggestion->status; 
+            }
+        }
+    }    
 }

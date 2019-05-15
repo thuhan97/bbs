@@ -1,7 +1,7 @@
 window.myEditor = function ($selector, height) {
     var editorConfig = {
         path_absolute: "/",
-        height: height || 100 + 'px',
+        height: height || 250 + 'px',
         theme: "modern",
         paste_data_images: true,
         plugins: [
@@ -49,15 +49,10 @@ window.myEditor = function ($selector, height) {
 
 $("#buttonExperience").click(function(){
     var content = $("#editorContainer_ifr").contents().find("body").text();
+    console.log(content);
     if(content.trim() != ''){
-        $('#formExp').submit();
+        $('#formExperience').submit();
     }
-});
-
-$(".button-exp").click(function() {
-    $( "#formExp" ).toggle();
-    $( ".button-add" ).toggle();
-    $( ".button-hidden" ).toggle();
 });
 
 $(".form-comment2").click(function(){

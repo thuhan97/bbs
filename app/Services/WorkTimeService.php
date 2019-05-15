@@ -408,9 +408,9 @@ class WorkTimeService extends AbstractService implements IWorkTimeService
                 || ($costStartAt > HAFT_MORNING && $costEndAt >= HAFT_AFTERNOON)) {
                 $cost = 0.5;
             }
-        } else if ($typeCheck > 0 && $costStartAt > HAFT_MORNING && $costEndAt >= HAFT_AFTERNOON) {
+        } else if ($typeCheck > 0 && $costStartAt < HAFT_AFTERNOON && $costEndAt >= HAFT_AFTERNOON) {
             $cost = 0.5;
-        } else if ($typeCheck < 0 && $costStartAt <= HAFT_MORNING && $costEndAt < HAFT_AFTERNOON) {
+        } else if ($typeCheck < 0 && $costStartAt <= HAFT_MORNING && $costEndAt > HAFT_MORNING) {
             $cost = 0.5;
         }
 

@@ -4,23 +4,12 @@ namespace App\Exports;
 
 use App\Models\Config;
 use App\Models\Punishes;
-use App\User;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Concerns\FromArray;
 
-class LatelyGridExport implements FromArray
+class LatelyGridExport extends WTGridExport implements FromArray
 {
     private $config;
-    private $records;
-    private $firstDate;
-    private $lastDate;
-    /**
-     * @var array
-     */
-    private $dateLists;
-
-    private $headings;
-    private $importList;
 
     /**
      * WorkTimeGridExport constructor.
@@ -30,34 +19,10 @@ class LatelyGridExport implements FromArray
     public function __construct($records, Request $request)
     {
         $this->config = Config::first();
-        $this->records = $records;
-        $this->firstDate = $records->min('work_day');
-        $this->lastDate = $records->max('work_day');
-
-        $userModel = User::select('id', 'staff_code', 'name')
-            ->where('status', ACTIVE_STATUS);
-        if ($request->has('user_id')) {
-            $this->users = $userModel
-                ->where('id', $request->get('user_id'))
-                ->get();
-        } else {
-            $this->users = $userModel
-                ->orderBy('contract_type')
-                ->orderBy('id')
-                ->get();
-        }
-        $this->punishes = Punishes::where('infringe_date', '>=', $this->firstDate)
-            ->where('infringe_date', '<=', $this->lastDate)
-            ->where('rule_id', LATE_RULE_ID)
-            ->get();
-
-        $this->dateLists = get_date_list($this->firstDate, $this->lastDate);
-
-        $this->getHeadings();
-        $this->getList();
+        parent::__construct($records, $request, true);
     }
 
-    private function getHeadings()
+    protected function getHeadings(): void
     {
         $row1 = ['', '', 'Thứ'];
         foreach ($this->dateLists as $date) {
@@ -77,7 +42,7 @@ class LatelyGridExport implements FromArray
         $this->headings = $headings;
     }
 
-    private function getList()
+    protected function getList(): void
     {
         $results = [];
         $userIds = [];
@@ -111,7 +76,7 @@ class LatelyGridExport implements FromArray
                 }
             }
             $userData[] = $count;
-            $userData[] = number_format($this->punishes->where('user_id', $user->id)->sum('total_money'));
+            $userData[] = $this->punishes->where('user_id', $user->id)->sum('total_money');
             $results[] = $userData;
             $rowNum++;
         }

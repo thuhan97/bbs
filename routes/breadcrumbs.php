@@ -179,6 +179,7 @@ $resources = [
     'meetings' => 'Phòng họp',
     'rules' => 'Quy định tiền phạt',
     'punishes' => 'Danh sách tiền phạt',
+    'group' => 'Group',
 ];
 foreach ($resources as $resource => $data) {
     $parent = 'admin';
@@ -188,12 +189,13 @@ foreach ($resources as $resource => $data) {
         $parent = $data['parent'];
     }
     $resource = 'admin::' . $resource;
-
     // List
     Breadcrumbs::register($resource, function ($breadcrumbs) use ($resource, $title, $parent) {
         $breadcrumbs->parent($parent);
         $breadcrumbs->push($title, route($resource . '.index'));
+
     });
+
     // Create
     Breadcrumbs::register($resource . '.create', function ($breadcrumbs) use ($resource) {
         $breadcrumbs->parent($resource);

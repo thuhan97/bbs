@@ -400,6 +400,8 @@ define('EXCEL_COLUMN_LENGTH', 26);
 define('REPORT_DRAFT', 0);
 define('REPORT_PUBLISH', 0);
 define('REPORT_PRIVATE', 1);
+define('APPROVE_SUGGESTION', 1);
+define('NOT_APPROVE_SUGGESTION', 0);
 
 
 

@@ -397,6 +397,9 @@ define('DECEMBER', 12);
 define('EXCEL_COLUMNS', ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']);
 define('EXCEL_COLUMN_LENGTH', 26);
 
+define('APPROVE_SUGGESTION', 1);
+define('NOT_APPROVE_SUGGESTION', 0);
+
 
 
 

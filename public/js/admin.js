@@ -79,6 +79,13 @@ window.myDateTimePicker = function ($selector, date) {
         defaultDate: date,
     });
 }
+window.myTimePicker = function ($selector, date) {
+    if (!date) date = new Date();
+
+    $selector.datetimepicker({
+        pickDate: false
+    });
+}
 
 window.myEditor = function ($selector, height) {
     var editorConfig = {

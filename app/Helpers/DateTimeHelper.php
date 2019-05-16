@@ -117,7 +117,24 @@ class DateTimeHelper
 
         return $dateCarbon->addYear()->format($format);
     }
-    public static function checkTileDayOffGetDate($date){
-        return Carbon::createFromFormat(DATE_TIME_FORMAT,$date)->format('d/m/Y');
+
+    public static function checkTileDayOffGetDate($date)
+    {
+        return Carbon::createFromFormat(DATE_TIME_FORMAT, $date)->format('d/m/Y');
+    }
+
+    /**
+     * @param $from
+     * @param $to
+     *
+     * @return int|string
+     */
+    public static function subMinute($from, $to)
+    {
+        $start = date_create($from);
+        $end = date_create($to);
+
+        $diff = date_diff($start, $end);
+        return $diff->format('%h') * 60 + $diff->format('%i') + 1;
     }
 }

@@ -3,9 +3,10 @@
     <div class="card text-center animated fadeInRight" id="punish">
         <!-- Card content -->
         <div class="card-body red lighten-5">
+            <h4 class="card-title text-uppercase mt-3">Tiền phạt cả công ty tháng {{date('m')}}</h4>
+
             <img src="{{get_punish_image($totalPunish)}}" class="image w-100"/>
 
-            <h4 class="card-title text-uppercase mt-3">Tổng tiền phạt công ty tháng {{date('m')}}</h4>
             <div class="bold punish-counter animated fadeIn" data-count="{{$totalPunish}}">0</div>
         </div>
     </div>

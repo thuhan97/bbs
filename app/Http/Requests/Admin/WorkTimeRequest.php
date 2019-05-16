@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Admin;
 
+use App\Rules\CheckWorkTimeExist;
 use Illuminate\Foundation\Http\FormRequest;
 
 class WorkTimeRequest extends FormRequest
@@ -24,14 +25,13 @@ class WorkTimeRequest extends FormRequest
     public function rules()
     {
         $datas = \request()->all();
-        $rules = [];
+        $rules = [
+            'user_id' => 'exists:users,id',
+            'work_day' => ['required', 'date', 'before:tomorrow', new CheckWorkTimeExist($datas['id'] ?? 0, $datas['user_id'] ?? 0)],
+        ];
         if (isset($datas['start_at']) || empty($datas)) {
-            $rules['type'] = 'required|integer';
-            $rules['work_day'] = 'required|date';
             $rules['start_at'] = 'required';
             $rules['end_at'] = 'required';
-        } else {
-            $rules['work_day'] = 'required|date';
         }
 
         return $rules;
@@ -45,13 +45,17 @@ class WorkTimeRequest extends FormRequest
             'end_at' => 'giờ checkout',
             'ot_type' => 'loại OT',
             'explanation_type' => 'hình thức',
+            'user_id' => 'nhân viên',
+            'today' => 'hôm nay',
+
         ];
     }
 
     public function messages()
     {
         return [
-            'end_at.after' => 'Trường :attribute phải lớn hơn giờ checkin'
+            'end_at.after' => 'Trường :attribute phải lớn hơn giờ checkin',
+            'work_day.before' => 'Vui lòng chọn ngày hôm nay hoặc trước đó.'
         ];
     }
 }

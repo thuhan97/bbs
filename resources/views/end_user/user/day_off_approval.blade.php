@@ -70,19 +70,25 @@
         <div class="row mb-1 ml-1">
             <div class="col-sm-4 col-xl-2 pr-3 pl-0 mb-2">
                 <label class=" text-w-400" for="">Từ ngày</label>
+                <div class="position-relative">
                 <input type="text"
                        class="form-control border-0 select-item"
                        id="search_start_at" autocomplete="off" name="search_start_at"
                        value="{{  $start ?? $searchStart  }}"
                        readonly="readonly">
+                    <i class="far fa-calendar-alt position-absolute calendar-search"></i>
+                </div>
             </div>
             <div class="col-sm-4 col-xl-2 no-padding-left">
                 <label class="text-w-400" for="inputZip">Tới ngày</label>
+                <div class="position-relative">
                 <input type="text"
                        class="form-control select-item  border-0 "
                        id="search_end_at" autocomplete="off" name="search_end_at"
                        value="{{ $end ?? ''}}"
                        readonly>
+                    <i class="far fa-calendar-alt position-absolute calendar-search"></i>
+                </div>
             </div>
             <div class="col-sm-2 col-xl-2 no-padding-left">
                 <label class=" text-w-400" for="inputCity"> &nbsp;</label>
@@ -373,6 +379,11 @@
         <script src="{{ cdn_asset('js/jquery.validate.min.js') }}"></script>
         <script type="text/javascript">
             $(document).ready(function (e) {
+
+                $('.calendar-search').on('click',function () {
+                    $(this).prev().datepicker('show');
+                })
+
                 $('.option-select').on('change', function () {
                     $("#form-search").submit();
                 });

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Events\CaculateLateTimeEvent;
 use App\Exports\LatelyGridExport;
+use App\Exports\OTGridExport;
 use App\Exports\WorkTimeAllExport;
 use App\Exports\WorkTimeGridExport;
 use App\Http\Requests\Admin\WorkTimeImportRequest;
@@ -16,6 +17,7 @@ use App\Repositories\Contracts\IWorkTimeRepository;
 use App\Services\Contracts\IWorkTimeService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
 
 /**
@@ -219,7 +221,7 @@ class WorkTimeController extends AdminBaseController
     private function makeRelationData($data = [])
     {
         $userModel = new User();
-        $data['request_users'] = $userModel->availableUsers()->pluck('name', 'id')->toArray();
+        $data['request_users'] = $userModel->availableUsers()->select(DB::raw("CONCAT(staff_code, ' - ', name) as name"), 'id')->pluck('name', 'id')->toArray();
 
         return $data;
     }
@@ -238,6 +240,11 @@ class WorkTimeController extends AdminBaseController
                     $records = $this->sevice->export($request);
 
                     return Excel::download(new LatelyGridExport($records, $request), "danh-sach-di-muon$date.xlsx");
+                } else if ($request->has('is_ot')) {
+                    $request->merge(['type' => WorkTime::TYPES['ot']]);
+                    $records = $this->sevice->export($request);
+
+                    return Excel::download(new OTGridExport($records, $request), "danh-sach-lam-them-gio$date.xlsx");
                 } else {
                     $records = $this->sevice->export($request);
                     return Excel::download(new WorkTimeAllExport($records), "thoi-gian-lam-viec$date.xlsx");

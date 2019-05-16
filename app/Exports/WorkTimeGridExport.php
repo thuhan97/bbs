@@ -7,6 +7,8 @@ use Maatwebsite\Excel\Concerns\FromArray;
 
 class WorkTimeGridExport extends WTGridExport implements FromArray
 {
+    protected $moreColumnNumber = 4;
+
     /**
      * WorkTimeGridExport constructor.
      *
@@ -15,6 +17,9 @@ class WorkTimeGridExport extends WTGridExport implements FromArray
     public function __construct($records, Request $request)
     {
         parent::__construct($records, $request);
+
+        $this->getHeadings();
+        $this->getList();
     }
 
     protected function getHeadings(): void

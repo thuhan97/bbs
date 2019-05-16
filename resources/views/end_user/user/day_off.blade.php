@@ -17,19 +17,27 @@
         <div class="row mb-3 ml-1">
             <div class="col-sm-4 col-xl-2 pr-3 pl-0">
                 <label class=" text-w-400" for="">Từ ngày</label>
-                <input type="text"
-                       class="form-control border-0 select-item"
-                       id="search_start_at" autocomplete="off" name="search_start_at"
-                       value="{{  $searchStratDate ?? $searchStart  }}"
-                       readonly="readonly">
+                <div class="position-relative">
+                    <input type="text"
+                           class="form-control border-0 select-item z-"
+                           id="search_start_at" autocomplete="off" name="search_start_at"
+                           value="{{  $searchStratDate ?? $searchStart  }}"
+                           readonly="readonly">
+                    <i class="far fa-calendar-alt position-absolute calendar-search"></i>
+                </div>
+
+
             </div>
             <div class="col-sm-4 col-xl-2 no-padding-left">
                 <label class="text-w-400" for="inputZip">Tới ngày</label>
+                <div class="position-relative">
                 <input type="text"
                        class="form-control select-item  border-0 "
                        id="search_end_at" autocomplete="off" name="search_end_at"
                        value="{{ $searchEndDate ?? ''}}"
                        readonly>
+                    <i class="far fa-calendar-alt position-absolute calendar-search"></i>
+                </div>
             </div>
             <div class="col-sm-2 col-xl-1 no-padding-left">
                 <label class=" text-w-400" for="inputCity"> &nbsp;</label>
@@ -412,8 +420,7 @@
                                 </div>
                                 <input type="hidden" name="day_off_id" value="">
                                 <div class="mb-3">
-                                    <label class="text-w-400" for="exampleFormControlTextarea5">Nội dung<span
-                                                class="text-danger">*</span></label>
+                                    <label class="text-w-400" for="exampleFormControlTextarea5">Nội dung</label>
                                     <textarea
                                             class="form-control reason_id rounded-0 select-item check-value {{ $errors->has('reason') ? ' has-error' : '' }}"
                                             id="exampleFormControlTextarea2" rows="3" placeholder="Lý do xin nghỉ..."
@@ -613,6 +620,9 @@
     <script type="text/javascript">
 
         $(document).ready(function () {
+            $('.calendar-search').on('click',function () {
+                $(this).prev().datepicker('show');
+            })
 
             checkUsable();
 
@@ -699,14 +709,21 @@
                 $('#modal-form').modal('show');
             });
 
-            var today = new Date();
-            var mon = today.getMonth() + 1;
-            var date = today.getFullYear() + '-' + mon + 1 + '-' + today.getDate();
-
+            var date = $("#start_date").val();
 
             @if($autoShowModal)
             $('#modal-form').modal('show');
             @endif
+
+            $("#start_date").on("change",function(){
+                // Get the selected date
+                var startDt = $("#start_date").datepicker("getDate");
+                var startDt1 = $("#start_date1").datepicker("getDate");
+                // Set the 'start date' for the second datepicker
+                $("#end_date").datepicker("setStartDate",startDt);
+                $("#end_date1").datepicker("setStartDate",startDt1);
+            });
+
 
             $('#search_start_at , #search_end_at').datepicker({format: 'yyyy/mm/dd',orientation: 'bottom'});
             $('#start_date , #start_date1').datepicker({
@@ -719,6 +736,7 @@
                 format: 'yyyy/mm/dd',
                 hoursDisabled: '0,1,2,3,4,5,6,7,18,19,20,21,22,23',
                 daysOfWeekDisabled: [0, 6],
+                startDate: date
             });
 
             $('#end_date,#start_date,.time-start,.time-end').on('change', function () {

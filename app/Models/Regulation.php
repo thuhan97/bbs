@@ -44,7 +44,7 @@ class Regulation extends Model
     public function scopeSearch($query, $searchTerm)
     {
         return $query->where('name', 'like', '%' . $searchTerm . '%')
-            ->orWhere('content', 'like', '%' . $searchTerm . '%');
+            ->orWhere('content', 'like', '%' . $searchTerm . '%')->orderBy('updated_at', 'desc');
     }
 
     /**

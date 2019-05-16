@@ -17,19 +17,27 @@
         <div class="row mb-3 ml-1">
             <div class="col-sm-4 col-xl-2 pr-3 pl-0">
                 <label class=" text-w-400" for="">Từ ngày</label>
-                <input type="text"
-                       class="form-control border-0 select-item"
-                       id="search_start_at" autocomplete="off" name="search_start_at"
-                       value="{{  $searchStratDate ?? $searchStart  }}"
-                       readonly="readonly">
+                <div class="position-relative">
+                    <input type="text"
+                           class="form-control border-0 select-item z-"
+                           id="search_start_at" autocomplete="off" name="search_start_at"
+                           value="{{  $searchStratDate ?? $searchStart  }}"
+                           readonly="readonly">
+                    <i class="far fa-calendar-alt position-absolute calendar-search"></i>
+                </div>
+
+
             </div>
             <div class="col-sm-4 col-xl-2 no-padding-left">
                 <label class="text-w-400" for="inputZip">Tới ngày</label>
+                <div class="position-relative">
                 <input type="text"
                        class="form-control select-item  border-0 "
                        id="search_end_at" autocomplete="off" name="search_end_at"
                        value="{{ $searchEndDate ?? ''}}"
                        readonly>
+                    <i class="far fa-calendar-alt position-absolute calendar-search"></i>
+                </div>
             </div>
             <div class="col-sm-2 col-xl-1 no-padding-left">
                 <label class=" text-w-400" for="inputCity"> &nbsp;</label>
@@ -129,24 +137,21 @@
                 </div>
                 <div class="col-sm-8 text-right col-md-8">
                     <div class="row">
-                        <div class="col-md-4"></div>
-                        <div class="col-md-4 col-12">
-                            <?php
-                            $user = \Illuminate\Support\Facades\Auth::user();
-                            ?>
-                            @if($user->jobtitle_id >= \App\Models\Report::MIN_APPROVE_JOBTITLE)
-                                <div class="pl-1">
-                                    <a href="{{route('day_off_approval')}}" id="btn-detail-day-off" class="btn btn-primary form-control w-100 waves-effect waves-light mx-0" type="button">
+                        <div class="col-lg-2"></div>
+                        <div class="col-12 col-lg-6">
+                            <div class="pr-1">
+                                <?php
+                                $user = \Illuminate\Support\Facades\Auth::user();
+                                ?>
+                                @if($user->jobtitle_id >= \App\Models\Report::MIN_APPROVE_JOBTITLE)
+                                    <a href="{{route('day_off_approval')}}" class="btn btn-primary" id="btn-detail-day-off" type="button">
                                         {{__l('day_off_approval')}}
                                     </a>
-                                </div>
-
-                            @endif
+                                @endif
+                            </div>
                         </div>
                         <div class="d-none d-sm-block col-sm-4">
-           <span class=" btn-secondary" id="btn-select">
-            {{ Form::select('status_search', SHOW_DAY_OFFF, $statusSearch ?? ALL_DAY_OFF, ['class' => 'browser-default custom-select mt-1 w-100 month option-select','placeholder'=>'']) }}
-        </span>
+                            {{ Form::select('status_search', SHOW_DAY_OFFF, $statusSearch ?? ALL_DAY_OFF, ['class' => 'browser-default custom-select w-100 month option-select select-search','placeholder'=>'']) }}
                         </div>
                     </div>
                 </div>
@@ -164,6 +169,7 @@
                 <th class="text-center">Tiêu đề</th>
                 <th class="text-center">Nội dung</th>
                 <th class="d-none d-md-table-cell text-center">Ngày được duyệt</th>
+                <th class="d-none d-md-table-cell text-center">Ngày không phép</th>
                 <th class="text-center">Phê duyệt</th>
                 <th class="d-none d-md-table-cell text-center">Xem thêm</th>
             </tr>
@@ -179,8 +185,11 @@
                     <td class="d-none d-md-table-cell text-center">{{ $absence->title != DAY_OFF_TITLE_DEFAULT ? \App\Helpers\DateTimeHelper::checkTileDayOffGetDate($absence->end_at) : $absence->end_date  }}</td>
                     <td class="text-center">{{ array_key_exists($absence->title, VACATION_FULL) ? VACATION_FULL[$absence->title] : ''  }}</td>
                     <td class="text-center">{!! nl2br($absence->reason) !!}</td>
-                    <td class="d-none d-md-table-cell text-center">{{!!!($absence->number_off || $absence->absent > DEFAULT_VALUE)? ($absence->status != STATUS_DAY_OFF['noActive'] ? 'Đang duyệt' : '') : checkNumber($absence->number_off) + checkNumber($absence->absent).' ngày'}}
-
+                    <td class="d-none d-md-table-cell text-center">
+                        {{!!!$absence->number_off ? ($absence->status != STATUS_DAY_OFF['noActive'] ? 'Đang duyệt' : '') : checkNumber($absence->number_off) .' ngày'}}
+                    </td>
+                    <td class="text-center">
+                        {{!!!$absence->absent ? ($absence->status != STATUS_DAY_OFF['noActive'] ? 'Đang duyệt' : '') : checkNumber($absence->absent) .' ngày'}}
                     </td>
                     <td class="text-center">
                         @if($absence->status == STATUS_DAY_OFF['abide'])
@@ -321,12 +330,12 @@
                                                     <label class=" text-w-400" for="inputCity">Ngày bắt đầu<span
                                                                 class="text-danger">*</span></label>
                                                     <?php
-                                                    $autoDateStart = date('Y/m/d', strtotime('tomorrow'));
+                                                    $autoDate = date('Y/m/d', strtotime('tomorrow'));
                                                     ?>
                                                     <input type="text"
                                                            class="form-control border-0 select-item {{ $errors->has('start_at') ? ' has-error' : '' }}"
                                                            id="start_date" autocomplete="off" name="start_at"
-                                                           value="{{ old('start_at', $autoDateStart) }}"
+                                                           value="{{ old('start_at', $autoDate) }}"
                                                            readonly="readonly">
                                                 </div>
                                                 <div class="col-sm-4 p-0 mt-2">
@@ -345,11 +354,11 @@
                                                     <input type="text"
                                                            class="form-control select-item  border-0 {{ $errors->has('end_at') ? ' has-error' : '' }}"
                                                            id="end_date" autocomplete="off" name="end_at"
-                                                           value="{{  old('end_at',$autoDateEnd) }}"
+                                                           value="{{  old('end_at',$autoDate) }}"
                                                            readonly>
                                                 </div>
                                                 <div class="col-sm-4 p-0 mt-2">
-                                                    {{ Form::select('end', CHECK_TIME_DAY_OFF, null, ['class' => 'form-control border-0 option-time-day-off browser-default custom-select select-item mannager_id check-value time-end' ]) }}
+                                                    {{ Form::select('end', CHECK_TIME_DAY_OFF, REMAIN_DAY_OFF_DEFAULT , ['class' => 'form-control border-0 option-time-day-off browser-default custom-select select-item mannager_id check-value time-end ds-end' ]) }}
                                                 </div>
                                             </div>
                                         </div>
@@ -415,8 +424,7 @@
                                 </div>
                                 <input type="hidden" name="day_off_id" value="">
                                 <div class="mb-3">
-                                    <label class="text-w-400" for="exampleFormControlTextarea5">Nội dung<span
-                                                class="text-danger">*</span></label>
+                                    <label class="text-w-400" for="exampleFormControlTextarea5">Nội dung</label>
                                     <textarea
                                             class="form-control reason_id rounded-0 select-item check-value {{ $errors->has('reason') ? ' has-error' : '' }}"
                                             id="exampleFormControlTextarea2" rows="3" placeholder="Lý do xin nghỉ..."
@@ -616,6 +624,9 @@
     <script type="text/javascript">
 
         $(document).ready(function () {
+            $('.calendar-search').on('click',function () {
+                $(this).prev().datepicker('show');
+            })
 
             checkUsable();
 
@@ -702,14 +713,21 @@
                 $('#modal-form').modal('show');
             });
 
-            var today = new Date();
-            var mon = today.getMonth() + 1;
-            var date = today.getFullYear() + '-' + mon + 1 + '-' + today.getDate();
-
+            var date = $("#start_date").val();
 
             @if($autoShowModal)
             $('#modal-form').modal('show');
             @endif
+
+            $("#start_date").on("change",function(){
+                // Get the selected date
+                var startDt = $("#start_date").datepicker("getDate");
+                var startDt1 = $("#start_date1").datepicker("getDate");
+                // Set the 'start date' for the second datepicker
+                $("#end_date").datepicker("setStartDate",startDt);
+                $("#end_date1").datepicker("setStartDate",startDt1);
+            });
+
 
             $('#search_start_at , #search_end_at').datepicker({format: 'yyyy/mm/dd',orientation: 'bottom'});
             $('#start_date , #start_date1').datepicker({
@@ -722,6 +740,7 @@
                 format: 'yyyy/mm/dd',
                 hoursDisabled: '0,1,2,3,4,5,6,7,18,19,20,21,22,23',
                 daysOfWeekDisabled: [0, 6],
+                startDate: date
             });
 
             $('#end_date,#start_date,.time-start,.time-end').on('change', function () {
@@ -819,10 +838,15 @@
                 success: function (data) {
                     // console.log(data);
                     if(data.check){
-                        $('#usable-check').text('Bạn sẽ bị tính ' + data.absent + ' ngày nghỉ không phép vì ngày phép còn lại không đủ.' )
+                        $('#usable-check').text('Bạn sẽ bị tính ' + data.absent + ' ngày nghỉ không phép vì ngày phép không đủ.' )
                     }else {
                         $('#usable-check').text(' ')
                     };
+                    if(data.flag){
+                        $('.ds-end').attr('disabled',true);
+                    }else {
+                        $('.ds-end').removeAttrs('disabled');
+                    }
                 }
             });
         }
@@ -838,9 +862,12 @@
                 $(btn).attr('disabled', 'disabled');
                 $(errors).text('Ngày kết thúc phải lớn hơn hoặc bằng ngày bắt đầu.');
             } else if (start1 == end1 && check == true) {
-                var timeStrat = new Date("November 13, 2013 " + $('.time-start').val()).getTime();
-                var timeEnd = new Date("November 13, 2013 " + $('.time-end').val()).getTime();
-                if (timeStrat >= timeEnd) {
+                var checkTimeStart=$('.time-start').val() == 0 ? ' 8:00:00' : ' 18:00:00';
+                var checkTimeEnd=$('.time-end').val() == 0 ? ' 8:00:00' : ' 18:00:00';
+                var timeStrat = new Date("November 13, 2013 " + checkTimeStart).getTime();
+                var timeEnd = new Date("November 13, 2013 " + checkTimeEnd ).getTime();
+                // alert(timeEnd)
+                if (timeStrat > timeEnd) {
                     $(btn).attr('disabled', 'disabled');
                     $(errors).text('Giờ kết thúc phải lớn hơn giờ bắt đầu.');
                 } else {

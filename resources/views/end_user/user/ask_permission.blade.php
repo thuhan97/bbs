@@ -13,24 +13,6 @@
                     button: "Đóng",
                 });
             </script>
-        @elseif(session()->has('approver_success'))
-            <script>
-                swal({
-                    title: "Thông báo!",
-                    text: "Bạn đã duyệt đơn thành công!",
-                    icon: "success",
-                    button: "Đóng",
-                });
-            </script>
-        @elseif(session()->has('reject_success'))
-            <script>
-                swal({
-                    title: "Thông báo!",
-                    text: "Bạn đã từ chối thành công!",
-                    icon: "success",
-                    button: "Đóng",
-                });
-            </script>
         @else
             <script>
                 swal({
@@ -48,6 +30,16 @@
                 title: "Thông báo!",
                 text: "Đơn đã được phê duyệt!",
                 icon: "error",
+                button: "Đóng",
+            });
+        </script>
+    @endif
+    @if(session()->has('approver_success') || session()->has('reject_success'))
+        <script>
+            swal({
+                title: "Thông báo!",
+                text: "Bạn đã duyệt đơn thành công!",
+                icon: "success",
                 button: "Đóng",
             });
         </script>
@@ -82,84 +74,21 @@
         </span>
         <br>
     @endif
-    <?php
-    $user = \Illuminate\Support\Facades\Auth::user();
-    ?>
-    @can('team-leader')
-        @if($dataLeader->isNotEmpty())
-            <h1>Danh sách xin phép</h1>
-            <table id="contactTbl" class="table table-striped table-bordered">
-                <colgroup>
-                    <col style="">
-                    <col style="">
-                    <col style="">
-                    <col style="">
-                </colgroup>
-                <thead class="grey lighten-2">
-                <tr>
-                    <th class="text-center">#</th>
-                    <th class="text-center">Ngày</th>
-                    <th>Tên nhân viên</th>
-                    <th>Hình thức</th>
-                    <th>Nội dung</th>
-                    <th>Nội dung từ chối</th>
-                    <th class="text-center" style="width: 10%;">Trạng Thái</th>
-                </tr>
-                </thead>
-                <?php $increment = 1; ?>
-                <tbody>
-                @foreach($dataLeader as $item)
-                    <tr>
-                        <th class="text-center">{{ $increment++ }}</th>
-                        <th class="text-center">{{ $item['work_day'] ?? '' }}</th>
-                        <th>{{ $item->user->name ?? '' }}</th>
-                        <td>
-                            {{$item->type_name}}
-                        </td>
-                        <td>{!! $item['note'] ?? '' !!}</td>
-                        <td>{!! $item['reason_reject'] ?? '' !!}</td>
-                        <td class="text-center td-approve">
-                            @can('manager')
-                                @if($item['work_times_explanation_status'] == array_search('Chưa duyệt', OT_STATUS))
-                                    <form action="{{ $item['type'] == array_search('Overtime',WORK_TIME_TYPE) ? route('approvedOT') : route('approved') }}"
-                                          method="post">
-                                        @csrf
-                                        <input type="hidden" name="id"
-                                               value="{{ $item['id'] ? $item['id'] : '' }}">
-                                        <input type="hidden" name="user_id"
-                                               value="{{ $item['user_id'] ? $item['user_id'] : '' }}">
-                                        <input type="hidden" name="reason"
-                                               value="{{ $item['note'] ? $item['note'] : '' }}">
-                                        <input type="hidden" name="work_day"
-                                               value="{{ $item['work_day'] ? $item['work_day'] : '' }}">
-                                        <input type="hidden" name="type"
-                                               value="{{ $item['type'] ? $item['type'] : '' }}">
-                                        <button class="btn-approve float-left"><i class="fas fa-check-circle"></i>
-                                        </button>
-                                    </form>
-                                    <button class="btn-reject float-right"
-                                            data-id="{{ $item['id'] ? $item['id'] : '' }}"><i class="fas fa-times"></i>
-                                    </button>
-                                @elseif($item['work_times_explanation_status'] == array_search('Đã duyệt', OT_STATUS))
-                                    <i class="fas fa-grin-stars fa-2x text-success"
-                                       title="{{ $item->workTimeApprover->name ?? '' }}"></i>
-                                @elseif($item['work_times_explanation_status'] == array_search('Từ chối', OT_STATUS))
-                                    <i class="fas fa-meh-blank fa-2x text-danger"
-                                       title="{{ $item->workTimeApprover->name ?? '' }}"></i>
-                                @endif
-                            @endcan
-                        </td>
-                    </tr>
-                @endforeach
-                </tbody>
-            </table>
-            {{$dataLeader->render('end_user.paginate') }}
-            <br><br><br>
-        @endif
-    @endcan
+    @if ($errors->has('reason_reject'))
+        <span class="help-block mb-5 color-red">
+            <strong>{{ $errors->first('reason_reject') }}</strong>
+        </span>
+        <br>
+    @endif
+    @if ($errors->has('work_time_explanation_id'))
+        <span class="help-block mb-5 color-red">
+            <strong>{{ $errors->first('work_time_explanation_id') }}</strong>
+        </span>
+        <br>
+    @endif
     <div class="row mb-4">
         <div class="col-md-4">
-            <h2>Xin phép cá nhân</h2>
+            <h2 class="mt-3">Danh sách xin phép</h2>
         </div>
         <div class="col-md-8 text-right">
             <button onclick="location.href='{{route("day_off")}}?t=1'"
@@ -181,85 +110,373 @@
             </button>
         </div>
     </div>
-    <table id="contactTbl" class="table table-striped table-bordered">
-        <colgroup>
-            <col style="">
-            <col style="">
-            <col style="">
-            <col style="">
-        </colgroup>
-        <thead class="grey lighten-2">
-        <tr>
-            <th class="text-center">#</th>
-            <th class="text-center">Ngày</th>
-            <th>Hình thức</th>
-            <th>Nội dung</th>
-            <th>Nội dung từ chối</th>
-            <th class="text-center">Trạng Thái</th>
-        </tr>
-        </thead>
-        <tbody>
 
-        @foreach($datas as $increment => $item)
-            <tr>
-                <th class="text-center">{{ $increment+1 }}</th>
-                <th class="text-center">{{ $item['work_day'] ?? '' }}</th>
-                <td>
-                    {{--{{$item->type_name}}aaa--}}
-                    @if($item['type'] == 0)
-                        Bình thường
-                    @elseif($item['type'] == 1)
-                        Đi muộn
-                    @elseif($item['type'] == 2)
-                        Về sớm
-                    @elseif($item['type'] == 4)
-                        @if($item['ot_type'] == 1)
-                            OT dự án
-                        @elseif($item['ot_type'] == 2)
-                            OT cá nhân
-                        @endif
-                    @endif
-                </td>
-                <td>{!! $item['note'] ?? '' !!}</td>
-                <td>{!! $item['reason_reject'] ?? '' !!}</td>
-                <td class="text-center td-approve">
-                    @if($item['work_times_explanation_status'] == array_search('Đã duyệt', OT_STATUS))
-                        <i class="fas fa-grin-stars fa-2x text-success"
-                           title="{{ $item->workTimeApprover->name ?? '' }}"></i>
-                    @elseif($item['work_times_explanation_status'] == array_search('Chưa duyệt', OT_STATUS))
-                        <i class="fas fa-meh-blank fa-2x text-warning" title="Chưa duyệt"></i>
-                    @elseif($item['work_times_explanation_status'] == array_search('Từ chối', OT_STATUS))
-                        <i class="fas fa-meh-blank fa-2x text-danger"
-                           title="{{ $item->workTimeApprover->name ?? ''  }}"></i>
-                    @endif
-                </td>
-            </tr>
-        @endforeach
-        </tbody>
-    </table>
-    {{ $datas->render('end_user.paginate') }}
+
+
+    @can('team-leader')
+        @if($managerApproveOther || $managerApproveOT)
+            <!-- Nav tabs -->
+            <ul class="nav nav-tabs md-tabs nav-justified primary-color" role="tablist">
+                <li class="nav-item">
+                    <a class="nav-link active" data-toggle="tab" href="#panelApprove" role="tab">Xin phép đi
+                        sớm/muộn</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-toggle="tab" href="#panelOT" role="tab">Xin OT</a>
+                </li>
+            </ul>
+            <!-- Nav tabs -->
+
+            <!-- Tab panels -->
+            <div class="tab-content">
+                <!-- Panel 1 -->
+                <div class="tab-pane fade in show active" id="panelApprove" role="tabpanel">
+                    <table id="contactTbl" class="table table-striped table-bordered">
+                        <colgroup>
+                            <col style="width: 50px">
+                            <col style="width: 100px">
+                            <col style="width: 180px">
+                            <col style="width: 100px">
+                            <col style="">
+                            <col style="">
+                            <col style="width: 100px">
+                        </colgroup>
+                        <thead class="grey lighten-2">
+                        <tr>
+                            <th class="text-center">#</th>
+                            <th class="text-center">Ngày</th>
+                            <th>Tên nhân viên</th>
+                            <th>Hình thức</th>
+                            <th>Nội dung</th>
+                            <th>Nội dung phản hồi</th>
+                            <th class="text-center" style="width: 10%;">Trạng Thái</th>
+                        </tr>
+                        </thead>
+                        <?php $increment = 1; ?>
+                        <tbody>
+                        @foreach($managerApproveOther as $item)
+                            {{--@dd($item)--}}
+                            <tr>
+                                <th class="text-center" style="padding: 15px">{{ $increment++ }}</th>
+                                <th class="text-center">{{ $item['work_day'] ?? '' }}</th>
+                                <th>{{ $item->creator->name ?? '' }}</th>
+                                <td>
+                                    @if($item->type == 1)
+                                        Đi muộn
+                                    @elseif($item->type == 2)
+                                        Về sớm
+                                    @endif
+                                </td>
+                                <td>{!! $item['note'] !!}</td>
+                                <td>{!! $item['reason_reject'] !!}</td>
+                                <td class="text-center td-approve">
+                                    @can('manager')
+                                        @if($item['status'] == array_search('Chưa duyệt', OT_STATUS))
+                                            {{--<button class="btn-approve float-left" data-permission="other"--}}
+                                            {{--data-id="{{ $item['id'] ? $item['id'] : '' }}"><i--}}
+                                            {{--class="fas fa-check-circle"></i></button>--}}
+                                            <button class="btn btn-info text-uppercase text-center approve"
+                                                    data-permission="other"
+                                                    data-id="{{ $item['id'] ? $item['id'] : '' }}">Duyệt
+                                            </button>
+                                        @elseif($item['status'] == array_search('Đã duyệt', OT_STATUS))
+                                            <i class="fas fa-grin-stars fa-2x text-success"
+                                               title="{{ $item->workTimeApprover->name ?? '' }}"></i>
+                                        @elseif($item['status'] == array_search('Từ chối', OT_STATUS))
+                                            <i class="fas fa-frown fa-2x text-danger"
+                                               title="{{ $item->workTimeApprover->name ?? '' }}"></i>
+                                        @endif
+                                    @endcan
+                                </td>
+                            </tr>
+                        @endforeach
+                        </tbody>
+                    </table>
+                    {{$dataLeader->render('end_user.paginate') }}
+                    <br>
+                </div>
+                <!-- Panel 1 -->
+
+                <!-- Panel 2 -->
+                <div class="tab-pane fade" id="panelOT" role="tabpanel">
+
+                    <table id="contactTbl" class="table table-striped table-bordered">
+                        <colgroup>
+                            <col style="width: 50px">
+                            <col style="width: 100px">
+                            <col style="width: 180px">
+                            <col style="width: 100px">
+                            <col style="width: 180px">
+                            <col style="">
+                            <col style="">
+                            <col style="width: 100px">
+                        </colgroup>
+                        <thead class="grey lighten-2">
+                        <tr>
+                            <th class="text-center">#</th>
+                            <th class="text-center">Ngày</th>
+                            <th>Tên nhân viên</th>
+                            <th>Hình thức</th>
+                            <th>Thời gian</th>
+                            <th>Nội dung</th>
+                            <th>Nội dung phản hồi</th>
+                            <th class="text-center" style="width: 10%;">Trạng Thái</th>
+                        </tr>
+                        </thead>
+                        <?php $increment = 1; ?>
+                        <tbody>
+                        @foreach($managerApproveOT as $item)
+                            {{--@dd($item)--}}
+                            <tr>
+                                <th class="text-center" style="padding: 15px">{{ $increment++ }}</th>
+                                <th class="text-center">{{ $item['work_day'] ?? '' }}</th>
+                                <th>{{ $item->creator->name ?? '' }}</th>
+                                <td>
+                                    {{$item->ot_type ? $item->ot_type == 1 ? 'OT Dự án' : 'OT cá nhân' : '' }}
+                                </td>
+                                <td>{{$item->description_time}}
+                                </td>
+                                <td>{!! $item['reason'] !!}</td>
+                                <td>{!! $item['note_respond'] !!}</td>
+                                <td class="text-center td-approve">
+                                    @can('manager')
+                                        @if($item['status'] == array_search('Chưa duyệt', OT_STATUS))
+
+                                            <button class="btn btn-info text-uppercase text-center approve"
+                                                    data-permission="ot"
+                                                    data-id="{{ $item['id'] ? $item['id'] : '' }}">Duyệt
+                                            </button>
+                                        @elseif($item['status'] == array_search('Đã duyệt', OT_STATUS))
+                                            <i class="fas fa-grin-stars fa-2x text-success"
+                                               title="{{ $item->workTimeApprover->name ?? '' }}"></i>
+                                        @elseif($item['status'] == array_search('Từ chối', OT_STATUS))
+                                            <i class="fas fa-frown fa-2x text-danger"
+                                               title="{{ $item->workTimeApprover->name ?? '' }}"></i>
+                                        @endif
+                                    @endcan
+                                </td>
+                            </tr>
+                        @endforeach
+                        </tbody>
+                    </table>
+                    {{$dataLeader->render('end_user.paginate') }}
+                    <br>
+
+                </div>
+                <!-- Panel 2 -->
+
+            </div>
+            <!-- Tab panels -->
+        @endif
+    @endcan
+
+
+
+    <h2>Xin phép cá nhân</h2>
+    <br>
+    <!-- Nav tabs -->
+    <ul class="nav nav-tabs md-tabs nav-justified primary-color" role="tablist">
+        <li class="nav-item">
+            <a class="nav-link active" data-toggle="tab" href="#panel555" role="tab">Xin phép đi sớm/muộn</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" data-toggle="tab" href="#panel666" role="tab">Xin OT</a>
+        </li>
+    </ul>
+    <!-- Nav tabs -->
+
+    <!-- Tab panels -->
+    <div class="tab-content">
+        <!-- Panel 1 -->
+        <div class="tab-pane fade in show active" id="panel555" role="tabpanel">
+            <table id="contactTbl" class="table table-striped table-bordered">
+                <colgroup>
+                    <col style="width: 50px">
+                    <col style="width: 100px">
+                    <col style="width: 100px">
+                    <col style="">
+                    <col style="">
+                    <col style="width: 100px">
+                </colgroup>
+                <thead class="grey lighten-2">
+                <tr>
+                    <th class="text-center">#</th>
+                    <th class="text-center">Ngày</th>
+                    <th>Hình thức</th>
+                    <th>Nội dung</th>
+                    <th>Nội dung từ chối</th>
+                    <th class="text-center">Trạng Thái</th>
+                </tr>
+                </thead>
+                <tbody>
+
+                @foreach($askPermission as $increment => $item)
+                    <tr>
+                        <th class="text-center">{{ $increment+1 }}</th>
+                        <th class="text-center">{{ $item['work_day'] ?? '' }}</th>
+                        <td>
+                            {{--{{$item->type_name}}aaa--}}
+                            @if($item['type'] == 0)
+                                Bình thường
+                            @elseif($item['type'] == 1)
+                                Đi muộn
+                            @elseif($item['type'] == 2)
+                                Về sớm
+                            @elseif($item['type'] == 4)
+                                @if($item['ot_type'] == 1)
+                                    OT dự án
+                                @elseif($item['ot_type'] == 2)
+                                    OT cá nhân
+                                @endif
+                            @endif
+                        </td>
+                        <td>{!! $item['note'] ?? '' !!}</td>
+                        <td>{!! $item['reason_reject'] ?? '' !!}</td>
+                        <td class="text-center td-approve">
+                            @if($item['status'] == array_search('Đã duyệt', OT_STATUS))
+                                <i class="fas fa-grin-stars fa-2x text-success"
+                                   title="{{ $item->workTimeApprover->name ?? '' }}"></i>
+                            @elseif($item['status'] == array_search('Chưa duyệt', OT_STATUS))
+                                <i class="fas fa-meh-blank fa-2x text-warning" title="Chưa duyệt"></i>
+                            @elseif($item['status'] == array_search('Từ chối', OT_STATUS))
+                                <i class="fas fa-frown fa-2x text-danger"
+                                   title="{{ $item->workTimeApprover->name ?? ''  }}"></i>
+                            @endif
+                        </td>
+                    </tr>
+                @endforeach
+                </tbody>
+            </table>
+        </div>
+        <!-- Panel 1 -->
+
+        <!-- Panel 2 -->
+        <div class="tab-pane fade" id="panel666" role="tabpanel">
+
+            <table id="contactTbl" class="table table-striped table-bordered">
+                <colgroup>
+                    <col style="width: 50px">
+                    <col style="width: 100px">
+                    <col style="width: 100px">
+                    <col style="width: 180px">
+                    <col style="">
+                    <col style="">
+                    <col style="width: 100px">
+                </colgroup>
+                <thead class="grey lighten-2">
+                <tr>
+                    <th class="text-center">#</th>
+                    <th class="text-center">Ngày</th>
+                    <th>Hình thức</th>
+                    <th>Thời gian</th>
+                    <th>Nội dung</th>
+                    <th>Nội dung từ chối</th>
+                    <th class="text-center">Trạng Thái</th>
+                </tr>
+                </thead>
+                <tbody>
+
+                @foreach($otTimes as $increment => $item)
+                    <tr>
+                        <th class="text-center">{{ $increment+1 }}</th>
+                        <th class="text-center">{{ $item['work_day'] ?? '' }}</th>
+                        <td>
+                            {{$item->ot_type ? $item->ot_type == 1 ? 'OT Dự án' : 'OT cá nhân' : '' }}
+                        </td>
+                        <td>{{$item->description_time}}</td>
+                        <td>{!! $item['reason'] !!}</td>
+                        <td>{!! $item['note_respond'] !!}</td>
+                        <td class="text-center td-approve">
+                            @if($item['status'] == array_search('Đã duyệt', OT_STATUS))
+                                <i class="fas fa-grin-stars fa-2x text-success"
+                                   title="{{ $item->workTimeApprover->name ?? '' }}"></i>
+                            @elseif($item['status'] == array_search('Chưa duyệt', OT_STATUS))
+                                <i class="fas fa-meh-blank fa-2x text-warning" title="Chưa duyệt"></i>
+                            @elseif($item['status'] == array_search('Từ chối', OT_STATUS))
+                                <i class="fas fa-frown fa-2x text-danger"
+                                   title="{{ $item->workTimeApprover->name ?? ''  }}"></i>
+                            @endif
+                        </td>
+                    </tr>
+                @endforeach
+                </tbody>
+            </table>
+
+        </div>
+        <!-- Panel 2 -->
+
+    </div>
+    <!-- Tab panels -->
+
+
+
+
+
+    @can('team-leader')
+        @if($otTimes->isNotEmpty())
+            {{--<h1>Danh sách xin phép</h1>--}}
+
+        @endif
+    @endcan
+
+
+
+    {{--{{ $datas->render('end_user.paginate') }}--}}
     <div class="modal fade reject" id="modal-reject" tabindex="-1"
          role="dialog" aria-labelledby="myModalLabel"
          aria-hidden="true">
         <div class="modal-dialog modal-center modal-set-center" role="document">
             <div class="modal-content" id="bg-img" style="background-image: url({{ asset('img/font/xin_nghi.png') }})">
                 <div class="modal-header text-center border-bottom-0 p-3">
-                    <h4 class='mg-center mb-2 modal-title w-100 font-weight-bold pt-2 mg-left-10'>Lý do</h4>
+                    <h4 class='mg-center mb-2 modal-title w-100 font-weight-bold pt-2 mg-left-10'>Nội dung đơn</h4>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span class="btn-close-icon" aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <div class="d-flex justify-content-center">
-                    <img src="{{ asset('img/font/gio_lam_viec_popup.png') }}" alt="" width="355px" height="260px">
+                <div class="permission-detail">
+                    <h5 class="offset-1 bold">Người xin phép:</h5>
+                    <p class="offset-1 creator_id"></p>
+                    <div class="content-hidden">
+                        <br>
+                        <h5 class="offset-1 bold">Tên dự án:</h5>
+                        <p class="offset-1 project_name"></p>
+                    </div>
+                    <div class="row col-12 content-hidden">
+                        <br>
+                        <div class="col-4">
+                            <h5 class="offset-1 bold">Giờ bắt đầu:</h5>
+                            <p class="offset-1 start_at"></p>
+                        </div>
+                        <div class="col-4">
+                            <h5 class="offset-1 bold">Giờ kết thúc:</h5>
+                            <p class="offset-1 end_at"></p>
+                        </div>
+                        <div class="col-4">
+                            <h5 class="offset-1 bold">Số phút OT</h5>
+                            <p class="offset-1 minute"></p>
+                        </div>
+                        <br>
+                    </div>
+                    <h5 class="offset-1 bold">Nội dung:</h5>
+                    <p class="offset-1 reason"></p>
                 </div>
-                <br>
-                <form action="{{ route('reject') }}" method="post">
+                <form action="{{ route('ask_permission.approvePermission') }}" method="post">
                     @csrf
                     <div class="d-flex justify-content-center text-area-reason" id="div-reason"></div>
-                    <textarea class="form-control permission-reason" name="reason_reject" cols="48" rows="6"
+                    <input type="hidden" class="id" name="id">
+                    <input type="hidden" class="approve-type" name="approve_type">
+                    <input type="hidden" class="permission-type" name="permission_type">
+                    <textarea class="form-control permission-reason" name="reason_approve" cols="48" rows="6"
                               placeholder="Nhập lý do ..."></textarea>
+                    {{--<p class="creator_id"></p>--}}
+                    {{--<p class="project_name"></p>--}}
+                    {{--<p class="start_at"></p>--}}
+                    {{--<p class="end_at"></p>--}}
+                    {{--<p class="minute"></p>--}}
+                    {{--<p class="reason"></p>--}}
                     <div class="pt-3 pb-4 d-flex justify-content-center border-top-0 rounded mb-0">
-                        <button class="btn btn-primary btn-send">GỬI ĐƠN</button>
+                        <button class="btn-send btn-approve mr-2" id="btn-approve">DUYỆT ĐƠN</button>
+                        <button class="btn-send btn-reject ml-2" id="btn-reject">KHÔNG DUYỆT</button>
                     </div>
                 </form>
             </div>
@@ -275,10 +492,7 @@
                         <span class="btn-close-icon" aria-hidden="true">×</span>
                     </button>
                 </div>
-                <div class="d-flex justify-content-center">
-                    <img src="{{ asset('img/font/gio_lam_viec_popup.png') }}" alt="" width="355px" height="260px">
-                </div>
-                <br>
+                @include('elements.ask_permission_image')
                 <form action="{{ route('ask_permission.create') }}" method="get">
                     <div class="d-flex justify-content-center text-area-reason" id="div-reason"></div>
                     <div class="offset-1 select-day">
@@ -311,10 +525,7 @@
                         <span class="btn-close-icon" aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <div class="d-flex justify-content-center">
-                    <img src="{{ asset('img/font/gio_lam_viec_popup.png') }}" alt="" width="355px" height="260px">
-                </div>
-                <br>
+                @include('elements.ask_permission_image')
                 <form action="{{ route('ask_permission.create') }}" method="get">
                     {{--@csrf--}}
                     <div class="d-flex justify-content-center text-area-reason" id="div-reason"></div>
@@ -348,26 +559,10 @@
                         <span class="btn-close-icon" aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <div class="d-flex justify-content-center">
-                    <img src="{{ asset('img/font/gio_lam_viec_popup.png') }}" alt="" width="355px" height="260px">
-                </div>
-                <br>
+                @include('elements.ask_permission_image')
                 <form action="{{ route('ask_permission.create') }}" method="get">
                     <div class="d-flex justify-content-center text-area-reason" id="div-reason"></div>
-                    <div class="row col-md-12">
-                        <div class="col-2"></div>
-                        <div class="col-md-4 text-center">
-                            <input style="position: relative;opacity: 1;pointer-events: inherit" class="other-ot"
-                                   type="radio" name="ot_type" id="project-ot" checked value="1">
-                            <label for="project-ot">OT dự án</label>
-                        </div>
-                        <div class="col-md-4 text-center">
-                            <input style="position: relative;opacity: 1;pointer-events: inherit" class="other-ot"
-                                   type="radio" name="ot_type" id="other-ot" value="2">
-                            <label for="other-ot">Lý do cá nhân</label>
-                        </div>
-                    </div>
-                    <div class="select-day">
+                    <div class="select-day mt-3">
                         <div class="container-fluid">
                             <div class="row append-textarea">
                                 <div class="col-2"></div>
@@ -386,8 +581,52 @@
                             </div>
                         </div>
                     </div>
-                    <br>
-                    <textarea class="form-control permission-reason-ot" name="note" cols="48" rows="6"
+                    <div class="container-fluid mt-2">
+                        <div class="row">
+                            <div class="col-2"></div>
+                            <input type="hidden" name="ot_id" class="ot_id">
+                            <input type="hidden" name="permission_status" class="permission_status">
+                            <div class="col-md-4 text-center">
+                                <input style="position: relative;opacity: 1;pointer-events: inherit" class="other-ot"
+                                       type="radio" name="ot_type" id="project-ot" checked value="1">
+                                <label for="project-ot">OT dự án</label>
+                            </div>
+                            <div class="col-md-4 text-center">
+                                <input style="position: relative;opacity: 1;pointer-events: inherit" class="other-ot"
+                                       type="radio" name="ot_type" id="other-ot" value="2">
+                                <label for="other-ot">Lý do cá nhân</label>
+                            </div>
+                        </div>
+                    </div>
+                    <select class="browser-default form-control project_name mt-2" name="project_name"
+                            style="width: 62%;margin: 0 auto;">
+                        <option value="0">Chọn dự án</option>
+                    </select>
+                    <div class="row mt-2">
+                        <div class="col-md-4 offset-2">
+                            <div class="form-group ">
+                                <label for="start_at">Thời gian bắt đầu *</label>
+                                <div class="input-group date">
+                                    <input type="time" class="form-control pull-right" autocomplete="off"
+                                           name="start_at"
+                                           value=""
+                                           id="start_at">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group ">
+                                <label for="end_at">Thời gian kết thúc *</label>
+                                <div class="input-group date">
+                                    <input type="time" class="form-control pull-right"
+                                           name="end_at" autocomplete="off"
+                                           value=""
+                                           id="end_at">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <textarea class="mt-2 form-control permission-reason-ot" name="note" cols="48" rows="6"
                               placeholder="Nhập lý do ..."></textarea>
                     <div class="pt-3 pb-4 d-flex justify-content-center border-top-0 rounded mb-0">
                         <button class="btn btn-primary btn-send btn-permission-ot">GỬI ĐƠN</button>
@@ -433,10 +672,50 @@
                 $(".modal-header").html("<h4 class='mg-center mb-2 modal-title w-100 font-weight-bold pt-2 header-permission-ot'>Xin OT</h4>");
                 $('#work_day_ot').datepicker("setDate", (date));
             });
-            $('.btn-reject').on('click', function () {
+            $('.approve').on('click', function () {
+                var otThis = $(this);
+                if (otThis.attr('id') === 'btn-reject') {
+                    $('.approve-type').attr('value', 2)
+                } else if (otThis.attr('id') === 'btn-approve') {
+                    $('.approve-type').attr('value', 1)
+                }
                 $('#modal-reject').modal('show');
-                let explanation = $(this).data("id");
-                $(".permission-reason").append("<input name='work_time_explanation_id' type='hidden' value='" + explanation + "'>");
+                var id = $(this).data("id");
+                var permissionType = $(this).data("permission");
+                // debugger
+                $('.id').attr('value', id);
+                $.ajax({
+                    url: '{{ route('ask_permission.approveDetail') }}',
+                    type: 'GET',
+                    dataType: 'JSON',
+                    data: {
+                        'id': id,
+                        'permission-type': permissionType,
+                    },
+                    success: function (respond) {
+                        // $('.id').attr('value', respond.id);
+                        if (permissionType === 'ot') {
+                            $('.creator_id').text(respond.creator_id);
+                            $('.project_name').text(respond.project_name);
+                            $('.start_at').text(respond.start_at);
+                            $('.end_at').text(respond.end_at);
+                            $('.minute').text(respond.minute);
+                            $('.reason').text(respond.reason);
+                        } else if (permissionType === 'other') {
+                            $('.creator_id').text(respond.user_id);
+                            $('.reason').text(respond.note);
+                        }
+                    }
+                });
+                if (permissionType === 'ot') {
+                    $('.content-hidden').prop('hidden', false)
+                    $('.permission-type').attr('value', 'ot')
+                } else {
+                    $('.content-hidden').prop('hidden', true)
+                    $('.permission-type').attr('value', 'other')
+                    // $('.permission-detail').hide()
+                    $('.creator_id,.project_name,.start_at,.end_at,.minute,.reason').empty()
+                }
             });
 
             $('#work-day-late').on('change', function () {
@@ -534,30 +813,55 @@
                         'type': type,
                     },
                     success: function (respond) {
-                        workDayOT.append("<input name='permission_status' type='hidden' value='" + respond.status + "'>");
-                        var note = respond.note ? respond.note : '',
-                            otType = respond.ot_type;
-                        $('.permission-reason-ot').text(note);
-                        if (otType) {
-                            if (otType === 1) {
-                                $('#project-ot').prop('checked', true)
-                                $('#other-ot').prop('checked', false)
-                            } else if (otType === 2) {
-                                $('#other-ot').prop('checked', true)
-                                $('#project-ot').prop('checked', false)
+                        if (respond[0]) {
+                            $('.permission_status').attr('value', respond[0].status);
+                            $('.ot_id').attr('value', respond[0].id);
+                            workDayOT.append("<input name='' type='hidden' value='" + respond[0].status + "'>");
+                            var note = respond[0].reason ? respond[0].reason : '',
+                                otType = respond[0].ot_type;
+                            $('.permission-reason-ot').text(note);
+                            if (otType) {
+                                if (otType === 1) {
+                                    $('#project-ot').prop('checked', true)
+                                    $('#other-ot').prop('checked', false)
+                                } else if (otType === 2) {
+                                    $('#other-ot').prop('checked', true)
+                                    $('#project-ot').prop('checked', false)
+                                }
                             }
-                        }
 
-                        if (respond.status === 1) {
-                            $('.header-permission-ot').text('Đơn đã được duyệt');
-                            $('.permission-reason-ot,.btn-permission-ot').prop('disabled', true);
+                            // $('.project_name').append('<option value="'+ element.name +'">' + element.name + '</option>');
+
+
+                            if (respond[0].status === 1) {
+                                $('.header-permission-ot').text('Đơn đã được duyệt');
+                                $('.permission-reason-ot,.btn-permission-ot').prop('disabled', true);
+                            } else {
+                                $('.header-permission-ot').text('Xin OT');
+                                $('.permission-reason-ot,.btn-permission-ot').prop('disabled', false);
+                            }
+                        } else if (respond[1]) {
+                            console.log(respond)
+                            respond[1].forEach(function (element) {
+                                $('.project_name').append('<option value="' + element.name + '">' + element.name + '</option>');
+                            });
                         } else {
-                            $('.header-permission-ot').text('Xin OT');
-                            $('.permission-reason-ot,.btn-permission-ot').prop('disabled', false);
+                            $('.permission-reason-ot').empty();
                         }
                     }
                 });
+                $('.project_name option[value!="0"]').remove();
             });
+            $('.approve-type').attr('value', '')
+
+            $('#btn-approve, #btn-reject').on('click', function () {
+                var selectorID = $(this).attr('id');
+                if (selectorID === 'btn-approve') {
+                    $('.approve-type').attr('value', 1)
+                } else if (selectorID === 'btn-reject') {
+                    $('.approve-type').attr('value', 2)
+                }
+            })
         });
     </script>
 @endsection

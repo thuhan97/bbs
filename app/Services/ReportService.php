@@ -8,9 +8,8 @@
 namespace App\Services;
 
 use App\Models\Config;
+use App\Models\Group;
 use App\Models\Report;
-use App\Models\Team;
-use App\Models\UserTeam;
 use App\Repositories\Contracts\IReportRepository;
 use App\Services\Contracts\IReportService;
 use Illuminate\Http\Request;
@@ -41,6 +40,7 @@ class ReportService extends AbstractService implements IReportService
     public function search(Request $request, &$perPage, &$search)
     {
         $criterias = $request->only('page', 'page_size', 'search', 'type', 'date_from', 'date_to', 'year', 'month', 'team_id');
+        $currentUser = Auth::user();
 
         $perPage = $criterias['page_size'] ?? REPORT_PAGE_SIZE;
         $search = $criterias['search'] ?? '';
@@ -48,26 +48,22 @@ class ReportService extends AbstractService implements IReportService
             ->select([
                 'id',
                 'week_num',
+                'to_ids',
                 'title',
+                'status',
                 'content',
                 'report_type',
                 'created_at',
                 'updated_at',
             ])
-            ->where([
-                'status' => ACTIVE_STATUS,
-            ])
+            ->where(function ($q) use ($currentUser) {
+                $q->where('status', ACTIVE_STATUS)->orWhere(function ($p) use ($currentUser) {
+                    $p->where('status', REPORT_DRAFT)->where('user_id', $currentUser->id);
+                });
+            })
             ->search($search)
             ->orderBy('id', 'desc');
 
-        //default private
-        $type = $request->get('type', 0);
-
-        if ($type == REPORT_SEARCH_TYPE['private']) {
-            $model->where('user_id', Auth::id());
-        } else {
-
-        }
         if (isset($criterias['date_from'])) {
             $model->where('created_at', '>=', $criterias['date_from']);
         }
@@ -80,13 +76,49 @@ class ReportService extends AbstractService implements IReportService
         if (!empty($criterias['month'])) {
             $model->where('month', $criterias['month']);
         }
-        if (isset($criterias['team_id'])) {
-            //get userId
-            $userIds = UserTeam::where('team_id', $criterias['team_id'])->pluck('user_id')->toArray();
-            $team = Team::find($criterias['team_id']);
-            $leaderId = $team->leader_id ?? 0;
-            $model->whereIn('user_id', $userIds)->orWhere('user_id', $leaderId);
+        $type = $request->get('type');
+
+        if (isset($type)) {
+            if ($type == REPORT_SEARCH_TYPE['private']) {
+                $model->where('user_id', Auth::id());
+            } elseif ($type == REPORT_SEARCH_TYPE['team']) {
+
+                if (isset($criterias['team_id'])) {
+                    $model->where('team_id', $criterias['team_id']);
+                }
+            } else {
+                //all
+
+            }
+
         }
+
+        if ($currentUser->isMaster()) {
+        } else if ($currentUser->isGroupManager()) {
+            $groupManage = Group::where('manager_id', $currentUser->id)->first();
+            if ($groupManage) {
+                $groupId = $groupManage->id;
+
+                $model->where(function ($q) use ($groupId) {
+                    $q->where('is_private', REPORT_PUBLISH)->orWhere('group_id', $groupId);
+                });
+            }
+        } else {
+            $team = $currentUser->team();
+            if ($team) {
+                $model->where(function ($q) use ($team) {
+                    $q->where('is_private', REPORT_PUBLISH)
+                        ->orWhere(function ($p) use ($team) {
+                            $p->where('is_private', REPORT_PRIVATE)
+                                ->where('team_id', $team->id);
+                        });
+                });
+
+            } else {
+                $model->where('is_private', REPORT_PUBLISH);
+            }
+        }
+
         return $model->paginate($perPage);
     }
 

@@ -11,6 +11,7 @@ use App\Models\DeviceUser;
 use App\Models\Event;
 use App\Models\EventAttendance;
 use App\Models\Feedback;
+use App\Models\Group;
 use App\Models\Meeting;
 use App\Models\OverTime;
 use App\Models\Post;
@@ -38,6 +39,7 @@ use App\Repositories\Contracts\IDeviceUserRepository;
 use App\Repositories\Contracts\IEventAttendanceRepository;
 use App\Repositories\Contracts\IEventRepository;
 use App\Repositories\Contracts\IFeedbackRepository;
+use App\Repositories\Contracts\IGroupRepository;
 use App\Repositories\Contracts\IMeetingRepository;
 use App\Repositories\Contracts\IOverTimeRepository;
 use App\Repositories\Contracts\IPostRepository;
@@ -59,6 +61,7 @@ use App\Repositories\DeviceUserRepository;
 use App\Repositories\EventAttendanceRepository;
 use App\Repositories\EventRepository;
 use App\Repositories\FeedbackRepository;
+use App\Repositories\GroupRepository;
 use App\Repositories\MeetingRepository;
 use App\Repositories\OverTimeRepository;
 use App\Repositories\PostRepository;
@@ -90,6 +93,9 @@ class RepositoriesServiceProvider extends ServiceProvider
     public function register()
     {
         ##AUTO_INSERT_BIND##
+        $this->app->bind(IGroupRepository::class, function () {
+            return new GroupRepository(new Group());
+        });
         $this->app->bind(IPunishesRepository::class, function () {
             return new PunishesRepository(new Punishes());
         });
@@ -178,6 +184,7 @@ class RepositoriesServiceProvider extends ServiceProvider
     {
         return [
             ##AUTO_INSERT_NAME##
+            IGroupRepository::class,
             IPunishesRepository::class,
             IRulesRepository::class,
             IDeviceUserRepository::class,

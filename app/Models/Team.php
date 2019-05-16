@@ -60,11 +60,9 @@ class Team extends Model
 
                 //search teams
 
-                $groupIds = array_filter(GROUPS, function ($key) use ($searchTerm) {
-                    return starts_with(mb_strtolower(GROUPS[$key]), mb_strtolower($searchTerm));
-                }, ARRAY_FILTER_USE_KEY);
+                $groupIds = Group::where('name', 'LIKE' ,'%' . $searchTerm . '%')->pluck('id')->toArray();
                 if (!empty($groupIds)) {
-                    $query->orWhereIn('group_id', array_keys($groupIds));
+                    $query->orWhereIn('group_id', $groupIds);
                 }
             }
         })
@@ -76,6 +74,11 @@ class Team extends Model
     public function leader()
     {
         return $this->hasOne('App\Models\User', 'id', 'leader_id');
+    }
+
+    public function group()
+    {
+        return $this->belongsTo(Group::class);
     }
 
     public function users()

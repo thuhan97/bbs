@@ -4,6 +4,7 @@
 @section('breadcrumbs')
     {!! Breadcrumbs::render('contact') !!}
 @endsection
+
 @section('content')
     <!-- Search form -->
     <form class="mb-4">
@@ -16,7 +17,7 @@
         <p>{{__l('total_user', ['number' => $users->count()])}}</p>
         <table id="contactTbl" class="table table-striped">
             <colgroup>
-                <col style="width: 30px">
+                <col class="d-none d-sm-table-cell" style="width: 30px">
                 <col style="width: 60px">
                 <col style="">
                 <col style="">
@@ -27,14 +28,14 @@
             </colgroup>
             <thead>
             <tr>
-                <th scope="col">#</th>
+                <th class="d-none d-sm-table-cell" scope="col">#</th>
                 <th scope="col">Ảnh</th>
-                <th scope="col">Mã nhân viên</th>
+                <th class="d-none d-sm-table-cell" scope="col">Mã nhân viên</th>
                 <th scope="col">Tên nhân viên</th>
-                <th scope="col">Tên group</th>
-                <th scope="col">Tên team</th>
-                <th scope="col">Chức vụ</th>
-                <th scope="col">Email</th>
+                <th class="d-none d-sm-table-cell" scope="col">Tên group</th>
+                <th class="d-none d-sm-table-cell" scope="col">Tên team</th>
+                <th class="d-none d-sm-table-cell" scope="col">Chức vụ</th>
+                <th class="d-none d-sm-table-cell" scope="col">Email</th>
                 <th class="text-center" scope="col">Số điện thoại</th>
                 {{--<th scope="col">Chi tiết</th>--}}
             </tr>
@@ -43,20 +44,30 @@
 
             @foreach($users as $id => $user)
                 <tr>
-                    <th scope="row">{{$id + 1}}</th>
+                    <th class="d-none d-sm-table-cell" scope="row">{{$id + 1}}</th>
                     <td class="text-center">
                         <img class="avatar lazy img-fluid z-depth-1 rounded-circle" data-src="{{$user->avatar}}"
                              src="{{URL_IMAGE_NO_IMAGE}}" onerror="this.src='{{URL_IMAGE_NO_IMAGE}}'">
                     </td>
-                    <td>{{$user->staff_code}}</td>
+                    <td class="d-none d-sm-table-cell">{{$user->staff_code}}</td>
                     <?php
                     $team = $user->team();
                     ?>
                     <td>{{$user->name}}</td>
-                    <td onclick="location.href='{{route('contact', ['search' => $team->group_name ?? ''])}}'">{{$team->group_name ?? ''}}</td>
-                    <td onclick="location.href='{{route('contact', ['search' => $team->name ?? ''])}}'">{{$team->name ?? ''}}</td>
-                    <td>{{JOB_TITLES[$user->jobtitle_id] ?? ''}}</td>
-                    <td>{{$user->email}}</td>
+                    <td class="d-none d-sm-table-cell"
+                        onclick="location.href='{{route('contact', ['search' => $team->group_name ?? ''])}}'">
+                        @if($team)
+                            @php($group = $groups->firstWhere('id', $team->group_id))
+
+                            @if($group)
+                                {{$group->name}}
+                            @endif
+                        @endif
+                    </td>
+                    <td class="d-none d-sm-table-cell"
+                        onclick="location.href='{{route('contact', ['search' => $team->name ?? ''])}}'">{{$team->name ?? ''}}</td>
+                    <td class="d-none d-sm-table-cell">{{JOB_TITLES[$user->jobtitle_id] ?? ''}}</td>
+                    <td class="d-none d-sm-table-cell">{{$user->email}}</td>
                     <td class="text-center">
                         @if($user->phone)
                             <span class="btn-showinfo btn btn-primary btn-sm">

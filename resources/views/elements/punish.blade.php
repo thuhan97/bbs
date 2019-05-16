@@ -2,10 +2,9 @@
     <!-- Card -->
     <div class="card text-center animated fadeInRight" id="punish">
         <!-- Card content -->
-        <div class="card-body red lighten-5">
+        <div class="card-body blue lighten-5 text-blue">
             <img src="{{get_punish_image($totalPunish)}}" class="image w-100"/>
-
-            <h4 class="card-title text-uppercase mt-3">Tổng tiền phạt công ty tháng {{date('m')}}</h4>
+            <h4 class="card-title text-uppercase mt-4 mb-0">Tiền phạt cả công ty tháng {{date('m')}}</h4>
             <div class="bold punish-counter animated fadeIn" data-count="{{$totalPunish}}">0</div>
         </div>
     </div>
@@ -14,24 +13,8 @@
 @push('extend-js')
     <script>
         $(function () {
-            var strToNum = function (str) {
-                //Find 1-3 digits followed by exactly 3 digits & a comma or end of string
-                let regx = /(\d{1,3})(\d{3}(?:,|$))/;
-                let currStr;
-
-                do {
-                    currStr = (currStr || str.split(`.`)[0])
-                        .replace(regx, `$1,$2`)
-                } while (currStr.match(regx)) //Stop when there's no match & null's returned
-
-                return (str.split(`.`)[1]) ?
-                    currStr.concat(`.`, str.split(`.`)[1]) :
-                    currStr;
-
-            };
-
             function formatNumber(number) {
-                return strToNum(number + '');
+                return (number + '').toGeneralConcurency('.');
             }
 
             $('.punish-counter').each(function () {

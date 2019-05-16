@@ -28,6 +28,11 @@ class OverTime extends Model
         'approver_id',
         'approver_at',
         'work_day',
+        'start_at',
+        'end_at',
+        'ot_type',
+        'project_name',
+        'note_respond',
     ];
 
     public function scopeSearch($query, $searchOtTimes)
@@ -50,5 +55,14 @@ class OverTime extends Model
     public function approver()
     {
         return $this->belongsTo(User::class, 'approver_id', 'id');
+    }
+
+    public function getDescriptionTimeAttribute($key)
+    {
+        $startAt = $this->attributes['start_at'];
+        $endAt = $this->attributes['end_at'];
+        return date_create($startAt)->format('H:i')
+            . ' - ' . date_create($endAt)->format('H:i')
+            . ' (' . \App\Helpers\DateTimeHelper::subMinuteWithFormat($startAt, $endAt) . ')';
     }
 }

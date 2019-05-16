@@ -1,7 +1,16 @@
+$( document ).ready(function() {
+    var heightPosts  = $( ".content-posts" );
+    heightPosts.each(function(){
+        if($(this).height() < 300){
+            $(this).siblings("p.show-more").css('display','none');
+        }
+    });    
+});
+
 window.myEditor = function ($selector, height) {
     var editorConfig = {
         path_absolute: "/",
-        height: height || 100 + 'px',
+        height: height || 250 + 'px',
         theme: "modern",
         paste_data_images: true,
         plugins: [
@@ -50,14 +59,10 @@ window.myEditor = function ($selector, height) {
 $("#buttonExperience").click(function(){
     var content = $("#editorContainer_ifr").contents().find("body").text();
     if(content.trim() != ''){
-        $('#formExp').submit();
+        $('#formExperience').submit();
+    }else{
+        alert('Bạn cần nhập nội dung kinh nghiệm làm việc!');
     }
-});
-
-$(".button-exp").click(function() {
-    $( "#formExp" ).toggle();
-    $( ".button-add" ).toggle();
-    $( ".button-hidden" ).toggle();
 });
 
 $(".form-comment2").click(function(){
@@ -90,4 +95,15 @@ $( ".button-send" ).click(function() {
             }
         })
     }    
-}); 
+});
+
+function showMoreLess(that) {
+    var dots = $(that).closest(".posts").find(".content-posts");
+    if (dots.css("max-height") === "300px") {
+        dots.css('max-height','none');
+        that.innerHTML = "Rút gọn";
+    } else {
+        dots.css('max-height','300px');
+        that.innerHTML = "Xem thêm";
+    }
+} 

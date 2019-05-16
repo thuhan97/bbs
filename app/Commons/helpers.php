@@ -412,10 +412,14 @@ if (!function_exists('users')) {
      *
      * @return array {array}
      */
-    function users()
+    function users($check=false)
     {
-        $teams = DB::table('users')->select('id', 'name')->orderBy('name', 'ASC')->pluck('name', 'id')->toArray();
-        return ['' => 'Chọn nhân viên'] + $teams;
+        $teams = DB::table('users')->select('id', 'name');
+        if ($check){
+            $teams=$teams->where('status',ACTIVE_STATUS)->whereIN('jobtitle_id',[MANAGER_ROLE,MASTER_ROLE]);
+        }
+
+        return ['' => 'Chọn nhân viên'] + $teams->orderBy('name', 'ASC')->pluck('name', 'id')->toArray();
     }
 }
 

@@ -82,6 +82,7 @@ $_createLink = route($baseResourceRoutesAlias . '.create', ['user_id' => $user->
                         <th class="text-center">Đến ngày</th>
                         <th class="text-center">Ngày tạo</th>
                         <th class="text-center">Ngày được tính</th>
+                        <th class="text-center">Ngày không phép</th>
                         <th class="text-center">Đã duyệt</th>
                         <th class="text-center">Chức năng</th>
                         </thead>
@@ -91,9 +92,6 @@ $_createLink = route($baseResourceRoutesAlias . '.create', ['user_id' => $user->
                             <?php
                             $editLink = route($baseResourceRoutesAlias . '.edit', $record->id);
                             $userLink = route($baseResourceRoutesAlias . '.user', $record->user_id);
-
-
-
                             $deleteLink = route($baseResourceRoutesAlias . '.destroy', $record->id);
                             $formId = 'formDeleteModel_' . $record->id;
                             ?>
@@ -102,7 +100,12 @@ $_createLink = route($baseResourceRoutesAlias . '.create', ['user_id' => $user->
                                 <td class="text-center">{{ $record->start_at }}</td>
                                 <td class="text-center">{{ $record->end_at }}</td>
                                 <td class="text-center">{{ $record->created_at }}</td>
-                                <td class="text-center">{{!!!$record->number_off ? 'Đang duyệt' : checkNumber($record->number_off).' ngày'}}</td>
+                                <td class="text-center">
+                                    {{!!!$record->number_off ? ($record->status != STATUS_DAY_OFF['noActive'] ? 'Đang duyệt' : '') : checkNumber($record->number_off) .' ngày'}}
+                                </td>
+                                <td class="text-center">
+                                    {{!!!$record->absent ? ($record->status != STATUS_DAY_OFF['noActive'] ? 'Đang duyệt' : '') : checkNumber($record->absent) .' ngày'}}
+                                </td>
                                 <td class="text-center">
                                     @if($record->status == STATUS_DAY_OFF['abide'])
                                         <span class="label label-warning">No</span>

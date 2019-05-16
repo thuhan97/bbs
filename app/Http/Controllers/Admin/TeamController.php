@@ -16,10 +16,12 @@ class TeamController extends AdminBaseController
      */
     protected $resourceAlias = 'admin.teams';
     protected $resourceAliasLeader = 'admin.teams_lead';
+
     /**
      * @var  string
      */
     protected $resourceRoutesAlias = 'admin::teams';
+
     /**
      * Fully qualified class name
      *
@@ -114,7 +116,7 @@ class TeamController extends AdminBaseController
             ->where('user_id', '<>', $record->leader_id)
             ->delete();
         $users_id_add = $request->to;
-        if ($users_id_add){
+        if ($users_id_add) {
             foreach ($users_id_add as $user_id) {
                 $user_team = new UserTeam;
                 $user_team->team_id = $request->id;
@@ -124,9 +126,10 @@ class TeamController extends AdminBaseController
         }
         return redirect()->action('Admin\TeamController@manageMember', ['id' => $request->id]);
     }
+
     public function getRedirectAfterSave($record, $request, $isCreate = null)
     {
-        return  redirect()->route($this->getResourceRoutesAlias() . '.index');
+        return redirect()->route($this->getResourceRoutesAlias() . '.index');
     }
 
 }

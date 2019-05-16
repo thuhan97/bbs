@@ -2,25 +2,18 @@
 
 namespace App\Exports;
 
+use App\Helpers\DateTimeHelper;
 use App\Models\Config;
 use App\Models\Punishes;
-use App\User;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Concerns\FromArray;
 
-class LatelyGridExport implements FromArray
+class LatelyGridExport extends WTGridExport implements FromArray
 {
-    private $config;
-    private $records;
-    private $firstDate;
-    private $lastDate;
-    /**
-     * @var array
-     */
-    private $dateLists;
+    protected $moreColumnNumber = 5;
 
-    private $headings;
-    private $importList;
+    private $config;
+    protected $punishes;
 
     /**
      * WorkTimeGridExport constructor.
@@ -30,34 +23,17 @@ class LatelyGridExport implements FromArray
     public function __construct($records, Request $request)
     {
         $this->config = Config::first();
-        $this->records = $records;
-        $this->firstDate = $records->min('work_day');
-        $this->lastDate = $records->max('work_day');
+        parent::__construct($records, $request);
 
-        $userModel = User::select('id', 'staff_code', 'name')
-            ->where('status', ACTIVE_STATUS);
-        if ($request->has('user_id')) {
-            $this->users = $userModel
-                ->where('id', $request->get('user_id'))
-                ->get();
-        } else {
-            $this->users = $userModel
-                ->orderBy('contract_type')
-                ->orderBy('id')
-                ->get();
-        }
         $this->punishes = Punishes::where('infringe_date', '>=', $this->firstDate)
             ->where('infringe_date', '<=', $this->lastDate)
             ->where('rule_id', LATE_RULE_ID)
             ->get();
-
-        $this->dateLists = get_date_list($this->firstDate, $this->lastDate);
-
         $this->getHeadings();
         $this->getList();
     }
 
-    private function getHeadings()
+    protected function getHeadings(): void
     {
         $row1 = ['', '', 'Thứ'];
         foreach ($this->dateLists as $date) {
@@ -77,7 +53,7 @@ class LatelyGridExport implements FromArray
         $this->headings = $headings;
     }
 
-    private function getList()
+    protected function getList(): void
     {
         $results = [];
         $userIds = [];
@@ -101,9 +77,9 @@ class LatelyGridExport implements FromArray
                 if ($workTime) {
                     $count++;
                     if ($workTime->start_at < HAFT_HOUR . ':00') {
-                        $userData[] = $this->subMinute($lateTimeMorning, $workTime->start_at);
+                        $userData[] = DateTimeHelper::subMinute($lateTimeMorning, $workTime->start_at);
                     } else {
-                        $userData[] = $this->subMinute($lateTimeAfternoon, $workTime->start_at);
+                        $userData[] = DateTimeHelper::subMinute($lateTimeAfternoon, $workTime->start_at);
                     }
 
                 } else {
@@ -111,7 +87,8 @@ class LatelyGridExport implements FromArray
                 }
             }
             $userData[] = $count;
-            $userData[] = number_format($this->punishes->where('user_id', $user->id)->sum('total_money'));
+            //Free for internship
+            $userData[] = $user->contract_type == CONTRACT_TYPES['internship'] ? 0 : $this->punishes->where('user_id', $user->id)->sum('total_money');
             $results[] = $userData;
             $rowNum++;
         }
@@ -122,6 +99,7 @@ class LatelyGridExport implements FromArray
                     ->where('work_day', $date)->count();
             }
             $lastRow[] = '';
+            $lastRow[] = $this->punishes->sum('total_money');
             $results[] = $lastRow;
         }
         $this->importList = $results;
@@ -135,12 +113,4 @@ class LatelyGridExport implements FromArray
         return array_merge($this->headings, $this->importList);
     }
 
-    private function subMinute($from, $to)
-    {
-        $start = date_create($from);
-        $end = date_create($to);
-
-        $diff = date_diff($start, $end);
-        return $diff->format('%i') + 1;
-    }
 }

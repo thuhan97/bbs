@@ -35,13 +35,15 @@ Route::group([
 //    Route::post('/thoi-gian-lam-viec/xin-phep-ot', 'UserController@workTimeAskPermissionOT')->name('work_time.ask_permission_ot');
     Route::post('/thoi-gian-lam-viec/xin-phep-ve-som', 'UserController@workTimeAskPermissionEarly')->name('work_time.ask_permission_early');
     Route::get('/thoi-gian-lam-viec/xin-di-muon', 'UserController@workTimeDetailAskPermission')->name('work_time.detail_ask_permission');
+    Route::get('/thoi-gian-lam-viec/du-an', 'UserController@workTimeGetProject')->name('work_time.get_project');
     Route::get('/ngay-nghi', 'UserController@dayOff')->name('day_off')->middleware('delete.cache');
     Route::get('xin-phep', 'UserController@askPermission')->name('ask_permission');
     Route::get('xin-phep/early', 'UserController@askPermissionEarly')->name('ask_permission.early');
     Route::get('xin-phep/ot', 'UserController@askPermissionOT')->name('ask_permission.ot');
     Route::get('xin-phep/create', 'UserController@askPermissionCreate')->name('ask_permission.create');
+    Route::get('xin-phep/chi-tiet-don', 'UserController@approveDetail')->name('ask_permission.approveDetail')->middleware('can:manager');
+    Route::post('xin-phep/phe-duyet', 'UserController@approvePermission')->name('ask_permission.approvePermission')->middleware('can:manager');
     Route::post('phe-duyet-xin-phep', 'UserController@approved')->name('approved')->middleware('can:manager');
-    Route::post('tu-choi-xin-phep', 'UserController@reject')->name('reject')->middleware('can:manager');
     Route::post('phe-duyet-xin-phep-ot', 'UserController@approvedOT')->name('approvedOT')->middleware('can:manager');
     /* Route::post('/ngay-nghi/create-api', 'UserController@dayOffCreate_API')->name('day_off_createAPI');*/
     Route::get('/ngay-nghi/list-approval-api', 'UserController@dayOffListApprovalAPI')->name('day_off_listApprovalAPI');
@@ -91,6 +93,7 @@ Route::group([
 
     Route::post('/add_suggestions', 'SuggestionController@addSuggestions')->name('add_suggestions');
     Route::get('/list_suggestions', 'SuggestionController@listSuggestions')->name('list_suggestions');
+    Route::post('/approve_suggestion', 'SuggestionController@approveSuggestion')->name('approve_suggestion');
 
     // create day off
     Route::post('/ngay-nghi/create-calendar', 'UserController@dayOffCreateCalendar')->name('day_off_create_calendar');

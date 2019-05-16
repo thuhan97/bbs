@@ -56,7 +56,7 @@ class ShareController extends Controller
 
     public function shareExperience()
     {
-        $list_experience = Share::where('type', '=', SHARE_EXPERIENCE)->orderBy('created_at', 'desc')->paginate(15);
+        $list_experience = Share::where('type', '=', SHARE_EXPERIENCE)->orderBy('created_at', 'desc')->paginate(10);
         // dd($list_experience);
         return view('end_user.share.share_experience', compact('list_experience'));
     }

@@ -36,8 +36,8 @@ class CreateDayOffRequest extends FormRequest
             'end_at' => 'required|after_or_equal:start_at',
             'status' => 'nullable|integer|between:0,1',
             'option_check'=>'nullable|digits_between:0,2',
-            'start'=>'nullable|date_format:H:i:s',
-            'end'=>'nullable|date_format:H:i:s',
+            'start'=>'nullable|digits_between:0,1',
+            'end'=>'nullable|digits_between:0,1',
 
         ];
         if ($this->id) {

@@ -8,7 +8,6 @@ $_pageSubtitle = (isset($addVarsForView['_pageSubtitle']) && !empty($addVarsForV
 $_listLink = route($resourceRoutesAlias . '.index');
 $_createLink = route($resourceRoutesAlias . '.create');
 $_mutipleDeleteLink = route($resourceRoutesAlias . '.deletes');
-
 $tableCounter = 0;
 $total = 0;
 if (count($records) > 0) {

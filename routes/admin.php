@@ -147,5 +147,9 @@ Route::group([
     Route::post('meetings/deletes', ['as' => 'meetings.deletes', 'uses' => 'MeetingController@deletes']);
     Route::resource('meetings', 'MeetingController');
 
+    // manager-group
+    Route::resource('manager', 'ManagerController');
+    Route::post('manager/deletes', ['as' => 'manager.deletes', 'uses' => 'ManagerController@deletes']);
+
 
 });

@@ -10,6 +10,10 @@
     padding-right: 0 !important;
 }
 
+.f-22 {
+    font-size: 22px;
+}
+
 .mw-100 {
     max-width: 100%;
 }
@@ -38,6 +42,14 @@
     display: block !important;
 }
 
+#main-nav {
+    background: #feaf25;
+}
+
+#main-nav .nav-link {
+    color: white;
+}
+
 #nav_bar_avatar {
     padding: 0;
 }
@@ -49,6 +61,10 @@
 
 .navbar .breadcrumb .breadcrumb-item.active, .navbar .breadcrumb .breadcrumb-item:before {
     color: black;
+}
+
+.navbar.scrolling-navbar .navbar-nav > li.active {
+    background: #00000012;
 }
 
 .breadcrumb-item a.waves-effect, .breadcrumb-item a.waves-light {
@@ -1320,14 +1336,14 @@ td.blank, .type-1, .type-2 {
 }
 
 @media (max-width: 575px) {
-    #btn-detail-day-off{
+    #btn-detail-day-off {
         width: 99%;
         height: 36px;
         line-height: 11px;
     }
 }
 
-.calendar-search{
+.calendar-search {
     top: 8px;
     right: 5px;
     font-size: 23px;

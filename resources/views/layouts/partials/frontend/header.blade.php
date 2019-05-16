@@ -2,7 +2,7 @@
 <header>
     <!-- Navbar -->
     {{--<nav class="navbar fixed-top navbar-expand-lg navbar-light white scrolling-navbar">--}}
-    <nav class="navbar fixed-top navbar-light white scrolling-navbar navbar-expand-lg">
+    <nav id="main-nav" class="navbar fixed-top scrolling-navbar navbar-expand-lg">
         <div class="container-fluid">
             <div class="float-left ">
                 <a href="#" data-activates="slide-out" class="navbar-toggler button-collapse"><i
@@ -11,7 +11,7 @@
             </div>
             <!-- Brand -->
             <a class="navbar-brand waves-effect" href="/">
-                <strong class="blue-text">BBS</strong>
+                <strong class="white-text">BBS</strong>
             </a>
 
             <!-- Collapse -->

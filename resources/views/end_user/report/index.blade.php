@@ -84,6 +84,8 @@ $type = request('type', $reportType);
                                  aria-labelledby="headingOne{{$idx}}"
                                  data-parent="#report">
                                 <div class="card-body">
+                                    <p class="pl-2">Gửi cho: {{$report->to_ids}}</p>
+
                                     {!! $report->content !!}
                                 </div>
                             </div>

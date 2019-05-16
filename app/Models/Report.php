@@ -31,6 +31,10 @@ class Report extends Model
         'content',
         'status',
         'report_type',
+        'group_id',
+        'team_id',
+        'report_date',
+        'is_private',
     ];
 
     /**
@@ -72,13 +76,18 @@ class Report extends Model
                 $title .= $week . ' [' . $startDate . ' - ' . $endDate . ']';
             }
 
-            return $title;
 
         } else if ($type == REPORT_SEARCH_TYPE['all']) {
 //get team
-            return $this->attributes['title'];
+            $title = $this->attributes['title'];
         } else {
-            return $this->attributes['title'];
+            $title = $this->attributes['title'];
         }
+
+        if ($this->attributes['status'] == REPORT_DRAFT) {
+            $title .= ' (Nháp)';
+        }
+
+        return $title;
     }
 }

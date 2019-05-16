@@ -43,7 +43,6 @@ class ReportController extends Controller
                 if (!$request->has('type')) {
                     $request->merge(['type' => 2]);
                     $request->merge(['team_id' => $teamId]);
-
                 }
             } else {
                 $teamId = 0;
@@ -65,12 +64,10 @@ class ReportController extends Controller
      */
     public function create()
     {
-//        $report = Report::where([
-//            'user_id' => Auth::id(),
-//            'year' => date('Y'),
-//            'week_num' => $week_number,
-//        ])->first();
-        $report = $this->service->newReportFromTemplate();
+        $report = $this->getDraftReport();
+
+        if (!$report)
+            $report = $this->service->newReportFromTemplate();
         return view('end_user.report.create', compact('report'));
     }
 
@@ -108,12 +105,15 @@ class ReportController extends Controller
      */
     public function saveReport(CreateReportRequest $request)
     {
-        $data = $request->only('status', 'choose_week', 'to_ids', 'content', 'is_new');
+        $data = $request->only('status', 'choose_week', 'to_ids', 'content', 'is_new', 'is_private');
         $choose_week = $data['choose_week'];
         $reportType = REPORT_TYPE_WEEKLY;
+        $reportDate = null;
         if ($choose_week == 0 || $choose_week == 1) {
             get_week_info($choose_week, $week_number);
         } else {
+            $reportDate = date_create_from_format('d/m', $data['choose_week']);
+
             $choose_week = 0;
             $reportType = REPORT_TYPE_DAILY;
             $week_number = get_week_number($choose_week);
@@ -122,17 +122,29 @@ class ReportController extends Controller
         $data['title'] = $this->service->getReportTitle($data['choose_week']);
 
         $data['week_num'] = $week_number;
+        $data['year'] = date('Y');
         $data['user_id'] = Auth::id();
         $data['month'] = getMonthFormWeek($week_number);
+        $data['report_date'] = $reportDate;
 
-        $report = Report::updateOrCreate([
-            'user_id' => Auth::id(),
-            'year' => date('Y'),
-            'month' => $data['month'],
-            'week_num' => $week_number,
-            'title' => $data['title'],
-            'report_type' => $reportType,
-        ], $data);
+        $report = $this->getDraftReport();
+        if ($report) {
+            $report->fill($data);
+            $report->save();
+        } else {
+            $report = Report::where([
+                'user_id' => Auth::id(),
+                'year' => date('Y'),
+                'month' => $data['month'],
+                'week_num' => $week_number,
+                'report_type' => $reportType,
+            ])->first();
+            if ($report) {
+                $report->delete();
+            }
+            $report = new Report($data);
+            $report->save();
+        }
         if ($report) {
             if (!$data['is_new']) {
                 flash()->success(__l('report_resent_successully'));
@@ -146,5 +158,11 @@ class ReportController extends Controller
         return redirect(route('report'));
     }
 
-
+    protected function getDraftReport()
+    {
+        return Report::where([
+            'user_id' => Auth::id(),
+            'status' => REPORT_DRAFT
+        ])->orderBy('id', 'desc')->first();
+    }
 }

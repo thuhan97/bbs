@@ -224,7 +224,7 @@
                                 <th class="text-center">{{ $item['work_day'] ?? '' }}</th>
                                 <th>{{ $item->creator->name ?? '' }}</th>
                                 <td>
-                                    {{$item->ot_type ? $item->ot_type == 1 ? 'OT Dự án' : 'OT cá nhân' : '' }}
+                                    {{$item->ot_type ? $item->ot_type == array_search('Dự án', OT_TYPE) ? 'OT Dự án' : 'OT cá nhân' : '' }}
                                 </td>
                                 <td>{!! $item['reason'] !!}</td>
                                 <td>{!! $item['note_respond'] !!}</td>
@@ -304,16 +304,16 @@
                         <th class="text-center">{{ $item['work_day'] ?? '' }}</th>
                         <td>
                             {{--{{$item->type_name}}aaa--}}
-                            @if($item['type'] == 0)
+                            @if($item['type'] == array_search('Bình thường', WORK_TIME_TYPE))
                                 Bình thường
-                            @elseif($item['type'] == 1)
+                            @elseif($item['type'] == array_search('Đi muộn', WORK_TIME_TYPE))
                                 Đi muộn
-                            @elseif($item['type'] == 2)
+                            @elseif($item['type'] == array_search('Về Sớm', WORK_TIME_TYPE))
                                 Về sớm
-                            @elseif($item['type'] == 4)
-                                @if($item['ot_type'] == 1)
+                            @elseif($item['type'] == array_search('Overtime', WORK_TIME_TYPE))
+                                @if($item['ot_type'] == array_search('Dự án', OT_TYPE))
                                     OT dự án
-                                @elseif($item['ot_type'] == 2)
+                                @elseif($item['ot_type'] == array_search('OT lý do cá nhân', OT_TYPE))
                                     OT cá nhân
                                 @endif
                             @endif

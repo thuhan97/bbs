@@ -25,7 +25,7 @@ use Illuminate\Support\Facades\DB;
 class WorkTimeService extends AbstractService implements IWorkTimeService
 {
     const LATE_UNIT = 1000;
-    const LATE_SECON_SUFFIX = ':00'; //00 to 59
+    const LATE_SECOND_SUFFIX = ':00'; //00 to 59
 
     private $calendarOffs;
 
@@ -102,7 +102,7 @@ class WorkTimeService extends AbstractService implements IWorkTimeService
      * @return array
      * @throws \Exception
      */
-    private function getWorkTime($user, $date, $startAt, $endAt)
+    public function getWorkTime($user, $date, $startAt, $endAt)
     {
         if ($endAt == null && $startAt != null && $startAt > HAFT_AFTERNOON) {
             [$startAt, $endAt] = [$endAt, $startAt];
@@ -331,6 +331,7 @@ class WorkTimeService extends AbstractService implements IWorkTimeService
     {
         $type = 0;
         $notes = [];
+
         if ($startAt) {
             $startAt .= ':00';
             //check đi muộn quá nửa buổi chiều -> nghỉ ngày
@@ -359,12 +360,11 @@ class WorkTimeService extends AbstractService implements IWorkTimeService
                 }
             }
         }
-
         if ($endAt && $type != WorkTime::TYPES['off']) {
             $endAt .= ':00';
 
-            if ($typeCheck >= 0 && $startAt > HAFT_HOUR) {
-                if ($endAt < HAFT_AFTERNOON) {
+            if ($typeCheck >= 0) {
+                if ($startAt > HAFT_HOUR && $endAt < HAFT_AFTERNOON) {
                     $notes[] = __('worktimes.early_over_haft_afternoon');
                     if ($typeCheck > 0) {
                         $type = WorkTime::TYPES['off'];
@@ -374,7 +374,6 @@ class WorkTimeService extends AbstractService implements IWorkTimeService
                     $type += WorkTime::TYPES['early'];
                     $notes[] = __('worktimes.early_afternoon');
                 }
-
             }
             if ($typeCheck <= 0) {
                 if ($endAt < $this->config->morning_end_work_at) {
@@ -397,16 +396,22 @@ class WorkTimeService extends AbstractService implements IWorkTimeService
         }
 //cost
         $cost = 0;
-        if ($typeCheck <= 0) {
-            if (($startAt == null || $startAt <= HAFT_MORNING) && ($endAt == null || $endAt >= HAFT_MORNING)) {
-                $cost += 0.5;
-            }
-        }
-        if ($typeCheck >= 0) {
+        $costStartAt = $startAt ?? $this->config->morning_start_work_at;
+        $costEndAt = $endAt ?? $this->config->afternoon_end_work_at;
 
-            if (($startAt == null || $startAt <= HAFT_AFTERNOON) && ($endAt == null || $endAt >= HAFT_AFTERNOON)) {
-                $cost += 0.5;
+        if ($typeCheck == 0) {
+            if ($costStartAt <= HAFT_MORNING && $costEndAt >= HAFT_AFTERNOON) {
+                $cost = 1;
+            } else if (//morning
+                ($costStartAt <= HAFT_MORNING && $costEndAt < HAFT_AFTERNOON)
+                //afternoon
+                || ($costStartAt > HAFT_MORNING && $costEndAt >= HAFT_AFTERNOON)) {
+                $cost = 0.5;
             }
+        } else if ($typeCheck > 0 && $costStartAt < HAFT_AFTERNOON && $costEndAt >= HAFT_AFTERNOON) {
+            $cost = 0.5;
+        } else if ($typeCheck < 0 && $costStartAt <= HAFT_MORNING && $costEndAt > HAFT_MORNING) {
+            $cost = 0.5;
         }
 
         return [$cost, $type, $notes];

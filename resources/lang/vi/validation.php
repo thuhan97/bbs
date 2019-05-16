@@ -153,5 +153,6 @@ return [
         'id_card' => 'số chứng minh nhân dân',
         'year' => 'năm',
         'month' => 'tháng',
+        'today' => 'hôm nay',
     ],
 ];

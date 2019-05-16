@@ -169,6 +169,7 @@
                 <th class="text-center">Tiêu đề</th>
                 <th class="text-center">Nội dung</th>
                 <th class="d-none d-md-table-cell text-center">Ngày được duyệt</th>
+                <th class="d-none d-md-table-cell text-center">Ngày không phép</th>
                 <th class="text-center">Phê duyệt</th>
                 <th class="d-none d-md-table-cell text-center">Xem thêm</th>
             </tr>
@@ -184,8 +185,11 @@
                     <td class="d-none d-md-table-cell text-center">{{ $absence->title != DAY_OFF_TITLE_DEFAULT ? \App\Helpers\DateTimeHelper::checkTileDayOffGetDate($absence->end_at) : $absence->end_date  }}</td>
                     <td class="text-center">{{ array_key_exists($absence->title, VACATION_FULL) ? VACATION_FULL[$absence->title] : ''  }}</td>
                     <td class="text-center">{!! nl2br($absence->reason) !!}</td>
-                    <td class="d-none d-md-table-cell text-center">{{!!!($absence->number_off || $absence->absent > DEFAULT_VALUE)? ($absence->status != STATUS_DAY_OFF['noActive'] ? 'Đang duyệt' : '') : checkNumber($absence->number_off) + checkNumber($absence->absent).' ngày'}}
-
+                    <td class="d-none d-md-table-cell text-center">
+                        {{!!!$absence->number_off ? ($absence->status != STATUS_DAY_OFF['noActive'] ? 'Đang duyệt' : '') : checkNumber($absence->number_off) .' ngày'}}
+                    </td>
+                    <td class="text-center">
+                        {{!!!$absence->absent ? ($absence->status != STATUS_DAY_OFF['noActive'] ? 'Đang duyệt' : '') : checkNumber($absence->absent) .' ngày'}}
                     </td>
                     <td class="text-center">
                         @if($absence->status == STATUS_DAY_OFF['abide'])

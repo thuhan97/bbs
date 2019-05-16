@@ -17,16 +17,17 @@
             <i class="fa fa-user"></i> <span>Nhân viên</span>
         </a>
     </li>
-    <li class="{{ \App\Utils::checkRoute(['admin::teams.index', 'admin::teams.create', 'admin::teams.edit', 'admin::teams.show']) ? 'active': '' }}">
-        <a href="{{ route('admin::teams.index') }}">
-            <i class="fa fa-users"></i> <span>Nhóm</span>
-        </a>
-    </li>
     <li class="{{ \App\Utils::checkRoute(['admin::group.index', 'admin::group.create', 'admin::group.edit', 'admin::group.show']) ? 'active': '' }}">
         <a href="{{ route('admin::group.index') }}">
             <i class="fa fa-object-group"></i><span>Group</span>
         </a>
     </li>
+    <li class="{{ \App\Utils::checkRoute(['admin::teams.index', 'admin::teams.create', 'admin::teams.edit', 'admin::teams.show']) ? 'active': '' }}">
+        <a href="{{ route('admin::teams.index') }}">
+            <i class="fa fa-users"></i> <span>Nhóm</span>
+        </a>
+    </li>
+
     <li class="{{ \App\Utils::checkRoute(['admin::projects.index', 'admin::projects.create', 'admin::projects.edit', 'admin::projects.show']) ? 'active': '' }}">
         <a href="{{ route('admin::projects.index') }}">
             <i class="fa fa-anchor"></i> <span>Dự án</span>

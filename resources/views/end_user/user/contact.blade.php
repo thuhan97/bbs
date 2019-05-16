@@ -4,6 +4,7 @@
 @section('breadcrumbs')
     {!! Breadcrumbs::render('contact') !!}
 @endsection
+
 @section('content')
     <!-- Search form -->
     <form class="mb-4">
@@ -54,7 +55,15 @@
                     ?>
                     <td>{{$user->name}}</td>
                     <td class="d-none d-sm-table-cell"
-                        onclick="location.href='{{route('contact', ['search' => $team->group_name ?? ''])}}'">{{$team->group_name ?? ''}}</td>
+                        onclick="location.href='{{route('contact', ['search' => $team->group_name ?? ''])}}'">
+                        @if($team)
+                            @php($group = $groups->firstWhere('id', $team->group_id))
+
+                            @if($group)
+                                {{$group->name}}
+                            @endif
+                        @endif
+                    </td>
                     <td class="d-none d-sm-table-cell"
                         onclick="location.href='{{route('contact', ['search' => $team->name ?? ''])}}'">{{$team->name ?? ''}}</td>
                     <td class="d-none d-sm-table-cell">{{JOB_TITLES[$user->jobtitle_id] ?? ''}}</td>

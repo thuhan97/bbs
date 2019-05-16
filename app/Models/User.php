@@ -175,7 +175,7 @@ class User extends Authenticatable implements JWTSubject
 
     public function isGroupManager()
     {
-        return $this->attributes['jobtitle_id'] == MANAGER_ROLE;
+        return Group::where('manager_id', $this->attributes['id'])->exists();
     }
 
     /**

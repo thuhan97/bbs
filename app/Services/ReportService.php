@@ -8,6 +8,7 @@
 namespace App\Services;
 
 use App\Models\Config;
+use App\Models\Group;
 use App\Models\Report;
 use App\Repositories\Contracts\IReportRepository;
 use App\Services\Contracts\IReportService;
@@ -76,12 +77,12 @@ class ReportService extends AbstractService implements IReportService
             $model->where('month', $criterias['month']);
         }
         $type = $request->get('type');
-        $groupId = 2;
 
         if (isset($type)) {
             if ($type == REPORT_SEARCH_TYPE['private']) {
                 $model->where('user_id', Auth::id());
             } elseif ($type == REPORT_SEARCH_TYPE['team']) {
+
                 if (isset($criterias['team_id'])) {
                     $model->where('team_id', $criterias['team_id']);
                 }
@@ -94,11 +95,15 @@ class ReportService extends AbstractService implements IReportService
 
         if ($currentUser->isMaster()) {
         } else if ($currentUser->isGroupManager()) {
-            $model->where(function ($q) use ($groupId) {
-                $q->where('is_private', REPORT_PUBLISH)->orWhere('group_id', $groupId);
-            });
-        } else {
+            $groupManage = Group::where('manager_id', $currentUser->id)->first();
+            if ($groupManage) {
+                $groupId = $groupManage->id;
 
+                $model->where(function ($q) use ($groupId) {
+                    $q->where('is_private', REPORT_PUBLISH)->orWhere('group_id', $groupId);
+                });
+            }
+        } else {
             $team = $currentUser->team();
             if ($team) {
                 $model->where(function ($q) use ($team) {

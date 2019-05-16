@@ -1,13 +1,17 @@
 <div class="table-responsive list-records">
     <table class="table table-hover table-bordered">
         <thead>
-        <th style="width: 10px;">
-            <button type="button" class="btn btn-default btn-sm checkbox-toggle"><i class="fa fa-square-o"></i></button>
-        </th>
-        <th class="text-center" style="width: 120px">Tên group</th>
-        <th class="text-center" style="width: 120px">Người quản lý</th>
-        <th class="text-center" style="width: 120px">Chức vụ</th>
-        <th class="text-center" style="width: 120px;">Chức năng</th>
+        <tr>
+            <th style="width: 40px;">
+                <button type="button" class="btn btn-default btn-sm checkbox-toggle"><i class="fa fa-square-o"></i>
+                </button>
+            </th>
+            <th style="width: 200px">Tên group</th>
+            <th style="width: 200px">Số team</th>
+            <th style="width: 200px">Người quản lý</th>
+            <th>Mô tả</th>
+            <th class="text-center" style="width: 120px;">Chức năng</th>
+        </tr>
         </thead>
         <tbody>
         @php
@@ -24,15 +28,16 @@
             <tr>
                 <td><input type="checkbox" name="ids[]" value="{{ $record->id }}" class="square-blue chkDelete"></td>
 
-                <td class="text-center">{{ $record->name }}</td>
-                <td class="text-center">
+                <td>{{ $record->name }}</td>
+                <td>{{ $record->teams->count() }}</td>
+                <td>
                     {{ $record->user->name ?? '' }}
                 </td>
-                <td class="text-center">{{ array_key_exists($record->user->jobtitle_id ?? '' ,JOB_TITLES) ? JOB_TITLES[$record->user->jobtitle_id] : '' }}</td>
+                <td>{!! $record->description !!}</td>
                 <!-- we will also add show, edit, and delete buttons -->
                 <td class="text-center">
                     <div class="btn-group">
-                        <a href="{{ $showLink }}" class="btn btn-info btn-sm"><i class="fa fa-eye"></i></a>
+                        <a href="{{ $showLink }}" class="btn btn-primary btn-sm"><i class="fa fa-eye"></i></a>
                         <a href="{{ $editLink }}" class="btn btn-info btn-sm"><i class="fa fa-edit"></i></a>
                         <a href="#" class="btn btn-danger btn-sm btnOpenerModalConfirmModelDelete"
                            data-form-id="{{ $formId }}"><i class="fa fa-trash-o"></i></a>

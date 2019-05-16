@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Models\DayOff;
 use App\Models\RemainDayoff;
 use App\Models\User;
 use App\Repositories\Contracts\IUserRepository;
@@ -56,19 +55,19 @@ class UserController extends AdminBaseController
                 'birthday' => 'nullable|date|before:' . date('Y-m-d', strtotime('- 15 years')),
                 'phone' => 'required|numeric|digits_between:10,30|unique:users,phone',
                 'id_card' => 'nullable|digits_between:9,12|unique:users,id_card|numeric',
-                'password'=>'required|min:8',
-                'password_confirmation'=>'same:password',
-                'start_date'=>'nullable|date|before_or_equal:today',
-                'end_date'=>"nullable|date|after:start_date",
-                'sex'=>"required|digits_between:0,1"
+                'password' => 'required|min:8',
+                'password_confirmation' => 'same:password',
+                'start_date' => 'nullable|date|before_or_equal:today',
+                'end_date' => "nullable|date|after:start_date",
+                'sex' => "required|digits_between:0,1"
             ],
             'messages' => [],
             'attributes' => [
-                'phone'=>'số điện thoại',
-                'start_date'=>'ngày vào công ty',
-                'end_date'=>'ngày nghỉ việc',
-                'staff_code'=>'mã nhân viên',
-                'sex'=>'giới tính'
+                'phone' => 'số điện thoại',
+                'start_date' => 'ngày vào công ty',
+                'end_date' => 'ngày nghỉ việc',
+                'staff_code' => 'mã nhân viên',
+                'sex' => 'giới tính'
             ],
             'advanced' => [],
         ];
@@ -85,25 +84,26 @@ class UserController extends AdminBaseController
                 'birthday' => 'nullable|date|before:' . date('Y-m-d', strtotime('- 15 years')),
                 'phone' => 'nullable|numeric|digits_between:10,30|unique:users,phone,' . $record->id,
                 'id_card' => 'nullable|digits_between:9,12|unique:users,id_card,' . $record->id,
-                'password'=>'nullable|min:8',
-                'password_confirmation'=>'same:password',
-                'start_date'=>'nullable|date|before_or_equal:today',
-                'end_date'=>"nullable|date|after:start_date",
-                'sex'=>"required|digits_between:0,1"
+                'password' => 'nullable|min:8',
+                'password_confirmation' => 'same:password',
+                'start_date' => 'nullable|date|before_or_equal:today',
+                'end_date' => "nullable|date|after:start_date",
+                'sex' => "required|digits_between:0,1"
             ],
             'messages' => [
 
             ],
             'attributes' => [
-                'phone'=>'số điện thoại',
-                'start_date'=>'ngày vào công ty',
-                'end_date'=>'ngày nghỉ việc',
-                'staff_code'=>'mã nhân viên',
-                'sex'=>'giới tính'
+                'phone' => 'số điện thoại',
+                'start_date' => 'ngày vào công ty',
+                'end_date' => 'ngày nghỉ việc',
+                'staff_code' => 'mã nhân viên',
+                'sex' => 'giới tính'
             ],
             'advanced' => [],
         ];
     }
+
     public function getSearchRecords(Request $request, $perPage = 15, $search = null)
     {
         $model = $this->getResourceModel()::search($search);
@@ -157,26 +157,27 @@ class UserController extends AdminBaseController
         }
         return redirect(route('admin::users.index'));
     }
+
     public function getRedirectAfterSave($record, $request, $isCreate = true)
     {
-        if ($isCreate){
-            $dayOff=new RemainDayoff();
-            $dayOff->user_id=$record->id;
+        if ($isCreate) {
+            $dayOff = new RemainDayoff();
+            $dayOff->user_id = $record->id;
             $day = Carbon::createFromFormat('Y-m-d', $request->start_date)->day;
-            if ($day <= HALF_MONTH && $record->sex == SEX['female'] && $record->contract_type == CONTRACT_TYPES['staff'] && $record->status == ACTIVE_STATUS){
+            if ($day <= HALF_MONTH && $record->sex == SEX['female'] && $record->contract_type == CONTRACT_TYPES['staff'] && $record->status == ACTIVE_STATUS) {
                 $dayOff->day_off_free_female = REMAIN_DAY_OFF_DEFAULT;
-            }else{
+            } else {
                 $dayOff->day_off_free_female = DEFAULT_VALUE;
             }
-            $dayOff->remain=DEFAULT_VALUE;
-            $dayOff->remain_increment=DEFAULT_VALUE;
-            $dayOff->year=date('Y');
+            $dayOff->remain = DEFAULT_VALUE;
+            $dayOff->remain_increment = DEFAULT_VALUE;
+            $dayOff->year = date('Y');
             $dayOff->save();
-        }else{
-            $dayOff=RemainDayoff::where('user_id',$record->id)->where('year',date('Y'))->first();
-            if ($dayOff){
+        } else {
+            $dayOff = RemainDayoff::where('user_id', $record->id)->where('year', date('Y'))->first();
+            if ($dayOff) {
                 $day = (int)date('d');
-                if ($day <= HALF_MONTH && $record->sex == SEX['female'] && $record->contract_type == CONTRACT_TYPES['staff'] && $record->status == ACTIVE_STATUS && $dayOff->check_add_free == DEFAULT_VALUE){
+                if ($day <= HALF_MONTH && $record->sex == SEX['female'] && $record->contract_type == CONTRACT_TYPES['staff'] && $record->status == ACTIVE_STATUS && $dayOff->check_add_free == DEFAULT_VALUE) {
                     $dayOff->day_off_free_female = REMAIN_DAY_OFF_DEFAULT;
                     $dayOff->check_add_free = REMAIN_DAY_OFF_DEFAULT;
                 }
@@ -185,12 +186,13 @@ class UserController extends AdminBaseController
         }
         return $this->redirectBackTo(route($this->getResourceRoutesAlias() . '.index'));
     }
+
     public function getValuesToSave(Request $request, $record = null)
     {
-        if (!$request->password){
+        if (!$request->password) {
             $request->offsetUnset('password');
         }
-        if (!isset($request->status)){
+        if (!isset($request->status)) {
             $request->merge(['status' => '0']);
         }
         return $request->only($this->getResourceModel()::getFillableFields());

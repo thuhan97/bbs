@@ -5,8 +5,12 @@
     {!! Breadcrumbs::render('report') !!}
 @endsection
 <?php
+$user = \Illuminate\Support\Facades\Auth::user();
 $year = request('year', date('Y'));
 $month = request('month', date('m'));
+if ($user->isMaster() || $user->isGroupManager()) {
+    $teamId = 0;
+}
 if ($teamId != 0) {
     $reportType = 2;
 } else {

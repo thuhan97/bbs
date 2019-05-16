@@ -33,7 +33,7 @@
             <div class="form-group margin-b-5 margin-t-5{{ $errors->has('description') ? ' has-error' : '' }}">
                 <label for="approve_comment">Mô tả</label>
                 <textarea class="form-control" name="description" id="approve_comment" rows="3"
-                          placeholder="Nhập ý kiến phê duyệt">{{ old('description',$record->description) }}</textarea>
+                          placeholder="Mô tả">{{ old('description',$record->description) }}</textarea>
 
                 @if ($errors->has('description'))
                     <span class="help-block">

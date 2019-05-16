@@ -1,3 +1,7 @@
+.btn {
+    box-shadow: none;
+}
+
 .text-blue {
     color: blue !important;
 }

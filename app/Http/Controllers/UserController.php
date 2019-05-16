@@ -10,6 +10,7 @@ use App\Http\Requests\CreateDayOffRequest;
 use App\Http\Requests\DayOffRequest;
 use App\Http\Requests\ProfileRequest;
 use App\Models\DayOff;
+use App\Models\Group;
 use App\Models\OverTime;
 use App\Models\RemainDayoff;
 use App\Models\User;
@@ -285,8 +286,8 @@ class UserController extends Controller
 
     public function askPermissionCreate(AskPermissionRequest $request)
     {
-        if ($request->has('permission_status') && $request['permission_status'] == array_search(' Chưa duyệt',OT_STATUS)) {
-            $workTimeExplanation = $this->getWorkTimeExplanation($request['work_day'])->where('status', array_search(' Chưa duyệt',OT_STATUS))->where('type', $request['permission_type'])->first();
+        if ($request->has('permission_status') && $request['permission_status'] == array_search(' Chưa duyệt', OT_STATUS)) {
+            $workTimeExplanation = $this->getWorkTimeExplanation($request['work_day'])->where('status', array_search(' Chưa duyệt', OT_STATUS))->where('type', $request['permission_type'])->first();
             if ($workTimeExplanation) {
                 $workTimeExplanation->update(['ot_type' => $request['ot_type'], 'note' => $request['note'], 'work_day' => $request['work_day']]);
             } else {
@@ -475,8 +476,8 @@ class UserController extends Controller
     public function contact(Request $request)
     {
         $users = $this->userService->getContact($request, $perPage, $search);
-
-        return view('end_user.user.contact', compact('users', 'search', 'perPage'));
+        $groups = Group::all();
+        return view('end_user.user.contact', compact('users', 'groups', 'search', 'perPage'));
     }
 
     /**
@@ -499,8 +500,8 @@ class UserController extends Controller
     {
         $dayOff = new DayOff();
         $dayOff->fill($request->all());
-        $timeStrat= $request->start == DEFAULT_VALUE ? CHECK_TIME_DAY_OFF_START_DATE : CHECK_TIME_DAY_OFF_HALT_DATE;
-        $timeEnd=$request->end == DEFAULT_VALUE ? CHECK_TIME_DAY_OFF_HALT_DATE : CHECK_TIME_DAY_OFF_END_DATE;
+        $timeStrat = $request->start == DEFAULT_VALUE ? CHECK_TIME_DAY_OFF_START_DATE : CHECK_TIME_DAY_OFF_HALT_DATE;
+        $timeEnd = $request->end == DEFAULT_VALUE ? CHECK_TIME_DAY_OFF_HALT_DATE : CHECK_TIME_DAY_OFF_END_DATE;
         $dayOff->start_at = $request->start_at . SPACE . $timeStrat;
         $dayOff->end_at = $request->end_at . SPACE . $timeEnd;
         $dayOff->title = DAY_OFF_TITLE_DEFAULT;
@@ -584,12 +585,12 @@ class UserController extends Controller
         $remainDayoffCurrentYear = $dayOffYear->remain ?? DEFAULT_VALUE;
         $DayoffFrreCurrentYear = $dayOffYear->day_off_free_female ?? DEFAULT_VALUE;
         $numOff = $this->userDayOffService->checkDateUsable($request->start_date, $request->end_date, $request->start_time, $request->end_time);
-        if (is_array($numOff) && $numOff[0] > ($dayOffPreYear + $remainDayoffCurrentYear + $DayoffFrreCurrentYear)){
+        if (is_array($numOff) && $numOff[0] > ($dayOffPreYear + $remainDayoffCurrentYear + $DayoffFrreCurrentYear)) {
             $absent = $numOff[0] - ($dayOffPreYear + $remainDayoffCurrentYear + $DayoffFrreCurrentYear);
             return response()->json([
                 'check' => true,
                 'absent' => $absent,
-                'flag'=>true
+                'flag' => true
             ]);
         }
         if ($numOff > ($dayOffPreYear + $remainDayoffCurrentYear + $DayoffFrreCurrentYear)) {

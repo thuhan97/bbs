@@ -1,3 +1,7 @@
+@php
+    $groups = \App\Models\Group::all()->pluck('name','id')->toArray();
+@endphp
+
 <div class="col-md-9">
     <div class="row">
         <div class="col-md-4">
@@ -21,7 +25,7 @@
 
             <div class="form-group margin-b-5 margin-t-5{{ $errors->has('group_id') ? ' has-error' : '' }}">
                 <label for="group_id">Group</label>
-                {{ Form::select('group_id', ['' => 'Chọn group'] + GROUPS, $record->group_id ?? '', ['class' => 'form-control']) }}
+                {{ Form::select('group_id', ['' => 'Chọn group'] + $groups, $record->group_id ?? '', ['class' => 'form-control']) }}
 
                 @if ($errors->has('group_id'))
                     <span class="help-block">

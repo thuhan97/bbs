@@ -37,19 +37,20 @@ class GroupController extends AdminBaseController
         $this->repository = $repository;
         parent::__construct();
     }
+
     public function resourceStoreValidationData()
     {
         return [
             'rules' => [
-                'name'=>'required|min:3|max:50',
-                'manager_id'=>'required|integer',
-                'description'=>'nullable|min:3',
+                'name' => 'required|min:3|max:50',
+                'manager_id' => 'required|integer',
+                'description' => 'nullable|min:3',
             ],
             'messages' => [],
             'attributes' => [
                 'name' => 'tên group',
                 'manager' => 'người quản lý',
-                'description'=>'mô tả'
+                'description' => 'mô tả'
             ],
             'advanced' => [],
         ];
@@ -59,26 +60,27 @@ class GroupController extends AdminBaseController
     {
         return [
             'rules' => [
-                'name'=>'required|max:50',
-                'manager_id'=>'required|integer',
-                'description'=>'nullable|min:3',
+                'name' => 'required|max:50',
+                'manager_id' => 'required|integer',
+                'description' => 'nullable|min:3',
             ],
             'messages' => [],
             'attributes' => [
                 'name' => 'tên group',
                 'manager' => 'người quản lý',
-                'description'=>'mô tả'
+                'description' => 'mô tả'
             ],
             'advanced' => [],
         ];
     }
+
     public function getSearchRecords(Request $request, $perPage = 15, $search = null)
     {
         $model = $this->getResourceModel()::search($search);
         if ($request->has('sort')) {
             $model->orderBy($request->get('sort'), $request->get('is_desc') ? 'asc' : 'desc');
         } else {
-            $model->orderBy('id', 'desc');
+            $model->orderBy('id');
         }
 
         return $model->paginate($perPage);

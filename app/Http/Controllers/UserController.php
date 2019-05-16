@@ -499,13 +499,14 @@ class UserController extends Controller
     {
         $dayOff = new DayOff();
         $dayOff->fill($request->all());
-        $timeStrat= $request->start == DEFAULT_VALUE ? CHECK_TIME_DAY_OFF_START_DATE : CHECK_TIME_DAY_OFF_END_DATE;
+        $timeStrat= $request->start == DEFAULT_VALUE ? CHECK_TIME_DAY_OFF_START_DATE : CHECK_TIME_DAY_OFF_HALT_DATE;
         $timeEnd=$request->end == DEFAULT_VALUE ? CHECK_TIME_DAY_OFF_HALT_DATE : CHECK_TIME_DAY_OFF_END_DATE;
         $dayOff->start_at = $request->start_at . SPACE . $timeStrat;
         $dayOff->end_at = $request->end_at . SPACE . $timeEnd;
         $dayOff->title = DAY_OFF_TITLE_DEFAULT;
         $dayOff->user_id = Auth::id();
         $dayOff->save();
+
         return redirect(route('day_off'))->with('day_off_success', '');
     }
 

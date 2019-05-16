@@ -73,9 +73,8 @@ trait ResourceController
 
         $valuesToSave = $this->getValuesToSave($request);
         $request->merge($valuesToSave);
-
-
         $this->resourceValidate($request, 'store');
+
         if ($record = $this->repository->save($this->alterValuesToSave($request, $valuesToSave))) {
             flash()->success('Thêm mới thành công.');
 

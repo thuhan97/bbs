@@ -16,7 +16,7 @@ class Group extends Model
 {
     use SoftDeletes, FillableFields, OrderableTrait, SearchLikeTrait;
 
-    protected $table = 'Group';
+    protected $table = 'group_id';
 
     protected $primaryKey = 'id';
 

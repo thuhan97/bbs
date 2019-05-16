@@ -28,9 +28,9 @@ class UserService extends AbstractService implements IUserService
     /**
      * UserService constructor.
      *
-     * @param \App\Models\User                            $model
+     * @param \App\Models\User $model
      * @param \App\Repositories\Contracts\IUserRepository $repository
-     * @param IUserTeamRepository                         $userTeamRepository
+     * @param IUserTeamRepository $userTeamRepository
      */
     public function __construct(User $model, IUserRepository $repository, IUserTeamRepository $userTeamRepository)
     {
@@ -73,7 +73,7 @@ class UserService extends AbstractService implements IUserService
     /**
      * @param Request $request
      * @param integer $perPage
-     * @param string  $search
+     * @param string $search
      *
      * @return collection
      */
@@ -108,7 +108,7 @@ class UserService extends AbstractService implements IUserService
      */
     public function getUserManager()
     {
-        $ids=Group::all()->pluck('manager_id');
-        return $this->model->whereIn('id',$ids)->where('id', '<>', Auth::id())->pluck('name', 'id');
+        $ids = Group::all()->pluck('manager_id');
+        return $this->model->whereIn('id', $ids)->where('id', '<>', Auth::id())->pluck('name', 'id');
     }
 }

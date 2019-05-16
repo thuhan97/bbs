@@ -24,9 +24,6 @@ Route::group([
 
     Route::get('/', ['as' => 'index', 'uses' => 'MasterController@index']);
     Route::get('/download', ['as' => 'download', 'uses' => 'MasterController@download']);
-
-    ##AUTO_INSERT_ROUTE##
-
     //punishes
     Route::post('punishes-submit', ['as' => 'punishes.submit', 'uses' => 'PunishesController@submits']);
     Route::get('punishes/status/{id}', ['as' => 'punishes.status', 'uses' => 'PunishesController@changeSubmitStatus']);
@@ -146,6 +143,10 @@ Route::group([
     //rooms
     Route::post('meetings/deletes', ['as' => 'meetings.deletes', 'uses' => 'MeetingController@deletes']);
     Route::resource('meetings', 'MeetingController');
+
+    // manager-group
+    Route::resource('group', 'GroupController');
+    Route::post('group/deletes', ['as' => 'group.deletes', 'uses' => 'GroupController@deletes']);
 
 
 });

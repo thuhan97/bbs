@@ -1,5 +1,6 @@
 <div class="text-right">
-    <span class="btn btn-warning btn-table" style="margin-right: 0" id="exportExcelGrid">Xuất bảng chấm công</span>
+    <span class="btn btn-success btn-table" style="margin-right: 0" id="exportOTGrid">Xuất danh sách làm thêm giờ</span>
+    <span class="btn btn-info btn-table" style="margin-right: 0" id="exportExcelGrid">Xuất bảng chấm công</span>
     <span class="btn btn-danger btn-table" style="margin-right: 0"
           id="exportExcelLatelyGrid">Xuất danh sách đi muộn</span>
     <span class="btn btn-primary btn-table" id="exportExcel">Xuất file excel</span>
@@ -113,6 +114,13 @@
                 $("#searchForm").submit();
                 $("#is_export").remove();
                 $("#is_lately").remove();
+            });
+            $("#exportOTGrid").click(function () {
+                $("#searchForm").append('<input id="is_export" type="hidden" name="is_export" value="1" />');
+                $("#searchForm").append('<input id="is_ot" type="hidden" name="is_ot" value="1" />');
+                $("#searchForm").submit();
+                $("#is_export").remove();
+                $("#is_ot").remove();
             });
         })
 

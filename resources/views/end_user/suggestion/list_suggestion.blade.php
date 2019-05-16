@@ -35,6 +35,9 @@
                             <th style="width: 200px">
                                 Ngày góp ý
                             </th>
+                            <th style="width: 200px">
+                                Trạng thái duyệt
+                            </th>                            
                         </tr>
                         </thead>
                         <tbody>
@@ -52,6 +55,12 @@
                                 <td class="center">
                                     {{$suggestion->created_at}}
                                 </td>
+                                <td class="center">
+                                    <div class="form-check">
+                                        <input type="checkbox" class="form-check-input checkout-approve" id="{{$idx}}" data="{{$suggestion->id}}" data-status="{{$suggestion->status}}" <?php echo ($suggestion->status == 1) ? 'checked = checked' : null ?>>
+                                        <label class="form-check-label" for="{{$idx}}"><?php echo ($suggestion->status == 1) ? '<strong style="color:blue;">Đã duyệt</strong>' : '<strong style="color:red;">Chưa duyệt</strong>' ?></label>
+                                    </div>                                    
+                                </td>                                
                             </tr>
                         @endforeach
                         </tbody>
@@ -65,4 +74,5 @@
             </div>
         </div>
     </div>
+    <script type="text/javascript" src="{{URL::asset('js/list_suggestion.js')}}"></script>
 @endsection

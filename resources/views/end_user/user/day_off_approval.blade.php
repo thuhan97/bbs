@@ -70,19 +70,25 @@
         <div class="row mb-1 ml-1">
             <div class="col-sm-4 col-xl-2 pr-3 pl-0 mb-2">
                 <label class=" text-w-400" for="">Từ ngày</label>
+                <div class="position-relative">
                 <input type="text"
                        class="form-control border-0 select-item"
                        id="search_start_at" autocomplete="off" name="search_start_at"
                        value="{{  $start ?? $searchStart  }}"
                        readonly="readonly">
+                    <i class="far fa-calendar-alt position-absolute calendar-search"></i>
+                </div>
             </div>
             <div class="col-sm-4 col-xl-2 no-padding-left">
                 <label class="text-w-400" for="inputZip">Tới ngày</label>
+                <div class="position-relative">
                 <input type="text"
                        class="form-control select-item  border-0 "
                        id="search_end_at" autocomplete="off" name="search_end_at"
                        value="{{ $end ?? ''}}"
                        readonly>
+                    <i class="far fa-calendar-alt position-absolute calendar-search"></i>
+                </div>
             </div>
             <div class="col-sm-2 col-xl-2 no-padding-left">
                 <label class=" text-w-400" for="inputCity"> &nbsp;</label>
@@ -208,6 +214,7 @@
                 <th class="text-center ">Tiêu đề</th>
                 <th class="text-center ">Nội dung</th>
                 <th class="text-center d-none d-sm-table-cell ">Ngày nghỉ</th>
+                <th class="text-center ">Ngày không phép</th>
                 <th class="text-center " >Phê duyệt</th>
                 <th class="text-center d-none d-sm-table-cell ">Xem thêm</th>
             </tr>
@@ -233,7 +240,10 @@
                     <td class="text-center ">{{ array_key_exists($record->title, VACATION_FULL) ? VACATION_FULL[$record->title] : ''  }}</td>
                     <td class="text-center ">{!! nl2br($record->reason) !!}</td>
                     <td class="text-center d-none d-sm-table-cell">
-                        {{!!!($record->number_off || $record->absent > DEFAULT_VALUE)? ($record->status != STATUS_DAY_OFF['noActive'] ? 'Đang duyệt' : '') : checkNumber($record->number_off) + checkNumber($record->absent).' ngày'}}
+                        {{!!!$record->number_off ? ($record->status != STATUS_DAY_OFF['noActive'] ? 'Đang duyệt' : '') : checkNumber($record->number_off).' ngày'}}
+                    </td>
+                    <td class="text-center">
+                        {{!!!$record->absent ? ($record->status != STATUS_DAY_OFF['noActive'] ? 'Đang duyệt' : '') : checkNumber($record->absent) .' ngày'}}
                     </td>
 
                     <td class="text-center p-0" style="vertical-align: middle;">
@@ -373,6 +383,11 @@
         <script src="{{ cdn_asset('js/jquery.validate.min.js') }}"></script>
         <script type="text/javascript">
             $(document).ready(function (e) {
+
+                $('.calendar-search').on('click',function () {
+                    $(this).prev().datepicker('show');
+                })
+
                 $('.option-select').on('change', function () {
                     $("#form-search").submit();
                 });

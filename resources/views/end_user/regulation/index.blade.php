@@ -10,7 +10,7 @@
 @endsection
 @section('content')
     <div class="row">
-        <div class="col-lg-10">
+        <div class="col-12 col-xxl-10">
             <!-- Search form -->
             <form class="mb-4">
                 <div class="md-form active-cyan-2 mb-3">
@@ -25,8 +25,8 @@
                     <tr>
                         <th style="width: 50px">STT</th>
                         <th>Nội quy/quy định</th>
-                        <th style="width: 200px">Ngày bắt đầu hiệu lực</th>
-                        <th style="width: 100px">Tải xuống</th>
+                        <th class="d-none d-sm-table-cell" style="width: 200px">Ngày bắt đầu hiệu lực</th>
+                        <th class="d-none d-sm-table-cell" style="width: 100px">Tải xuống</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -38,8 +38,8 @@
                             <td>
                                 <a href="{{route('regulation_detail', ['id' => $regulation->id])}}">{{$regulation->name}}</a>
                             </td>
-                            <td class="text-center">{{$regulation->approve_date}}</td>
-                            <td class="text-center">
+                            <td class="text-center d-none d-sm-table-cell">{{$regulation->approve_date}}</td>
+                            <td class="text-center d-none d-sm-table-cell">
                                 @if($regulation->file_path)
                                     <a class="text-dark" target="_blank"
                                        href="{{route('regulation_download', ['id' => $regulation->id])}}">

@@ -590,11 +590,14 @@ class UserController extends Controller
     {
         $dayOff = new DayOff();
         $dayOff->fill($request->all());
-        $dayOff->start_at = $request->start_at . SPACE . $request->start;
-        $dayOff->end_at = $request->end_at . SPACE . $request->end;
+        $timeStrat= $request->start == DEFAULT_VALUE ? CHECK_TIME_DAY_OFF_START_DATE : CHECK_TIME_DAY_OFF_HALT_DATE;
+        $timeEnd=$request->end == DEFAULT_VALUE ? CHECK_TIME_DAY_OFF_HALT_DATE : CHECK_TIME_DAY_OFF_END_DATE;
+        $dayOff->start_at = $request->start_at . SPACE . $timeStrat;
+        $dayOff->end_at = $request->end_at . SPACE . $timeEnd;
         $dayOff->title = DAY_OFF_TITLE_DEFAULT;
         $dayOff->user_id = Auth::id();
         $dayOff->save();
+
         return redirect(route('day_off'))->with('day_off_success', '');
     }
 
@@ -678,12 +681,15 @@ class UserController extends Controller
         $remainDayoffCurrentYear = $dayOffYear->remain ?? DEFAULT_VALUE;
         $DayoffFrreCurrentYear = $dayOffYear->day_off_free_female ?? DEFAULT_VALUE;
         $numOff = $this->userDayOffService->checkDateUsable($request->start_date, $request->end_date, $request->start_time, $request->end_time);
-        if (!$numOff) {
+        if (is_array($numOff) && $numOff[0] > ($dayOffPreYear + $remainDayoffCurrentYear + $DayoffFrreCurrentYear)){
+            $absent = $numOff[0] - ($dayOffPreYear + $remainDayoffCurrentYear + $DayoffFrreCurrentYear);
             return response()->json([
-                'check' => false,
-
+                'check' => true,
+                'absent' => $absent,
+                'flag'=>true
             ]);
-        } elseif ($numOff > ($dayOffPreYear + $remainDayoffCurrentYear + $DayoffFrreCurrentYear)) {
+        }
+        if ($numOff > ($dayOffPreYear + $remainDayoffCurrentYear + $DayoffFrreCurrentYear)) {
             $absent = $numOff - ($dayOffPreYear + $remainDayoffCurrentYear + $DayoffFrreCurrentYear);
             return response()->json([
                 'check' => true,
@@ -695,7 +701,6 @@ class UserController extends Controller
 
             ]);
         }
-
     }
 
     private

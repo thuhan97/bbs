@@ -2,15 +2,25 @@
 
 namespace App\Exports;
 
-use App\Models\Punishes;
+use App\Helpers\ExcelHelper;
 use App\User;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Concerns\ShouldAutoSize;
+use Maatwebsite\Excel\Concerns\WithEvents;
+use Maatwebsite\Excel\Events\AfterSheet;
+use Maatwebsite\Excel\Events\BeforeSheet;
 
-abstract class WTGridExport
+abstract class WTGridExport implements ShouldAutoSize, WithEvents
 {
+    protected $ignoreFormatColumns = [
+        'B', 'C'
+    ];
+
     protected $records;
     protected $firstDate;
     protected $lastDate;
+
+
     /**
      * @var array
      */
@@ -18,16 +28,16 @@ abstract class WTGridExport
 
     protected $headings;
     protected $importList;
-    protected $punishes;
+    protected $moreColumnNumber = 3;
 
     /**
      * WorkTimeGridExport constructor.
      *
      * @param $records
      */
-    public function __construct($records, Request $request, $isGetPunishe = false)
+    public function __construct($records, Request $request)
     {
-        $userModel = User::select('id', 'staff_code', 'name')
+        $userModel = User::select('id', 'staff_code', 'name', 'contract_type')
             ->where('status', ACTIVE_STATUS);
         $userID = $request->get('user_id', 0);
         if ($userID) {
@@ -47,14 +57,6 @@ abstract class WTGridExport
         $this->lastDate = $lastDate;
         $this->dateLists = get_date_list($this->firstDate, $this->lastDate);
 
-        if ($isGetPunishe)
-            $this->punishes = Punishes::where('infringe_date', '>=', $this->firstDate)
-                ->where('infringe_date', '<=', $this->lastDate)
-                ->where('rule_id', LATE_RULE_ID)
-                ->get();
-
-        $this->getHeadings();
-        $this->getList();
     }
 
     protected function getHeadings(): void
@@ -65,4 +67,56 @@ abstract class WTGridExport
     {
     }
 
+    public function registerEvents(): array
+    {
+        $borderStyle = [
+            'borders' => [
+                'outline' => [
+                    'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+                    'color' => ['argb' => 'black'],
+                ],
+            ]
+        ];
+        $styleArray = [
+            'alignment' => array(
+                'horizontal' => \PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
+            )
+            ,
+            'font' => [
+                'bold' => true
+            ],
+
+        ];
+        $styleArray1 = [
+            'alignment' => array(
+                'horizontal' => \PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
+            ),
+        ];
+
+        return [
+            BeforeSheet::class => function (BeforeSheet $event) {
+
+            },
+            AfterSheet::class => function (AfterSheet $event) use ($borderStyle, $styleArray, $styleArray1) {
+                $count = count($this->users) + 4;
+                $length = count($this->dateLists) + $this->moreColumnNumber;
+                $rows = ExcelHelper::getExcelRows($length);
+                $headingFormat = array_merge($borderStyle, $styleArray);
+                $workTimeFormat = array_merge($borderStyle, $styleArray1);
+                $nameFormat = $borderStyle;
+
+                foreach ($rows as $value) {
+                    $event->sheet->getStyle($value . '1')->applyFromArray($headingFormat);
+                    $event->sheet->getStyle($value . '2')->applyFromArray($headingFormat);
+                    for ($i = 0; $count > $i; $i++) {
+                        if (!in_array($value, $this->ignoreFormatColumns))
+                            $event->sheet->getStyle($value . "1:" . $value . $i)->applyFromArray($workTimeFormat);
+                        $event->sheet->getStyle($value . "1:" . $value . $i)->applyFromArray($nameFormat);
+                    }
+                }
+                $event->sheet->insertNewRowBefore(DEFAULT_INSERT_ROW_EXCEL);
+            },
+
+        ];
+    }
 }

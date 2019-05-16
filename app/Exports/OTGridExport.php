@@ -3,17 +3,20 @@
 namespace App\Exports;
 
 use App\Helpers\DateTimeHelper;
+use App\Models\AdditionalDate;
 use App\Models\Config;
-use App\Models\Punishes;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Concerns\FromArray;
 
-class LatelyGridExport extends WTGridExport implements FromArray
+class OTGridExport extends WTGridExport implements FromArray
 {
-    protected $moreColumnNumber = 5;
+    protected $moreColumnNumber = 6;
 
     private $config;
-    protected $punishes;
+    /**
+     * @var \Illuminate\Database\Eloquent\Collection|static[]
+     */
+    private $additionalDates;
 
     /**
      * WorkTimeGridExport constructor.
@@ -23,12 +26,10 @@ class LatelyGridExport extends WTGridExport implements FromArray
     public function __construct($records, Request $request)
     {
         $this->config = Config::first();
+        $this->additionalDates = AdditionalDate::all();
+
         parent::__construct($records, $request);
 
-        $this->punishes = Punishes::where('infringe_date', '>=', $this->firstDate)
-            ->where('infringe_date', '<=', $this->lastDate)
-            ->where('rule_id', LATE_RULE_ID)
-            ->get();
         $this->getHeadings();
         $this->getList();
     }
@@ -46,7 +47,8 @@ class LatelyGridExport extends WTGridExport implements FromArray
             $row2[] = date_format(date_create($date), 'd');
         }
         $row2[] = 'Tổng số buổi';
-        $row2[] = 'Tổng tiền phạt';
+        $row2[] = 'Tổng sô giờ';
+        $row2[] = 'Tổng sô tiền';
 
         $headings[] = $row1;
         $headings[] = $row2;
@@ -58,9 +60,8 @@ class LatelyGridExport extends WTGridExport implements FromArray
         $results = [];
         $userIds = [];
         $rowNum = 1;
-        $lateTimeMorning = $this->config->time_morning_go_late_at;
-        $lateTimeAfternoon = $this->config->time_afternoon_go_late_at;
-
+        $otTimeAt = $this->config->time_ot_early_at;
+        $allTotal = 0;
         foreach ($this->users as $user) {
             $workTimes = $this->records->where('user_id', $user->id);
             $userIds[] = $user->id;
@@ -70,28 +71,39 @@ class LatelyGridExport extends WTGridExport implements FromArray
                 $user->staff_code,
             ];
             $count = 0;
-
+            $totalHourUser = 0;
             foreach ($this->dateLists as $date) {
+
                 $workTime = $workTimes->firstWhere('work_day', $date);
 
                 if ($workTime) {
                     $count++;
-                    if ($workTime->start_at < HAFT_HOUR . ':00') {
-                        $userData[] = DateTimeHelper::subMinute($lateTimeMorning, $workTime->start_at);
+                    $dateObj = date_create($date);
+                    $checkIsAdditionalDate = $this->additionalDates->firstWhere('date_add', $dateObj->format(DATE_FORMAT));
+                    $hour = 0;
+                    //Regular date && additation date
+                    if (!$this->config->work_days || ($this->config->work_days && in_array($dateObj->format('N'), $this->config->work_days)) || $checkIsAdditionalDate) {
+                        if ($workTime->end_at > $otTimeAt) {
+                            $hour = $this->getOtHour($otTimeAt, $workTime->end_at);
+                        }
                     } else {
-                        $userData[] = DateTimeHelper::subMinute($lateTimeAfternoon, $workTime->start_at);
+                        //weekend
+                        $hour = $this->getOtHour($workTime->start_at, $workTime->end_at);
                     }
-
+                    $totalHourUser += $hour;
+                    $userData[] = $hour;
                 } else {
                     $userData[] = '';
                 }
             }
+            $allTotal += $totalHourUser;
             $userData[] = $count;
-            //Free for internship
-            $userData[] = $user->contract_type == CONTRACT_TYPES['internship'] ? 0 : $this->punishes->where('user_id', $user->id)->sum('total_money');
+            $userData[] = $totalHourUser;
+            $userData[] = '';
             $results[] = $userData;
             $rowNum++;
         }
+
         if ($this->users->count() > 1) {
             $lastRow = ['', '', 'Tổng'];
             foreach ($this->dateLists as $date) {
@@ -99,7 +111,8 @@ class LatelyGridExport extends WTGridExport implements FromArray
                     ->where('work_day', $date)->count();
             }
             $lastRow[] = '';
-            $lastRow[] = $this->punishes->sum('total_money');
+            $lastRow[] = $allTotal;
+            $lastRow[] = '';
             $results[] = $lastRow;
         }
         $this->importList = $results;
@@ -113,4 +126,11 @@ class LatelyGridExport extends WTGridExport implements FromArray
         return array_merge($this->headings, $this->importList);
     }
 
+    private function getOtHour($from, $to)
+    {
+
+        $minute = DateTimeHelper::subMinute($from, $to);
+
+        return floor($minute / 15) * 0.25;
+    }
 }

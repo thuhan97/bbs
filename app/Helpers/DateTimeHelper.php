@@ -138,5 +138,18 @@ class DateTimeHelper
         $mins = $diffMinutes % 60;
 
         return $diffMinutes;
+    /**
+     * @param $from
+     * @param $to
+     *
+     * @return int|string
+     */
+    public static function subMinute($from, $to)
+    {
+        $start = date_create($from);
+        $end = date_create($to);
+
+        $diff = date_diff($start, $end);
+        return $diff->format('%h') * 60 + $diff->format('%i') + 1;
     }
 }

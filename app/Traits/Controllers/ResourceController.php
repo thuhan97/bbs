@@ -2,6 +2,7 @@
 
 namespace App\Traits\Controllers;
 
+use function GuzzleHttp\Promise\all;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Http\Request;
 
@@ -72,8 +73,9 @@ trait ResourceController
 
         $valuesToSave = $this->getValuesToSave($request);
         $request->merge($valuesToSave);
-        $this->resourceValidate($request, 'store');
 
+
+        $this->resourceValidate($request, 'store');
         if ($record = $this->repository->save($this->alterValuesToSave($request, $valuesToSave))) {
             flash()->success('Thêm mới thành công.');
 

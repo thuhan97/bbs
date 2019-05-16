@@ -8,6 +8,7 @@
 namespace App\Services;
 
 use App\Events\UserRegistered;
+use App\Models\Group;
 use App\Models\Potato;
 use App\Models\Team;
 use App\Models\User;
@@ -107,6 +108,7 @@ class UserService extends AbstractService implements IUserService
      */
     public function getUserManager()
     {
-        return $this->model->where('jobtitle_id', '>=', MIN_APPROVE_JOB)->where('status', ACTIVE_STATUS)->where('id', '<>', Auth::id())->pluck('name', 'id');
+        $ids=Group::all()->pluck('manager');
+        return $this->model->whereIn('id',$ids)->where('id', '<>', Auth::id())->pluck('name', 'id');
     }
 }

@@ -81,7 +81,7 @@ class GenerateApi extends Command
         $string_use .= 'use App\Repositories\\' . $repo . ';' . "\n";
         $string_use .= 'use App\Models\\' . $Module . ';';
 
-        $string_provides = '			' . $repo . '::class,';
+        $string_provides = '			I' . $repo . '::class,';
 
         $file_path = app_path('Providers/RepositoriesServiceProvider.php');
         $bind_marker = '##AUTO_INSERT_BIND##';

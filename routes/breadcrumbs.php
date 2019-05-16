@@ -179,7 +179,7 @@ $resources = [
     'meetings' => 'Phòng họp',
     'rules' => 'Quy định tiền phạt',
     'punishes' => 'Danh sách tiền phạt',
-    'manager' => 'Danh sách Manager',
+    'group' => 'Group',
 ];
 foreach ($resources as $resource => $data) {
     $parent = 'admin';

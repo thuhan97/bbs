@@ -27,6 +27,14 @@ Route::group([
 
     ##AUTO_INSERT_ROUTE##
 
+		//group
+		Route::resource('group', 'GroupController');
+		
+
+		//group
+		Route::resource('group', 'GroupController');
+		
+
     //punishes
     Route::post('punishes-submit', ['as' => 'punishes.submit', 'uses' => 'PunishesController@submits']);
     Route::get('punishes/status/{id}', ['as' => 'punishes.status', 'uses' => 'PunishesController@changeSubmitStatus']);
@@ -148,8 +156,8 @@ Route::group([
     Route::resource('meetings', 'MeetingController');
 
     // manager-group
-    Route::resource('manager', 'ManagerController');
-    Route::post('manager/deletes', ['as' => 'manager.deletes', 'uses' => 'ManagerController@deletes']);
+    Route::resource('group', 'GroupController');
+    Route::post('group/deletes', ['as' => 'group.deletes', 'uses' => 'GroupController@deletes']);
 
 
 });

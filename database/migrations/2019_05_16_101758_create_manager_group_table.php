@@ -19,6 +19,7 @@ class CreateManagerGroupTable extends Migration
             $table->integer('manager');
             $table->longText('description');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

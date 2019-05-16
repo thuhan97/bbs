@@ -24,17 +24,6 @@ Route::group([
 
     Route::get('/', ['as' => 'index', 'uses' => 'MasterController@index']);
     Route::get('/download', ['as' => 'download', 'uses' => 'MasterController@download']);
-
-    ##AUTO_INSERT_ROUTE##
-
-		//group
-		Route::resource('group', 'GroupController');
-		
-
-		//group
-		Route::resource('group', 'GroupController');
-		
-
     //punishes
     Route::post('punishes-submit', ['as' => 'punishes.submit', 'uses' => 'PunishesController@submits']);
     Route::get('punishes/status/{id}', ['as' => 'punishes.status', 'uses' => 'PunishesController@changeSubmitStatus']);

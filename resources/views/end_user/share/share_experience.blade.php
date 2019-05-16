@@ -10,7 +10,7 @@
 @section('content')
 <link rel="stylesheet" href="{{URL::asset('css/share_experience.css')}}">
 
-<div class="col-md-8">
+<div class="col-md-10">
     <div class="content">
         <div class="tab-pane active">
 <!--             <div class="divAddButton">

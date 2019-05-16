@@ -123,6 +123,21 @@ class DateTimeHelper
         return Carbon::createFromFormat(DATE_TIME_FORMAT, $date)->format('d/m/Y');
     }
 
+    public static function getMinutesBetweenTwoTime($from, $to)
+    {
+        // Absolute value of time difference in seconds
+        $diff = abs(strtotime($to) - strtotime($from));
+
+        // Convert $diff to minutes
+        $diffMinutes = $diff / 60;
+
+        // Get hours
+        $hours = floor($diffMinutes / 60);
+
+        // Get minutes
+        $mins = $diffMinutes % 60;
+
+        return $diffMinutes;
     /**
      * @param $from
      * @param $to

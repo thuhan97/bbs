@@ -91,6 +91,7 @@ Route::group([
 
     Route::post('/add_suggestions', 'SuggestionController@addSuggestions')->name('add_suggestions');
     Route::get('/list_suggestions', 'SuggestionController@listSuggestions')->name('list_suggestions');
+    Route::post('/approve_suggestion', 'SuggestionController@approveSuggestion')->name('approve_suggestion');
 
     // create day off
     Route::post('/ngay-nghi/create-calendar', 'UserController@dayOffCreateCalendar')->name('day_off_create_calendar');

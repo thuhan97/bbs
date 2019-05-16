@@ -2,7 +2,7 @@
     width: 100%;
 }
 .posts{
-    border-bottom: 2px solid #dee2e6f7;
+    border-bottom: 1px solid #dee2e66b;
     margin-bottom: 20px;    
 }    
 .button-send{
@@ -56,5 +56,13 @@ p{
 	float: right;
 } 
 .content-posts{
-	margin-bottom: 30px;
+	margin-bottom: 10px;
+    max-height: 300px;
+    overflow: hidden;
+}
+.posts:last-child {
+  border-bottom: none;
+}
+.show-more{
+    margin-bottom: 10px !important;
 }

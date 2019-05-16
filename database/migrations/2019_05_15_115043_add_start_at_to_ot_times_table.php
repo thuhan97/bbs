@@ -14,7 +14,8 @@ class AddStartAtToOtTimesTable extends Migration
     public function up()
     {
         Schema::table('ot_times', function (Blueprint $table) {
-            $table->string('project_name',255);
+            $table->string('project_name',255)->nullable();
+            $table->string('note_respond',255);
             $table->integer('ot_type')->comment('1: OT dự án / 2: OT lý do cá nhân');
             $table->time('start_at');
             $table->time('end_at');

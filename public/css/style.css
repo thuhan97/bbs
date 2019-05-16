@@ -1308,3 +1308,36 @@ td.blank, .type-1, .type-2 {
     padding: 15px;
 }
 
+#btn-approve {
+    width: 30%;
+    height: 45px;
+    background: #36d174;
+    font-size: .81rem;
+    text-transform: uppercase;
+    white-space: normal;
+    word-wrap: break-word;
+}
+#btn-reject {
+    width: 30%;
+    height: 45px;
+    background: #ff3547;
+    font-size: .81rem;
+    text-transform: uppercase;
+    white-space: normal;
+    word-wrap: break-word;
+}
+
+.md-tabs {
+    -webkit-box-shadow: 0 5px 11px 0 rgba(0,0,0,.18), 0 4px 15px 0 rgba(0,0,0,.15);
+    box-shadow: 0 5px 11px 0 rgba(0,0,0,.18), 0 4px 15px 0 rgba(0,0,0,.15);
+    border: 0;
+    padding: 0.2rem;
+    margin-left: 1rem;
+    margin-right: 1rem;
+    margin-bottom: -20px;
+    background-color: #2bbbad;
+    z-index: 1;
+    position: relative;
+    -webkit-border-radius: .25rem;
+    border-radius: .25rem;
+}

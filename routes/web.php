@@ -41,8 +41,9 @@ Route::group([
     Route::get('xin-phep/early', 'UserController@askPermissionEarly')->name('ask_permission.early');
     Route::get('xin-phep/ot', 'UserController@askPermissionOT')->name('ask_permission.ot');
     Route::get('xin-phep/create', 'UserController@askPermissionCreate')->name('ask_permission.create');
+    Route::get('xin-phep/chi-tiet-don', 'UserController@approveDetail')->name('ask_permission.approveDetail')->middleware('can:manager');
+    Route::post('xin-phep/phe-duyet', 'UserController@approvePermission')->name('ask_permission.approvePermission')->middleware('can:manager');
     Route::post('phe-duyet-xin-phep', 'UserController@approved')->name('approved')->middleware('can:manager');
-    Route::post('tu-choi-xin-phep', 'UserController@reject')->name('reject')->middleware('can:manager');
     Route::post('phe-duyet-xin-phep-ot', 'UserController@approvedOT')->name('approvedOT')->middleware('can:manager');
     /* Route::post('/ngay-nghi/create-api', 'UserController@dayOffCreate_API')->name('day_off_createAPI');*/
     Route::get('/ngay-nghi/list-approval-api', 'UserController@dayOffListApprovalAPI')->name('day_off_listApprovalAPI');

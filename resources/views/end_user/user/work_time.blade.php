@@ -89,21 +89,37 @@
         <span class="help-block mb-5 color-red">
             <strong>{{ $errors->first('ot_type') }}</strong>
         </span>
+        <br>
     @endif
     @if ($errors->has('explanation_type'))
         <span class="help-block mb-5 color-red">
             <strong>{{ $errors->first('explanation_type') }}</strong>
         </span>
+        <br>
     @endif
     @if ($errors->has('ot_type'))
         <span class="help-block mb-5 color-red">
             <strong>{{ $errors->first('ot_type') }}</strong>
         </span>
+        <br>
     @endif
     @if ($errors->has('reason'))
         <span class="help-block mb-5 color-red">
             <strong>{{ $errors->first('reason') }}</strong>
         </span>
+        <br>
+    @endif
+    @if ($errors->has('start_at'))
+        <span class="help-block mb-5 color-red">
+            <strong>{{ $errors->first('start_at') }}</strong>
+        </span>
+        <br>
+    @endif
+    @if ($errors->has('end_at'))
+        <span class="help-block mb-5 color-red">
+            <strong>{{ $errors->first('end_at') }}</strong>
+        </span>
+        <br>
     @endif
     <div class="modal fade myModal" id="modal-form" tabindex="-1"
          role="dialog" aria-labelledby="myModalLabel"
@@ -235,7 +251,7 @@
                             '<div class="row col-12">' +
                             '<div class="user col-md-6 pl-0 pr-0 text-center">' +
                             '    <input type="radio" id="ot-project" class="user-radio2 radio-modal-work-time" name="ot_type" value="1"  style="position: relative;opacity: 1;pointer-events: inherit"/>' +
-                            '    <label for="ot-project">OT Dự ánNN </label>' +
+                            '    <label for="ot-project">OT Dự án </label>' +
                             '</div>' +
                             '<div class="user col-md-6 pl-0 pr-0 text-center">' +
                             '    <input id="ot-other" type="radio" class="user-radio3 radio-modal-work-time"  name="ot_type" value="2"  style="position: relative;opacity: 1;pointer-events: inherit"/>' +
@@ -243,7 +259,7 @@
                             '</div>' +
                             '</div>' +
                             // '<div class="col-md-12">' +
-                                '<div class="col-12">'+
+                            '<div class="col-12">' +
                             '   <select class="browser-default form-control project_name" name="project_name">' +
                             '       <option value="0">Chọn dự án</option>' +
                             '   </select>' +
@@ -359,8 +375,7 @@
                                     },
                                     success: function (responds) {
                                         responds.forEach(function (element) {
-                                            console.log(element);
-                                            $('.project_name').append('<option value=' + element.id + '>' + element.name + '</option>');
+                                            $('.project_name').append('<option value="' + element.name + '">' + element.name + '</option>');
                                         });
                                     }
                                 });
@@ -371,7 +386,6 @@
                                 } else {
                                     $('.ot_type, .project_name,#start_at,#end_at').prop('disabled', true);
                                 }
-
                                 $(".ot_type").on('change', function () {
                                     var explanationOtType = $(this).val(),
                                         work_day = $('.work_day').val();
@@ -384,17 +398,26 @@
                                             'explanationOtType': explanationOtType,
                                         },
                                         success: function (respond) {
-                                            if (respond.note || respond.type === 4) {
-                                                var note = respond.note
+                                            if (respond.reason) {
+                                                var note = respond.reason
                                             } else {
                                                 note = ''
                                             }
+                                            $('#start_at').val(respond.start_at);
+                                            $('#end_at').val(respond.end_at);
+                                            $(".project_name option").each(function (data) {
+                                                if (respond.project_name === $(this).val()) {
+                                                    $(this).attr('selected', true)
+                                                } else {
+                                                    $(this).attr('selected', false)
+                                                }
+                                            });
                                             if (respond.status === 1) {
                                                 $('.title-wt-modal-approve').text('Đơn đã được duyệt');
-                                                $('.wt-textarea-reason,.btn-send-permission').prop('disabled', true);
+                                                $('.wt-textarea-reason,.btn-send-permission,.ot_type,.project_name,#start_at,#end_at').prop('disabled', true);
                                             } else {
                                                 $('.title-wt-modal-approve').text('Xin phép');
-                                                $('.wt-textarea-reason,.btn-send-permission').prop('disabled', false);
+                                                $('.wt-textarea-reason,.btn-send-permission,.ot_type,.project_name,#start_at,#end_at').prop('disabled', false);
                                             }
                                             $('.wt-textarea-reason').text(note)
                                         }
@@ -410,12 +433,12 @@
                     $('.project_name,#start_at,#end_at').prop('disabled', true);
                     $('#ot-project,#ot-other').on('click', function () {
                         var otThis = $(this);
-                        if(otThis.attr('id') === 'ot-other') {
-                            $('.project_name').empty()
-                            $('.project_name').prop('disabled',true)
-                            $('#start_at,#end_at').prop('disabled',false)
+                        if (otThis.attr('id') === 'ot-other') {
+                            $('.project_name option[value!="0"]').remove();
+                            $('.project_name').prop('disabled', true)
+                            $('#start_at,#end_at').prop('disabled', false)
                         } else if (otThis.attr('id') === 'ot-project') {
-                            $('.project_name,#start_at,#end_at').prop('disabled',false)
+                            $('.project_name,#start_at,#end_at').prop('disabled', false)
                         }
                         // $('.project_name,#start_at,#end_at').prop('disabled', false);
                         var lateWorkDay = $('.work_day').val(),
@@ -429,28 +452,17 @@
                                 'explanationOtType': explanationOtType,
                             },
                             success: function (respond) {
-                                console.log(respond)
                                 if (respond.project) {
                                     var projectName = respond.project
-                                }else {
+                                } else {
                                     var projectName = respond;
                                 }
                                 projectName.forEach(function (element) {
                                     if (otThis.attr('id') === 'ot-project') {
-                                        $('.project_name').append('<option value="'+ element.name +'">' + element.name + '</option>');
+                                        $('.project_name').append('<option value="' + element.name + '">' + element.name + '</option>');
                                     }
-                                    });
+                                });
 
-                                if (respond.note || respond.type === 4 && respond.ot_type === 2) {
-                                    var project = respond.note
-                                } else {
-                                    project = ''
-                                }
-                                if (respond.note || respond.type === 4 && respond.ot_type === 2) {
-                                    var other = respond.note
-                                } else {
-                                    other = ''
-                                }
                                 if (respond.status === 1) {
                                     $('.title-wt-modal-approve').text('Đơn đã được duyệt');
                                     $('.wt-textarea-reason,.btn-send-permission').prop('disabled', true);
@@ -458,9 +470,21 @@
                                     $('.title-wt-modal-approve').text('Xin phép');
                                     $('.wt-textarea-reason,.btn-send-permission').prop('disabled', false);
                                 }
+                                $(".project_name option").each(function (data) {
+                                    if (respond.project_name === $(this).val()) {
+                                        $(this).attr('selected', true)
+                                    }
+                                });
+
+                                $('#start_at').val(respond.start_at);
+                                $('#end_at').val(respond.end_at);
+                                if (respond.status === undefined) {
+                                    var reason = '';
+                                } else {
+                                    var reason = respond.reason;
+                                }
                                 $('.wt-status').attr('value', respond.status);
-                                $('.wt-textarea-reason').text(project);
-                                $('.wt-textarea-reason').text(other);
+                                $('.wt-textarea-reason').text(reason);
                             }
                         });
                     });
@@ -477,7 +501,12 @@
                                 'explanationType': explanationType,
                             },
                             success: function (respond) {
-                                if (respond.note || respond.type === 4 && respond.ot_type === 2) {
+                                if (respond.status != 1) {
+                                    $('.title-wt-modal-approve').text('Xin phép');
+                                    $('.wt-textarea-reason,.btn-send-permission,#start_at,#end_at').prop('disabled',false)
+                                    $('#start_at,#end_at').val('')
+                                }
+                                if (respond.note && respond.ot_type === 2) {
                                     var note = respond.note
                                 } else {
                                     note = ''

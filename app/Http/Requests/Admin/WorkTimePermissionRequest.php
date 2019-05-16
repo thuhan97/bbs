@@ -24,10 +24,9 @@ class WorkTimePermissionRequest extends FormRequest
     public function rules()
     {
         $rules = [];
-        if ($this->request->has('explanation_ot_type')){
-//            $rules['explanation_ot_type'] = 'required|integer|between:1,2';
-        }
-//        $rules['explanation_type'] = 'required|integer|between:1,4';
+//        $rules['explanation_type'] = 'required';
+        $rules['start_at'] = 'required';
+        $rules['end_at'] = 'required|after:start_at';
         $rules['work_day'] = 'required|date';
         $rules['reason'] = 'required';
         return $rules;
@@ -36,8 +35,9 @@ class WorkTimePermissionRequest extends FormRequest
     public function attributes()
     {
         return [
-            'explanation_ot_type' => 'hình thức ot',
-            'explanation_type' => 'hình thức',
+//            'explanation_type' => 'hình thức',
+            'start_at' => 'thời gian bắt đầu',
+            'end_at' => 'thời gian kết thúc',
             'work_day' => 'ngày làm việc',
             'reason' => 'lý do',
             'status' => 'trạng thái',
@@ -47,7 +47,7 @@ class WorkTimePermissionRequest extends FormRequest
     public function messages()
     {
         return [
-            'end_at.after' => 'Trường :attribute phải lớn hơn giờ checkin',
+            'end_at.after' => 'Trường :attribute phải lớn hơn giờ bắt đầu',
         ];
     }
 }

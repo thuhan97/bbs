@@ -434,31 +434,33 @@
                     </button>
                 </div>
                 <div class="permission-detail">
-                    <h5 class="offset-1 bold">Người xin phép:</h5>
-                    <p class="offset-1 creator_id"></p>
-                    <div class="content-hidden">
-                        <br>
-                        <h5 class="offset-1 bold">Tên dự án:</h5>
-                        <p class="offset-1 project_name"></p>
+                    <div class="container-fluid">
+
+                        <h5 class="bold">Người xin phép:</h5>
+                        <p class="creator_id"></p>
+                        <div class="content-hidden">
+                            <h5 class="bold">Tên dự án:</h5>
+                            <p class="project_name"></p>
+                        </div>
+                        <div class="row content-hidden">
+                            <div class="col-4">
+                                <h5 class="bold">Giờ bắt đầu:</h5>
+                                <p class="start_at"></p>
+                            </div>
+                            <div class="col-4">
+                                <h5 class="bold">Giờ kết thúc:</h5>
+                                <p class="end_at"></p>
+                            </div>
+                            <div class="col-4">
+                                <h5 class="bold">Số phút OT</h5>
+                                <p class="minute"></p>
+                            </div>
+                            <br>
+                        </div>
+                        <h5 class="bold">Nội dung:</h5>
+                        <p class="reason"></p>
                     </div>
-                    <div class="row col-12 content-hidden">
-                        <br>
-                        <div class="col-4">
-                            <h5 class="offset-1 bold">Giờ bắt đầu:</h5>
-                            <p class="offset-1 start_at"></p>
-                        </div>
-                        <div class="col-4">
-                            <h5 class="offset-1 bold">Giờ kết thúc:</h5>
-                            <p class="offset-1 end_at"></p>
-                        </div>
-                        <div class="col-4">
-                            <h5 class="offset-1 bold">Số phút OT</h5>
-                            <p class="offset-1 minute"></p>
-                        </div>
-                        <br>
-                    </div>
-                    <h5 class="offset-1 bold">Nội dung:</h5>
-                    <p class="offset-1 reason"></p>
+
                 </div>
                 <form action="{{ route('ask_permission.approvePermission') }}" method="post">
                     @csrf
@@ -495,7 +497,7 @@
                 @include('elements.ask_permission_image')
                 <form action="{{ route('ask_permission.create') }}" method="get">
                     <div class="d-flex justify-content-center text-area-reason" id="div-reason"></div>
-                    <div class="offset-1 select-day">
+                    <div class="select-day">
                         <div class="row col-12 option-permission"></div>
                         <input name='permission_late' type='hidden'>
                         <input name='permission_type' type='hidden' value="1">
@@ -529,7 +531,7 @@
                 <form action="{{ route('ask_permission.create') }}" method="get">
                     {{--@csrf--}}
                     <div class="d-flex justify-content-center text-area-reason" id="div-reason"></div>
-                    <div class="offset-1 select-day">
+                    <div class="select-day">
                         <div class="row col-12 option-permission"></div>
                         <input name='permission_early' type='hidden'>
                         <input name='permission_type' type='hidden' value="2">

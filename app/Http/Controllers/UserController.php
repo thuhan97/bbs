@@ -22,6 +22,7 @@ use App\Repositories\Contracts\IDayOffRepository;
 use App\Services\Contracts\IDayOffService;
 use App\Services\Contracts\IUserService;
 use App\Transformers\DayOffTransformer;
+use Carbon\Carbon;
 use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -418,10 +419,20 @@ class UserController extends Controller
         Request $request)
     {
         if ($request['permission_type'] == 'ot') {
-            OverTime::where('id', $request['id'])->update(['status' => $request['approve_type'], 'note_respond' => $request['reason_approve']]);
+            OverTime::where('id', $request['id'])->update([
+                'status' => $request['approve_type'],
+                'note_respond' => $request['reason_approve'],
+                'approver_id' => Auth::id(),
+                'approver_at' => Carbon::now()
+            ]);
             return back()->with('reject_success', '');
         } elseif ($request['permission_type'] == 'other') {
-            WorkTimesExplanation::where('id', $request['id'])->update(['status' => $request['approve_type'], 'approver_id' => Auth::id(), 'reason_reject' => $request['reason_approve']]);
+            WorkTimesExplanation::where('id', $request['id'])->update(
+                [
+                    'status' => $request['approve_type'],
+                    'approver_id' => Auth::id(),
+                    'reason_reject' => $request['reason_approve']
+                ]);
         }
         return back()->with('approver_success', '');
     }

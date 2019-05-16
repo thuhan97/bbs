@@ -4,7 +4,7 @@
 <div class="col-md-8">
     <div class="content">
         <div class="tab-pane active">
-            <form action="{{ route('save_edit_experience') }}" method="post" id="formAddExperience" enctype="multipart/form-data">
+            <form action="{{ route('save_edit_experience') }}" method="post" id="formExperience" enctype="multipart/form-data">
                 @csrf <!-- {{ csrf_field() }} -->
                 <div class="form-group margin-b-5 margin-t-5">
                     <h2 for="acronym_name"><strong>Kinh nghiệm làm việc</strong></h2><br />

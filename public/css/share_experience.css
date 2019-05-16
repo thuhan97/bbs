@@ -56,8 +56,13 @@ p{
 	float: right;
 } 
 .content-posts{
-	margin-bottom: 30px;
+	margin-bottom: 10px;
+    max-height: 300px;
+    overflow: hidden;
 }
 .posts:last-child {
   border-bottom: none;
+}
+.show-more{
+    margin-bottom: 10px !important;
 }

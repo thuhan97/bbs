@@ -18,7 +18,7 @@
                 <button type="button" class="btn btn-danger button-exp button-hidden" style="display: none;">ẨN ĐĂNG BÀI</button>
             </div> -->
             <div class="createReport fixed-action-btn">
-                <a href="#" class="button-add btn-lg red waves-effect waves-light text-white" title="Chia sẻ" data-target="#feedback" data-toggle="modal" style="border-radius: 45%;">
+                <a href="#" class="button-add btn-lg red waves-effect waves-light text-white" title="Đăng bài" data-target="#feedback" data-toggle="modal" style="border-radius: 45%;">
                     <img src="{{ asset('img/icon_exp.png') }}" onerror="this.src='{{URL_IMAGE_NO_IMAGE}}'" alt="avatar image" />
                     Đăng bài
                 </a>
@@ -47,6 +47,9 @@
                             <div class="content-posts">
                                 <p><?php echo $experience->content; ?></p>
                             </div>                      
+                            <p class="show-more">
+                                <a class="js-show-more" href="#" title="Xem Thêm Nội Dung" onclick="showMoreLess(this)" id="myBtn">Xem Thêm</a>
+                            </p>                                
                         </div>
                     </div>
                 @endforeach 

@@ -367,10 +367,10 @@ define('OT_TYPE', [
     2 => 'OT lý do cá nhân',
 ]);
 
-define('CHECK_TIME_DAY_OFF_START_DATE','8:00:00');
-define('CHECK_TIME_DAY_OFF_HALT_DATE','12:00:00');
-define('CHECK_TIME_DAY_OFF_END_DATE','18:00:00');
-define('CHECK_TIME_DAY_OFF', ['AM','PM']);
+define('CHECK_TIME_DAY_OFF_START_DATE', '8:00:00');
+define('CHECK_TIME_DAY_OFF_HALT_DATE', '12:00:00');
+define('CHECK_TIME_DAY_OFF_END_DATE', '18:00:00');
+define('CHECK_TIME_DAY_OFF', ['AM', 'PM']);
 define('CHECK_TIME_DAY_OFF_USABLE_START', ['00:00:00', '12:00:00']);
 define('CHECK_TIME_DAY_OFF_USABLE_END', ['00:00:00', '23:00:00']);
 define('CHECK_TIME_DAY_OFF_USABLE', [
@@ -396,13 +396,16 @@ define('DATE_FORMAT_DAY_OFF', 'Y/m/d H:i:s');
 define('SUN', 'Sun');
 define('SAT', 'Sat');
 
-define('INT_HALT_DATE',12);
-define('ONE_HOURS',1);
+define('INT_HALT_DATE', 12);
+define('ONE_HOURS', 1);
 define('JANUARY', 1);
 define('DECEMBER', 12);
 define('EXCEL_COLUMNS', ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']);
 define('EXCEL_COLUMN_LENGTH', 26);
 
+define('REPORT_DRAFT', 0);
+define('REPORT_PUBLISH', 0);
+define('REPORT_PRIVATE', 1);
 define('APPROVE_SUGGESTION', 1);
 define('NOT_APPROVE_SUGGESTION', 0);
 

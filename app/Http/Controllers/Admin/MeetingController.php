@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Models\Meeting;
-use Illuminate\Http\Request;
 use App\Repositories\Contracts\IMeetingRepository;
 use App\Services\Contracts\IMeetingService;
 
@@ -14,10 +13,12 @@ class MeetingController extends AdminBaseController
      * @var  string
      */
     protected $resourceAlias = 'admin.meetings';
+
     /**
      * @var  string
      */
     protected $resourceRoutesAlias = 'admin::meetings';
+
     /**
      * Fully qualified class name
      *
@@ -40,17 +41,18 @@ class MeetingController extends AdminBaseController
         $this->meetingService = $meetingService;
         parent::__construct();
     }
+
     public function resourceStoreValidationData()
     {
         return [
             'rules' => [
                 'name' => 'required|max:255|unique:meetings,name,NULL,id,deleted_at,NULL',
-                'seats'=> 'numeric'
+                'seats' => 'numeric'
             ],
             'messages' => [],
             'attributes' => [
                 'name' => 'tên phòng',
-                'seats'=> 'số ghế'
+                'seats' => 'số ghế'
             ],
             'advanced' => [],
         ];
@@ -60,18 +62,16 @@ class MeetingController extends AdminBaseController
     {
         return [
             'rules' => [
-                'name' => 'required|max:255|unique:meetings,name,'.$record->name.',id,deleted_at,NULL',
-                'seats'=> 'numeric'
+                'name' => 'required|max:255|unique:meetings,name,' . $record->name . ',id,deleted_at,NULL',
+                'seats' => 'numeric'
             ],
             'messages' => [],
             'attributes' => [
                 'name' => 'tên phòng',
-                'seats'=> 'số ghế',
+                'seats' => 'số ghế',
             ],
             'advanced' => [],
         ];
     }
-
-   
 
 }

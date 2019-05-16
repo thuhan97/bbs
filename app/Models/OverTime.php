@@ -56,4 +56,13 @@ class OverTime extends Model
     {
         return $this->belongsTo(User::class, 'approver_id', 'id');
     }
+
+    public function getDescriptionTimeAttribute($key)
+    {
+        $startAt = $this->attributes['start_at'];
+        $endAt = $this->attributes['end_at'];
+        return date_create($startAt)->format('H:i')
+            . ' - ' . date_create($endAt)->format('H:i')
+            . ' (' . \App\Helpers\DateTimeHelper::subMinuteWithFormat($startAt, $endAt) . ')';
+    }
 }

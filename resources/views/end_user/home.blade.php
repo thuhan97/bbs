@@ -21,7 +21,7 @@
                                 <div class="col-sm-7" style="padding-left: 0">
                                     <div class="media-body p-1"
                                          onclick="location.href='{{route('post_detail', ['id' => $post->id])}}'">
-                                        <h4 class="mt-0 mb-1 font-weight-bold elipsis-line line-2 fix-2">{{$post->name}}</h4>
+                                        <h4 class="mt-3 mb-1 font-weight-bold elipsis-line line-2 fix-2 f-22">{{$post->name}}</h4>
                                         <p class="elipsis-line line-3 fix-3 m-0">{{str_limit(strip_tags(nl2br($post->introduction) ), 150) }}</p>
                                     </div>
                                 </div>
@@ -38,11 +38,11 @@
                     <!--/.Featured Image-->
                     <!--Card-->
                     @if($event)
-                        <h4 class="text-d-bold">
+                        <h3 class="text-d-bold">
                             <a href="{{route('event_detail', ['id' => $event->id])}}">
                                 Sự kiện sắp diễn ra - {{ $event->name }}
                             </a>
-                        </h4>
+                        </h3>
                         <div class="mb-3">
                             Thời gian: {{$event->event_date}}@if($event->place) - địa điểm: {{$event->place}}
                             , @endif

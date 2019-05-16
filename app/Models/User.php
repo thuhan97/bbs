@@ -161,7 +161,21 @@ class User extends Authenticatable implements JWTSubject
         if ($userTeam) {
             return Team::where('id', $userTeam->team_id)->first();
         }
+    }
 
+    public function isMaster()
+    {
+        return $this->attributes['jobtitle_id'] == MASTER_ROLE;
+    }
+
+    public function isManager()
+    {
+        return $this->attributes['jobtitle_id'] == MANAGER_ROLE;
+    }
+
+    public function isGroupManager()
+    {
+        return Group::where('manager_id', $this->attributes['id'])->exists();
     }
 
     /**

@@ -5,8 +5,12 @@
     {!! Breadcrumbs::render('report') !!}
 @endsection
 <?php
+$user = \Illuminate\Support\Facades\Auth::user();
 $year = request('year', date('Y'));
 $month = request('month', date('m'));
+if ($user->isMaster() || $user->isGroupManager()) {
+    $teamId = 0;
+}
 if ($teamId != 0) {
     $reportType = 2;
 } else {
@@ -84,6 +88,8 @@ $type = request('type', $reportType);
                                  aria-labelledby="headingOne{{$idx}}"
                                  data-parent="#report">
                                 <div class="card-body">
+                                    <p class="pl-2">Gửi cho: {{$report->to_ids}}</p>
+
                                     {!! $report->content !!}
                                 </div>
                             </div>

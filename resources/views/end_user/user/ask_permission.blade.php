@@ -133,10 +133,13 @@
                 <div class="tab-pane fade in show active" id="panelApprove" role="tabpanel">
                     <table id="contactTbl" class="table table-striped table-bordered">
                         <colgroup>
+                            <col style="width: 50px">
+                            <col style="width: 100px">
+                            <col style="width: 180px">
+                            <col style="width: 100px">
                             <col style="">
                             <col style="">
-                            <col style="">
-                            <col style="">
+                            <col style="width: 100px">
                         </colgroup>
                         <thead class="grey lighten-2">
                         <tr>
@@ -172,9 +175,9 @@
                                             {{--<button class="btn-approve float-left" data-permission="other"--}}
                                             {{--data-id="{{ $item['id'] ? $item['id'] : '' }}"><i--}}
                                             {{--class="fas fa-check-circle"></i></button>--}}
-                                            <button class="btn-reject text-center approve" data-permission="other"
-                                                    data-id="{{ $item['id'] ? $item['id'] : '' }}"><i
-                                                        class="fas fa-times"></i>
+                                            <button class="btn btn-info text-uppercase text-center approve"
+                                                    data-permission="other"
+                                                    data-id="{{ $item['id'] ? $item['id'] : '' }}">Duyệt
                                             </button>
                                         @elseif($item['status'] == array_search('Đã duyệt', OT_STATUS))
                                             <i class="fas fa-grin-stars fa-2x text-success"
@@ -199,10 +202,14 @@
 
                     <table id="contactTbl" class="table table-striped table-bordered">
                         <colgroup>
+                            <col style="width: 50px">
+                            <col style="width: 100px">
+                            <col style="width: 180px">
+                            <col style="width: 100px">
+                            <col style="width: 180px">
                             <col style="">
                             <col style="">
-                            <col style="">
-                            <col style="">
+                            <col style="width: 100px">
                         </colgroup>
                         <thead class="grey lighten-2">
                         <tr>
@@ -210,6 +217,7 @@
                             <th class="text-center">Ngày</th>
                             <th>Tên nhân viên</th>
                             <th>Hình thức</th>
+                            <th>Thời gian</th>
                             <th>Nội dung</th>
                             <th>Nội dung phản hồi</th>
                             <th class="text-center" style="width: 10%;">Trạng Thái</th>
@@ -226,15 +234,17 @@
                                 <td>
                                     {{$item->ot_type ? $item->ot_type == 1 ? 'OT Dự án' : 'OT cá nhân' : '' }}
                                 </td>
+                                <td>{{$item->description_time}}
+                                </td>
                                 <td>{!! $item['reason'] !!}</td>
                                 <td>{!! $item['note_respond'] !!}</td>
                                 <td class="text-center td-approve">
                                     @can('manager')
                                         @if($item['status'] == array_search('Chưa duyệt', OT_STATUS))
 
-                                            <button class="btn-reject text-center approve" data-permission="ot"
-                                                    data-id="{{ $item['id'] ? $item['id'] : '' }}"><i
-                                                        class="fas fa-times"></i>
+                                            <button class="btn btn-info text-uppercase text-center approve"
+                                                    data-permission="ot"
+                                                    data-id="{{ $item['id'] ? $item['id'] : '' }}">Duyệt
                                             </button>
                                         @elseif($item['status'] == array_search('Đã duyệt', OT_STATUS))
                                             <i class="fas fa-grin-stars fa-2x text-success"
@@ -281,10 +291,12 @@
         <div class="tab-pane fade in show active" id="panel555" role="tabpanel">
             <table id="contactTbl" class="table table-striped table-bordered">
                 <colgroup>
+                    <col style="width: 50px">
+                    <col style="width: 100px">
+                    <col style="width: 100px">
                     <col style="">
                     <col style="">
-                    <col style="">
-                    <col style="">
+                    <col style="width: 100px">
                 </colgroup>
                 <thead class="grey lighten-2">
                 <tr>
@@ -343,16 +355,20 @@
 
             <table id="contactTbl" class="table table-striped table-bordered">
                 <colgroup>
+                    <col style="width: 50px">
+                    <col style="width: 100px">
+                    <col style="width: 100px">
+                    <col style="width: 180px">
                     <col style="">
                     <col style="">
-                    <col style="">
-                    <col style="">
+                    <col style="width: 100px">
                 </colgroup>
                 <thead class="grey lighten-2">
                 <tr>
                     <th class="text-center">#</th>
                     <th class="text-center">Ngày</th>
                     <th>Hình thức</th>
+                    <th>Thời gian</th>
                     <th>Nội dung</th>
                     <th>Nội dung từ chối</th>
                     <th class="text-center">Trạng Thái</th>
@@ -367,6 +383,7 @@
                         <td>
                             {{$item->ot_type ? $item->ot_type == 1 ? 'OT Dự án' : 'OT cá nhân' : '' }}
                         </td>
+                        <td>{{$item->description_time}}</td>
                         <td>{!! $item['reason'] !!}</td>
                         <td>{!! $item['note_respond'] !!}</td>
                         <td class="text-center td-approve">
@@ -475,10 +492,7 @@
                         <span class="btn-close-icon" aria-hidden="true">×</span>
                     </button>
                 </div>
-                <div class="d-flex justify-content-center">
-                    <img src="{{ asset('img/font/gio_lam_viec_popup.png') }}" alt="" width="355px" height="260px">
-                </div>
-                <br>
+                @include('elements.ask_permission_image')
                 <form action="{{ route('ask_permission.create') }}" method="get">
                     <div class="d-flex justify-content-center text-area-reason" id="div-reason"></div>
                     <div class="offset-1 select-day">
@@ -511,10 +525,7 @@
                         <span class="btn-close-icon" aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <div class="d-flex justify-content-center">
-                    <img src="{{ asset('img/font/gio_lam_viec_popup.png') }}" alt="" width="355px" height="260px">
-                </div>
-                <br>
+                @include('elements.ask_permission_image')
                 <form action="{{ route('ask_permission.create') }}" method="get">
                     {{--@csrf--}}
                     <div class="d-flex justify-content-center text-area-reason" id="div-reason"></div>
@@ -548,27 +559,9 @@
                         <span class="btn-close-icon" aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <div class="d-flex justify-content-center">
-                    <img src="{{ asset('img/font/gio_lam_viec_popup.png') }}" alt="" width="355px" height="260px">
-                </div>
-                <br>
+                @include('elements.ask_permission_image')
                 <form action="{{ route('ask_permission.create') }}" method="get">
                     <div class="d-flex justify-content-center text-area-reason" id="div-reason"></div>
-                    <div class="row col-md-12">
-                        <div class="col-2"></div>
-                        <input type="hidden" name="ot_id" class="ot_id">
-                        <input type="hidden" name="permission_status" class="permission_status">
-                        <div class="col-md-4 text-center">
-                            <input style="position: relative;opacity: 1;pointer-events: inherit" class="other-ot"
-                                   type="radio" name="ot_type" id="project-ot" checked value="1">
-                            <label for="project-ot">OT dự án</label>
-                        </div>
-                        <div class="col-md-4 text-center">
-                            <input style="position: relative;opacity: 1;pointer-events: inherit" class="other-ot"
-                                   type="radio" name="ot_type" id="other-ot" value="2">
-                            <label for="other-ot">Lý do cá nhân</label>
-                        </div>
-                    </div>
                     <div class="select-day mt-3">
                         <div class="container-fluid">
                             <div class="row append-textarea">
@@ -588,13 +581,30 @@
                             </div>
                         </div>
                     </div>
-                    <select class="browser-default form-control project_name mt-3" name="project_name"
+                    <div class="container-fluid mt-2">
+                        <div class="row">
+                            <div class="col-2"></div>
+                            <input type="hidden" name="ot_id" class="ot_id">
+                            <input type="hidden" name="permission_status" class="permission_status">
+                            <div class="col-md-4 text-center">
+                                <input style="position: relative;opacity: 1;pointer-events: inherit" class="other-ot"
+                                       type="radio" name="ot_type" id="project-ot" checked value="1">
+                                <label for="project-ot">OT dự án</label>
+                            </div>
+                            <div class="col-md-4 text-center">
+                                <input style="position: relative;opacity: 1;pointer-events: inherit" class="other-ot"
+                                       type="radio" name="ot_type" id="other-ot" value="2">
+                                <label for="other-ot">Lý do cá nhân</label>
+                            </div>
+                        </div>
+                    </div>
+                    <select class="browser-default form-control project_name mt-2" name="project_name"
                             style="width: 62%;margin: 0 auto;">
                         <option value="0">Chọn dự án</option>
                     </select>
-                    <div class="row mt-4">
+                    <div class="row mt-2">
                         <div class="col-md-4 offset-2">
-                            <div class="form-group margin-b-5 margin-t-5">
+                            <div class="form-group ">
                                 <label for="start_at">Thời gian bắt đầu *</label>
                                 <div class="input-group date">
                                     <input type="time" class="form-control pull-right" autocomplete="off"
@@ -605,7 +615,7 @@
                             </div>
                         </div>
                         <div class="col-md-4">
-                            <div class="form-group margin-b-5 margin-t-5">
+                            <div class="form-group ">
                                 <label for="end_at">Thời gian kết thúc *</label>
                                 <div class="input-group date">
                                     <input type="time" class="form-control pull-right"
@@ -616,8 +626,7 @@
                             </div>
                         </div>
                     </div>
-                    <br>
-                    <textarea class="form-control permission-reason-ot" name="note" cols="48" rows="6"
+                    <textarea class="mt-2 form-control permission-reason-ot" name="note" cols="48" rows="6"
                               placeholder="Nhập lý do ..."></textarea>
                     <div class="pt-3 pb-4 d-flex justify-content-center border-top-0 rounded mb-0">
                         <button class="btn btn-primary btn-send btn-permission-ot">GỬI ĐƠN</button>
@@ -831,7 +840,7 @@
                                 $('.header-permission-ot').text('Xin OT');
                                 $('.permission-reason-ot,.btn-permission-ot').prop('disabled', false);
                             }
-                        } else if (respond[1]){
+                        } else if (respond[1]) {
                             console.log(respond)
                             respond[1].forEach(function (element) {
                                 $('.project_name').append('<option value="' + element.name + '">' + element.name + '</option>');

@@ -133,10 +133,7 @@
                         <span class="btn-close-icon" aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <div class="d-flex justify-content-center">
-                    <img src="{{ asset('img/font/gio_lam_viec_popup.png') }}" alt="" width="355px" height="260px">
-                </div>
-                <br>
+                @include('elements.ask_permission_image')
                 <form action="{{ route('work_time.ask_permission') }}" method="post">
                     @csrf
                     <div class="d-flex justify-content-center text-area-reason" id="div-reason"></div>
@@ -217,7 +214,7 @@
                                 '</div>' +
                                 '</div>' +
                                 '        <div class="col-md-6">\n' +
-                                '            <div class="form-group margin-b-5 margin-t-5">\n' +
+                                '            <div class="form-group ">\n' +
                                 '                <label for="start_at">Thời gian kết thúc *</label>\n' +
                                 '                <div class="input-group date">\n' +
                                 '                    <input type="time" class="form-control pull-right" autocomplete="off"\n' +
@@ -228,7 +225,7 @@
                                 '            </div>\n' +
                                 '        </div>\n' +
                                 '        <div class="col-md-6">\n' +
-                                '            <div class="form-group margin-b-5 margin-t-5">\n' +
+                                '            <div class="form-group ">\n' +
                                 '                <label for="end_at">Thời gian bắt đầu *</label>\n' +
                                 '                <div class="input-group date">\n' +
                                 '                    <input type="time" class="form-control pull-right"\n' +
@@ -266,7 +263,7 @@
                             '</div>' +
                             '</div>' +
                             '        <div class="col-md-6">\n' +
-                            '            <div class="form-group margin-b-5 margin-t-5">\n' +
+                            '            <div class="form-group ">\n' +
                             '                <label for="start_at">Thời gian bắt đầu *</label>\n' +
                             '                <div class="input-group date">\n' +
                             '                    <input type="time" class="form-control pull-right" autocomplete="off"\n' +
@@ -277,7 +274,7 @@
                             '            </div>\n' +
                             '        </div>\n' +
                             '        <div class="col-md-6">\n' +
-                            '            <div class="form-group margin-b-5 margin-t-5">\n' +
+                            '            <div class="form-group ">\n' +
                             '                <label for="end_at">Thời gian kết thúc *</label>\n' +
                             '                <div class="input-group date">\n' +
                             '                    <input type="time" class="form-control pull-right"\n' +
@@ -334,7 +331,7 @@
                                 '   </select>' +
                                 '</div>' +
                                 '        <div class="col-md-6">\n' +
-                                '            <div class="form-group margin-b-5 margin-t-5">\n' +
+                                '            <div class="form-group ">\n' +
                                 '                <label for="start_at">Thời gian bắt đầu *</label>\n' +
                                 '                <div class="input-group date">\n' +
                                 '                    <input type="time" class="form-control pull-right" autocomplete="off"\n' +
@@ -345,7 +342,7 @@
                                 '            </div>\n' +
                                 '        </div>\n' +
                                 '        <div class="col-md-6">\n' +
-                                '            <div class="form-group margin-b-5 margin-t-5">\n' +
+                                '            <div class="form-group ">\n' +
                                 '                <label for="end_at">Thời gian kết thúc *</label>\n' +
                                 '                <div class="input-group date">\n' +
                                 '                    <input type="time" class="form-control pull-right"\n' +
@@ -503,7 +500,7 @@
                             success: function (respond) {
                                 if (respond.status != 1) {
                                     $('.title-wt-modal-approve').text('Xin phép');
-                                    $('.wt-textarea-reason,.btn-send-permission,#start_at,#end_at').prop('disabled',false)
+                                    $('.wt-textarea-reason,.btn-send-permission,#start_at,#end_at').prop('disabled', false)
                                     $('#start_at,#end_at').val('')
                                 }
                                 if (respond.note && respond.ot_type === 2) {

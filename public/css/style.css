@@ -1,3 +1,7 @@
+.btn, .btn:active, .btn:focus, .btn:hover {
+    box-shadow: none;
+}
+
 .text-blue {
     color: blue !important;
 }
@@ -8,6 +12,10 @@
 
 .no-padding-right {
     padding-right: 0 !important;
+}
+
+.f-22 {
+    font-size: 22px;
 }
 
 .mw-100 {
@@ -38,6 +46,14 @@
     display: block !important;
 }
 
+#main-nav {
+    background: #feaf25 !important;
+}
+
+#main-nav .nav-link {
+    color: white;
+}
+
 #nav_bar_avatar {
     padding: 0;
 }
@@ -51,6 +67,10 @@
     color: black;
 }
 
+.navbar.scrolling-navbar .navbar-nav > li.active {
+    background: #00000012;
+}
+
 .breadcrumb-item a.waves-effect, .breadcrumb-item a.waves-light {
     display: inline;
 }
@@ -61,11 +81,16 @@
 
 #contactTbl tbody td, #contactTbl tbody th {
     vertical-align: middle;
-    padding: 0.1rem 0.5rem;
+    padding: 0.5rem 0.5rem;
 }
 
 #contactTbl .td-approve {
-    padding: 0.8rem 0.5rem;
+    padding: 0;
+}
+
+#contactTbl .td-approve .btn-info {
+    padding: 8px 15px;
+
 }
 
 #contactTbl .avatar {
@@ -1000,6 +1025,9 @@ td.blank, .type-1, .type-2 {
         margin-top: -16px
     }
 
+    #main-nav {
+        background: #4a89ff !important;
+    }
 }
 
 .permission-reason, .permission-reason-late-ot, .permission-reason-late, .permission-reason-early, .permission-reason-ot {
@@ -1298,6 +1326,44 @@ td.blank, .type-1, .type-2 {
     .offset-xxl-11 {
         margin-left: 91.666667%;
     }
+
+    .d-xxl-none {
+        display: none !important;
+    }
+
+    .d-xxl-inline {
+        display: inline !important;
+    }
+
+    .d-xxl-inline-block {
+        display: inline-block !important;
+    }
+
+    .d-xxl-block {
+        display: block !important;
+    }
+
+    .d-xxl-table {
+        display: table !important;
+    }
+
+    .d-xxl-table-row {
+        display: table-row !important;
+    }
+
+    .d-xxl-table-cell {
+        display: table-cell !important;
+    }
+
+    .d-xxl-flex {
+        display: -ms-flexbox !important;
+        display: flex !important;
+    }
+
+    .d-xxl-inline-flex {
+        display: -ms-inline-flexbox !important;
+        display: inline-flex !important;
+    }
 }
 
 .navbar.fixed-top {
@@ -1332,6 +1398,7 @@ td.blank, .type-1, .type-2 {
     white-space: normal;
     word-wrap: break-word;
 }
+
 #btn-reject {
     width: 30%;
     height: 45px;
@@ -1343,8 +1410,8 @@ td.blank, .type-1, .type-2 {
 }
 
 .md-tabs {
-    -webkit-box-shadow: 0 5px 11px 0 rgba(0,0,0,.18), 0 4px 15px 0 rgba(0,0,0,.15);
-    box-shadow: 0 5px 11px 0 rgba(0,0,0,.18), 0 4px 15px 0 rgba(0,0,0,.15);
+    -webkit-box-shadow: 0 5px 11px 0 rgba(0, 0, 0, .18), 0 4px 15px 0 rgba(0, 0, 0, .15);
+    box-shadow: 0 5px 11px 0 rgba(0, 0, 0, .18), 0 4px 15px 0 rgba(0, 0, 0, .15);
     border: 0;
     padding: 0.2rem;
     margin-left: 1rem;
@@ -1356,15 +1423,16 @@ td.blank, .type-1, .type-2 {
     -webkit-border-radius: .25rem;
     border-radius: .25rem;
 }
+
 @media (max-width: 575px) {
-    #btn-detail-day-off{
+    #btn-detail-day-off {
         width: 99%;
         height: 36px;
         line-height: 11px;
     }
 }
 
-.calendar-search{
+.calendar-search {
     top: 8px;
     right: 5px;
     font-size: 23px;
@@ -1372,3 +1440,10 @@ td.blank, .type-1, .type-2 {
     color: darkgrey;
 }
 
+.modal.show .modal-dialog {
+    overflow: hidden;
+}
+
+.modal-open .modal {
+    overflow-y: hidden;
+}

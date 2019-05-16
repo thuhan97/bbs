@@ -16,13 +16,13 @@
         </div>
         <div class="col-md-4">
 
-                <div class="form-group margin-b-5 margin-t-5{{ $errors->has('manager') ? ' has-error' : '' }}">
+                <div class="form-group margin-b-5 margin-t-5{{ $errors->has('manager_id') ? ' has-error' : '' }}">
                     <label for="group_id">Người quản lý *</label>
-                    {{ Form::select('manager', ['' => 'Chọn người quản lí'] + users(true), $record->manager ?? '', ['class' => 'form-control']) }}
+                    {{ Form::select('manager_id', ['' => 'Chọn người quản lí'] + users(true), $record->manager_id ?? '', ['class' => 'form-control']) }}
 
-                    @if ($errors->has('manager'))
+                    @if ($errors->has('manager_id'))
                         <span class="help-block">
-                        <strong>{{ $errors->first('manager') }}</strong>
+                        <strong>{{ $errors->first('manager_id') }}</strong>
                     </span>
                     @endif
                 </div>

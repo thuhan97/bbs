@@ -42,7 +42,7 @@ class GroupController extends AdminBaseController
         return [
             'rules' => [
                 'name'=>'required|min:3|max:50',
-                'manager'=>'required|integer',
+                'manager_id'=>'required|integer',
                 'description'=>'nullable|min:3',
             ],
             'messages' => [],
@@ -60,7 +60,7 @@ class GroupController extends AdminBaseController
         return [
             'rules' => [
                 'name'=>'required|max:50',
-                'manager'=>'required|integer',
+                'manager_id'=>'required|integer',
                 'description'=>'nullable|min:3',
             ],
             'messages' => [],

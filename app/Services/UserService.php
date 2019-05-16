@@ -108,7 +108,7 @@ class UserService extends AbstractService implements IUserService
      */
     public function getUserManager()
     {
-        $ids=Group::all()->pluck('manager');
+        $ids=Group::all()->pluck('manager_id');
         return $this->model->whereIn('id',$ids)->where('id', '<>', Auth::id())->pluck('name', 'id');
     }
 }

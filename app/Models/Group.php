@@ -23,7 +23,7 @@ class Group extends Model
     protected $fillable = [
         'id',
         'name',
-        'manager',
+        'manager_id',
         'description',
         'created_at',
         'updated_at',
@@ -34,11 +34,11 @@ class Group extends Model
         return $query->where(function ($q) use ($searchTerm) {
             $q->orWhere('group.name', 'like', '%' . $searchTerm . '%')
                 ->orWhere('users.name', 'like', '%' . $searchTerm . '%');
-        })->join('users', 'users.id', '=','group.manager')
+        })->join('users', 'users.id', '=','group.manager_id')
             ->select('group.*');
     }
     public function user()
     {
-        return $this->hasOne(User::class, 'id', 'manager');
+        return $this->hasOne(User::class, 'id', 'manager_id');
     }
 }

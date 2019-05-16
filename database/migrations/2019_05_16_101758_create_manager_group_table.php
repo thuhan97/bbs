@@ -13,10 +13,10 @@ class CreateManagerGroupTable extends Migration
      */
     public function up()
     {
-        Schema::create('manager_group', function (Blueprint $table) {
+        Schema::create('group', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name',50);
-            $table->integer('manager');
+            $table->integer('manager_id');
             $table->longText('description');
             $table->timestamps();
             $table->softDeletes();

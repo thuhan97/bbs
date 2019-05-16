@@ -364,7 +364,8 @@ define('CHECK_TIME_DAY_OFF_START_DATE','8:00:00');
 define('CHECK_TIME_DAY_OFF_HALT_DATE','12:00:00');
 define('CHECK_TIME_DAY_OFF_END_DATE','18:00:00');
 define('CHECK_TIME_DAY_OFF', ['AM','PM']);
-define('CHECK_TIME_DAY_OFF_USABLE', ['00:00:00', '24:00:00']);
+define('CHECK_TIME_DAY_OFF_USABLE_START', ['00:00:00', '12:00:00']);
+define('CHECK_TIME_DAY_OFF_USABLE_END', ['00:00:00', '23:00:00']);
 define('DAY_OFF_TITLE_DEFAULT', 1);
 define('ARRAY_TITLE_DAYOFF_VACATION_MODE', [2, 3, 4]);
 define('GROUPS', [
@@ -386,6 +387,7 @@ define('SAT', 'Sat');
 define('JANUARY',1);
 define('DECEMBER',12);
 define('INT_HALT_DATE',12);
+define('ONE_HOURS',1);
 
 
 

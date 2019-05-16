@@ -349,7 +349,7 @@
                                                            readonly>
                                                 </div>
                                                 <div class="col-sm-4 p-0 mt-2">
-                                                    {{ Form::select('end', CHECK_TIME_DAY_OFF, REMAIN_DAY_OFF_DEFAULT , ['class' => 'form-control border-0 option-time-day-off browser-default custom-select select-item mannager_id check-value time-end' ]) }}
+                                                    {{ Form::select('end', CHECK_TIME_DAY_OFF, REMAIN_DAY_OFF_DEFAULT , ['class' => 'form-control border-0 option-time-day-off browser-default custom-select select-item mannager_id check-value time-end ds-end' ]) }}
                                                 </div>
                                             </div>
                                         </div>
@@ -817,13 +817,17 @@
                 'type': 'get',
                 'data': {'start_date':dateStart  , 'end_date': dateEnd,'start_time':timeStart  , 'end_time': timeEnd, },
                 success: function (data) {
-                    // console.log(data);
+                    console.log(data);
                     if(data.check){
                         $('#usable-check').text('Bạn sẽ bị tính ' + data.absent + ' ngày nghỉ không phép vì ngày phép còn lại không đủ.' )
                     }else {
                         $('#usable-check').text(' ')
                     };
-
+                    if(data.flag){
+                        $('.ds-end').attr('disabled',true);
+                    }else {
+                        $('.ds-end').removeAttrs('disabled');
+                    }
                 }
             });
         }

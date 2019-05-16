@@ -429,22 +429,29 @@ class DayOffService extends AbstractService implements IDayOffService
     public function checkDateUsable($startDate, $endDate, $startTime, $endTime)
     {
 
-        $start = $startTime == DEFAULT_VALUE ? CHECK_TIME_DAY_OFF_USABLE[0] : CHECK_TIME_DAY_OFF_USABLE[1];
-        $end = $endTime == DEFAULT_VALUE ? CHECK_TIME_DAY_OFF_USABLE[0] : CHECK_TIME_DAY_OFF_USABLE[1];
+        $start = $startTime == DEFAULT_VALUE ? CHECK_TIME_DAY_OFF_USABLE_START[0] : CHECK_TIME_DAY_OFF_USABLE_START[1];
+        $end = $endTime == DEFAULT_VALUE ? CHECK_TIME_DAY_OFF_USABLE_END[0] : CHECK_TIME_DAY_OFF_USABLE_END[1];
+
         $from = Carbon::createFromFormat(DATE_FORMAT_DAY_OFF, $startDate . ' ' . $start);
+
         $to = Carbon::createFromFormat(DATE_FORMAT_DAY_OFF, $endDate . ' ' . $end);
         if (strtotime($from) > strtotime($to)) {
             return false;
         }
         $numberDate = $to->diffInDays($from) + REMAIN_DAY_OFF_DEFAULT;
-        if ($endTime == 1) {
-            $day = ($to->diffInHours($from)) / HOURS_OF_DAY;
 
-        } else {
+        if ($startTime == DEFAULT_VALUE && $endTime != DEFAULT_VALUE) {
+            $day = ($to->diffInHours($from) + ONE_HOURS)  / HOURS_OF_DAY;
+
+        }elseif ($startTime == REMAIN_DAY_OFF_DEFAULT  && $endTime == REMAIN_DAY_OFF_DEFAULT){
+            $day = ($to->diffInHours($from) + ONE_HOURS)  / HOURS_OF_DAY;
+
+        }
+        else {
             $day = ($to->diffInHours($from) + INT_HALT_DATE) / HOURS_OF_DAY;
         }
-
         $total = [];
+        $totalCalendarOff = [];
         $checkAdditional = DEFAULT_VALUE;
         for ($i = DEFAULT_VALUE; $i < $numberDate; $i++) {
             $convertDay = Carbon::createFromFormat(DATE_FORMAT_DAY_OFF, $startDate . ' ' . $start)->addDay($i)->format('D');
@@ -459,42 +466,24 @@ class DayOffService extends AbstractService implements IDayOffService
                 $checkAdditional = $checkAdditional + REMAIN_DAY_OFF_DEFAULT;
             }
         }
+        $check=false;
         $calender = CalendarOff::all();
-
         foreach ($calender as $value) {
-            $numCalenderOffStart = Carbon::createFromFormat(DATE_FORMAT, $value->date_off_from);
-            $numCalenderOffEnd = Carbon::createFromFormat(DATE_FORMAT, $value->date_off_to);
-            $numCalenderOffStart1 = Carbon::createFromFormat(DATE_FORMAT, $value->date_off_from)->format('Y-m-d');
-            $numCalenderOffEnd1 = Carbon::createFromFormat(DATE_FORMAT, $value->date_off_to)->format('Y-m-d');
-            $to1= $to->format('Y-m-d');
-            $from1= $from->format('Y-m-d');
-             /*if (strtotime($from) <= strtotime($numCalenderOffStart) &&   strtotime($to) >= strtotime($numCalenderOffStart)) {
-                 if (strtotime($numCalenderOffEnd) >= strtotime($to)){
-                     $numCalenderDay = $numCalenderOffStart->diffInDays($to);
-                     $day = $day - $numCalenderDay-1;
-
-                 }else if (strtotime($numCalenderOffEnd) < strtotime($to)){
-                     $numCalenderDay = $numCalenderOffEnd->diffInDays($numCalenderOffStart);
-                     $day = $day - $numCalenderDay-1;
-                     return $day;
-                 }
-
-             }*/
-            if (strtotime($from1) <= strtotime($numCalenderOffStart1) &&   strtotime($to1) >= strtotime($numCalenderOffStart1)) {
-
-                if (strtotime($from1) < strtotime($numCalenderOffStart1) && strtotime($to1) <= strtotime($numCalenderOffEnd1) ){
-
-                    $numCalenderDay = $to->diffInDays($numCalenderOffStart);
-                    $day = $day - $numCalenderDay -1;
-                }elseif (strtotime($from1) < strtotime($numCalenderOffStart1) && strtotime($to1) > strtotime($numCalenderOffEnd1) ){
-                    $numCalenderDay = $numCalenderOffStart->diffInDays($numCalenderOffEnd);
-                    $day = $day - $numCalenderDay;
+            $numCalenderOffStart = Carbon::createFromFormat(DATE_FORMAT, $value->date_off_from)->format('Y-m-d');
+            $numCalenderOffEnd = Carbon::createFromFormat(DATE_FORMAT, $value->date_off_to)->format('Y-m-d');
+            for ($i = DEFAULT_VALUE; $i < $numberDate; $i++) {
+                $convertDayCheckStart = Carbon::createFromFormat(DATE_FORMAT_DAY_OFF, $startDate . ' ' . $start)->addDay($i)->format('Y-m-d');
+                $convertDayCheckEnd = Carbon::createFromFormat(DATE_FORMAT_DAY_OFF, $endDate . ' ' . $end)->addDay($i)->format('Y-m-d');
+                if (strtotime($convertDayCheckEnd) == strtotime($numCalenderOffEnd)){
+                        $check=true;
                 }
-            }elseif (strtotime($from1) >= strtotime($numCalenderOffStart1) && strtotime($to1) <= strtotime($numCalenderOffEnd1) && strtotime($to1) >= strtotime($numCalenderOffStart1)){
-                return 0;
+                if (strtotime($convertDayCheckStart) >= strtotime($numCalenderOffStart) && strtotime($convertDayCheckStart) <= strtotime($numCalenderOffEnd)) {
+                    array_push($totalCalendarOff, $i);
+                }
             }
         }
-        return $day - (count($total) + $checkAdditional);
+        $totalDayOff=($day+ $checkAdditional) - (count($total)+count($totalCalendarOff));
+        return  $check == true ?([$totalDayOff,$check]) : $totalDayOff;
     }
 
     /**

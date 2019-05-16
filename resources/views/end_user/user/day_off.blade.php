@@ -817,7 +817,7 @@
                 'type': 'get',
                 'data': {'start_date':dateStart  , 'end_date': dateEnd,'start_time':timeStart  , 'end_time': timeEnd, },
                 success: function (data) {
-                    console.log(data);
+                    // console.log(data);
                     if(data.check){
                         $('#usable-check').text('Bạn sẽ bị tính ' + data.absent + ' ngày nghỉ không phép vì ngày phép còn lại không đủ.' )
                     }else {

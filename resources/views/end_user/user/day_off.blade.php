@@ -838,7 +838,7 @@
                 success: function (data) {
                     // console.log(data);
                     if(data.check){
-                        $('#usable-check').text('Bạn sẽ bị tính ' + data.absent + ' ngày nghỉ không phép vì ngày phép còn lại không đủ.' )
+                        $('#usable-check').text('Bạn sẽ bị tính ' + data.absent + ' ngày nghỉ không phép vì ngày phép không đủ.' )
                     }else {
                         $('#usable-check').text(' ')
                     };

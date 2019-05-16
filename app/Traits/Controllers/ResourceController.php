@@ -2,6 +2,7 @@
 
 namespace App\Traits\Controllers;
 
+use function GuzzleHttp\Promise\all;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Http\Request;
 

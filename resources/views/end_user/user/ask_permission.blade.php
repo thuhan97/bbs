@@ -470,12 +470,6 @@
                     <input type="hidden" class="permission-type" name="permission_type">
                     <textarea class="form-control permission-reason" name="reason_approve" cols="48" rows="6"
                               placeholder="Nhập lý do ..."></textarea>
-                    {{--<p class="creator_id"></p>--}}
-                    {{--<p class="project_name"></p>--}}
-                    {{--<p class="start_at"></p>--}}
-                    {{--<p class="end_at"></p>--}}
-                    {{--<p class="minute"></p>--}}
-                    {{--<p class="reason"></p>--}}
                     <div class="pt-3 pb-4 d-flex justify-content-center border-top-0 rounded mb-0">
                         <button class="btn-send btn-approve mr-2" id="btn-approve">DUYỆT ĐƠN</button>
                         <button class="btn-send btn-reject ml-2" id="btn-reject">KHÔNG DUYỆT</button>
@@ -529,7 +523,6 @@
                 </div>
                 @include('elements.ask_permission_image')
                 <form action="{{ route('ask_permission.create') }}" method="get">
-                    {{--@csrf--}}
                     <div class="d-flex justify-content-center text-area-reason" id="div-reason"></div>
                     <div class="select-day">
                         <div class="row col-12 option-permission"></div>
@@ -568,12 +561,12 @@
                         <div class="row">
                             <input type="hidden" name="ot_id" class="ot_id">
                             <input type="hidden" name="permission_status" class="permission_status">
-                            <div class="col-md-6 text-center my-2">
+                            <div class="col-md-6 text-center mt-3">
                                 <input style="position: relative;opacity: 1;pointer-events: inherit" class="other-ot ml-5"
                                        type="radio" name="ot_type" id="project-ot" checked value="1">
                                 <label for="project-ot">OT dự án</label>
                             </div>
-                            <div class="col-md-6 text-center my-2">
+                            <div class="col-md-6 text-center mt-3">
                                 <input style="position: relative;opacity: 1;pointer-events: inherit" class="other-ot"
                                        type="radio" name="ot_type" id="other-ot" value="2">
                                 <label for="other-ot" class="mr-5">Lý do cá nhân</label>
@@ -861,7 +854,15 @@
                 } else if (selectorID === 'btn-reject') {
                     $('.approve-type').attr('value', 2)
                 }
-            })
+            });
+
+            $('#project-ot').on('click',function () {
+                $('.project_name').prop('disabled',false);
+            });
+
+            $('#other-ot').on('click',function () {
+                $('.project_name').prop('disabled',true);
+            });
         });
     </script>
 @endsection

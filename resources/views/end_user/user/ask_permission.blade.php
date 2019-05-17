@@ -122,7 +122,7 @@
                         sớm/muộn</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" data-toggle="tab" href="#panelOT" role="tab">Xin OT</a>
+                    <a class="nav-link tab-nav-link-ot" data-toggle="tab" href="#panelOT" role="tab">Xin OT</a>
                 </li>
             </ul>
             <!-- Nav tabs -->
@@ -148,7 +148,7 @@
                             <th>Tên nhân viên</th>
                             <th>Hình thức</th>
                             <th>Nội dung</th>
-                            <th>Nội dung phản hồi</th>
+                            <th class="">Nội dung phản hồi</th>
                             <th class="text-center" style="width: 10%;">Trạng Thái</th>
                         </tr>
                         </thead>
@@ -232,7 +232,7 @@
                                 <th class="text-center">{{ $item['work_day'] ?? '' }}</th>
                                 <th>{{ $item->creator->name ?? '' }}</th>
                                 <td>
-                                    {{$item->ot_type ? $item->ot_type == 1 ? 'OT Dự án' : 'OT cá nhân' : '' }}
+                                    {{$item->ot_type ? $item->ot_type == array_search('Dự án', OT_TYPE) ? 'OT Dự án' : 'OT cá nhân' : '' }}
                                 </td>
                                 <td>{{$item->description_time}}
                                 </td>
@@ -316,16 +316,16 @@
                         <th class="text-center">{{ $item['work_day'] ?? '' }}</th>
                         <td>
                             {{--{{$item->type_name}}aaa--}}
-                            @if($item['type'] == 0)
+                            @if($item['type'] == array_search('Bình thường', WORK_TIME_TYPE))
                                 Bình thường
-                            @elseif($item['type'] == 1)
+                            @elseif($item['type'] == array_search('Đi muộn', WORK_TIME_TYPE))
                                 Đi muộn
-                            @elseif($item['type'] == 2)
+                            @elseif($item['type'] == array_search('Về Sớm', WORK_TIME_TYPE))
                                 Về sớm
-                            @elseif($item['type'] == 4)
-                                @if($item['ot_type'] == 1)
+                            @elseif($item['type'] == array_search('Overtime', WORK_TIME_TYPE))
+                                @if($item['ot_type'] == array_search('Dự án', OT_TYPE))
                                     OT dự án
-                                @elseif($item['ot_type'] == 2)
+                                @elseif($item['ot_type'] == array_search('OT lý do cá nhân', OT_TYPE))
                                     OT cá nhân
                                 @endif
                             @endif
@@ -564,48 +564,46 @@
                 @include('elements.ask_permission_image')
                 <form action="{{ route('ask_permission.create') }}" method="get">
                     <div class="d-flex justify-content-center text-area-reason" id="div-reason"></div>
-                    <div class="select-day mt-3">
+                    <div class="container-fluid my-2">
+                        <div class="row">
+                            <input type="hidden" name="ot_id" class="ot_id">
+                            <input type="hidden" name="permission_status" class="permission_status">
+                            <div class="col-md-6 text-center my-2">
+                                <input style="position: relative;opacity: 1;pointer-events: inherit" class="other-ot ml-5"
+                                       type="radio" name="ot_type" id="project-ot" checked value="1">
+                                <label for="project-ot">OT dự án</label>
+                            </div>
+                            <div class="col-md-6 text-center my-2">
+                                <input style="position: relative;opacity: 1;pointer-events: inherit" class="other-ot"
+                                       type="radio" name="ot_type" id="other-ot" value="2">
+                                <label for="other-ot" class="mr-5">Lý do cá nhân</label>
+                            </div>
+                        </div>
+                    </div>
+                    <select class="browser-default form-control project_name my-2" name="project_name"
+                            style="width: 83%;margin: 0 auto;">
+                        <option value="0">Chọn dự án</option>
+                    </select>
+                    <div class="select-day">
                         <div class="container-fluid">
                             <div class="row append-textarea">
-                                <div class="col-2"></div>
-                                <div class="col-4">
-                                    <label for="inputCity">Chọn ngày *</label>
+                                <div class="col-5 my-2 ml-3">
+                                    <label for="inputCity" class="my-2">Chọn ngày *</label>
                                 </div>
-                                <div class="col-4">
+                                <div class="col-5 my-2 offset-1 pl-0 pr-0">
                                     <input type="hidden" name="permission_ot">
                                     <input type="hidden" value="4" name="permission_type">
                                     <input type="text"
                                            class="form-control select-item {{ $errors->has('work_day') ? ' has-error' : '' }}"
                                            id="work_day_ot" autocomplete="off" name="work_day"
                                            value="{{ old('work_day', date('Y-m-d')) }}"
-                                           readonly="readonly">
+                                           readonly="readonly" style="width: 96.5%;">
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="container-fluid mt-2">
-                        <div class="row">
-                            <div class="col-2"></div>
-                            <input type="hidden" name="ot_id" class="ot_id">
-                            <input type="hidden" name="permission_status" class="permission_status">
-                            <div class="col-md-4 text-center">
-                                <input style="position: relative;opacity: 1;pointer-events: inherit" class="other-ot"
-                                       type="radio" name="ot_type" id="project-ot" checked value="1">
-                                <label for="project-ot">OT dự án</label>
-                            </div>
-                            <div class="col-md-4 text-center">
-                                <input style="position: relative;opacity: 1;pointer-events: inherit" class="other-ot"
-                                       type="radio" name="ot_type" id="other-ot" value="2">
-                                <label for="other-ot">Lý do cá nhân</label>
-                            </div>
-                        </div>
-                    </div>
-                    <select class="browser-default form-control project_name mt-2" name="project_name"
-                            style="width: 62%;margin: 0 auto;">
-                        <option value="0">Chọn dự án</option>
-                    </select>
-                    <div class="row mt-2">
-                        <div class="col-md-4 offset-2">
+                    <div class="row">
+                        <div class="col-md-5 offset-1 my-2">
                             <div class="form-group ">
                                 <label for="start_at">Thời gian bắt đầu *</label>
                                 <div class="input-group date">
@@ -616,8 +614,8 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-4">
-                            <div class="form-group ">
+                        <div class="col-md-5 my-2">
+                            <div class="form-group">
                                 <label for="end_at">Thời gian kết thúc *</label>
                                 <div class="input-group date">
                                     <input type="time" class="form-control pull-right"

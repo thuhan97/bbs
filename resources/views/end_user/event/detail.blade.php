@@ -69,26 +69,24 @@
                 <h3 class="card-title h3 my-4 text-center text-danger"><strong>Đã hết thời hạn gửi phản hồi</strong>
                 </h3>
             @endif
-
-            <h5 class="card-title h6 my-4"><b>Danh sách nhân viên gửi phản hồi :</b></h5>
-
-            <table id="dtBasicExample" class="table table-striped table-bordered" cellspacing="0" width="100%">
-                <thead>
-                <tr>
-                    <th class="th-sm">Tên nhân viên
-                    </th>
-                    <th class="th-sm">Mã nhân viên
-                    </th>
-                    <th class="th-sm">Trạng thái
-                    </th>
-                    <th class="th-sm">Ý kiến cá nhân
-                    </th>
-                    <th class="th-sm">Ngày đăng kí
-                    </th>
-                </tr>
-                </thead>
-                <tbody>
-                @if (count($listUserJoinEvent) > 0)
+            @if (count($listUserJoinEvent) > 0)
+                <h5 class="card-title h6 my-4"><b>Danh sách nhân viên gửi phản hồi:</b></h5>
+                <table id="dtBasicExample" class="table table-striped table-bordered" cellspacing="0" width="100%">
+                    <thead>
+                    <tr>
+                        <th class="th-sm">Tên nhân viên
+                        </th>
+                        <th class="th-sm">Mã nhân viên
+                        </th>
+                        <th class="th-sm">Trạng thái
+                        </th>
+                        <th class="th-sm">Ý kiến cá nhân
+                        </th>
+                        <th class="th-sm">Ngày đăng kí
+                        </th>
+                    </tr>
+                    </thead>
+                    <tbody>
                     @foreach ($listUserJoinEvent as $listUserJoinEventValue)
                         <tr>
                             <td>{{ $listUserJoinEventValue->name }}</td>
@@ -98,10 +96,10 @@
                             <td>{{ $listUserJoinEventValue->created_at }}</td>
                         </tr>
                     @endforeach
-                @endif
+                    </tbody>
+                </table>
+            @endif
 
-                </tbody>
-            </table>
         </div>
     </div>
     @push('extend-js')

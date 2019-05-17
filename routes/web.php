@@ -79,6 +79,8 @@ Route::group([
     Route::get('/tao-du-an', 'ProjectController@create')->name('create_project');
     Route::post('/tao-du-an', 'ProjectController@store')->name('store_project')->middleware('can:team-leader');
     Route::get('/du-an/{id}', 'ProjectController@detail')->where(['id' => '\d+'])->name('project_detail');
+    Route::get('/sua-du-an/{id}', 'ProjectController@edit')->where(['id' => '\d+'])->name('project_edit');
+    Route::post('/sua-du-an/{id}', 'ProjectController@update')->where(['id' => '\d+'])->name('project_update');
 
     Route::get('/chia-se-tai-lieu', 'ShareController@listShareDocument')->name('list_share_document');
     Route::get('/chia-se-tai-lieu', 'ShareController@listShareDocument')->name('list_share_document');
@@ -90,7 +92,7 @@ Route::group([
     Route::get('/edit_experience/{id}', 'ShareController@editExperience')->name('edit_experience');
     Route::post('/save_edit_experience', 'ShareController@saveEditExperience')->name('save_edit_experience');
     Route::post('/add_comment', 'ShareController@addComment')->name('add_comment');
-    Route::get('/kinh-nghiem-lam-viec/{url}', 'ShareController@viewExperience')->name('view_experience');
+    Route::get('/kinh-nghiem-lam-viec/{id}', 'ShareController@viewExperience')->name('view_experience');
 
     Route::post('/add_suggestions', 'SuggestionController@addSuggestions')->name('add_suggestions');
     Route::get('/list_suggestions', 'SuggestionController@listSuggestions')->name('list_suggestions');

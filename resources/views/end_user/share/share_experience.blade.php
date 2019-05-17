@@ -8,8 +8,9 @@
     {!! Breadcrumbs::render('share_experience') !!}
 @endsection
 @section('content')
-<link rel="stylesheet" href="{{URL::asset('css/share_experience.css')}}">
+    <link rel="stylesheet" href="{{URL::asset('css/share_experience.css')}}">
 
+<<<<<<< HEAD
 <div class="col-md-10">
     <div class="content">
         <div class="tab-pane active">
@@ -19,42 +20,61 @@
                     Đăng bài
                 </a>
             </div>
+=======
+    <div class="col-md-8">
+        <div class="content" id="share_ex">
+            <div class="tab-pane active">
+                <div class="createReport fixed-action-btn">
+                    <a href="#" class="btn-lg red waves-effect waves-light text-white" title="Đăng bài"
+                       data-target="#feedback" data-toggle="modal" style="border-radius: 35px;">
+                        <img src="{{ asset('img/icon_exp.png') }}" onerror="this.src='{{URL_IMAGE_NO_IMAGE}}'"
+                             alt="avatar image"/>
+                        Đăng bài
+                    </a>
+                </div>
+>>>>>>> e45358ae7b44ee47d0c5279a9f0067077acb156e
                 @foreach($list_experience as $experience)
-                    <div class="posts row">            
-                        <div class="content-share-experience col-md-12">
+                    <div class="posts">
+                        <div class="content-share-experience">
                             <div class="userImage">
-                              <img src="{{$experience->user->avatar}}" onerror="this.src='{{URL_IMAGE_NO_IMAGE}}'" alt="avatar image" />
+                                <img src="{{$experience->user->avatar}}" onerror="this.src='{{URL_IMAGE_NO_IMAGE}}'"
+                                     alt="avatar image"/>
                             </div>
                             <div class="info-user-post">
                                 <p class="">
-                                    <?php echo isset($experience->user->name) ? $experience->user->name : ''; ?>
-                                    @if($experience->user->id == Auth::user()->id)
-                                        <div class="dropdown">
-                                            <i class="fa fa-ellipsis-h" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></i>
-                                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                                <a class="dropdown-item" href="{{ route('edit_experience', $experience->id) }}">Sửa bài viết</a>
-                                                <a class="dropdown-item" href="{{ route('deleted_experience', $experience->id) }}">Xóa bài viết</a>
-                                            </div>                                            
+                                <?php echo isset($experience->user->name) ? $experience->user->name : ''; ?>
+                                @if($experience->user_id == Auth::user()->id)
+                                    <div class="dropdown">
+                                        <i class="fa fa-ellipsis-h" data-toggle="dropdown" aria-haspopup="true"
+                                           aria-expanded="false"></i>
+                                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                            <a class="dropdown-item"
+                                               href="{{ route('edit_experience', $experience->id) }}">Sửa bài viết</a>
+                                            <a class="dropdown-item"
+                                               href="{{ route('deleted_experience', $experience->id) }}">Xóa bài
+                                                viết</a>
                                         </div>
+                                    </div>
                                     @endif
-                                </p>
-                                <span class="date sub-text">{{date_format($experience->created_at,"Y-m-d")}}</span>
+                                    </p>
+                                    <span class="date sub-text">{{date_format($experience->created_at,"Y-m-d")}}</span>
                             </div>
                             <div class="content-posts">
                                 <p><?php echo $experience->introduction; ?></p>
-                            </div>                      
+                            </div>
                             <p class="show-more">
-                                <a class="js-show-more" href="{{ route('view_experience',$experience->id) }}" title="Xem Thêm Nội Dung" id="myBtn">Xem Thêm</a>
-                            </p>                                
+                                <a class="js-show-more" href="{{ route('view_experience',$experience->id) }}"
+                                   title="Xem Thêm Nội Dung" id="myBtn">Xem Thêm</a>
+                            </p>
                         </div>
                     </div>
-                @endforeach 
+                @endforeach
                 <div class="row">
                     {{ $list_experience->links() }}
-                </div>                   
+                </div>
+            </div>
         </div>
     </div>
-</div>
     <!-- Modal -->
     <div class="modal fade" id="feedback" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
          aria-hidden="true">
@@ -68,23 +88,28 @@
                         </div>
                     </button>
                 </div>
-                <form action="{{ route('add_experience') }}" method="post" enctype="multipart/form-data" id="formExperience">
-                    @csrf <!-- {{ csrf_field() }} -->
+                <form action="{{ route('add_experience') }}" method="post" enctype="multipart/form-data"
+                      id="formExperience">
+                @csrf <!-- {{ csrf_field() }} -->
                     <div class="margin-b-5 margin-t-5">
                         <div class="divContent">
-                            <div class="form-group">    
-                                <label>Miêu tả*</label>
-                                <textarea class="form-control" id="introduction" name="introduction" placeholder="Miêu tả..."></textarea>
+                            <div class="form-group">
+                                <label>Tóm tắt *</label>
+                                <textarea class="form-control" id="introduction" name="introduction"
+                                          placeholder="Tóm tắt nội dung chia sẻ"></textarea>
                             </div>
-                            <div class="form-group">     
-                                <label>Nội dung*</label>                          
-                                <textarea class="form-control" id="editorContainer" name="content" placeholder="Viết kinh nghiệm bạn muốn chia sẻ ..."></textarea>
+                            <div class="form-group">
+                                <label>Nội dung*</label>
+                                <textarea class="form-control" id="editorContainer" name="content"
+                                          placeholder="Viết kinh nghiệm bạn muốn chia sẻ ..."></textarea>
                             </div>
-                            <div class="card bg-danger text-white" id="ErrorMessaging"></div>    
-                        </div>    
+                            <div class="card bg-danger text-white" id="ErrorMessaging"></div>
+                        </div>
                     </div>
                     <div class="pt-3 pb-4 d-flex justify-content-center border-top-0 rounded mb-0">
-                        <button type="button" class="btn btn-primary" id="buttonExperience" onclick="sendForm()">ĐĂNG BÀI</button>
+                        <button type="button" class="btn btn-primary" id="buttonExperience" onclick="sendForm()">ĐĂNG
+                            BÀI
+                        </button>
                     </div>
                 </form>
             </div>

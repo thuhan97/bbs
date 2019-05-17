@@ -84,10 +84,10 @@ class ShareController extends Controller
     public function deletedExperience($id)
     {
         $experience = Share::find($id);
-        if(isset($experience->creator_id) && $experience->creator_id == Auth::user()->id){
+        if (isset($experience->creator_id) && $experience->creator_id == Auth::user()->id) {
             $experience->delete();
             flash()->success(__l('share_experience_successully_deleted'));
-        }else{
+        } else {
             flash()->error(__l('share_experience_error_deleted'));
         }
         return redirect()->route('share_experience');
@@ -96,9 +96,9 @@ class ShareController extends Controller
     public function editExperience($id)
     {
         $experience = Share::find($id);
-        if(isset($experience->creator_id) && $experience->creator_id == Auth::user()->id){
+        if (isset($experience->creator_id) && $experience->creator_id == Auth::user()->id) {
             return view('end_user.share.edit_experience', compact('experience'));
-        }else{
+        } else {
             flash()->error(__l('share_experience_error_edit'));
             return redirect()->route('share_experience');
         }
@@ -121,7 +121,7 @@ class ShareController extends Controller
             flash()->error(__l('share_experience_error_empty'));
         }
         return redirect()->route('share_experience');
-    }              
+    }
 
     public function addComment(request $request)
     {
@@ -139,12 +139,12 @@ class ShareController extends Controller
     public function viewExperience($id)
     {
         $experience = Share::find($id);
-        if($experience){
+        if ($experience) {
             return view('end_user.share.view_experience', compact('experience'));
-        }else{
-            flash()->error(__l('share_experience_error_view'));
+        } else {
+            flash()->error(__l('share_experience_error_edit'));
             return redirect()->route('share_experience');
         }
-    }    
+    }
 
 }

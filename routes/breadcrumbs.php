@@ -86,6 +86,11 @@ Breadcrumbs::register('project_create', function ($breadcrumbs) {
     $breadcrumbs->push(__l('create_project'), route('create_project'));
 
 });
+Breadcrumbs::register('edit_project', function ($breadcrumbs, $project) {
+    $breadcrumbs->parent('project');
+    $breadcrumbs->push(__l('edit_project'), route('project_edit', $project->id));
+
+});
 //Home > Meeting Room
 Breadcrumbs::register('meetings', function ($breadcrumbs) {
     $breadcrumbs->parent('home');
@@ -134,6 +139,15 @@ Breadcrumbs::register('list_suggestions', function ($breadcrumbs) {
 Breadcrumbs::register('share_experience', function ($breadcrumbs) {
     $breadcrumbs->parent('home');
     $breadcrumbs->push(__l('share_experience'), route('share_experience'));
+});
+// Dashboard > share_experience
+Breadcrumbs::register('share_experience_edit', function ($breadcrumbs, $experience) {
+    $breadcrumbs->parent('share_experience');
+    $breadcrumbs->push(__l('share_experience_edit'), route('edit_experience', $experience->id));
+});
+Breadcrumbs::register('share_experience_detail', function ($breadcrumbs, $experience) {
+    $breadcrumbs->parent('share_experience');
+    $breadcrumbs->push(__l('share_experience_detail'), route('view_experience', $experience->id));
 });
 // Dashboard > day_off
 Breadcrumbs::register('day_off', function ($breadcrumbs) {

@@ -22,7 +22,7 @@
         <th>Số điện thoại
             {!! __admin_sortable('phone') !!}
         </th>
-        <th>Chức vụ
+        <th>Chức danh
             {!! __admin_sortable('jobtitle_id') !!}
         </th>
         <th>Loại hợp đồng

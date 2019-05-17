@@ -12,12 +12,13 @@
 @section('content')
     <link rel="stylesheet" href="{{URL::asset('css/list_share_document.css')}}">
     <div class="createReport fixed-action-btn">
-        <a href="#" class="button-add btn-lg red waves-effect waves-light text-white" title="Chia sẻ" data-target="#feedback" data-toggle="modal">
+        <a href="#" class="button-add btn-lg red waves-effect waves-light text-white" title="Chia sẻ"
+           data-target="#feedback" data-toggle="modal">
             <i class="fa fa-plus" aria-hidden="true"></i>
         </a>
     </div>
     <div class="row">
-        <div class="container-fluid  mt-3 mt-xl-5">
+        <div class="container-fluid">
             <form class="mb-4">
                 <div class="md-form active-cyan-2 mb-3">
                     @include('layouts.partials.frontend.search-input', ['search' => $search, 'text' => __l('Search')])
@@ -38,9 +39,9 @@
                         <th>
                             Ngày tải lên
                         </th>
-<!--                         <th>
-                            Định dạng
-                        </th> -->
+                        <!--                         <th>
+                                                    Định dạng
+                                                </th> -->
                         <th>
                             Tải ngay
                         </th>
@@ -61,11 +62,11 @@
                             <td class="center">
                                 {{$document->created_at}}
                             </td>
-<!--                             <?php
-                            $ext = pathinfo($document->file, PATHINFO_EXTENSION);
-                            ?>
-                            <td class="center">
-                                <i class="<?php echo isset(ICONS_TYPES_FILES[$ext]) ? ICONS_TYPES_FILES[$ext] : ''; ?>"
+                        <!--                             <?php
+                        $ext = pathinfo($document->file, PATHINFO_EXTENSION);
+                        ?>
+                                <td class="center">
+                                    <i class="<?php echo isset(ICONS_TYPES_FILES[$ext]) ? ICONS_TYPES_FILES[$ext] : ''; ?>"
                                    aria-hidden="true"></i>
                             </td> -->
                             <td class="center">

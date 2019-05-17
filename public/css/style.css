@@ -1457,3 +1457,6 @@ td.blank, .type-1, .type-2 {
 .select-day {
     padding: 0 15px;
 }
+.custom-modal{
+    left: 270px;
+}

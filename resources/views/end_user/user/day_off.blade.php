@@ -212,7 +212,7 @@
     </div>
 
     <!-- Modal: View detail absence form -->
-    <div class="modal fade right" id="detailAbsence" tabindex="-1"
+    <div class="modal fade right custom-modal" id="detailAbsence" tabindex="-1"
          role="dialog" aria-labelledby="exampleModalLabel"
          aria-hidden="true" data-backdrop="false">
         <div class="modal-dialog modal-full-height modal-right modal-notify modal-info"
@@ -275,7 +275,7 @@
         </div>
     </div>
     <!-- Modal: View detail absence form -->
-    <div class="modal fade modal-open" id="modal-form" tabindex="-1" role="dialog"
+    <div class="modal fade modal-open custom-modal" id="modal-form" tabindex="-1" role="dialog"
          aria-labelledby="myModalLabel"
          aria-hidden="true">
 
@@ -495,7 +495,7 @@
         </div>
     </div>
 
-    <div class="modal fade modal-open" id="modal-form-detail" tabindex="-1" role="dialog"
+    <div class="modal fade modal-open custom-modal" id="modal-form-detail" tabindex="-1" role="dialog"
          aria-labelledby="myModalLabel"
          aria-hidden="true">
         <div class="modal-dialog modal-center" role="document">
@@ -559,7 +559,7 @@
     <!-- Modal -->
     <form action="{{ route('delete_day_off') }}" method="post">
         @csrf
-        <div class="modal fade" id="basicExampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        <div class="modal fade custom-modal" id="basicExampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
              aria-hidden="true">
             <input type="hidden" value="" name="day_off_id" id="id-delete">
             <div class="modal-dialog" role="document">

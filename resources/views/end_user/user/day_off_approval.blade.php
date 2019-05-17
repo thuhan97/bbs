@@ -270,7 +270,7 @@
 
         <form action="{{ route('edit_day_off_detail') }}" method="post" id="edit-day-off">
             @csrf
-            <div class="modal fade modal-open" id="modal-form" tabindex="-1" role="dialog"
+            <div class="modal fade modal-open custom-modal" id="modal-form" tabindex="-1" role="dialog"
                  aria-labelledby="myModalLabel"
                  aria-hidden="true">
                 <div class="modal-dialog modal-center" role="document">
@@ -339,7 +339,7 @@
 
         <form action="{{ route('delete_day_off') }}" method="post">
             @csrf
-            <div class="modal fade" id="basicExampleModal" tabindex="-1" role="dialog"
+            <div class="modal fade custom-modal" id="basicExampleModal" tabindex="-1" role="dialog"
                  aria-labelledby="exampleModalLabel"
                  aria-hidden="true">
                 <input type="hidden" value="" name="id_close" id="id-close">

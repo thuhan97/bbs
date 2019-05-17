@@ -92,6 +92,7 @@ Route::group([
     Route::get('/edit_experience/{id}', 'ShareController@editExperience')->name('edit_experience');
     Route::post('/save_edit_experience', 'ShareController@saveEditExperience')->name('save_edit_experience');
     Route::post('/add_comment', 'ShareController@addComment')->name('add_comment');
+    Route::get('/kinh-nghiem-lam-viec/{id}', 'ShareController@viewExperience')->name('view_experience');
 
     Route::post('/add_suggestions', 'SuggestionController@addSuggestions')->name('add_suggestions');
     Route::get('/list_suggestions', 'SuggestionController@listSuggestions')->name('list_suggestions');

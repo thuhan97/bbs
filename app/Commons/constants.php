@@ -256,7 +256,7 @@ define('WORK_TIME_TYPE', [
 ]);
 define('OT_STATUS', [
 //    -1 => 'Từ chối',
-    0 => ' Chưa duyệt',
+    0 => 'Chưa duyệt',
     1 => 'Đã duyệt',
     2 => 'Từ chối',
 ]);

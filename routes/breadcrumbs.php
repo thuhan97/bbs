@@ -140,6 +140,15 @@ Breadcrumbs::register('share_experience', function ($breadcrumbs) {
     $breadcrumbs->parent('home');
     $breadcrumbs->push(__l('share_experience'), route('share_experience'));
 });
+// Dashboard > share_experience
+Breadcrumbs::register('share_experience_edit', function ($breadcrumbs, $experience) {
+    $breadcrumbs->parent('share_experience');
+    $breadcrumbs->push(__l('share_experience_edit'), route('edit_experience', $experience->id));
+});
+Breadcrumbs::register('share_experience_detail', function ($breadcrumbs, $experience) {
+    $breadcrumbs->parent('share_experience');
+    $breadcrumbs->push(__l('share_experience_detail'), route('view_experience', $experience->id));
+});
 // Dashboard > day_off
 Breadcrumbs::register('day_off', function ($breadcrumbs) {
     $breadcrumbs->parent('personal');

@@ -474,8 +474,8 @@
                                 $('#btn-submit-form').html('<button type="submit" class="btn  btn-primary">DUYỆT ĐƠN</button> <span class="btn btn-danger btn-send" id="close-day-off" data-toggle="modal" data-target="#basicExampleModal"> HỦY DUYỆT </span>')
                             } else {
 
-                                $('#number_off').remove();
-                                $('#btn-submit-form').remove();
+                                $('#number_off').html('');
+                                $('#btn-submit-form').html('');
                                 (data.data.status == 2 || data.data.status == 0) ? $('#number_off').html(' ') : $('#number_off').html(data.absent + ' ngày') ;
 
                                 $('#app-comment').html(data.data.approve_comment);

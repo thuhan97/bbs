@@ -67,6 +67,10 @@
     width: 40px;
 }
 
+.navbar.navbar-light .breadcrumb .nav-item.active > .nav-link, .navbar.navbar-light .navbar-nav .nav-item.active > .nav-link {
+    background: #fec563;
+}
+
 .navbar .breadcrumb .breadcrumb-item.active, .navbar .breadcrumb .breadcrumb-item:before {
     color: black;
 }

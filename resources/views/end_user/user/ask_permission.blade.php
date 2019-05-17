@@ -88,7 +88,9 @@
     @endif
     <div class="row mb-4">
         <div class="col-md-4">
-            <h2 class="mt-3 mobile-font-17">Danh sách xin phép</h2>
+            @can('team-leader')
+                <h2 class="mt-3 mobile-font-17">Danh sách xin phép</h2>
+            @endcan
         </div>
         <div class="col-md-8 text-right mobile-mg-right-5">
             <button onclick="location.href='{{route("day_off")}}?t=1'"
@@ -118,8 +120,8 @@
             <!-- Nav tabs -->
             <ul class="nav nav-tabs md-tabs nav-justified primary-color" role="tablist">
                 <li class="nav-item">
-                    <a class="nav-link active" data-toggle="tab" href="#panelApprove" role="tab">Xin phép đi
-                        sớm/muộn</a>
+                    <a class="nav-link active" data-toggle="tab" href="#panelApprove" role="tab">Xin đi
+                        muộn/sớm</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link tab-nav-link-ot" data-toggle="tab" href="#panelOT" role="tab">Xin OT</a>
@@ -175,7 +177,9 @@
                                         @if($item['status'] == array_search('Chưa duyệt', OT_STATUS))
                                             <button class="btn btn-info text-uppercase text-center approve"
                                                     data-permission="other"
-                                                    data-id="{{ $item['id'] ? $item['id'] : '' }}">Duyệt
+                                                    data-id="{{ $item['id'] ? $item['id'] : '' }}"
+                                                    data-itemType="@if($item->type == 1) Xin đi muộn @elseif($item->type == 2) Xin về sớm @endif">
+                                                Duyệt
                                             </button>
                                         @elseif($item['status'] == array_search('Đã duyệt', OT_STATUS))
                                             <i class="fas fa-grin-stars fa-2x text-success"
@@ -184,16 +188,16 @@
                                             <i class="fas fa-frown fa-2x text-danger"
                                                title="{{ $item->workTimeApprover->name ?? '' }}"></i>
                                         @endif
-                                        @elsecan('team-leader')
-                                            @if($item['status'] == array_search('Đã duyệt', OT_STATUS))
-                                                <i class="fas fa-grin-stars fa-2x text-success"
-                                                   title="{{ $item->workTimeApprover->name ?? '' }}"></i>
-                                            @elseif($item['status'] == array_search('Chưa duyệt', OT_STATUS))
-                                                <i class="fas fa-meh-blank fa-2x text-warning" title="Chưa duyệt"></i>
-                                            @elseif($item['status'] == array_search('Từ chối', OT_STATUS))
-                                                <i class="fas fa-frown fa-2x text-danger"
-                                                   title="{{ $item->workTimeApprover->name ?? ''  }}"></i>
-                                            @endif
+                                    @elsecan('team-leader')
+                                        @if($item['status'] == array_search('Đã duyệt', OT_STATUS))
+                                            <i class="fas fa-grin-stars fa-2x text-success"
+                                               title="{{ $item->workTimeApprover->name ?? '' }}"></i>
+                                        @elseif($item['status'] == array_search('Chưa duyệt', OT_STATUS))
+                                            <i class="fas fa-meh-blank fa-2x text-warning" title="Chưa duyệt"></i>
+                                        @elseif($item['status'] == array_search('Từ chối', OT_STATUS))
+                                            <i class="fas fa-frown fa-2x text-danger"
+                                               title="{{ $item->workTimeApprover->name ?? ''  }}"></i>
+                                        @endif
                                     @endcan
                                 </td>
                             </tr>
@@ -248,21 +252,14 @@
                                 <td class="d-none d-md-table-cell">{!! $item['reason'] !!}</td>
                                 <td class="d-none d-md-table-cell">{!! $item['note_respond'] !!}</td>
                                 <td class="text-center td-approve">
-                                    @if($item['status'] == array_search('Đã duyệt', OT_STATUS))
-                                        <i class="fas fa-grin-stars fa-2x text-success"
-                                           title="{{ $item->workTimeApprover->name ?? '' }}"></i>
-                                    @elseif($item['status'] == array_search('Chưa duyệt', OT_STATUS))
-                                        <i class="fas fa-meh-blank fa-2x text-warning" title="Chưa duyệt"></i>
-                                    @elseif($item['status'] == array_search('Từ chối', OT_STATUS))
-                                        <i class="fas fa-frown fa-2x text-danger"
-                                           title="{{ $item->workTimeApprover->name ?? ''  }}"></i>
-                                    @endif
                                     @can('manager')
                                         @if($item['status'] == array_search('Chưa duyệt', OT_STATUS))
 
                                             <button class="btn btn-info text-uppercase text-center approve"
                                                     data-permission="ot"
-                                                    data-id="{{ $item['id'] ? $item['id'] : '' }}">Duyệt
+                                                    data-id="{{ $item['id'] ? $item['id'] : '' }}"
+                                                    data-itemtype="{{$item->ot_type ? $item->ot_type == array_search('Dự án', OT_TYPE) ? 'OT Dự án' : 'OT cá nhân' : '' }}">
+                                                Duyệt
                                             </button>
                                         @elseif($item['status'] == array_search('Đã duyệt', OT_STATUS))
                                             <i class="fas fa-grin-stars fa-2x text-success"
@@ -270,6 +267,16 @@
                                         @elseif($item['status'] == array_search('Từ chối', OT_STATUS))
                                             <i class="fas fa-frown fa-2x text-danger"
                                                title="{{ $item->workTimeApprover->name ?? '' }}"></i>
+                                        @endif
+                                    @elsecan('team-leader')
+                                        @if($item['status'] == array_search('Đã duyệt', OT_STATUS))
+                                            <i class="fas fa-grin-stars fa-2x text-success"
+                                               title="{{ $item->workTimeApprover->name ?? '' }}"></i>
+                                        @elseif($item['status'] == array_search('Chưa duyệt', OT_STATUS))
+                                            <i class="fas fa-meh-blank fa-2x text-warning" title="Chưa duyệt"></i>
+                                        @elseif($item['status'] == array_search('Từ chối', OT_STATUS))
+                                            <i class="fas fa-frown fa-2x text-danger"
+                                               title="{{ $item->workTimeApprover->name ?? ''  }}"></i>
                                         @endif
                                     @endcan
                                 </td>
@@ -295,7 +302,7 @@
     <!-- Nav tabs -->
     <ul class="nav nav-tabs md-tabs nav-justified primary-color" role="tablist">
         <li class="nav-item">
-            <a class="nav-link active" data-toggle="tab" href="#panel555" role="tab">Xin phép đi sớm/muộn</a>
+            <a class="nav-link active" data-toggle="tab" href="#panel555" role="tab">Xin đi muộn/sớm</a>
         </li>
         <li class="nav-item">
             <a class="nav-link tab-nav-link-ot" data-toggle="tab" href="#panel666" role="tab">Xin OT</a>
@@ -433,7 +440,8 @@
         <div class="modal-dialog modal-center permission-modal-set-center" role="document">
             <div class="modal-content" id="bg-img" style="background-image: url({{ asset('img/font/xin_nghi.png') }})">
                 <div class="modal-header text-center border-bottom-0 p-3">
-                    <h4 class='mg-center mb-2 modal-title w-100 font-weight-bold pt-2 mg-left-10'>Nội dung đơn</h4>
+                    <h4 class='mg-center mb-2 modal-title w-100 font-weight-bold pt-2 mg-left-10 title-permission'>Nội
+                        dung đơn</h4>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span class="btn-close-icon" aria-hidden="true">&times;</span>
                     </button>
@@ -679,8 +687,11 @@
                     $('.approve-type').attr('value', 1)
                 }
                 $('#modal-reject').modal('show');
-                var id = $(this).data("id");
-                var permissionType = $(this).data("permission");
+                var id = $(this).data("id"),
+                    permissionType = $(this).data("permission"),
+                    itemtype = $(this).data("itemtype");
+                console.log(itemtype)
+                $('.modal-title').text(itemtype)
                 // debugger
                 $('.id').attr('value', id);
                 $.ajax({
@@ -840,9 +851,8 @@
                                 $('.permission-reason-ot,.btn-permission-ot').prop('disabled', false);
                             }
                         } else if (respond[1]) {
-                            console.log(respond)
                             respond[1].forEach(function (element) {
-                                $('.project_name').append('<option value="' + element.name + '">' + element.name + '</option>');
+                                $('.project_name').append('<option value="' + element.id + '">' + element.name + '</option>');
                             });
                         } else {
                             $('.permission-reason-ot').empty();

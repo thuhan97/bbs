@@ -1483,10 +1483,6 @@ td.blank, .type-1, .type-2 {
         width: 32%;
     }
 
-    .md-tabs .nav-item.open .nav-link, .md-tabs .nav-link.active {
-        height: 64px;
-    }
-
     .permission-modal-set-center {
         margin: 0 auto;
         width: 84%;
@@ -1494,6 +1490,27 @@ td.blank, .type-1, .type-2 {
 
     .mobile-mg-right-5 {
         margin-right: 5%;
+    }
+
+
+    .primary-color, ul.stepper li.active a .circle, ul.stepper li.completed a .circle {
+        background-color: #e0e0e0 !important;
+        box-shadow: none;
+    }
+
+    .md-tabs .nav-item.open .nav-link, .md-tabs .nav-link.active {
+        border-radius: 0px;
+        background-color: #4285f4;
+    }
+
+    .md-tabs .nav-link {
+        border-radius: 0px;
+        color: black;
+    }
+
+    .md-tabs {
+        border: 0;
+        padding: 0rem;
     }
 }
 
@@ -1520,3 +1537,29 @@ td.blank, .type-1, .type-2 {
 .custom-modal {
     left: 270px;
 }
+
+
+.primary-color, ul.stepper li.active a .circle, ul.stepper li.completed a .circle {
+    background-color: #e0e0e0 !important;
+    box-shadow: none;
+}
+
+.md-tabs .nav-item.open .nav-link, .md-tabs .nav-link.active {
+    border-radius: 0px;
+    background-color: #4285f4;
+    padding: 13px;
+    height: 50px;
+}
+
+.md-tabs .nav-link {
+    border-radius: 0px;
+    padding: 13px;
+    color: black;
+}
+
+.md-tabs {
+    border: 0;
+    padding: 0rem;
+    height: 50px;
+}
+

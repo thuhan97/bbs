@@ -317,7 +317,7 @@ class UserController extends Controller
 
 
         $askPermission = $this->permissionGetExplanation()->where('user_id', Auth::id())->get();
-        $otTimes = $this->permissionGetOverTime()->where('creator_id', Auth::id())->get();
+        $otTimes = $this->permissionGetOverTime()->where('creator_id', Auth::id())->orderBy('created_at', 'desc')->get();
         $managerApproveOther = $this->permissionGetExplanation()->orderBy('status', 'asc')->orderBy('updated_at', 'desc')->get();
         $managerApproveOT = $this->permissionGetOverTime()->orderBy('status', 'asc')->get();
         return view('end_user.user.ask_permission', compact('askPermission', 'otTimes', 'dataLeader', 'managerApproveOther', 'managerApproveOT'));
@@ -346,7 +346,7 @@ class UserController extends Controller
 
     public function askPermissionCreate(AskPermissionRequest $request)
     {
-        if ($request['permission_type'] == array_search('Overtime', OT_STATUS)) {
+        if (array_search('Overtime', WORK_TIME_TYPE) == $request['permission_type']) {
             $minute = DateTimeHelper::getMinutesBetweenTwoTime($request['start_at'], $request['end_at']);
             if ($request['permission_status'] == null) {
                 OverTime::create([
@@ -644,13 +644,13 @@ class UserController extends Controller
             $dayOff->save();
             return back()->with('close', '');
         }
-        $numOff= $dayOff->number_off ? checkNumber($dayOff->number_off) : 0;
-        $absent= $dayOff->absent ? checkNumber($dayOff->absent) : 0;
+        $numOff = $dayOff->number_off ? checkNumber($dayOff->number_off) : 0;
+        $absent = $dayOff->absent ? checkNumber($dayOff->absent) : 0;
 
 
         return response()->json([
             'data' => $dayOff,
-            'numoff' => $numOff ,
+            'numoff' => $numOff,
             'approver' => User::find($dayOff->approver_id)->name ?? '',
             'userdayoff' => User::find($dayOff->user_id)->name ?? '',
             'absent' => $absent + $numOff
@@ -731,7 +731,7 @@ class UserController extends Controller
     private
     function permissionGetOverTime()
     {
-        return OverTime::orderBy('created_at', 'asc');
+        return OverTime::where('id','!=',null);
     }
 
     private

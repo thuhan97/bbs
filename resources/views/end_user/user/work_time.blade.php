@@ -481,7 +481,7 @@
 
                                 if (respond.status === 1) {
                                     $('.title-wt-modal-approve').text('Đơn đã được duyệt');
-                                    $('.wt-textarea-reason,.btn-send-permission').prop('disabled', true);
+                                    $('.wt-textarea-reason,.btn-send-permission,#start_at,#end_at').prop('disabled', true);
                                 } else {
                                     $('.title-wt-modal-approve').text('Xin phép');
                                     $('.wt-textarea-reason,.btn-send-permission').prop('disabled', false);

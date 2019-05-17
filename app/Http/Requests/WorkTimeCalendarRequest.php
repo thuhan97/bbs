@@ -25,21 +25,21 @@ class WorkTimeCalendarRequest extends FormRequest
     {
         $requestAll = $this->request->all();
         $rules = [];
-        if ($this->request->has('checkOtType')) {
+        if ($this->request->has('checkOtType') && $requestAll['checkOtType'] == 2) {
             $rules['ot_type'] = 'required|between:1,2';
             $rules['project_name'] = 'required|exists:users,id';
             $rules['start_at'] = 'required';
             $rules['end_at'] = 'required|after:start_at';
         } elseif ($this->request->has('explanation_type')) {
             $rules['explanation_type'] = 'required|between:1,2';
-        } elseif ($requestAll['wt_ask_permission'] == null) {
+        } elseif ($this->request->has('wt_ask_permission') && $requestAll['wt_ask_permission'] == null) {
             $rules['wt_ask_permission'] = 'required';
-        } elseif ($requestAll['wt_ask_permission_ot'] == null) {
+        } elseif ($this->request->has('wt_ask_permission_ot') && $requestAll['wt_ask_permission_ot'] == null) {
             $rules['ot_type'] = 'required|between:1,2';
             $rules['start_at'] = 'required';
             $rules['end_at'] = 'required|after:start_at';
         }
-        if ($requestAll['wt_ask_permission_ot_project'] == 'true') {
+        if ($this->request->has('wt_ask_permission_ot_project') && $requestAll['wt_ask_permission_ot_project'] == 'true') {
             $rules['ot_type'] = 'required|between:1,2';
             $rules['project_name'] = 'required|exists:users,id';
             $rules['start_at'] = 'required';

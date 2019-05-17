@@ -252,16 +252,16 @@
                             '<div class="row col-md-12 append-reason">' +
                             '<div class="col-md-12 d-flex justify-content-center row">' +
                             '<div class="row col-12">' +
-                            '<div class="user col-md-6 pl-0 pr-0 text-center my-2">' +
+                            '<div class="user col-md-6 pl-0 pr-0 text-center my-2 mt-3">' +
                             '    <input type="radio" id="ot-project" class="user-radio2 radio-modal-work-time" name="ot_type"  style="position: relative;opacity: 1;pointer-events: inherit"/>' +
                             '    <label for="ot-project">OT Dự án </label>' +
                             '</div>' +
-                            '<div class="user col-md-6 pl-0 pr-0 text-center my-2">' +
+                            '<div class="user col-md-6 pl-0 pr-0 text-center my-2 mt-3">' +
                             '    <input id="ot-other" type="radio" class="user-radio3 radio-modal-work-time"  name="ot_type" style="position: relative;opacity: 1;pointer-events: inherit"/>' +
                             '    <label for="ot-other">OT Cá nhân </label>' +
                             '</div>' +
                             '</div>' +
-                            '   <select class="browser-default form-control project_name ml-4 my-2" name="project_name">' +
+                            '   <select class="browser-default form-control project_name ml-4 mb-2" name="project_name">' +
                             '       <option value="0">Chọn dự án</option>' +
                             '   </select>' +
                             '</div>' +
@@ -312,15 +312,15 @@
                                 '<input hidden name="wt_ask_permission_ot" class="wt_ask_permission_ot" value="">' +
                                 '<input hidden name="wt_ask_permission_ot_project" class="wt_ask_permission_ot_project" value="">' +
                                 '<input type="hidden" class="work_day" name="work_day" value="' + getDataTime + '">' +
-                                '<div class="user col-md-4 pl-0 pr-0 my-2 text-center">' +
+                                '<div class="user col-md-4 pl-0 pr-0 my-2 text-center mt-3">' +
                                 '    <input type="radio" id="late" class="user-radio2 radio-modal-work-time" name="explanation_type" value="1"  style="position: relative;opacity: 1;pointer-events: inherit"/>' +
                                 '    <label for="late">Xin đi muộn </label>' +
                                 '</div>' +
-                                '<div class="user col-md-4 pl-0 pr-0 my-2 text-center">' +
+                                '<div class="user col-md-4 pl-0 pr-0 my-2 text-center mt-3">' +
                                 '    <input  id="early" type="radio" class="user-radio3 radio-modal-work-time"  name="explanation_type" value="2"  style="position: relative;opacity: 1;pointer-events: inherit"/>' +
                                 '    <label for="early">Xin về sớm </label>' +
                                 '</div>' +
-                                '   <div class="user col-md-4 pl-2 pr-0 my-2 text-center">' +
+                                '   <div class="user col-md-4 pl-2 pr-0 my-2 text-center mt-3">' +
                                 '       <input type="radio" id="ot" class="user-radio1 radio-modal-work-time" name="explanation_type" value="4"  style="position: relative;opacity: 1;pointer-events: inherit"/>' +
                                 '       <label for="ot">Xin OT</label>' +
                                 '   </div>' +

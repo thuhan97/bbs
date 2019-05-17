@@ -88,9 +88,9 @@
     @endif
     <div class="row mb-4">
         <div class="col-md-4">
-            <h2 class="mt-3">Danh sách xin phép</h2>
+            <h2 class="mt-3 mobile-font-17">Danh sách xin phép</h2>
         </div>
-        <div class="col-md-8 text-right">
+        <div class="col-md-8 text-right mobile-mg-right-5">
             <button onclick="location.href='{{route("day_off")}}?t=1'"
                     class="btn btn-success no-box-shadow waves-effect waves-light float-right" id="btn-off">
                 Xin nghỉ phép
@@ -143,12 +143,12 @@
                         </colgroup>
                         <thead class="grey lighten-2">
                         <tr>
-                            <th class="text-center">#</th>
-                            <th class="text-center">Ngày</th>
-                            <th>Tên nhân viên</th>
+                            <th class="text-center d-none d-md-table-cell">#</th>
+                            <th class="text-center mb-with-32">Ngày</th>
+                            <th class="table-with-42">Tên nhân viên</th>
                             <th>Hình thức</th>
-                            <th>Nội dung</th>
-                            <th class="">Nội dung phản hồi</th>
+                            <th class="d-none d-md-table-cell">Nội dung</th>
+                            <th class="d-none d-md-table-cell">Nội dung phản hồi</th>
                             <th class="text-center" style="width: 10%;">Trạng Thái</th>
                         </tr>
                         </thead>
@@ -157,9 +157,10 @@
                         @foreach($managerApproveOther as $item)
                             {{--@dd($item)--}}
                             <tr>
-                                <th class="text-center" style="padding: 15px">{{ $increment++ }}</th>
-                                <th class="text-center">{{ $item['work_day'] ?? '' }}</th>
-                                <th>{{ $item->creator->name ?? '' }}</th>
+                                <th class="text-center d-none d-md-table-cell"
+                                    style="padding: 15px">{{ $increment++ }}</th>
+                                <th class="text-center" style="padding: 15px">{{ $item['work_day'] ?? '' }}</th>
+                                <th class="table-with-42">{{ $item->creator->name ?? '' }}</th>
                                 <td>
                                     @if($item->type == 1)
                                         Đi muộn
@@ -167,14 +168,11 @@
                                         Về sớm
                                     @endif
                                 </td>
-                                <td>{!! $item['note'] !!}</td>
-                                <td>{!! $item['reason_reject'] !!}</td>
+                                <td class="d-none d-md-table-cell">{!! $item['note'] !!}</td>
+                                <td class="d-none d-md-table-cell">{!! $item['reason_reject'] !!}</td>
                                 <td class="text-center td-approve">
                                     @can('manager')
                                         @if($item['status'] == array_search('Chưa duyệt', OT_STATUS))
-                                            {{--<button class="btn-approve float-left" data-permission="other"--}}
-                                            {{--data-id="{{ $item['id'] ? $item['id'] : '' }}"><i--}}
-                                            {{--class="fas fa-check-circle"></i></button>--}}
                                             <button class="btn btn-info text-uppercase text-center approve"
                                                     data-permission="other"
                                                     data-id="{{ $item['id'] ? $item['id'] : '' }}">Duyệt
@@ -186,6 +184,16 @@
                                             <i class="fas fa-frown fa-2x text-danger"
                                                title="{{ $item->workTimeApprover->name ?? '' }}"></i>
                                         @endif
+                                        @elsecan('team-leader')
+                                            @if($item['status'] == array_search('Đã duyệt', OT_STATUS))
+                                                <i class="fas fa-grin-stars fa-2x text-success"
+                                                   title="{{ $item->workTimeApprover->name ?? '' }}"></i>
+                                            @elseif($item['status'] == array_search('Chưa duyệt', OT_STATUS))
+                                                <i class="fas fa-meh-blank fa-2x text-warning" title="Chưa duyệt"></i>
+                                            @elseif($item['status'] == array_search('Từ chối', OT_STATUS))
+                                                <i class="fas fa-frown fa-2x text-danger"
+                                                   title="{{ $item->workTimeApprover->name ?? ''  }}"></i>
+                                            @endif
                                     @endcan
                                 </td>
                             </tr>
@@ -213,13 +221,13 @@
                         </colgroup>
                         <thead class="grey lighten-2">
                         <tr>
-                            <th class="text-center">#</th>
-                            <th class="text-center">Ngày</th>
-                            <th>Tên nhân viên</th>
+                            <th class="text-center d-none d-md-table-cell">#</th>
+                            <th class="text-center mb-with-32" style="padding: 15px">Ngày</th>
+                            <th class="table-with-42">Tên nhân viên</th>
                             <th>Hình thức</th>
-                            <th>Thời gian</th>
-                            <th>Nội dung</th>
-                            <th>Nội dung phản hồi</th>
+                            <th class="d-none d-md-table-cell">Thời gian</th>
+                            <th class="d-none d-md-table-cell">Nội dung</th>
+                            <th class="d-none d-md-table-cell">Nội dung phản hồi</th>
                             <th class="text-center" style="width: 10%;">Trạng Thái</th>
                         </tr>
                         </thead>
@@ -228,17 +236,27 @@
                         @foreach($managerApproveOT as $item)
                             {{--@dd($item)--}}
                             <tr>
-                                <th class="text-center" style="padding: 15px">{{ $increment++ }}</th>
+                                <th class="text-center d-none d-md-table-cell"
+                                    style="padding: 15px">{{ $increment++ }}</th>
                                 <th class="text-center">{{ $item['work_day'] ?? '' }}</th>
-                                <th>{{ $item->creator->name ?? '' }}</th>
+                                <th class="table-with-42">{{ $item->creator->name ?? '' }}</th>
                                 <td>
                                     {{$item->ot_type ? $item->ot_type == array_search('Dự án', OT_TYPE) ? 'OT Dự án' : 'OT cá nhân' : '' }}
                                 </td>
-                                <td>{{$item->description_time}}
+                                <td class="d-none d-md-table-cell">{{$item->description_time}}
                                 </td>
-                                <td>{!! $item['reason'] !!}</td>
-                                <td>{!! $item['note_respond'] !!}</td>
+                                <td class="d-none d-md-table-cell">{!! $item['reason'] !!}</td>
+                                <td class="d-none d-md-table-cell">{!! $item['note_respond'] !!}</td>
                                 <td class="text-center td-approve">
+                                    @if($item['status'] == array_search('Đã duyệt', OT_STATUS))
+                                        <i class="fas fa-grin-stars fa-2x text-success"
+                                           title="{{ $item->workTimeApprover->name ?? '' }}"></i>
+                                    @elseif($item['status'] == array_search('Chưa duyệt', OT_STATUS))
+                                        <i class="fas fa-meh-blank fa-2x text-warning" title="Chưa duyệt"></i>
+                                    @elseif($item['status'] == array_search('Từ chối', OT_STATUS))
+                                        <i class="fas fa-frown fa-2x text-danger"
+                                           title="{{ $item->workTimeApprover->name ?? ''  }}"></i>
+                                    @endif
                                     @can('manager')
                                         @if($item['status'] == array_search('Chưa duyệt', OT_STATUS))
 
@@ -280,7 +298,7 @@
             <a class="nav-link active" data-toggle="tab" href="#panel555" role="tab">Xin phép đi sớm/muộn</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" data-toggle="tab" href="#panel666" role="tab">Xin OT</a>
+            <a class="nav-link tab-nav-link-ot" data-toggle="tab" href="#panel666" role="tab">Xin OT</a>
         </li>
     </ul>
     <!-- Nav tabs -->
@@ -300,11 +318,11 @@
                 </colgroup>
                 <thead class="grey lighten-2">
                 <tr>
-                    <th class="text-center">#</th>
-                    <th class="text-center">Ngày</th>
+                    <th class="text-center d-none d-md-table-cell">#</th>
+                    <th class="text-center table-with-42">Ngày</th>
                     <th>Hình thức</th>
-                    <th>Nội dung</th>
-                    <th>Nội dung từ chối</th>
+                    <th class="d-none d-md-table-cell">Nội dung</th>
+                    <th class="d-none d-md-table-cell">Nội dung từ chối</th>
                     <th class="text-center">Trạng Thái</th>
                 </tr>
                 </thead>
@@ -312,8 +330,8 @@
 
                 @foreach($askPermission as $increment => $item)
                     <tr>
-                        <th class="text-center">{{ $increment+1 }}</th>
-                        <th class="text-center">{{ $item['work_day'] ?? '' }}</th>
+                        <th class="text-center d-none d-md-table-cell">{{ $increment+1 }}</th>
+                        <th class="text-center" style="padding: 15px;width: 10%;">{{ $item['work_day'] ?? '' }}</th>
                         <td>
                             {{--{{$item->type_name}}aaa--}}
                             @if($item['type'] == array_search('Bình thường', WORK_TIME_TYPE))
@@ -330,8 +348,8 @@
                                 @endif
                             @endif
                         </td>
-                        <td>{!! $item['note'] ?? '' !!}</td>
-                        <td>{!! $item['reason_reject'] ?? '' !!}</td>
+                        <td class="d-none d-md-table-cell">{!! $item['note'] ?? '' !!}</td>
+                        <td class="d-none d-md-table-cell">{!! $item['reason_reject'] ?? '' !!}</td>
                         <td class="text-center td-approve">
                             @if($item['status'] == array_search('Đã duyệt', OT_STATUS))
                                 <i class="fas fa-grin-stars fa-2x text-success"
@@ -365,12 +383,12 @@
                 </colgroup>
                 <thead class="grey lighten-2">
                 <tr>
-                    <th class="text-center">#</th>
+                    <th class="text-center d-none d-md-table-cell">#</th>
                     <th class="text-center">Ngày</th>
                     <th>Hình thức</th>
                     <th>Thời gian</th>
-                    <th>Nội dung</th>
-                    <th>Nội dung từ chối</th>
+                    <th class="d-none d-md-table-cell">Nội dung</th>
+                    <th class="d-none d-md-table-cell">Nội dung từ chối</th>
                     <th class="text-center">Trạng Thái</th>
                 </tr>
                 </thead>
@@ -378,14 +396,14 @@
 
                 @foreach($otTimes as $increment => $item)
                     <tr>
-                        <th class="text-center">{{ $increment+1 }}</th>
-                        <th class="text-center">{{ $item['work_day'] ?? '' }}</th>
+                        <th class="text-center d-none d-md-table-cell">{{ $increment+1 }}</th>
+                        <th class="text-center mb-with-32" style="padding: 15px">{{ $item['work_day'] ?? '' }}</th>
                         <td>
                             {{$item->ot_type ? $item->ot_type == 1 ? 'OT Dự án' : 'OT cá nhân' : '' }}
                         </td>
-                        <td>{{$item->description_time}}</td>
-                        <td>{!! $item['reason'] !!}</td>
-                        <td>{!! $item['note_respond'] !!}</td>
+                        <td class="mb-with-32">{{$item->description_time}}</td>
+                        <td class="d-none d-md-table-cell">{!! $item['reason'] !!}</td>
+                        <td class=" d-none d-md-table-cell">{!! $item['note_respond'] !!}</td>
                         <td class="text-center td-approve">
                             @if($item['status'] == array_search('Đã duyệt', OT_STATUS))
                                 <i class="fas fa-grin-stars fa-2x text-success"
@@ -408,24 +426,11 @@
     </div>
     <!-- Tab panels -->
 
-
-
-
-
-    @can('team-leader')
-        @if($otTimes->isNotEmpty())
-            {{--<h1>Danh sách xin phép</h1>--}}
-
-        @endif
-    @endcan
-
-
-
     {{--{{ $datas->render('end_user.paginate') }}--}}
     <div class="modal fade reject" id="modal-reject" tabindex="-1"
          role="dialog" aria-labelledby="myModalLabel"
          aria-hidden="true">
-        <div class="modal-dialog modal-center modal-set-center" role="document">
+        <div class="modal-dialog modal-center permission-modal-set-center" role="document">
             <div class="modal-content" id="bg-img" style="background-image: url({{ asset('img/font/xin_nghi.png') }})">
                 <div class="modal-header text-center border-bottom-0 p-3">
                     <h4 class='mg-center mb-2 modal-title w-100 font-weight-bold pt-2 mg-left-10'>Nội dung đơn</h4>
@@ -481,7 +486,7 @@
     <div class="modal fade myModal" id="modal-form" tabindex="-1"
          role="dialog" aria-labelledby="myModalLabel"
          aria-hidden="true">
-        <div class="modal-dialog modal-center modal-set-center" role="document">
+        <div class="modal-dialog modal-center permission-modal-set-center" role="document">
             <div class="modal-content" id="bg-img" style="background-image: url({{ asset('img/font/xin_nghi.png') }})">
                 <div class="modal-header text-center border-bottom-0 p-3">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -514,7 +519,7 @@
     <div class="modal fade" id="modal-early" tabindex="-1"
          role="dialog" aria-labelledby="myModalLabel"
          aria-hidden="true">
-        <div class="modal-dialog modal-center modal-set-center" role="document">
+        <div class="modal-dialog modal-center permission-modal-set-center" role="document">
             <div class="modal-content" id="bg-img" style="background-image: url({{ asset('img/font/xin_nghi.png') }})">
                 <div class="modal-header text-center border-bottom-0 p-3">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -547,7 +552,7 @@
     <div class="modal fade myModal" id="modal-form-ot" tabindex="-1"
          role="dialog" aria-labelledby="myModalLabel"
          aria-hidden="true">
-        <div class="modal-dialog modal-center modal-set-center" role="document">
+        <div class="modal-dialog modal-center permission-modal-set-center" role="document">
             <div class="modal-content" id="bg-img" style="background-image: url({{ asset('img/font/xin_nghi.png') }})">
                 <div class="modal-header text-center border-bottom-0 p-3">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -562,7 +567,8 @@
                             <input type="hidden" name="ot_id" class="ot_id">
                             <input type="hidden" name="permission_status" class="permission_status">
                             <div class="col-md-6 text-center mt-3">
-                                <input style="position: relative;opacity: 1;pointer-events: inherit" class="other-ot ml-5"
+                                <input style="position: relative;opacity: 1;pointer-events: inherit"
+                                       class="other-ot ml-5"
                                        type="radio" name="ot_type" id="project-ot" checked value="1">
                                 <label for="project-ot">OT dự án</label>
                             </div>
@@ -856,12 +862,12 @@
                 }
             });
 
-            $('#project-ot').on('click',function () {
-                $('.project_name').prop('disabled',false);
+            $('#project-ot').on('click', function () {
+                $('.project_name').prop('disabled', false);
             });
 
-            $('#other-ot').on('click',function () {
-                $('.project_name').prop('disabled',true);
+            $('#other-ot').on('click', function () {
+                $('.project_name').prop('disabled', true);
             });
         });
     </script>

@@ -20,6 +20,7 @@
     width:40px;
     /*height:100%;*/
     float:left;
+    margin-right: 5px;
     /*position: absolute;*/
 }
 .userImage img {
@@ -57,7 +58,7 @@ p{
 } 
 .content-posts{
 	margin-bottom: 10px;
-    max-height: 300px;
+/*    max-height: 300px;*/
     overflow: hidden;
 }
 .posts:last-child {
@@ -65,4 +66,10 @@ p{
 }
 .show-more{
     margin-bottom: 10px !important;
+}
+.modal-dialog{
+    overflow-x: hidden;
+}
+.divContent{
+    margin: 0px 10px;
 }

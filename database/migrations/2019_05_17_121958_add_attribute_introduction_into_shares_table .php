@@ -14,7 +14,7 @@ class AddAttributeIntroductionIntoSharesTable extends Migration
     public function up()
     {
         Schema::table('shares', function (Blueprint $table) {
-            $table->longText('introduction');
+            $table->string('introduction', 500);
         });
     }
 

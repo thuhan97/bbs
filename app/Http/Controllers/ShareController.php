@@ -142,7 +142,7 @@ class ShareController extends Controller
         if($experience){
             return view('end_user.share.view_experience', compact('experience'));
         }else{
-            flash()->error(__l('share_experience_error_edit'));
+            flash()->error(__l('share_experience_error_view'));
             return redirect()->route('share_experience');
         }
     }    

@@ -77,4 +77,5 @@ return [
     'share_experience_error_deleted' => 'Xóa chia sẻ kinh nghiệm thất bại',
     'share_experience_successully_edit' => 'Sửa chia sẻ kinh nghiệm thành công',
     'share_experience_error_edit' => 'Sửa chia sẻ kinh nghiệm thất bại',    
+    'share_experience_error_view' => 'Không tìm thấy chia sẻ kinh nghiệm',    
 ];

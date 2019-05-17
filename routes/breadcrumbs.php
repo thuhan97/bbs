@@ -86,6 +86,11 @@ Breadcrumbs::register('project_create', function ($breadcrumbs) {
     $breadcrumbs->push(__l('create_project'), route('create_project'));
 
 });
+Breadcrumbs::register('edit_project', function ($breadcrumbs, $project) {
+    $breadcrumbs->parent('project');
+    $breadcrumbs->push(__l('edit_project'), route('project_edit', $project->id));
+
+});
 //Home > Meeting Room
 Breadcrumbs::register('meetings', function ($breadcrumbs) {
     $breadcrumbs->parent('home');

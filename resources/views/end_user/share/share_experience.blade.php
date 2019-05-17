@@ -14,7 +14,7 @@
     <div class="content">
         <div class="tab-pane active">
             <div class="createReport fixed-action-btn">
-                <a href="#" class="btn-lg red waves-effect waves-light text-white" title="Đăng bài" data-target="#feedback" data-toggle="modal" style="border-radius: 35px;">
+                <a href="#" class="btn-lg red waves-effect waves-light text-white" title="Đăng bài" data-target="#feedback" data-toggle="modal" style="border-radius: 35px;border: 5px solid #FED6D8;">
                     <img src="{{ asset('img/icon_exp.png') }}" onerror="this.src='{{URL_IMAGE_NO_IMAGE}}'" alt="avatar image" />
                     Đăng bài
                 </a>

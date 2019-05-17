@@ -10,7 +10,6 @@
 @section('content')
     <link rel="stylesheet" href="{{URL::asset('css/share_experience.css')}}">
 
-<<<<<<< HEAD
 <div class="col-md-10">
     <div class="content">
         <div class="tab-pane active">
@@ -20,19 +19,6 @@
                     Đăng bài
                 </a>
             </div>
-=======
-    <div class="col-md-8">
-        <div class="content" id="share_ex">
-            <div class="tab-pane active">
-                <div class="createReport fixed-action-btn">
-                    <a href="#" class="btn-lg red waves-effect waves-light text-white" title="Đăng bài"
-                       data-target="#feedback" data-toggle="modal" style="border-radius: 35px;">
-                        <img src="{{ asset('img/icon_exp.png') }}" onerror="this.src='{{URL_IMAGE_NO_IMAGE}}'"
-                             alt="avatar image"/>
-                        Đăng bài
-                    </a>
-                </div>
->>>>>>> e45358ae7b44ee47d0c5279a9f0067077acb156e
                 @foreach($list_experience as $experience)
                     <div class="posts">
                         <div class="content-share-experience">

@@ -73,3 +73,13 @@ p{
 .divContent{
     margin: 0px 10px;
 }
+.modal-header{
+    justify-content: center;
+    position: relative;
+}
+.text-title{
+    position: absolute;
+}
+.modal-header{
+    padding: 1.5rem 1rem !important;
+}

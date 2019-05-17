@@ -59,8 +59,9 @@
     <div class="modal fade" id="feedback" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
          aria-hidden="true">
         <div class="modal-dialog modal-center modal-lg" role="document">
-            <div class="modal-content" id="bg-img">
+            <div class="modal-content">
                 <div class="modal-header text-center border-bottom-0 p-3">
+                    <h2 for="acronym_name" class="text-title"><strong>Kinh nghiệm làm việc</strong></h2>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <div class="background-close-icon">
                             <span class="btn-close-icon" aria-hidden="true">&times;</span>
@@ -70,7 +71,6 @@
                 <form action="{{ route('add_experience') }}" method="post" enctype="multipart/form-data" id="formExperience">
                     @csrf <!-- {{ csrf_field() }} -->
                     <div class="margin-b-5 margin-t-5">
-                        <h2 for="acronym_name" class="text-center"><strong>Kinh nghiệm làm việc</strong></h2>
                         <div class="divContent">
                             <div class="form-group">    
                                 <label>Miêu tả*</label>

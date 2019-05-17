@@ -544,13 +544,13 @@ if (!function_exists('get_punish_image')) {
         $unit = 1000;
         //10M
         if ($number > 10000 * $unit) {
-            return '/img/pigs/pig-4.jpg';
+            return '/img/pigs/pig-4.png';
         } else if ($number > 5000 * $unit) {
-            return '/img/pigs/pig-3.jpg';
+            return '/img/pigs/pig-3.png';
         } else if ($number > 2000 * $unit) {
-            return '/img/pigs/pig-2.jpg';
+            return '/img/pigs/pig-2.png';
         } else {
-            return '/img/pigs/pig-1.jpg';
+            return '/img/pigs/pig-1.png';
         }
     }
 }

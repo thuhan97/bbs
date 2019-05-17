@@ -1,18 +1,18 @@
 @extends('layouts.end_user')
-@section('page-title', __l('create_project'))
+@section('page-title', __l('edit_project'))
 
 @section('breadcrumbs')
-    {!! Breadcrumbs::render('project_create') !!}
+    {!! Breadcrumbs::render('edit_project', $record) !!}
 @endsection
 @section('content')
     <div class="row">
         <div class="col-xxl-2"></div>
         <div class="col-xxl-8 col-12">
             <div class="card">
-                <form action="{{route('store_project')}}" method="post" enctype="multipart/form-data">
+                <form action="{{route('project_update', $record->id)}}" method="post" enctype="multipart/form-data">
                     @csrf
                     <div class="card-body">
-                        <h4 class="card-title">{{__l('create_project')}}
+                        <h4 class="card-title">{{__l('edit_project')}}
                         </h4>
                         <hr/>
                         <div class="card-text">
@@ -20,7 +20,7 @@
                             <br/>
                             <div class="text-right">
                                 <a href="{{route('project')}}" class="btn btn-warning">Hủy</a>
-                                <button type="submit" class="btn btn-success">Tạo mới</button>
+                                <button type="submit" class="btn btn-success">Cập nhật</button>
                             </div>
                         </div>
                     </div>

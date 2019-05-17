@@ -170,7 +170,7 @@ class User extends Authenticatable implements JWTSubject
 
     public function isManager()
     {
-        return $this->attributes['jobtitle_id'] == MANAGER_ROLE;
+        return $this->attributes['jobtitle_id'] >= MANAGER_ROLE;
     }
 
     public function isGroupManager()

@@ -31,7 +31,7 @@ $name = $team->name ?? $config->name;
             <i class="fas fa-address-book mr-3"></i> {{__l('contact')}}</a>
 
         <a href="{{route('project')}}"
-           class="list-group-item list-group-item-action waves-effect {{ \App\Utils::checkRoute(['project', 'project_detail']) ? 'active': '' }}">
+           class="list-group-item list-group-item-action waves-effect {{ \App\Utils::checkRoute(['project', 'create_project','project_edit', 'project_detail']) ? 'active': '' }}">
             <i class="fas fa-industry mr-3"></i>
             {{__l('Project')}}</a>
 
@@ -46,7 +46,7 @@ $name = $team->name ?? $config->name;
             <i class="fas fa-file mr-3"></i>
             Chia sẻ tài liệu</a>
         <a href="{{route('share_experience')}}"
-           class="list-group-item list-group-item-action waves-effect {{ \App\Utils::checkRoute(['share_experience']) ? 'active': '' }}">
+           class="list-group-item list-group-item-action waves-effect {{ \App\Utils::checkRoute(['share_experience', 'view_experience', 'edit_experience']) ? 'active': '' }}">
             <i class="fas fa-book mr-3"></i>
             Kinh nghiệm làm việc</a><!--
         <a href="{{route('post')}}"

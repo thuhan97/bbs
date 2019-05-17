@@ -102,7 +102,7 @@
             </div>
             <div class="form-check form-check-inline">
                 <input type="radio" class="form-check-input" id="status-2" name="status"
-                       @if(old('stattus', $record->status) == 1) checked @endif
+                       @if(old('stattus', $record->status) == 2) checked @endif
                        value="2">
                 <label class="form-check-label" for="status-2">Đã kết thúc</label>
             </div>

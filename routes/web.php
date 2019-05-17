@@ -79,6 +79,8 @@ Route::group([
     Route::get('/tao-du-an', 'ProjectController@create')->name('create_project');
     Route::post('/tao-du-an', 'ProjectController@store')->name('store_project')->middleware('can:team-leader');
     Route::get('/du-an/{id}', 'ProjectController@detail')->where(['id' => '\d+'])->name('project_detail');
+    Route::get('/sua-du-an/{id}', 'ProjectController@edit')->where(['id' => '\d+'])->name('project_edit');
+    Route::post('/sua-du-an/{id}', 'ProjectController@update')->where(['id' => '\d+'])->name('project_update');
 
     Route::get('/chia-se-tai-lieu', 'ShareController@listShareDocument')->name('list_share_document');
     Route::get('/chia-se-tai-lieu', 'ShareController@listShareDocument')->name('list_share_document');

@@ -75,6 +75,45 @@ class ProjectController extends Controller
      *
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
+    public function edit($id)
+    {
+        $user = Auth::user();
+        $record = Project::find($id);
+        if ($record && $user->can('edit', $record))
+            return view('end_user.project.update', compact('record'));
+
+        abort(404);
+    }
+
+    /**
+     * @param $id
+     *
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function update(CreateProjectRequest $request, $id)
+    {
+        $all = $request->all();
+        if ($request->has('image_upload')) {
+            $imageUrl = $request->file('image_upload')->store(PROJECT_IMAGE_FOLDER, 'uploads');
+            $all['image_url'] = '/uploads/' . $imageUrl;
+        }
+        $user = Auth::user();
+        $project = Project::find($id);
+        if ($project && $user->can('edit', $project)) {
+            $project->fill($all);
+            $project->save();
+            flash()->success(__l('project_edit_successully'));
+
+            return redirect(route('project'));
+        }
+        abort(404);
+    }
+
+    /**
+     * @param $id
+     *
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function detail($id)
     {
         $project = $this->service->detail($id);

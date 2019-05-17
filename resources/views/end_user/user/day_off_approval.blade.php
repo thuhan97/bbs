@@ -67,42 +67,42 @@
                 {{ Form::select('month', MONTH, $month ?? '', ['class' => 'browser-default custom-select w-100 month option-select','placeholder'=>'Chọn tháng']) }}
             </div>
         </div>--}}
-        <div class="row mb-1 ml-1">
-            <div class="col-sm-4 col-xl-2 pr-3 pl-0 mb-2">
+
+
+
+
+        <div class="row mb-2 ml-1 mb-sm-3">
+            <div class="col-6 col-sm-4 col-xl-2 pr-3 pl-0">
                 <label class=" text-w-400" for="">Từ ngày</label>
                 <div class="position-relative">
-                <input type="text"
-                       class="form-control border-0 select-item"
-                       id="search_start_at" autocomplete="off" name="search_start_at"
-                       value="{{  $start ?? $searchStart  }}"
-                       readonly="readonly">
+                    <input type="text"
+                           class="form-control border-0 select-item z-"
+                           id="search_start_at" autocomplete="off" name="search_start_at"
+                           value="{{  $start ?? $searchStart  }}"
+                           readonly="readonly">
                     <i class="far fa-calendar-alt position-absolute calendar-search"></i>
                 </div>
+
+
             </div>
-            <div class="col-sm-4 col-xl-2 no-padding-left">
+            <div class="col-6 col-sm-4 col-xl-2 pr-3 pl-0">
                 <label class="text-w-400" for="inputZip">Tới ngày</label>
                 <div class="position-relative">
-                <input type="text"
-                       class="form-control select-item  border-0 "
-                       id="search_end_at" autocomplete="off" name="search_end_at"
-                       value="{{ $end ?? ''}}"
-                       readonly>
+                    <input type="text"
+                           class="form-control select-item  border-0 "
+                           id="search_end_at" autocomplete="off" name="search_end_at"
+                           value="{{ $end ?? ''}}"
+                    readonly>
                     <i class="far fa-calendar-alt position-absolute calendar-search"></i>
                 </div>
             </div>
-            <div class="col-sm-2 col-xl-2 no-padding-left">
-                <label class=" text-w-400" for="inputCity"> &nbsp;</label>
-                <div class="input-group">
-                    <input type="text" class="form-control search-day-off border-radius-1"
-                           placeholder="Tìm tên nhân viên"
-                           name="search" id="content-search" value="{{ $search ?? '' }}">
-                </div>
-            </div>
-            <div class="col-sm-2 col-xl-1 no-padding-left">
-                <label class=" text-w-400" for="inputCity"> &nbsp;</label>
-                <button class="form-control select-item  border-0 btn-secondary" id="result-search"><i class="fas fa-search"></i></button>
+            <div class="col-sm-2 col-xl-1 no-padding-left mt-3 mt-sm-0">
+                <label class=" text-w-400 d-none d-sm-block" for="inputCity"> &nbsp;</label>
+                <button class="form-control select-item  border-0 btn-secondary" id="result-search"><i
+                            class="fas fa-search"></i></button>
             </div>
         </div>
+
         <div class="d-none d-xl-flex container-fluid col-12 row border-bottom-2 mb-2" style="position: relative;">
             <div class="col-sm-3 col-md-6 col-lg-3 position-relative">
                 <a href="{{ route('day_off_show',['status'=>ALL_DAY_OFF]) }}" class="card bg-primary border-radius-2">
@@ -187,7 +187,7 @@
             </div>
         </div>
         <br>
-        <div class="row">
+        <div class="row d-none d-xl-flex">
             <div class="col-sm-8 col-md-4"></div>
             <div class="col-7 col-sm-2 col-md-4">
             </div>
@@ -196,12 +196,11 @@
                 {{ Form::select('status', SHOW_DAY_OFFF, $status ?? ALL_DAY_OFF, ['class' => 'browser-default custom-select w-100 search-day-off border-radius-1 option-select']) }}
 
             </div>
-
             </div>
         </div>
     </form>
     <br>
-    <div class="d-flex flex-column">
+    <div class="d-flex flex-column" id="table-phone">
         <!--Table-->
         <table id="tablePreview" class="table ">
             <!--Table head-->
@@ -212,10 +211,10 @@
                 <th class="text-center ">Từ ngày</th>
                 <th class="text-center d-none d-sm-table-cell">Tới ngày</th>
                 <th class="text-center ">Tiêu đề</th>
-                <th class="text-center ">Nội dung</th>
-                <th class="text-center d-none d-sm-table-cell ">Ngày nghỉ</th>
-                <th class="text-center ">Ngày không phép</th>
-                <th class="text-center " >Phê duyệt</th>
+                <th class="text-center d-none d-sm-table-cell">Nội dung</th>
+                <th class="text-center ">Ngày có phép</th>
+                <th class="text-center  d-none d-sm-table-cell">Ngày không phép</th>
+                <th class="text-center d-none d-sm-table-cell" >Phê duyệt</th>
                 <th class="text-center d-none d-sm-table-cell ">Xem thêm</th>
             </tr>
             </thead>
@@ -228,7 +227,7 @@
                         {!! ((($getDayOff->currentPage()*PAGINATE_DAY_OFF)-PAGINATE_DAY_OFF)+1)+$keys !!}
                     </th>
 
-                    <td class="text-center table-name ">
+                    <td class="text-center ">
                         {{$record->user->name}}
                     </td>
                     <td class="text-center ">
@@ -238,15 +237,15 @@
                         {{ $record->title != DAY_OFF_TITLE_DEFAULT ? \App\Helpers\DateTimeHelper::checkTileDayOffGetDate($record->end_at) : $record->end_date  }}
                     </td>
                     <td class="text-center ">{{ array_key_exists($record->title, VACATION_FULL) ? VACATION_FULL[$record->title] : ''  }}</td>
-                    <td class="text-center ">{!! nl2br($record->reason) !!}</td>
-                    <td class="text-center d-none d-sm-table-cell">
+                    <td class="text-center d-none d-sm-table-cell">{!! nl2br($record->reason) !!}</td>
+                    <td class="text-center ">
                         {{!!!$record->number_off ? ($record->status != STATUS_DAY_OFF['noActive'] ? 'Đang duyệt' : '') : checkNumber($record->number_off).' ngày'}}
                     </td>
-                    <td class="text-center">
-                        {{!!!$record->absent ? ($record->status != STATUS_DAY_OFF['noActive'] ? 'Đang duyệt' : '') : checkNumber($record->absent) .' ngày'}}
+                    <td class="text-center d-none d-sm-table-cell">
+                    {{!!! $record->absent == DEFAULT_VALUE  ? ($record->status == STATUS_DAY_OFF['abide'] ? 'Đang duyệt' : (  $record->status == STATUS_DAY_OFF['noActive'] ? '' : checkNumber($record->absent) .' ngày')) :  checkNumber($absence->absent) .' ngày'}}
                     </td>
 
-                    <td class="text-center p-0" style="vertical-align: middle;">
+                    <td class="text-center p-0 d-none d-sm-table-cell" style="vertical-align: middle;">
                         @if($record->status == STATUS_DAY_OFF['abide'])
                             <i class="fas fa-meh-blank fa-2x text-warning text-center"></i>
                         @elseif($record->status == STATUS_DAY_OFF['active'])
@@ -271,7 +270,7 @@
 
         <form action="{{ route('edit_day_off_detail') }}" method="post" id="edit-day-off">
             @csrf
-            <div class="modal fade modal-open" id="modal-form" tabindex="-1" role="dialog"
+            <div class="modal fade modal-open custom-modal" id="modal-form" tabindex="-1" role="dialog"
                  aria-labelledby="myModalLabel"
                  aria-hidden="true">
                 <div class="modal-dialog modal-center" role="document">
@@ -340,7 +339,7 @@
 
         <form action="{{ route('delete_day_off') }}" method="post">
             @csrf
-            <div class="modal fade" id="basicExampleModal" tabindex="-1" role="dialog"
+            <div class="modal fade custom-modal" id="basicExampleModal" tabindex="-1" role="dialog"
                  aria-labelledby="exampleModalLabel"
                  aria-hidden="true">
                 <input type="hidden" value="" name="id_close" id="id-close">

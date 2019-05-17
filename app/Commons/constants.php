@@ -94,6 +94,8 @@ define('POSITIONS', [
     2 => 'Manager',
     3 => 'Giám đốc',
     4 => 'Chuyên viên',
+    5 => 'Comtor',
+    6 => 'Tester',
 ]);
 
 define('SEXS', [

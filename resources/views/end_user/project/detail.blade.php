@@ -8,13 +8,19 @@
     <div class="card">
         <h5 class="card-header h5">{{$project->name}}</h5>
         <div class="card-body">
-            <div class="text-uppercase">
-                <i class="fas fa-circle  "
-                   style="{{COLOR_STATUS_PROJECT[$project->status]}}"> {{STATUS_PROJECT[$project->status]}}</i>
+            <div>
+                <div class="text-uppercase">
+                    <i class="fas fa-circle"
+                       style="{{COLOR_STATUS_PROJECT[$project->status]}}"> {{STATUS_PROJECT[$project->status]}}</i>
+                </div>
+                @can('edit', $project)
+                    <a href="{{route('project_edit', ['id'=> $project->id])}}"
+                       class="d-none d-lg-block float-right btn btn-warning" style="position: relative; top: -40px;">Chỉnh sửa</a>
+                @endcan
             </div>
             <div class="row mt-4">
                 <div class="col-md-4 text-center">
-                    <img src="{{$project->image_url}}" class="img-fluid z-depth-1">
+                    <img src="{{$project->image_url}}" class="img-fluid z-depth-1 mb-3">
                 </div>
                 <div class="col-md-8">
                     <table class="table table-bordered table-striped">

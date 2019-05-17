@@ -13,12 +13,8 @@
 <div class="col-md-10">
     <div class="content">
         <div class="tab-pane active">
-<!--             <div class="divAddButton">
-                <button type="button" class="btn btn-danger button-exp button-add">ĐĂNG BÀI</button>
-                <button type="button" class="btn btn-danger button-exp button-hidden" style="display: none;">ẨN ĐĂNG BÀI</button>
-            </div> -->
             <div class="createReport fixed-action-btn">
-                <a href="#" class="button-add btn-lg red waves-effect waves-light text-white" title="Đăng bài" data-target="#feedback" data-toggle="modal" style="border-radius: 45%;">
+                <a href="#" class="btn-lg red waves-effect waves-light text-white" title="Đăng bài" data-target="#feedback" data-toggle="modal" style="border-radius: 35px;">
                     <img src="{{ asset('img/icon_exp.png') }}" onerror="this.src='{{URL_IMAGE_NO_IMAGE}}'" alt="avatar image" />
                     Đăng bài
                 </a>
@@ -45,10 +41,10 @@
                                 <span class="date sub-text">{{date_format($experience->created_at,"Y-m-d")}}</span>
                             </div>
                             <div class="content-posts">
-                                <p><?php echo $experience->content; ?></p>
+                                <p><?php echo $experience->introduction; ?></p>
                             </div>                      
                             <p class="show-more">
-                                <a class="js-show-more" href="#" title="Xem Thêm Nội Dung" onclick="showMoreLess(this)" id="myBtn">Xem Thêm</a>
+                                <a class="js-show-more" href="{{ route('view_experience',$experience->id) }}" title="Xem Thêm Nội Dung" id="myBtn">Xem Thêm</a>
                             </p>                                
                         </div>
                     </div>
@@ -62,7 +58,7 @@
     <!-- Modal -->
     <div class="modal fade" id="feedback" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
          aria-hidden="true">
-        <div class="modal-dialog modal-center" role="document">
+        <div class="modal-dialog modal-center modal-lg" role="document">
             <div class="modal-content" id="bg-img">
                 <div class="modal-header text-center border-bottom-0 p-3">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -71,22 +67,26 @@
                         </div>
                     </button>
                 </div>
-                <div class="form-group">
-                    <form action="{{ route('add_experience') }}" method="post" enctype="multipart/form-data" id="formExperience">
-                        @csrf <!-- {{ csrf_field() }} -->
-                        <div class="form-group margin-b-5 margin-t-5">
-                            <div class="form-group">
-                                <h2 for="acronym_name" class="text-center"><strong>Kinh nghiệm làm việc</strong></h2>
+                <form action="{{ route('add_experience') }}" method="post" enctype="multipart/form-data" id="formExperience">
+                    @csrf <!-- {{ csrf_field() }} -->
+                    <div class="margin-b-5 margin-t-5">
+                        <h2 for="acronym_name" class="text-center"><strong>Kinh nghiệm làm việc</strong></h2>
+                        <div class="divContent">
+                            <div class="form-group">    
+                                <label>Miêu tả*</label>
+                                <textarea class="form-control" id="introduction" name="introduction" placeholder="Miêu tả..."></textarea>
                             </div>
-                            <div class="form-group divContent">    
+                            <div class="form-group">     
+                                <label>Nội dung*</label>                          
                                 <textarea class="form-control" id="editorContainer" name="content" placeholder="Viết kinh nghiệm bạn muốn chia sẻ ..."></textarea>
-                            </div>    
-                        </div>
-                        <div class="pt-3 pb-4 d-flex justify-content-center border-top-0 rounded mb-0">
-                            <button type="button" class="btn btn-primary" id="buttonExperience">ĐĂNG BÀI</button>
-                        </div>
-                    </form>
-                </div>
+                            </div>
+                            <div class="card bg-danger text-white" id="ErrorMessaging"></div>    
+                        </div>    
+                    </div>
+                    <div class="pt-3 pb-4 d-flex justify-content-center border-top-0 rounded mb-0">
+                        <button type="button" class="btn btn-primary" id="buttonExperience" onclick="sendForm()">ĐĂNG BÀI</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
@@ -99,11 +99,3 @@
         })
     </script>
 @endpush
-<style>
-    .modal-dialog{
-        overflow-x: hidden;
-    }
-    .divContent{
-        margin: 0px 10px;
-    }
-</style>

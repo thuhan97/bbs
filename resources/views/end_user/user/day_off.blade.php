@@ -527,7 +527,7 @@
                     <div class="mb-3 ml-3" id="remove-numoff">
                         <!-- Default input -->
                         <label class="text-d-bold" for="exampleForm2">Thời gian được tính:</label>
-                        <strong id="number_off"></strong> ngày
+                        <strong id="number_off"></strong>
                     </div>
                     <div class="mb-4 pb-2">
                         <div class="row">
@@ -774,7 +774,9 @@
                         $('#approver_id').html(data.approver);
                         $('#number_off').html(data.data.number_off);
                         $('#strat_end').html(data.data.start_date + ' - ' + data.data.end_date);
-                        $('#reason').html(data.data.reason.replace(/\n/g, "<br />"));
+                        if (data.data.reason){
+                            $('#reason').html(data.data.reason.replace(/\n/g, "<br />"));
+                        }
                         $('#id-delete').val(data.data.id);
                         if (title.hasOwnProperty(data.data.title)) {
                             $('#title').html(title[data.data.title]);
@@ -791,8 +793,8 @@
                         } else {
                             $('#remove-app-comment').hide();
                         }
-                        if (data.numoff) {
-                            $('#number_off').html(data.numoff);
+                        if (data.data.numoff || data.data.absent) {
+                            data.data.status == 2 ? '' : $('#number_off').html(data.absent + ' ngày') ;
                             $('#remove-numoff').show();
                         } else {
                             $('#remove-numoff').hide();

@@ -122,7 +122,7 @@
                         sớm/muộn</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" data-toggle="tab" href="#panelOT" role="tab">Xin OT</a>
+                    <a class="nav-link tab-nav-link-ot" data-toggle="tab" href="#panelOT" role="tab">Xin OT</a>
                 </li>
             </ul>
             <!-- Nav tabs -->
@@ -148,7 +148,7 @@
                             <th>Tên nhân viên</th>
                             <th>Hình thức</th>
                             <th>Nội dung</th>
-                            <th>Nội dung phản hồi</th>
+                            <th class="">Nội dung phản hồi</th>
                             <th class="text-center" style="width: 10%;">Trạng Thái</th>
                         </tr>
                         </thead>

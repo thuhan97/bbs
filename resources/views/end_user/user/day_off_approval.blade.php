@@ -469,7 +469,7 @@
                                 $('#number_off').html('<input type="text" class="form-control select-item" autocomplete="off" name="number_off" value="" id="number_off">')
                                 $('#btn-submit-form').html('<button type="submit" class="btn  btn-primary">DUYỆT ĐƠN</button> <span class="btn btn-danger btn-send" id="close-day-off" data-toggle="modal" data-target="#basicExampleModal"> HỦY DUYỆT </span>')
                             } else {
-                                data.data.status == 2 ? '' : $('#number_off').html(data.absent) ;
+                                data.data.status == 2 ? '' : $('#number_off').html(data.absent + ' ngày') ;
                                 $('#app-comment').html(data.data.approve_comment);
                             }
                             var urlForm = "{{ route('edit_day_off_detail') }}" + '/' + data.data.id;

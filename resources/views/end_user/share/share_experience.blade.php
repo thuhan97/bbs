@@ -29,7 +29,7 @@
                             <div class="info-user-post">
                                 <p class="">
                                 <?php echo isset($experience->user->name) ? $experience->user->name : ''; ?>
-                                @if($experience->user_id == Auth::user()->id)
+                                @if($experience->creator_id == Auth::user()->id)
                                     <div class="dropdown">
                                         <i class="fa fa-ellipsis-h" data-toggle="dropdown" aria-haspopup="true"
                                            aria-expanded="false"></i>

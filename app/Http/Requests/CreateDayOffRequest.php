@@ -31,7 +31,7 @@ class CreateDayOffRequest extends FormRequest
                 })
             ],
             'title' => 'nullable|integer',
-            'reason' => 'required|max:1000|min:3',
+            'reason' => 'nullable|max:1000|min:3',
             'start_at' => 'required|date',
             'end_at' => 'required|after_or_equal:start_at',
             'status' => 'nullable|integer|between:0,1',

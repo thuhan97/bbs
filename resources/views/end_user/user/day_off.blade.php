@@ -314,7 +314,7 @@
                                                 class="text-danger">*</span></label>
                                     <textarea
                                             class="form-control reason_id rounded-0 select-item check-value {{ $errors->has('reason') ? ' has-error' : '' }}"
-                                            id="exampleFormControlTextarea2" rows="3" placeholder="Lý do xin nghỉ..."
+                                            id="exampleFormControlTextarea2" rows="3" placeholder="Lý do xin nghỉ..." required
                                             name="reason">{{  old('reason') }}</textarea>
                                     @if ($errors->has('reason'))
                                         <div class="mt-1">
@@ -622,7 +622,6 @@
     @endif
 
     <script type="text/javascript">
-
         $(document).ready(function () {
             $('.calendar-search').on('click', function () {
                 $(this).prev().datepicker('show');
@@ -658,7 +657,6 @@
                             digits: true
                         },
                         reason: {
-                            required: true,
                             maxlength: 100
                         }
                         ,

@@ -274,7 +274,7 @@
                  aria-labelledby="myModalLabel"
                  aria-hidden="true">
                 <div class="modal-dialog modal-center" role="document">
-                    <div class="modal-content" id="bg-img"
+                    <div class="modal-content bg-img-day-off" id="bg-img"
                          style="background-image: url({{ asset('img/font/xin_nghi.png') }})">
                         <div class="modal-header text-center border-bottom-0 p-3">
                             <h4 class="modal-title w-100 font-weight-bold pt-2">NỘI DUNG ĐƠN</h4>
@@ -448,7 +448,6 @@
                         'url': '{{ route('day_off_detail') }}' + '/' + id,
                         'type': 'get',
                         success: function (data) {
-
                             $('#user-day-off').html(data.userdayoff);
                             $('#strat_end').html(data.data.start_date + ' - ' + data.data.end_date);
                             if (data.data.reason){
@@ -464,12 +463,21 @@
                             } else {
                                 $('#remove-app-date').hide();
                             }
+                            if (data.data.numoff || data.data.absent) {
+                                $('#remove-numoff').show();
+                            } else {
+                                $('#remove-numoff').hide();
+                            }
                             if (data.data.status == 0) {
                                 $('#app-comment').html('<textarea class="form-control reason_id rounded-0 select-item "id="exampleFormControlTextarea2" rows="3" placeholder="Nhập ý kiến của người duyệt" name="approve_comment"></textarea>');
                                 $('#number_off').html('<input type="text" class="form-control select-item" autocomplete="off" name="number_off" value="" id="number_off">')
                                 $('#btn-submit-form').html('<button type="submit" class="btn  btn-primary">DUYỆT ĐƠN</button> <span class="btn btn-danger btn-send" id="close-day-off" data-toggle="modal" data-target="#basicExampleModal"> HỦY DUYỆT </span>')
                             } else {
-                                data.data.status == 2 ? '' : $('#number_off').html(data.absent) ;
+
+                                $('#number_off').html('');
+                                $('#btn-submit-form').html('');
+                                (data.data.status == 2 || data.data.status == 0) ? $('#number_off').html(' ') : $('#number_off').html(data.absent + ' ngày') ;
+
                                 $('#app-comment').html(data.data.approve_comment);
                             }
                             var urlForm = "{{ route('edit_day_off_detail') }}" + '/' + data.data.id;

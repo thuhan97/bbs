@@ -1385,6 +1385,7 @@ td.blank, .type-1, .type-2 {
 }
 
 #punish {
+    color: #4285f4;
 }
 
 #punish .punish-counter {
@@ -1520,10 +1521,11 @@ td.blank, .type-1, .type-2 {
 .custom-modal {
     left: 270px;
 }
+
 @media (max-width: 1400px) {
- .bg-img-day-off{
-     height: 600px;
-     overflow: auto;
- }
+    .bg-img-day-off {
+        height: 600px;
+        overflow: auto;
+    }
 }
 

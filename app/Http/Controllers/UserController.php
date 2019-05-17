@@ -10,6 +10,7 @@ use App\Http\Requests\AskPermissionRequest;
 use App\Http\Requests\CreateDayOffRequest;
 use App\Http\Requests\DayOffRequest;
 use App\Http\Requests\ProfileRequest;
+use App\Http\Requests\WorkTimeCalendarRequest;
 use App\Models\DayOff;
 use App\Models\Group;
 use App\Models\OverTime;
@@ -217,15 +218,12 @@ class UserController extends Controller
 
     public function workTimeDetailAskPermission(Request $request)
     {
-//        dd($request->all());
         if ($request->has('explanationOtType')) {
-//            $workTimeExplanation = $this->getWorkTimeExplanation($request['work_day'])->whereIn('status', array_values(WORK_TIME_OT_STATUS))->where('type', array_search('Overtime', WORK_TIME_TYPE))->where('ot_type', $request['explanationOtType'])->first();
             $workTimeExplanation = OverTime::where('creator_id', Auth::id())->where('work_day', $request['work_day'])->whereIn('status', array_values(WORK_TIME_OT_STATUS))->where('ot_type', $request['explanationOtType'])->first();
         } else if ($request->has('explanationType')) {
             $workTimeExplanation = $this->getWorkTimeExplanation($request['work_day'])->whereIn('status', array_values(WORK_TIME_OT_STATUS))->where('type', $request['explanationType'])->first();
         }
-//dd($workTimeExplanation);
-        $projectName = Project::all()->toArray();
+        $projectName = $this->projectActive()->toArray();
         $explanationRes = [];
         if ($workTimeExplanation) {
             $explanationRes = $workTimeExplanation->toArray();
@@ -237,55 +235,56 @@ class UserController extends Controller
         return 0;
     }
 
-    public function workTimeAskPermission(WorkTimePermissionRequest $request)
+    public function workTimeAskPermission(WorkTimeCalendarRequest $request)
     {
+//        dd(1);
         $minute = DateTimeHelper::getMinutesBetweenTwoTime($request['start_at'], $request['end_at']);
         $otType = $request['ot_type'];
         $reason = $request['reason'];
         $workDay = $request['work_day'];
 //        if ($request->has('status') && $request['status'] == 0 || is_null($request['status'])) {
-            if ($request->has('ot_type')) {
-                $workTimeExplanation = OverTime::where('creator_id', Auth::id())->where('work_day', $workDay)->where('status', '!=',array_search('Từ chối', OT_STATUS))->first();
-                if ($workTimeExplanation) {
-                    $workTimeExplanation->update(['reason' => $reason, 'minute' => $minute, 'ot_type' => $otType, 'project_name' => $request['project_name']]);
-                    return back()->with('wt_permission_success', '');
-                } else {
-                    OverTime::create([
-                        'creator_id' => Auth::id(),
-                        'minute' => $minute,
-                        'work_day' => $request['work_day'],
-                        'status' => array_search('Chưa duyệt', OT_STATUS),
-                        'reason' => $reason,
-                        'start_at' => $request['start_at'],
-                        'end_at' => $request['end_at'],
-                        'ot_type' => $otType,
-                        'project_name' => $request['project_name'],
-                    ]);
-                    return back()->with('wt_permission_success', 'wt_permission_success');
-                }
-            } else if ($request['explanation_type'] == array_search('Đi muộn', WORK_TIME_TYPE) || $request['explanation_type'] == array_search('Về Sớm', WORK_TIME_TYPE)) {
-                $workTimeExplanation = $this->getWorkTimeExplanation($workDay)->where('type', $request['explanation_type'])->first();
-                if ($workTimeExplanation) {
-                    $workTimeExplanation->update(['type' => $request['explanation_type'], 'note' => $reason]);
-                    return back()->with('wt_permission_success', '');
-                } else {
-                    WorkTimesExplanation::create([
-                        'user_id' => Auth::id(),
-                        'work_day' => $request['work_day'],
-                        'type' => $request['explanation_type'],
-                        'note' => $reason
-                    ]);
-                    return back()->with('wt_permission_success', 'wt_permission_success');
-                }
+        if ($request->has('ot_type')) {
+            $workTimeExplanation = OverTime::where('creator_id', Auth::id())->where('work_day', $workDay)->where('status', '!=', array_search('Từ chối', OT_STATUS))->first();
+            if ($workTimeExplanation) {
+                $workTimeExplanation->update(['reason' => $reason, 'minute' => $minute, 'ot_type' => $otType, 'project_name' => $request['project_name']]);
+                return back()->with('wt_permission_success', '');
+            } else {
+                OverTime::create([
+                    'creator_id' => Auth::id(),
+                    'minute' => $minute,
+                    'work_day' => $request['work_day'],
+                    'status' => array_search('Chưa duyệt', OT_STATUS),
+                    'reason' => $reason,
+                    'start_at' => $request['start_at'],
+                    'end_at' => $request['end_at'],
+                    'ot_type' => $otType,
+                    'project_name' => $request['project_name'],
+                ]);
+                return back()->with('wt_permission_success', 'wt_permission_success');
+            }
+        } else if ($request['explanation_type'] == array_search('Đi muộn', WORK_TIME_TYPE) || $request['explanation_type'] == array_search('Về Sớm', WORK_TIME_TYPE)) {
+            $workTimeExplanation = $this->getWorkTimeExplanation($workDay)->where('type', $request['explanation_type'])->first();
+            if ($workTimeExplanation) {
+                $workTimeExplanation->update(['type' => $request['explanation_type'], 'note' => $reason]);
+                return back()->with('wt_permission_success', '');
+            } else {
+                WorkTimesExplanation::create([
+                    'user_id' => Auth::id(),
+                    'work_day' => $request['work_day'],
+                    'type' => $request['explanation_type'],
+                    'note' => $reason
+                ]);
+                return back()->with('wt_permission_success', 'wt_permission_success');
             }
         }
+    }
 //        } else {
 //            return back()->with('permission_error', '');
 //        }
 
     public function workTimeGetProject(Request $request)
     {
-        return Project::all()->toArray();
+        return $this->projectActive()->toArray();
     }
 
     public function askPermission()
@@ -367,7 +366,7 @@ class UserController extends Controller
             } else if ($request['permission_status'] == array_search('Đã duyệt', OT_STATUS)) {
                 return back()->with('permission_error', '');
             }
-        } elseif ($request['permission_type'] == array_search('Đi muộn', WORK_TIME_TYPE) || $request['permission_type'] ==  array_search('Về Sớm', WORK_TIME_TYPE)) {
+        } elseif ($request['permission_type'] == array_search('Đi muộn', WORK_TIME_TYPE) || $request['permission_type'] == array_search('Về Sớm', WORK_TIME_TYPE)) {
             $workTimeExplanation = $this->getWorkTimeExplanation($request['work_day'])->where('status', array_search(' Chưa duyệt', OT_STATUS))->where('type', $request['permission_type'])->first();
             if ($workTimeExplanation) {
                 $workTimeExplanation->update(['ot_type' => $request['ot_type'], 'note' => $request['note'], 'work_day' => $request['work_day']]);
@@ -406,7 +405,7 @@ class UserController extends Controller
     function askPermissionOT(Request $request)
     {
         $workTimeExplanation = OverTime::where('work_day', $request['data'])->where('creator_id', Auth::id())->where('status', array_search('Đã duyệt', OT_STATUS))->first();
-        $datas = Project::all();
+        $datas = $this->projectActive();
         if ($workTimeExplanation) {
             return [$workTimeExplanation, $datas];
         } else {
@@ -731,5 +730,11 @@ class UserController extends Controller
     function permissionGetOverTime()
     {
         return OverTime::orderBy('created_at', 'asc');
+    }
+
+    private
+    function projectActive()
+    {
+        return Project::where('start_date', '<', date('Y-m-d'))->where('end_date', '>', date('Y-m-d'))->get();
     }
 }

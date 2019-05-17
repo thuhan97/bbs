@@ -564,48 +564,46 @@
                 @include('elements.ask_permission_image')
                 <form action="{{ route('ask_permission.create') }}" method="get">
                     <div class="d-flex justify-content-center text-area-reason" id="div-reason"></div>
-                    <div class="select-day mt-3">
+                    <div class="container-fluid my-2">
+                        <div class="row">
+                            <input type="hidden" name="ot_id" class="ot_id">
+                            <input type="hidden" name="permission_status" class="permission_status">
+                            <div class="col-md-6 text-center my-2">
+                                <input style="position: relative;opacity: 1;pointer-events: inherit" class="other-ot ml-5"
+                                       type="radio" name="ot_type" id="project-ot" checked value="1">
+                                <label for="project-ot">OT dự án</label>
+                            </div>
+                            <div class="col-md-6 text-center my-2">
+                                <input style="position: relative;opacity: 1;pointer-events: inherit" class="other-ot"
+                                       type="radio" name="ot_type" id="other-ot" value="2">
+                                <label for="other-ot" class="mr-5">Lý do cá nhân</label>
+                            </div>
+                        </div>
+                    </div>
+                    <select class="browser-default form-control project_name my-2" name="project_name"
+                            style="width: 83%;margin: 0 auto;">
+                        <option value="0">Chọn dự án</option>
+                    </select>
+                    <div class="select-day">
                         <div class="container-fluid">
                             <div class="row append-textarea">
-                                <div class="col-2"></div>
-                                <div class="col-4">
-                                    <label for="inputCity">Chọn ngày *</label>
+                                <div class="col-5 my-2 ml-3">
+                                    <label for="inputCity" class="my-2">Chọn ngày *</label>
                                 </div>
-                                <div class="col-4">
+                                <div class="col-5 my-2 offset-1 pl-0 pr-0">
                                     <input type="hidden" name="permission_ot">
                                     <input type="hidden" value="4" name="permission_type">
                                     <input type="text"
                                            class="form-control select-item {{ $errors->has('work_day') ? ' has-error' : '' }}"
                                            id="work_day_ot" autocomplete="off" name="work_day"
                                            value="{{ old('work_day', date('Y-m-d')) }}"
-                                           readonly="readonly">
+                                           readonly="readonly" style="width: 96.5%;">
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="container-fluid mt-2">
-                        <div class="row">
-                            <div class="col-2"></div>
-                            <input type="hidden" name="ot_id" class="ot_id">
-                            <input type="hidden" name="permission_status" class="permission_status">
-                            <div class="col-md-4 text-center">
-                                <input style="position: relative;opacity: 1;pointer-events: inherit" class="other-ot"
-                                       type="radio" name="ot_type" id="project-ot" checked value="1">
-                                <label for="project-ot">OT dự án</label>
-                            </div>
-                            <div class="col-md-4 text-center">
-                                <input style="position: relative;opacity: 1;pointer-events: inherit" class="other-ot"
-                                       type="radio" name="ot_type" id="other-ot" value="2">
-                                <label for="other-ot">Lý do cá nhân</label>
-                            </div>
-                        </div>
-                    </div>
-                    <select class="browser-default form-control project_name mt-2" name="project_name"
-                            style="width: 62%;margin: 0 auto;">
-                        <option value="0">Chọn dự án</option>
-                    </select>
-                    <div class="row mt-2">
-                        <div class="col-md-4 offset-2">
+                    <div class="row">
+                        <div class="col-md-5 offset-1 my-2">
                             <div class="form-group ">
                                 <label for="start_at">Thời gian bắt đầu *</label>
                                 <div class="input-group date">
@@ -616,8 +614,8 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-4">
-                            <div class="form-group ">
+                        <div class="col-md-5 my-2">
+                            <div class="form-group">
                                 <label for="end_at">Thời gian kết thúc *</label>
                                 <div class="input-group date">
                                     <input type="time" class="form-control pull-right"

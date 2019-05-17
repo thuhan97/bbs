@@ -14,7 +14,7 @@ class ChangeColumReasonTableDayOffs extends Migration
     public function up()
     {
         Schema::table('day_offs', function (Blueprint $table) {
-            $table->string('reason', 100)->default(null)->change();
+            $table->string('reason')->default(null)->change();
         });
     }
 

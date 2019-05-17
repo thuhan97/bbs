@@ -97,3 +97,13 @@ p {
 .divContent {
     margin: 0px 10px;
 }
+.modal-header{
+    justify-content: center;
+    position: relative;
+}
+.text-title{
+    position: absolute;
+}
+.modal-header{
+    padding-top: 1.5rem !important;
+}

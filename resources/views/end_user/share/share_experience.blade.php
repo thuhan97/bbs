@@ -10,17 +10,15 @@
 @section('content')
     <link rel="stylesheet" href="{{URL::asset('css/share_experience.css')}}">
 
-    <div class="col-md-8">
-        <div class="content" id="share_ex">
-            <div class="tab-pane active">
-                <div class="createReport fixed-action-btn">
-                    <a href="#" class="btn-lg red waves-effect waves-light text-white" title="Đăng bài"
-                       data-target="#feedback" data-toggle="modal" style="border-radius: 35px;">
-                        <img src="{{ asset('img/icon_exp.png') }}" onerror="this.src='{{URL_IMAGE_NO_IMAGE}}'"
-                             alt="avatar image"/>
-                        Đăng bài
-                    </a>
-                </div>
+<div class="col-md-10">
+    <div class="content">
+        <div class="tab-pane active">
+            <div class="createReport fixed-action-btn">
+                <a href="#" class="btn-lg red waves-effect waves-light text-white" title="Đăng bài" data-target="#feedback" data-toggle="modal" style="border-radius: 35px;border: 5px solid #FED6D8;">
+                    <img src="{{ asset('img/icon_exp.png') }}" onerror="this.src='{{URL_IMAGE_NO_IMAGE}}'" alt="avatar image" />
+                    Đăng bài
+                </a>
+            </div>
                 @foreach($list_experience as $experience)
                     <div class="posts">
                         <div class="content-share-experience">
@@ -67,9 +65,9 @@
     <div class="modal fade" id="feedback" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
          aria-hidden="true">
         <div class="modal-dialog modal-center modal-lg" role="document">
-
-            <div class="modal-content" id="bg-img">
+            <div class="modal-content">
                 <div class="modal-header text-center border-bottom-0 p-3">
+                    <h2 for="acronym_name" class="text-title"><strong>Kinh nghiệm làm việc</strong></h2>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <div class="background-close-icon">
                             <span class="btn-close-icon" aria-hidden="true">&times;</span>
@@ -80,7 +78,6 @@
                       id="formExperience">
                 @csrf <!-- {{ csrf_field() }} -->
                     <div class="margin-b-5 margin-t-5">
-                        <h2 for="acronym_name" class="text-center"><strong>Kinh nghiệm làm việc</strong></h2>
                         <div class="divContent">
                             <div class="form-group">
                                 <label>Tóm tắt *</label>

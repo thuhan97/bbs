@@ -2,6 +2,10 @@
     box-shadow: none;
 }
 
+.card {
+    box-shadow: none;
+}
+
 .text-blue {
     color: blue !important;
 }
@@ -1017,15 +1021,15 @@ td.blank, .type-1, .type-2 {
     }
 
     .btn {
-        -webkit-box-shadow: 0 2px 5px 0 rgba(0,0,0,.16), 0 2px 10px 0 rgba(0,0,0,.12);
-        box-shadow: 0 2px 5px 0 rgba(0,0,0,.16), 0 2px 10px 0 rgba(0,0,0,.12);
+        -webkit-box-shadow: 0 2px 5px 0 rgba(0, 0, 0, .16), 0 2px 10px 0 rgba(0, 0, 0, .12);
+        box-shadow: 0 2px 5px 0 rgba(0, 0, 0, .16), 0 2px 10px 0 rgba(0, 0, 0, .12);
         padding: 0.7rem .7rem;
         font-size: .81rem;
-        -webkit-transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,-webkit-box-shadow .15s ease-in-out;
-        transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,-webkit-box-shadow .15s ease-in-out;
-        -o-transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
-        transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
-        transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out,-webkit-box-shadow .15s ease-in-out;
+        -webkit-transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out, -webkit-box-shadow .15s ease-in-out;
+        transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out, -webkit-box-shadow .15s ease-in-out;
+        -o-transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+        transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+        transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out, -webkit-box-shadow .15s ease-in-out;
         margin: .175rem;
         border: 0;
         -webkit-border-radius: .125rem;
@@ -1043,7 +1047,7 @@ td.blank, .type-1, .type-2 {
 
     .md-tabs .nav-item.open .nav-link, .md-tabs .nav-link.active {
         height: 64px;
-        background-color: rgba(0,0,0,.2);
+        background-color: rgba(0, 0, 0, .2);
         color: #fff;
         -webkit-transition: all 1s;
         -o-transition: all 1s;
@@ -1412,6 +1416,10 @@ td.blank, .type-1, .type-2 {
     font-size: 50px;
 }
 
+#punish .image {
+    height: 250px;
+}
+
 #btn-detail-day-off {
     border-radius: 3px;
     padding: 14px;
@@ -1468,7 +1476,8 @@ td.blank, .type-1, .type-2 {
         line-height: 14px;
         margin-left: 3px;
     }
-    #table-phone{
+
+    #table-phone {
         margin-top: -39px;
     }
 }
@@ -1492,6 +1501,7 @@ td.blank, .type-1, .type-2 {
 .select-day {
     padding: 0 15px;
 }
-.custom-modal{
+
+.custom-modal {
     left: 270px;
 }

@@ -794,13 +794,20 @@
                             $('#remove-app-comment').hide();
                         }
                         if (data.data.numoff || data.data.absent) {
-                            data.data.status == 2 ? '' : $('#number_off').html(data.absent + ' ngày') ;
+                            $('#remove-numoff').show();
+                        } else {
+                            $('#remove-numoff').hide();
+                        }
+                        if (data.data.numoff || data.data.absent) {
+                            (data.data.status == 2 || data.data.status == 0) ? $('#number_off').html(' ') : $('#number_off').html(data.absent + ' ngày') ;
                             $('#remove-numoff').show();
                         } else {
                             $('#remove-numoff').hide();
                         }
                         if (data.data.status == 0) {
                             $('#btn-show-modal').html('<span class="btn btn-danger" data-toggle="modal" data-target="#basicExampleModal">HỦY ĐƠN</span>');
+                        }else{
+                            $('#btn-show-modal').html('')
                         }
                         $('#modal-form-detail').modal('show');
                     }

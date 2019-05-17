@@ -46,7 +46,7 @@
                                     <span class="date sub-text">{{date_format($experience->created_at,"Y-m-d")}}</span>
                             </div>
                             <div class="content-posts">
-                                <p><?php echo $experience->introduction; ?></p>
+                                <p>{!! nl2br($experience->introduction) !!}</p>
                             </div>
                             <p class="show-more">
                                 <a class="js-show-more" href="{{ route('view_experience',$experience->id) }}"

@@ -13,11 +13,11 @@
 
                     <div class="divContent">
                         <div class="form-group">
-                            <strong><?php echo $experience->introduction ?></strong>
+                            <strong>{!! nl2br($experience->introduction) !!}</strong>
                         </div>
                         <div class="form-group">
                             <h4>Nội dung:</h4>
-                            <p><?php echo $experience->content ?></p>
+                            <p>{!! $experience->content !!}</p>
                         </div>
                         <div class="card bg-danger text-white" id="ErrorMessaging"></div>
                     </div>

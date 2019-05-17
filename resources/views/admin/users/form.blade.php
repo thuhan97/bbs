@@ -1,6 +1,5 @@
 <?php
 $defaultStaffCode = "J" . str_pad((\App\Models\User::max('id') + 1), 3, '0', STR_PAD_LEFT);
-
 if (!isset($record->status)) {
     $record->status = ACTIVE_STATUS;
 }
@@ -33,8 +32,7 @@ if (isset($record->end_date)) {
                                             <label for="staff_code">Mã nhân viên *</label>
                                             <input type="text" class="form-control" name="staff_code"
                                                    placeholder="Nhập mã nhân viên"
-                                                   value="{{ old('staff_code', $record->staff_code ?? $defaultStaffCode ) }}"
-                                                   {{ $record->staff_code ? 'readonly':'' }}   required>
+                                                   value="{{ old('staff_code', $record->staff_code ?? $defaultStaffCode ) }}" required>
                                             @if ($errors->has('staff_code'))
                                                 <span class="help-block">
                     <strong>{{ $errors->first('staff_code') }}</strong>
@@ -43,7 +41,7 @@ if (isset($record->end_date)) {
                                         </div>
                                     </div>
                                     <div class="col-md-6 {{ $errors->has('sex') ? ' has-error' : '' }} form-group top-5">
-                                        <label for="staff_code">Giới tính</label>
+                                        <label for="staff_code">Giới tính *</label>
                                         {{ Form::select('sex', SEXS, old('sex', $record->sex ) , ['class'=>'form-control']) }}
                                         @if ($errors->has('sex'))
                                             <span class="help-block">
@@ -143,7 +141,7 @@ if (isset($record->end_date)) {
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group margin-b-5 margin-t-5{{ $errors->has('phone') ? ' has-error' : '' }}">
-                                            <label for="phone">Số điện thoại</label>
+                                            <label for="phone">Số điện thoại *</label>
                                             <input type="text" class="form-control" name="phone"
                                                    placeholder="Số điện thoại"
                                                    value="{{ old('phone', $record->phone) }}">
@@ -200,7 +198,7 @@ if (isset($record->end_date)) {
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group margin-b-5 mg-top-10{{ $errors->has('start_date') ? ' has-error' : '' }}">
-                                    <label for="start_date">Ngày vào công ty</label>
+                                    <label for="start_date">Ngày vào công ty *</label>
                                     <div class="input-group date">
                                         <div class="input-group-addon">
                                             <i class="fa fa-calendar"></i>
@@ -287,7 +285,7 @@ if (isset($record->end_date)) {
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group margin-b-5 margin-t-5{{ $errors->has('password_confirmation') ? ' has-error' : '' }}">
-                                        <label for="password_confirmation">Xác nhận mật khẩu</label>
+                                        <label for="password_confirmation">Xác nhận mật khẩu *</label>
                                         <input type="password" class="form-control" name="password_confirmation"
                                                placeholder="Xác nhận mật khẩu">
 

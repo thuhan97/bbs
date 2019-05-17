@@ -644,14 +644,16 @@ class UserController extends Controller
             $dayOff->save();
             return back()->with('close', '');
         }
-        if ($dayOff->number_off) {
-            $numOff = checkNumber($dayOff->number_off);
-        }
+        $numOff= $dayOff->number_off ? checkNumber($dayOff->number_off) : 0;
+        $absent= $dayOff->absent ? checkNumber($dayOff->absent) : 0;
+
+
         return response()->json([
             'data' => $dayOff,
-            'numoff' => $numOff ?? null,
+            'numoff' => $numOff ,
             'approver' => User::find($dayOff->approver_id)->name ?? '',
-            'userdayoff' => User::find($dayOff->user_id)->name ?? ''
+            'userdayoff' => User::find($dayOff->user_id)->name ?? '',
+            'absent' => $absent + $numOff
         ]);
     }
 

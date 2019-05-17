@@ -2,6 +2,10 @@
     box-shadow: none;
 }
 
+.card {
+    box-shadow: none;
+}
+
 .text-blue {
     color: blue !important;
 }
@@ -1387,6 +1391,10 @@ td.blank, .type-1, .type-2 {
     font-size: 50px;
 }
 
+#punish .image {
+    height: 250px;
+}
+
 #btn-detail-day-off {
     border-radius: 3px;
     padding: 14px;
@@ -1443,7 +1451,8 @@ td.blank, .type-1, .type-2 {
         line-height: 14px;
         margin-left: 3px;
     }
-    #table-phone{
+
+    #table-phone {
         margin-top: -39px;
     }
 
@@ -1529,6 +1538,7 @@ td.blank, .type-1, .type-2 {
 .select-day {
     padding: 0 15px;
 }
-.custom-modal{
+
+.custom-modal {
     left: 270px;
 }

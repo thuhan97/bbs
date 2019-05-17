@@ -9,8 +9,8 @@
                     <div class="col-md-6">
                         <div class="post-item grey lighten-4">
                             <div class="row mb-3">
-                                <div class="col-sm-5 text-center view overlay">
-                                    <a href="{{route('post_detail', ['id' => $post->id])}}">
+                                <div class="col-sm-5 text-center view overlay d-flex align-items-center">
+                                    <a href="{{route('post_detail', ['id' => $post->id])}}" class="w-100">
                                         <img class=""
                                              src="{{$post->image_url}}"
                                              alt="{{$post->name}}" width="100%">
@@ -18,7 +18,7 @@
 
                                     </a>
                                 </div>
-                                <div class="col-sm-7" style="padding-left: 0">
+                                <div class="col-sm-7">
                                     <div class="media-body p-1"
                                          onclick="location.href='{{route('post_detail', ['id' => $post->id])}}'">
                                         <h4 class="mt-3 mb-1 font-weight-bold elipsis-line line-2 fix-2 f-22">{{$post->name}}</h4>

@@ -288,7 +288,7 @@
                                     viên</label>
                                 <div class="ml-3" id="user-day-off"></div>
                             </div>
-                            <div class="mb-3 ml-3 ">
+                            <div class="mb-2 ml-3 ">
                                 <!-- Default input -->
                                 <label class="text-d-bold" for="exampleForm2">Thời gian được tính:</label>
                                 <strong class="" id="number_off">
@@ -448,10 +448,12 @@
                         'url': '{{ route('day_off_detail') }}' + '/' + id,
                         'type': 'get',
                         success: function (data) {
+
                             $('#user-day-off').html(data.userdayoff);
-                            $('#number_off').html(data.data.number_off);
                             $('#strat_end').html(data.data.start_date + ' - ' + data.data.end_date);
-                            $('#reason').html(data.data.reason.replace(/\n/g, "<br />"));
+                            if (data.data.reason){
+                                $('#reason').html(data.data.reason.replace(/\n/g, "<br />"));
+                            }
                             $('#id-delete').val(data.data.id);
                             if (title.hasOwnProperty(data.data.title)) {
                                 $('#title').html(title[data.data.title]);
@@ -462,18 +464,12 @@
                             } else {
                                 $('#remove-app-date').hide();
                             }
-                            if (data.numoff) {
-                                $('#number_off').html(data.numoff);
-                                $('#remove-numoff').show();
-                            } else {
-                                $('#remove-numoff').hide();
-                            }
                             if (data.data.status == 0) {
                                 $('#app-comment').html('<textarea class="form-control reason_id rounded-0 select-item "id="exampleFormControlTextarea2" rows="3" placeholder="Nhập ý kiến của người duyệt" name="approve_comment"></textarea>');
                                 $('#number_off').html('<input type="text" class="form-control select-item" autocomplete="off" name="number_off" value="" id="number_off">')
                                 $('#btn-submit-form').html('<button type="submit" class="btn  btn-primary">DUYỆT ĐƠN</button> <span class="btn btn-danger btn-send" id="close-day-off" data-toggle="modal" data-target="#basicExampleModal"> HỦY DUYỆT </span>')
                             } else {
-                                $('#number_off').html(data.numoff);
+                                data.data.status == 2 ? '' : $('#number_off').html(data.absent) ;
                                 $('#app-comment').html(data.data.approve_comment);
                             }
                             var urlForm = "{{ route('edit_day_off_detail') }}" + '/' + data.data.id;

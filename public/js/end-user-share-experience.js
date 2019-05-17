@@ -129,6 +129,6 @@ function sendForm() {
         $("#formExperience").submit();
     } else {
         let errorBox = document.getElementById('ErrorMessaging');
-        errorBox.innerHTML = "<div class='card-body'>Miêu tả và nội dung không được để trống!</div>";
+        errorBox.innerHTML = "<div class='card-body'>Tóm tắt và nội dung không được để trống!</div>";
     }
 }

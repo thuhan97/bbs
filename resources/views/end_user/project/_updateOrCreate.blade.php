@@ -106,7 +106,7 @@
                        value="2">
                 <label class="form-check-label" for="status-2">Đã kết thúc</label>
             </div>
-            <br/>
+            <br/>Tóm tắt và nội dung không được để trống
             @if ($errors->has('status'))
                 <span class="text-danger">
                                 <strong>{{ $errors->first('status') }}</strong>

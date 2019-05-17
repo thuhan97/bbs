@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ShareExperienceRequest;
 use App\Http\Requests\ShareRequest;
 use App\Models\Comment;
 use App\Models\Share;
@@ -60,7 +61,7 @@ class ShareController extends Controller
         return view('end_user.share.share_experience', compact('list_experience'));
     }
 
-    public function addExperience(Request $request)
+    public function addExperience(ShareExperienceRequest $request)
     {
         $content = $request->get('content');
         $introduction = $request->get('introduction');
@@ -104,7 +105,7 @@ class ShareController extends Controller
         }
     }
 
-    public function saveEditExperience(request $request)
+    public function saveEditExperience(ShareExperienceRequest $request)
     {
         $content = $request->get('content');
         $introduction = $request->get('introduction');

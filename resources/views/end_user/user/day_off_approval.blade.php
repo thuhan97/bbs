@@ -274,7 +274,7 @@
                  aria-labelledby="myModalLabel"
                  aria-hidden="true">
                 <div class="modal-dialog modal-center" role="document">
-                    <div class="modal-content" id="bg-img"
+                    <div class="modal-content bg-img-day-off" id="bg-img"
                          style="background-image: url({{ asset('img/font/xin_nghi.png') }})">
                         <div class="modal-header text-center border-bottom-0 p-3">
                             <h4 class="modal-title w-100 font-weight-bold pt-2">NỘI DUNG ĐƠN</h4>

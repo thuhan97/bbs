@@ -17,7 +17,7 @@ class HomeController extends Controller
     {
         $posts = Post::select('id', 'name', 'introduction', 'image_url')
             ->where('status', ACTIVE_STATUS)
-            ->orderBy('id', 'desc')
+            ->orderBy('updated_at', 'desc')
             ->take(2)
             ->get();
 

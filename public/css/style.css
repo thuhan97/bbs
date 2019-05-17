@@ -67,6 +67,10 @@
     width: 40px;
 }
 
+.navbar.navbar-light .breadcrumb .nav-item.active > .nav-link, .navbar.navbar-light .navbar-nav .nav-item.active > .nav-link {
+    background: #fec563;
+}
+
 .navbar .breadcrumb .breadcrumb-item.active, .navbar .breadcrumb .breadcrumb-item:before {
     color: black;
 }
@@ -1385,6 +1389,7 @@ td.blank, .type-1, .type-2 {
 }
 
 #punish {
+    color: #4285f4;
 }
 
 #punish .punish-counter {
@@ -1561,5 +1566,12 @@ td.blank, .type-1, .type-2 {
     border: 0;
     padding: 0rem;
     height: 50px;
+}
+
+@media (max-width: 1400px) {
+    .bg-img-day-off {
+        height: 600px;
+        overflow: auto;
+    }
 }
 

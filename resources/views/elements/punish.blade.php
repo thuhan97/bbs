@@ -2,7 +2,7 @@
     <!-- Card -->
     <div class="card text-center animated fadeInRight" id="punish">
         <!-- Card content -->
-        <div class="card-body blue lighten-5 text-blue">
+        <div class="card-body blue lighten-5">
             <div class="text-center white">
                 <img src="{{get_punish_image($totalPunish)}}" class="image my-5"/>
             </div>

@@ -572,7 +572,7 @@
                     <div class="d-flex justify-content-center text-area-reason" id="div-reason"></div>
                     <div class="container-fluid my-2">
                         <div class="row">
-                            <input type="text" name="ot_id" class="ot_id">
+                            <input type="hidden" name="ot_id" class="ot_id">
                             <input type="hidden" name="permission_status" class="permission_status">
                             <div class="col-md-6 text-center mt-3">
                                 <input style="position: relative;opacity: 1;pointer-events: inherit"
@@ -850,7 +850,8 @@
                                 $('.header-permission-ot').text('Xin OT');
                                 $('.permission-reason-ot,.btn-permission-ot').prop('disabled', false);
                             }
-                        } else if (respond[1]) {
+                        }
+                        if (respond[1]) {
                             respond[1].forEach(function (element) {
                                 $('.project_name').append('<option value="' + element.id + '">' + element.name + '</option>');
                             });

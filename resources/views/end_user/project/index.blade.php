@@ -30,7 +30,7 @@
                         <col style="width: 50px">
                         <col style="">
                         <col style="">
-                        <col style="width: 10%">
+                        <col style="width: 180px">
                         <col style="width: 10%">
                         <col style="width: 10%">
                         <col style="width: 10%">

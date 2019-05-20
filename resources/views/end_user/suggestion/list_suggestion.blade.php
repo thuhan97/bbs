@@ -37,7 +37,7 @@
                             </th>
                             <th style="width: 200px">
                                 Trạng thái duyệt
-                            </th>                            
+                            </th>
                         </tr>
                         </thead>
                         <tbody>
@@ -50,17 +50,20 @@
                                     {{$suggestion->user->name ?? ''}}
                                 </td>
                                 <td class="center">
-                                    {{nl2br($suggestion->content)}}
+                                    {!! nl2br($suggestion->content) !!}
                                 </td>
                                 <td class="center">
                                     {{$suggestion->created_at}}
                                 </td>
                                 <td class="center">
                                     <div class="form-check">
-                                        <input type="checkbox" class="form-check-input checkout-approve" id="{{$idx}}" data="{{$suggestion->id}}" data-status="{{$suggestion->status}}" <?php echo ($suggestion->status == 1) ? 'checked = checked' : null ?>>
-                                        <label class="form-check-label" for="{{$idx}}"><?php echo ($suggestion->status == 1) ? '<strong style="color:blue;">Đã duyệt</strong>' : '<strong style="color:red;">Chưa duyệt</strong>' ?></label>
-                                    </div>                                    
-                                </td>                                
+                                        <input type="checkbox" class="form-check-input checkout-approve" id="{{$idx}}"
+                                               data="{{$suggestion->id}}"
+                                               data-status="{{$suggestion->status}}" <?php echo ($suggestion->status == 1) ? 'checked = checked' : null ?>>
+                                        <label class="form-check-label"
+                                               for="{{$idx}}"><?php echo ($suggestion->status == 1) ? '<strong style="color:blue;">Đã duyệt</strong>' : '<strong style="color:red;">Chưa duyệt</strong>' ?></label>
+                                    </div>
+                                </td>
                             </tr>
                         @endforeach
                         </tbody>

@@ -154,6 +154,8 @@ define('STATUS_JOIN_EVENT', [
     1 => 'Tham gia',
 ]);
 
+define('EVENT_JOIN_STATUS', 1);
+
 define('NOT_AUTHENTICATED', 'Tài khoản không hợp lệ');
 define('NOT_AUTHORIZED', 'Tài khoản không đủ thẩm quyền');
 

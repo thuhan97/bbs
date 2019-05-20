@@ -67,7 +67,8 @@ Route::group([
     Route::get('/events', 'EventController@getCalendar')->name('getCalendar');
     Route::get('/lich-su-kien', 'EventController@calendar')->name('event_calendar');
     Route::get('/su-kien/{id}', 'EventController@detail')->where(['id' => '\d+'])->name('event_detail');
-    Route::post('/dang-ki-su-kien', 'EventAttendanceController@JoinEvent')->name('join_event');
+    Route::post('/dang-ky-su-kien', 'EventAttendanceController@joinEvent')->name('join_event');
+    Route::get('/dang-ky-nhanh-su-kien/{id}', 'EventAttendanceController@quickJoinEvent')->name('quick_join_event');
     Route::get('/thong-bao', 'PostController@index')->name('post');
     Route::get('/thong-bao/{id}', 'PostController@detail')->where(['id' => '\d+'])->name('post_detail');
     Route::get('/bao-cao', 'ReportController@index')->name('report');

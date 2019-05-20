@@ -142,7 +142,7 @@
                     <table id="contactTbl" class="table table-striped table-bordered">
                         <colgroup>
                             <col style="width: 50px">
-                            <col style="width: 100px">
+                            <col style="width: 120px">
                             <col style="width: 180px">
                             <col style="width: 100px">
                             <col style="">

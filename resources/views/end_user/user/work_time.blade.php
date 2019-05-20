@@ -424,18 +424,20 @@
                                                     $(this).attr('selected', false)
                                                 }
                                             });
-                                            if (respond.status === 1) {
-                                                $('.title-wt-modal-approve').text('Đơn đã được duyệt');
-                                                $('.wt-textarea-reason,.btn-send-permission,.ot_type,#start_at,#end_at').prop('disabled', true);
-                                            } else {
-                                                $('.title-wt-modal-approve').text('Xin phép');
-                                                $('.wt-textarea-reason,.btn-send-permission,.ot_type,#start_at,#end_at').prop('disabled', false);
-                                            }
+                                            $('.project_id').val(respond.project_id);
                                             if (explanationOtType === '2') {
                                                 $('.project_id').prop('disabled', true);
                                             } else {
                                                 $('.project_id').prop('disabled', false);
                                             }
+                                            if (respond.status === 1) {
+                                                $('.title-wt-modal-approve').text('Đơn đã được duyệt');
+                                                $('.wt-textarea-reason,.btn-send-permission,.project_id,.ot_type,#start_at,#end_at').prop('disabled', true);
+                                            } else if (respond.status === 0 || respond.status === 2) {
+                                                $('.title-wt-modal-approve').text('Xin phép');
+                                                $('.wt-textarea-reason,.btn-send-permission,.project_id,.ot_type,#start_at,#end_at').prop('disabled', false);
+                                            }
+
                                             $('.wt-textarea-reason').text(note)
                                         }
                                     });
@@ -478,6 +480,8 @@
                                 } else {
                                     var projectName = respond;
                                 }
+                                $('.project_id option[value!=0]').remove();
+
                                 projectName.forEach(function (element) {
                                     if (otThis.attr('id') === 'ot-project') {
                                         $('.project_id').append('<option value="' + element.id + '">' + element.name + '</option>');
@@ -491,12 +495,14 @@
                                     $('.title-wt-modal-approve').text('Xin phép');
                                     $('.wt-textarea-reason,.btn-send-permission').prop('disabled', false);
                                 }
-                                $(".project_id option").each(function (data) {
-                                    if (respond.project_id === $(this).val()) {
-                                        $(this).attr('selected', true)
-                                    }
-                                });
+// console.log(respond.project_id)
 
+                                // $(".project_id option").each(function (data) {
+                                //     console.log($(this).val())
+                                //     if (respond.project_id === $(this).val()) {
+                                //         $(this).attr('selected', true)
+                                //     }
+                                // });
                                 $('#start_at').val(respond.start_at);
                                 $('#end_at').val(respond.end_at);
                                 if (respond.status === undefined) {

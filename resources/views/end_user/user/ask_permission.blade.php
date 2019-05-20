@@ -80,9 +80,9 @@
         </span>
         <br>
     @endif
-    @if ($errors->has('project_name'))
+    @if ($errors->has('project_id'))
         <span class="help-block mb-5 color-red">
-            <strong>{{ $errors->first('project_name') }}</strong>
+            <strong>{{ $errors->first('project_id') }}</strong>
         </span>
         <br>
     @endif
@@ -459,7 +459,7 @@
                         <p class="creator_id"></p>
                         <div class="content-hidden">
                             <h5 class="bold">Tên dự án:</h5>
-                            <p class="project_name"></p>
+                            <p class="project_id"></p>
                         </div>
                         <div class="row content-hidden">
                             <div class="col-4">
@@ -593,7 +593,7 @@
                             </div>
                         </div>
                     </div>
-                    <select class="browser-default form-control project_name my-2" name="project_name"
+                    <select class="browser-default form-control project_id my-2" name="project_id"
                             style="width: 83%;margin: 0 auto;">
                         <option value="0">Chọn dự án</option>
                     </select>
@@ -712,7 +712,7 @@
                         // $('.id').attr('value', respond.id);
                         if (permissionType === 'ot') {
                             $('.creator_id').text(respond.creator_id);
-                            $('.project_name').text(respond.project_name);
+                            $('.project_id').text(respond.project_id);
                             $('.start_at').text(respond.start_at);
                             $('.end_at').text(respond.end_at);
                             $('.minute').text(respond.minute);
@@ -730,7 +730,7 @@
                     $('.content-hidden').prop('hidden', true)
                     $('.permission-type').attr('value', 'other')
                     // $('.permission-detail').hide()
-                    $('.creator_id,.project_name,.start_at,.end_at,.minute,.reason').empty()
+                    $('.creator_id,.project_id,.start_at,.end_at,.minute,.reason').empty()
                 }
             });
 
@@ -848,9 +848,9 @@
                                 }
                             }
                             if (respond[0].ot_type == 2) {
-                                $('.project_name ').prop('disabled', true);
+                                $('.project_id ').prop('disabled', true);
                             } else {
-                                $('.project_name ').prop('disabled', false);
+                                $('.project_id ').prop('disabled', false);
                             }
 
                             if (respond[0].status === 1) {
@@ -863,14 +863,14 @@
                         }
                         if (respond[1]) {
                             respond[1].forEach(function (element) {
-                                $('.project_name').append('<option value="' + element.id + '">' + element.name + '</option>');
+                                $('.project_id').append('<option value="' + element.id + '">' + element.name + '</option>');
                             });
                         } else {
                             $('.permission-reason-ot').empty();
                         }
                     }
                 });
-                $('.project_name option[value!="0"]').remove();
+                $('.project_id option[value!="0"]').remove();
             });
             $('.approve-type').attr('value', '')
 
@@ -884,11 +884,11 @@
             });
 
             $('#project-ot').on('click', function () {
-                $('.project_name').prop('disabled', false);
+                $('.project_id').prop('disabled', false);
             });
 
             $('#other-ot').on('click', function () {
-                $('.project_name').prop('disabled', true);
+                $('.project_id').prop('disabled', true);
             });
         });
     </script>

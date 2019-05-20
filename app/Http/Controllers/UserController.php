@@ -241,8 +241,8 @@ class UserController extends Controller
         $otType = $request['ot_type'];
         $reason = $request['reason'];
         $workDay = $request['work_day'];
-        if ($request->has('project_name')) {
-            $project = Project::find($request['project_name'])->name;
+        if ($request->has('project_id')) {
+            $project = Project::find($request['project_id'])->name;
         }else {
             $project = null;
         }
@@ -250,7 +250,7 @@ class UserController extends Controller
         if ($request->has('ot_type')) {
             $workTimeExplanation = OverTime::where('creator_id', Auth::id())->where('work_day', $workDay)->where('status', '!=', array_search('Từ chối', OT_STATUS))->first();
             if ($workTimeExplanation) {
-                $workTimeExplanation->update(['reason' => $reason, 'minute' => $minute, 'ot_type' => $otType,'project_id'=>$request['project_name'], 'project_name' => $project]);
+                $workTimeExplanation->update(['reason' => $reason, 'minute' => $minute, 'ot_type' => $otType,'project_id'=>$request['project_id'], 'project_name' => $project]);
                 return back()->with('wt_permission_success', '');
             } else {
                 OverTime::create([
@@ -262,7 +262,7 @@ class UserController extends Controller
                     'start_at' => $request['start_at'],
                     'end_at' => $request['end_at'],
                     'ot_type' => $otType,
-                    'project_id' => $request['project_name'],
+                    'project_id' => $request['project_id'],
                     'project_name' => $project,
                 ]);
                 return back()->with('wt_permission_success', 'wt_permission_success');
@@ -354,7 +354,7 @@ class UserController extends Controller
         if (array_search('Overtime', WORK_TIME_TYPE) == $request['permission_type']) {
             $minute = DateTimeHelper::getMinutesBetweenTwoTime($request['start_at'], $request['end_at']);
             if ($request->has('project_name')) {
-                $project = Project::find($request['project_name'])->name;
+                $project = Project::find($request['project_id'])->name;
             }else {
                 $project = null;
             }
@@ -368,12 +368,12 @@ class UserController extends Controller
                     'minute' => $minute,
                     'start_at' => $request['start_at'],
                     'end_at' => $request['end_at'],
-                    'project_id' => $request['project_name'],
+                    'project_id' => $request['project_id'],
                     'project_name' => $project,
                 ]);
                 return back()->with('create_permission_success', '');
             } else if ($request['permission_status'] == array_search('Bình thường', WORK_TIME_TYPE)) {
-                OverTime::where('id', $request['ot_id'])->update(['reason' => $request['note'], 'ot_type' => $request['ot_type'], 'start_at' => $request['start_at'], 'end_at' => $request['end_at'], 'minute' => $minute, 'project_name' => $project, 'project_id' => $request['project_name']]);
+                OverTime::where('id', $request['ot_id'])->update(['reason' => $request['note'], 'ot_type' => $request['ot_type'], 'start_at' => $request['start_at'], 'end_at' => $request['end_at'], 'minute' => $minute, 'project_name' => $project, 'project_id' => $request['project_id']]);
                 return back()->with('create_permission_success', 'create_permission_success');
             } else if ($request['permission_status'] == array_search('Đã duyệt', OT_STATUS)) {
                 return back()->with('permission_error', '');

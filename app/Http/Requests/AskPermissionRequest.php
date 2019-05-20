@@ -62,7 +62,7 @@ class AskPermissionRequest extends FormRequest
         }
 
         if ($requestAll['ot_type'] == array_search('Đi muộn', WORK_TIME_TYPE)) {
-            $rules['project_name'] = 'required|exists:projects,id';
+            $rules['project_id'] = 'required|exists:projects,id';
 
         }
 

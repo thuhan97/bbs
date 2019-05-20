@@ -27,7 +27,7 @@ class WorkTimeCalendarRequest extends FormRequest
         $rules = [];
         if ($this->request->has('checkOtType') && $requestAll['checkOtType'] == 2) {
             $rules['ot_type'] = 'required|between:1,2';
-            $rules['project_name'] = 'required|exists:projects,id';
+            $rules['project_id'] = 'required|exists:projects,id';
             $rules['start_at'] = 'required';
             $rules['end_at'] = 'required|after:start_at';
         } elseif ($this->request->has('explanation_type')) {
@@ -41,7 +41,7 @@ class WorkTimeCalendarRequest extends FormRequest
         }
         if ($this->request->has('wt_ask_permission_ot_project') && $requestAll['wt_ask_permission_ot_project'] == 'true') {
             $rules['ot_type'] = 'required|between:1,2';
-            $rules['project_name'] = 'required|exists:projects,id';
+            $rules['project_id'] = 'required|exists:projects,id';
             $rules['start_at'] = 'required';
             $rules['end_at'] = 'required|after:start_at';
         }
@@ -57,7 +57,7 @@ class WorkTimeCalendarRequest extends FormRequest
         return [
             'ot_type' => 'hình thức',
             'wt_ask_permission' => 'hình thức',
-            'project_name' => 'dự án',
+            'project_id' => 'dự án',
             'start_at' => 'thời gian bắt đầu',
             'end_at' => 'thời gian kết thúc',
             'work_day' => 'ngày làm việc',

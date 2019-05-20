@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Models\Event;
-use App\Repositories\Contracts\IEventRepository;
-use App\Services\Contracts\IEventService;
-use App\Repositories\Contracts\IEventAttendanceRepository;
-use App\Services\Contracts\IEventAttendanceService;
-use Illuminate\Support\Facades\Auth;
 use App\Exports\DowloadExcelEventExport;
+use App\Models\Event;
+use App\Repositories\Contracts\IEventAttendanceRepository;
+use App\Repositories\Contracts\IEventRepository;
+use App\Services\Contracts\IEventAttendanceService;
+use App\Services\Contracts\IEventService;
+use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
 
 /**
@@ -30,8 +30,8 @@ class EventController extends AdminBaseController
     /**
      * EventController constructor.
      *
-     * @param IEventService $eventService
-     * @param IEventAttendanceService $eventAttendanceService
+     * @param IEventService              $eventService
+     * @param IEventAttendanceService    $eventAttendanceService
      * @param IEventAttendanceRepository $eventAttendanceRepository
      */
 
@@ -91,7 +91,7 @@ class EventController extends AdminBaseController
                 'image_url' => 'required|max:1000',
                 'introduction' => 'required|max:500',
                 'content' => 'required',
-                'status' => 'required|numeric',
+                'status' => 'nullable|numeric',
                 'event_date' => 'required|date',
                 'event_end_date' => 'date|after_or_equal:event_date',
 
@@ -120,6 +120,16 @@ class EventController extends AdminBaseController
             return Excel::download(new DowloadExcelEventExport($id), $filename);
         }
         abort(404);
+    }
+
+    public function getValuesToSave(Request $request, $record = null)
+    {
+        $data = $request->only($this->getResourceModel()::getFillableFields());
+        if (!isset($data['status'])) {
+            $data['status'] = UNACTIVE_STATUS;
+        }
+
+        return $data;
     }
 
 }

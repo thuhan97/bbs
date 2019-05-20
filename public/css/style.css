@@ -3,7 +3,7 @@
 }
 
 .card {
-    box-shadow: none;
+    /*box-shadow: none;*/
 }
 
 .text-blue {
@@ -888,10 +888,11 @@ td.blank, .type-1, .type-2 {
     color: #ffffff !important;
 }
 
-/*.data-type-5 {*/
-/*background-color: #01c851 !important;*/
-/*color: #ffffff !important;*/
-/*}*/
+.data-type-5 {
+    color: white;
+    background: rgba(248, 80, 50, 1);
+    background: linear-gradient(to bottom right, #ff3547 50%, #4285f4 50%);
+}
 
 .text-d-bold {
     font-weight: bold;
@@ -1488,10 +1489,6 @@ td.blank, .type-1, .type-2 {
         width: 32%;
     }
 
-    .md-tabs .nav-item.open .nav-link, .md-tabs .nav-link.active {
-        height: 64px;
-    }
-
     .permission-modal-set-center {
         margin: 0 auto;
         width: 84%;
@@ -1500,6 +1497,31 @@ td.blank, .type-1, .type-2 {
     .mobile-mg-right-5 {
         margin-right: 5%;
     }
+
+
+    .primary-color, ul.stepper li.active a .circle, ul.stepper li.completed a .circle {
+        background-color: #e0e0e0 !important;
+        box-shadow: none;
+    }
+
+    .md-tabs .nav-item.open .nav-link, .md-tabs .nav-link.active {
+        border-radius: 0px;
+        background-color: #4285f4;
+    }
+
+    .md-tabs .nav-link {
+        border-radius: 0px;
+        color: black;
+    }
+
+    .md-tabs {
+        border: 0;
+        padding: 0rem;
+    }
+
+    /* .custom-modal {
+         left: 0px !important;
+     }*/
 }
 
 .calendar-search {
@@ -1526,10 +1548,48 @@ td.blank, .type-1, .type-2 {
     left: 270px;
 }
 
+
+.primary-color, ul.stepper li.active a .circle, ul.stepper li.completed a .circle {
+    background-color: #e0e0e0 !important;
+    box-shadow: none;
+}
+
+.md-tabs .nav-item.open .nav-link, .md-tabs .nav-link.active {
+    border-radius: 0px;
+    background-color: #4285f4;
+    padding: 13px;
+    height: 50px;
+}
+
+.md-tabs .nav-link {
+    border-radius: 0px;
+    padding: 13px;
+    color: black;
+}
+
+.md-tabs {
+    border: 0;
+    padding: 0rem;
+    height: 50px;
+}
+
 @media (max-width: 1400px) {
     .bg-img-day-off {
         height: 600px;
         overflow: auto;
     }
+}
+
+@media (min-width: 1024px) {
+    .custom-modal {
+        left: 270px;
+    }
+}
+
+@media (min-width: 1024px) and (max-width: 1100px) {
+    .custom-modal {
+        top: -303px;
+    }
+
 }
 

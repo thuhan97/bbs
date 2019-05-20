@@ -93,8 +93,8 @@
         <div class="modal-dialog modal-center" role="document">
             <div class="modal-content" id="bg-img"
                  style="background-image: url({{ asset('img/background_share.png') }})">
-                <div class="modal-header text-center border-bottom-0 p-3"
-                     style="background-image: url({{ asset('img/header-popup-share.png') }})">
+                <div class="modal-header justify-content-center border-bottom-0 p-3">
+                    <img class="imgHeaderPopup" src="{{ asset('img/header-popup-share.png') }}" alt="img">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <div class="background-close-icon">
                             <span class="btn-close-icon" aria-hidden="true">&times;</span>
@@ -109,7 +109,7 @@
                             <label class="ml-3 text-w-400" for="titleDocument">Tiêu đề tài liệu *</label>
                             <input type="text" required id="titleDocument" class="form-control mb-3"
                                    name="titleDocument"
-                                   placeholder="Tiêu liệu bạn muốn chia sẻ " autocomplete="off">
+                                   placeholder="Tên tài liệu bạn muốn chia sẻ..." autocomplete="off">
                             <label class="ml-3 text-w-400" for="titleForm">Upload file và chia sẻ file *</label>
                             <div class="inputDnD">
                                 <input type="file" required name="fileDocument"

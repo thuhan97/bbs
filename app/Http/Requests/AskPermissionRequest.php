@@ -24,6 +24,8 @@ class AskPermissionRequest extends FormRequest
      */
     public function rules()
     {
+        $requestAll = $this->request->all();
+
         $rules = [];
         if ($this->request->has('permission_late')) {
             $rules['permission_type'] = [
@@ -36,6 +38,7 @@ class AskPermissionRequest extends FormRequest
         }
 
         if ($this->request->has('permission_early')) {
+
             $rules['permission_type'] = [
                 'required',
                 'integer',
@@ -46,17 +49,21 @@ class AskPermissionRequest extends FormRequest
         }
 
         if ($this->request->has('permission_ot')) {
+
             $rules['permission_type'] = [
                 'required',
-                'integer',
                 Rule::in(array_search('Overtime', WORK_TIME_TYPE))
             ];
             $rules['ot_type'] = 'required|between:1,2';
-            $rules['project_name'] = 'required|exists:users,id';
             $rules['start_at'] = 'required';
             $rules['end_at'] = 'required|after:start_at';
             $rules['work_day'] = 'required|date';
             $rules['note'] = 'required';
+        }
+
+        if ($requestAll['ot_type'] == array_search('Đi muộn', WORK_TIME_TYPE)) {
+            $rules['project_id'] = 'required|exists:projects,id';
+
         }
 
         if ($this->has('work_time_explanation_id')) {

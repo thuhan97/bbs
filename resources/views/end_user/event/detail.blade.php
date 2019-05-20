@@ -70,7 +70,7 @@
                 </h3>
             @endif
             @if (count($listUserJoinEvent) > 0)
-                <h5 class="card-title h6 my-4"><b>Danh sách nhân viên gửi phản hồi:</b></h5>
+                <h5 id="registerList" class="card-title h6 my-4"><b>Danh sách nhân viên đã đăng ký:</b></h5>
                 <table id="dtBasicExample" class="table table-striped table-bordered" cellspacing="0" width="100%">
                     <thead>
                     <tr>

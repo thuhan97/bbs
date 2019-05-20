@@ -171,7 +171,7 @@
                 <th class=" text-center">Ngày có phép</th>
                 <th class="d-none d-md-table-cell text-center">Ngày không phép</th>
                 <th class="text-center">Phê duyệt</th>
-                <th class="d-none d-md-table-cell text-center">Xem thêm</th>
+                <th class=" text-center">Xem thêm</th>
             </tr>
             </thead>
             <tbody>
@@ -200,7 +200,7 @@
                             <i class="fas fa-frown fa-2x text-danger"></i>
                         @endif
                     </td>
-                    <td class=" d-none d-md-table-cell text-center">
+                    <td class=" text-center">
                         <p class=" btn-sm m-0 detail-dayoff" style="cursor: pointer" attr="{{ $absence->id }}">Chi
                             tiết >></p>
                     </td>

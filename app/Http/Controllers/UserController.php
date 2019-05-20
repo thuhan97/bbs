@@ -54,7 +54,7 @@ class UserController extends Controller
 
     public function saveProfile(ProfileRequest $request)
     {
-        $data = $request->only('address', 'current_address', 'gmail', 'gitlab', 'chatwork', 'skills', 'in_future', 'hobby', 'foreign_laguage', 'school');
+        $data = $request->only('address', 'current_address', 'gmail', 'gitlab', 'chatwork', 'skills', 'in_future', 'hobby', 'foreign_language', 'school');
 
         if ($request->hasFile('avatar')) {
             $avatar = request()->file('avatar');
@@ -237,16 +237,19 @@ class UserController extends Controller
 
     public function workTimeAskPermission(WorkTimeCalendarRequest $request)
     {
-//        dd(1);
         $minute = DateTimeHelper::getMinutesBetweenTwoTime($request['start_at'], $request['end_at']);
         $otType = $request['ot_type'];
         $reason = $request['reason'];
         $workDay = $request['work_day'];
-//        if ($request->has('status') && $request['status'] == 0 || is_null($request['status'])) {
         if ($request->has('ot_type')) {
+            if ($request['ot_type'] == array_search('Dự án',OT_TYPE)) {
+                $project = Project::find($request['project_id'])->name;
+            } else {
+                $project = null;
+            }
             $workTimeExplanation = OverTime::where('creator_id', Auth::id())->where('work_day', $workDay)->where('status', '!=', array_search('Từ chối', OT_STATUS))->first();
             if ($workTimeExplanation) {
-                $workTimeExplanation->update(['reason' => $reason, 'minute' => $minute, 'ot_type' => $otType, 'project_name' => $request['project_name']]);
+                $workTimeExplanation->update(['reason' => $reason, 'minute' => $minute, 'ot_type' => $otType, 'project_id' => $request['project_id'], 'project_name' => $project]);
                 return back()->with('wt_permission_success', '');
             } else {
                 OverTime::create([
@@ -258,7 +261,8 @@ class UserController extends Controller
                     'start_at' => $request['start_at'],
                     'end_at' => $request['end_at'],
                     'ot_type' => $otType,
-                    'project_name' => $request['project_name'],
+                    'project_id' => $request['project_id'],
+                    'project_name' => $project,
                 ]);
                 return back()->with('wt_permission_success', 'wt_permission_success');
             }
@@ -278,9 +282,6 @@ class UserController extends Controller
             }
         }
     }
-//        } else {
-//            return back()->with('permission_error', '');
-//        }
 
     public function workTimeGetProject(Request $request)
     {
@@ -317,7 +318,7 @@ class UserController extends Controller
 
 
         $askPermission = $this->permissionGetExplanation()->where('user_id', Auth::id())->get();
-        $otTimes = $this->permissionGetOverTime()->where('creator_id', Auth::id())->get();
+        $otTimes = $this->permissionGetOverTime()->where('creator_id', Auth::id())->orderBy('created_at', 'desc')->get();
         $managerApproveOther = $this->permissionGetExplanation()->orderBy('status', 'asc')->orderBy('updated_at', 'desc')->get();
         $managerApproveOT = $this->permissionGetOverTime()->orderBy('status', 'asc')->get();
         return view('end_user.user.ask_permission', compact('askPermission', 'otTimes', 'dataLeader', 'managerApproveOther', 'managerApproveOT'));
@@ -346,9 +347,15 @@ class UserController extends Controller
 
     public function askPermissionCreate(AskPermissionRequest $request)
     {
-        if ($request['permission_type'] == array_search('Overtime', OT_STATUS)) {
+        if (array_search('Overtime', WORK_TIME_TYPE) == $request['permission_type']) {
             $minute = DateTimeHelper::getMinutesBetweenTwoTime($request['start_at'], $request['end_at']);
-            if ($request['permission_status'] == null) {
+            if ($request->has('project_name')) {
+                $project = Project::find($request['project_id'])->name;
+            } else {
+                $project = null;
+            }
+            $overTime = OverTime::where('creator_id', Auth::id())->where('work_day', $request['work_day'])->first();
+            if ($overTime == null && $request['permission_status'] == null) {
                 OverTime::create([
                     'creator_id' => Auth::id(),
                     'work_day' => $request['work_day'],
@@ -357,17 +364,19 @@ class UserController extends Controller
                     'minute' => $minute,
                     'start_at' => $request['start_at'],
                     'end_at' => $request['end_at'],
-                    'project_name' => $request['project_name'],
+                    'project_id' => $request['project_id'],
+                    'project_name' => $project,
                 ]);
-                return back()->with('create_permission_success', 'create_permission_success');
+                return back()->with('create_permission_success', '');
             } else if ($request['permission_status'] == array_search('Bình thường', WORK_TIME_TYPE)) {
-                OverTime::where('id', $request['ot_id'])->update(['reason' => $request['note'], 'ot_type' => $request['ot_type'], 'start_at' => $request['start_at'], 'end_at' => $request['end_at'], 'minute' => $minute, 'project_name' => $request['project_name']]);
+                OverTime::where('id', $request['ot_id'])->update(['reason' => $request['note'], 'ot_type' => $request['ot_type'], 'start_at' => $request['start_at'], 'end_at' => $request['end_at'], 'minute' => $minute, 'project_name' => $project, 'project_id' => $request['project_id']]);
                 return back()->with('create_permission_success', 'create_permission_success');
             } else if ($request['permission_status'] == array_search('Đã duyệt', OT_STATUS)) {
                 return back()->with('permission_error', '');
             }
         } elseif ($request['permission_type'] == array_search('Đi muộn', WORK_TIME_TYPE) || $request['permission_type'] == array_search('Về Sớm', WORK_TIME_TYPE)) {
             $workTimeExplanation = $this->getWorkTimeExplanation($request['work_day'])->where('status', array_search(' Chưa duyệt', OT_STATUS))->where('type', $request['permission_type'])->first();
+
             if ($workTimeExplanation) {
                 $workTimeExplanation->update(['ot_type' => $request['ot_type'], 'note' => $request['note'], 'work_day' => $request['work_day']]);
             } else {
@@ -383,8 +392,7 @@ class UserController extends Controller
         }
     }
 
-    public
-    function askPermissionEarly(Request $request)
+    public function askPermissionEarly(Request $request)
     {
         $workTimeExplanation = $this->getWorkTimeExplanation($request['work_day'])->first();
         if ($workTimeExplanation) {
@@ -401,10 +409,10 @@ class UserController extends Controller
         return back()->with('create_permission_success', '');
     }
 
-    public
-    function askPermissionOT(Request $request)
+    public function askPermissionOT(Request $request)
     {
-        $workTimeExplanation = OverTime::where('work_day', $request['data'])->where('creator_id', Auth::id())->where('status', array_search('Đã duyệt', OT_STATUS))->first();
+        $workTimeExplanation = OverTime::where('work_day', $request['data'])->where('creator_id', Auth::id())/*->where('status', '!=', array_search('Đã duyệt', OT_STATUS))*/
+        ->first();
         $datas = $this->projectActive();
         if ($workTimeExplanation) {
             return [$workTimeExplanation, $datas];
@@ -413,8 +421,7 @@ class UserController extends Controller
         }
     }
 
-    public
-    function approvePermission(/*AskPermissionRequest*/
+    public function approvePermission(/*AskPermissionRequest*/
         Request $request)
     {
         if ($request['permission_type'] == 'ot') {
@@ -436,8 +443,7 @@ class UserController extends Controller
         return back()->with('approver_success', '');
     }
 
-    public
-    function approved(ApprovedRequest $request)
+    public function approved(ApprovedRequest $request)
     {
         $workTimesExplanationID = $request['id'];
         if ($workTimesExplanationID) {
@@ -446,8 +452,7 @@ class UserController extends Controller
         }
     }
 
-    public
-    function approvedOT(ApprovedRequest $request)
+    public function approvedOT(ApprovedRequest $request)
     {
         $workTimesExplanationID = $request['id'];
         if ($workTimesExplanationID) {
@@ -470,8 +475,7 @@ class UserController extends Controller
 //
 //
 
-    public
-    function dayOff(DayOffRequest $request, $status = null)
+    public function dayOff(DayOffRequest $request, $status = null)
     {
         $countDayOff = $this->userDayOffService->countDayOffUserLogin();
         $userManager = $this->userService->getUserManager();
@@ -488,8 +492,7 @@ class UserController extends Controller
         return view('end_user.user.day_off', compact('availableDayLeft', 'userManager', 'countDayOff', 'autoShowModal'));
     }
 
-    public
-    function dayOffListApprovalAPI(Request $request)
+    public function dayOffListApprovalAPI(Request $request)
     {
         $response = [
             'success' => false,
@@ -508,8 +511,7 @@ class UserController extends Controller
         ]);
     }
 
-    public
-    function dayOffApprove(DayOffRequest $request, $status = null)
+    public function dayOffApprove(DayOffRequest $request, $status = null)
     {
         $dataDayOff = $this->userDayOffService->showList($status);
         return view('end_user.user.day_off_approval', compact(
@@ -517,8 +519,7 @@ class UserController extends Controller
         ));
     }
 
-    public
-    function dayOffApprove_get(Request $request, $id)
+    public function dayOffApprove_get(Request $request, $id)
     {
         if (!$request->ajax() || !Auth::check() || $id === null) {
             return null;
@@ -531,8 +532,7 @@ class UserController extends Controller
         return $transformer->transform($responseObject);
     }
 
-    public
-    function dayOffApprove_AcceptAPI(Request $request)
+    public function dayOffApprove_AcceptAPI(Request $request)
     {
         $response = [
             'success' => false,
@@ -571,8 +571,7 @@ class UserController extends Controller
 //
 //
 
-    public
-    function contact(Request $request)
+    public function contact(Request $request)
     {
         $users = $this->userService->getContact($request, $perPage, $search);
         $groups = Group::all();
@@ -586,8 +585,7 @@ class UserController extends Controller
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public
-    function dayOffCreatevacationVacation(CreateDayOffRequest $request)
+    public function dayOffCreatevacationVacation(CreateDayOffRequest $request)
     {
         if ($request->id_hid){
             $dayOff =DayOff::FindOrFail($request->id_hid);
@@ -605,8 +603,7 @@ class UserController extends Controller
         }
     }
 
-    public
-    function dayOffCreate(CreateDayOffRequest $request)
+    public function dayOffCreate(CreateDayOffRequest $request)
     {
 
        if ($request->id_hid){
@@ -630,8 +627,7 @@ class UserController extends Controller
         }
     }
 
-    public
-    function dayOffSearch(Request $request)
+    public function dayOffSearch(Request $request)
     {
         $start = $request->search_start_at;
         $end = $request->search_end_at;
@@ -644,8 +640,7 @@ class UserController extends Controller
         ));
     }
 
-    public
-    function dayOffShow($status)
+    public function dayOffShow($status)
     {
         $dataDayOff = $this->userDayOffService->showList($status);
         return view('end_user.user.day_off_approval', compact(
@@ -653,8 +648,7 @@ class UserController extends Controller
         ));
     }
 
-    public
-    function dayOffDetail($id, $check = false)
+    public function dayOffDetail($id, $check = false)
     {
         $dayOff = $this->userDayOffService->getOneData($id);
         if ($dayOff->status == STATUS_DAY_OFF['abide'] && $check) {
@@ -664,7 +658,7 @@ class UserController extends Controller
         }
         $numOff= $dayOff->number_off ? checkNumber($dayOff->number_off) : DEFAULT_VALUE;
         $absent= $dayOff->absent ? checkNumber($dayOff->absent) : DEFAULT_VALUE;
-
+        
         if ($dayOff->title != REMAIN_DAY_OFF_DEFAULT){
             $timeStart= DateTimeHelper::checkTileDayOffGetDate($dayOff->start_at);
             $timeEnd= DateTimeHelper::checkTileDayOffGetDate($dayOff->end_at);
@@ -673,7 +667,7 @@ class UserController extends Controller
         }
         return response()->json([
             'data' => $dayOff,
-            'numoff' => $numOff ,
+            'numoff' => $numOff,
             'approver' => User::find($dayOff->approver_id)->name ?? '',
             'userdayoff' => User::find($dayOff->user_id)->name ?? '',
             'absent' => $absent + $numOff,
@@ -684,8 +678,7 @@ class UserController extends Controller
         ]);
     }
 
-    public
-    function editDayOffDetail(Request $request, $id)
+    public function editDayOffDetail(Request $request, $id)
     {
         $this->validate($request, [
             'number_off' => 'required|numeric|min:0',
@@ -695,8 +688,7 @@ class UserController extends Controller
         return back()->with('success', __('messages.edit_day_off_successully'));
     }
 
-    public
-    function deleteOrCloseDayOff(Request $request)
+    public function deleteOrCloseDayOff(Request $request)
     {
         if (isset($request->day_off_id)) {
             DayOff::findOrFail($request->day_off_id)->delete();
@@ -713,8 +705,7 @@ class UserController extends Controller
         }
     }
 
-    public
-    function checkUsable(Request $request)
+    public function checkUsable(Request $request)
     {
         $dayOffPreYear = RemainDayoff::where('user_id', Auth::id())->where('year', date('Y') - PRE_YEAR)->first()->remain ?? DEFAULT_VALUE;
         $dayOffYear = RemainDayoff::where('user_id', Auth::id())->where('year', date('Y'))->first();
@@ -743,26 +734,22 @@ class UserController extends Controller
         }
     }
 
-    private
-    function getWorkTimeExplanation($work_day)
+    private function getWorkTimeExplanation($work_day)
     {
         return WorkTimesExplanation::where('user_id', Auth::id())->where('work_day', $work_day);
     }
 
-    private
-    function permissionGetExplanation()
+    private function permissionGetExplanation()
     {
         return WorkTimesExplanation::where('type', '!=', 4);
     }
 
-    private
-    function permissionGetOverTime()
+    private function permissionGetOverTime()
     {
-        return OverTime::orderBy('created_at', 'asc');
+        return OverTime::where('id', '!=', null);
     }
 
-    private
-    function projectActive()
+    private function projectActive()
     {
         return Project::where('status', Project::IS_ACTIVE)->get();
     }

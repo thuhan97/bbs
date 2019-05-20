@@ -107,14 +107,23 @@ class Event extends Model
 
     /**
      * @content has One user
+     * @return \Illuminate\Database\Eloquent\Relations\hasMany
      * @author  : Hunglt
      * @Date    : 2018/09/28
      *
-     * @return \Illuminate\Database\Eloquent\Relations\hasMany
      */
     public function eventAttendanceList()
     {
-        return $this->hasMany(EventAttendanceList::class, 'event_id', 'id');
+        return $this->hasMany(EventAttendance::class, 'event_id', 'id');
+    }
+
+    public function canRegister($userId)
+    {
+        if ($this->attributes['deadline_at'] >= date(DATE_TIME_FORMAT)) {
+            if (!$this->eventAttendanceList()->where('user_id', $userId)->exists())
+                return true;
+        }
+        return false;
     }
 
 

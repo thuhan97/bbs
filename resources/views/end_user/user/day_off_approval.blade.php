@@ -206,12 +206,12 @@
             <!--Table head-->
             <thead class="grey lighten-2">
             <tr>
-                <th class="text-center d-none d-md-table-cell">STT</th>
+                <th class="text-center d-none d-xl-table-cell">STT</th>
                 <th class="text-center ">Nhân viên</th>
                 <th class="text-center ">Từ ngày</th>
                 <th class="text-center d-none d-sm-table-cell">Tới ngày</th>
                 <th class="text-center ">Tiêu đề</th>
-                <th class="text-center d-none d-sm-table-cell">Nội dung</th>
+                <th class="text-center d-none d-xl-table-cell">Nội dung</th>
                 <th class="text-center ">Ngày có phép</th>
                 <th class="text-center  d-none d-sm-table-cell">Ngày không phép</th>
                 <th class="text-center d-none d-sm-table-cell" >Phê duyệt</th>
@@ -223,7 +223,7 @@
             <tbody id="ajax-show">
             @foreach($getDayOff as $keys => $record)
                 <tr id="rowApprove{{$loop->index+1}}">
-                    <th scope="row" class="text-center d-none d-md-table-cell">
+                    <th scope="row" class="text-center d-none d-xl-table-cell">
                         {!! ((($getDayOff->currentPage()*PAGINATE_DAY_OFF)-PAGINATE_DAY_OFF)+1)+$keys !!}
                     </th>
 
@@ -237,7 +237,7 @@
                         {{ $record->title != DAY_OFF_TITLE_DEFAULT ? \App\Helpers\DateTimeHelper::checkTileDayOffGetDate($record->end_at) : $record->end_date  }}
                     </td>
                     <td class="text-center ">{{ array_key_exists($record->title, VACATION_FULL) ? VACATION_FULL[$record->title] : ''  }}</td>
-                    <td class="text-center d-none d-sm-table-cell">{!! nl2br($record->reason) !!}</td>
+                    <td class="text-center d-none d-xl-table-cell">{!! nl2br($record->reason) !!}</td>
                     <td class="text-center ">
                         {{!!!$record->number_off ? ($record->status != STATUS_DAY_OFF['noActive'] ? 'Đang duyệt' : '') : checkNumber($record->number_off).' ngày'}}
                     </td>
@@ -449,7 +449,11 @@
                         'type': 'get',
                         success: function (data) {
                             $('#user-day-off').html(data.userdayoff);
-                            $('#strat_end').html(data.data.start_date + ' - ' + data.data.end_date);
+                            if (data.time){
+                                $('#strat_end').html(data.time);
+                            } else{
+                                $('#strat_end').html(data.data.start_date + ' - ' + data.data.end_date);
+                            }
                             if (data.data.reason){
                                 $('#reason').html(data.data.reason.replace(/\n/g, "<br />"));
                             }

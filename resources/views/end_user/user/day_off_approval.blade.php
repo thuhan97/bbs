@@ -215,7 +215,7 @@
                 <th class="text-center ">Ngày có phép</th>
                 <th class="text-center  d-none d-sm-table-cell">Ngày không phép</th>
                 <th class="text-center d-none d-sm-table-cell" >Phê duyệt</th>
-                <th class="text-center d-none d-sm-table-cell ">Xem thêm</th>
+                <th class="text-center ">Xem thêm</th>
             </tr>
             </thead>
             <!--Table head-->
@@ -254,7 +254,7 @@
                             <i class="fas fa-frown fa-2x text-danger"></i>
                         @endif
                     </td>
-                    <td class="text-center d-none d-sm-table-cell">
+                    <td class="text-center ">
                         <p class=" btn-sm m-0 detail-dayoff" style="cursor: pointer" attr="{{ $record->id }}">Chi
                             tiết >></p>
                     </td>

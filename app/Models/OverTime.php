@@ -33,6 +33,7 @@ class OverTime extends Model
         'ot_type',
         'project_name',
         'note_respond',
+        'project_id',
     ];
 
     public function scopeSearch($query, $searchOtTimes)
@@ -55,6 +56,11 @@ class OverTime extends Model
     public function approver()
     {
         return $this->belongsTo(User::class, 'approver_id', 'id');
+    }
+
+    public function project()
+    {
+        return $this->belongsTo(Project::class, 'project_id', 'id');
     }
 
     public function getDescriptionTimeAttribute($key)

@@ -97,10 +97,10 @@ window.myEditor = function ($selector, height) {
             "advlist autolink lists link image charmap print preview hr anchor pagebreak",
             "searchreplace wordcount visualblocks visualchars code fullscreen",
             "insertdatetime media nonbreaking save table contextmenu directionality",
-            "emoticons template paste textcolor colorpicker textpattern"
+            "emoticons template paste textcolor colorpicker textpattern code"
         ],
         toolbar1: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image",
-        toolbar2: "fullscreen preview media | forecolor backcolor emoticons",
+        toolbar2: "fullscreen code preview media | forecolor backcolor emoticons",
         image_advtab: true,
         file_browser_callback: function (field_name, url, type, win) {
             var x = window.innerWidth || document.documentElement.clientWidth || document.getElementsByTagName('body')[0].clientWidth;

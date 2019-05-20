@@ -54,7 +54,7 @@
                         ?>
                         <tr>
                             <td>
-                                {{$document->name}}
+                                {{html_entity_decode($document->name)}}
                             </td>
                             <td class="center">
                                 <?php echo isset($document->user->name) ? $document->user->name : ''; ?>

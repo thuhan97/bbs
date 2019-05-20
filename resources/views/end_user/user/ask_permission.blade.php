@@ -80,6 +80,12 @@
         </span>
         <br>
     @endif
+    @if ($errors->has('project_name'))
+        <span class="help-block mb-5 color-red">
+            <strong>{{ $errors->first('project_name') }}</strong>
+        </span>
+        <br>
+    @endif
     @if ($errors->has('work_time_explanation_id'))
         <span class="help-block mb-5 color-red">
             <strong>{{ $errors->first('work_time_explanation_id') }}</strong>
@@ -825,6 +831,8 @@
                     success: function (respond) {
                         if (respond[0]) {
                             $('.permission_status').attr('value', respond[0].status);
+                            $('#start_at').attr('value', respond[0].start_at);
+                            $('#end_at').attr('value', respond[0].end_at);
                             $('.ot_id').attr('value', respond[0].id);
                             workDayOT.append("<input name='' type='hidden' value='" + respond[0].status + "'>");
                             var note = respond[0].reason ? respond[0].reason : '',
@@ -839,9 +847,11 @@
                                     $('#project-ot').prop('checked', false)
                                 }
                             }
-
-                            // $('.project_name').append('<option value="'+ element.name +'">' + element.name + '</option>');
-
+                            if (respond[0].ot_type == 2) {
+                                $('.project_name ').prop('disabled', true);
+                            } else {
+                                $('.project_name ').prop('disabled', false);
+                            }
 
                             if (respond[0].status === 1) {
                                 $('.header-permission-ot').text('Đơn đã được duyệt');

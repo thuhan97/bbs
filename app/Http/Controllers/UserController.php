@@ -348,7 +348,11 @@ class UserController extends Controller
     {
         if (array_search('Overtime', WORK_TIME_TYPE) == $request['permission_type']) {
             $minute = DateTimeHelper::getMinutesBetweenTwoTime($request['start_at'], $request['end_at']);
-            $project = Project::find($request['project_name'])->name;
+            if ($request->has('project_name')) {
+                $project = Project::find($request['project_name'])->name;
+            }else {
+                $project = null;
+            }
             $overTime = OverTime::where('creator_id', Auth::id())->where('work_day', $request['work_day'])->first();
             if ($overTime == null && $request['permission_status'] == null) {
                 OverTime::create([

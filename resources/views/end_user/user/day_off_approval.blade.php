@@ -449,13 +449,14 @@
                         'type': 'get',
                         success: function (data) {
                             $('#user-day-off').html(data.userdayoff);
-                            $('#strat_end').html(data.data.start_date + ' - ' + data.data.end_date);
                             if (data.time){
                                 $('#strat_end').html(data.time);
                             } else{
                                 $('#strat_end').html(data.data.start_date + ' - ' + data.data.end_date);
                             }
-
+                            if (data.data.reason){
+                                $('#reason').html(data.data.reason.replace(/\n/g, "<br />"));
+                            }
                             $('#id-delete').val(data.data.id);
                             if (title.hasOwnProperty(data.data.title)) {
                                 $('#title').html(title[data.data.title]);

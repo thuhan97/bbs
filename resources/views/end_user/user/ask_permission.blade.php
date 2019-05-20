@@ -593,8 +593,8 @@
                             </div>
                         </div>
                     </div>
-                    <select class="browser-default form-control project_id my-2" name="project_id"
-                            style="width: 83%;margin: 0 auto;">
+                    <select class="browser-default form-control project_id my-2 permission_project_id" name="project_id"
+                            style="width: 83%;margin: 0 auto;" id="project_id">
                         <option value="0">Chọn dự án</option>
                     </select>
                     <div class="select-day">
@@ -834,6 +834,7 @@
                             $('#start_at').attr('value', respond[0].start_at);
                             $('#end_at').attr('value', respond[0].end_at);
                             $('.ot_id').attr('value', respond[0].id);
+
                             workDayOT.append("<input name='' type='hidden' value='" + respond[0].status + "'>");
                             var note = respond[0].reason ? respond[0].reason : '',
                                 otType = respond[0].ot_type;
@@ -847,19 +848,12 @@
                                     $('#project-ot').prop('checked', false)
                                 }
                             }
-                            if (respond[0].ot_type == 2) {
-                                $('.project_id ').prop('disabled', true);
-                            } else {
-                                $('.project_id ').prop('disabled', false);
-                            }
+                            // if (respond[0].ot_type == 2) {
+                            //     $('.project_id ').prop('disabled', true);
+                            // } else {
+                            //     $('.project_id ').prop('disabled', false);
+                            // }
 
-                            if (respond[0].status === 1) {
-                                $('.header-permission-ot').text('Đơn đã được duyệt');
-                                $('.permission-reason-ot,.btn-permission-ot').prop('disabled', true);
-                            } else {
-                                $('.header-permission-ot').text('Xin OT');
-                                $('.permission-reason-ot,.btn-permission-ot').prop('disabled', false);
-                            }
                         }
                         if (respond[1]) {
                             respond[1].forEach(function (element) {
@@ -868,11 +862,20 @@
                         } else {
                             $('.permission-reason-ot').empty();
                         }
+
+                        $('.project_id').val(respond[0].project_id);
+                        if (respond[0].status === 1) {
+                            $('.header-permission-ot').text('Đơn đã được duyệt');
+                            $('.permission-reason-ot,.btn-permission-ot,#start_at,#end_at,#project_id').prop('disabled', true);
+                        } else {
+                            $('.header-permission-ot').text('Xin OT');
+                            $('.permission-reason-ot,.btn-permission-ot,#start_at,#end_at,#project_id').prop('disabled', false);
+                        }
                     }
                 });
                 $('.project_id option[value!="0"]').remove();
             });
-            $('.approve-type').attr('value', '')
+            $('.approve-type').attr('value', '');
 
             $('#btn-approve, #btn-reject').on('click', function () {
                 var selectorID = $(this).attr('id');
@@ -881,14 +884,6 @@
                 } else if (selectorID === 'btn-reject') {
                     $('.approve-type').attr('value', 2)
                 }
-            });
-
-            $('#project-ot').on('click', function () {
-                $('.project_id').prop('disabled', false);
-            });
-
-            $('#other-ot').on('click', function () {
-                $('.project_id').prop('disabled', true);
             });
         });
     </script>

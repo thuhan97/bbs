@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Models\Post;
 use App\Repositories\Contracts\IPostRepository;
+use Illuminate\Http\Request;
 
 /**
  * PostController
@@ -54,7 +55,7 @@ class PostController extends AdminBaseController
                 'image_url' => 'required|max:1000',
                 'introduction' => 'required|max:1000',
                 'content' => 'required',
-                'status' => 'required|numeric',
+                'status' => 'nullable|numeric',
             ],
             'messages' => [],
             'attributes' => [],
@@ -71,7 +72,7 @@ class PostController extends AdminBaseController
                 'image_url' => 'required|max:1000',
                 'introduction' => 'required|max:1000',
                 'content' => 'required',
-                'status' => 'required|numeric',
+                'status' => 'nullable|numeric',
             ],
             'messages' => [],
             'attributes' => [],
@@ -79,4 +80,13 @@ class PostController extends AdminBaseController
         ];
     }
 
+    public function getValuesToSave(Request $request, $record = null)
+    {
+        $data = $request->only($this->getResourceModel()::getFillableFields());
+        if (!isset($data['status'])) {
+            $data['status'] = UNACTIVE_STATUS;
+        }
+
+        return $data;
+    }
 }

@@ -381,7 +381,7 @@
                                     },
                                     success: function (responds) {
                                         responds.forEach(function (element) {
-                                            $('.project_name').append('<option value="' + element.name + '">' + element.name + '</option>');
+                                            $('.project_name').append('<option value="' + element.id + '">' + element.name + '</option>');
                                         });
                                     }
                                 });
@@ -426,10 +426,15 @@
                                             });
                                             if (respond.status === 1) {
                                                 $('.title-wt-modal-approve').text('Đơn đã được duyệt');
-                                                $('.wt-textarea-reason,.btn-send-permission,.ot_type,.project_name,#start_at,#end_at').prop('disabled', true);
+                                                $('.wt-textarea-reason,.btn-send-permission,.ot_type,#start_at,#end_at').prop('disabled', true);
                                             } else {
                                                 $('.title-wt-modal-approve').text('Xin phép');
-                                                $('.wt-textarea-reason,.btn-send-permission,.ot_type,.project_name,#start_at,#end_at').prop('disabled', false);
+                                                $('.wt-textarea-reason,.btn-send-permission,.ot_type,#start_at,#end_at').prop('disabled', false);
+                                            }
+                                            if (explanationOtType === '2') {
+                                                $('.project_name').prop('disabled', true);
+                                            } else {
+                                                $('.project_name').prop('disabled', false);
                                             }
                                             $('.wt-textarea-reason').text(note)
                                         }
@@ -523,7 +528,7 @@
                                     $('.wt-textarea-reason,.btn-send-permission').prop('disabled', false)
                                     $('#start_at,#end_at').val('')
                                 }
-                                if (respond.note && respond.ot_type === 2) {
+                                if (respond.note) {
                                     var note = respond.note
                                 } else {
                                     note = ''
@@ -723,9 +728,11 @@
                             type_2 = $('#calendar .data-type-2').length,
                             type_4 = $('#calendar .data-type-4').length,
                             type_5 = $('#calendar .data-type-5').length,
-                            earlyLate = type_1 + type_2;
-                        $("#btn-early-late").text('Số buổi đi muộn: ' + type_1);
-                        $("#btn-ot").text('Số buổi OT: ' + type_4);
+                            earlyOt = type_1 + type_5;
+                            Ot = type_4 + type_5;
+                        console.log(earlyOt);
+                        $("#btn-early-late").text('Số buổi đi muộn: ' + earlyOt);
+                        $("#btn-ot").text('Số buổi OT: ' + Ot);
                         $("#btn-late-ot").text('Số buổi về sớm: ' + type_2);
                     },
                     error: (data) => {

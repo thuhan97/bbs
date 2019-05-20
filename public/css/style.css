@@ -888,10 +888,11 @@ td.blank, .type-1, .type-2 {
     color: #ffffff !important;
 }
 
-/*.data-type-5 {*/
-/*background-color: #01c851 !important;*/
-/*color: #ffffff !important;*/
-/*}*/
+.data-type-5 {
+    color: white;
+    background: rgba(248, 80, 50, 1);
+    background: linear-gradient(to bottom right, #ff3547 50%, #4285f4 50%);
+}
 
 .text-d-bold {
     font-weight: bold;
@@ -1517,9 +1518,10 @@ td.blank, .type-1, .type-2 {
         border: 0;
         padding: 0rem;
     }
-   /* .custom-modal {
-        left: 0px !important;
-    }*/
+
+    /* .custom-modal {
+         left: 0px !important;
+     }*/
 }
 
 .calendar-search {
@@ -1577,15 +1579,17 @@ td.blank, .type-1, .type-2 {
         overflow: auto;
     }
 }
+
 @media (min-width: 1024px) {
     .custom-modal {
         left: 270px;
     }
 }
-@media (min-width: 1024px) and (max-width: 1100px){
-        .custom-modal {
-            top: -303px;
-        }
+
+@media (min-width: 1024px) and (max-width: 1100px) {
+    .custom-modal {
+        top: -303px;
+    }
 
 }
 

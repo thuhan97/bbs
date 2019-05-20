@@ -132,31 +132,31 @@
             </div>
         </div>
 
-            <div class="row mb-2">
-                <div class="col-sm-4 col-md-4">
-                </div>
-                <div class="col-sm-8 text-right col-md-8">
-                    <div class="row">
-                        <div class="col-lg-2"></div>
-                        <div class="col-12 col-sm-8 col-lg-6 ">
-                            <div class="pr-1">
-                                <?php
-                                $user = \Illuminate\Support\Facades\Auth::user();
-                                ?>
-                                @if($user->jobtitle_id >= \App\Models\Report::MIN_APPROVE_JOBTITLE)
-                                    <a href="{{route('day_off_approval')}}" class="btn btn-primary"
-                                       id="btn-detail-day-off" type="button">
-                                        {{__l('day_off_approval')}}
-                                    </a>
-                                @endif
-                            </div>
+        <div class="row mb-2">
+            <div class="col-sm-4 col-md-4">
+            </div>
+            <div class="col-sm-8 text-right col-md-8">
+                <div class="row">
+                    <div class="col-lg-2"></div>
+                    <div class="col-12 col-sm-8 col-lg-6 ">
+                        <div class="pr-1">
+                            <?php
+                            $user = \Illuminate\Support\Facades\Auth::user();
+                            ?>
+                            @if($user->jobtitle_id >= \App\Models\Report::MIN_APPROVE_JOBTITLE)
+                                <a href="{{route('day_off_approval')}}" class="btn btn-primary"
+                                   id="btn-detail-day-off" type="button">
+                                    {{__l('day_off_approval')}}
+                                </a>
+                            @endif
                         </div>
-                        <div class="d-none d-sm-block col-sm-4">
-                            {{ Form::select('status_search', SHOW_DAY_OFFF, $statusSearch ?? ALL_DAY_OFF, ['class' => 'browser-default custom-select mt-1 w-100 month option-select select-search','placeholder'=>'']) }}
-                        </div>
+                    </div>
+                    <div class="d-none d-sm-block col-sm-4">
+                        {{ Form::select('status_search', SHOW_DAY_OFFF, $statusSearch ?? ALL_DAY_OFF, ['class' => 'browser-default custom-select mt-1 w-100 month option-select select-search','placeholder'=>'']) }}
                     </div>
                 </div>
             </div>
+        </div>
 
     </form>
     <div class="">
@@ -287,10 +287,10 @@
                         <span class="btn-close-icon" aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <div class="modal-header text-center border-bottom-0 p-3">
+                <div class="modal-header text-center border-bottom-0 p-0">
                     <h6 class="modal-title w-100 font-weight-bold text-danger" id="usable-check"></h6>
                 </div>
-                <div class="modal-body mt-0 pb-0 d-flex justify-content-start ml-3">
+                <div class="modal-body mt-0 pb-0 d-flex justify-content-start ml-3" id="toggle-show">
                     <div class="custom-control custom-radio">
                         <input type="radio" class="custom-control-input option-dayoff" id="defaultUnchecked"
                                name="defaultExampleRadios" checked value="0">
@@ -299,22 +299,25 @@
 
                     <!-- Default checked -->
                     <div class="custom-control custom-radio ml-5">
-                        <input type="radio" class="custom-control-input option-dayoff" id="defaultChecked"
+                        <input type="radio" class="custom-control-input option-dayoff" id="defaultChecked1"
                                name="defaultExampleRadios" value="1" @if(old('title')) checked @endif>
-                        <label class="custom-control-label " for="defaultChecked"><h5>Xin nghỉ chế độ</h5></label>
+                        <label class="custom-control-label " for="defaultChecked1"><h5>Xin nghỉ chế độ</h5></label>
                     </div>
                 </div>
                 <div class="tab-content p-0" id="myTabContent">
                     <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
                         <form action="{{ route('day_off_create') }}" method="post" id="form_create_day_off">
                             @csrf
+                            <input type="hidden" name="id_hid" class="id_hide">
                             <div class="modal-body mx-3 mt-0 pb-0">
                                 <div class="mb-3">
                                     <label class="text-w-400" for="exampleFormControlTextarea5">Nội dung <span
                                                 class="text-danger">*</span></label>
+                                    <input type="reset" value="reset" style="opacity: -0.5" id="value-rs">
                                     <textarea
                                             class="form-control reason_id rounded-0 select-item check-value {{ $errors->has('reason') ? ' has-error' : '' }}"
-                                            id="exampleFormControlTextarea2" rows="3" placeholder="Lý do xin nghỉ..." required
+                                            id="exampleFormControlTextarea2" rows="3" placeholder="Lý do xin nghỉ..."
+                                            required
                                             name="reason">{{  old('reason') }}</textarea>
                                     @if ($errors->has('reason'))
                                         <div class="mt-1">
@@ -339,7 +342,7 @@
                                                            readonly="readonly">
                                                 </div>
                                                 <div class="col-sm-4 p-0 mt-2">
-                                                    {{ Form::select('start', CHECK_TIME_DAY_OFF, null, ['class' => 'form-control option-time-day-off browser-default custom-select select-item mannager_id check-value time-start' ]) }}
+                                                    {{ Form::select('start', CHECK_TIME_DAY_OFF, old('start'), ['class' => 'form-control option-time-day-off browser-default custom-select select-item  check-value time-start' ]) }}
                                                 </div>
                                             </div>
                                         </div>
@@ -358,7 +361,7 @@
                                                            readonly>
                                                 </div>
                                                 <div class="col-sm-4 p-0 mt-2">
-                                                    {{ Form::select('end', CHECK_TIME_DAY_OFF, REMAIN_DAY_OFF_DEFAULT , ['class' => 'form-control border-0 option-time-day-off browser-default custom-select select-item mannager_id check-value time-end ds-end' ]) }}
+                                                    {{ Form::select('end', CHECK_TIME_DAY_OFF, old('end',REMAIN_DAY_OFF_DEFAULT) , ['class' => 'form-control border-0 option-time-day-off browser-default custom-select select-item  check-value time-end ds-end' ]) }}
                                                 </div>
                                             </div>
                                         </div>
@@ -410,12 +413,13 @@
                         <form action="{{ route('day_off_create_vacation') }}" method="post"
                               id="form_create_day_off_vacation">
                             @csrf
+                            <input type="hidden" name="id_hid" class="id_hide">
                             <div class="modal-body mx-3 mt-0 pb-0">
                                 <div class="mb-3">
                                     <!-- Default input -->
                                     <label class="text-w-400" for="exampleForm2">Chế độ nghỉ<span
                                                 class="text-danger">*</span></label>
-                                    {{ Form::select('title', VACATION,null,['class' => 'form-control my-1 mr-1  browser-default custom-select md-form select-item reason_id check-value']) }}
+                                    {{ Form::select('title', VACATION,null,['class' => 'form-control my-1 mr-1  browser-default custom-select md-form select-item  check-value edit-regime']) }}
                                     @if ($errors->has('title'))
                                         <div class="">
                                             <span class="help-block text-danger">{{ $errors->first('title') }}</span>
@@ -425,9 +429,10 @@
                                 <input type="hidden" name="day_off_id" value="">
                                 <div class="mb-3">
                                     <label class="text-w-400" for="exampleFormControlTextarea5">Nội dung</label>
+                                    <input type="reset" value="reset" style="opacity: -0.5" id="value-rs1">
                                     <textarea
                                             class="form-control reason_id rounded-0 select-item check-value {{ $errors->has('reason') ? ' has-error' : '' }}"
-                                            id="exampleFormControlTextarea2" rows="3" placeholder="Lý do xin nghỉ..."
+                                            id="exampleFormControl" rows="3" placeholder="Lý do xin nghỉ..."
                                             name="reason">{{  old('reason') }}</textarea>
                                     @if ($errors->has('reason'))
                                         <div class="mt-1">
@@ -443,6 +448,7 @@
                                             <?php
 
                                             $autoDate = date('Y/m/d', strtotime('tomorrow'));
+                                            $autoDateEnd = date('Y/m/d', strtotime('tomorrow + 1day'));
 
                                             ?>
                                             <input type="text"
@@ -457,7 +463,7 @@
                                             <input type="text"
                                                    class="form-control select-item {{ $errors->has('end_at') ? ' has-error' : '' }}"
                                                    id="end_date1" autocomplete="off" name="end_at"
-                                                   value="{{  old('end_at') }}"
+                                                   value="{{  old('end_at',$autoDateEnd) }}"
                                                    readonly="readonly">
                                         </div>
                                         <span id="errors_date1" class="text-danger ml-3 "></span>
@@ -542,14 +548,18 @@
                             </div>
                         </div>
                     </div>
-                    <div class="mb-5" id="remove-app-comment">
+                    <div class="mb-3" id="remove-app-comment">
                         <label class="text-d-bold ml-3" for="exampleFormControlTextarea5">Ý kiến người
                             duyệt</label>
                         <div class="ml-3" id="app-comment"></div>
                     </div>
-
-                    <div class=" mb-1 pb-4 d-flex justify-content-center border-top-0 rounded mb-0" id="btn-show-modal">
-
+                    <div class="d-flex justify-content-center mb-4">
+                        <div>
+                            <span id="btn-show-modal-edit"></span>
+                        </div>
+                        <div>
+                            <span id="btn-show-modal"></span>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -559,7 +569,8 @@
     <!-- Modal -->
     <form action="{{ route('delete_day_off') }}" method="post">
         @csrf
-        <div class="modal fade custom-modal" id="basicExampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        <div class="modal fade custom-modal" id="basicExampleModal" tabindex="-1" role="dialog"
+             aria-labelledby="exampleModalLabel"
              aria-hidden="true">
             <input type="hidden" value="" name="day_off_id" id="id-delete">
             <div class="modal-dialog" role="document">
@@ -604,6 +615,17 @@
             swal({
                 title: "Thông báo!",
                 text: "Bạn đã gửi đơn thành công!",
+                icon: "success",
+                button: "Đóng",
+            });
+        </script>
+    @endif
+
+    @if(session()->has('day_off_edit_success'))
+        <script>
+            swal({
+                title: "Thông báo!",
+                text: "Bạn đã sửa đơn thành công!",
                 icon: "success",
                 button: "Đóng",
             });
@@ -709,6 +731,14 @@
 
             $('.show-modal').on('click', function () {
                 $('#modal-form').modal('show');
+                $('#toggle-show').attr('style', 'display: flex !important');
+                $('#home').addClass('active show');
+                $('#profile').removeClass('active show');
+                $('#defaultUnchecked').prop('checked',true);
+                $('#value-rs').click();
+                $('#value-rs1').click();
+                $('.id_hide').val(' ');
+                $(".reason_id").html(null);
             });
 
             var date = $("#start_date").val();
@@ -774,7 +804,7 @@
                         $('#approver_id').html(data.approver);
                         $('#number_off').html(data.data.number_off);
                         $('#strat_end').html(data.data.start_date + ' - ' + data.data.end_date);
-                        if (data.data.reason){
+                        if (data.data.reason) {
                             $('#reason').html(data.data.reason.replace(/\n/g, "<br />"));
                         }
                         $('#id-delete').val(data.data.id);
@@ -799,19 +829,67 @@
                             $('#remove-numoff').hide();
                         }
                         if (data.data.numoff || data.data.absent) {
-                            (data.data.status == 2 || data.data.status == 0) ? $('#number_off').html(' ') : $('#number_off').html(data.absent + ' ngày') ;
+                            (data.data.status == 2 || data.data.status == 0) ? $('#number_off').html(' ') : $('#number_off').html(data.absent + ' ngày');
                             $('#remove-numoff').show();
                         } else {
                             $('#remove-numoff').hide();
                         }
                         if (data.data.status == 0) {
                             $('#btn-show-modal').html('<span class="btn btn-danger" data-toggle="modal" data-target="#basicExampleModal">HỦY ĐƠN</span>');
-                        }else{
+                            $('#btn-show-modal-edit').html('<span class="btn btn-info" attr=' + data.data.id + '>SỬA ĐƠN</span>');
+                        } else {
                             $('#btn-show-modal').html('')
+                            $('#btn-show-modal-edit').html('')
                         }
                         $('#modal-form-detail').modal('show');
                     }
                 });
+            })
+
+            $(document).on('click', '#btn-show-modal-edit', function () {
+                var id = $(this).children().attr('attr');
+                $.ajax
+                ({
+                    'url': '{{ route('day_off_detail') }}' + '/' + id,
+                    'type': 'get',
+                    success: function (data) {
+                        $('#modal-form').modal('show');
+                        $('#modal-form-detail').modal('hide');
+                        $('#toggle-show').attr('style', 'display: none !important');
+                        $('.id_hide').val(data.data.id);
+                        if (data.data.title == 1) {
+                            $('#profile').removeClass('active show');
+                            $('#home').addClass('active show');
+                            $('#start_date').val(data.timeStartEdit)
+
+                            $('#end_date').val(data.timeEndEdit)
+
+                            if (data.data.start_date.slice(12,17) == '08:00') {
+                                $('.time-start').val(0)
+                            } else {
+                                $('.time-start').val(1)
+                            }
+                            if (data.data.end_date.slice(12,17) == '12:00') {
+                                $('.time-end').val(0)
+                            } else {
+                                $('.time-end').val(1)
+                            }
+                            $('.mannager_id').val(data.approver_id)
+                            $('#exampleFormControlTextarea2').html(data.data.reason);
+                            $('#btn-send').text('SỬA ĐƠN');
+
+                        }else{
+                            $('#home').removeClass('active show');
+                            $('#profile').addClass('active show');
+                            $('.edit-regime').val(data.data.title );
+                            $('#exampleFormControl').html(data.data.reason);
+                            $('#start_date1').val(data.timeStartEdit)
+                            $('#end_date1').val(data.timeEndEdit)
+                            $('.mannager_id').val(data.approver_id)
+                            $('#btn-send-day-off').text('SỬA ĐƠN');
+                        }
+                    }
+                })
             })
 
             $('.detail-dayoff').on('click', function () {
@@ -822,7 +900,6 @@
                 var check = $(this).val();
                 if (check == 1) {
                     $('#usable-check').text(' ')
-                    $('#home').removeClass('active show');
                     $('#home').removeClass('active show');
                     $('#profile').addClass('active show');
                 } else {
@@ -890,6 +967,7 @@
             }
         }
     </script>
+
 @endsection
 
 @push('extend-css')

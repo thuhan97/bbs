@@ -1544,11 +1544,6 @@ td.blank, .type-1, .type-2 {
     padding: 0 15px;
 }
 
-.custom-modal {
-    left: 270px;
-}
-
-
 .primary-color, ul.stepper li.active a .circle, ul.stepper li.completed a .circle {
     background-color: #e0e0e0 !important;
     box-shadow: none;

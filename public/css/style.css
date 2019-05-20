@@ -1517,6 +1517,9 @@ td.blank, .type-1, .type-2 {
         border: 0;
         padding: 0rem;
     }
+   /* .custom-modal {
+        left: 0px !important;
+    }*/
 }
 
 .calendar-search {
@@ -1573,5 +1576,16 @@ td.blank, .type-1, .type-2 {
         height: 600px;
         overflow: auto;
     }
+}
+@media (min-width: 1024px) {
+    .custom-modal {
+        left: 270px;
+    }
+}
+@media (min-width: 1024px) and (max-width: 1100px){
+        .custom-modal {
+            top: -303px;
+        }
+
 }
 

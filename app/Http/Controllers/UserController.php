@@ -587,16 +587,30 @@ class UserController extends Controller
      */
     public function dayOffCreatevacationVacation(CreateDayOffRequest $request)
     {
-        $dayOff = new DayOff();
+        if ($request->id_hid){
+            $dayOff =DayOff::FindOrFail($request->id_hid);
+
+        }else{
+            $dayOff = new DayOff();
+        }
         $dayOff->fill($request->all());
         $dayOff->user_id = Auth::id();
         $dayOff->save();
-        return redirect(route('day_off'))->with('day_off_success', '');
+        if ($request->id_hid){
+            return redirect(route('day_off'))->with('day_off_edit_success', '');
+        }else{
+            return redirect(route('day_off'))->with('day_off_success', '');
+        }
     }
 
     public function dayOffCreate(CreateDayOffRequest $request)
     {
-        $dayOff = new DayOff();
+
+       if ($request->id_hid){
+           $dayOff =DayOff::FindOrFail($request->id_hid);
+       }else{
+           $dayOff = new DayOff();
+       }
         $dayOff->fill($request->all());
         $timeStrat = $request->start == DEFAULT_VALUE ? CHECK_TIME_DAY_OFF_START_DATE : CHECK_TIME_DAY_OFF_HALT_DATE;
         $timeEnd = $request->end == DEFAULT_VALUE ? CHECK_TIME_DAY_OFF_HALT_DATE : CHECK_TIME_DAY_OFF_END_DATE;
@@ -606,7 +620,11 @@ class UserController extends Controller
         $dayOff->user_id = Auth::id();
         $dayOff->save();
 
-        return redirect(route('day_off'))->with('day_off_success', '');
+        if ($request->id_hid){
+            return redirect(route('day_off'))->with('day_off_edit_success', '');
+        }else{
+            return redirect(route('day_off'))->with('day_off_success', '');
+        }
     }
 
     public function dayOffSearch(Request $request)
@@ -638,16 +656,25 @@ class UserController extends Controller
             $dayOff->save();
             return back()->with('close', '');
         }
-        $numOff = $dayOff->number_off ? checkNumber($dayOff->number_off) : 0;
-        $absent = $dayOff->absent ? checkNumber($dayOff->absent) : 0;
+        $numOff= $dayOff->number_off ? checkNumber($dayOff->number_off) : DEFAULT_VALUE;
+        $absent= $dayOff->absent ? checkNumber($dayOff->absent) : DEFAULT_VALUE;
+        
+        if ($dayOff->title != REMAIN_DAY_OFF_DEFAULT){
+            $timeStart= DateTimeHelper::checkTileDayOffGetDate($dayOff->start_at);
+            $timeEnd= DateTimeHelper::checkTileDayOffGetDate($dayOff->end_at);
+            $time=$timeStart.' - '.$timeEnd;
 
-
+        }
         return response()->json([
             'data' => $dayOff,
             'numoff' => $numOff,
             'approver' => User::find($dayOff->approver_id)->name ?? '',
             'userdayoff' => User::find($dayOff->user_id)->name ?? '',
-            'absent' => $absent + $numOff
+            'absent' => $absent + $numOff,
+            'approver_id'=>User::find($dayOff->approver_id)->id ?? '',
+            'timeStartEdit'=>Carbon::createFromFormat(DATE_TIME_FORMAT, $dayOff->start_at)->format('Y/m/d'),
+            'timeEndEdit'=>Carbon::createFromFormat(DATE_TIME_FORMAT, $dayOff->end_at)->format('Y/m/d'),
+            'time'=> $time ?? DEFAULT_VALUE
         ]);
     }
 

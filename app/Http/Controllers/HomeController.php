@@ -21,7 +21,7 @@ class HomeController extends Controller
             ->take(2)
             ->get();
 
-        $event = Event::select('id', 'name', 'place', 'event_date', 'event_end_date', 'introduction', 'image_url', 'content', 'created_at')
+        $event = Event::select('id', 'name', 'place', 'event_date', 'event_end_date', 'introduction', 'image_url', 'content', 'created_at', 'deadline_at')
             ->where('status', ACTIVE_STATUS)
             ->whereDate('event_date', '>=', date(DATE_FORMAT))
             ->orderBy('event_date')

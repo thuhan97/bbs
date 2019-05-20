@@ -60,10 +60,16 @@
                         {!! $event->content !!}
 
                         <br/>
-                        <br/>
-                        <a class="btn btn-primary waves-effect waves-light" style="margin-left: 0px"
-                           href="{{route('event')}}" role="button"> Xem tất cả sự kiện</a>
-
+                        <div class="row">
+                            <div class="col-md-12">
+                                @if($event->canRegister(\Illuminate\Support\Facades\Auth::id()))
+                                    <a class="btn btn-warning waves-effect waves-light" style="margin-left: 0px"
+                                       href="{{route('quick_join_event', $event->id)}}" role="button"> Đăng ký nhanh</a>
+                                @endif
+                                <a class="btn btn-primary waves-effect waves-light" style="margin-right: 0px"
+                                   href="{{route('event')}}" role="button"> Xem tất cả sự kiện</a>
+                            </div>
+                        </div>
                         <hr/>
                 @endif
                 @include('elements.feedback')

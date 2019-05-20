@@ -96,7 +96,7 @@ class UserService extends AbstractService implements IUserService
                         ->orWhereIn('id', $leaderIds);
                 }
 
-            });
+            })->orderBy('jobtitle_id', 'desc')->orderBy('staff_code');
 
         return $userModels->get();
     }

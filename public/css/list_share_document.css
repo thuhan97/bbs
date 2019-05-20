@@ -29,15 +29,17 @@ th, .center{
   min-height: 6em; 
   outline: none; 
   visibility: hidden; 
-  cursor: pointer; 
-  background-color: #c61c23; 
+  cursor: pointer;
+  height: 120px;
 } 
 .inputDnD .form-control-file:before { 
   content: attr(data-title); 
   position: absolute; 
+  background:#ffff;
+  height: 120px;
   width: 100%; 
   min-height: 6em; 
-  line-height: 2em; 
+  line-height: 4em; 
   padding-top: 1.5em; 
   opacity: 1; 
   visibility: visible; 

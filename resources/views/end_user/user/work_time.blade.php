@@ -91,9 +91,9 @@
         </span>
         <br>
     @endif
-    @if ($errors->has('project_name'))
+    @if ($errors->has('project_id'))
         <span class="help-block mb-5 color-red">
-            <strong>{{ $errors->first('project_name') }}</strong>
+            <strong>{{ $errors->first('project_id') }}</strong>
         </span>
         <br>
     @endif
@@ -261,7 +261,7 @@
                             '    <label for="ot-other">OT Cá nhân </label>' +
                             '</div>' +
                             '</div>' +
-                            '   <select class="browser-default form-control project_name ml-4 mb-2" name="project_name">' +
+                            '   <select class="browser-default form-control project_id ml-4 mb-2" name="project_id">' +
                             '       <option value="0">Chọn dự án</option>' +
                             '   </select>' +
                             '</div>' +
@@ -332,7 +332,7 @@
                                 '   </select>' +
                                 '</div>' +
                                 '<div class="user col-md-6 my-2">' +
-                                '   <select class="browser-default form-control float-left project_name" name="project_name">' +
+                                '   <select class="browser-default form-control float-left project_id" name="project_id">' +
                                 '       <option value="0">Chọn dự án</option>' +
                                 '   </select>' +
                                 '</div>' +
@@ -381,16 +381,16 @@
                                     },
                                     success: function (responds) {
                                         responds.forEach(function (element) {
-                                            $('.project_name').append('<option value="' + element.name + '">' + element.name + '</option>');
+                                            $('.project_id').append('<option value="' + element.id + '">' + element.name + '</option>');
                                         });
                                     }
                                 });
                                 $('.user .demo').remove();
 
                                 if ($('.ot:checked')) {
-                                    $('.ot_type, .project_name,#start_at,#end_at').prop('disabled', false);
+                                    $('.ot_type, .project_id,#start_at,#end_at').prop('disabled', false);
                                 } else {
-                                    $('.ot_type, .project_name,#start_at,#end_at').prop('disabled', true);
+                                    $('.ot_type, .project_id,#start_at,#end_at').prop('disabled', true);
                                 }
                                 $(".ot_type").on('change', function () {
                                     var explanationOtType = $(this).val(),
@@ -417,8 +417,8 @@
                                             }
                                             $('#start_at').val(respond.start_at);
                                             $('#end_at').val(respond.end_at);
-                                            $(".project_name option").each(function (data) {
-                                                if (respond.project_name === $(this).val()) {
+                                            $(".project_id option").each(function (data) {
+                                                if (respond.project_id === $(this).val()) {
                                                     $(this).attr('selected', true)
                                                 } else {
                                                     $(this).attr('selected', false)
@@ -426,10 +426,15 @@
                                             });
                                             if (respond.status === 1) {
                                                 $('.title-wt-modal-approve').text('Đơn đã được duyệt');
-                                                $('.wt-textarea-reason,.btn-send-permission,.ot_type,.project_name,#start_at,#end_at').prop('disabled', true);
+                                                $('.wt-textarea-reason,.btn-send-permission,.ot_type,#start_at,#end_at').prop('disabled', true);
                                             } else {
                                                 $('.title-wt-modal-approve').text('Xin phép');
-                                                $('.wt-textarea-reason,.btn-send-permission,.ot_type,.project_name,#start_at,#end_at').prop('disabled', false);
+                                                $('.wt-textarea-reason,.btn-send-permission,.ot_type,#start_at,#end_at').prop('disabled', false);
+                                            }
+                                            if (explanationOtType === '2') {
+                                                $('.project_id').prop('disabled', true);
+                                            } else {
+                                                $('.project_id').prop('disabled', false);
                                             }
                                             $('.wt-textarea-reason').text(note)
                                         }
@@ -437,26 +442,26 @@
                                 })
                             });
 
-                            $('.ot_type, .project_name,#start_at,#end_at').prop('disabled', true);
+                            $('.ot_type, .project_id,#start_at,#end_at').prop('disabled', true);
                         } else {
                             makeModal()
                         }
                     }
-                    $('.project_name,#start_at,#end_at').prop('disabled', true);
+                    $('.project_id,#start_at,#end_at').prop('disabled', true);
                     $('#ot-project,#ot-other').on('click', function () {
                         var otThis = $(this);
                         if (otThis.attr('id') === 'ot-other') {
                             otThis.attr('value', 1);
                             $('.checkOtType').attr('value', 1)
-                            $('.project_name option[value!="0"]').remove();
-                            $('.project_name').prop('disabled', true)
+                            $('.project_id option[value!="0"]').remove();
+                            $('.project_id').prop('disabled', true)
                             $('#start_at,#end_at').prop('disabled', false)
                         } else if (otThis.attr('id') === 'ot-project') {
                             otThis.attr('value', 2);
                             $('.checkOtType').attr('value', 2)
-                            $('.project_name,#start_at,#end_at').prop('disabled', false)
+                            $('.project_id,#start_at,#end_at').prop('disabled', false)
                         }
-                        // $('.project_name,#start_at,#end_at').prop('disabled', false);
+                        // $('.project_id,#start_at,#end_at').prop('disabled', false);
                         var lateWorkDay = $('.work_day').val(),
                             explanationOtType = $(this).val();
                         $.ajax({
@@ -475,19 +480,19 @@
                                 }
                                 projectName.forEach(function (element) {
                                     if (otThis.attr('id') === 'ot-project') {
-                                        $('.project_name').append('<option value="' + element.id + '">' + element.name + '</option>');
+                                        $('.project_id').append('<option value="' + element.id + '">' + element.name + '</option>');
                                     }
                                 });
 
                                 if (respond.status === 1) {
                                     $('.title-wt-modal-approve').text('Đơn đã được duyệt');
-                                    $('.wt-textarea-reason,.btn-send-permission').prop('disabled', true);
+                                    $('.wt-textarea-reason,.btn-send-permission,#start_at,#end_at').prop('disabled', true);
                                 } else {
                                     $('.title-wt-modal-approve').text('Xin phép');
                                     $('.wt-textarea-reason,.btn-send-permission').prop('disabled', false);
                                 }
-                                $(".project_name option").each(function (data) {
-                                    if (respond.project_name === $(this).val()) {
+                                $(".project_id option").each(function (data) {
+                                    if (respond.project_id === $(this).val()) {
                                         $(this).attr('selected', true)
                                     }
                                 });
@@ -523,7 +528,7 @@
                                     $('.wt-textarea-reason,.btn-send-permission').prop('disabled', false)
                                     $('#start_at,#end_at').val('')
                                 }
-                                if (respond.note && respond.ot_type === 2) {
+                                if (respond.note) {
                                     var note = respond.note
                                 } else {
                                     note = ''
@@ -532,8 +537,8 @@
                             }
                         });
 
-                        $('.ot_type, .project_name,#start_at,#end_at').prop('disabled', true);
-                        $('.project_name option[value!="0"]').remove();
+                        $('.ot_type, .project_id,#start_at,#end_at').prop('disabled', true);
+                        $('.project_id option[value!="0"]').remove();
                         $('.wt-late-reason').remove()
                     });
 
@@ -723,9 +728,11 @@
                             type_2 = $('#calendar .data-type-2').length,
                             type_4 = $('#calendar .data-type-4').length,
                             type_5 = $('#calendar .data-type-5').length,
-                            earlyLate = type_1 + type_2;
-                        $("#btn-early-late").text('Số buổi đi muộn: ' + type_1);
-                        $("#btn-ot").text('Số buổi OT: ' + type_4);
+                            earlyOt = type_1 + type_5;
+                            Ot = type_4 + type_5;
+                        console.log(earlyOt);
+                        $("#btn-early-late").text('Số buổi đi muộn: ' + earlyOt);
+                        $("#btn-ot").text('Số buổi OT: ' + Ot);
                         $("#btn-late-ot").text('Số buổi về sớm: ' + type_2);
                     },
                     error: (data) => {

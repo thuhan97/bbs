@@ -58,6 +58,7 @@
                 </thead>
                 <tbody>
                 @foreach ($records as $record)
+                    @dump($record)
                     <tr>
                         <td class="table-text text-center">
                             {{ $record->creator->staff_code ?? '' }}

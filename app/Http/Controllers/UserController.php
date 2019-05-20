@@ -54,7 +54,7 @@ class UserController extends Controller
 
     public function saveProfile(ProfileRequest $request)
     {
-        $data = $request->only('address', 'current_address', 'gmail', 'gitlab', 'chatwork', 'skills', 'in_future', 'hobby', 'foreign_laguage', 'school');
+        $data = $request->only('address', 'current_address', 'gmail', 'gitlab', 'chatwork', 'skills', 'in_future', 'hobby', 'foreign_language', 'school');
 
         if ($request->hasFile('avatar')) {
             $avatar = request()->file('avatar');

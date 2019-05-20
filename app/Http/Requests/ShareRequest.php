@@ -24,8 +24,8 @@ class ShareRequest extends FormRequest
     public function rules()
     {
         return [
-            'titleDocoment' => 'required|string|max:255',
-            'fileDocoment.*' => 'required|file|max:10240'
+            'titleDocument' => 'required|string|max:255',
+            'fileDocument.*' => 'required|file|max:10240'
         ];
     }   
 }

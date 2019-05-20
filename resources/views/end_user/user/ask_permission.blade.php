@@ -696,7 +696,6 @@
                 var id = $(this).data("id"),
                     permissionType = $(this).data("permission"),
                     itemtype = $(this).data("itemtype");
-                console.log(itemtype)
                 $('.modal-title').text(itemtype)
                 // debugger
                 $('.id').attr('value', id);
@@ -739,7 +738,7 @@
                     type = 1,
                     workDayLate = $(this);
                 $.ajax({
-                    url: '{{ route('ask_permission.ot') }}',
+                    url: '{{ route('ask_permission.modal') }}',
                     type: 'GET',
                     dataType: 'JSON',
                     data: {
@@ -753,8 +752,8 @@
                             var status = respond.status;
                         }
                         workDayLate.append("<input name='permission_status' type='hidden' value='" + status + "'>");
-                        var note = respond.note ? respond.note : '',
-                            otType = respond.ot_type;
+                        var note = respond[0].note ? respond[0].note : '',
+                            otType = respond[0].ot_type;
                         $('.permission-reason-late').text(note);
                         if (otType) {
                             if (otType === 1) {
@@ -766,7 +765,7 @@
                             }
                         }
 
-                        if (respond.status === 1) {
+                        if (respond[0].status === 1) {
                             $('.header-permission-late').text('Đơn đã được duyệt');
                             $('.permission-reason-late,.btn-permission-late').prop('disabled', true);
                         } else {
@@ -782,7 +781,7 @@
                     type = 2,
                     workDayLate = $(this);
                 $.ajax({
-                    url: '{{ route('ask_permission.ot') }}',
+                    url: '{{ route('ask_permission.modal') }}',
                     type: 'GET',
                     dataType: 'JSON',
                     data: {
@@ -790,9 +789,9 @@
                         'type': type,
                     },
                     success: function (respond) {
-                        workDayLate.append("<input name='permission_status' type='hidden' value='" + respond.status + "'>");
-                        var note = respond.note ? respond.note : '',
-                            otType = respond.ot_type;
+                        workDayLate.append("<input name='permission_status' type='hidden' value='" + respond[0].status + "'>");
+                        var note = respond[0].note ? respond[0].note : '',
+                            otType = respond[0].ot_type;
                         $('.permission-reason-early').text(note);
                         if (otType) {
                             if (otType === 1) {
@@ -804,7 +803,7 @@
                             }
                         }
 
-                        if (respond.status === 1) {
+                        if (respond[0].status === 1) {
                             $('.header-permission-early').text('Đơn đã được duyệt');
                             $('.permission-reason-early,.btn-permission-early').prop('disabled', true);
                         } else {
@@ -821,7 +820,7 @@
                     workDayOT = $(this);
 
                 $.ajax({
-                    url: '{{ route('ask_permission.ot') }}',
+                    url: '{{ route('ask_permission.modal') }}',
                     type: 'GET',
                     dataType: 'JSON',
                     data: {

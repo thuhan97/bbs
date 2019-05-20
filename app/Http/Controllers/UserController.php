@@ -665,7 +665,12 @@ class UserController extends Controller
         $numOff= $dayOff->number_off ? checkNumber($dayOff->number_off) : DEFAULT_VALUE;
         $absent= $dayOff->absent ? checkNumber($dayOff->absent) : DEFAULT_VALUE;
 
+        if ($dayOff->title != REMAIN_DAY_OFF_DEFAULT){
+            $timeStart= DateTimeHelper::checkTileDayOffGetDate($dayOff->start_at);
+            $timeEnd= DateTimeHelper::checkTileDayOffGetDate($dayOff->end_at);
+            $time=$timeStart.' - '.$timeEnd;
 
+        }
         return response()->json([
             'data' => $dayOff,
             'numoff' => $numOff ,
@@ -674,7 +679,8 @@ class UserController extends Controller
             'absent' => $absent + $numOff,
             'approver_id'=>User::find($dayOff->approver_id)->id ?? '',
             'timeStartEdit'=>Carbon::createFromFormat(DATE_TIME_FORMAT, $dayOff->start_at)->format('Y/m/d'),
-            'timeEndEdit'=>Carbon::createFromFormat(DATE_TIME_FORMAT, $dayOff->end_at)->format('Y/m/d')
+            'timeEndEdit'=>Carbon::createFromFormat(DATE_TIME_FORMAT, $dayOff->end_at)->format('Y/m/d'),
+            'time'=> $time ?? DEFAULT_VALUE
         ]);
     }
 

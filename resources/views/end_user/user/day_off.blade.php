@@ -803,7 +803,11 @@
                     success: function (data) {
                         $('#approver_id').html(data.approver);
                         $('#number_off').html(data.data.number_off);
-                        $('#strat_end').html(data.data.start_date + ' - ' + data.data.end_date);
+                        if (data.time){
+                            $('#strat_end').html(data.time);
+                        } else{
+                            $('#strat_end').html(data.data.start_date + ' - ' + data.data.end_date);
+                        }
                         if (data.data.reason) {
                             $('#reason').html(data.data.reason.replace(/\n/g, "<br />"));
                         }

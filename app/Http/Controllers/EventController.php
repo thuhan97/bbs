@@ -3,9 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\EventCalendarRequest;
-use App\Services\Contracts\IEventService;
 use App\Repositories\Contracts\IEventAttendanceRepository;
 use App\Services\Contracts\IEventAttendanceService;
+use App\Services\Contracts\IEventService;
 use App\Traits\RESTActions;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -26,8 +26,8 @@ class EventController extends Controller
     /**
      * EventController constructor.
      *
-     * @param IEventService $eventService
-     * @param IEventAttendanceService $eventAttendanceService
+     * @param IEventService              $eventService
+     * @param IEventAttendanceService    $eventAttendanceService
      * @param IEventAttendanceRepository $eventAttendanceRepository
      */
     public function __construct(

@@ -50,6 +50,18 @@
         </span>
         <br>
     @endif
+    @if ($errors->has('id'))
+        <span class="help-block mb-5 color-red">
+            <strong>{{ $errors->first('id') }}</strong>
+        </span>
+        <br>
+    @endif
+    @if ($errors->has('approve_type'))
+        <span class="help-block mb-5 color-red">
+            <strong>{{ $errors->first('approve_type') }}</strong>
+        </span>
+        <br>
+    @endif
     @if ($errors->has('type'))
         <span class="help-block mb-5 color-red">
             <strong>{{ $errors->first('type') }}</strong>
@@ -323,7 +335,7 @@
             <table id="contactTbl" class="table table-striped table-bordered">
                 <colgroup>
                     <col style="width: 50px">
-                    <col style="width: 100px">
+                    <col style="width: 120px">
                     <col style="width: 100px">
                     <col style="">
                     <col style="">
@@ -346,7 +358,6 @@
                         <th class="text-center d-none d-md-table-cell">{{ $increment+1 }}</th>
                         <th class="text-center" style="padding: 15px;width: 10%;">{{ $item['work_day'] ?? '' }}</th>
                         <td>
-                            {{--{{$item->type_name}}aaa--}}
                             @if($item['type'] == array_search('Bình thường', WORK_TIME_TYPE))
                                 Bình thường
                             @elseif($item['type'] == array_search('Đi muộn', WORK_TIME_TYPE))
@@ -387,7 +398,7 @@
             <table id="contactTbl" class="table table-striped table-bordered">
                 <colgroup>
                     <col style="width: 50px">
-                    <col style="width: 100px">
+                    <col style="width: 120px">
                     <col style="width: 100px">
                     <col style="width: 180px">
                     <col style="">
@@ -503,6 +514,7 @@
         <div class="modal-dialog modal-center permission-modal-set-center" role="document">
             <div class="modal-content" id="bg-img" style="background-image: url({{ asset('img/font/xin_nghi.png') }})">
                 <div class="modal-header text-center border-bottom-0 p-3">
+                    <h4 class='mg-center mb-2 modal-title w-100 font-weight-bold pt-2 header-permission-late title-permission'></h4>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span class="btn-close-icon" aria-hidden="true">×</span>
                     </button>
@@ -536,6 +548,7 @@
         <div class="modal-dialog modal-center permission-modal-set-center" role="document">
             <div class="modal-content" id="bg-img" style="background-image: url({{ asset('img/font/xin_nghi.png') }})">
                 <div class="modal-header text-center border-bottom-0 p-3">
+                    <h4 class='mg-center mb-2 modal-title w-100 font-weight-bold pt-2 header-permission-late title-permission'></h4>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span class="btn-close-icon" aria-hidden="true">&times;</span>
                     </button>
@@ -569,6 +582,7 @@
         <div class="modal-dialog modal-center permission-modal-set-center" role="document">
             <div class="modal-content" id="bg-img" style="background-image: url({{ asset('img/font/xin_nghi.png') }})">
                 <div class="modal-header text-center border-bottom-0 p-3">
+                    <h4 class='mg-center mb-2 modal-title w-100 font-weight-bold pt-2 header-permission-late title-permission'></h4>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span class="btn-close-icon" aria-hidden="true">&times;</span>
                     </button>
@@ -666,7 +680,7 @@
                 $(".permission-reason").empty();
                 $('#modal-form').modal('show');
                 $(".permission-reason-late").append("<input name='type' type='text' value='1'>");
-                $(".modal-header").html("<h4 class='mg-center mb-2 modal-title w-100 font-weight-bold pt-2 header-permission-late'>Xin đi muộn</h4>");
+                $(".title-permission").text("Xin đi muộn");
                 // $('#work_day').datepicker("setDate", currenFullTime);
                 $('#work-day-late').datepicker("setDate", date);
             });
@@ -676,13 +690,13 @@
                 $(".permission-reason-late").empty();
                 $(".permission-reason").empty();
                 $(".permission-reason").append("<input name='type' type='text' value='2'>");
-                $(".modal-header").html("<h4 class='mg-center mb-2 modal-title w-100 font-weight-bold pt-2 header-permission-early'>Xin về sớm</h4>");
+                $(".title-permission").text("Xin về sớm");
                 $('#work-day-early').datepicker("setDate", date);
             });
             $('.approve-btn-ot').on('click', function () {
                 $('#modal-form-ot').modal('show');
                 $(".permission-reason").append("<input name='type' type='text' value='4'>");
-                $(".modal-header").html("<h4 class='mg-center mb-2 modal-title w-100 font-weight-bold pt-2 header-permission-ot'>Xin OT</h4>");
+                $(".title-permission").text("Xin OT");
                 $('#work_day_ot').datepicker("setDate", (date));
             });
             $('.approve').on('click', function () {
@@ -696,7 +710,6 @@
                 var id = $(this).data("id"),
                     permissionType = $(this).data("permission"),
                     itemtype = $(this).data("itemtype");
-                console.log(itemtype)
                 $('.modal-title').text(itemtype)
                 // debugger
                 $('.id').attr('value', id);
@@ -739,7 +752,7 @@
                     type = 1,
                     workDayLate = $(this);
                 $.ajax({
-                    url: '{{ route('ask_permission.ot') }}',
+                    url: '{{ route('ask_permission.modal') }}',
                     type: 'GET',
                     dataType: 'JSON',
                     data: {
@@ -753,8 +766,8 @@
                             var status = respond.status;
                         }
                         workDayLate.append("<input name='permission_status' type='hidden' value='" + status + "'>");
-                        var note = respond.note ? respond.note : '',
-                            otType = respond.ot_type;
+                        var note = respond[0].note ? respond[0].note : '',
+                            otType = respond[0].ot_type;
                         $('.permission-reason-late').text(note);
                         if (otType) {
                             if (otType === 1) {
@@ -766,7 +779,7 @@
                             }
                         }
 
-                        if (respond.status === 1) {
+                        if (respond[0].status === 1) {
                             $('.header-permission-late').text('Đơn đã được duyệt');
                             $('.permission-reason-late,.btn-permission-late').prop('disabled', true);
                         } else {
@@ -782,7 +795,7 @@
                     type = 2,
                     workDayLate = $(this);
                 $.ajax({
-                    url: '{{ route('ask_permission.ot') }}',
+                    url: '{{ route('ask_permission.modal') }}',
                     type: 'GET',
                     dataType: 'JSON',
                     data: {
@@ -790,9 +803,9 @@
                         'type': type,
                     },
                     success: function (respond) {
-                        workDayLate.append("<input name='permission_status' type='hidden' value='" + respond.status + "'>");
-                        var note = respond.note ? respond.note : '',
-                            otType = respond.ot_type;
+                        workDayLate.append("<input name='permission_status' type='hidden' value='" + respond[0].status + "'>");
+                        var note = respond[0].note ? respond[0].note : '',
+                            otType = respond[0].ot_type;
                         $('.permission-reason-early').text(note);
                         if (otType) {
                             if (otType === 1) {
@@ -804,11 +817,11 @@
                             }
                         }
 
-                        if (respond.status === 1) {
+                        if (respond[0].status === 1) {
                             $('.header-permission-early').text('Đơn đã được duyệt');
                             $('.permission-reason-early,.btn-permission-early').prop('disabled', true);
                         } else {
-                            $('.header-permission-early').text('Xin về sớm');
+                            $('.title-permission').text('Xin về sớm');
                             $('.permission-reason-early,.btn-permission-early').prop('disabled', false);
                         }
                     }
@@ -821,7 +834,7 @@
                     workDayOT = $(this);
 
                 $.ajax({
-                    url: '{{ route('ask_permission.ot') }}',
+                    url: '{{ route('ask_permission.modal') }}',
                     type: 'GET',
                     dataType: 'JSON',
                     data: {
@@ -829,7 +842,16 @@
                         'type': type,
                     },
                     success: function (respond) {
+                        if (respond[1]) {
+                            respond[1].forEach(function (element) {
+                                $('.project_id').append('<option value="' + element.id + '">' + element.name + '</option>');
+                            });
+                        } else {
+                            $('.permission-reason-ot').empty();
+                        }
+
                         if (respond[0]) {
+                            $('.project_id').val(respond[0].project_id);
                             $('.permission_status').attr('value', respond[0].status);
                             $('#start_at').attr('value', respond[0].start_at);
                             $('#end_at').attr('value', respond[0].end_at);
@@ -855,20 +877,13 @@
                             // }
 
                         }
-                        if (respond[1]) {
-                            respond[1].forEach(function (element) {
-                                $('.project_id').append('<option value="' + element.id + '">' + element.name + '</option>');
-                            });
-                        } else {
-                            $('.permission-reason-ot').empty();
-                        }
 
-                        $('.project_id').val(respond[0].project_id);
+
                         if (respond[0].status === 1) {
                             $('.header-permission-ot').text('Đơn đã được duyệt');
                             $('.permission-reason-ot,.btn-permission-ot,#start_at,#end_at,#project_id').prop('disabled', true);
                         } else {
-                            $('.header-permission-ot').text('Xin OT');
+                            $('.title-permission').text('Xin OT');
                             $('.permission-reason-ot,.btn-permission-ot,#start_at,#end_at,#project_id').prop('disabled', false);
                         }
                     }
@@ -884,6 +899,15 @@
                 } else if (selectorID === 'btn-reject') {
                     $('.approve-type').attr('value', 2)
                 }
+            });
+
+            $('#project-ot').click(function () {
+                $('#project_id').prop('disabled', false)
+            });
+
+            $('#other-ot').click(function () {
+                $('#project_id').prop('disabled', true)
+
             });
         });
     </script>

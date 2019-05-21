@@ -22,7 +22,6 @@ class EventAttendanceService extends AbstractService implements IEventAttendance
         $this->model = $model;
     }
 
-
     /**
      * @param int $id
      *
@@ -32,7 +31,8 @@ class EventAttendanceService extends AbstractService implements IEventAttendance
     {
         return EventAttendance::select('event_attendance.*', 'users.name', 'users.staff_code')
             ->join('users', 'event_attendance.user_id', '=', 'users.id')
-            ->where('event_attendance.event_id', $id)->orderBy('users.id', 'asc')
+            ->where('event_attendance.event_id', $id)
+            ->orderBy('users.id', 'asc')
             ->get();
     }
 

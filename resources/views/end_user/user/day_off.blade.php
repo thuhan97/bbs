@@ -167,7 +167,7 @@
                 <th class="text-center">Từ ngày</th>
                 <th class="d-none d-md-table-cell text-center">Tới ngày</th>
                 <th class="text-center">Tiêu đề</th>
-                <th class="text-center d-none d-md-table-cell">Nội dung</th>
+                <th class="text-center d-none d-xl-table-cell">Nội dung</th>
                 <th class=" text-center">Ngày có phép</th>
                 <th class="d-none d-md-table-cell text-center">Ngày không phép</th>
                 <th class="text-center">Phê duyệt</th>
@@ -184,7 +184,7 @@
                     <td class="text-center">{{ $absence->title != DAY_OFF_TITLE_DEFAULT ? \App\Helpers\DateTimeHelper::checkTileDayOffGetDate($absence->start_at) : $absence->start_date  }}</td>
                     <td class="d-none d-md-table-cell text-center">{{ $absence->title != DAY_OFF_TITLE_DEFAULT ? \App\Helpers\DateTimeHelper::checkTileDayOffGetDate($absence->end_at) : $absence->end_date  }}</td>
                     <td class="text-center">{{ array_key_exists($absence->title, VACATION_FULL) ? VACATION_FULL[$absence->title] : ''  }}</td>
-                    <td class="text-center d-none d-md-table-cell">{!! nl2br($absence->reason) !!}</td>
+                    <td class="text-center d-none d-xl-table-cell">{!! nl2br($absence->reason) !!}</td>
                     <td class="d-none d-md-table-cell text-center">
                         {{!!!$absence->number_off ? ($absence->status != STATUS_DAY_OFF['noActive'] ? 'Đang duyệt' : '') : checkNumber($absence->number_off) .' ngày'}}
                     </td>
@@ -280,9 +280,9 @@
          aria-hidden="true">
 
         <div class="modal-dialog modal-center" role="document">
-            <div class="modal-content" id="bg-img" style="background-image: url({{ asset('img/font/xin_nghi.png') }})">
-                <div class="modal-header text-center border-bottom-0 p-3">
-                    <h4 class="modal-title w-100 font-weight-bold pt-2 ml-5">XIN NGHỈ PHÉP</h4>
+            <div class="modal-content modal-center-display" id="bg-img" style="background-image: url({{ asset('img/font/xin_nghi.png') }})">
+                <div class="modal-header text-center border-bottom-0 pb-2 p-sm-4">
+                    <h4 class="modal-title w-100 font-weight-bold">XIN NGHỈ PHÉP</h4>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span class="btn-close-icon" aria-hidden="true">&times;</span>
                     </button>
@@ -290,26 +290,32 @@
                 <div class="modal-header text-center border-bottom-0 p-0">
                     <h6 class="modal-title w-100 font-weight-bold text-danger" id="usable-check"></h6>
                 </div>
-                <div class="modal-body mt-0 pb-0 d-flex justify-content-start ml-3" id="toggle-show">
-                    <div class="custom-control custom-radio">
-                        <input type="radio" class="custom-control-input option-dayoff" id="defaultUnchecked"
-                               name="defaultExampleRadios" checked value="0">
-                        <label class="custom-control-label" for="defaultUnchecked"><h5>Xin nghỉ phép</h5></label>
+                <div class="modal-body mt-0 pb-0 pt-2 d-flex justify-content-start ml-3" id="toggle-show">
+                    <div class="row w-100">
+                        <div class="col-12 col-md-6">
+                            <div class="custom-control custom-radio">
+                                <input type="radio" class="custom-control-input option-dayoff" id="defaultUnchecked"
+                                       name="defaultExampleRadios" checked value="0">
+                                <label class="custom-control-label" for="defaultUnchecked"><h5>Xin nghỉ phép</h5></label>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-6">
+                            <!-- Default checked -->
+                            <div class="custom-control custom-radio">
+                                <input type="radio" class="custom-control-input option-dayoff" id="defaultChecked1"
+                                       name="defaultExampleRadios" value="1" @if(old('title')) checked @endif>
+                                <label class="custom-control-label " for="defaultChecked1"><h5>Xin nghỉ chế độ</h5></label>
+                            </div>
+                        </div>
                     </div>
 
-                    <!-- Default checked -->
-                    <div class="custom-control custom-radio ml-5">
-                        <input type="radio" class="custom-control-input option-dayoff" id="defaultChecked1"
-                               name="defaultExampleRadios" value="1" @if(old('title')) checked @endif>
-                        <label class="custom-control-label " for="defaultChecked1"><h5>Xin nghỉ chế độ</h5></label>
-                    </div>
                 </div>
                 <div class="tab-content p-0" id="myTabContent">
                     <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
                         <form action="{{ route('day_off_create') }}" method="post" id="form_create_day_off">
                             @csrf
                             <input type="hidden" name="id_hid" class="id_hide">
-                            <div class="modal-body mx-3 mt-0 pb-0">
+                            <div class="modal-body mx-3 mt-0 pt-2 pb-1 pb-sm-3">
                                 <div class="mb-3">
                                     <label class="text-w-400" for="exampleFormControlTextarea5">Nội dung <span
                                                 class="text-danger">*</span></label>
@@ -329,7 +335,7 @@
                                     <div class="row">
                                         <div class="form-group col-sm-6 m-0">
                                             <div class="row">
-                                                <div class="col-sm-7 py-0 pr-0">
+                                                <div class=" col-8 col-sm-7 pr-0">
                                                     <label class=" text-w-400" for="inputCity">Ngày bắt đầu<span
                                                                 class="text-danger">*</span></label>
                                                     <?php
@@ -341,14 +347,14 @@
                                                            value="{{ old('start_at', $autoDate) }}"
                                                            readonly="readonly">
                                                 </div>
-                                                <div class="col-sm-4 p-0 mt-2">
+                                                <div class="col-4 col-sm-4 py-0 pl-0 mt-2">
                                                     {{ Form::select('start', CHECK_TIME_DAY_OFF, old('start'), ['class' => 'form-control option-time-day-off browser-default custom-select select-item  check-value time-start' ]) }}
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="form-group col-sm-6 m-0">
+                                        <div class="form-group col-sm-6 m-0 mt-1">
                                             <div class="row">
-                                                <div class="col-sm-7 py-0 pr-0">
+                                                <div class="col-8 col-sm-7 pr-0">
                                                     <?php
                                                     $autoDateEnd = date('Y/m/d', strtotime('tomorrow + 1day'));
                                                     ?>
@@ -360,7 +366,7 @@
                                                            value="{{  old('end_at',$autoDate) }}"
                                                            readonly>
                                                 </div>
-                                                <div class="col-sm-4 p-0 mt-2">
+                                                <div class="col-4 col-sm-4 py-0 pl-0 mt-2">
                                                     {{ Form::select('end', CHECK_TIME_DAY_OFF, old('end',REMAIN_DAY_OFF_DEFAULT) , ['class' => 'form-control border-0 option-time-day-off browser-default custom-select select-item  check-value time-end ds-end' ]) }}
                                                 </div>
                                             </div>
@@ -403,7 +409,7 @@
                                     @endif
                                 </div>
                             </div>
-                            <div class="pt-3 pb-4 d-flex justify-content-center border-top-0 rounded mb-0"
+                            <div class="pb-2 pb-sm-3 d-flex justify-content-center border-top-0 rounded mb-0"
                                  id="create_day_off">
                                 <button class="btn btn-primary" id="btn-send">GỬI ĐƠN</button>
                             </div>
@@ -414,8 +420,8 @@
                               id="form_create_day_off_vacation">
                             @csrf
                             <input type="hidden" name="id_hid" class="id_hide">
-                            <div class="modal-body mx-3 mt-0 pb-0">
-                                <div class="mb-3">
+                            <div class="modal-body mx-3 mt-0 pb-1 pb-sm-3">
+                                <div class="mb-1 mb-sm-3">
                                     <!-- Default input -->
                                     <label class="text-w-400" for="exampleForm2">Chế độ nghỉ<span
                                                 class="text-danger">*</span></label>
@@ -427,7 +433,7 @@
                                     @endif
                                 </div>
                                 <input type="hidden" name="day_off_id" value="">
-                                <div class="mb-3">
+                                <div class="mb-1 mb-sm-3">
                                     <label class="text-w-400" for="exampleFormControlTextarea5">Nội dung</label>
                                     <input type="reset" value="reset" style="opacity: -0.5" id="value-rs1">
                                     <textarea
@@ -457,7 +463,7 @@
                                                    value="{{ old('start_at', $autoDate) }}" readonly="readonly">
                                         </div>
                                         <!-- Default input -->
-                                        <div class="form-group col-sm-6 m-0">
+                                        <div class="form-group col-sm-6 m-0 mt-1">
                                             <label class="text-w-400" for="inputZip">Ngày kết thúc<span
                                                         class="text-danger">*</span></label>
                                             <input type="text"
@@ -490,7 +496,7 @@
                                     @endif
                                 </div>
                             </div>
-                            <div class="pt-3 pb-4 d-flex justify-content-center border-top-0 rounded mb-0"
+                            <div class="pb-2 pb-sm-3 d-flex justify-content-center border-top-0 rounded mb-0"
                                  id="create_day_off">
                                 <button class="btn btn-primary" id="btn-send-day-off">GỬI ĐƠN</button>
                             </div>
@@ -505,7 +511,7 @@
          aria-labelledby="myModalLabel"
          aria-hidden="true">
         <div class="modal-dialog modal-center" role="document">
-            <div class="modal-content" id="bg-img"
+            <div class="modal-content modal-center-display" id="bg-img"
                  style="background-image: url({{ asset('img/font/xin_nghi.png') }})">
                 <div class="modal-header text-center border-bottom-0 p-3">
                     <h4 class="modal-title w-100 font-weight-bold pt-2">NỘI DUNG ĐƠN</h4>
@@ -513,7 +519,7 @@
                         <span class="btn-close-icon" aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <div class="modal-body mx-3 mt-0 pb-0">
+                <div class="modal-body mx-0 mt-0 pb-0">
                     <div class="mb-3">
                         <!-- Default input -->
                         <label class="ml-3 text-d-bold" for="exampleForm2">Lý do:</label>

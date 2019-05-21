@@ -1451,6 +1451,14 @@ td.blank, .type-1, .type-2 {
 }
 
 @media (max-width: 575px) {
+    .option-time-day-off{
+        width: 100% !important;
+        margin-left: 0;
+    }
+    .modal-center-display{
+        margin: 0 auto;
+        width: 92%;
+    }
     #btn-detail-day-off {
         width: 100%;
         height: 38px;

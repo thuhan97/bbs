@@ -1,3 +1,4 @@
+@section('page-title', __l('ask_permission'))
 @extends('layouts.end_user')
 @section('breadcrumbs')
     {!! Breadcrumbs::render('ask_permission') !!}

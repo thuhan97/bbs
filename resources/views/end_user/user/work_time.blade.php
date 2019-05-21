@@ -495,6 +495,7 @@
                                     $('.title-wt-modal-approve').text('Xin phép');
                                     $('.wt-textarea-reason,.btn-send-permission').prop('disabled', false);
                                 }
+                                
                                 $('#start_at').val(respond.start_at);
                                 $('#end_at').val(respond.end_at);
                                 if (respond.status === undefined) {
@@ -728,6 +729,7 @@
                             type_5 = $('#calendar .data-type-5').length,
                             earlyOt = type_1 + type_5;
                             Ot = type_4 + type_5;
+                        console.log(earlyOt);
                         $("#btn-early-late").text('Số buổi đi muộn: ' + earlyOt);
                         $("#btn-ot").text('Số buổi OT: ' + Ot);
                         $("#btn-late-ot").text('Số buổi về sớm: ' + type_2);

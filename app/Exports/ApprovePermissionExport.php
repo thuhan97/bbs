@@ -20,16 +20,14 @@ class ApprovePermissionExport implements FromArray, WithHeadings, ShouldAutoSize
     public function headings(): array
     {
         return [
-            'STT',
             'Mã nhân viên',
             'Tên nhân viên',
             'Ngày',
-            'Giờ đến công ty',
-            'Giờ rời công ty',
+            'Hình thức',
             'Giải trình',
-            'Nội dung từ chối',
-            'Trạng thái phê duyệt',
+            'Nội dung phản hồi',
             'Người duyệt',
+            'Trạng thái phê duyệt',
         ];
     }
 
@@ -40,9 +38,8 @@ class ApprovePermissionExport implements FromArray, WithHeadings, ShouldAutoSize
     public function array(): array
     {
         $results = [];
-        $i = 1;
         foreach ($this->approvePermissions as $approvePermission) {
-            $item = $this->makeRow($approvePermission, $i++);
+            $item = $this->makeRow($approvePermission);
             $results[] = $item;
         }
         return $results;
@@ -50,19 +47,17 @@ class ApprovePermissionExport implements FromArray, WithHeadings, ShouldAutoSize
 
 
 
-    public function makeRow($approvePermission, $i)
+    public function makeRow($approvePermission)
     {
         return [
-            'stt' => $i++,
             'staff_code' => $approvePermission->creator->staff_code,
             'creator' => $approvePermission->creator->name,
             'work_day' => $approvePermission->work_day,
-            'work_time_start_at' => DateTimeHelper::workTime($approvePermission['user_id'],$approvePermission['work_day'])[0],
-            'work_time_end_at' => DateTimeHelper::workTime($approvePermission['user_id'],$approvePermission['work_day'])[1],
+            'type' => $approvePermission->type == array_search('Đi muộn',WORK_TIME_TYPE) ? 'Đi muộn' : $approvePermission->type == array_search('Về sớm',WORK_TIME_TYPE) ? 'Về sớm' : '',
             'note' => $approvePermission->note,
             'reason_reject' => $approvePermission->reason_reject,
-            'status' => $approvePermission->status == array_search('Chưa duyệt', OT_STATUS) ? 'Chưa duyệt' : 'Đã duyệt',
             'approver' => $approvePermission->approver->name ?? '',
+            'status' => $approvePermission->status == array_search('Chưa duyệt', OT_STATUS) ? 'Chưa duyệt' : 'Đã duyệt',
         ];
     }
 }

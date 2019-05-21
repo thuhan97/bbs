@@ -32,18 +32,6 @@ class ApprovePermissionController extends AdminBaseController
      */
     protected $resourceTitle = 'Xin phép';
 
-    public function getSearchRecords(Request $request, $perPage = 50, $search = null, $paginatorData = [])
-    {
-        $model = $this->getResourceModel()::search($search);
-        if ($request->has('sort')) {
-            $model->orderBy($request->get('sort'), $request->get('is_desc') ? 'asc' : 'desc');
-        } else {
-            $model->orderBy('id', 'desc');
-        }
-
-        return $model->paginate($perPage);
-    }
-
     public function exportData(Request $request, $search = null)
     {
         switch ($request->path()) {

@@ -658,7 +658,7 @@ class UserController extends Controller
         }
         $numOff= $dayOff->number_off ? checkNumber($dayOff->number_off) : DEFAULT_VALUE;
         $absent= $dayOff->absent ? checkNumber($dayOff->absent) : DEFAULT_VALUE;
-        
+
         if ($dayOff->title != REMAIN_DAY_OFF_DEFAULT){
             $timeStart= DateTimeHelper::checkTileDayOffGetDate($dayOff->start_at);
             $timeEnd= DateTimeHelper::checkTileDayOffGetDate($dayOff->end_at);

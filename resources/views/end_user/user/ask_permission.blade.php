@@ -244,7 +244,6 @@
                         <?php $increment = 1; ?>
                         <tbody>
                         @foreach($managerApproveOT as $item)
-                            {{--@dd($item)--}}
                             <tr>
                                 <th class="text-center d-none d-md-table-cell"
                                     style="padding: 15px">{{ $increment++ }}</th>

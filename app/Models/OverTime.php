@@ -41,9 +41,11 @@ class OverTime extends Model
         return $query->where(function ($q) use ($searchOtTimes) {
             $q->orWhere('work_day', 'like', '%' . $searchOtTimes . '%')
                 ->orWhere('users.name', 'like', '%' . $searchOtTimes . '%')
-                ->orWhere('users.staff_code', 'like', '%' . $searchOtTimes . '%');
+                ->orWhere('users.staff_code', 'like', '%' . $searchOtTimes . '%')
+                ->orWhere('projects.name', 'like', '%' . $searchOtTimes . '%');
         })
             ->join('users', 'users.id', 'creator_id')
+            ->join('projects', 'projects.id', 'project_id')
             ->select('ot_times.*')
             ->orderBy('ot_times.id', 'desc');
     }

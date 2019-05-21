@@ -48,11 +48,9 @@
                 <th style="padding: 15px">Mã nhân viên</th>
                 <th style="padding: 15px">Tên nhân viên</th>
                 <th style="padding: 15px">Ngày</th>
-                {{--<th style="padding: 15px">Hình thức</th>--}}
-                <th style="padding: 15px">Giờ rời công ty</th>
-                <th style="padding: 15px">Giờ đến công ty</th>
+                <th style="padding: 15px">Hình thức</th>
                 <th style="padding: 15px">Giải trình</th>
-                <th style="padding: 15px">Nội dung từ chối</th>
+                <th style="padding: 15px">Nội dung phản hồi</th>
                 <th style="padding: 15px">Người duyệt</th>
                 <th style="padding: 15px;">Trạng thái phê duyệt</th>
                 </thead>
@@ -62,17 +60,22 @@
                 @endphp
                 @foreach ($records as $record)
                     <tr>
-                        <td class="table-text text-center">
+                        <td class="table-text text-center" style="padding: 15px">
                             {{ $record->creator->staff_code ?? '' }}
                         </td>
-                        <td class="table-text">{{ $record->creator->name ?? '' }}</td>
-                        <td class="table-text">{{ $record->work_day }}</td>
-                        <td class="table-text">{{ \App\Helpers\DateTimeHelper::workTime($record['user_id'],$record['work_day'])[0] }}</td>
-                        <td class="table-text">{{ \App\Helpers\DateTimeHelper::workTime($record['user_id'],$record['work_day'])[1] }}</td>
-                        <td class="table-text">{!! $record->note !!} </td>
-                        <td class="table-text">{!! $record->reason_reject !!} </td>
-                        <td class="table-text"> {{ $record->approver->name ?? '' }}</td>
-                        <td class="table-text text-center">
+                        <td class="table-text" style="padding: 15px">{{ $record->creator->name ?? '' }}</td>
+                        <td class="table-text" style="padding: 15px">{{ $record->work_day }}</td>
+                        <td class="table-text" style="padding: 15px">
+                            @if($record->type == array_search('Đi muộn',WORK_TIME_TYPE))
+                                Đi muộn
+                            @elseif($record->type == array_search('Về sớm',WORK_TIME_TYPE))
+                                Về sớm
+                            @endif
+                        </td>
+                        <td class="table-text" style="padding: 15px">{!! $record->note !!} </td>
+                        <td class="table-text" style="padding: 15px">{!! $record->reason_reject !!} </td>
+                        <td class="table-text" style="padding: 15px"> {{ $record->approver->name ?? '' }}</td>
+                        <td class="table-text text-center" style="padding: 15px">
                             @if($record['status'] == array_search('Đã duyệt',OT_STATUS))
                                 <span class="label label-info">Đã duyệt</span>
                             @elseif($record['status'] == array_search('Chưa duyệt',OT_STATUS))

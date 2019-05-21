@@ -2,7 +2,6 @@
 
 namespace App\Exports;
 
-use App\Helpers\DateTimeHelper;
 use Maatwebsite\Excel\Concerns\FromArray;
 use Maatwebsite\Excel\Concerns\ShouldAutoSize;
 use Maatwebsite\Excel\Concerns\WithHeadings;
@@ -25,11 +24,12 @@ class OTListExport implements FromArray, WithHeadings, ShouldAutoSize
             'Tên nhân viên',
             'Ngày',
             'Hình thức',
-            'Giờ đến công ty',
-            'Giờ rời công ty',
-            'Giải trình',
-            'Trạng thái phê duyệt',
+            'Thời gian',
+            'Tên Dự án',
+            'Nội dung',
+            'Nội dung phản hồi',
             'Người duyệt',
+            'Trạng thái',
         ];
     }
 
@@ -49,7 +49,6 @@ class OTListExport implements FromArray, WithHeadings, ShouldAutoSize
     }
 
 
-
     public function makeRow($overTime, $i)
     {
         return [
@@ -58,11 +57,12 @@ class OTListExport implements FromArray, WithHeadings, ShouldAutoSize
             'creator' => $overTime->creator->name,
             'work_day' => $overTime->work_day,
             'ot_type' => $overTime->ot_type == array_search('Dự án', OT_TYPE) ? 'OT dự án' : 'Lý do cá nhân',
-            'work_time_start_at' => DateTimeHelper::workTime($overTime['user_id'],$overTime['work_day'])[0],
-            'work_time_end_at' => DateTimeHelper::workTime($overTime['user_id'],$overTime['work_day'])[1],
-            'note' => $overTime->note,
-            'status' => $overTime->status == array_search('Chưa duyệt', OT_STATUS) ? 'Chưa duyệt' : 'Đã duyệt',
+            'description_time' => $overTime->description_time,
+            'project_name' => $overTime->project->name ?? '',
+            'reason' => $overTime->reason,
+            'note_respond' => $overTime->note_respond,
             'approver' => $overTime->approver->name ?? '',
+            'status' => $overTime->status == array_search('Chưa duyệt', OT_STATUS) ? 'Chưa duyệt' : 'Đã duyệt',
         ];
     }
 }

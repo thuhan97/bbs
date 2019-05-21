@@ -6,6 +6,7 @@ use App\Helpers\DateTimeHelper;
 use App\Http\Requests\Admin\WorkTimePermissionRequest;
 use App\Http\Requests\Admin\WorkTimeRequest;
 use App\Http\Requests\ApprovedRequest;
+use App\Http\Requests\ApprovePermissionRequest;
 use App\Http\Requests\AskPermissionRequest;
 use App\Http\Requests\CreateDayOffRequest;
 use App\Http\Requests\DayOffRequest;
@@ -242,7 +243,7 @@ class UserController extends Controller
         $reason = $request['reason'];
         $workDay = $request['work_day'];
         if ($request->has('ot_type')) {
-            if ($request['ot_type'] == array_search('Dự án',OT_TYPE)) {
+            if ($request['ot_type'] == array_search('Dự án', OT_TYPE)) {
                 $project = Project::find($request['project_id'])->name;
             } else {
                 $project = null;
@@ -409,20 +410,27 @@ class UserController extends Controller
         return back()->with('create_permission_success', '');
     }
 
-    public function askPermissionOT(Request $request)
+    public function askPermissionModal(Request $request)
     {
-        $workTimeExplanation = OverTime::where('work_day', $request['data'])->where('creator_id', Auth::id())/*->where('status', '!=', array_search('Đã duyệt', OT_STATUS))*/
-        ->first();
-        $datas = $this->projectActive();
-        if ($workTimeExplanation) {
-            return [$workTimeExplanation, $datas];
+        $validatedData = $request->validate([
+            'data' => 'required|date',
+            'type' => 'required|between:1,4',
+        ]);
+        if ($request['type'] == array_search('Overtime', WORK_TIME_TYPE)) {
+            $datas = OverTime::where('work_day', $request['data'])->where('creator_id', Auth::id())/*->where('status', '!=', array_search('Đã duyệt', OT_STATUS))*/
+            ->first();
+        } else if ($request['type'] == array_search('Đi muộn', WORK_TIME_TYPE) || $request['type'] == array_search('Về Sớm', WORK_TIME_TYPE)) {
+            $datas = WorkTimesExplanation::where('work_day', $request['data'])->where('type', $request['type'])->where('user_id', Auth::id())->first();
+        }
+        $projects = $this->projectActive();
+        if ($datas) {
+            return [$datas, $projects];
         } else {
-            return ['', $datas];
+            return ['', $projects];
         }
     }
 
-    public function approvePermission(/*AskPermissionRequest*/
-        Request $request)
+    public function approvePermission(ApprovePermissionRequest $request)
     {
         if ($request['permission_type'] == 'ot') {
             OverTime::where('id', $request['id'])->update([

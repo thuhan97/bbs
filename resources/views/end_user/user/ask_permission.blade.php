@@ -110,28 +110,7 @@
                 <h2 class="mt-3 mobile-font-17">Danh sách xin phép</h2>
             @endcan
         </div>
-        <div class="col-md-8 text-right mobile-mg-right-5">
-            <button onclick="location.href='{{route("day_off")}}?t=1'"
-                    class="btn btn-success no-box-shadow waves-effect waves-light float-right" id="btn-off">
-                Xin nghỉ phép
-            </button>
-            <button type="button"
-                    class="d-none d-xl-block btn btn-primary no-box-shadow approve-btn-ot waves-effect waves-light float-right"
-                    id="btn-late-ot">
-                Xin OT
-            </button>
-            <button type="button" class="approve-btn-early btn btn-warning no-box-shadow waves-light float-right"
-                    id="btn-late">
-                Xin về sớm
-            </button>
-            <button type="button" class="approve-btn-late btn btn-danger no-box-shadow waves-light float-right"
-                    id="btn-late">
-                Xin đi muộn
-            </button>
-        </div>
     </div>
-
-
 
     @can('team-leader')
         @if($managerApproveOther || $managerApproveOT)
@@ -312,9 +291,30 @@
         @endif
     @endcan
 
-
-
-    <h2>Xin phép cá nhân</h2>
+    <div class="row">
+        <div class="col-md-3">
+            <h2>Xin phép cá nhân</h2>
+        </div>
+        <div class="col-md-9 text-right mobile-mg-right-5 float-right">
+            <button onclick="location.href='{{route("day_off")}}?t=1'"
+                    class="btn btn-success no-box-shadow waves-effect waves-light float-right" id="btn-off">
+                Xin nghỉ phép
+            </button>
+            <button type="button"
+                    class="d-none d-xl-block btn btn-primary no-box-shadow approve-btn-ot waves-effect waves-light float-right"
+                    id="btn-late-ot">
+                Xin OT
+            </button>
+            <button type="button" class="approve-btn-early btn btn-warning no-box-shadow waves-light float-right"
+                    id="btn-late">
+                Xin về sớm
+            </button>
+            <button type="button" class="approve-btn-late btn btn-danger no-box-shadow waves-light float-right"
+                    id="btn-late">
+                Xin đi muộn
+            </button>
+        </div>
+    </div>
     <br>
     <!-- Nav tabs -->
     <ul class="nav nav-tabs md-tabs nav-justified primary-color" role="tablist">

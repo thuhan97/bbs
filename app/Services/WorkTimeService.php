@@ -334,7 +334,9 @@ class WorkTimeService extends AbstractService implements IWorkTimeService
     {
         $type = 0;
         $notes = [];
-
+        if ($registerAt) {
+            $registerAt = date_create($registerAt)->modify('+1 minutes')->format('H:i:s');
+        }
         if ($startAt) {
             $startAt .= ':00';
             //check đi muộn quá nửa buổi chiều -> nghỉ ngày

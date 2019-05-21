@@ -67,7 +67,7 @@ $currentId = request('select_type', $addVarsForView['currentId'] ?? 0);
 
                         <input type="text" class="form-control" id="{{$item}}_end" name="{{$item}}_end"
                                placeholder="Thời gian kết thúc"
-                               value="{{ $addVarsForView['old_value']['type_3'][$item]['end_at'] }}" readonly="">
+                               value="{{ $addVarsForView['old_value']['type_3'][$item]['end_at'] }}">
                         @if ($errors->has($item . '_start') || $errors->has($item . '_end'))
                             <span class="help-block">
                             <strong>{{ $errors->first($item . '_start') ? $errors->first($item . '_start') : $errors->first($item . '_end') }}</strong>
@@ -135,21 +135,18 @@ $currentId = request('select_type', $addVarsForView['currentId'] ?? 0);
                 let selector = str.replace('start', 'end');
                 let endTimeSelector = $('#' + selector);
 
-                if (e.time.hours < 8) {
+                if (e.time.hours < 7) {
                     $(this).val('{{ $config['morning_start_work_at'] }}');
                     endTimeSelector.val('{{ $config['morning_end_work_at'] }}');
-                    return
-                } else if (e.time.hours >= 13) {
-                    $(this).val('{{ $config['afternoon_start_work_at'] }}');
-                    endTimeSelector.val('{{ $config['afternoon_end_work_at'] }}');
-                    return
-                } else if (e.time.hours <= 13 && e.time.hours >= 12) {
-                    $(this).val('{{ $config['afternoon_start_work_at'] }}');
-                    endTimeSelector.val('{{ $config['afternoon_end_work_at'] }}');
-                    return
-                }
 
-                endTimeSelector.val(timeEndCalculate(e));
+                    return
+                } else if (e.time.hours > 15) {
+                    $(this).val('{{ $config['afternoon_start_work_at'] }}');
+                    endTimeSelector.val('{{ $config['afternoon_end_work_at'] }}');
+                    return
+                } else {
+                    endTimeSelector.val(timeEndCalculate(e));
+                }
             });
         })
     </script>

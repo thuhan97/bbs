@@ -43,7 +43,9 @@ class WorkTimeService extends AbstractService implements IWorkTimeService
         $this->calendarOffs = CalendarOff::all();
         $this->additionalDates = AdditionalDate::all();
 
-        $this->users = User::select('id', 'name', 'staff_code', 'contract_type', 'is_remote')->with('workTimeRegisters')->get();
+        $this->users = User::select('id', 'name', 'staff_code', 'contract_type', 'is_remote', 'jobtitle_id')
+            ->with('workTimeRegisters')
+            ->get();
 
     }
 
@@ -84,13 +86,14 @@ class WorkTimeService extends AbstractService implements IWorkTimeService
     {
         $userId = $userCode[$staffCode];
         $user = $this->users->firstWhere('id', $userId);
-
-        $workTime = $this->getWorkTime($user, $work_day, $startAt, $endAt);
-        if ($workTime) {
-            $workTime['user_id'] = $userId;
-            $workTime['work_day'] = $work_day->format(DATE_FORMAT_SLASH);
+        if ($user) {
+            $workTime = $this->getWorkTime($user, $work_day, $startAt, $endAt);
+            if ($workTime) {
+                $workTime['user_id'] = $userId;
+                $workTime['work_day'] = $work_day->format(DATE_FORMAT_SLASH);
+            }
+            return $workTime;
         }
-        return $workTime;
     }
 
     /**
@@ -135,7 +138,7 @@ class WorkTimeService extends AbstractService implements IWorkTimeService
                     $notes[] = __('worktimes.no_info');
 
                 } else {
-                    list($cost, $type, $notes) = $this->getCostWorkTime($user, $startAt, $endAt);
+                    list($cost, $type, $notes) = $this->getCostWorkTime(null, $startAt, $endAt);
                 }
             } else {
                 //check dayoff partime or internship
@@ -149,11 +152,11 @@ class WorkTimeService extends AbstractService implements IWorkTimeService
                             $notes[] = __('worktimes.no_info');
                         } else {
                             if ($workTime->end_at <= SWITCH_TIME) {
-                                list($cost, $type, $notes) = $this->getCostWorkTime($user, $startAt, $endAt, -1);
+                                list($cost, $type, $notes) = $this->getCostWorkTime($workTime->start_at, $startAt, $endAt, -1);
                             } else if ($workTime->start_at >= SWITCH_TIME) { //afternoon only
-                                list($cost, $type, $notes) = $this->getCostWorkTime($user, $startAt, $endAt, 1);
+                                list($cost, $type, $notes) = $this->getCostWorkTime($workTime->start_at, $startAt, $endAt, 1);
                             } else {
-                                list($cost, $type, $notes) = $this->getCostWorkTime($user, $startAt, $endAt);
+                                list($cost, $type, $notes) = $this->getCostWorkTime($workTime->start_at, $startAt, $endAt);
                             }
                         }
                     }
@@ -327,7 +330,7 @@ class WorkTimeService extends AbstractService implements IWorkTimeService
      *
      * @return array
      */
-    private function getCostWorkTime($user, $startAt, $endAt, $typeCheck = 0)
+    private function getCostWorkTime($registerAt, $startAt, $endAt, $typeCheck = 0)
     {
         $type = 0;
         $notes = [];
@@ -336,12 +339,13 @@ class WorkTimeService extends AbstractService implements IWorkTimeService
             $startAt .= ':00';
             //check đi muộn quá nửa buổi chiều -> nghỉ ngày
             if ($typeCheck >= 0) {
+                $timeLateAt = $registerAt ?? $this->config->time_afternoon_go_late_at;
                 if ($startAt >= HAFT_AFTERNOON) {
                     $type = WorkTime::TYPES['off'];
                     $notes[] = __('worktimes.off');
                     $notes[] = __('worktimes.late_over_haft_afternoon');
                 } //check đi muộn buổi chiều
-                else if ($startAt >= $this->config->time_afternoon_go_late_at) {
+                else if ($startAt >= $timeLateAt) {
                     $type += WorkTime::TYPES['lately'];
                     $notes[] = __('worktimes.lately_afternoon');
                 } //Chấm công buổi chiều, nghỉ sáng
@@ -351,10 +355,12 @@ class WorkTimeService extends AbstractService implements IWorkTimeService
                 }
             }
             if ($typeCheck <= 0 && $startAt < HAFT_HOUR) {
+                $timeLateAt = $registerAt ?? $this->config->time_morning_go_late_at;
+
                 //check đi muộn quá nửa buổi sáng -> nghỉ sáng
                 if ($startAt >= HAFT_MORNING) {
                     $notes[] = __('worktimes.late_over_haft_morning');
-                } else if ($startAt >= $this->config->time_morning_go_late_at) {
+                } else if ($startAt >= $timeLateAt) {
                     $type += WorkTime::TYPES['lately'];
                     $notes[] = __('worktimes.lately_morning');
                 }

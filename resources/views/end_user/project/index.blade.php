@@ -17,7 +17,7 @@
     @endcan
     <div class="row">
         <div class="col-12 col-xxl-10">
-            <form class="mb-4">
+            <form class="mb-0 mb-lg-4">
                 <div class="md-form active-cyan-2 mb-3">
                     @include('layouts.partials.frontend.search-input', ['search' => $search, 'text' => __l('Search')])
                     <input type="hidden" name="page_size" value="{{$perPage}}">
@@ -27,44 +27,43 @@
                 <p>{{__l('total_record', ['number' => $projects->total()])}}</p>
                 <table id="contactTbl" class="table table-striped">
                     <colgroup>
-                        <col style="width: 50px">
+                        <col class="d-none d-sm-table-cell" style="width: 50px">
                         <col style="">
-                        <col style="">
+                        <col class="d-none d-sm-table-cell" style="">
+                        <col class="d-none d-sm-table-cell" style="width: 180px">
+                        <col class="d-none d-sm-table-cell" style="width: 10%">
                         <col style="width: 180px">
-                        <col style="width: 10%">
-                        <col style="width: 10%">
-                        <col style="width: 10%">
-                        <col style="width: 60px">
+                        <col class="d-none d-sm-table-cell" style="width: 10%">
+                        <col class="d-none d-sm-table-cell" style="width: 60px">
                     </colgroup>
                     <thead>
                     <tr>
-                        <th>#</th>
+                        <th class="d-none d-sm-table-cell">#</th>
                         <th>Tên</th>
-
-                        <th>Khách hàng</th>
+                        <th class="d-none d-sm-table-cell">Khách hàng</th>
                         <th>Leader</th>
-                        <th class="text-center">Bắt đầu</th>
-                        <th class="text-center">Kết thúc</th>
-                        <th>Trạng thái</th>
-                        <th></th>
+                        <th class="d-none d-sm-table-cell text-center">Bắt đầu</th>
+                        <th class="d-none d-sm-table-cell text-center">Kết thúc</th>
+                        <th class="d-none d-sm-table-cell">Trạng thái</th>
+                        <th class="d-none d-sm-table-cell"></th>
                     </tr>
                     </thead>
                     <tbody>
 
                     @foreach($projects as $id => $row)
                         <tr>
-                            <th>{{ $id + 1 }}</th>
-                            <td>{{$row->name}}</td>
-                            <td>{{$row->customer}}</td>
+                            <th class="d-none d-sm-table-cell">{{ $id + 1 }}</th>
+                            <td onclick="location.href='{{route('project_detail', ['id' => $row->id])}}'">{{$row->name}}</td>
+                            <td class="d-none d-sm-table-cell">{{$row->customer}}</td>
                             <td>{{$row->leader->name ?? 'Đang cập nhật'}}</td>
-                            <td class="text-center">
+                            <td class="text-center d-none d-sm-table-cell">
                                 {{$row->start_date}}
                             </td>
-                            <td class="text-center">
+                            <td class="text-center d-none d-sm-table-cell">
                                 {{$row->end_date}}
                             </td>
-                            <td>{{STATUS_PROJECT[$row->status]}}</td>
-                            <td class="text-center">
+                            <td class="d-none d-sm-table-cell">{{STATUS_PROJECT[$row->status]}}</td>
+                            <td class="text-center d-none d-sm-table-cell">
                                 <a href="{{route('project_detail', ['id' => $row->id])}}"
                                    class="btn btn-primary">Xem
                                 </a>
@@ -73,6 +72,7 @@
                     @endforeach
                     </tbody>
                 </table>
+
                 @if ($projects->lastPage() > 1)
                     @include('common.paginate_eu', ['records' => $projects])
                 @endif

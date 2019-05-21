@@ -8,17 +8,25 @@
     {!! Breadcrumbs::render('share_experience') !!}
 @endsection
 @section('content')
-    <link rel="stylesheet" href="{{URL::asset('css/share_experience.css')}}">
 
-<div class="col-md-10">
-    <div class="content">
-        <div class="tab-pane active">
-            <div class="createReport fixed-action-btn">
-                <a href="#" class="btn-lg red waves-effect waves-light text-white" title="Đăng bài" data-target="#feedback" data-toggle="modal" style="border-radius: 35px;border: 5px solid #FED6D8;font-size: 17px;">
-                    <img class="imgAddExperience" src="{{ asset('img/icon_exp.png') }}" onerror="this.src='{{URL_IMAGE_NO_IMAGE}}'" alt="avatar image" />
-                    Đăng bài
-                </a>
+    <div class="mt-4 col-md-10">
+        <form class="mb-4">
+            <div class="md-form active-cyan-2 mb-3">
+                @include('layouts.partials.frontend.search-input', ['search' => $search, 'text' => __l('Search')])
+                <input type="hidden" name="page_size" value="{{$perPage}}">
             </div>
+        </form>
+        <div class="content">
+            <div class="tab-pane active">
+                <div class="createReport fixed-action-btn">
+                    <a href="#" class="btn-lg red waves-effect waves-light text-white" title="Đăng bài"
+                       data-target="#feedback" data-toggle="modal"
+                       style="border-radius: 35px;border: 5px solid #FED6D8;font-size: 17px;">
+                        <img class="imgAddExperience" src="{{ asset('img/icon_exp.png') }}"
+                             onerror="this.src='{{URL_IMAGE_NO_IMAGE}}'" alt="avatar image"/>
+                        Đăng bài
+                    </a>
+                </div>
                 @foreach($list_experience as $experience)
                     <div class="posts">
                         <div class="content-share-experience">
@@ -103,6 +111,9 @@
     </div>
 @endsection
 
+@push('extend-css')
+    <link rel="stylesheet" href="{{URL::asset('css/share_experience.css')}}">
+@endpush
 @push('footer-scripts')
     <script>
         $(function () {

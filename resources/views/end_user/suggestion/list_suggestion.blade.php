@@ -23,19 +23,19 @@
                     <table class="table table-bordered table-hover">
                         <thead>
                         <tr class="blue lighten-5">
-                            <th style="width: 50px">
+                            <th class="d-none d-sm-table-cell" style="width: 50px">
                                 #
                             </th>
-                            <th style="width: 200px">
+                            <th style="width: 180px">
                                 Người góp ý
                             </th>
                             <th>
                                 Nội dung
                             </th>
-                            <th style="width: 200px">
+                            <th class="d-none d-sm-table-cell" style="width: 150px">
                                 Ngày góp ý
                             </th>
-                            <th style="width: 200px">
+                            <th class="d-none d-sm-table-cell" style="width: 200px">
                                 Trạng thái duyệt
                             </th>
                         </tr>
@@ -43,7 +43,7 @@
                         <tbody>
                         @foreach($list_suggestions as $idx => $suggestion)
                             <tr>
-                                <td class="center">
+                                <td class="d-none d-sm-table-cell center">
                                     {{$idx + 1}}
                                 </td>
                                 <td class="center">
@@ -52,10 +52,10 @@
                                 <td class="center">
                                     {!! nl2br($suggestion->content) !!}
                                 </td>
-                                <td class="center">
-                                    {{$suggestion->created_at}}
+                                <td class="d-none d-sm-table-cell center">
+                                    {{$suggestion->created_at->format(DATE_FORMAT)}}
                                 </td>
-                                <td class="center">
+                                <td class="d-none d-sm-table-cell center">
                                     <div class="form-check">
                                         <input type="checkbox" class="form-check-input checkout-approve" id="{{$idx}}"
                                                data="{{$suggestion->id}}"

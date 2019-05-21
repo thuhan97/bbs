@@ -55,10 +55,17 @@ class ShareController extends Controller
         return redirect()->route('list_share_document');
     }
 
-    public function shareExperience()
+    public function shareExperience(Request $request)
     {
-        $list_experience = Share::where('type', '=', SHARE_EXPERIENCE)->orderBy('created_at', 'desc')->paginate(DEFAULT_PAGE_SIZE);
-        return view('end_user.share.share_experience', compact('list_experience'));
+        $search = $request->get('search');
+        $perPage = $request->get('page_size', DEFAULT_PAGE_SIZE);
+        $list_experience = Share::where('type', '=', SHARE_EXPERIENCE)
+            ->search($search)
+            ->orderBy('created_at', 'desc')
+            ->paginate($perPage);
+
+
+        return view('end_user.share.share_experience', compact('list_experience', 'search', 'perPage'));
     }
 
     public function addExperience(ShareExperienceRequest $request)

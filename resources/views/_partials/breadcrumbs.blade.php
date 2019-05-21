@@ -1,5 +1,5 @@
 @if ($breadcrumbs)
-    <ul class="breadcrumb mb-4">
+    <ul class="breadcrumb mb-2 mb-lg-4">
         @foreach ($breadcrumbs as $breadcrumb)
             @if ($loop->first)
                 <li class="breadcrumb-item"><a href="{{ $breadcrumb->url }}">

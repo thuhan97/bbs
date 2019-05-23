@@ -376,8 +376,9 @@ class UserController extends Controller
                 return back()->with('permission_error', '');
             }
         } elseif ($request['permission_type'] == array_search('Đi muộn', WORK_TIME_TYPE) || $request['permission_type'] == array_search('Về Sớm', WORK_TIME_TYPE)) {
-            $workTimeExplanation = $this->getWorkTimeExplanation($request['work_day'])->where('status', array_search(' Chưa duyệt', OT_STATUS))->where('type', $request['permission_type'])->first();
+            $workTimeExplanation = $this->getWorkTimeExplanation($request['work_day'])->whereIn('status', WORK_TIME_OT_STATUS)->where('type', $request['permission_type'])->first();
 
+//            dd($workTimeExplanation);
             if ($workTimeExplanation) {
                 $workTimeExplanation->update(['ot_type' => $request['ot_type'], 'note' => $request['note'], 'work_day' => $request['work_day']]);
                 return back()->with('create_permission_success', '');
@@ -421,7 +422,7 @@ class UserController extends Controller
             $datas = OverTime::where('work_day', $request['data'])->where('creator_id', Auth::id())/*->where('status', '!=', array_search('Đã duyệt', OT_STATUS))*/
             ->first();
         } else if ($request['type'] == array_search('Đi muộn', WORK_TIME_TYPE) || $request['type'] == array_search('Về Sớm', WORK_TIME_TYPE)) {
-            $datas = WorkTimesExplanation::where('work_day', $request['data'])->where('type', $request['type'])->where('user_id', Auth::id())->first();
+            $datas = WorkTimesExplanation::where('work_day', $request['data'])->where('status','!=',array_search('Từ chối',OT_STATUS))->where('type', $request['type'])->where('user_id', Auth::id())->first();
         }
         $projects = $this->projectActive();
         if ($datas) {

@@ -7,6 +7,7 @@
 
 namespace App\Services;
 
+use App\Helpers\DatabaseHelper;
 use App\Models\Config;
 use App\Models\Group;
 use App\Models\Report;

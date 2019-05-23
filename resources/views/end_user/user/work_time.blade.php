@@ -495,14 +495,7 @@
                                     $('.title-wt-modal-approve').text('Xin phép');
                                     $('.wt-textarea-reason,.btn-send-permission').prop('disabled', false);
                                 }
-// console.log(respond.project_id)
-
-                                // $(".project_id option").each(function (data) {
-                                //     console.log($(this).val())
-                                //     if (respond.project_id === $(this).val()) {
-                                //         $(this).attr('selected', true)
-                                //     }
-                                // });
+                                
                                 $('#start_at').val(respond.start_at);
                                 $('#end_at').val(respond.end_at);
                                 if (respond.status === undefined) {

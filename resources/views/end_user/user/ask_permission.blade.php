@@ -1,3 +1,4 @@
+@section('page-title', __l('ask_permission'))
 @extends('layouts.end_user')
 @section('breadcrumbs')
     {!! Breadcrumbs::render('ask_permission') !!}
@@ -5,6 +6,25 @@
 @section('content')
     @if(session()->has('create_permission_success'))
         @if(session()->get('day_off_success') != '')
+            <script>
+                swal({
+                    title: "Thông báo!",
+                    text: "Bạn đã gửi đơn thành công!",
+                    icon: "success",
+                    button: "Đóng",
+                });
+            </script>
+        @else
+            <script>
+                swal({
+                    title: "Thông báo!",
+                    text: "Bạn đã sửa đơn thành công!",
+                    icon: "success",
+                    button: "Đóng",
+                });
+            </script>
+        @endif
+        @if(session()->get('create_permission_success') != '')
             <script>
                 swal({
                     title: "Thông báo!",
@@ -110,28 +130,7 @@
                 <h2 class="mt-3 mobile-font-17">Danh sách xin phép</h2>
             @endcan
         </div>
-        <div class="col-md-8 text-right mobile-mg-right-5">
-            <button onclick="location.href='{{route("day_off")}}?t=1'"
-                    class="btn btn-success no-box-shadow waves-effect waves-light float-right" id="btn-off">
-                Xin nghỉ phép
-            </button>
-            <button type="button"
-                    class="d-none d-xl-block btn btn-primary no-box-shadow approve-btn-ot waves-effect waves-light float-right"
-                    id="btn-late-ot">
-                Xin OT
-            </button>
-            <button type="button" class="approve-btn-early btn btn-warning no-box-shadow waves-light float-right"
-                    id="btn-late">
-                Xin về sớm
-            </button>
-            <button type="button" class="approve-btn-late btn btn-danger no-box-shadow waves-light float-right"
-                    id="btn-late">
-                Xin đi muộn
-            </button>
-        </div>
     </div>
-
-
 
     @can('team-leader')
         @if($managerApproveOther || $managerApproveOT)
@@ -280,20 +279,20 @@
                                             </button>
                                         @elseif($item['status'] == array_search('Đã duyệt', OT_STATUS))
                                             <i class="fas fa-grin-stars fa-2x text-success"
-                                               title="{{ $item->workTimeApprover->name ?? '' }}"></i>
+                                               title="{{ $item->approver->name ?? '' }}"></i>
                                         @elseif($item['status'] == array_search('Từ chối', OT_STATUS))
                                             <i class="fas fa-frown fa-2x text-danger"
-                                               title="{{ $item->workTimeApprover->name ?? '' }}"></i>
+                                               title="{{ $item->approver->name ?? '' }}"></i>
                                         @endif
                                     @elsecan('team-leader')
                                         @if($item['status'] == array_search('Đã duyệt', OT_STATUS))
                                             <i class="fas fa-grin-stars fa-2x text-success"
-                                               title="{{ $item->workTimeApprover->name ?? '' }}"></i>
+                                               title="{{ $item->approver->name ?? '' }}"></i>
                                         @elseif($item['status'] == array_search('Chưa duyệt', OT_STATUS))
                                             <i class="fas fa-meh-blank fa-2x text-warning" title="Chưa duyệt"></i>
                                         @elseif($item['status'] == array_search('Từ chối', OT_STATUS))
                                             <i class="fas fa-frown fa-2x text-danger"
-                                               title="{{ $item->workTimeApprover->name ?? ''  }}"></i>
+                                               title="{{ $item->approver->name ?? ''  }}"></i>
                                         @endif
                                     @endcan
                                 </td>
@@ -312,9 +311,30 @@
         @endif
     @endcan
 
-
-
-    <h2>Xin phép cá nhân</h2>
+    <div class="row">
+        <div class="col-md-3">
+            <h2>Xin phép cá nhân</h2>
+        </div>
+        <div class="col-md-9 text-right mobile-mg-right-5 float-right">
+            <button onclick="location.href='{{route("day_off")}}?t=1'"
+                    class="btn btn-success no-box-shadow waves-effect waves-light float-right" id="btn-off">
+                Xin nghỉ phép
+            </button>
+            <button type="button"
+                    class="d-none d-xl-block btn btn-primary no-box-shadow approve-btn-ot waves-effect waves-light float-right"
+                    id="btn-late-ot">
+                Xin OT
+            </button>
+            <button type="button" class="approve-btn-early btn btn-warning no-box-shadow waves-light float-right"
+                    id="btn-late">
+                Xin về sớm
+            </button>
+            <button type="button" class="approve-btn-late btn btn-danger no-box-shadow waves-light float-right"
+                    id="btn-late">
+                Xin đi muộn
+            </button>
+        </div>
+    </div>
     <br>
     <!-- Nav tabs -->
     <ul class="nav nav-tabs md-tabs nav-justified primary-color" role="tablist">
@@ -346,7 +366,7 @@
                     <th class="text-center table-with-42">Ngày</th>
                     <th>Hình thức</th>
                     <th class="d-none d-md-table-cell">Nội dung</th>
-                    <th class="d-none d-md-table-cell">Nội dung từ chối</th>
+                    <th class="d-none d-md-table-cell">Nội dung phản hồi</th>
                     <th class="text-center">Trạng Thái</th>
                 </tr>
                 </thead>
@@ -430,12 +450,12 @@
                         <td class="text-center td-approve">
                             @if($item['status'] == array_search('Đã duyệt', OT_STATUS))
                                 <i class="fas fa-grin-stars fa-2x text-success"
-                                   title="{{ $item->workTimeApprover->name ?? '' }}"></i>
+                                   title="{{ $item->approver->name ?? '' }}"></i>
                             @elseif($item['status'] == array_search('Chưa duyệt', OT_STATUS))
                                 <i class="fas fa-meh-blank fa-2x text-warning" title="Chưa duyệt"></i>
                             @elseif($item['status'] == array_search('Từ chối', OT_STATUS))
                                 <i class="fas fa-frown fa-2x text-danger"
-                                   title="{{ $item->workTimeApprover->name ?? ''  }}"></i>
+                                   title="{{ $item->approver->name ?? ''  }}"></i>
                             @endif
                         </td>
                     </tr>

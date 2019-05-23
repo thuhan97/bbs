@@ -939,9 +939,10 @@
                     }
                     ;
                     if (data.flag) {
-                        $('.ds-end').attr('disabled', true);
+                        $('.ds-end option[value="0"]').attr('disabled', true);
+                        $('.ds-end').val(1);
                     } else {
-                        $('.ds-end').removeAttrs('disabled');
+                        $('.ds-end option[value="0"]').attr('disabled', false);
                     }
                 }
             });

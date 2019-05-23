@@ -368,18 +368,20 @@ class UserController extends Controller
                     'project_id' => $request['project_id'],
                     'project_name' => $project,
                 ]);
-                return back()->with('create_permission_success', '');
+                return back()->with('create_permission_success', 'create_permission_success');
             } else if ($request['permission_status'] == array_search('Bình thường', WORK_TIME_TYPE)) {
                 OverTime::where('id', $request['ot_id'])->update(['reason' => $request['note'], 'ot_type' => $request['ot_type'], 'start_at' => $request['start_at'], 'end_at' => $request['end_at'], 'minute' => $minute, 'project_name' => $project, 'project_id' => $request['project_id']]);
-                return back()->with('create_permission_success', 'create_permission_success');
+                return back()->with('create_permission_success', '');
             } else if ($request['permission_status'] == array_search('Đã duyệt', OT_STATUS)) {
                 return back()->with('permission_error', '');
             }
         } elseif ($request['permission_type'] == array_search('Đi muộn', WORK_TIME_TYPE) || $request['permission_type'] == array_search('Về Sớm', WORK_TIME_TYPE)) {
-            $workTimeExplanation = $this->getWorkTimeExplanation($request['work_day'])->where('status', array_search(' Chưa duyệt', OT_STATUS))->where('type', $request['permission_type'])->first();
+            $workTimeExplanation = $this->getWorkTimeExplanation($request['work_day'])->whereIn('status', WORK_TIME_OT_STATUS)->where('type', $request['permission_type'])->first();
 
+//            dd($workTimeExplanation);
             if ($workTimeExplanation) {
                 $workTimeExplanation->update(['ot_type' => $request['ot_type'], 'note' => $request['note'], 'work_day' => $request['work_day']]);
+                return back()->with('create_permission_success', '');
             } else {
                 WorkTimesExplanation::create([
                     'user_id' => Auth::id(),
@@ -420,7 +422,7 @@ class UserController extends Controller
             $datas = OverTime::where('work_day', $request['data'])->where('creator_id', Auth::id())/*->where('status', '!=', array_search('Đã duyệt', OT_STATUS))*/
             ->first();
         } else if ($request['type'] == array_search('Đi muộn', WORK_TIME_TYPE) || $request['type'] == array_search('Về Sớm', WORK_TIME_TYPE)) {
-            $datas = WorkTimesExplanation::where('work_day', $request['data'])->where('type', $request['type'])->where('user_id', Auth::id())->first();
+            $datas = WorkTimesExplanation::where('work_day', $request['data'])->where('status','!=',array_search('Từ chối',OT_STATUS))->where('type', $request['type'])->where('user_id', Auth::id())->first();
         }
         $projects = $this->projectActive();
         if ($datas) {
@@ -595,18 +597,18 @@ class UserController extends Controller
      */
     public function dayOffCreatevacationVacation(CreateDayOffRequest $request)
     {
-        if ($request->id_hid){
-            $dayOff =DayOff::FindOrFail($request->id_hid);
+        if ($request->id_hid) {
+            $dayOff = DayOff::FindOrFail($request->id_hid);
 
-        }else{
+        } else {
             $dayOff = new DayOff();
         }
         $dayOff->fill($request->all());
         $dayOff->user_id = Auth::id();
         $dayOff->save();
-        if ($request->id_hid){
+        if ($request->id_hid) {
             return redirect(route('day_off'))->with('day_off_edit_success', '');
-        }else{
+        } else {
             return redirect(route('day_off'))->with('day_off_success', '');
         }
     }
@@ -614,11 +616,11 @@ class UserController extends Controller
     public function dayOffCreate(CreateDayOffRequest $request)
     {
 
-       if ($request->id_hid){
-           $dayOff =DayOff::FindOrFail($request->id_hid);
-       }else{
-           $dayOff = new DayOff();
-       }
+        if ($request->id_hid) {
+            $dayOff = DayOff::FindOrFail($request->id_hid);
+        } else {
+            $dayOff = new DayOff();
+        }
         $dayOff->fill($request->all());
         $timeStrat = $request->start == DEFAULT_VALUE ? CHECK_TIME_DAY_OFF_START_DATE : CHECK_TIME_DAY_OFF_HALT_DATE;
         $timeEnd = $request->end == DEFAULT_VALUE ? CHECK_TIME_DAY_OFF_HALT_DATE : CHECK_TIME_DAY_OFF_END_DATE;
@@ -628,9 +630,9 @@ class UserController extends Controller
         $dayOff->user_id = Auth::id();
         $dayOff->save();
 
-        if ($request->id_hid){
+        if ($request->id_hid) {
             return redirect(route('day_off'))->with('day_off_edit_success', '');
-        }else{
+        } else {
             return redirect(route('day_off'))->with('day_off_success', '');
         }
     }
@@ -664,25 +666,26 @@ class UserController extends Controller
             $dayOff->save();
             return back()->with('close', '');
         }
-        $numOff= $dayOff->number_off ? checkNumber($dayOff->number_off) : DEFAULT_VALUE;
-        $absent= $dayOff->absent ? checkNumber($dayOff->absent) : DEFAULT_VALUE;
+        $numOff = $dayOff->number_off ? checkNumber($dayOff->number_off) : DEFAULT_VALUE;
+        $absent = $dayOff->absent ? checkNumber($dayOff->absent) : DEFAULT_VALUE;
 
-        if ($dayOff->title != REMAIN_DAY_OFF_DEFAULT){
-            $timeStart= DateTimeHelper::checkTileDayOffGetDate($dayOff->start_at);
-            $timeEnd= DateTimeHelper::checkTileDayOffGetDate($dayOff->end_at);
-            $time=$timeStart.' - '.$timeEnd;
+        if ($dayOff->title != REMAIN_DAY_OFF_DEFAULT) {
+            $timeStart = DateTimeHelper::checkTileDayOffGetDate($dayOff->start_at);
+            $timeEnd = DateTimeHelper::checkTileDayOffGetDate($dayOff->end_at);
+            $time = $timeStart . ' - ' . $timeEnd;
 
         }
+        $numOffApprove = $this->userDayOffService->checkDateUsable($dayOff->start_at, $dayOff->end_at, null, null,true);
         return response()->json([
             'data' => $dayOff,
             'numoff' => $numOff,
             'approver' => User::find($dayOff->approver_id)->name ?? '',
             'userdayoff' => User::find($dayOff->user_id)->name ?? '',
             'absent' => $absent + $numOff,
-            'approver_id'=>User::find($dayOff->approver_id)->id ?? '',
-            'timeStartEdit'=>Carbon::createFromFormat(DATE_TIME_FORMAT, $dayOff->start_at)->format('Y/m/d'),
-            'timeEndEdit'=>Carbon::createFromFormat(DATE_TIME_FORMAT, $dayOff->end_at)->format('Y/m/d'),
-            'time'=> $time ?? DEFAULT_VALUE
+            'approver_id' => User::find($dayOff->approver_id)->id ?? '',
+            'timeStartEdit' => Carbon::createFromFormat(DATE_TIME_FORMAT, $dayOff->start_at)->format('Y/m/d'),
+            'timeEndEdit' => Carbon::createFromFormat(DATE_TIME_FORMAT, $dayOff->end_at)->format('Y/m/d'),
+            'time' => $time ?? DEFAULT_VALUE
         ]);
     }
 
@@ -720,24 +723,18 @@ class UserController extends Controller
         $remainDayoffCurrentYear = $dayOffYear->remain ?? DEFAULT_VALUE;
         $DayoffFrreCurrentYear = $dayOffYear->day_off_free_female ?? DEFAULT_VALUE;
         $numOff = $this->userDayOffService->checkDateUsable($request->start_date, $request->end_date, $request->start_time, $request->end_time);
+//        return $numOff;
         if (is_array($numOff) && $numOff[0] > ($dayOffPreYear + $remainDayoffCurrentYear + $DayoffFrreCurrentYear)) {
             $absent = $numOff[0] - ($dayOffPreYear + $remainDayoffCurrentYear + $DayoffFrreCurrentYear);
             return response()->json([
                 'check' => true,
                 'absent' => $absent,
-                'flag' => true
-            ]);
-        }
-        if ($numOff > ($dayOffPreYear + $remainDayoffCurrentYear + $DayoffFrreCurrentYear)) {
-            $absent = $numOff - ($dayOffPreYear + $remainDayoffCurrentYear + $DayoffFrreCurrentYear);
-            return response()->json([
-                'check' => true,
-                'absent' => $absent
+                'flag' => $numOff[1]
             ]);
         } else {
             return response()->json([
                 'check' => false,
-
+                'flag' => true
             ]);
         }
     }

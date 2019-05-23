@@ -426,35 +426,52 @@ class DayOffService extends AbstractService implements IDayOffService
     }
 
 
-    public function checkDateUsable($startDate, $endDate, $startTime, $endTime)
+    public function checkDateUsable($startDate, $endDate, $startTime, $endTime,$flag=false)
     {
-
-        $start = $startTime == DEFAULT_VALUE ? CHECK_TIME_DAY_OFF_USABLE_START[0] : CHECK_TIME_DAY_OFF_USABLE_START[1];
-        $end = $endTime == DEFAULT_VALUE ? CHECK_TIME_DAY_OFF_USABLE_END[0] : CHECK_TIME_DAY_OFF_USABLE_END[1];
-
-        $from = Carbon::createFromFormat(DATE_FORMAT_DAY_OFF, $startDate . ' ' . $start);
-
-        $to = Carbon::createFromFormat(DATE_FORMAT_DAY_OFF, $endDate . ' ' . $end);
+        if ($flag){
+            $start=Carbon::createFromFormat(DATE_TIME_FORMAT, $startDate)->format(DATE_FORMAT_DAY_OFF) ;
+            $end=Carbon::createFromFormat(DATE_TIME_FORMAT, $endDate)->format(DATE_FORMAT_DAY_OFF) ;
+            $stratTimeDayOff= Carbon::createFromFormat(DATE_TIME_FORMAT, $startDate)->format(TIME_FORMAT);
+            $endTimeDayOff= Carbon::createFromFormat(DATE_TIME_FORMAT, $endDate)->format(TIME_FORMAT);
+            $startDateDayOff=Carbon::createFromFormat(DATE_TIME_FORMAT, $startDate)->format(DATE_FORMAT_SLASH) ;
+            $endDateDayOff=Carbon::createFromFormat(DATE_TIME_FORMAT, $endDate)->format(DATE_FORMAT_SLASH) ;
+        }else{
+            $checkStart = $startTime == DEFAULT_VALUE ? CHECK_TIME_DAY_OFF_USABLE_START[0] : CHECK_TIME_DAY_OFF_USABLE_START[1];
+            $checkEnd = $endTime == DEFAULT_VALUE ? CHECK_TIME_DAY_OFF_USABLE_END[0] : CHECK_TIME_DAY_OFF_USABLE_END[1];
+            $start=$startDate . ' ' . $checkStart;
+            $end=$endDate . ' ' . $checkEnd;
+        }
+        $from = Carbon::createFromFormat(DATE_FORMAT_DAY_OFF, $start);
+        $to = Carbon::createFromFormat(DATE_FORMAT_DAY_OFF, $end);
         if (strtotime($from) > strtotime($to)) {
             return false;
         }
         $numberDate = $to->diffInDays($from) + REMAIN_DAY_OFF_DEFAULT;
-
-        if ($startTime == DEFAULT_VALUE && $endTime != DEFAULT_VALUE) {
-            $day = ($to->diffInHours($from) + ONE_HOURS)  / HOURS_OF_DAY;
-
-        }elseif ($startTime == REMAIN_DAY_OFF_DEFAULT  && $endTime == REMAIN_DAY_OFF_DEFAULT){
-            $day = ($to->diffInHours($from) + ONE_HOURS)  / HOURS_OF_DAY;
-
-        }
-        else {
-            $day = ($to->diffInHours($from) + INT_HALT_DATE) / HOURS_OF_DAY;
+        if ($flag){
+            if ($stratTimeDayOff ==CHECK_TIME_DAY_OFF_START_DATE){
+                $stratTimeDayOff=CHECK_TIME_DAY_OFF_USABLE_START[0];
+            }
+            if ($endTimeDayOff ==CHECK_TIME_DAY_OFF_END_DATE){
+                $endTimeDayOff=TIME_END_DATE;
+            }
+            $e=Carbon::createFromFormat(DATE_FORMAT_DAY_OFF, $startDateDayOff .' '.$stratTimeDayOff);
+            $f=Carbon::createFromFormat(DATE_FORMAT_DAY_OFF, $endDateDayOff.' '.$endTimeDayOff);
+            $day = ($e->diffInHours($f))/HOURS_OF_DAY ;
+        }else{
+            if ($startTime == DEFAULT_VALUE && $endTime != DEFAULT_VALUE) {
+                $day = ($to->diffInHours($from) + ONE_HOURS)  / HOURS_OF_DAY;
+            }elseif ($startTime == REMAIN_DAY_OFF_DEFAULT  && $endTime == REMAIN_DAY_OFF_DEFAULT){
+                $day = ($to->diffInHours($from) + ONE_HOURS)  / HOURS_OF_DAY;
+            }
+            else {
+                $day = ($to->diffInHours($from) + INT_HALT_DATE) / HOURS_OF_DAY;
+            }
         }
         $total = [];
         $totalCalendarOff = [];
         $checkAdditional = DEFAULT_VALUE;
         for ($i = DEFAULT_VALUE; $i < $numberDate; $i++) {
-            $convertDay = Carbon::createFromFormat(DATE_FORMAT_DAY_OFF, $startDate . ' ' . $start)->addDay($i)->format('D');
+            $convertDay = Carbon::createFromFormat(DATE_FORMAT_DAY_OFF, $start)->addDay($i)->format('D');
             if ($convertDay == SUN || $convertDay == SAT) {
                 array_push($total, $i);
             }
@@ -468,22 +485,22 @@ class DayOffService extends AbstractService implements IDayOffService
         }
         $check=false;
         $calender = CalendarOff::all();
-        foreach ($calender as $value) {
-            $numCalenderOffStart = Carbon::createFromFormat(DATE_FORMAT, $value->date_off_from)->format('Y-m-d');
-            $numCalenderOffEnd = Carbon::createFromFormat(DATE_FORMAT, $value->date_off_to)->format('Y-m-d');
+        foreach ($calender as $keys => $value) {
+            $numCalenderOffStart = Carbon::createFromFormat(DATE_FORMAT, $value->date_off_from)->format(DATE_FORMAT);
+            $numCalenderOffEnd = Carbon::createFromFormat(DATE_FORMAT, $value->date_off_to)->format(DATE_FORMAT);
             for ($i = DEFAULT_VALUE; $i < $numberDate; $i++) {
-                $convertDayCheckStart = Carbon::createFromFormat(DATE_FORMAT_DAY_OFF, $startDate . ' ' . $start)->addDay($i)->format('Y-m-d');
-                $convertDayCheckEnd = Carbon::createFromFormat(DATE_FORMAT_DAY_OFF, $endDate . ' ' . $end)->addDay($i)->format('Y-m-d');
-                if (strtotime($convertDayCheckEnd) == strtotime($numCalenderOffEnd)){
-                        $check=true;
-                }
+                $convertDayCheckStart = Carbon::createFromFormat(DATE_FORMAT_DAY_OFF,  $start)->addDay($i)->format(DATE_FORMAT);
+                $convertDayCheckEnd = Carbon::createFromFormat(DATE_FORMAT_DAY_OFF,  $end)->addDay($i)->format(DATE_FORMAT);
                 if (strtotime($convertDayCheckStart) >= strtotime($numCalenderOffStart) && strtotime($convertDayCheckStart) <= strtotime($numCalenderOffEnd)) {
                     array_push($totalCalendarOff, $i);
                 }
             }
+                if (strtotime($to->format(DATE_FORMAT)) <= strtotime($numCalenderOffEnd) && strtotime($to->format(DATE_FORMAT)) >= strtotime($numCalenderOffStart)){
+                    $check=true;
+                }
         }
         $totalDayOff=($day+ $checkAdditional) - (count($total)+count($totalCalendarOff));
-        return  $check == true ?([$totalDayOff,$check]) : $totalDayOff;
+        return  [$totalDayOff,$check];
     }
 
     /**

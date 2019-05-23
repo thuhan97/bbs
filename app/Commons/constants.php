@@ -374,7 +374,7 @@ define('OT_TYPE', [
     2 => 'OT lý do cá nhân',
 ]);
 
-define('CHECK_TIME_DAY_OFF_START_DATE', '8:00:00');
+define('CHECK_TIME_DAY_OFF_START_DATE', '08:00:00');
 define('CHECK_TIME_DAY_OFF_HALT_DATE', '12:00:00');
 define('CHECK_TIME_DAY_OFF_END_DATE', '18:00:00');
 define('CHECK_TIME_DAY_OFF', ['AM', 'PM']);
@@ -415,6 +415,8 @@ define('REPORT_PUBLISH', 0);
 define('REPORT_PRIVATE', 1);
 define('APPROVE_SUGGESTION', 1);
 define('NOT_APPROVE_SUGGESTION', 0);
+define('TIME_END_DATE','24:00:00');
+define('TIME_FORMAT','H:i:s');
 
 
 

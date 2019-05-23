@@ -485,6 +485,7 @@
                                 (data.data.status == 2 || data.data.status == 0) ? $('#number_off').html(' ') : $('#number_off').html(data.absent + ' ngày') ;
 
                                 $('#app-comment').html(data.data.approve_comment);
+                                $('#approver_num').text(' ');
                             }
                             var urlForm = "{{ route('edit_day_off_detail') }}" + '/' + data.data.id;
 

@@ -25,7 +25,6 @@ class AskPermissionRequest extends FormRequest
     public function rules()
     {
         $requestAll = $this->request->all();
-
         $rules = [];
         if ($this->request->has('permission_late')) {
             $rules['permission_type'] = [
@@ -59,11 +58,6 @@ class AskPermissionRequest extends FormRequest
             $rules['end_at'] = 'required|after:start_at';
             $rules['work_day'] = 'required|date';
             $rules['note'] = 'required';
-        }
-
-        if ($requestAll['ot_type'] == array_search('Đi muộn', WORK_TIME_TYPE)) {
-            $rules['project_id'] = 'required|exists:projects,id';
-
         }
 
         if ($this->has('work_time_explanation_id')) {

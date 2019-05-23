@@ -1134,7 +1134,7 @@ td.blank, .type-1, .type-2 {
 }
 
 .data-type-2 {
-    background-color: #00c851!important;
+    background-color: #00c851 !important;
     color: #ffffff !important;
 }
 
@@ -1429,7 +1429,8 @@ td.blank, .type-1, .type-2 {
 .report-receiver img {
     max-width: 30px;
     max-height: 30px;
-    margin-top: -5px;
+    margin-top: -2px;
+    margin-left: -4px;
 }
 
 @media (min-width: 768px) and (max-width: 1000px) {

@@ -293,6 +293,7 @@
                                 <label class="text-d-bold" for="exampleForm2">Thời gian được tính:</label>
                                 <strong class="" id="number_off">
                                 </strong>
+                                <span id="approver_num" class="text-danger"></span>
                             </div>
                             <div class="mb-3">
                                 <!-- Default input -->
@@ -476,6 +477,7 @@
                                 $('#app-comment').html('<textarea class="form-control reason_id rounded-0 select-item "id="exampleFormControlTextarea2" rows="3" placeholder="Nhập ý kiến của người duyệt" name="approve_comment"></textarea>');
                                 $('#number_off').html('<input type="text" class="form-control select-item" autocomplete="off" name="number_off" value="" id="number_off">')
                                 $('#btn-submit-form').html('<button type="submit" class="btn  btn-primary">DUYỆT ĐƠN</button> <span class="btn btn-danger btn-send" id="close-day-off" data-toggle="modal" data-target="#basicExampleModal"> HỦY DUYỆT </span>')
+                                $('#approver_num').text('Thời gian  ước tính : '+ data.approver_num +' ngày');
                             } else {
 
                                 $('#number_off').html('');
@@ -483,6 +485,7 @@
                                 (data.data.status == 2 || data.data.status == 0) ? $('#number_off').html(' ') : $('#number_off').html(data.absent + ' ngày') ;
 
                                 $('#app-comment').html(data.data.approve_comment);
+                                $('#approver_num').text(' ');
                             }
                             var urlForm = "{{ route('edit_day_off_detail') }}" + '/' + data.data.id;
 

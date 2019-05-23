@@ -613,7 +613,6 @@ class UserController extends Controller
 
     public function dayOffCreate(CreateDayOffRequest $request)
     {
-
        if ($request->id_hid){
            $dayOff =DayOff::FindOrFail($request->id_hid);
        }else{
@@ -671,8 +670,8 @@ class UserController extends Controller
             $timeStart= DateTimeHelper::checkTileDayOffGetDate($dayOff->start_at);
             $timeEnd= DateTimeHelper::checkTileDayOffGetDate($dayOff->end_at);
             $time=$timeStart.' - '.$timeEnd;
-
         }
+        $numOffApprove = $this->userDayOffService->checkDateUsable($dayOff->start_at, $dayOff->end_at, null, null,true);
         return response()->json([
             'data' => $dayOff,
             'numoff' => $numOff,
@@ -682,7 +681,8 @@ class UserController extends Controller
             'approver_id'=>User::find($dayOff->approver_id)->id ?? '',
             'timeStartEdit'=>Carbon::createFromFormat(DATE_TIME_FORMAT, $dayOff->start_at)->format('Y/m/d'),
             'timeEndEdit'=>Carbon::createFromFormat(DATE_TIME_FORMAT, $dayOff->end_at)->format('Y/m/d'),
-            'time'=> $time ?? DEFAULT_VALUE
+            'time'=> $time ?? DEFAULT_VALUE,
+            'approver_num'=> $numOffApprove[DEFAULT_VALUE] > DEFAULT_VALUE ? $numOffApprove[DEFAULT_VALUE] : DEFAULT_VALUE
         ]);
     }
 
@@ -720,24 +720,18 @@ class UserController extends Controller
         $remainDayoffCurrentYear = $dayOffYear->remain ?? DEFAULT_VALUE;
         $DayoffFrreCurrentYear = $dayOffYear->day_off_free_female ?? DEFAULT_VALUE;
         $numOff = $this->userDayOffService->checkDateUsable($request->start_date, $request->end_date, $request->start_time, $request->end_time);
+//        return $numOff;
         if (is_array($numOff) && $numOff[0] > ($dayOffPreYear + $remainDayoffCurrentYear + $DayoffFrreCurrentYear)) {
             $absent = $numOff[0] - ($dayOffPreYear + $remainDayoffCurrentYear + $DayoffFrreCurrentYear);
             return response()->json([
                 'check' => true,
                 'absent' => $absent,
-                'flag' => true
-            ]);
-        }
-        if ($numOff > ($dayOffPreYear + $remainDayoffCurrentYear + $DayoffFrreCurrentYear)) {
-            $absent = $numOff - ($dayOffPreYear + $remainDayoffCurrentYear + $DayoffFrreCurrentYear);
-            return response()->json([
-                'check' => true,
-                'absent' => $absent
+                'flag' => $numOff[1]
             ]);
         } else {
             return response()->json([
                 'check' => false,
-
+                'flag' => true
             ]);
         }
     }

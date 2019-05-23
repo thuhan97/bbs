@@ -109,6 +109,6 @@ interface IDayOffService extends IBaseService
     /**
      * @return integer
      */
-    public function checkDateUsable($startDate,$endDate,$startTime,$endTime);
+    public function checkDateUsable($startDate,$endDate,$startTime,$endTime,$flag=false);
 
 }

@@ -1,5 +1,5 @@
 $(function () {
-    $(".button-collapse").sideNav();
+    // $(".button-collapse").sideNav();
 // SideNav Scrollbar Initialization
 
     $(".pageSize").change(function () {

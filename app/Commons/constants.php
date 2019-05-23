@@ -58,6 +58,8 @@ define('REGION_CODE_BY_LANG', [
     'vi' => 'VN',
 ]);
 
+define('STAFF_CONTRACT_TYPES', 0);
+
 define('CONTRACT_TYPES', [
     'staff' => 0,
     'probation' => 1,

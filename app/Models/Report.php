@@ -26,7 +26,6 @@ class Report extends Model
         'month',
         'week_num',
         'user_id',
-        'to_ids',
         'title',
         'content',
         'status',
@@ -43,6 +42,22 @@ class Report extends Model
     public function user()
     {
         return $this->belongsTo(User::class)->where('status', ACTIVE_STATUS);
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\hasMany
+     */
+    public function reportReceivers()
+    {
+        return $this->hasMany(ReportReceiver::class);
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\hasManyThrough
+     */
+    public function receivers()
+    {
+        return $this->hasManyThrough(User::class, ReportReceiver::class, 'report_id', 'id', 'id', 'user_id');
     }
 
     /**

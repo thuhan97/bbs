@@ -44,7 +44,10 @@
 @endsection
 
 @push('footer-scripts')
+    <script src="{{cdn_asset('/js/end-user-share-experience.js')}}"></script>
+
     <script>
+
         $(function () {
             myEditor($("#editorContainer"), 400);
         })

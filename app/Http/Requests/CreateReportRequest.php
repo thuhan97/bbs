@@ -31,7 +31,7 @@ class CreateReportRequest extends FormRequest
         $rules = [
             'choose_week' => 'required|in:' . implode(',', $chooseWeek),
             'status' => 'required|numeric|min:0|max:2',
-            'to_ids' => 'required',
+            'to_ids' => 'required|array',
             'content' => 'required',
         ];
 

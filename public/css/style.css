@@ -1410,6 +1410,23 @@ td.blank, .type-1, .type-2 {
     height: 50px;
 }
 
+.report-receiver {
+    margin-left: 5px;
+    padding: 8px;
+    border-radius: 15px;
+    border: 1px solid #ccc;
+}
+
+.report-receiver.me {
+    background-color: #fedd61;
+}
+
+.report-receiver img {
+    max-width: 30px;
+    max-height: 30px;
+    margin-top: -5px;
+}
+
 @media (min-width: 768px) and (max-width: 1000px) {
     #app {
         padding-top: 0rem !important;
@@ -1507,14 +1524,16 @@ td.blank, .type-1, .type-2 {
 
 
 @media (max-width: 575px) {
-    .option-time-day-off{
+    .option-time-day-off {
         width: 100% !important;
         margin-left: 0;
     }
-    .modal-center-display{
+
+    .modal-center-display {
         margin: 0 auto;
         width: 92%;
     }
+
     #btn-detail-day-off {
         width: 100%;
         height: 38px;

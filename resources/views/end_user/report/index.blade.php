@@ -88,7 +88,19 @@ $type = request('type', $reportType);
                                  aria-labelledby="headingOne{{$idx}}"
                                  data-parent="#report">
                                 <div class="card-body">
-                                    <p class="pl-2">Gửi cho: {{$report->to_ids}}</p>
+                                    <div class="pl-2 mb-3">Gửi cho:
+                                        @if($report->to_ids)
+                                            {{$report->to_ids}}
+                                        @else
+                                            @foreach($report->receivers as $receiver)
+                                                <span class="report-receiver @if($receiver->id == \Illuminate\Support\Facades\Auth::id()) me @endif">
+                                                    <img src="{{$receiver->avatar}}" class="rounded-circle">
+                                                    <span>{{$receiver->name}}</span>
+                                                </span>
+                                            @endforeach
+                                        @endif
+
+                                    </div>
 
                                     {!! $report->content !!}
                                 </div>

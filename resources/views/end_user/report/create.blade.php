@@ -57,9 +57,18 @@
                 </div>
                 <label class="mt-3" for="to_ids">Bạn gửi báo cáo cho ai?</label>
                 <div class="md-form mt-1 mb-0">
-                    <input type="text" id="to_ids" name="to_ids" class="form-control"
-                           value="{{old('to_ids', $report->to_ids)}}"
-                           required>
+                    <select class="mdb-select md-form" multiple searchable="Tìm người nhận ..." name="to_ids[]">
+                        <option disabled>Chọn người gửi báo cáo</option>
+                        @foreach($receivers as $groupName => $users)
+                            <optgroup label="{{$groupName}}">
+                                @foreach($users as $user)
+                                    <option value="{{$user['id']}}"
+                                            data-icon="{{$user['avatar']}}"
+                                            class="rounded-circle">{{$user['name']}}</option>
+                                @endforeach
+                            </optgroup>
+                        @endforeach
+                    </select>
                 </div>
                 @if ($errors->has('to_ids'))
                     <div class="red-text">
@@ -87,9 +96,7 @@
 
     <script>
         $(document).ready(function () {
-//            $('.mdb-select').materialSelect();
-            $('.chips').materialChip('data');
-            $('.chips').materialChip('options');
+            $('.mdb-select').materialSelect();
         });
         tinymce.init({
             selector: 'textarea',

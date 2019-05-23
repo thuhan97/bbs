@@ -41,12 +41,11 @@
 </main>
 <!-- editor -->
 <script src="{{cdn_asset('/js/tinymce/tinymce.min.js')}}"></script>
-<script src="{{cdn_asset('/js/end-user-share-experience.js')}}"></script>
 @stack('footer-scripts')
 
 <!-- Scripts -->
 <script type="text/javascript" src="{{ cdn_asset('js/mdb.min.js') }}"></script>
-{{--<script type="text/javascript" src="{{ asset('js/mdb.min.js') }}"></script>--}}
+{{--<script type="text/javascript" src="{{ cdn_asset('/mdb/js/compiled.min.js') }}"></script>--}}
 <script type="text/javascript" src="{{ cdn_asset('js/main.js') }}"></script>
 
 @stack('extend-js')

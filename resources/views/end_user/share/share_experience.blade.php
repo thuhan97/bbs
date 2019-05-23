@@ -115,6 +115,8 @@
     <link rel="stylesheet" href="{{URL::asset('css/share_experience.css')}}">
 @endpush
 @push('footer-scripts')
+    <script src="{{cdn_asset('/js/end-user-share-experience.js')}}"></script>
+
     <script>
         $(function () {
             myEditor($("#editorContainer"));

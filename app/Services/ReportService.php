@@ -57,11 +57,13 @@ class ReportService extends AbstractService implements IReportService
                 'updated_at',
             ])
             ->where(function ($q) use ($currentUser) {
-                $q->where('status', ACTIVE_STATUS)->orWhere(function ($p) use ($currentUser) {
-                    $p->where('status', REPORT_DRAFT)->where('user_id', $currentUser->id);
-                });
+                $q->where('status', ACTIVE_STATUS)
+                    ->orWhere(function ($p) use ($currentUser) {
+                        $p->where('status', REPORT_DRAFT)->where('user_id', $currentUser->id);
+                    });
             })
             ->search($search)
+            ->with('receivers:users.id,name,avatar')
             ->orderBy('id', 'desc');
 
         if (isset($criterias['date_from'])) {
@@ -76,48 +78,53 @@ class ReportService extends AbstractService implements IReportService
         if (!empty($criterias['month'])) {
             $model->where('month', $criterias['month']);
         }
-        $type = $request->get('type');
+        $model->where(function ($modelInner) use ($request, $criterias, $currentUser) {
 
-        if (isset($type)) {
-            if ($type == REPORT_SEARCH_TYPE['private']) {
-                $model->where('user_id', Auth::id());
-            } elseif ($type == REPORT_SEARCH_TYPE['team']) {
+            $type = $request->get('type');
 
-                if (isset($criterias['team_id'])) {
-                    $model->where('team_id', $criterias['team_id']);
+            if (isset($type)) {
+                if ($type == REPORT_SEARCH_TYPE['private']) {
+                    $modelInner->where('user_id', Auth::id());
+                } elseif ($type == REPORT_SEARCH_TYPE['team']) {
+                    if (isset($criterias['team_id'])) {
+                        $modelInner->where('team_id', $criterias['team_id']);
+                    }
+                } else {
+                    //all
+                }
+
+            }
+
+            if ($currentUser->isMaster()) {
+            } else if ($currentUser->isGroupManager()) {
+                $groupManage = Group::where('manager_id', $currentUser->id)->first();
+                if ($groupManage) {
+                    $groupId = $groupManage->id;
+
+                    $modelInner->where(function ($q) use ($groupId) {
+                        $q->where('is_private', REPORT_PUBLISH)->orWhere('group_id', $groupId);
+                    });
                 }
             } else {
-                //all
+                $team = $currentUser->team();
+                if ($team) {
+                    $modelInner->where(function ($q) use ($team) {
+                        $q->where('is_private', REPORT_PUBLISH)
+                            ->orWhere(function ($p) use ($team) {
+                                $p->where('is_private', REPORT_PRIVATE)
+                                    ->where('team_id', $team->id);
+                            });
+                    });
 
+                } else {
+                    $modelInner->where('is_private', REPORT_PUBLISH);
+                }
             }
 
-        }
-
-        if ($currentUser->isMaster()) {
-        } else if ($currentUser->isGroupManager()) {
-            $groupManage = Group::where('manager_id', $currentUser->id)->first();
-            if ($groupManage) {
-                $groupId = $groupManage->id;
-
-                $model->where(function ($q) use ($groupId) {
-                    $q->where('is_private', REPORT_PUBLISH)->orWhere('group_id', $groupId);
-                });
-            }
-        } else {
-            $team = $currentUser->team();
-            if ($team) {
-                $model->where(function ($q) use ($team) {
-                    $q->where('is_private', REPORT_PUBLISH)
-                        ->orWhere(function ($p) use ($team) {
-                            $p->where('is_private', REPORT_PRIVATE)
-                                ->where('team_id', $team->id);
-                        });
-                });
-
-            } else {
-                $model->where('is_private', REPORT_PUBLISH);
-            }
-        }
+            $modelInner->orWhereHas('reportReceivers', function ($q) use ($currentUser) {
+                $q->where('user_id', $currentUser->id);
+            });
+        });
 
         return $model->paginate($perPage);
     }

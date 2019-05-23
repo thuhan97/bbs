@@ -2,14 +2,18 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\ReportCreatedNoticeEvent;
 use App\Http\Requests\CreateReportRequest;
 use App\Models\Report;
+use App\Models\ReportReceiver;
 use App\Models\Team;
+use App\Models\User;
 use App\Repositories\Contracts\IReportRepository;
 use App\Services\Contracts\IReportService;
 use App\Traits\RESTActions;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class ReportController extends Controller
 {
@@ -53,7 +57,6 @@ class ReportController extends Controller
         }
 
         $reports = $this->service->search($request, $perPage, $search);
-
         $teams = Team::pluck('name', 'id')->toArray();
 
         return view('end_user.report.index', compact('reports', 'search', 'perPage', 'data', 'teams', 'teamId'));
@@ -65,10 +68,11 @@ class ReportController extends Controller
     public function create()
     {
         $report = $this->getDraftReport();
+        $receivers = $this->getReportReceiver();
 
         if (!$report)
             $report = $this->service->newReportFromTemplate();
-        return view('end_user.report.create', compact('report'));
+        return view('end_user.report.create', compact('report', 'receivers'));
     }
 
     /**
@@ -128,6 +132,7 @@ class ReportController extends Controller
         $data['report_date'] = $reportDate;
 
         $report = $this->getDraftReport();
+        DB::beginTransaction();
         if ($report) {
             $report->fill($data);
             $report->save();
@@ -145,6 +150,19 @@ class ReportController extends Controller
             $report = new Report($data);
             $report->save();
         }
+
+        //make receivers
+        $receivers = User::whereIn('id', $data['to_ids'])->get();
+        ReportReceiver::where('report_id', $report->id)->delete();
+        foreach ($receivers as $receiver) {
+            $dataReceivers[] = [
+                'report_id' => $report->id,
+                'user_id' => $receiver->id,
+            ];
+            event(new ReportCreatedNoticeEvent($report, $receiver));
+        }
+        ReportReceiver::insertAll($dataReceivers);
+        DB::commit();
         if ($report) {
             if (!$data['is_new']) {
                 flash()->success(__l('report_resent_successully'));
@@ -164,5 +182,70 @@ class ReportController extends Controller
             'user_id' => Auth::id(),
             'status' => REPORT_DRAFT
         ])->orderBy('id', 'desc')->first();
+    }
+
+    /**
+     * @return array
+     */
+    private function getReportReceiver()
+    {
+        $user = Auth::user();
+        $masters = [
+            'Ban giám đốc' => $this->getUserModel(['jobtitle_id' => MASTER_ROLE])->toArray()
+        ];
+        $managerUsers = $this->getUserModel(['jobtitle_id' => MANAGER_ROLE], false);
+        $managers = [
+            'Manager' => $managerUsers->get()->toArray()
+        ];
+
+        if ($user->jobtitle_id >= MANAGER_ROLE) {
+            return $masters;
+        } else if ($user->jobtitle_id == TEAMLEADER_ROLE) {
+            return $managers + $masters;
+        } else {
+            $team = $user->team();
+            if ($team) {
+                //team leader
+                $userIds = [
+                    $team->leader_id,
+                    $team->group->manager_id ?? 0,
+                ];
+                $directs = [
+                    'Quản lý trực tiếp' => $this->getUserModel([], false)->whereIn('id', $userIds)->get()->toArray()
+                ];
+                //manager
+                $otherManagers = $managerUsers->whereNotIn('id', $userIds)->get();
+                $managers = [
+                    'Manager' => $otherManagers->toArray()
+                ];
+                //other
+                $others = $this->getUserModel([], false)->where('jobtitle_id', '!=', MASTER_ROLE)->whereNotIn('id', $userIds + $otherManagers->pluck('id')->toArray())->orderBy('name')->get()->toArray();
+                $users = [
+                    'Khác' => $others
+                ];
+                return $directs + $managers + $masters + $users;
+            } else {
+                // manager + team leader
+                $teamLeadUsers = $this->getUserModel(['jobtitle_id' => TEAMLEADER_ROLE]);
+                $teamLeads = [
+                    'Team Leader' => $teamLeadUsers->toArray()
+                ];
+
+                return $teamLeads + $managers;
+            }
+        }
+    }
+
+    private function getUserModel($conditions = [], $isGet = true)
+    {
+        $model = User::select('id', 'staff_code', 'name', 'avatar')
+            ->where('contract_type', STAFF_CONTRACT_TYPES)->where('status', ACTIVE_STATUS)->where($conditions);
+
+        if ($isGet) {
+            return $model->get();
+
+        } else {
+            return $model;
+        }
     }
 }

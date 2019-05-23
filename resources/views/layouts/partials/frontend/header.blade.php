@@ -55,19 +55,19 @@
                 </ul>
                 <!-- Right -->
                 <ul class="navbar-nav nav-flex-icons">
-                    <li class="nav-item dropdown">
+                    <li class="nav-item">
                         <a class="nav-link waves-effect waves-light" id="nav_bar_avatar">
                             <img src="{{Auth::user()->avatar}}" onerror="this.src='{{URL_IMAGE_NO_IMAGE}}'"
                                  class="rounded-circle z-depth-0" alt="avatar image">
                         </a>
                     </li>
                     <li class="nav-item dropdown">
-
-                        <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button"
+                        <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#"
+                           role="button"
                            aria-haspopup="true"
                            aria-expanded="false">{{Auth::user()->name}}</a>
                         <div class="dropdown-menu">
-                            <a class="dropdown-item d-none d-sm-block "
+                            <a class="dropdown-item d-none d-sm-block"
                                href="{{route('profile')}}">{{__l('Profile')}}</a>
                             <a class="dropdown-item" href="{{route('changePassword')}}">{{__l('change_password')}}</a>
                             <div class="dropdown-divider"></div>

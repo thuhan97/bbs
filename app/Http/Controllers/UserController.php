@@ -685,7 +685,8 @@ class UserController extends Controller
             'approver_id' => User::find($dayOff->approver_id)->id ?? '',
             'timeStartEdit' => Carbon::createFromFormat(DATE_TIME_FORMAT, $dayOff->start_at)->format('Y/m/d'),
             'timeEndEdit' => Carbon::createFromFormat(DATE_TIME_FORMAT, $dayOff->end_at)->format('Y/m/d'),
-            'time' => $time ?? DEFAULT_VALUE
+            'time' => $time ?? DEFAULT_VALUE,
+            'approver_num'=> is_array($numOffApprove) ? ($numOffApprove[0] > 0 ? $numOffApprove[0] : 0) : ($numOffApprove > 0 ? $numOffApprove : 0)
         ]);
     }
 

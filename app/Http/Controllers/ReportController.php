@@ -148,13 +148,12 @@ class ReportController extends Controller
             ])->first();
 
             if (!$report) {
-                $report = new Report($data);
-            } else {
                 $user = Auth::user();
                 $team = $user->team();
                 if ($team)
                     $data['color_tag'] = $team->color;
-
+                $report = new Report($data);
+            } else {
                 $report->fill($data);
             }
             $report->save();

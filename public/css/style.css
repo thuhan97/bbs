@@ -1442,6 +1442,8 @@ td.blank, .type-1, .type-2 {
     max-height: 1000px;
     overflow-x: hidden;
     overflow-y: auto;
+
+    color: gray;
 }
 
 .replies .created_at {

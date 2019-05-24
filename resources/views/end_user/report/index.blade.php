@@ -78,7 +78,7 @@ $type = request('type', $reportType);
                             <h5 class="mb-0">
                                 <i class="fas fa-sticky-note"
                                    @if($report->color_tag) style="color: {{$report->color_tag}}" @endif></i>
-                                {{$report->getTitle($type, $year, $month)}}
+                                {{$report->getTitle($type, $year, $month, \Illuminate\Support\Facades\Auth::id())}}
 
                                 <i class="fas fa-angle-down rotate-icon"></i>
                             </h5>
@@ -131,7 +131,7 @@ $type = request('type', $reportType);
                                             <div class="media-body">
                                                 <div class="row">
                                                     <div class="col-6">
-                                                        <h5 class="mt-0 font-weight-bold blue-text">{{$reply->user->name}}</h5>
+                                                        <h6 class="mt-0 blue-text">{{$reply->user->name}}</h6>
                                                     </div>
                                                     <div class="col-6 text-right created_at">
                                                         @if($reply->created_at)
@@ -140,8 +140,9 @@ $type = request('type', $reportType);
                                                         @endif
                                                     </div>
                                                 </div>
-
-                                                {!! $reply->content !!}
+                                                <div class="content">
+                                                    {!! $reply->content !!}
+                                                </div>
                                             </div>
                                         </div>
                                     @endif
@@ -163,7 +164,7 @@ $type = request('type', $reportType);
                 <div class="media-body">
                     <div class="row">
                         <div class="col-6">
-                            <h5 class="mt-0 font-weight-bold blue-text full_name"></h5>
+                            <h6 class="mt-0 blue-text full_name"></h6>
                         </div>
                         <div class="col-6 text-right created_at"></div>
                     </div>

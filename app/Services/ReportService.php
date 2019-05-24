@@ -47,6 +47,7 @@ class ReportService extends AbstractService implements IReportService
         $model = $this->model
             ->select([
                 'id',
+                'user_id',
                 'week_num',
                 'to_ids',
                 'title',

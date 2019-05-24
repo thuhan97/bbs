@@ -21,7 +21,7 @@
 
             <!-- Title -->
             <h3 class="card-title h3 my-4 text-center"><strong>{{$event->name}}</strong>
-                @if($event->event_end_date < date('Y-m-d H:i:s'))
+                @if($event->event_end_date < date('Y-m-d'))
                     <h4 class="card-title h3 my-4 text-center text-danger"><strong>Đã kết thúc</strong>
                     </h4>
                 @endif
@@ -35,7 +35,8 @@
     </div>
     @if($event->deadline_at > date('Y-m-d H:i:s'))
         <form class="border border-light p-2 p-sm-5" method="POST" action="{{ route('join_event') }}">
-            <p class="h4 mb-4 text-center">Phản hồi</p>
+            <h4 class="h4 text-center">Đăng ký </h4>
+            <h5 class=" text-center mb-4 text-warning">(còn {{show_timeout_event($event->deadline_at)}})</h5>
             <div class="d-flex justify-content-between joinEvent">
                 @csrf
                 <input type="hidden" name="event_id" value="{{ $event->id }}">
@@ -61,7 +62,8 @@
             <button class="btn btn-info btn-block my-4" type="submit">Gửi phản hồi</button>
         </form>
     @else
-        <h3 class="card-title h3 my-4 text-center text-danger"><strong>Đã hết thời hạn đăng ký - {{$event->deadline_at}}</strong>
+        <h3 class="card-title h3 my-4 text-center text-danger"><strong>Đã hết thời hạn đăng ký
+                - {{$event->deadline_at}}</strong>
         </h3>
     @endif
     @if ($listUserJoinEvent->count() > 0)

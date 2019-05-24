@@ -90,44 +90,62 @@ $type = request('type', $reportType);
                         <div class="col-xl-6 report-item">
                             <div>
                                 <div class="card-body">
-                                    <div class="pl-2 mb-3">Gửi cho:
-                                        @if($report->to_ids)
-                                            {{$report->to_ids}}
-                                        @else
-                                            @foreach($report->receivers as $receiver)
-                                                <span class="report-receiver @if($receiver->id == \Illuminate\Support\Facades\Auth::id()) me @endif">
-                                                    <img src="{{$receiver->avatar}}" class="rounded-circle">
-                                                    <span>{{$receiver->name}}</span>
-                                                </span>
-                                            @endforeach
-                                        @endif
-
+                                    <div class="pl-2 mb-3 sent-to">
+                                        Gửi cho:
+                                        <div class="mt-2">
+                                            @if($report->to_ids)
+                                                {{$report->to_ids}}
+                                            @else
+                                                @foreach($report->receivers as $receiver)
+                                                    <div class="float-left mb-2 report-receiver @if($receiver->id == \Illuminate\Support\Facades\Auth::id()) me @endif">
+                                                        <img src="{{$receiver->avatar}}" class="rounded-circle">
+                                                        <span>{{$receiver->name}}</span>
+                                                    </div>
+                                                @endforeach
+                                            @endif
+                                            <div class="clearfix"></div>
+                                        </div>
                                     </div>
-
-                                    {!! $report->content !!}
+                                    <hr/>
+                                    <div>
+                                        {!! $report->content !!}
+                                    </div>
                                 </div>
                             </div>
                         </div>
                         <div class="col-xl-6 reply-content">
-                            <label for="reply_{{$report->id}}" for="content">Gửi nhận xét</label>
-                            <textarea id="reply_{{$report->id}}" class="md-form md-textarea w-100"></textarea>
-                            <button class="btn ml-0 btn-danger btnSendReply" data-id="{{$report->id}}">Gửi nhận xét
-                            </button>
-                            <div class="replies">
-                                <div class="media mt-2 mb-2">
-                                    <img class="d-flex rounded-circle avatar z-depth-1-half mr-3" width="100"
-                                         height="100"
-                                         src="https://mdbootstrap.com/img/Photos/Avatars/avatar-5.jpg"
-                                         alt="Avatar">
-                                    <div class="media-body">
-                                        <h5 class="mt-0 font-weight-bold blue-text">Anna Smith</h5>
-                                        Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante
-                                        sollicitudin. Cras purus
-                                        odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc
-                                        ac nisi vulputate
-                                        fringilla. Donec lacinia congue felis in faucibus.
-                                    </div>
-                                </div>
+                            <div class="form-reply" style="display: none">
+                                <label for="reply_{{$report->id}}" for="content">Gửi nhận xét</label>
+                                <textarea id="reply_{{$report->id}}" class="md-form md-textarea w-100"></textarea>
+                                <button class="btn ml-0 btn-danger btnSendReply" data-id="{{$report->id}}">Gửi nhận xét
+                                </button>
+                            </div>
+
+                            <div class="replies mt-2">
+                                @foreach($report->reportReplies as $reply)
+                                    @if($reply->user)
+                                        <div class="media mt-2 mb-2">
+                                            <img class="d-flex rounded-circle avatar z-depth-1-half mr-3"
+                                                 src="{{$reply->user->avatar}}"
+                                                 alt="{{$reply->user->name}}">
+                                            <div class="media-body">
+                                                <div class="row">
+                                                    <div class="col-6">
+                                                        <h5 class="mt-0 font-weight-bold blue-text">{{$reply->user->name}}</h5>
+                                                    </div>
+                                                    <div class="col-6 text-right created_at">
+                                                        @if($reply->created_at)
+                                                            {{$reply->created_at->format(DATE_FORMAT)}}
+                                                            <span>{{$reply->created_at->format(TIME_FORMAT)}}</span>
+                                                        @endif
+                                                    </div>
+                                                </div>
+
+                                                {!! $reply->content !!}
+                                            </div>
+                                        </div>
+                                    @endif
+                                @endforeach
                             </div>
                         </div>
                     </div>
@@ -139,11 +157,16 @@ $type = request('type', $reportType);
 
         <div id="tempReply" style="display: none">
             <div class="media mt-2 mb-2">
-                <img class="d-flex rounded-circle avatar z-depth-1-half mr-3" width="100" height="100"
+                <img class="d-flex rounded-circle avatar z-depth-1-half mr-3"
                      src=""
                      alt="">
                 <div class="media-body">
-                    <h5 class="mt-0 font-weight-bold blue-text full_name"></h5>
+                    <div class="row">
+                        <div class="col-6">
+                            <h5 class="mt-0 font-weight-bold blue-text full_name"></h5>
+                        </div>
+                        <div class="col-6 text-right created_at"></div>
+                    </div>
                     <div class="content">
                     </div>
                 </div>
@@ -171,22 +194,38 @@ $type = request('type', $reportType);
                 limitMin: $('#date_from')
             });
             $(".btnSendReply").click(function () {
-                var $template = $("#tempReply").children().first().clone();
                 var reportId = $(this).data('id');
                 var $textArea = $('#reply_' + reportId);
                 var content = tinymce.get('reply_' + reportId).getContent();
-                tinymce.get('reply_' + reportId).setContent('');
+                if (content) {
+                    var date = new Date();
+                    var $template = $("#tempReply").children().first().clone();
 
-                $template.find('.avatar').attr('src', '{{\Illuminate\Support\Facades\Auth::user()->avatar}}');
-                $template.find('.avatar').attr('alt', '{{\Illuminate\Support\Facades\Auth::user()->name}}');
-                $template.find('.full_name').html('{{\Illuminate\Support\Facades\Auth::user()->name}}');
-                $template.find('.content').html(content);
+                    tinymce.get('reply_' + reportId).setContent('');
 
-                $(this).next().prepend($template);
+                    $template.find('.avatar').attr('src', '{{\Illuminate\Support\Facades\Auth::user()->avatar}}');
+                    $template.find('.avatar').attr('alt', '{{\Illuminate\Support\Facades\Auth::user()->name}}');
+                    $template.find('.full_name').text('{{\Illuminate\Support\Facades\Auth::user()->name}}');
 
+                    $template.find('.created_at').text('vừa xong');
+                    $template.find('.content').html(content);
 
+                    $(this).parent().next().prepend($template);
+                    $.ajax({
+                        url: '{{route('reply_report')}}',
+                        type: 'POST',
+                        dataType: 'JSON',
+                        data: {content: content, report_id: reportId},
+                        success: function (q) {
+                        },
+                        error: function () {
+                            $template.remove();
+                        }
+                    });
+                }
             });
             $('.card-header').click(function () {
+                var $that = $(this);
                 var reportId = $(this).data('id');
 
                 var $textArea = $('#reply_' + reportId);
@@ -199,6 +238,11 @@ $type = request('type', $reportType);
                             "advlist autolink lists link charmap preview hr anchor pagebreak paste textcolor colorpicker",
                         ],
                         toolbar1: "insertfile undo redo | styleselect | bold italic | forecolor backcolor | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link",
+                        setup: function (editor) {
+                            editor.on('init', function () {
+                                $that.next().find('.form-reply').slideDown();
+                            });
+                        }
                     });
 
                     $textArea.addClass('initialized');

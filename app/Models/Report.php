@@ -48,6 +48,14 @@ class Report extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Relations\hasMany
      */
+    public function reportReplies()
+    {
+        return $this->hasMany(ReportReply::class);
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\hasMany
+     */
     public function reportReceivers()
     {
         return $this->hasMany(ReportReceiver::class);

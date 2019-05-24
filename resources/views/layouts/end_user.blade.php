@@ -41,6 +41,19 @@
 </main>
 <!-- editor -->
 <script src="{{cdn_asset('/js/tinymce/tinymce.min.js')}}"></script>
+<script type="text/javascript">
+    (function ($) {
+        if (document.head.querySelector('meta[name="csrf-token"]')) {
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+        } else {
+            console.error('CSRF token not found: https://laravel.com/docs/csrf#csrf-x-csrf-token');
+        }
+    })(jQuery);
+</script>
 @stack('footer-scripts')
 
 <!-- Scripts -->

@@ -91,26 +91,6 @@
                         @endif
                     </div>
                 </div>
-
-                <div class="col-md-3">
-                    <div class="form-group margin-b-5 margin-t-5{{ $errors->has('notify_date') ? ' has-error' : '' }}">
-                        <label for="notify_date">Ngày gửi thông báo *</label>
-                        <div class="input-group date">
-                            <div class="input-group-addon">
-                                <i class="fa fa-calendar"></i>
-                            </div>
-                            <input type="text" class="form-control pull-right datepicker" autocomplete="off"
-                                   name="notify_date"
-                                   value="{{ old('notify_date', $record->notify_date) }}" id="notify_date">
-                        </div>
-                        @if ($errors->has('notify_date'))
-                            <span class="help-block">
-                                <strong>{{ $errors->first('notify_date') }}</strong>
-                            </span>
-                        @endif
-                    </div>
-                </div>
-
                 <div class="col-md-3">
                     <div class="form-group margin-b-5 margin-t-5{{ $errors->has('deadline_at') ? ' has-error' : '' }}">
                         <label for="deadline_at">Ngày hết hạn đăng kí *</label>
@@ -129,10 +109,25 @@
                         @endif
                     </div>
                 </div>
-
-
+                <div class="col-md-3">
+                    <div class="form-group margin-b-5 margin-t-5{{ $errors->has('notify_date') ? ' has-error' : '' }}">
+                        <label for="notify_date">Ngày gửi thông báo *</label>
+                        <div class="input-group date">
+                            <div class="input-group-addon">
+                                <i class="fa fa-calendar"></i>
+                            </div>
+                            <input type="text" class="form-control pull-right datepicker" autocomplete="off"
+                                   name="notify_date"
+                                   value="{{ old('notify_date', $record->notify_date) }}" id="notify_date">
+                        </div>
+                        @if ($errors->has('notify_date'))
+                            <span class="help-block">
+                                <strong>{{ $errors->first('notify_date') }}</strong>
+                            </span>
+                        @endif
+                    </div>
+                </div>
             </div>
-
         </div>
         <div class="col-md-12">
             <div class="form-group margin-b-5 margin-t-5{{ $errors->has('place') ? ' has-error' : '' }}">
@@ -205,7 +200,8 @@
         $(function () {
             myFilemanager($('#lfm'), 'image');
             myEditor($("#content"));
-            myDatePicker($("#event_date, #event_end_date, #notify_date, #deadline_at"));
+            myDatePicker($("#event_date, #event_end_date"));
+            myDateTimePicker($("#notify_date, #deadline_at"));
         })
     </script>
 @endpush

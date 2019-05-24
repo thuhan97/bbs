@@ -1415,6 +1415,11 @@ td.blank, .type-1, .type-2 {
     height: 50px;
 }
 
+.report-item .sent-to {
+    /*background: #ececec;*/
+    /*padding: 5px;*/
+}
+
 .report-receiver {
     margin-left: 5px;
     padding: 8px;
@@ -1431,6 +1436,32 @@ td.blank, .type-1, .type-2 {
     height: 30px;
     margin-top: -3px;
     margin-left: -6px;
+}
+
+.reply-content {
+    max-height: 1000px;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+.replies .created_at {
+    font-size: 12px;
+    color: grey;
+    line-height: 32px;
+}
+
+.replies .created_at span {
+    display: none;
+    transition: all linear 0.5s;
+}
+
+.replies .created_at:hover span {
+    display: inline-block;
+}
+
+.replies .avatar {
+    width: 60px;
+    height: 60px;
 }
 
 @media (min-width: 768px) and (max-width: 1000px) {

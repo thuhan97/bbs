@@ -64,7 +64,11 @@ class ReportService extends AbstractService implements IReportService
                     });
             })
             ->search($search)
-            ->with('receivers:users.id,name,avatar')
+            ->with(['receivers' => function ($q) {
+                $q->select('users.id', 'users.name', 'avatar')->orderBy('jobtitle_id', 'desc');
+            }, 'reportReplies' => function ($q) {
+                $q->orderBy('report_reply.id', 'desc');
+            }])
             ->orderBy('id', 'desc');
 
         if (isset($criterias['date_from'])) {

@@ -5,7 +5,6 @@ namespace App\Models;
 use App\Traits\Eloquent\OrderableTrait;
 use App\Traits\Eloquent\SearchLikeTrait;
 use App\Traits\Models\FillableFields;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\DB;

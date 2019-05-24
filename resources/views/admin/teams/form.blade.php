@@ -41,7 +41,7 @@
 
             <div class="form-group margin-b-5 margin-t-5{{ $errors->has('leader_id') ? ' has-error' : '' }}">
                 <label for="leader_id">Trưởng nhóm *</label>
-                {{ Form::select('leader_id', $record->getMemberNotInTeam($record->leader_id ?? '')->pluck('name','id') , $record->leader_id ?? '', ['class' => 'form-control']) }}
+                {{ Form::select('leader_id', $record->getLeaderNotInTeam($record->leader_id ?? '')->pluck('name','id') , $record->leader_id ?? '', ['class' => 'form-control']) }}
 
                 @if ($errors->has('leader_id'))
                     <span class="help-block">

@@ -9,7 +9,6 @@ $_listLink = route($resourceRoutesAlias . '.index');
 $_createLink = route($resourceRoutesAlias . '.create');
 $_updateLink = route($resourceRoutesAlias . '.edit', $record->id);
 $_printLink = false;
-$_printLink = false;
 ?>
 
 @section('breadcrumbs')
@@ -88,7 +87,7 @@ $_printLink = false;
                                 <option value="{{$record->leader->id}}" disabled>{{$record->leader->name}} (Trưởng
                                     nhóm)
                                 </option>
-                                <select name="to[]" id="undo_redo_to" class="form-control" size="13"
+                                <select name="member_ids[]" id="undo_redo_to" class="form-control" size="13"
                                         multiple="multiple">
                                     @foreach($members as $member)
                                         @if($member->user->id !== $record->leader->id)

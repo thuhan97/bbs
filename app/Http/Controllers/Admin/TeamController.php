@@ -88,7 +88,7 @@ class TeamController extends AdminBaseController
     {
         $team = new Team;
         $record = $this->repository->findOne($id);
-        $member_not_in_team = $team->getMembers($record->leader_id);
+        $member_not_in_team = $team->getMemberNotInTeam();
 
         return view($this->getResourceManageMemberPath(), $this->filterShowViewData($record, [
             'record' => $record,
@@ -111,20 +111,29 @@ class TeamController extends AdminBaseController
 
     public function saveUserTeam(Request $request)
     {
+        $this->validate($request, [
+            'member_ids' => 'array'
+        ]);
         $record = $this->repository->findOne($request->id);
-        UserTeam::where('team_id', $request->id)
-            ->where('user_id', '<>', $record->leader_id)
-            ->delete();
-        $users_id_add = $request->to;
-        if ($users_id_add) {
-            foreach ($users_id_add as $user_id) {
-                $user_team = new UserTeam;
-                $user_team->team_id = $request->id;
-                $user_team->user_id = $user_id;
-                $user_team->save();
+        if ($record) {
+            UserTeam::where('team_id', $record->id)
+                ->delete();
+
+            $member_ids = $request->member_ids;
+            if ($member_ids) {
+                $userTeams = [];
+                foreach ($member_ids as $member_id) {
+                    if ($record->leader_id != $member_id)
+                        $userTeams[] = [
+                            'team_id' => $record->id,
+                            'user_id' => $member_id,
+                        ];
+                }
+                UserTeam::insertAll($userTeams);
             }
+            return redirect()->action('Admin\TeamController@manageMember', ['id' => $request->id]);
         }
-        return redirect()->action('Admin\TeamController@manageMember', ['id' => $request->id]);
+        abort(404);
     }
 
     public function getRedirectAfterSave($record, $request, $isCreate = null)

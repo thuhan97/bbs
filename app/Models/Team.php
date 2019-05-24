@@ -60,7 +60,7 @@ class Team extends Model
 
                 //search teams
 
-                $groupIds = Group::where('name', 'LIKE' ,'%' . $searchTerm . '%')->pluck('id')->toArray();
+                $groupIds = Group::where('name', 'LIKE', '%' . $searchTerm . '%')->pluck('id')->toArray();
                 if (!empty($groupIds)) {
                     $query->orWhereIn('group_id', $groupIds);
                 }
@@ -99,23 +99,29 @@ class Team extends Model
     /**
      * @return mixed
      */
-    public function getMemberNotInTeam($id = null)
+    public function getLeaderNotInTeam()
     {
         $memberModel = new UserTeam;
         $member = $memberModel->getMemberIdAttribute();
-        $users = User::whereNotIn('id', $member)
+        $users = User::whereNotIn('id', $member->pluck('user_id')->toArray())
             ->whereIn('jobtitle_id', [TEAMLEADER_ROLE, MANAGER_ROLE, HEAD_DEPARTMENT_ROLE])//Leader
             ->get();
         return $users;
     }
 
-    public function getMembers($id = null)
+    /**
+     * @return mixed
+     */
+    public function getMemberNotInTeam()
     {
+        $teamLeaderIds = Team::pluck('leader_id')->toArray();
         $memberModel = new UserTeam;
         $member = $memberModel->getMemberIdAttribute();
+        $memberIds = $member->pluck('user_id')->toArray();
+        $ignoreIds = $teamLeaderIds + $memberIds;
 
-        $users = User::whereNotIn('id', $member)->get();
-
+        $users = User::whereNotIn('id', $ignoreIds)
+            ->get();
         return $users;
     }
 

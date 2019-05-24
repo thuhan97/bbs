@@ -49,6 +49,10 @@ class ReportController extends Controller
                     $request->merge(['type' => 2]);
                     $request->merge(['team_id' => $teamId]);
                 }
+
+                if ($request->type == 2 && !$request->has('team_id')) {
+                    $request->merge(['team_id' => $teamId]);
+                }
             } else {
                 $teamId = 0;
             }

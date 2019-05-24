@@ -1422,7 +1422,7 @@ td.blank, .type-1, .type-2 {
 
 .report-receiver {
     margin-left: 5px;
-    padding: 8px;
+    padding: 4px 8px 1px;
     border-radius: 18px;
     border: 1px solid #ccc;
 }

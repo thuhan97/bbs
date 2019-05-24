@@ -70,7 +70,7 @@ return [
     'notification_change_pass' => 'Đổi mật khẩu thành công, xin vui lòng đăng nhập lại!',
     'edit_day_off_successully' => 'Chỉnh sửa ngày nghỉ thành công',
     'punish_late_money' => 'Phạt đi muộn lần :number (:check_in) tháng :month.',
-    'punish_late_money_aio' => 'Phạt đi muộn :number buổi (từ :start_date đến :to_date).',
+    'punish_late_money_aio' => 'Phạt đi muộn :number buổi (tháng :month).',
     'config_updated' => 'Lưu thiết lập thành công.',
     'system_no_config_time' => 'Chưa cấu hình thời gian thiết lập hệ thống.',
     'project_add_successully' => 'Thêm mới dự án thành công.',
@@ -79,7 +79,7 @@ return [
     'share_experience_error_deleted' => 'Xóa chia sẻ kinh nghiệm thất bại',
     'share_experience_successully_edit' => 'Sửa chia sẻ kinh nghiệm thành công',
     'share_experience_error_edit' => 'Sửa chia sẻ kinh nghiệm thất bại',
-    'share_experience_error_view' => 'Không tìm thấy chia sẻ kinh nghiệm',    
+    'share_experience_error_view' => 'Không tìm thấy chia sẻ kinh nghiệm',
     'share_experience_edit' => 'Sửa nội dung',
     'share_experience_detail' => 'Chi tiết',
 ];

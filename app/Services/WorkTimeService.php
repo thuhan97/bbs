@@ -189,6 +189,10 @@ class WorkTimeService extends AbstractService implements IWorkTimeService
      */
     public function calculateLateTime($fromDate, $toDate, $userIds = [])
     {
+        $date = date_create($fromDate);
+        $month = $date->format('m');
+        [$firstDate, $endDate] = getStartAndEndDateOfMonth($month, $date->format('Y'));
+
         //read config file
         $path = storage_path('app/' . $this->config->late_time_rule_json ?? LATE_MONEY_CONFIG); // ie: /var/www/laravel/app/storage/json/filename.json
 
@@ -204,8 +208,8 @@ class WorkTimeService extends AbstractService implements IWorkTimeService
                 WorkTime::TYPES['lately'],
                 WorkTime::TYPES['lately_ot'],
             ])
-            ->whereDate('work_day', '>=', $fromDate)
-            ->whereDate('work_day', '<=', $toDate);
+            ->whereDate('work_day', '>=', $firstDate)
+            ->whereDate('work_day', '<=', $endDate);
 
         if (!empty($userIds)) $model->whereIn('user_id', $userIds);
 
@@ -215,8 +219,8 @@ class WorkTimeService extends AbstractService implements IWorkTimeService
         DB::beginTransaction();
         //clear old data
         $punish = Punishes::where('rule_id', LATE_RULE_ID)
-            ->whereDate('infringe_date', '>=', $fromDate)
-            ->whereDate('infringe_date', '<=', $toDate);
+            ->whereDate('infringe_date', '>=', $firstDate)
+            ->whereDate('infringe_date', '<=', $endDate);
         if (!empty($userIds))
             $punish->whereIn('user_id', $userIds);
 
@@ -240,8 +244,7 @@ class WorkTimeService extends AbstractService implements IWorkTimeService
                             'total_money' => $aio['aio'] * self::LATE_UNIT,
                             'detail' => __l('punish_late_money_aio', [
                                 'number' => $lateCount,
-                                'start_date' => $fromDate,
-                                'to_date' => $toDate,
+                                'month' => $endDate,
                             ])
                         ];
                     }
@@ -264,7 +267,7 @@ class WorkTimeService extends AbstractService implements IWorkTimeService
                                     'detail' => __l('punish_late_money', [
                                         'number' => $number,
                                         'check_in' => date('h:i', strtotime($workTime->start_at)),
-                                        'month' => get_month($workTime->work_day),
+                                        'month' => $month,
                                     ])
                                 ];
                             }

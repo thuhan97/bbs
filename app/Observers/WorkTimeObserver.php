@@ -29,6 +29,18 @@ class WorkTimeObserver
     }
 
     /**
+     * Handle the worktime "created" event.
+     *
+     * @param WorkTime $workTime
+     *
+     * @return void
+     */
+    public function created(WorkTime $workTime)
+    {
+        $this->updatedData($workTime);
+    }
+
+    /**
      * Handle the worktime "updating" event.
      *
      * @param WorkTime $workTime
@@ -38,6 +50,18 @@ class WorkTimeObserver
     public function updating(WorkTime $workTime)
     {
         $this->updatingData($workTime);
+    }
+
+    /**
+     * Handle the worktime "updated" event.
+     *
+     * @param WorkTime $workTime
+     *
+     * @return void
+     */
+    public function updated(WorkTime $workTime)
+    {
+        $this->updatedData($workTime);
     }
 
     private function updatingData(WorkTime $workTime)
@@ -50,6 +74,10 @@ class WorkTimeObserver
             $workTime->type = $workTimeData['type'];
             $workTime->cost = $workTimeData['cost'];
         }
+    }
+
+    private function updatedData(WorkTime $workTime)
+    {
         $date = date_create_from_format(DATE_FORMAT, $workTime->work_day);
         [$startDate, $endDate] = getStartAndEndDateOfMonth($date->format('m'), $date->format('Y'));
         $this->workTimeService->calculateLateTime($startDate, $endDate, [$workTime->user_id]);

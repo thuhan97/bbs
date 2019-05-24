@@ -95,7 +95,7 @@
                 <label class="form-check-label" for="status-0">Chưa bắt đầu</label>
             </div>
             <div class="form-check form-check-inline">
-                <input type="radio" class="form-check-input" idWorkTimeCalendarRequest ="status-1" name="status"
+                <input type="radio" class="form-check-input" id="status-1" name="status"
                        @if(old('stattus', $record->status) == 1) checked @endif
                        value="1">
                 <label class="form-check-label" for="status-1">Đang phát triển</label>

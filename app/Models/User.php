@@ -206,5 +206,9 @@ class User extends Authenticatable implements JWTSubject
     {
         return $this->hasMany(WorkTimeRegister::class)->where('day', '!=', 7);
     }
+    public function user_team()
+    {
+        return $this->hasOne(UserTeam::class, 'user_id', 'id');
+    }
 
 }

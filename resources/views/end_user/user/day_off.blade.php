@@ -401,7 +401,7 @@
                                 <div class="">
                                     <label class="text-w-400" for="exampleForm2">Người duyệt<span
                                                 class="text-danger">*</span></label>
-                                    {{ Form::select('approver_id', $userManager, null, ['class' => 'form-control my-1 mr-1 browser-default custom-select md-form select-item mannager_id check-value','placeholder'=>'Chọn người duyệt đơn' ]) }}
+                                    {{ Form::select('approver_id', $userManager, null, ['class' => 'form-control my-1 mr-1 browser-default custom-select md-form select-item mannager_id check-value']) }}
                                     @if ($errors->has('approver_id'))
                                         <div class="mt-1 ml-3">
                                             <span class="help-block text-danger">{{ $errors->first('approver_id') }}</span>
@@ -488,7 +488,7 @@
                                 <div class="">
                                     <label class=" mt-1 text-w-400" for="exampleForm2">Người duyệt<span
                                                 class="text-danger">*</span></label>
-                                    {{ Form::select('approver_id', $userManager, null, ['class' => 'form-control my-1 mr-1 browser-default custom-select md-form select-item mannager_id check-value','placeholder'=>'Chọn người duyệt đơn' ]) }}
+                                    {{ Form::select('approver_id', $userManager, null, ['class' => 'form-control my-1 mr-1 browser-default custom-select md-form select-item mannager_id check-value' ]) }}
                                     @if ($errors->has('approver_id'))
                                         <div class="mt-1 ml-3">
                                             <span class="help-block text-danger">{{ $errors->first('approver_id') }}</span>

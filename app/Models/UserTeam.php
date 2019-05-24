@@ -78,5 +78,9 @@ class UserTeam extends Model
             ->orderBy('name', 'ASC')->pluck('name', 'id')->toArray();
 
     }
+    public function team()
+    {
+        return $this->hasOne(Team::class, 'id', 'team_id');
+    }
 
 }

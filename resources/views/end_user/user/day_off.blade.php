@@ -175,10 +175,6 @@
             </tr>
             </thead>
             <tbody>
-            <button type="button" class="btn btn-primary" data-toggle="tooltip" data-placement="right"
-                    title="Tooltip on ">
-                Tooltip on right
-            </button>
             @foreach ($dataDayOff as $keys => $absence)
                 <tr class="dayoffEU_record">
                     <th class="d-none d-md-table-cell text-center" scope="row">

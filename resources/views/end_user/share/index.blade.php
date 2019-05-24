@@ -71,7 +71,8 @@
                             </td> -->
                             <td class="center">
                                 <a href="/download_file_share/{{$document->id}}" target="_blank">
-                                    <i class="fa fa-download" aria-hidden="true" style="color: #4285f4;"></i>
+                                    <i class="<?php echo isset(ICONS_TYPES_FILES[$ext]) ? ICONS_TYPES_FILES[$ext] : ''; ?>"
+                                       aria-hidden="true" style="color: #4285f4;"></i>
                                 </a>
                             </td>
                         </tr>

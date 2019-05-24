@@ -112,8 +112,8 @@ class UserService extends AbstractService implements IUserService
         if (Auth::user()->jobtitle_id == MANAGER_ROLE){
             return $this->model->where('jobtitle_id', MASTER_ROLE)->pluck('name', 'id');
         }
-        $id = User::find(Auth::id())->user_team->team->group_id ?? null;
-        $manager=Group::find($id)->manager_id ?? null;
-        return $this->model->where('id',$manager)->pluck('name','id');
+       $a=UserTeam::where('user_id',Auth::id())->first()->team_id;
+        $id = Team::find($a)->group->manager_id ?? null;
+        return $this->model->where('id',$id)->pluck('name','id');
     }
 }

@@ -7,7 +7,6 @@
 
 namespace App\Services;
 
-use App\Helpers\DatabaseHelper;
 use App\Models\Config;
 use App\Models\Group;
 use App\Models\Report;
@@ -54,6 +53,7 @@ class ReportService extends AbstractService implements IReportService
                 'status',
                 'content',
                 'report_type',
+                'color_tag',
                 'created_at',
                 'updated_at',
             ])
@@ -95,30 +95,36 @@ class ReportService extends AbstractService implements IReportService
                 }
 
             }
+            if ($type != REPORT_SEARCH_TYPE['private']) {
+                if ($currentUser->isMaster()) {
+                } else if ($currentUser->isGroupManager()) {
+                    $groupManage = Group::where('manager_id', $currentUser->id)->first();
+                    if ($groupManage) {
+                        $groupId = $groupManage->id;
 
-            if ($currentUser->isMaster()) {
-            } else if ($currentUser->isGroupManager()) {
-                $groupManage = Group::where('manager_id', $currentUser->id)->first();
-                if ($groupManage) {
-                    $groupId = $groupManage->id;
-
-                    $modelInner->where(function ($q) use ($groupId) {
-                        $q->where('is_private', REPORT_PUBLISH)->orWhere('group_id', $groupId);
-                    });
-                }
-            } else {
-                $team = $currentUser->team();
-                if ($team) {
-                    $modelInner->where(function ($q) use ($team) {
-                        $q->where('is_private', REPORT_PUBLISH)
-                            ->orWhere(function ($p) use ($team) {
-                                $p->where('is_private', REPORT_PRIVATE)
-                                    ->where('team_id', $team->id);
-                            });
-                    });
-
+                        $modelInner->where(function ($q) use ($groupId) {
+                            $q->where('is_private', REPORT_PUBLISH)->orWhere('group_id', $groupId);
+                        });
+                    }
                 } else {
-                    $modelInner->where('is_private', REPORT_PUBLISH);
+                    $team = $currentUser->team();
+                    if ($team) {
+                        $modelInner->where(function ($q) use ($type, $team, $currentUser) {
+                            $q->where('is_private', REPORT_PUBLISH)
+                                ->orWhere(function ($p) use ($team) {
+                                    $p->where('is_private', REPORT_PRIVATE)
+                                        ->where('team_id', $team->id);
+                                });
+
+                            if ($type == REPORT_SEARCH_TYPE['all']) {
+                                $q->orWhere(function ($p) use ($currentUser) {
+                                    $p->where('user_id', $currentUser->id);
+                                });
+                            }
+                        });
+                    } else {
+                        $modelInner->where('is_private', REPORT_PUBLISH);
+                    }
                 }
             }
 
@@ -126,7 +132,7 @@ class ReportService extends AbstractService implements IReportService
                 $q->where('user_id', $currentUser->id);
             });
         });
-
+//dd(DatabaseHelper::getQuery($model));
         return $model->paginate($perPage);
     }
 

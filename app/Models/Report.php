@@ -34,6 +34,7 @@ class Report extends Model
         'team_id',
         'report_date',
         'is_private',
+        'color_tag',
     ];
 
     /**

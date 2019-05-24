@@ -132,12 +132,13 @@ class ReportService extends AbstractService implements IReportService
                     }
                 }
             }
+            if (!($type == REPORT_SEARCH_TYPE['team'] && isset($criterias['team_id']))) {
+                $modelInner->orWhereHas('reportReceivers', function ($q) use ($currentUser) {
+                    $q->where('user_id', $currentUser->id);
+                });
+            }
 
-            $modelInner->orWhereHas('reportReceivers', function ($q) use ($currentUser) {
-                $q->where('user_id', $currentUser->id);
-            });
         });
-//dd(DatabaseHelper::getQuery($model));
         return $model->paginate($perPage);
     }
 

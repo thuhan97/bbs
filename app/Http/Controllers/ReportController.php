@@ -146,15 +146,17 @@ class ReportController extends Controller
                 'report_type' => $reportType,
                 'report_date' => $reportDate,
             ])->first();
-            if ($report) {
-                $report->delete();
-            }
-            $user = Auth::user();
-            $team = $user->team();
-            if ($team)
-                $data['color_tag'] = $team->color;
 
-            $report = new Report($data);
+            if (!$report) {
+                $report = new Report($data);
+            } else {
+                $user = Auth::user();
+                $team = $user->team();
+                if ($team)
+                    $data['color_tag'] = $team->color;
+
+                $report->fill($data);
+            }
             $report->save();
         }
 

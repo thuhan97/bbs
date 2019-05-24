@@ -39,9 +39,6 @@
                         <th>
                             Ngày tải lên
                         </th>
-                        <!--                         <th>
-                                                    Định dạng
-                                                </th> -->
                         <th>
                             Tải ngay
                         </th>
@@ -49,9 +46,6 @@
                     </thead>
                     <tbody>
                     @foreach($list_document as $document)
-                        <?php
-                        // $ext = pathinfo($document->file, PATHINFO_EXTENSION);
-                        ?>
                         <tr>
                             <td>
                                 {{html_entity_decode($document->name)}}
@@ -62,13 +56,9 @@
                             <td class="center">
                                 {{$document->created_at}}
                             </td>
-                        <!--                             <?php
-                        $ext = pathinfo($document->file, PATHINFO_EXTENSION);
-                        ?>
-                                <td class="center">
-                                    <i class="<?php echo isset(ICONS_TYPES_FILES[$ext]) ? ICONS_TYPES_FILES[$ext] : ''; ?>"
-                                   aria-hidden="true"></i>
-                            </td> -->
+                            <?php
+                            $ext = pathinfo($document->file, PATHINFO_EXTENSION);
+                            ?>
                             <td class="center">
                                 <a href="/download_file_share/{{$document->id}}" target="_blank">
                                     <i class="<?php echo isset(ICONS_TYPES_FILES[$ext]) ? ICONS_TYPES_FILES[$ext] : ''; ?>"

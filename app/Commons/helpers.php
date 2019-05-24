@@ -412,11 +412,11 @@ if (!function_exists('users')) {
      *
      * @return array {array}
      */
-    function users($check=false)
+    function users($check = false)
     {
         $teams = DB::table('users')->select('id', 'name');
-        if ($check){
-            $teams=$teams->where('status',ACTIVE_STATUS)->whereIN('jobtitle_id',[MANAGER_ROLE,MASTER_ROLE]);
+        if ($check) {
+            $teams = $teams->where('status', ACTIVE_STATUS)->whereIN('jobtitle_id', [MANAGER_ROLE, MASTER_ROLE]);
         }
 
         return ['' => 'Chọn nhân viên'] + $teams->orderBy('name', 'ASC')->pluck('name', 'id')->toArray();
@@ -551,6 +551,46 @@ if (!function_exists('get_punish_image')) {
             return '/img/pigs/pig-2.png';
         } else {
             return '/img/pigs/pig-1.png';
+        }
+    }
+}
+if (!function_exists('show_timeout_event')) {
+
+    /**
+     * @param      $endAt
+     * @param null $startAt
+     *
+     * @return string
+     */
+
+    function show_timeout_event($endAt, $startAt = null)
+    {
+        if (!$startAt) $startAt = date(DATE_TIME_FORMAT);
+        $start = date_create($endAt);
+        $end = date_create($startAt);
+        $diff = date_diff($end, $start);
+        $month = $diff->format('%m');
+
+        if ($month > 0) {
+            return $endAt;
+        } else {
+            $day = $diff->format('%d');
+            if ($day > 0) {
+                return $day . ' ngày';
+            } else {
+                $hour = $diff->format('%h');
+                if ($hour > 0) {
+                    return $day . ' giờ';
+                } else {
+                    $minute = $diff->format('%i');
+                    if ($minute > 0) {
+                        return $minute . ' phút';
+                    } else {
+                        return 'vài giây nữa thôi !!!';
+
+                    }
+                }
+            }
         }
     }
 }

@@ -34,6 +34,7 @@ class Report extends Model
         'team_id',
         'report_date',
         'is_private',
+        'color_tag',
     ];
 
     /**
@@ -42,6 +43,14 @@ class Report extends Model
     public function user()
     {
         return $this->belongsTo(User::class)->where('status', ACTIVE_STATUS);
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\hasMany
+     */
+    public function reportReplies()
+    {
+        return $this->hasMany(ReportReply::class);
     }
 
     /**
@@ -74,24 +83,28 @@ class Report extends Model
             ->orWhere('content', 'like', '%' . $searchTerm . '%');
     }
 
-    public function getTitle($type, $year, $month)
+    public function getTitle($type, $year, $month, $currentUserId)
     {
         if ($type == REPORT_SEARCH_TYPE['private']) {
-            $reportType = $this->attributes['report_type'];
+            if ($this->attributes['user_id'] != $currentUserId) {
+                $title = $this->attributes['title'];
 
-            $title = "Báo cáo " . (REPORT_TYPES[$reportType] ?? '') . " ";
-            if ($reportType == REPORT_TYPE_DAILY) {
-                $title .= date_format(new \DateTime($this->attributes['created_at']), 'Y/m/d');
             } else {
-                $week = $this->attributes['week_num'];
+                $reportType = $this->attributes['report_type'];
 
-                $weekDays = getStartAndEndDate($week, $year);
-                $startDate = $weekDays['week_start'];
-                $endDate = $weekDays['week_end'];
-                $title .= $week . ' [' . $startDate . ' - ' . $endDate . ']';
+                $title = "Báo cáo " . (REPORT_TYPES[$reportType] ?? '') . " ";
+                if ($reportType == REPORT_TYPE_DAILY) {
+                    $title .= date_format(new \DateTime($this->attributes['created_at']), 'Y/m/d');
+                } else {
+                    $week = $this->attributes['week_num'];
+
+                    $weekDays = getStartAndEndDate($week, $year);
+                    $startDate = $weekDays['week_start'];
+                    $endDate = $weekDays['week_end'];
+                    $title .= $week . ' [' . $startDate . ' - ' . $endDate . ']';
+                }
+
             }
-
-
         } else if ($type == REPORT_SEARCH_TYPE['all']) {
 //get team
             $title = $this->attributes['title'];

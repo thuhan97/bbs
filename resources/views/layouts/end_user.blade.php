@@ -15,8 +15,8 @@
     <link href="{{ cdn_asset('css/complied.css') }}" rel="stylesheet">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css"
           integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
-    <link href="{{ cdn_asset('css/style.css') }}" rel="stylesheet">
     <link href="{{ cdn_asset('css/addons/datatables.min.css') }}" rel="stylesheet">
+    <link href="{{ cdn_asset('css/style.css') }}?v={{date('Ymd')}}" rel="stylesheet">
 
     <script type="text/javascript" src="{{ cdn_asset('mdb/js/jquery-3.3.1.min.js') }}"></script>
     <script type="text/javascript" src="{{ cdn_asset('mdb/js/popper.min.js') }}"></script>
@@ -41,10 +41,23 @@
 </main>
 <!-- editor -->
 <script src="{{cdn_asset('/js/tinymce/tinymce.min.js')}}"></script>
+<script type="text/javascript">
+    (function ($) {
+        if (document.head.querySelector('meta[name="csrf-token"]')) {
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+        } else {
+            console.error('CSRF token not found: https://laravel.com/docs/csrf#csrf-x-csrf-token');
+        }
+    })(jQuery);
+</script>
 @stack('footer-scripts')
 
 <!-- Scripts -->
-<script type="text/javascript" src="{{ cdn_asset('js/mdb.min.js') }}"></script>
+<script type="text/javascript" src="{{ cdn_asset('js/mdb.min.js?v=1') }}"></script>
 {{--<script type="text/javascript" src="{{ cdn_asset('/mdb/js/compiled.min.js') }}"></script>--}}
 <script type="text/javascript" src="{{ cdn_asset('js/main.js') }}"></script>
 

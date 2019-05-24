@@ -6,6 +6,7 @@ use App\Events\ReportCreatedNoticeEvent;
 use App\Http\Requests\CreateReportRequest;
 use App\Models\Report;
 use App\Models\ReportReceiver;
+use App\Models\ReportReply;
 use App\Models\Team;
 use App\Models\User;
 use App\Repositories\Contracts\IReportRepository;
@@ -143,10 +144,16 @@ class ReportController extends Controller
                 'month' => $data['month'],
                 'week_num' => $week_number,
                 'report_type' => $reportType,
+                'report_date' => $reportDate,
             ])->first();
             if ($report) {
                 $report->delete();
             }
+            $user = Auth::user();
+            $team = $user->team();
+            if ($team)
+                $data['color_tag'] = $team->color;
+
             $report = new Report($data);
             $report->save();
         }
@@ -174,6 +181,21 @@ class ReportController extends Controller
         }
 
         return redirect(route('report'));
+    }
+
+    public function replyReport(Request $request)
+    {
+        $this->validate($request, [
+            'content' => 'required',
+            'report_id' => 'required|exists:reports,id',
+        ]);
+        $data = $request->only('content', 'report_id');
+        $data['user_id'] = Auth::id();
+
+        $reportReply = new ReportReply($data);
+        $reportReply->save();
+
+        return $this->respond(['success' => true]);
     }
 
     protected function getDraftReport()

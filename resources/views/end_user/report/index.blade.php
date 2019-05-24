@@ -65,48 +65,111 @@ $type = request('type', $reportType);
         @endif
     </form>
     @if($reports->isNotEmpty())
-        <div class="row">
-            <div class="col-xl-6">
-                <div class="accordion md-accordion" id="report" role="tablist" aria-multiselectable="true">
-                    @foreach($reports as $idx => $report)
-                        <div class="card">
-                            <div class="card-header" role="tab" id="headingOne{{$idx}}">
-                                <a data-toggle="collapse" data-parent="#report" href="#report_item_{{$idx}}"
-                                   aria-expanded="true"
-                                   aria-controls="report_item_{{$idx}}"
-                                   class="text-black"
-                                >
-                                    <h5 class="mb-0">
-                                        <i class="fas fa-sticky-note"></i>
-                                        {{$report->getTitle($type, $year, $month)}}
+        @foreach($reports as $idx => $report)
+            <div class="accordion md-accordion" id="report" role="tablist" aria-multiselectable="true">
 
-                                        <i class="fas fa-angle-down rotate-icon"></i>
-                                    </h5>
-                                </a>
-                            </div>
-                            <div id="report_item_{{$idx}}" class="collapse" role="tabpanel"
-                                 aria-labelledby="headingOne{{$idx}}"
-                                 data-parent="#report">
+                <div class="card">
+                    <div class="card-header" role="tab" id="headingOne{{$idx}}" data-id="{{$report->id}}">
+                        <a data-toggle="collapse" data-parent="#report" href="#report_item_{{$idx}}"
+                           aria-expanded="true"
+                           aria-controls="report_item_{{$idx}}"
+                           class="text-black"
+                        >
+                            <h5 class="mb-0">
+                                <i class="fas fa-sticky-note"
+                                   @if($report->color_tag) style="color: {{$report->color_tag}}" @endif></i>
+                                {{$report->getTitle($type, $year, $month, \Illuminate\Support\Facades\Auth::id())}}
+
+                                <i class="fas fa-angle-down rotate-icon"></i>
+                            </h5>
+                        </a>
+                    </div>
+                    <div id="report_item_{{$idx}}" class="collapse row" role="tabpanel"
+                         aria-labelledby="headingOne{{$idx}}"
+                         data-parent="#report">
+                        <div class="col-xl-6 report-item">
+                            <div>
                                 <div class="card-body">
-                                    <div class="pl-2 mb-3">Gửi cho:
-                                        @if($report->to_ids)
-                                            {{$report->to_ids}}
-                                        @else
-                                            @foreach($report->receivers as $receiver)
-                                                <span class="report-receiver @if($receiver->id == \Illuminate\Support\Facades\Auth::id()) me @endif">
-                                                    <img src="{{$receiver->avatar}}" class="rounded-circle">
-                                                    <span>{{$receiver->name}}</span>
-                                                </span>
-                                            @endforeach
-                                        @endif
-
+                                    <div class="pl-2 mb-3 sent-to">
+                                        Gửi cho:
+                                        <div class="mt-2">
+                                            @if($report->to_ids)
+                                                {{$report->to_ids}}
+                                            @else
+                                                @foreach($report->receivers as $receiver)
+                                                    <div class="float-left mb-2 report-receiver @if($receiver->id == \Illuminate\Support\Facades\Auth::id()) me @endif">
+                                                        <img src="{{$receiver->avatar}}" class="rounded-circle">
+                                                        <span>{{$receiver->name}}</span>
+                                                    </div>
+                                                @endforeach
+                                            @endif
+                                            <div class="clearfix"></div>
+                                        </div>
                                     </div>
-
-                                    {!! $report->content !!}
+                                    <hr/>
+                                    <div>
+                                        {!! $report->content !!}
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    @endforeach
+                        <div class="col-xl-6 reply-content">
+                            <div class="form-reply" style="display: none">
+                                <label for="reply_{{$report->id}}" for="content">Gửi nhận xét</label>
+                                <textarea id="reply_{{$report->id}}" class="md-form md-textarea w-100"></textarea>
+                                <button class="btn ml-0 btn-danger btnSendReply" data-id="{{$report->id}}">Gửi nhận xét
+                                </button>
+                            </div>
+
+                            <div class="replies mt-2">
+                                @foreach($report->reportReplies as $reply)
+                                    @if($reply->user)
+                                        <div class="media mt-2 mb-2">
+                                            <img class="d-flex rounded-circle avatar z-depth-1-half mr-3"
+                                                 src="{{$reply->user->avatar}}"
+                                                 alt="{{$reply->user->name}}">
+                                            <div class="media-body">
+                                                <div class="row">
+                                                    <div class="col-6">
+                                                        <h6 class="mt-0 blue-text">{{$reply->user->name}}</h6>
+                                                    </div>
+                                                    <div class="col-6 text-right created_at">
+                                                        @if($reply->created_at)
+                                                            {{$reply->created_at->format(DATE_FORMAT)}}
+                                                            <span>{{$reply->created_at->format(TIME_FORMAT)}}</span>
+                                                        @endif
+                                                    </div>
+                                                </div>
+                                                <div class="content">
+                                                    {!! $reply->content !!}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    @endif
+                                @endforeach
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        @endforeach
+
+        <div id="tempReply" style="display: none">
+            <div class="media mt-2 mb-2">
+                <img class="d-flex rounded-circle avatar z-depth-1-half mr-3"
+                     src=""
+                     alt="">
+                <div class="media-body">
+                    <div class="row">
+                        <div class="col-6">
+                            <h6 class="mt-0 blue-text full_name"></h6>
+                        </div>
+                        <div class="col-6 text-right created_at"></div>
+                    </div>
+                    <div class="content">
+                    </div>
                 </div>
             </div>
         </div>
@@ -120,70 +183,9 @@ $type = request('type', $reportType);
 
     <script>
         $(function () {
-            var $divPreview = $("#div-preview");
-            var $chkShowMore = $("#chkShowMore");
-
-            function hanldeShowMore() {
-                $('.show-more').slideToggle();
-            }
-
-            function clearForm($form) {
-                $form.find('.form-control')
-                    .not(':button, :submit, :reset, :hidden')
-                    .val('')
-                    .prop('checked', false)
-                    .prop('selected', false);
-                $chkShowMore.click();
-                $chkShowMore.removeAttr('checked');
-            }
-
-            function handleReportItemClick($tr) {
-                $(' #div-preview').hide();
-                $('.show-loader').fadeIn();
-                var $id = $tr.data('id');
-                $divPreview.find('#btn-detail').attr('href', '/bao-cao/' + $id);
-
-                $.ajax({
-                    url: '{{route('getReport')}}?id=' + $id,
-                    method: 'GET',
-                    dataType: 'JSON',
-                    success: function (response) {
-                        if (response.code == 200 && response.data.report) {
-                            var report = response.data.report;
-                            if (report.user) {
-                                $divPreview.find('.card-header').text(report.user.name + " [Tuần " + report.week_num + "]");
-                            } else {
-                                $divPreview.find('.card-header').text("Tuần " + report.week_num);
-                            }
-                            $divPreview.find('.card-title').text(report.title);
-                            $divPreview.find('.txtTo').text(report.to_ids);
-                            $divPreview.find('.content').html(report.content);
-                        }
-                    },
-                    complete: function () {
-                        $('.show-loader').hide();
-                        $('#div-preview').fadeIn();
-                    }
-                });
-            }
-
-            $chkShowMore.change(hanldeShowMore);
-
-            if ($chkShowMore.is(':checked')) {
-                hanldeShowMore();
-            }
-
-            $('.trReportItem').click(function () {
-                var that = $(this);
-                that.siblings().removeClass('select');
-                that.addClass('select');
-                handleReportItemClick(that);
-            });
             $('#formReport select').change(function () {
                 $("#formReport").submit();
             });
-
-            $('.trReportItem').first().click();
 
             $('#date_from').dateTimePicker({
                 limitMax: $('#date_to')
@@ -192,6 +194,63 @@ $type = request('type', $reportType);
             $('#date_to').dateTimePicker({
                 limitMin: $('#date_from')
             });
-        })
+            $(".btnSendReply").click(function () {
+                var reportId = $(this).data('id');
+                var $textArea = $('#reply_' + reportId);
+                var content = tinymce.get('reply_' + reportId).getContent();
+                if (content) {
+                    var date = new Date();
+                    var $template = $("#tempReply").children().first().clone();
+
+                    tinymce.get('reply_' + reportId).setContent('');
+
+                    $template.find('.avatar').attr('src', '{{\Illuminate\Support\Facades\Auth::user()->avatar}}');
+                    $template.find('.avatar').attr('alt', '{{\Illuminate\Support\Facades\Auth::user()->name}}');
+                    $template.find('.full_name').text('{{\Illuminate\Support\Facades\Auth::user()->name}}');
+
+                    $template.find('.created_at').text('vừa xong');
+                    $template.find('.content').html(content);
+
+                    $(this).parent().next().prepend($template);
+                    $.ajax({
+                        url: '{{route('reply_report')}}',
+                        type: 'POST',
+                        dataType: 'JSON',
+                        data: {content: content, report_id: reportId},
+                        success: function (q) {
+                        },
+                        error: function () {
+                            $template.remove();
+                        }
+                    });
+                }
+            });
+            $('.card-header').click(function () {
+                var $that = $(this);
+                var reportId = $(this).data('id');
+
+                var $textArea = $('#reply_' + reportId);
+                if (!$textArea.hasClass('initialized')) {
+                    tinymce.init({
+                        selector: 'textarea#reply_' + reportId,
+                        paste_data_images: true,
+                        height: '80px',
+                        plugins: [
+                            "advlist autolink lists link charmap preview hr anchor pagebreak paste textcolor colorpicker",
+                        ],
+                        toolbar1: "insertfile undo redo | styleselect | bold italic | forecolor backcolor | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link",
+                        setup: function (editor) {
+                            editor.on('init', function () {
+                                $that.next().find('.form-reply').slideDown();
+                            });
+                        }
+                    });
+
+                    $textArea.addClass('initialized');
+                }
+            });
+        });
+
+
     </script>
 @endpush

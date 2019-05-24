@@ -17,7 +17,7 @@ class CreateReportReplyTable extends Migration
             $table->increments('id');
             $table->integer('report_id');
             $table->integer('user_id');
-            $table->integer('content');
+            $table->text('content');
 
             $table->timestamps();
             $table->softDeletes();

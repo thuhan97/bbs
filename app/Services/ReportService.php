@@ -47,12 +47,14 @@ class ReportService extends AbstractService implements IReportService
         $model = $this->model
             ->select([
                 'id',
+                'user_id',
                 'week_num',
                 'to_ids',
                 'title',
                 'status',
                 'content',
                 'report_type',
+                'color_tag',
                 'created_at',
                 'updated_at',
             ])
@@ -63,7 +65,11 @@ class ReportService extends AbstractService implements IReportService
                     });
             })
             ->search($search)
-            ->with('receivers:users.id,name,avatar')
+            ->with(['receivers' => function ($q) {
+                $q->select('users.id', 'users.name', 'avatar')->orderBy('jobtitle_id', 'desc');
+            }, 'reportReplies' => function ($q) {
+                $q->orderBy('report_reply.id', 'desc');
+            }])
             ->orderBy('id', 'desc');
 
         if (isset($criterias['date_from'])) {
@@ -94,30 +100,36 @@ class ReportService extends AbstractService implements IReportService
                 }
 
             }
+            if ($type != REPORT_SEARCH_TYPE['private']) {
+                if ($currentUser->isMaster()) {
+                } else if ($currentUser->isGroupManager()) {
+                    $groupManage = Group::where('manager_id', $currentUser->id)->first();
+                    if ($groupManage) {
+                        $groupId = $groupManage->id;
 
-            if ($currentUser->isMaster()) {
-            } else if ($currentUser->isGroupManager()) {
-                $groupManage = Group::where('manager_id', $currentUser->id)->first();
-                if ($groupManage) {
-                    $groupId = $groupManage->id;
-
-                    $modelInner->where(function ($q) use ($groupId) {
-                        $q->where('is_private', REPORT_PUBLISH)->orWhere('group_id', $groupId);
-                    });
-                }
-            } else {
-                $team = $currentUser->team();
-                if ($team) {
-                    $modelInner->where(function ($q) use ($team) {
-                        $q->where('is_private', REPORT_PUBLISH)
-                            ->orWhere(function ($p) use ($team) {
-                                $p->where('is_private', REPORT_PRIVATE)
-                                    ->where('team_id', $team->id);
-                            });
-                    });
-
+                        $modelInner->where(function ($q) use ($groupId) {
+                            $q->where('is_private', REPORT_PUBLISH)->orWhere('group_id', $groupId);
+                        });
+                    }
                 } else {
-                    $modelInner->where('is_private', REPORT_PUBLISH);
+                    $team = $currentUser->team();
+                    if ($team) {
+                        $modelInner->where(function ($q) use ($type, $team, $currentUser) {
+                            $q->where('is_private', REPORT_PUBLISH)
+                                ->orWhere(function ($p) use ($team) {
+                                    $p->where('is_private', REPORT_PRIVATE)
+                                        ->where('team_id', $team->id);
+                                });
+
+                            if ($type == REPORT_SEARCH_TYPE['all']) {
+                                $q->orWhere(function ($p) use ($currentUser) {
+                                    $p->where('user_id', $currentUser->id);
+                                });
+                            }
+                        });
+                    } else {
+                        $modelInner->where('is_private', REPORT_PUBLISH);
+                    }
                 }
             }
 
@@ -125,7 +137,7 @@ class ReportService extends AbstractService implements IReportService
                 $q->where('user_id', $currentUser->id);
             });
         });
-
+//dd(DatabaseHelper::getQuery($model));
         return $model->paginate($perPage);
     }
 

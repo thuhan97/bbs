@@ -15,6 +15,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Regulation extends Model
 {
     public $autoCreator = true;
+    public $autoOrder = true;
 
     use SoftDeletes, FillableFields, OrderableTrait, SearchLikeTrait;
 
@@ -28,6 +29,7 @@ class Regulation extends Model
         'status',
         'approve_date',
         'file_path',
+        'order',
         'created_at',
         'updated_at',
         'deleted_at',

@@ -36,6 +36,24 @@
                 @endif
             </div>
         </div>
+        <div class="col-md-4">
+            <div class="form-group margin-b-5 margin-t-5{{ $errors->has('order') ? ' has-error' : '' }}">
+                <label for="approve_date">Thứ tự ưu tiên</label>
+                <div class="input-group">
+                    <div class="input-group-addon">
+                        <i class="fa fa-sort"></i>
+                    </div>
+                    <input type="number" class="form-control pull-right" autocomplete="off"
+                           name="order"
+                           value="{{ old('order', $record->order) }}" id="order">
+                </div>
+                @if ($errors->has('order'))
+                    <span class="help-block">
+                                <strong>{{ $errors->first('order') }}</strong>
+                            </span>
+                @endif
+            </div>
+        </div>
     </div>
 </div>
 

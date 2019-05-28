@@ -41,6 +41,7 @@ class RegulationService extends AbstractService implements IRegulationService
         $criterias['status'] = ACTIVE_STATUS;
         $perPage = $criterias['page_size'] ?? DEFAULT_PAGE_SIZE;
         $search = $criterias['search'] ?? '';
+        $criterias['orders'] = ['order' => 'asc'];
 
         return $this->repository->findBy($criterias, [
             'id',

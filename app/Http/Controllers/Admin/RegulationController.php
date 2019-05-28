@@ -3,9 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Models\Regulation;
-use App\Models\RegulationFile;
 use App\Repositories\Contracts\IRegulationRepository;
-use Illuminate\Http\Request;
 
 /**
  * RegulationController

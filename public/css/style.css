@@ -1646,6 +1646,16 @@ td.blank, .type-1, .type-2 {
      }*/
 }
 
+.wt-textarea-check-ot {
+    width: 90%;
+    margin: 0 auto;
+}
+
+.wt-textarea-current-day {
+    width: 94%;
+    margin: 0 auto;
+}
+
 @media (max-width: 1400px) {
     .bg-img-day-off {
         height: 600px;

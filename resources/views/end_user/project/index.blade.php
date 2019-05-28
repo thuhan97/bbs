@@ -16,7 +16,7 @@
         </div>
     @endcan
     <div class="row">
-        <div class="col-12 col-xxl-10">
+        <div class="col-12 col-xxl-11">
             <form class="mb-0 mb-lg-4">
                 <div class="md-form active-cyan-2 mb-3">
                     @include('layouts.partials.frontend.search-input', ['search' => $search, 'text' => __l('Search')])

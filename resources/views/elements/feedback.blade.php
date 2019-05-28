@@ -1,7 +1,7 @@
 
 <div class="mb-4 wow fadeIn">
     <!-- Card -->
-    <div class="card">
+    <div class="border border-light card z-depth-0">
 
     {{--        <div class="view overlay">--}}
     {{--            <img class="card-img-top"--}}
@@ -27,7 +27,7 @@
                     <label for="feedback">Rất mong nhận được ý kiến đóng góp hoặc đề xuất của bạn đến công ty!</label>
                 </div>
                 <div class="pt-3 pb-4 d-flex border-top-0 rounded mb-0">
-                    <button type="submit" class="btn btn-warning">Gửi ngay
+                    <button type="submit" class="btn btn-primary">Gửi ngay
                     </button>
                 </div>
             </form>

@@ -25,15 +25,15 @@
             </div>
         </div>
         @foreach($events as $event)
-            <div class="jumbotron mb-3 {{$event->event_status_class}}">
+            <div class="jumbotron mb-3 z-depth-0 border {{$event->event_status_class}}">
                 <h2 class="h1-responsive"><strong> {{$event->event_status_name .$event->name}}</strong></h2>
                 <p class="lead">{{__l('event_time')}}: <strong
-                            class="text-danger text-uppercase"><i>{{ $event->event_date}}</i></strong></p>
+                            class="text-danger text-uppercase">{{ $event->event_date}}</strong></p>
                 <p class="lead">{{__l('event_place')}}: <strong
-                            class="text-danger text-uppercase"><i>{{ $event->place}}</i></strong></p>
+                            class="text-danger text-uppercase">{{ $event->place}}</strong></p>
                 <hr class="my-2">
-                <p>
-                    {{$event->introduction}}
+                <p class="text-danger" style="font-size: 120%">
+                    {!! nl2br($event->introduction) !!}
                 </p>
                 <div class="">
                     <a href="{{route('event_detail', ['id' => $event->id])}}" class="btn btn-warning btn-lg"

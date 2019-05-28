@@ -1,6 +1,6 @@
 <div class="mb-4 wow fadeIn">
     <!-- Card -->
-    <div class="card text-center animated fadeInRight" id="punish">
+    <div class="border border-light card text-center animated fadeInRight" id="punish">
         <!-- Card content -->
         <div class="card-body blue lighten-5">
             <div class="text-center white">

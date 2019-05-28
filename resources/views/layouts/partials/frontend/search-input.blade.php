@@ -3,6 +3,6 @@
            placeholder="{{$text}}" aria-label="Search">
 
     <div class="input-group-prepend">
-        <button class="btn btn-info" id="inputGroup-sizing-default">Tìm kiếm</button>
+        <button class="btn btn-primary" id="inputGroup-sizing-default">Tìm kiếm</button>
     </div>
 </div>

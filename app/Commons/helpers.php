@@ -595,3 +595,66 @@ if (!function_exists('show_timeout_event')) {
     }
 }
 
+if (!function_exists('get_beautiful_time')) {
+
+    /**
+     * @param      $endAt
+     * @param null $startAt
+     *
+     * @return string
+     */
+
+    function get_beautiful_time($time)
+    {
+        $startAt = date(DATE_TIME_FORMAT);
+
+        $start = date_create($time);
+        $end = date_create($startAt);
+        $diff = date_diff($end, $start);
+        $month = $diff->format('%m');
+
+        if ($month > 1) {
+            return $time;
+        } else if ($month == 1) {
+            return 'Tháng trước';
+        } else {
+            $day = $diff->format('%d');
+
+            if ($day > 1) {
+                $currentWeek = get_week_number();
+                $week = get_week_number($time);
+                $subWeek = $currentWeek - $week;
+                if ($subWeek > 1) {
+                    return $subWeek . ' tuần trước';
+                } elseif ($subWeek == 1) {
+                    return get_day_name($time) . ', tuần trước';
+                } else {
+                    return $day . ' ngày trước';
+                }
+            }
+            if ($day == 1) {
+                return 'Hôm qua';
+            } else {
+                $hour = $diff->format('%h');
+
+                if ($hour > 2) {
+                    if ($start->format(DATE_FORMAT) != $end->format(DATE_FORMAT)) {
+                        return 'Hôm qua';
+                    } else {
+                        return $hour . ' giờ trước';
+                    }
+                } elseif ($hour >= 1) {
+                    return $hour . ' giờ trước';
+                } else {
+                    $minute = $diff->format('%i');
+                    if ($minute > 0) {
+                        return $minute . ' phút trước';
+                    } else {
+                        return 'Vừa xong';
+
+                    }
+                }
+            }
+        }
+    }
+}

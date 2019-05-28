@@ -1466,6 +1466,17 @@ td.blank, .type-1, .type-2 {
     height: 60px;
 }
 
+#report .txt-time {
+    color: gray;
+    font-size: 14px;
+    line-height: 24px;
+}
+
+#report .txt-time .fas {
+    /*top: 1px;*/
+    /*position: relative;*/
+}
+
 @media (min-width: 768px) and (max-width: 1000px) {
     #app {
         padding-top: 0rem !important;

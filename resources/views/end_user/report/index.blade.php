@@ -78,9 +78,12 @@ $type = request('type', $reportType);
                             <h5 class="mb-0">
                                 <i class="fas fa-sticky-note"
                                    @if($report->color_tag) style="color: {{$report->color_tag}}" @endif></i>
-                                {{$report->getTitle($type, $year, $month, \Illuminate\Support\Facades\Auth::id())}}
 
+                                {{$report->getTitle($type, $year, $month, \Illuminate\Support\Facades\Auth::id())}}
                                 <i class="fas fa-angle-down rotate-icon"></i>
+                                <span class="txt-time float-right mr-2"><i class="fas fa-clock "
+                                                                           title="{{$report->created_at}}"></i> {{get_beautiful_time($report->created_at)}}</span>
+
                             </h5>
                         </a>
                     </div>
@@ -92,7 +95,8 @@ $type = request('type', $reportType);
                                 <div class="card-body p-0">
                                     @if(\Illuminate\Support\Facades\Auth::user()->can('delete', $report))
                                         <div class="text-right">
-                                            <a href="{{route('deleteReport', $report->id)}}" class="btn btn-danger"><i class="fa fa-trash"></i> Xóa</a>
+                                            <a href="{{route('deleteReport', $report->id)}}" class="btn btn-danger"><i
+                                                        class="fa fa-trash"></i> Xóa</a>
                                         </div>
                                     @endif
                                     <div class="pl-2 mb-3 sent-to">

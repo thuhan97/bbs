@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Helpers\DateTimeHelper;
-use App\Http\Requests\Admin\WorkTimePermissionRequest;
 use App\Http\Requests\Admin\WorkTimeRequest;
 use App\Http\Requests\ApprovedRequest;
 use App\Http\Requests\ApprovePermissionRequest;
@@ -55,7 +54,7 @@ class UserController extends Controller
 
     public function saveProfile(ProfileRequest $request)
     {
-        $data = $request->only('address', 'current_address', 'gmail', 'gitlab', 'chatwork', 'skills', 'in_future', 'hobby', 'foreign_language', 'school');
+        $data = $request->only('current_address', 'gmail', 'gitlab', 'chatwork', 'skills', 'in_future', 'hobby', 'foreign_language', 'school');
 
         if ($request->hasFile('avatar')) {
             $avatar = request()->file('avatar');
@@ -422,7 +421,7 @@ class UserController extends Controller
             $datas = OverTime::where('work_day', $request['data'])->where('creator_id', Auth::id())/*->where('status', '!=', array_search('Đã duyệt', OT_STATUS))*/
             ->first();
         } else if ($request['type'] == array_search('Đi muộn', WORK_TIME_TYPE) || $request['type'] == array_search('Về Sớm', WORK_TIME_TYPE)) {
-            $datas = WorkTimesExplanation::where('work_day', $request['data'])->where('status','!=',array_search('Từ chối',OT_STATUS))->where('type', $request['type'])->where('user_id', Auth::id())->first();
+            $datas = WorkTimesExplanation::where('work_day', $request['data'])->where('status', '!=', array_search('Từ chối', OT_STATUS))->where('type', $request['type'])->where('user_id', Auth::id())->first();
         }
         $projects = $this->projectActive();
         if ($datas) {
@@ -675,7 +674,7 @@ class UserController extends Controller
             $time = $timeStart . ' - ' . $timeEnd;
 
         }
-        $numOffApprove = $this->userDayOffService->checkDateUsable($dayOff->start_at, $dayOff->end_at, null, null,true);
+        $numOffApprove = $this->userDayOffService->checkDateUsable($dayOff->start_at, $dayOff->end_at, null, null, true);
         return response()->json([
             'data' => $dayOff,
             'numoff' => $numOff,

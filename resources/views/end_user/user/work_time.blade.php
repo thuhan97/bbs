@@ -265,11 +265,11 @@
                             '       <option value="0">Chọn dự án</option>' +
                             '   </select>' +
                             '</div>' +
-                            '        <div class="col-md-6 my-2">\n' +
+                            '        <div class="col-md-6 my-2 pl-4">\n' +
                             '            <div class="form-group ">\n' +
                             '                <label for="start_at">Thời gian bắt đầu *</label>\n' +
-                            '                <div class="input-group date">\n' +
-                            '                    <input type="time" class="form-control pull-right" autocomplete="off"\n' +
+                            '                <div class="<!--input-group date-->">\n' +
+                            '                    <input type="time" class="form-control pull-right w-95" autocomplete="off"\n' +
                             '                           name="start_at"\n' +
                             '                           value=""\n' +
                             '                           id="start_at">\n' +
@@ -279,8 +279,8 @@
                             '        <div class="col-md-6 my-2">\n' +
                             '            <div class="form-group ">\n' +
                             '                <label for="end_at">Thời gian kết thúc *</label>\n' +
-                            '                <div class="input-group date">\n' +
-                            '                    <input type="time" class="form-control pull-right"\n' +
+                            '                <div class="<!--input-group date-->">\n' +
+                            '                    <input type="time" class="form-control pull-right w-95"\n' +
                             '                           name="end_at" autocomplete="off"\n' +
                             '                           value=""\n' +
                             '                           id="end_at">\n' +
@@ -289,7 +289,7 @@
                             '        </div>\n' +
                             '<input type="hidden" name="work_day" class="work_day" value="' + getDataTime + '">' +
                             '<input type="hidden" name="checkOtType" class="checkOtType" value="">' +
-                            '<textarea class="form-control wt-textarea-reason" name="reason" rows="6" placeholder="Nội dung bạn muốn gửi..."></textarea>' +
+                            '<textarea class="form-control wt-textarea-reason wt-textarea-check-ot" name="reason" rows="6" placeholder="Nội dung bạn muốn gửi..."></textarea>' +
                             '</div>';
                     }
 
@@ -358,7 +358,7 @@
                                 '                </div>\n' +
                                 '            </div>\n' +
                                 '        </div>\n' +
-                                '<textarea class="form-control my-2 wt-textarea-reason" name="reason" rows="6" placeholder="Nội dung bạn muốn gửi..."></textarea>' +
+                                '<textarea class="form-control my-2 wt-textarea-reason wt-textarea-current-day" name="reason" rows="6" placeholder="Nội dung bạn muốn gửi..."></textarea>' +
                                 '</div>';
 
                             $('.user-radio3').change(function () {

@@ -32,7 +32,7 @@
                 <p class="lead">{{__l('event_place')}}: <strong
                             class="text-danger text-uppercase">{{ $event->place}}</strong></p>
                 <hr class="my-2">
-                <p class="text-danger" style="font-size: 120%">
+                <p style="font-size: 120%">
                     {!! nl2br($event->introduction) !!}
                 </p>
                 <div class="">

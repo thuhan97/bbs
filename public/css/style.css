@@ -1663,6 +1663,16 @@ td.blank, .type-1, .type-2 {
     .custom-modal {
         top: -303px;
     }
-
+}
+.badge {
+    top: 1px;
+    left: 22px;
+    background-color: red;
+    color: white;
+    width: 21px;
+    height: 22px;
+    border-radius: 50%;
+    padding-top: 5px;
+    padding-left: 4px;
 }
 

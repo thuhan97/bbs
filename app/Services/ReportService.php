@@ -54,6 +54,7 @@ class ReportService extends AbstractService implements IReportService
                 'status',
                 'content',
                 'report_type',
+                'report_date',
                 'color_tag',
                 'created_at',
                 'updated_at',

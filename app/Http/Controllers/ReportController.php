@@ -203,6 +203,16 @@ class ReportController extends Controller
         return $this->respond(['success' => true]);
     }
 
+    public function deleteReport($id)
+    {
+        $report = Report::find($id);
+        if ($report && Auth::user()->can('delete', $report)) {
+            $report->delete();
+            flash()->success(__l('report_deleted'));
+        }
+        return redirect(route('report'));
+    }
+
     protected function getDraftReport()
     {
         return Report::where([

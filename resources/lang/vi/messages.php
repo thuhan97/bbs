@@ -82,4 +82,5 @@ return [
     'share_experience_error_view' => 'Không tìm thấy chia sẻ kinh nghiệm',
     'share_experience_edit' => 'Sửa nội dung',
     'share_experience_detail' => 'Chi tiết',
+    'report_deleted' => 'Đã xóa báo cáo',
 ];

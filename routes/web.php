@@ -75,6 +75,7 @@ Route::group([
     Route::get('/tao-bao-cao', 'ReportController@create')->name('create_report');
     Route::get('/report', 'ReportController@getReport')->name('getReport');
     Route::post('/tao-bao-cao', 'ReportController@saveReport')->name('save_report');
+    Route::get('/xoa-bao-cao/{id}', 'ReportController@deleteReport')->name('deleteReport');
     Route::post('/reply-bao-cao', 'ReportController@replyReport')->name('reply_report');
     Route::get('/bao-cao/{id}', 'ReportController@detail')->where(['id' => '\d+'])->name('report_detail');
     Route::get('/du-an', 'ProjectController@index')->name('project');

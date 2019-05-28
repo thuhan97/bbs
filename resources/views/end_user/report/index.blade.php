@@ -69,7 +69,7 @@ $type = request('type', $reportType);
             <div class="accordion md-accordion" id="report" role="tablist" aria-multiselectable="true">
 
                 <div class="card">
-                    <div class="card-header" role="tab" id="headingOne{{$idx}}" data-id="{{$report->id}}">
+                    <div class="card-header pr-0 pl-0" role="tab" id="headingOne{{$idx}}" data-id="{{$report->id}}">
                         <a data-toggle="collapse" data-parent="#report" href="#report_item_{{$idx}}"
                            aria-expanded="true"
                            aria-controls="report_item_{{$idx}}"
@@ -89,7 +89,12 @@ $type = request('type', $reportType);
                          data-parent="#report">
                         <div class="col-xl-6 report-item">
                             <div>
-                                <div class="card-body">
+                                <div class="card-body p-0">
+                                    @if(\Illuminate\Support\Facades\Auth::user()->can('delete', $report))
+                                        <div class="text-right">
+                                            <a href="{{route('deleteReport', $report->id)}}" class="btn btn-danger"><i class="fa fa-trash"></i> Xóa</a>
+                                        </div>
+                                    @endif
                                     <div class="pl-2 mb-3 sent-to">
                                         Gửi cho:
                                         <div class="mt-2">

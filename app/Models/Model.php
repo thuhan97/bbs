@@ -40,8 +40,8 @@ abstract class Model extends \Illuminate\Database\Eloquent\Model
             if (with(new static)->autoCreator && !isset($data['creator_id'])) {
                 $data['creator_id'] = Auth::id();
             }
-            if (with(new static)->autoRank && !isset($data['rank'])) {
-                $data['rank'] = with(new static)->max('rank') + 1;
+            if (with(new static)->autoRank && !isset($data['order'])) {
+                $data['order'] = with(new static)->max('order') + 1;
             }
             return with(new static)->timestamps ? array_merge([
                 with(new static)::CREATED_AT => $now,

@@ -213,7 +213,7 @@ abstract class AbstractRepository implements IBaseRepository
         }
     }
 
-    public function dragDropRank(array $ids, $order = 'DESC', $rankColName = 'rank')
+    public function dragDropRank(array $ids, $order = 'DESC', $rankColName = 'order')
     {
         // old ranks arrangement
         $oldArrange = $this->model
@@ -236,7 +236,7 @@ abstract class AbstractRepository implements IBaseRepository
         // update database
         foreach ($newArrange as $rank => $newId) {
             $row = $this->findOne($newId);
-            if ($row->rank != $rank) {
+            if ($row->order != $rank) {
                 $this->update($row, [$rankColName => $rank]);
             }
         }

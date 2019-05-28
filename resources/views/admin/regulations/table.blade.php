@@ -2,6 +2,7 @@
     <table class="table table-hover table-bordered">
         <colgroup>
             <col style="width: 30px">
+            <col style="width: 70px">
             <col style="">
             <col style="width: 150px">
             <col style="width: 150px">
@@ -12,6 +13,9 @@
         <th style="width: 10px;">
             <button type="button" class="btn btn-default btn-sm checkbox-toggle"><i class="fa fa-square-o "></i>
             </button>
+        </th>
+        <th>Thứ tự
+            {!! __admin_sortable('order') !!}
         </th>
         <th>Tên
             {!! __admin_sortable('name') !!}
@@ -37,6 +41,7 @@
             ?>
             <tr>
                 <td><input type="checkbox" name="ids[]" value="{{ $record->id }}" class="square-blue chkDelete"></td>
+                <td class="text-right">{{ $record->order }}</td>
                 <td class="table-text">
                     <a href="{{ $editLink }}">{{ $record->name }}</a>
                 </td>

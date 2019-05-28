@@ -247,11 +247,11 @@
 
                     <td class="text-center p-0 d-none d-sm-table-cell" style="vertical-align: middle;">
                         @if($record->status == STATUS_DAY_OFF['abide'])
-                            <i class="fas fa-meh-blank fa-2x text-warning text-center"></i>
+                            <i data-toggle="tooltip" data-placement="right" title="Chờ phê duyệt" class="fas fa-meh-blank fa-2x text-warning text-center"></i>
                         @elseif($record->status == STATUS_DAY_OFF['active'])
-                            <i class="fas fa-grin-stars fa-2x text-success"></i>
+                            <i data-toggle="tooltip" data-placement="right" title="Đã duyệt đơn" class="fas fa-grin-stars fa-2x text-success"></i>
                         @else
-                            <i class="fas fa-frown fa-2x text-danger"></i>
+                            <i data-toggle="tooltip" data-placement="right" title="Không duyệt"  class="fas fa-frown fa-2x text-danger"></i>
                         @endif
                     </td>
                     <td class="text-center ">

@@ -30,7 +30,6 @@
 
 @push('extend-js')
     <link href="{{ asset('fullcalendar/fullcalendar.min.css') }}" rel="stylesheet">
-    <script type="text/javascript" src="{{ asset('js/moment.min.js') }}"></script>
 
     <script type="text/javascript" src="{{ asset('fullcalendar/fullcalendar.min.js') }}"></script>
 

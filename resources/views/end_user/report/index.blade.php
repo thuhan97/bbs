@@ -82,7 +82,7 @@ $type = request('type', $reportType);
                                 {{$report->getTitle($type, $year, $month, \Illuminate\Support\Facades\Auth::id())}}
                                 <i class="fas fa-angle-down rotate-icon"></i>
                                 <span class="txt-time float-right mr-2"><i class="fas fa-clock "
-                                                                           title="{{$report->created_at}}"></i> {{get_beautiful_time($report->created_at)}}</span>
+                                                                           title="{{$report->created_at}}"></i> <span class="time-subcribe" data-time="{{$report->created_at}}">{{get_beautiful_time($report->created_at)}}</span></span>
 
                             </h5>
                         </a>

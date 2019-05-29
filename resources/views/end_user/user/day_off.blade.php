@@ -654,8 +654,6 @@
                 $(this).prev().datepicker('show');
             })
 
-            checkUsable();
-
             $('.option-select').on('change', function () {
                 $("#form-search").submit();
             });
@@ -744,6 +742,9 @@
                 $('#value-rs1').click();
                 $('.id_hide').val(' ');
                 $(".reason_id").html(null);
+                $('#btn-send , #btn-send-day-off').text('Gửi Đơn');
+                checkUsable();
+
             });
 
             var date = $("#start_date").val();
@@ -867,6 +868,10 @@
                         $('#toggle-show').attr('style', 'display: none !important');
                         $('.id_hide').val(data.data.id);
                         if (data.data.title == 1) {
+                            if (data.totalAbsent !=0){
+                                $('#usable-check').text('Bạn sẽ bị tính ' + data.totalAbsent + ' ngày nghỉ không phép vì ngày phép không đủ.')
+                                $('#usable-check').show();
+                            }
                             $('#profile').removeClass('active show');
                             $('#home').addClass('active show');
                             $('#start_date').val(data.timeStartEdit)
@@ -888,6 +893,7 @@
                             $('#btn-send').text('SỬA ĐƠN');
 
                         }else{
+                            $('#usable-check').hide();
                             $('#home').removeClass('active show');
                             $('#profile').addClass('active show');
                             $('.edit-regime').val(data.data.title );
@@ -908,10 +914,11 @@
             $('.option-dayoff').on('click', function () {
                 var check = $(this).val();
                 if (check == 1) {
-                    $('#usable-check').text(' ')
+                    $('#usable-check').hide();
                     $('#home').removeClass('active show');
                     $('#profile').addClass('active show');
                 } else {
+                    $('#usable-check').show();
                     $('#home').addClass('active show');
                     $('#profile').removeClass('active show');
                 }
@@ -930,8 +937,8 @@
                 'type': 'get',
                 'data': {'start_date': dateStart, 'end_date': dateEnd, 'start_time': timeStart, 'end_time': timeEnd,},
                 success: function (data) {
-                    // console.log(data);
-                    if (data.check) {
+                    $('#usable-check').show();
+                    if (data.check && data.absent != 0) {
                         $('#usable-check').text('Bạn sẽ bị tính ' + data.absent + ' ngày nghỉ không phép vì ngày phép không đủ.')
                     } else {
                         $('#usable-check').text(' ')

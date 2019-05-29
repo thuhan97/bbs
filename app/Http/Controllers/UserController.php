@@ -691,7 +691,7 @@ class UserController extends Controller
             'timeStartEdit' => Carbon::createFromFormat(DATE_TIME_FORMAT, $dayOff->start_at)->format('Y/m/d'),
             'timeEndEdit' => Carbon::createFromFormat(DATE_TIME_FORMAT, $dayOff->end_at)->format('Y/m/d'),
             'time' => $time ?? DEFAULT_VALUE,
-            'approver_num'=> is_array($numOffApprove) ? ($numOffApprove[0] > 0 ? $numOffApprove[0] : 0) : ($numOffApprove > 0 ? $numOffApprove : 0),
+            'approver_num'=> $numOffApprove[0],
             'totalRemain'=>$dayOffPreYear+$remainDayoffCurrentYear+$DayoffFrreCurrentYear,
             'totalAbsent'=>$totalAbsent
         ]);

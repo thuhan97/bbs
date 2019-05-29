@@ -6,31 +6,52 @@ $(function () {
         $(".pageSize").change(function () {
             location.href = $(".pageSize option:selected").data('href');
         });
-        var subcribeTimeInterval = null;
+        var subcribeList = [];
+        var subcribeHourList = [];
+
+
+        if ($(".time-subcribe").length > 0) {
+            $(".time-subcribe").each(function () {
+                var text = $(this).text();
+
+                if (text.indexOf('giờ trước') >= 0 || text.indexOf('phút trước') >= 0) {
+                    subcribeHourList.push(this);
+                } else if (text.indexOf('giây trước') >= 0 || text.indexOf('xong') >= 0) {
+                    subcribeList.push(this);
+                }
+            });
+        }
+
+        function _changeText(that) {
+            var time = $(that).data('time');
+            moment.locale('vi');
+            var fromNow = moment(time).fromNow();
+            $(that).text(fromNow);
+        }
 
         function subcribeTime() {
-            if ($(".time-subcribe").length > 0) {
-
-                $(".time-subcribe").each(function () {
-                    var text = $(this).text();
-
-                    if (text.indexOf('giờ trước') >= 0 || text.indexOf('phút trước') >= 0 || text.indexOf('giây trước') >= 0 || text.indexOf('xong') >= 0) {
-                        var time = $(this).data('time');
-                        moment.locale('vi');
-                        var fromNow = moment(time).fromNow();
-                        $(this).text(fromNow);
-                    }
-                });
-            } else if (subcribeTimeInterval) {
-                clearInterval(subcribeTimeInterval);
+            for (let item in subcribeList) {
+                _changeText(subcribeList[item]);
             }
         }
 
-        subcribeTime();
+        function subcribeTimeHour() {
+            for (let item in subcribeHourList) {
+                _changeText(subcribeHourList[item]);
+            }
+        }
 
-        subcribeTimeInterval = setInterval(function () {
-            subcribeTime();
-        }, 10000);
+        if (subcribeList.length > 0) {
+            setInterval(function () {
+                subcribeTime();
+            }, 1000);
+        }
+        if (subcribeHourList.length > 0) {
+            setInterval(function () {
+                subcribeTimeHour();
+            }, 30000);
+        }
+
     }
 );
 

@@ -245,7 +245,7 @@
                         @endif
                     </td>
                     <td class="text-center ">
-                        <p class=" btn-sm m-0 detail-dayoff" style="cursor: pointer" attr="{{ $record->id }}" user="{{ $record->user_id }}">Chi
+                        <p class=" btn-sm m-0 detail-dayoff" style="cursor: pointer" attr="{{ $record->id }}">Chi
                             tiết >></p>
                     </td>
 

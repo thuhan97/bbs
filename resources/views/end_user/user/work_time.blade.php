@@ -43,7 +43,7 @@
     @endif
     <i class="fa fa-icon-check"></i>
     <form name="dateChooser">
-        <div class="row">
+        <div class="row m-t-20 mt-1">
             <div class="col-xl-2 col-xxl-1 col-md-2 pr-1">
                 <select id="chooseYear" class="mr-1 browser-default form-control float-left chooseYear"
                         name="chooseYear"></select>

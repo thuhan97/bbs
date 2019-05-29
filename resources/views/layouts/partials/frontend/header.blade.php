@@ -6,7 +6,7 @@
         <div class="container-fluid">
             <div class="float-left ">
                 <a href="#" data-activates="slide-out" class="navbar-toggler button-collapse"><i
-                            class="navbar-toggler-icon"></i><span
+                            class="fas fa-bars" style="color: white;margin-top: 5px"></i><span
                             class="sr-only" aria-hidden="true">Menu</span></a>
             </div>
             <!-- Brand -->
@@ -46,22 +46,30 @@
                             <span class="sr-only">(current)</span>
                         </a>
                     </li>
-                    <li class="nav-item {{ \App\Utils::checkRoute(['report']) ? 'active': '' }}">
+                    <li class="nav-item  {{ \App\Utils::checkRoute(['report']) ? 'active': '' }}">
                         <a href="{{route('report')}}"
                            class="nav-link waves-effect">{{__l('Report')}}
                             <span class="sr-only">(current)</span>
                         </a>
                     </li>
+                    <li class="nav-item d-block d-xl-none {{ \App\Utils::checkRoute(['report']) ? 'active': '' }}">
+                        <a class="nav-link waves-effect" href="{{route('changePassword')}}">{{__l('change_password')}}</a>
+                    </li>
+                    <li class="nav-item d-block d-xl-none {{ \App\Utils::checkRoute(['report']) ? 'active': '' }}">
+                        <a class="nav-link waves-effect"
+                           href="{{route('logout')}}">{{__l('logout')}}
+                        </a>
+                    </li>
                 </ul>
                 <!-- Right -->
                 <ul class="navbar-nav nav-flex-icons">
-                    <li class="nav-item">
+                    <li class="nav-item d-none d-sm-block">
                         <a class="nav-link waves-effect waves-light" id="nav_bar_avatar">
                             <img src="{{Auth::user()->avatar}}" onerror="this.src='{{URL_IMAGE_NO_IMAGE}}'"
                                  class="rounded-circle z-depth-0" alt="avatar image">
                         </a>
                     </li>
-                    <li class="nav-item dropdown">
+                    <li class="nav-item dropdown d-none d-sm-block">
                         <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#"
                            role="button"
                            aria-haspopup="true"

@@ -124,10 +124,10 @@
         </span>
         <br>
     @endif
-    <div class="row mb-4">
+    <div class="row mb-3 mt-3">
         <div class="col-md-4">
             @can('team-leader')
-                <h2 class="mt-3 mobile-font-17">Danh sách xin phép</h2>
+                <h2 class="mobile-font-17 mb-0 ml-3">Danh sách xin phép</h2>
             @endcan
         </div>
     </div>
@@ -147,7 +147,7 @@
             <!-- Nav tabs -->
 
             <!-- Tab panels -->
-            <div class="tab-content">
+            <div class="tab-content pb-0">
                 <!-- Panel 1 -->
                 <div class="tab-pane fade in show active" id="panelApprove" role="tabpanel">
                     <table id="contactTbl" class="table table-striped table-bordered">
@@ -310,165 +310,164 @@
             <!-- Tab panels -->
         @endif
     @endcan
-
-    <div class="row">
-        <div class="col-md-3">
-            <h2>Xin phép cá nhân</h2>
+    @cannot('manager')
+        <div class="row m-t-20">
+            <div class="col-md-4">
+                <h2 class="mb-0 mt-2 ml-3">Xin phép cá nhân</h2>
+            </div>
+            <div class="col-md-8 text-right mobile-mg-right-5 float-right my-2 my-sm-0">
+                <button onclick="location.href='{{route("day_off")}}?t=1'"
+                        class="btn btn-success no-box-shadow waves-effect waves-light float-right mr-0 mr-sm-3" id="btn-off">
+                    Xin nghỉ phép
+                </button>
+                <button type="button"
+                        class="d-none d-xl-block btn btn-primary no-box-shadow approve-btn-ot waves-effect waves-light float-right"
+                        id="btn-late-ot">
+                    Xin OT
+                </button>
+                <button type="button" class="approve-btn-early btn btn-warning no-box-shadow waves-light float-right"
+                        id="btn-late">
+                    Xin về sớm
+                </button>
+                <button type="button" class="approve-btn-late btn btn-danger no-box-shadow waves-light float-right"
+                        id="btn-late">
+                    Xin đi muộn
+                </button>
+            </div>
         </div>
-        <div class="col-md-9 text-right mobile-mg-right-5 float-right">
-            <button onclick="location.href='{{route("day_off")}}?t=1'"
-                    class="btn btn-success no-box-shadow waves-effect waves-light float-right" id="btn-off">
-                Xin nghỉ phép
-            </button>
-            <button type="button"
-                    class="d-none d-xl-block btn btn-primary no-box-shadow approve-btn-ot waves-effect waves-light float-right"
-                    id="btn-late-ot">
-                Xin OT
-            </button>
-            <button type="button" class="approve-btn-early btn btn-warning no-box-shadow waves-light float-right"
-                    id="btn-late">
-                Xin về sớm
-            </button>
-            <button type="button" class="approve-btn-late btn btn-danger no-box-shadow waves-light float-right"
-                    id="btn-late">
-                Xin đi muộn
-            </button>
-        </div>
-    </div>
-    <br>
-    <!-- Nav tabs -->
-    <ul class="nav nav-tabs md-tabs nav-justified primary-color" role="tablist">
-        <li class="nav-item">
-            <a class="nav-link active" data-toggle="tab" href="#panel555" role="tab">Xin đi muộn/sớm</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link tab-nav-link-ot" data-toggle="tab" href="#panel666" role="tab">Xin OT</a>
-        </li>
-    </ul>
-    <!-- Nav tabs -->
+        <!-- Nav tabs -->
+        <ul class="nav nav-tabs md-tabs nav-justified primary-color mt-2" role="tablist">
+            <li class="nav-item">
+                <a class="nav-link active" data-toggle="tab" href="#panel555" role="tab">Xin đi muộn/sớm</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link tab-nav-link-ot" data-toggle="tab" href="#panel666" role="tab">Xin OT</a>
+            </li>
+        </ul>
+        <!-- Nav tabs -->
 
-    <!-- Tab panels -->
-    <div class="tab-content">
-        <!-- Panel 1 -->
-        <div class="tab-pane fade in show active" id="panel555" role="tabpanel">
-            <table id="contactTbl" class="table table-striped table-bordered">
-                <colgroup>
-                    <col style="width: 50px">
-                    <col style="width: 120px">
-                    <col style="width: 100px">
-                    <col style="">
-                    <col style="">
-                    <col style="width: 100px">
-                </colgroup>
-                <thead class="grey lighten-2">
-                <tr>
-                    <th class="text-center d-none d-md-table-cell">#</th>
-                    <th class="text-center table-with-42">Ngày</th>
-                    <th>Hình thức</th>
-                    <th class="d-none d-md-table-cell">Nội dung</th>
-                    <th class="d-none d-md-table-cell">Nội dung phản hồi</th>
-                    <th class="text-center">Trạng Thái</th>
-                </tr>
-                </thead>
-                <tbody>
-
-                @foreach($askPermission as $increment => $item)
+        <!-- Tab panels -->
+        <div class="tab-content">
+            <!-- Panel 1 -->
+            <div class="tab-pane fade in show active" id="panel555" role="tabpanel">
+                <table id="contactTbl" class="table table-striped table-bordered">
+                    <colgroup>
+                        <col style="width: 50px">
+                        <col style="width: 120px">
+                        <col style="width: 100px">
+                        <col style="">
+                        <col style="">
+                        <col style="width: 100px">
+                    </colgroup>
+                    <thead class="grey lighten-2">
                     <tr>
-                        <th class="text-center d-none d-md-table-cell">{{ $increment+1 }}</th>
-                        <th class="text-center" style="padding: 15px;width: 10%;">{{ $item['work_day'] ?? '' }}</th>
-                        <td>
-                            @if($item['type'] == array_search('Bình thường', WORK_TIME_TYPE))
-                                Bình thường
-                            @elseif($item['type'] == array_search('Đi muộn', WORK_TIME_TYPE))
-                                Đi muộn
-                            @elseif($item['type'] == array_search('Về Sớm', WORK_TIME_TYPE))
-                                Về sớm
-                            @elseif($item['type'] == array_search('Overtime', WORK_TIME_TYPE))
-                                @if($item['ot_type'] == array_search('Dự án', OT_TYPE))
-                                    OT dự án
-                                @elseif($item['ot_type'] == array_search('OT lý do cá nhân', OT_TYPE))
-                                    OT cá nhân
+                        <th class="text-center d-none d-md-table-cell">#</th>
+                        <th class="text-center table-with-42">Ngày</th>
+                        <th>Hình thức</th>
+                        <th class="d-none d-md-table-cell">Nội dung</th>
+                        <th class="d-none d-md-table-cell">Nội dung phản hồi</th>
+                        <th class="text-center">Trạng Thái</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+
+                    @foreach($askPermission as $increment => $item)
+                        <tr>
+                            <th class="text-center d-none d-md-table-cell">{{ $increment+1 }}</th>
+                            <th class="text-center" style="padding: 15px;width: 10%;">{{ $item['work_day'] ?? '' }}</th>
+                            <td>
+                                @if($item['type'] == array_search('Bình thường', WORK_TIME_TYPE))
+                                    Bình thường
+                                @elseif($item['type'] == array_search('Đi muộn', WORK_TIME_TYPE))
+                                    Đi muộn
+                                @elseif($item['type'] == array_search('Về Sớm', WORK_TIME_TYPE))
+                                    Về sớm
+                                @elseif($item['type'] == array_search('Overtime', WORK_TIME_TYPE))
+                                    @if($item['ot_type'] == array_search('Dự án', OT_TYPE))
+                                        OT dự án
+                                    @elseif($item['ot_type'] == array_search('OT lý do cá nhân', OT_TYPE))
+                                        OT cá nhân
+                                    @endif
                                 @endif
-                            @endif
-                        </td>
-                        <td class="d-none d-md-table-cell">{!! $item['note'] ?? '' !!}</td>
-                        <td class="d-none d-md-table-cell">{!! $item['reason_reject'] ?? '' !!}</td>
-                        <td class="text-center td-approve">
-                            @if($item['status'] == array_search('Đã duyệt', OT_STATUS))
-                                <i class="fas fa-grin-stars fa-2x text-success"
-                                   title="{{ $item->workTimeApprover->name ?? '' }}"></i>
-                            @elseif($item['status'] == array_search('Chưa duyệt', OT_STATUS))
-                                <i class="fas fa-meh-blank fa-2x text-warning" title="Chưa duyệt"></i>
-                            @elseif($item['status'] == array_search('Từ chối', OT_STATUS))
-                                <i class="fas fa-frown fa-2x text-danger"
-                                   title="{{ $item->workTimeApprover->name ?? ''  }}"></i>
-                            @endif
-                        </td>
-                    </tr>
-                @endforeach
-                </tbody>
-            </table>
-        </div>
-        <!-- Panel 1 -->
+                            </td>
+                            <td class="d-none d-md-table-cell">{!! $item['note'] ?? '' !!}</td>
+                            <td class="d-none d-md-table-cell">{!! $item['reason_reject'] ?? '' !!}</td>
+                            <td class="text-center td-approve">
+                                @if($item['status'] == array_search('Đã duyệt', OT_STATUS))
+                                    <i class="fas fa-grin-stars fa-2x text-success"
+                                       title="{{ $item->workTimeApprover->name ?? '' }}"></i>
+                                @elseif($item['status'] == array_search('Chưa duyệt', OT_STATUS))
+                                    <i class="fas fa-meh-blank fa-2x text-warning" title="Chưa duyệt"></i>
+                                @elseif($item['status'] == array_search('Từ chối', OT_STATUS))
+                                    <i class="fas fa-frown fa-2x text-danger"
+                                       title="{{ $item->workTimeApprover->name ?? ''  }}"></i>
+                                @endif
+                            </td>
+                        </tr>
+                    @endforeach
+                    </tbody>
+                </table>
+            </div>
+            <!-- Panel 1 -->
 
-        <!-- Panel 2 -->
-        <div class="tab-pane fade" id="panel666" role="tabpanel">
+            <!-- Panel 2 -->
+            <div class="tab-pane fade" id="panel666" role="tabpanel">
 
-            <table id="contactTbl" class="table table-striped table-bordered">
-                <colgroup>
-                    <col style="width: 50px">
-                    <col style="width: 120px">
-                    <col style="width: 100px">
-                    <col style="width: 180px">
-                    <col style="">
-                    <col style="">
-                    <col style="width: 100px">
-                </colgroup>
-                <thead class="grey lighten-2">
-                <tr>
-                    <th class="text-center d-none d-md-table-cell">#</th>
-                    <th class="text-center">Ngày</th>
-                    <th>Hình thức</th>
-                    <th>Thời gian</th>
-                    <th class="d-none d-md-table-cell">Nội dung</th>
-                    <th class="d-none d-md-table-cell">Nội dung từ chối</th>
-                    <th class="text-center">Trạng Thái</th>
-                </tr>
-                </thead>
-                <tbody>
-
-                @foreach($otTimes as $increment => $item)
+                <table id="contactTbl" class="table table-striped table-bordered">
+                    <colgroup>
+                        <col style="width: 50px">
+                        <col style="width: 120px">
+                        <col style="width: 100px">
+                        <col style="width: 180px">
+                        <col style="">
+                        <col style="">
+                        <col style="width: 100px">
+                    </colgroup>
+                    <thead class="grey lighten-2">
                     <tr>
-                        <th class="text-center d-none d-md-table-cell">{{ $increment+1 }}</th>
-                        <th class="text-center mb-with-32" style="padding: 15px">{{ $item['work_day'] ?? '' }}</th>
-                        <td>
-                            {{$item->ot_type ? $item->ot_type == 1 ? 'OT Dự án' : 'OT cá nhân' : '' }}
-                        </td>
-                        <td class="mb-with-32">{{$item->description_time}}</td>
-                        <td class="d-none d-md-table-cell">{!! $item['reason'] !!}</td>
-                        <td class=" d-none d-md-table-cell">{!! $item['note_respond'] !!}</td>
-                        <td class="text-center td-approve">
-                            @if($item['status'] == array_search('Đã duyệt', OT_STATUS))
-                                <i class="fas fa-grin-stars fa-2x text-success"
-                                   title="{{ $item->approver->name ?? '' }}"></i>
-                            @elseif($item['status'] == array_search('Chưa duyệt', OT_STATUS))
-                                <i class="fas fa-meh-blank fa-2x text-warning" title="Chưa duyệt"></i>
-                            @elseif($item['status'] == array_search('Từ chối', OT_STATUS))
-                                <i class="fas fa-frown fa-2x text-danger"
-                                   title="{{ $item->approver->name ?? ''  }}"></i>
-                            @endif
-                        </td>
+                        <th class="text-center d-none d-md-table-cell">#</th>
+                        <th class="text-center">Ngày</th>
+                        <th>Hình thức</th>
+                        <th>Thời gian</th>
+                        <th class="d-none d-md-table-cell">Nội dung</th>
+                        <th class="d-none d-md-table-cell">Nội dung từ chối</th>
+                        <th class="text-center">Trạng Thái</th>
                     </tr>
-                @endforeach
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+
+                    @foreach($otTimes as $increment => $item)
+                        <tr>
+                            <th class="text-center d-none d-md-table-cell">{{ $increment+1 }}</th>
+                            <th class="text-center mb-with-32" style="padding: 15px">{{ $item['work_day'] ?? '' }}</th>
+                            <td>
+                                {{$item->ot_type ? $item->ot_type == 1 ? 'OT Dự án' : 'OT cá nhân' : '' }}
+                            </td>
+                            <td class="mb-with-32">{{$item->description_time}}</td>
+                            <td class="d-none d-md-table-cell">{!! $item['reason'] !!}</td>
+                            <td class=" d-none d-md-table-cell">{!! $item['note_respond'] !!}</td>
+                            <td class="text-center td-approve">
+                                @if($item['status'] == array_search('Đã duyệt', OT_STATUS))
+                                    <i class="fas fa-grin-stars fa-2x text-success"
+                                       title="{{ $item->approver->name ?? '' }}"></i>
+                                @elseif($item['status'] == array_search('Chưa duyệt', OT_STATUS))
+                                    <i class="fas fa-meh-blank fa-2x text-warning" title="Chưa duyệt"></i>
+                                @elseif($item['status'] == array_search('Từ chối', OT_STATUS))
+                                    <i class="fas fa-frown fa-2x text-danger"
+                                       title="{{ $item->approver->name ?? ''  }}"></i>
+                                @endif
+                            </td>
+                        </tr>
+                    @endforeach
+                    </tbody>
+                </table>
+
+            </div>
+            <!-- Panel 2 -->
 
         </div>
-        <!-- Panel 2 -->
-
-    </div>
-    <!-- Tab panels -->
-
+        <!-- Tab panels -->
+    @endcan
     {{--{{ $datas->render('end_user.paginate') }}--}}
     <div class="modal fade reject" id="modal-reject" tabindex="-1"
          role="dialog" aria-labelledby="myModalLabel"

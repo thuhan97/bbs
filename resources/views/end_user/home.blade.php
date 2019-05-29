@@ -7,7 +7,7 @@
             <div class="row">
                 @foreach($posts as $post)
                     <div class="col-md-6">
-                        <div class="post-item grey lighten-4">
+                        <div class="post-item grey lighten-4 home-header-box">
                             <div class="row mb-3">
                                 <div class="col-sm-5 text-center view overlay d-flex align-items-center">
                                     <a href="{{route('post_detail', ['id' => $post->id])}}" class="w-100">
@@ -22,7 +22,7 @@
                                     <div class="media-body p-1"
                                          onclick="location.href='{{route('post_detail', ['id' => $post->id])}}'">
                                         <h4 class="mt-3 mb-1 font-weight-bold elipsis-line line-2 fix-2 f-22">{{$post->name}}</h4>
-                                        <p class="elipsis-line line-3 fix-3 m-0">{{str_limit(strip_tags(nl2br($post->introduction) ), 150) }}</p>
+                                        <p class="elipsis-line line-3 fix-3 m-0">{{str_limit(strip_tags(nl2br($post->introduction) ), 60) }}</p>
                                     </div>
                                 </div>
                             </div>
@@ -30,9 +30,9 @@
                     </div>
                 @endforeach
             </div>
-            <div class="text-right"><a href="{{route('post')}}">Xem thêm thông báo >></a></div>
+            <div class="text-right pt-3"><a href="{{route('post')}}">Xem thêm thông báo >></a></div>
             <!--Grid row-->
-            <div class="row my-4 ">
+            <div class="row my-3">
                 <!--Grid column-->
                 <div class="col-xl-8 mb-4">
                     <!--/.Featured Image-->

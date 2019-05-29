@@ -9,9 +9,9 @@
     @endif
 @endsection
 @section('content')
-    <form class="mb-4">
-        <div class="md-form active-cyan-2 mb-3">
-            @include('layouts.partials.frontend.search-input', ['search' => $search, 'text' => __l('Search')])
+    <form>
+        <div class="md-form active-cyan-2 mb-2">
+            @include('layouts.partials.frontend.search-input', ['class' => 'tien','search' => $search, 'text' => __l('Search')])
             <input type="hidden" name="page_size" value="{{$perPage}}">
         </div>
     </form>
@@ -19,8 +19,8 @@
         <div class="row mb-3">
             <div class="col-sm-6"></div>
             <div class="col-sm-6 text-right">
-                <a href="{{route('event_calendar')}}" class="btn btn-primary waves-effect">
-                    <i class="fas fa-calendar"></i> Xem lịch
+                <a href="{{route('event_calendar')}}" class="btn btn-primary waves-effect" id="inputGroup-sizing-default">
+                    <i class="fas fa-calendar icon-calendar-event"></i> Xem lịch
                 </a>
             </div>
         </div>

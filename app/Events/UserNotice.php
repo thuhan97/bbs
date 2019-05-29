@@ -2,37 +2,30 @@
 
 namespace App\Events;
 
-use App\Models\Report;
-use App\Models\User;
-use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
+use Illuminate\Broadcasting\PrivateChannel;
+use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class ReportCreatedNoticeEvent
+class UserNotice implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    /**
-     * @var Report
-     */
-    public $report;
+    private $userId;
 
-    /**
-     * @var User
-     */
-    public $receiver;
+    public $message;
 
     /**
      * Create a new event instance.
      *
-     * @param Report $report
-     * @param User   $user
+     * @param $userId
+     * @param $message
      */
-    public function __construct(Report $report, User $receiver)
+    public function __construct($userId, $message)
     {
-        $this->report = $report;
-        $this->receiver = $receiver;
+        $this->userId = $userId;
+        $this->message = $message;
     }
 
     /**
@@ -42,6 +35,6 @@ class ReportCreatedNoticeEvent
      */
     public function broadcastOn()
     {
-        return new Channel('bbs');
+        return new PrivateChannel('users.' . $this->userId);
     }
 }

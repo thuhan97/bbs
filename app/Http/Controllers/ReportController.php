@@ -9,6 +9,7 @@ use App\Models\ReportReceiver;
 use App\Models\ReportReply;
 use App\Models\Team;
 use App\Models\User;
+use App\Notifications\SentReport;
 use App\Repositories\Contracts\IReportRepository;
 use App\Services\Contracts\IReportService;
 use App\Traits\RESTActions;
@@ -157,10 +158,12 @@ class ReportController extends Controller
                 if ($team)
                     $data['color_tag'] = $team->color;
                 $report = new Report($data);
+                $report->save();
+                $user->notify(new SentReport($report));
             } else {
                 $report->fill($data);
+                $report->save();
             }
-            $report->save();
         }
 
         //make receivers

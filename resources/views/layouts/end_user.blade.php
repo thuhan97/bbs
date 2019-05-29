@@ -23,6 +23,21 @@
     <script type="text/javascript" src="{{ cdn_asset('mdb/js/bootstrap.min.js') }}"></script>
     <script type="text/javascript" src="{{ cdn_asset('js/addons/datatables.min.js') }}"></script>
     <script type="text/javascript" src="{{ cdn_asset('js/sweetalert.min.js') }}"></script>
+    <script type="text/javascript" src="https://js.pusher.com/4.4/pusher.min.js"></script>
+    <script>
+        window.userId = '{{\Illuminate\Support\Facades\Auth::id()}}';
+        Pusher.logToConsole = true;
+        window.pusher = new Pusher('{{env('PUSHER_APP_KEY')}}', {
+            cluster: 'ap1',
+            forceTLS: true,
+            authEndpoint: '/broadcasting/auth',
+            auth: {
+                headers: {
+                    'X-CSRF-Token': "{{ csrf_token() }}"
+                }
+            }
+        });
+    </script>
     @stack('extend-css')
 </head>
 <body>
@@ -61,6 +76,7 @@
 <script type="text/javascript" src="{{ asset('js/moment-with-locales.min.js') }}"></script>
 {{--<script type="text/javascript" src="{{ cdn_asset('/mdb/js/compiled.min.js') }}"></script>--}}
 <script type="text/javascript" src="{{ cdn_asset('js/main.js') }}"></script>
+<script type="text/javascript" src="{{ cdn_asset('js/notify.js') }}"></script>
 
 @stack('extend-js')
 </body>

@@ -1,4 +1,12 @@
 <!--Main Navigation-->
+<?php
+$notifications = \App\Models\Notification::where('user_id', \Illuminate\Support\Facades\Auth::id())->orderBy('id', 'desc')->get();
+$notificationCount = 0;
+foreach ($notifications as $notification) {
+    if ($notification->read_at == null)
+        $notificationCount++;
+}
+?>
 <header>
     <!-- Navbar -->
     {{--<nav class="navbar fixed-top navbar-expand-lg navbar-light white scrolling-navbar">--}}
@@ -53,18 +61,7 @@
                         </a>
                     </li>
                 </ul>
-                <!-- Right -->
-                <ul class="navbar-nav mr-2" >
-                    <li class="nav-item dropdown">
-                        <a style="font-size: 22px" class="nav-link position-relative" data-toggle="dropdown" href="#" role="button" aria-expanded="false"><i class="fas fa-bell"></i></a>
-                        <div class="badge position-absolute text-center">3</div>
-                        <div class="dropdown-menu">
-                            <a class="dropdown-item d-none d-sm-block" href="">notification1</a>
-                            <a class="dropdown-item" href="">notification2</a>
-                            <a class="dropdown-item" href="">notification3</a>
-                        </div>
-                    </li>
-                </ul>
+
                 <ul class="navbar-nav nav-flex-icons">
                     <li class="nav-item">
                         <a class="nav-link waves-effect waves-light" id="nav_bar_avatar">
@@ -88,7 +85,41 @@
                         </div>
                     </li>
                 </ul>
+                <!-- Right -->
+                <ul class="navbar-nav mr-2">
+                    <li class="nav-item dropdown">
+                        <a style="font-size: 22px" class="nav-link position-relative" data-toggle="dropdown" href="#"
+                           role="button" aria-expanded="false" id="btnNotification"><i class="fas fa-bell"></i></a>
+                        @if($notifications->isNotEmpty())
+                            <div class="badge position-absolute text-center lblNotifyBagde"
+                                 data-count="{{$notificationCount}}">{{$notificationCount}}</div>
+                            <div class="dropdown-menu dropdown-right z-depth-1" id="notification">
+                                @foreach($notifications as $notification)
+                                    <div class="dropdown-item notify-read-{{$notification->is_read}}"
+                                         onclick="location.href='{{$notification->data}}'">
+                                        <div class="notice-img text-center d-flex justify-content-center ">
+                                            <img class="rounded-circle" src="{{JVB_LOGO_URL}}"/>
+                                        </div>
+                                        <div class="notice-content ">
+                                            <div class="wrap-text notice-title">{{$notification->title}}</div>
+                                            <div class="text-gray wrap-text notice-text">{{$notification->content}}</div>
+                                            <div class="text-gray">
+                                                <i>
+                                                    <span class="{{NOTIFICATION_LOGO[$notification->logo_id] ?? NOTIFICATION_LOGO[0]}}"></span>
+                                                    <span class="time-subcribe"
+                                                          data-time="{{$notification->created_at}}"
+                                                          title="{{$notification->created_at}}">{{get_beautiful_time($notification->created_at)}}</span>
+                                                </i>
+                                            </div>
+                                        </div>
 
+                                    </div>
+                                @endforeach
+                            </div>
+                        @endif
+
+                    </li>
+                </ul>
             </div>
 
         </div>
@@ -99,3 +130,23 @@
 
 </header>
 <!--Main Navigation-->
+@push('extend-js')
+    <script>
+        $(function () {
+            $("#btnNotification").click(function () {
+                if ($(".lblNotifyBagde").data('count') == 0) {
+                    $("#notification .dropdown-item").removeClass('notify-read-0').addClass('notify-read-1');
+                } else {
+                    $.ajax({
+                        url: '{{route('notification_mark_read')}}',
+                        dataType: 'JSON',
+                        type: 'POST',
+                        success: function (data) {
+                            $(".lblNotifyBagde").data('count', 0).text(0).hide();
+                        }
+                    })
+                }
+            });
+        })
+    </script>
+@endpush

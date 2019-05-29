@@ -2,37 +2,36 @@
 
 namespace App\Events;
 
-use App\Models\Report;
-use App\Models\User;
+use App\Models\Post;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
+use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class ReportCreatedNoticeEvent
+class PostNotify implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
     /**
-     * @var Report
+     * @var array
      */
-    public $report;
-
-    /**
-     * @var User
-     */
-    public $receiver;
+    public $data;
 
     /**
      * Create a new event instance.
      *
-     * @param Report $report
-     * @param User   $user
+     * @param Post $post
      */
-    public function __construct(Report $report, User $receiver)
+    public function __construct(Post $post)
     {
-        $this->report = $report;
-        $this->receiver = $receiver;
+        $this->data = [
+            'id' => $post->id,
+            'name' => $post->name,
+            'image_url' => $post->image_url,
+            'introduction' => $post->introduction,
+            'url' => route('post_detail', $post->id),
+        ];
     }
 
     /**

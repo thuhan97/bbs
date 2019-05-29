@@ -108,6 +108,7 @@ Route::group([
     Route::post('/ngay-nghi/create-day-off-vacation', 'UserController@dayOffCreatevacationVacation')->name('day_off_create_vacation');
     Route::get('/kiem-tra-ngay-phep-con-lai', 'UserController@checkUsable')->name('check-usable-day-offf');
 
+    Route::post('/notification/mark-read', 'NotificationController@markRead')->name('notification_mark_read');
 });
 
 Route::group([

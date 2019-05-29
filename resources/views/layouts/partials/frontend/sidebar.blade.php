@@ -1,7 +1,7 @@
 <?php
 $team = \Auth::user()->team();
 
-$logoUrl = ($team && $team->banner) ? lfm_thumbnail($team->banner) : 'http://jvb-corp.com/img/logo.png';
+$logoUrl = ($team && $team->banner) ? lfm_thumbnail($team->banner) : JVB_LOGO_URL;
 $name = $team->name ?? $config->name;
 ?>
 

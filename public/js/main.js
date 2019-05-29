@@ -6,9 +6,9 @@ $(function () {
         $(".pageSize").change(function () {
             location.href = $(".pageSize option:selected").data('href');
         });
+
         var subcribeList = [];
         var subcribeHourList = [];
-
 
         if ($(".time-subcribe").length > 0) {
             $(".time-subcribe").each(function () {

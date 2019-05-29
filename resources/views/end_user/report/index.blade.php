@@ -70,9 +70,9 @@ $type = request('type', $reportType);
 
                 <div class="card">
                     <div class="card-header pr-0 pl-0" role="tab" id="headingOne{{$idx}}" data-id="{{$report->id}}">
-                        <a data-toggle="collapse" data-parent="#report" href="#report_item_{{$idx}}"
+                        <a data-toggle="collapse" data-parent="#report" href="#report_item_{{$report->id}}"
                            aria-expanded="true"
-                           aria-controls="report_item_{{$idx}}"
+                           aria-controls="report_item_{{$report->id}}"
                            class="text-black"
                         >
                             <h5 class="mb-0">
@@ -82,7 +82,9 @@ $type = request('type', $reportType);
                                 {{$report->getTitle($type, $year, $month, \Illuminate\Support\Facades\Auth::id())}}
                                 <i class="fas fa-angle-down rotate-icon"></i>
                                 <span class="txt-time float-right mr-2"><i class="fas fa-clock "
-                                                                           title="{{$report->created_at}}"></i> <span class="time-subcribe" data-time="{{$report->created_at}}">{{get_beautiful_time($report->created_at)}}</span></span>
+                                                                           title="{{$report->created_at}}"></i> <span
+                                            class="time-subcribe"
+                                            data-time="{{$report->created_at}}">{{get_beautiful_time($report->created_at)}}</span></span>
 
                             </h5>
                         </a>

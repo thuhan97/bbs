@@ -54,6 +54,17 @@
                     </li>
                 </ul>
                 <!-- Right -->
+                <ul class="navbar-nav mr-2" >
+                    <li class="nav-item dropdown">
+                        <a style="font-size: 22px" class="nav-link position-relative" data-toggle="dropdown" href="#" role="button" aria-expanded="false"><i class="fas fa-bell"></i></a>
+                        <div class="badge position-absolute text-center">3</div>
+                        <div class="dropdown-menu">
+                            <a class="dropdown-item d-none d-sm-block" href="">notification1</a>
+                            <a class="dropdown-item" href="">notification2</a>
+                            <a class="dropdown-item" href="">notification3</a>
+                        </div>
+                    </li>
+                </ul>
                 <ul class="navbar-nav nav-flex-icons">
                     <li class="nav-item">
                         <a class="nav-link waves-effect waves-light" id="nav_bar_avatar">

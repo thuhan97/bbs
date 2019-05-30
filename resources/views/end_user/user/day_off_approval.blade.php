@@ -71,10 +71,10 @@
 
         <div class="row mb-0 ml-1 mb-sm-4 mt-sm-3">
             <div class="row col-6 col-sm-4 col-xl-4 pr-3 pl-3 pt-2">
-                <label class=" text-w-400 pt-2 mr-2" for="">Từ ngày</label>
+                <label class=" text-w-400 pt-2" for="">Từ ngày</label>
                 <div class="position-relative">
                     <input type="text"
-                           class="form-control border-0 select-item z-"
+                           class="form-control border-0 select-item ml-2"
                            id="search_start_at" autocomplete="off" name="search_start_at"
                            value="{{  $start ?? $searchStart  }}"
                            readonly="readonly">
@@ -84,10 +84,10 @@
 
             </div>
             <div class="row col-6 col-sm-4 col-xl-4 pr-3 pl-3 pt-2 div-day-off-from-day">
-                <label class="text-w-400 pt-2 mr-2" for="inputZip">Tới ngày</label>
+                <label class="text-w-400 pt-2 label-from-days" for="inputZip">Tới ngày</label>
                 <div class="position-relative">
                     <input type="text"
-                           class="form-control select-item  border-0 "
+                           class="form-control select-item  border-0 ml-2"
                            id="search_end_at" autocomplete="off" name="search_end_at"
                            value="{{ $end ?? ''}}"
                            readonly>
@@ -189,15 +189,14 @@
             <div class="col-7 col-sm-2 col-md-2 d-none d-xl-flex"></div>
             <div class="col-12 col-md-6 row pr-0">
 {{--                <div class="pr-4 pr-sm-0 col-md-4 offset-3">--}}
-                <div class="col-12 col-sm-8 col-lg-6 pr-0">
-                    <a href="{{route('day_off')}}" class="btn btn-primary float-right mb-2 mb-sm-0 mr-0 mr-sm-0"
+                <div class="col-12 col-sm-8 col-lg-7 pr-0">
+                    <a href="{{route('day_off')}}" class="btn btn-primary float-right mb-2 mb-sm-0 mr-0 mr-sm-3"
                        id="btn-detail-day-off" type="button">
                         Xem ngày phép
                     </a>
                 </div>
                 <div class="pl-1 col-md-5 pr-0 d-none d-xl-flex">
-                    {{ Form::select('status', SHOW_DAY_OFFF, $status ?? ALL_DAY_OFF, ['class' => 'browser-default custom-select search-day-off border-radius-1 option-select float-right h-48 mt-1 w-95']) }}
-
+                    {{ Form::select('status', SHOW_DAY_OFFF, $status ?? ALL_DAY_OFF, ['class' => 'browser-default custom-select search-day-off border-radius-1 option-select float-right h-48 mt-1']) }}
                 </div>
             </div>
         </div>

@@ -987,10 +987,6 @@
     background: #f4f4f4 !important;;
 }
 
-.search-day-off {
-    border: 1px solid #f4f4f4;
-}
-
 .color-search {
     color: #d8d8d8;
     font-size: 18px;
@@ -1227,6 +1223,10 @@ td.blank, .type-1, .type-2 {
     right: 10px;
     position: relative;
     opacity: 1;
+}
+
+.m-l-15 {
+    margin-left: 15px;
 }
 
 .ml-40 {

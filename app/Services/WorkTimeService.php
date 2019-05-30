@@ -244,7 +244,7 @@ class WorkTimeService extends AbstractService implements IWorkTimeService
                             'total_money' => $aio['aio'] * self::LATE_UNIT,
                             'detail' => __l('punish_late_money_aio', [
                                 'number' => $lateCount,
-                                'month' => $endDate,
+                                'month' => $month,
                             ])
                         ];
                     }

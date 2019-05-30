@@ -868,6 +868,7 @@
                         $('#modal-form-detail').modal('hide');
                         $('#toggle-show').attr('style', 'display: none !important');
                         $('.id_hide').val(data.data.id);
+                        $('#usable-check').hide();
                         if (data.data.title == 1) {
                             if (data.totalAbsent !=0){
                                 $('#usable-check').text('Bạn sẽ bị tính ' + data.totalAbsent + ' ngày nghỉ không phép vì ngày phép không đủ.')
@@ -894,7 +895,6 @@
                             $('#btn-send').text('SỬA ĐƠN');
 
                         }else{
-                            $('#usable-check').hide();
                             $('#home').removeClass('active show');
                             $('#profile').addClass('active show');
                             $('.edit-regime').val(data.data.title );
@@ -945,12 +945,7 @@
                         $('#usable-check').text(' ')
                     }
                     ;
-                    if (data.flag) {
-                        $('.ds-end option[value="0"]').attr('disabled', true);
-                        $('.ds-end').val(1);
-                    } else {
-                        $('.ds-end option[value="0"]').attr('disabled', false);
-                    }
+
                 }
             });
         }

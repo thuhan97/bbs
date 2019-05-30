@@ -314,7 +314,7 @@
 }
 
 .no-border {
-    border: none;
+    border: none !important;
 }
 
 .select-normal {
@@ -813,7 +813,8 @@
     }
 }
 
-@media (max-width: 1564px) {
+/*      Display 15inch      */
+@media (min-width: 768px) and (max-width: 1564px) {
     tr.calendar-body td {
         width: 162px;
         height: 95px;
@@ -828,6 +829,28 @@
         padding: 15px 0 15px 0;
         /*height: 4em;*/
         /*padding: 20px 5px;*/
+    }
+
+    .d-none-15inch {
+        display: none;
+    }
+
+    .home-title-event {
+        font-size: 18px;
+    }
+
+    .home-event-content-right {
+        font-size: 15px;
+    }
+
+    .mb-15ich-0 {
+        margin-bottom: 0 !important;
+    }
+
+    .btn-detail-laptop {
+        position: absolute;
+        bottom: 0;
+        right: 0;
     }
 }
 
@@ -1056,8 +1079,13 @@
         left: 7px;
         top: 7px;
     }
+
+    .mt-lt-13 {
+        bottom: -10px !important;
+    }
 }
 
+/*      Display 18inch        */
 @media (min-width: 1800px) {
     .ml-xxl-2 {
         margin-left: -60px;
@@ -1069,6 +1097,19 @@
 
     .ml-xxxl-1 {
         margin-left: -57px;
+    }
+
+    .d-none-18inch {
+        display: none;
+    }
+
+    .mb-1-18inch {
+        margin-bottom: 1rem!important;
+    }
+
+    .my-3-18inch {
+        margin-bottom: 1rem!important;
+        margin-top: 1rem!important;
     }
 }
 
@@ -1828,4 +1869,14 @@ td.blank, .type-1, .type-2 {
 
 .icon-calendar-event {
     margin-right: 5px;
+}
+
+.md-form textarea.md-textarea {
+    overflow-y: hidden;
+    padding: 0;
+    resize: none;
+}
+
+.md-form textarea~label.active {
+    display: none;
 }

@@ -4,24 +4,14 @@ namespace App\Events;
 
 use App\Models\Report;
 use App\Models\User;
-use Illuminate\Broadcasting\Channel;
-use Illuminate\Broadcasting\InteractsWithSockets;
-use Illuminate\Foundation\Events\Dispatchable;
-use Illuminate\Queue\SerializesModels;
+use Illuminate\Broadcasting\PrivateChannel;
 
-class ReportCreatedNoticeEvent
+class ReportCreatedNoticeEvent extends NotificationBroadCast
 {
-    use Dispatchable, InteractsWithSockets, SerializesModels;
-
-    /**
-     * @var Report
-     */
-    public $report;
-
     /**
      * @var User
      */
-    public $receiver;
+    private $receiver;
 
     /**
      * Create a new event instance.
@@ -31,8 +21,22 @@ class ReportCreatedNoticeEvent
      */
     public function __construct(Report $report, User $receiver)
     {
-        $this->report = $report;
+        $senderName = $report->user->name;
+        $url = route('report') . '?id=' . $report->id;
+        $this->data = [
+            'id' => $report->id,
+            'title' => $senderName . ' gửi báo cáo công việc.',
+            'content' => str_replace(': ' . $senderName, '', $report->title),
+            'image_url' => $report->user->avatar,
+            'logo_url' => NOTIFICATION_LOGO[NOTIFICATION_TYPE['report']],
+            'logo_id' => NOTIFICATION_TYPE['report'],
+            'url' => $url,
+            'from_id' => $report->user_id,
+            'to_id' => $receiver->id,
+        ];
         $this->receiver = $receiver;
+
+        parent::__construct();
     }
 
     /**
@@ -42,6 +46,6 @@ class ReportCreatedNoticeEvent
      */
     public function broadcastOn()
     {
-        return new Channel('bbs');
+        return new PrivateChannel('users.' . $this->receiver->id);
     }
 }

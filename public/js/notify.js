@@ -9,9 +9,7 @@ $(function () {
         var data = notice.data;
         myNotify.pushNotify('Thông báo', data.name, null, data.url, data.logo_url);
     });
-    bbsChannel.bind('App\\Events\\ReportCreatedNoticeEvent', function (data) {
-        console.log(JSON.stringify(data));
-    });
+
 
     var myChannel = pusher.subscribe('private-users.' + userId);
 
@@ -21,6 +19,11 @@ $(function () {
     });
     myChannel.bind('App\\Events\\UserNotice', function (data) {
         console.log(JSON.stringify(data));
+    });
+    myChannel.bind('App\\Events\\ReportCreatedNoticeEvent', function (notice) {
+        var data = notice.data;
+        debugger
+        myNotify.pushNotify(data.title, data.content, data.image_url, data.url, data.logo_url);
     });
 
     var $notification = $("#notification");
@@ -65,7 +68,7 @@ $(function () {
 
     MyNotify.prototype.increaseUnread = function () {
         //increase unread count
-        var unreadCount = $lblBagde.data('count');
+        var unreadCount = $lblBagde.attr('data-count');
         unreadCount++;
         $lblBagde.attr('data-count', unreadCount).text(unreadCount).show();
     };

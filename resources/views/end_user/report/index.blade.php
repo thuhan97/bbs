@@ -89,7 +89,7 @@ $type = request('type', $reportType);
                             </h5>
                         </a>
                     </div>
-                    <div id="report_item_{{$idx}}" class="collapse row" role="tabpanel"
+                    <div id="report_item_{{$report->id}}" class="collapse row" role="tabpanel"
                          aria-labelledby="headingOne{{$idx}}"
                          data-parent="#report">
                         <div class="col-xl-6 report-item">
@@ -236,9 +236,10 @@ $type = request('type', $reportType);
                     });
                 }
             });
-            $('.card-header').click(function () {
-                var $that = $(this);
-                var reportId = $(this).data('id');
+
+            function openReport(header) {
+                var $that = $(header);
+                var reportId = $(header).data('id');
 
                 var $textArea = $('#reply_' + reportId);
                 if (!$textArea.hasClass('initialized')) {
@@ -259,7 +260,17 @@ $type = request('type', $reportType);
 
                     $textArea.addClass('initialized');
                 }
+            }
+
+            $('.card-header').click(function () {
+                openReport(this);
             });
+
+            if (location.hash) {
+                var aTag = $("a[href='" + location.hash + "']");
+                aTag.click();
+                openReport(aTag.parent()[0]);
+            }
         });
 
 

@@ -1,6 +1,6 @@
 <!--Main Navigation-->
 <?php
-$notifications = \App\Models\Notification::where('user_id', \Illuminate\Support\Facades\Auth::id())->orderBy('created_at', 'desc')->take(100)->get();
+$notifications = \App\Models\Notification::where('user_id', \Illuminate\Support\Facades\Auth::id())->with('sender:id,avatar')->orderBy('created_at', 'desc')->take(100)->get();
 $notificationCount = 0;
 foreach ($notifications as $notification) {
     if ($notification->read_at == null)
@@ -98,7 +98,8 @@ foreach ($notifications as $notification) {
                                     <div class="dropdown-item notify-read-{{$notification->is_read}}"
                                          onclick="location.href='{{$notification->data}}'">
                                         <div class="notice-img text-center d-flex justify-content-center ">
-                                            <img class="rounded-circle" src="{{JVB_LOGO_URL}}"/>
+                                            <img class="rounded-circle"
+                                                 src="{{ $notification->sender->avatar ?? JVB_LOGO_URL}}"/>
                                         </div>
                                         <div class="notice-content ">
                                             <div class="wrap-text notice-title">{{$notification->title}}</div>

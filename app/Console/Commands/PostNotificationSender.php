@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use App\Events\PostNotify;
+use App\Helpers\NotificationHelper;
 use App\Models\Notification;
 use App\Models\Post;
 use App\Models\User;
@@ -45,20 +46,13 @@ class PostNotificationSender extends Command
         $posts = Post::where('has_notify', 1)
             ->where('is_sent', 0)->where('notify_date', '<=', Carbon::now())
             ->get();
-        $posts = Post::all()->take(1);
+//        $posts = Post::all();
         $users = User::where('status', ACTIVE_STATUS)->pluck('id')->toArray();
         $notifications = [];
         foreach ($posts as $post) {
             foreach ($users as $user_id) {
-                $notifications[] = [
-                    'id' => Notification::generateUID(),
-                    'user_id' => $user_id,
-                    'logo_id' => NOTIFICATION_TYPE['post'],
-                    'sender_id' => 0,
-                    'title' => 'Thông báo',
-                    'content' => $post->name,
-                    'data' => route('post_detail', $post->id),
-                ];
+                $notifications[] =
+                    NotificationHelper::generateNotify($user_id, 'Thông báo', $post->name, 0, NOTIFICATION_TYPE['post'], route('post_detail', $post->id));
             }
             broadcast(new PostNotify($post));
             $post->is_sent = 1;

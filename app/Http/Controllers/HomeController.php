@@ -15,7 +15,6 @@ class HomeController extends Controller
 
     public function index()
     {
-
         $posts = Post::select('id', 'name', 'introduction', 'image_url')
             ->where('status', ACTIVE_STATUS)
             ->orderBy('updated_at', 'desc')
@@ -37,8 +36,6 @@ class HomeController extends Controller
 
         $totalPunish = Punishes::whereDate('infringe_date', '>=', date('Y-m-01'))->sum('total_money');
         return view('end_user.home', compact('posts', 'event', 'projects', 'totalPunish'));
-
-
     }
 
 

@@ -28,6 +28,7 @@ class PostNotify implements ShouldBroadcast
         $this->data = [
             'id' => $post->id,
             'name' => $post->name,
+            'logo_url' => NOTIFICATION_LOGO[NOTIFICATION_TYPE['post']],
             'image_url' => $post->image_url,
             'introduction' => $post->introduction,
             'url' => route('post_detail', $post->id),

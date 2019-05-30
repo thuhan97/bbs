@@ -7,7 +7,7 @@ $(function () {
             location.href = $(".pageSize option:selected").data('href');
         });
 
-        var subcribeList = [];
+        window.subcribeList = [];
         var subcribeHourList = [];
 
         if ($(".time-subcribe").length > 0) {
@@ -24,6 +24,7 @@ $(function () {
 
         function _changeText(that) {
             var time = $(that).data('time');
+            if (!time) time = new Date();
             moment.locale('vi');
             var fromNow = moment(time).fromNow();
             $(that).text(fromNow);
@@ -41,11 +42,10 @@ $(function () {
             }
         }
 
-        if (subcribeList.length > 0) {
-            setInterval(function () {
-                subcribeTime();
-            }, 1000);
-        }
+        setInterval(function () {
+            subcribeTime();
+        }, 1000);
+
         if (subcribeHourList.length > 0) {
             setInterval(function () {
                 subcribeTimeHour();

@@ -2,8 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Events\PostNotify;
-use App\Events\UserNotice;
 use App\Models\Event;
 use App\Models\Post;
 use App\Models\Project;
@@ -23,9 +21,6 @@ class HomeController extends Controller
             ->orderBy('updated_at', 'desc')
             ->take(2)
             ->get();
-
-        broadcast(new PostNotify($posts->first()));
-        broadcast(new UserNotice(17, 'AAAA'));
 
         $event = Event::select('id', 'name', 'place', 'event_date', 'event_end_date', 'introduction', 'image_url', 'content', 'created_at', 'deadline_at')
             ->where('status', ACTIVE_STATUS)

@@ -6,6 +6,7 @@ use App\Events\PostNotify;
 use App\Models\Notification;
 use App\Models\Post;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Console\Command;
 
 class PostNotificationSender extends Command
@@ -41,8 +42,10 @@ class PostNotificationSender extends Command
      */
     public function handle()
     {
-//        $posts = Post::where('has_notify', 1)->where('is_noticed', 0)->where('notify_date', '<=', Carbon::now())->get();
-        $posts = Post::all();
+        $posts = Post::where('has_notify', 1)
+            ->where('is_sent', 0)->where('notify_date', '<=', Carbon::now())
+            ->get();
+        $posts = Post::all()->take(1);
         $users = User::where('status', ACTIVE_STATUS)->pluck('id')->toArray();
         $notifications = [];
         foreach ($posts as $post) {

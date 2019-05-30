@@ -1,6 +1,6 @@
 <!--Main Navigation-->
 <?php
-$notifications = \App\Models\Notification::where('user_id', \Illuminate\Support\Facades\Auth::id())->orderBy('id', 'desc')->get();
+$notifications = \App\Models\Notification::where('user_id', \Illuminate\Support\Facades\Auth::id())->orderBy('created_at', 'desc')->take(100)->get();
 $notificationCount = 0;
 foreach ($notifications as $notification) {
     if ($notification->read_at == null)
@@ -89,7 +89,7 @@ foreach ($notifications as $notification) {
                 <ul class="navbar-nav mr-2">
                     <li class="nav-item dropdown">
                         <a style="font-size: 22px" class="nav-link position-relative" data-toggle="dropdown" href="#"
-                           role="button" aria-expanded="false" id="btnNotification"><i class="fas fa-bell"></i></a>
+                           role="button" aria-expanded="false" id="btnNotification"><i class="bell fas fa-bell"></i></a>
                         @if($notifications->isNotEmpty())
                             <div class="badge position-absolute text-center lblNotifyBagde"
                                  data-count="{{$notificationCount}}">{{$notificationCount}}</div>
@@ -105,7 +105,7 @@ foreach ($notifications as $notification) {
                                             <div class="text-gray wrap-text notice-text">{{$notification->content}}</div>
                                             <div class="text-gray">
                                                 <i>
-                                                    <span class="{{NOTIFICATION_LOGO[$notification->logo_id] ?? NOTIFICATION_LOGO[0]}}"></span>
+                                                    <span class="notice-icon {{NOTIFICATION_LOGO[$notification->logo_id] ?? NOTIFICATION_LOGO[0]}}"></span>
                                                     <span class="time-subcribe"
                                                           data-time="{{$notification->created_at}}"
                                                           title="{{$notification->created_at}}">{{get_beautiful_time($notification->created_at)}}</span>
@@ -116,6 +116,7 @@ foreach ($notifications as $notification) {
                                     </div>
                                 @endforeach
                             </div>
+
                         @endif
 
                     </li>
@@ -125,7 +126,26 @@ foreach ($notifications as $notification) {
         </div>
     </nav>
     <!-- Navbar -->
-
+    <div id="notification_template" class="hidden">
+        <div class="dropdown-item notify-read-0">
+            <div class="notice-img text-center d-flex justify-content-center ">
+                <img class="rounded-circle" src="{{JVB_LOGO_URL}}"/>
+            </div>
+            <div class="notice-content ">
+                <div class="wrap-text notice-title"></div>
+                <div class="text-gray wrap-text notice-text"></div>
+                <div class="text-gray">
+                    <i>
+                        <span class="notice-icon"></span>
+                        <span class="time-subcribe"
+                              data-time=""
+                              title="">
+                                                </span>
+                    </i>
+                </div>
+            </div>
+        </div>
+    </div>
     @include('layouts.partials.frontend.sidebar')
 
 </header>
@@ -134,7 +154,7 @@ foreach ($notifications as $notification) {
     <script>
         $(function () {
             $("#btnNotification").click(function () {
-                if ($(".lblNotifyBagde").data('count') == 0) {
+                if ($(".lblNotifyBagde").attr('data-count') == 0) {
                     $("#notification .dropdown-item").removeClass('notify-read-0').addClass('notify-read-1');
                 } else {
                     $.ajax({
@@ -142,7 +162,7 @@ foreach ($notifications as $notification) {
                         dataType: 'JSON',
                         type: 'POST',
                         success: function (data) {
-                            $(".lblNotifyBagde").data('count', 0).text(0).hide();
+                            $(".lblNotifyBagde").attr('data-count', 0).text(0).hide();
                         }
                     })
                 }

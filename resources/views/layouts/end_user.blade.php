@@ -28,8 +28,8 @@
 <body>
 @include('layouts.partials.frontend.header')
 
-<main id="app" class="pt-md-5">
-    <div class="container-fluid mt-3 mt-xl-5">
+<main id="app" class="p-t-2-2">
+    <div class="container-fluid mt-3 m-t-4em">
         <div id="main">
             @if(View::hasSection('breadcrumbs'))
                 @yield('breadcrumbs')
@@ -58,6 +58,7 @@
 
 <!-- Scripts -->
 <script type="text/javascript" src="{{ cdn_asset('js/mdb.min.js?v=1') }}"></script>
+<script type="text/javascript" src="{{ asset('js/moment-with-locales.min.js') }}"></script>
 {{--<script type="text/javascript" src="{{ cdn_asset('/mdb/js/compiled.min.js') }}"></script>--}}
 <script type="text/javascript" src="{{ cdn_asset('js/main.js') }}"></script>
 

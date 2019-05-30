@@ -7,14 +7,14 @@
 
 @section('content')
     <!-- Search form -->
-    <form class="mb-4">
+    <form>
         <div class="md-form active-cyan-2 mb-3">
             @include('layouts.partials.frontend.search-input', ['search' => $search, 'text' => __l('Search_contact')])
             <input type="hidden" name="page_size" value="{{$perPage}}">
         </div>
     </form>
     @if($users->isNotEmpty())
-        <p>{{__l('total_user', ['number' => $users->count()])}}</p>
+        <p class="mb-0">{{__l('total_user', ['number' => $users->count()])}}</p>
         <table id="contactTbl" class="table table-striped">
             <colgroup>
                 <col class="d-none d-sm-table-cell" style="width: 30px">

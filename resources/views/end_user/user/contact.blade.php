@@ -67,16 +67,16 @@
                     <td class="d-none d-sm-table-cell"
                         onclick="location.href='{{route('contact', ['search' => $team->name ?? ''])}}'">{{$team->name ?? ''}}</td>
                     <td class="d-none d-sm-table-cell">{{JOB_TITLES[$user->jobtitle_id] ?? ''}}</td>
-                    <td class="d-none d-sm-table-cell">{{$user->email}}</td>
+                    <td class="d-none d-sm-table-cell"><a href="mailto:{{$user->email}}"> {{$user->email}}</a></td>
                     <td class="text-center">
                         @if($user->phone)
                             <span class="btn-showinfo btn btn-primary btn-sm">
                                 <i class="fas fas-eyes"></i>
                                 Xem
                             </span>
-                            <span class="info">
-                             {{$user->phone}}
-                        </span>
+                            <a href="tel:{{$user->phone}}" class="info">
+                                {{$user->phone}}
+                            </a>
                         @else
                             <span>{{__l('updating')}}</span>
                         @endif

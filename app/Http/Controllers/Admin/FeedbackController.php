@@ -7,7 +7,7 @@ use App\Models\Feedback;
 use App\Models\User;
 use App\Repositories\Contracts\IFeedbackRepository;
 use Carbon\Carbon;
-use Illuminate\Support\Facades\Request;
+use Illuminate\Http\Request;
 
 /**
  * FeedbackController

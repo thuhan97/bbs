@@ -265,7 +265,7 @@
             event.preventDefault();
             $(".enable").prop("disabled", false);
             $(".md-form .fas").css("display", "block");
-            $(".hidden").css("display", "block");
+            $(".btn.hidden, .required.hidden").css("display", "block");
             $(".btn-edit-profile").css("display", "none")
 
         });

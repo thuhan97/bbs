@@ -43,9 +43,6 @@ class FacadesProvider extends ServiceProvider
         $this->app->singleton('url_helper', function () {
             return new UrlHelper();
         });
-        $this->app->singleton('transcript_helper', function () {
-            return new TranscriptHelper();
-        });
         $this->app->singleton('image_helper', function () {
             return new ImageHelper();
         });

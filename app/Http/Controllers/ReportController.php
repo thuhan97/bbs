@@ -9,8 +9,10 @@ use App\Models\ReportReceiver;
 use App\Models\ReportReply;
 use App\Models\Team;
 use App\Models\User;
+use App\Notifications\SentReport;
 use App\Repositories\Contracts\IReportRepository;
 use App\Services\Contracts\IReportService;
+use App\Services\NotificationService;
 use App\Traits\RESTActions;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -21,11 +23,16 @@ class ReportController extends Controller
     use RESTActions;
 
     private $reportRepository;
+    /**
+     * @var NotificationService
+     */
+    private $notificationService;
 
-    public function __construct(IReportService $service, IReportRepository $reportRepository)
+    public function __construct(IReportService $service, IReportRepository $reportRepository, NotificationService $notificationService)
     {
         $this->service = $service;
         $this->reportRepository = $reportRepository;
+        $this->notificationService = $notificationService;
     }
 
     /**
@@ -157,10 +164,12 @@ class ReportController extends Controller
                 if ($team)
                     $data['color_tag'] = $team->color;
                 $report = new Report($data);
+                $report->save();
+                $user->notify(new SentReport($report));
             } else {
                 $report->fill($data);
+                $report->save();
             }
-            $report->save();
         }
 
         //make receivers
@@ -171,7 +180,7 @@ class ReportController extends Controller
                 'report_id' => $report->id,
                 'user_id' => $receiver->id,
             ];
-            event(new ReportCreatedNoticeEvent($report, $receiver));
+            broadcast(new ReportCreatedNoticeEvent($report, $receiver))->toOthers();
         }
         ReportReceiver::insertAll($dataReceivers);
         DB::commit();
@@ -194,11 +203,14 @@ class ReportController extends Controller
             'content' => 'required',
             'report_id' => 'required|exists:reports,id',
         ]);
+
         $data = $request->only('content', 'report_id');
         $data['user_id'] = Auth::id();
 
         $reportReply = new ReportReply($data);
         $reportReply->save();
+
+        $this->notificationService->sentReportNotification($request->get('report_id'), Auth::user(), $request->get('content'));
 
         return $this->respond(['success' => true]);
     }
@@ -276,6 +288,7 @@ class ReportController extends Controller
     private function getUserModel($conditions = [], $isGet = true)
     {
         $model = User::select('id', 'staff_code', 'name', 'avatar')
+            ->where('id', '!=', Auth::id())
             ->where('contract_type', STAFF_CONTRACT_TYPES)->where('status', ACTIVE_STATUS)->where($conditions);
 
         if ($isGet) {

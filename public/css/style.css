@@ -1181,7 +1181,7 @@ td.blank, .type-1, .type-2 {
     font-weight: bold;
 }
 
-#number_off-error, #title-error, #exampleFormControlTextarea2-error, #approver_id-error, #option_check-error ,#exampleFormControlTextarea4-error {
+#number_off-error, #title-error, #exampleFormControlTextarea2-error, #approver_id-error, #option_check-error, #exampleFormControlTextarea4-error {
     color: red;
 }
 
@@ -1810,6 +1810,12 @@ td.blank, .type-1, .type-2 {
     }
 }
 
+.wrap-text {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
 .badge {
     top: 1px;
     left: 22px;
@@ -1829,3 +1835,4 @@ td.blank, .type-1, .type-2 {
 .icon-calendar-event {
     margin-right: 5px;
 }
+

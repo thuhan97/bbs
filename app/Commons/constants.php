@@ -415,9 +415,28 @@ define('REPORT_PUBLISH', 0);
 define('REPORT_PRIVATE', 1);
 define('APPROVE_SUGGESTION', 1);
 define('NOT_APPROVE_SUGGESTION', 0);
-define('TIME_END_DATE','24:00:00');
-define('TIME_FORMAT','H:i:s');
+define('TIME_END_DATE', '24:00:00');
+define('TIME_FORMAT', 'H:i:s');
 
+define('NOTIFICATION_TYPE', [
+    'post' => 1,
+    'event' => 2,
+    'permission' => 3,
+    'approve_permission' => 4,
+    'report' => 5,
+    'comment_report' => 6,
+]);
+define('NOTIFICATION_LOGO', [
+    0 => 'fa fa-flag black-text',
+    1 => 'fa fa-anchor orange-text',
+    2 => 'fa fa-calendar green-text',
+    3 => 'fa fa-question blue-text',
+    4 => 'fa fa-question info-text',
+    5 => 'fa fa-book orange-text',
+    6 => 'fa fa-book secondary-text',
+]);
+
+define('JVB_LOGO_URL', 'http://jvb-corp.com/img/logo.png');
 
 
 

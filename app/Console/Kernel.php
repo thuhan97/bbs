@@ -6,6 +6,7 @@ use App\Console\Commands\AddDayOffFree;
 use App\Console\Commands\AddDayOffMonth;
 use App\Console\Commands\HolidayAutoAdd;
 use App\Console\Commands\MoveDayOffEndYear;
+use App\Console\Commands\PostNotificationSender;
 use App\Console\Commands\SentMailEvent;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
@@ -23,6 +24,7 @@ class Kernel extends ConsoleKernel
         MoveDayOffEndYear::class,
         HolidayAutoAdd::class,
         AddDayOffFree::class,
+        PostNotificationSender::class,
     );
 
     /**
@@ -40,6 +42,7 @@ class Kernel extends ConsoleKernel
         $schedule->command('command:move_day_off_end_year')->cron('45 23 31 12 *');
         $schedule->command('command:add_day_off_free')->cron('* * 1 * *');
         $schedule->command('command:holiday')->monthly();
+        $schedule->command('cron:post-notice')->everyThirtyMinutes();
     }
 
     /**

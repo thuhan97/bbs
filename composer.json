@@ -25,6 +25,7 @@
     "spatie/laravel-fractal": "^5.3",
     "tymon/jwt-auth": "1.0.0-rc.3",
     "unisharp/laravel-filemanager": "~1.8",
+    "webpatser/laravel-uuid": "^3.0",
     "zizaco/entrust": "5.2.x-dev"
   },
   "require-dev": {

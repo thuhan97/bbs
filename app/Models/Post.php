@@ -35,6 +35,7 @@ class Post extends Model
         'share_count',
         'status',
         'notify_date',
+        'is_sent',
     ];
 
 

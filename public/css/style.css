@@ -1181,7 +1181,7 @@ td.blank, .type-1, .type-2 {
     font-weight: bold;
 }
 
-#number_off-error, #title-error, #exampleFormControlTextarea2-error, #approver_id-error, #option_check-error {
+#number_off-error, #title-error, #exampleFormControlTextarea2-error, #approver_id-error, #option_check-error ,#exampleFormControlTextarea4-error {
     color: red;
 }
 
@@ -1764,7 +1764,7 @@ td.blank, .type-1, .type-2 {
 
 @media (max-width: 1400px) {
     .bg-img-day-off {
-        height: 600px;
+        height: 547px;
         overflow: auto;
     }
 

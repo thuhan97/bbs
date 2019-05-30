@@ -31,16 +31,6 @@
         <script>
             swal({
                 title: "Thông báo!",
-                text: "Bạn đã sửa đơn thành công!",
-                icon: "success",
-                button: "Đóng",
-            });
-        </script>
-    @endif
-    @if(session()->has('active'))
-        <script>
-            swal({
-                title: "Thông báo!",
                 text: "Bạn đã duyệt đơn thành công!",
                 icon: "success",
                 button: "Đóng",
@@ -281,7 +271,7 @@
                 <div class="modal-dialog modal-center" role="document">
                     <div class="modal-content modal-center-display bg-img-day-off" id="bg-img"
                          style="background-image: url({{ asset('img/font/xin_nghi.png') }})">
-                        <div class="modal-header text-center border-bottom-0 p-3">
+                        <div class="modal-header text-center border-bottom-0 pb-0">
                             <h4 class="modal-title w-100 font-weight-bold pt-2">NỘI DUNG ĐƠN</h4>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span class="btn-close-icon" aria-hidden="true">&times;</span>
@@ -292,15 +282,20 @@
                                 <label class="ml-3 text-d-bold" for="exampleFormControlTextarea5">Tên nhân
                                     viên</label>
                                 <div class="ml-3" id="user-day-off"></div>
+
+                            </div>
+                            <div class="mb-2">
+                                <label class="ml-3 text-d-bold" for="exampleFormControlTextarea5">Số ngày nghỉ phép còn lại : </label>
+                                <strong class="" id="number_off_remain"></strong>
+
                             </div>
                             <div class="mb-2 ml-3 ">
                                 <!-- Default input -->
                                 <label class="text-d-bold" for="exampleForm2">Thời gian được tính:</label>
-                                <strong class="" id="number_off">
-                                </strong>
+                                <strong class="" id="number_off"></strong>
                                 <span id="approver_num" class="text-danger"></span>
                             </div>
-                            <div class="mb-3">
+                            <div class="mb-2">
                                 <!-- Default input -->
                                 <label class="ml-3 text-d-bold" for="exampleForm2">Ngày nghỉ:</label>
                                 <div class="ml-3" id="strat_end"></div>
@@ -311,12 +306,12 @@
                                 <div class="ml-3" id="title"></div>
                             </div>
 
-                            <div class="mb-3">
+                            <div class="mb-2">
                                 <label class="ml-3 text-d-bold" for="exampleFormControlTextarea5">Chi tiết lý
                                     do:</label>
                                 <div class="ml-3" id="reason"></div>
                             </div>
-                            <div class="mb-4 pb-2">
+                            <div class="mb-2">
                                 <div class="row">
                                     <div class="form-group col-6 m-0">
                                         <label class="ml-3 text-d-bold" for="inputCity">Người duyệt</label>
@@ -329,12 +324,12 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="mb-3 ml-3" id="remove-app-comment">
+                            <div class="mb-2 ml-3" id="remove-app-comment">
                                 <label class="text-d-bold" for="exampleFormControlTextarea5">Ý kiến người
                                     duyệt</label>
                                 <div class="" id="app-comment"></div>
                             </div>
-                            <div class=" mb-1 pb-4 d-flex justify-content-center border-top-0 rounded mb-0"
+                            <div class=" mb-1 pb-2 d-flex justify-content-center border-top-0 rounded mb-0"
                                  id="btn-submit-form">
                             </div>
                         </div>
@@ -343,7 +338,7 @@
             </div>
         </form>
 
-        <form action="{{ route('delete_day_off') }}" method="post">
+        <form action="{{ route('delete_day_off') }}" method="post" id="close_day_off">
             @csrf
             <div class="modal fade custom-modal" id="basicExampleModal" tabindex="-1" role="dialog"
                  aria-labelledby="exampleModalLabel"
@@ -359,6 +354,7 @@
                                 <span aria-hidden="true">&times;</span>
                             </button>
                         </div>
+                        <input type="hidden" name="approval_coment" id="approval_comment">
                         <div class="d-flex justify-content-center">
                             <button type="submit" class="btn btn-secondary w-25">ĐỒNG Ý</button>
                             <span class="btn btn-primary w-25" data-dismiss="modal">HỦY</span>
@@ -478,19 +474,18 @@
                             } else {
                                 $('#remove-numoff').hide();
                             }
+                            $('#number_off').html(data.approver_num + ' ngày') ;
+                            $('#number_off_remain').html(data.totalRemain +' ngày' )
                             if (data.data.status == 0) {
-                                $('#app-comment').html('<textarea class="form-control reason_id rounded-0 select-item "id="exampleFormControlTextarea2" rows="3" placeholder="Nhập ý kiến của người duyệt" name="approve_comment"></textarea>');
-                                $('#number_off').html('<input type="text" class="form-control select-item" autocomplete="off" name="number_off" value="" id="number_off">')
-                                $('#btn-submit-form').html('<button type="submit" class="btn  btn-primary">DUYỆT ĐƠN</button> <span class="btn btn-danger btn-send" id="close-day-off" data-toggle="modal" data-target="#basicExampleModal"> HỦY DUYỆT </span>')
-                                $('#approver_num').text('Thời gian  ước tính : ' + data.approver_num + ' ngày');
+                                $('#app-comment').html('<textarea class="form-control reason_id rounded-0 select-item "id="exampleFormControlTextarea4" rows="3" placeholder="Nhập ý kiến của người duyệt" name="approve_comment"></textarea>');
+                                $('#approver_num').html('<input type="hidden" class="form-control select-item" autocomplete="off" name="number_off" value="'+ data.approver_num +'" id="">')
+                                $('#btn-submit-form').html('<button type="submit" class="btn  btn-primary">DUYỆT ĐƠN</button> <span class="btn btn-danger btn-send" id="close-day-off" data-target="#basicExampleModal"> HỦY DUYỆT </span>')
+
                             } else {
 
-                                $('#number_off').html('');
                                 $('#btn-submit-form').html('');
-                                (data.data.status == 2 || data.data.status == 0) ? $('#number_off').html(' ') : $('#number_off').html(data.absent + ' ngày');
 
                                 $('#app-comment').html(data.data.approve_comment);
-                                $('#approver_num').text(' ');
                             }
                             var urlForm = "{{ route('edit_day_off_detail') }}" + '/' + data.data.id;
 
@@ -503,6 +498,18 @@
                 })
                 $('.detail-dayoff').on('click', function () {
                     $(this).addClass('text-primary');
+                })
+                $(document).on('click' , '#close-day-off' , function () {
+                    var comment=$(('#exampleFormControlTextarea4')).val();
+                    if (comment.length < 3){
+                        if (comment.length == 0){
+                            $('#basicExampleModal').modal('show')
+                        }
+                        $('#basicExampleModal').modal('hide')
+                    } else {
+                        $('#basicExampleModal').modal('show')
+                    }
+                    $('#approval_comment').val(comment);
                 })
             });
 

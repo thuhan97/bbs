@@ -28,7 +28,7 @@ $type = request('type', $reportType);
         </a>
     </div>
     <form class="mb-2 mb-3" id="formReport">
-        <div class="row">
+        <div class="row mt-4">
             <div class="col-12 col-sm-3 col-md-3 col-xl-2 mb-2">
                 <div class="md-form m-0">
                     {{ Form::select('type', REPORT_SEARCH_TYPE_NAME, $type, ['class'=>'mr-1 mt-md-0 w-30 browser-default custom-select']) }}

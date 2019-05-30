@@ -7,7 +7,7 @@
             <div class="row">
                 @foreach($posts as $post)
                     <div class="col-md-6">
-                        <div class="post-item grey lighten-4 home-header-box">
+                        <div class="post-item grey lighten-4">
                             <div class="row mb-3">
                                 <div class="col-sm-5 text-center view overlay d-flex align-items-center">
                                     <a href="{{route('post_detail', ['id' => $post->id])}}" class="w-100">

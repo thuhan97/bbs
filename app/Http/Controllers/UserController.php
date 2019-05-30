@@ -693,7 +693,7 @@ class UserController extends Controller
             'time' => $time ?? DEFAULT_VALUE,
             'approver_num'=> $numOffApprove[0],
             'totalRemain'=>$dayOffPreYear+$remainDayoffCurrentYear+$DayoffFrreCurrentYear,
-            'totalAbsent'=>$totalAbsent
+            'totalAbsent'=>$totalAbsent > 0 ? $totalAbsent: 0
         ]);
     }
     public function editDayOffDetail(Request $request, $id)

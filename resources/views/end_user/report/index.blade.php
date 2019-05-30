@@ -109,7 +109,8 @@ $type = request('type', $reportType);
                                             @else
                                                 @foreach($report->receivers as $receiver)
                                                     <div class="float-left mb-2 report-receiver @if($receiver->id == \Illuminate\Support\Facades\Auth::id()) me @endif">
-                                                        <img src="{{$receiver->avatar}}" class="rounded-circle">
+                                                        <img src="{{$receiver->avatar}}" class="rounded-circle"
+                                                             onerror="this.src='{{URL_IMAGE_NO_IMAGE}}'">
                                                         <span>{{$receiver->name}}</span>
                                                     </div>
                                                 @endforeach
@@ -210,19 +211,10 @@ $type = request('type', $reportType);
                 var $textArea = $('#reply_' + reportId);
                 var content = tinymce.get('reply_' + reportId).getContent();
                 if (content) {
-                    var date = new Date();
-                    var $template = $("#tempReply").children().first().clone();
+                    var avatar = '{{\Illuminate\Support\Facades\Auth::user()->avatar}}';
+                    var name = '{{\Illuminate\Support\Facades\Auth::user()->name}}';
+                    commentReport(reportId, name, avatar, content, true);
 
-                    tinymce.get('reply_' + reportId).setContent('');
-
-                    $template.find('.avatar').attr('src', '{{\Illuminate\Support\Facades\Auth::user()->avatar}}');
-                    $template.find('.avatar').attr('alt', '{{\Illuminate\Support\Facades\Auth::user()->name}}');
-                    $template.find('.full_name').text('{{\Illuminate\Support\Facades\Auth::user()->name}}');
-
-                    $template.find('.created_at').text('vừa xong');
-                    $template.find('.content').html(content);
-
-                    $(this).parent().next().prepend($template);
                     $.ajax({
                         url: '{{route('reply_report')}}',
                         type: 'POST',
@@ -273,6 +265,21 @@ $type = request('type', $reportType);
             }
         });
 
+        window.commentReport = function (reportId, name, avatar, content, clearContent) {
+            var date = new Date();
+            var $template = $("#tempReply").children().first().clone();
+            if (clearContent)
+                tinymce.get('reply_' + reportId).setContent('');
+
+            $template.find('.avatar').attr('src', avatar);
+            $template.find('.avatar').attr('alt', name);
+            $template.find('.full_name').text(name);
+
+            $template.find('.created_at').text('vừa xong');
+            $template.find('.content').html(content);
+
+            $("#report_item_" + reportId).find('.replies').prepend($template);
+        }
 
     </script>
 @endpush

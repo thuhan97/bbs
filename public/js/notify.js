@@ -22,8 +22,14 @@ $(function () {
     });
     myChannel.bind('App\\Events\\ReportCreatedNoticeEvent', function (notice) {
         var data = notice.data;
-        debugger
         myNotify.pushNotify(data.title, data.content, data.image_url, data.url, data.logo_url);
+    });
+    myChannel.bind('App\\Events\\ReportReplyNoticeEvent', function (notice) {
+        var data = notice.data;
+        myNotify.pushNotify(data.title, data.content, data.image_url, data.url, data.logo_url);
+        if (window.commentReport) {
+            window.commentReport(data.id, data.name, data.image_url, data.content);
+        }
     });
 
     var $notification = $("#notification");
@@ -38,6 +44,7 @@ $(function () {
         if (!image) image = window.system_image;
         if (!link) link = location.origin;
         if (!icon) icon = 'fa fa-flag black-text';
+        content = strip(content);
         //add to notification list
         var $template = $("#notification_template").children().first().clone();
         $template.find('.notice-title').text(title);
@@ -84,4 +91,9 @@ $(function () {
 
     window.myNotify = new MyNotify();
 
+    function strip(html) {
+        var tmp = document.createElement("DIV");
+        tmp.innerHTML = html;
+        return tmp.textContent || tmp.innerText || "";
+    }
 });

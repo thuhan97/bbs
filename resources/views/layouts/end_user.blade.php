@@ -29,7 +29,7 @@
 @include('layouts.partials.frontend.header')
 
 <main id="app" class="p-t-2-2">
-    <div class="container-fluid mt-3 mt-xl-5">
+    <div class="container-fluid mt-3 m-t-4em">
         <div id="main">
             @if(View::hasSection('breadcrumbs'))
                 @yield('breadcrumbs')

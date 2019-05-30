@@ -288,6 +288,10 @@
     width: 45%;
 }
 
+.w-65 {
+    width: 65%;
+}
+
 .w-73 {
     width: 73%;
 }
@@ -298,6 +302,15 @@
 
 .w-90 {
     width: 90%;
+}
+
+
+.w-95 {
+    width: 95%;
+}
+
+.h-48 {
+    height: 48px;
 }
 
 .no-border {
@@ -328,7 +341,7 @@
 
 .navbar.navbar-light .breadcrumb .nav-item.active > .nav-link, .navbar.navbar-light .navbar-nav .nav-item.active > .nav-link {
     background: #ffffff;
-    color: #4284f4!important;
+    color: #4284f4 !important;
 }
 
 .navbar-expand-lg .navbar-nav .nav-link {
@@ -794,6 +807,10 @@
         padding-top: 25px;
         cursor: pointer;
     }
+
+    .m-t-4em {
+        margin-top: 4rem !important;
+    }
 }
 
 @media (max-width: 1564px) {
@@ -1225,7 +1242,7 @@ td.blank, .type-1, .type-2 {
 }
 
 .p-t-2-2 {
-    padding-top: 2.2rem!important;
+    padding-top: 2.2rem !important;
 }
 
 
@@ -1353,7 +1370,7 @@ td.blank, .type-1, .type-2 {
     margin-top: 5px;
 }
 
-.day-off-card{
+.day-off-card, .day-off-approval-card {
     cursor: pointer;
     height: 140px;
 }
@@ -1366,7 +1383,7 @@ td.blank, .type-1, .type-2 {
     margin-left: -40px;
 }
 
-.btn-secondary-search-day-off {
+.btn-secondary-search-day-off, .btn-secondary-search-day-off-approval {
     margin-top: -24px;
 }
 
@@ -1534,6 +1551,7 @@ td.blank, .type-1, .type-2 {
     .breadcrumb {
         padding: 10px !important;
     }
+
     #main {
         padding-top: 2rem !important;
     }
@@ -1551,7 +1569,7 @@ td.blank, .type-1, .type-2 {
         color: darkgrey;
     }
 
-    .btn-secondary-search-day-off {
+    .btn-secondary-search-day-off, .btn-secondary-search-day-off-approval {
         margin-top: -54px;
         width: 15%;
         margin-left: 85%;
@@ -1750,12 +1768,12 @@ td.blank, .type-1, .type-2 {
         overflow: auto;
     }
 
-    .day-off-card {
+    .day-off-card, .day-off-approval-card {
         cursor: pointer;
         height: 100px !important;
     }
 
-    .content-card-day-off {
+    .content-card-day-off, .content-card-day-off-approval {
         font-size: 35px;
         margin-top: -15px;
     }
@@ -1791,6 +1809,7 @@ td.blank, .type-1, .type-2 {
         top: -303px;
     }
 }
+
 .badge {
     top: 1px;
     left: 22px;
@@ -1801,11 +1820,6 @@ td.blank, .type-1, .type-2 {
     border-radius: 50%;
     padding-top: 4px;
     padding-left: 4px;
-}
-
-
-.home-header-box {
-    height: 150px !important;
 }
 
 #inputGroup-sizing-default {

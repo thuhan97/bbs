@@ -32,6 +32,9 @@
                             <th>
                                 Nội dung
                             </th>
+                            <th>
+                                Ý kiến admin
+                            </th>
                             <th class="d-none d-sm-table-cell" style="width: 150px">
                                 Ngày góp ý
                             </th>
@@ -42,6 +45,7 @@
                         </thead>
                         <tbody>
                         @foreach($list_suggestions as $idx => $suggestion)
+                            @if($suggestion->isseus_id == auth()->id())
                             <tr>
                                 <td class="d-none d-sm-table-cell center">
                                     {{$idx + 1}}
@@ -51,6 +55,9 @@
                                 </td>
                                 <td class="center">
                                     {!! nl2br($suggestion->content) !!}
+                                </td>
+                                <td class="center">
+                                    {!! nl2br($suggestion->comment) !!}
                                 </td>
                                 <td class="d-none d-sm-table-cell center">
                                     {{$suggestion->created_at->format(DATE_FORMAT)}}
@@ -65,6 +72,7 @@
                                     </div>
                                 </td>
                             </tr>
+                            @endif
                         @endforeach
                         </tbody>
                     </table>

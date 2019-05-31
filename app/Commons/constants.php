@@ -425,6 +425,7 @@ define('NOTIFICATION_TYPE', [
     'approve_permission' => 4,
     'report' => 5,
     'comment_report' => 6,
+    'suggestions'=>7
 ]);
 define('NOTIFICATION_LOGO', [
     0 => 'fa fa-flag black-text',
@@ -434,8 +435,9 @@ define('NOTIFICATION_LOGO', [
     4 => 'fa fa-question info-text',
     5 => 'fa fa-book orange-text',
     6 => 'fa fa-book secondary-text',
+    7 => 'fa fa-envelope-o secondary-text'
 ]);
-
+define('SUGGESTIONS_TITLE_NOTIFY','bạn có một đề xuất - góp ý mới cần giải quyết.');
 define('JVB_LOGO_URL', 'http://jvb-corp.com/img/logo.png');
 
 

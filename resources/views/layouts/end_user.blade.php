@@ -17,7 +17,7 @@
           integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
     <link href="{{ cdn_asset('css/addons/datatables.min.css') }}" rel="stylesheet">
     <link href="{{ cdn_asset('css/notification.css') }}?v={{date('Ymd')}}-1" rel="stylesheet">
-    <link href="{{ cdn_asset('css/style.css') }}?v={{date('Ymd')}}-1" rel="stylesheet">
+    <link href="{{ cdn_asset('css/style.css') }}?v={{date('Ymd')}}" rel="stylesheet">
 
     <script type="text/javascript" src="{{ cdn_asset('mdb/js/jquery-3.3.1.min.js') }}"></script>
     <script type="text/javascript" src="{{ cdn_asset('mdb/js/popper.min.js') }}"></script>

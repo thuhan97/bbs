@@ -169,4 +169,11 @@ class DateTimeHelper
         $diff = date_diff($start, $end);
         return $diff->format('%hh%im');
     }
+
+    public static function getOtHour($from, $to)
+    {
+        $minute = self::subMinute($from, $to);
+
+        return floor($minute / 15) * 0.25;
+    }
 }

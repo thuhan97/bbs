@@ -84,11 +84,11 @@ class OTGridExport extends WTGridExport implements FromArray
                     //Regular date && additation date
                     if (!$this->config->work_days || ($this->config->work_days && in_array($dateObj->format('N'), $this->config->work_days)) || $checkIsAdditionalDate) {
                         if ($workTime->end_at > $otTimeAt) {
-                            $hour = $this->getOtHour($otTimeAt, $workTime->end_at);
+                            $hour = DateTimeHelper::getOtHour($otTimeAt, $workTime->end_at);
                         }
                     } else {
                         //weekend
-                        $hour = $this->getOtHour($workTime->start_at, $workTime->end_at);
+                        $hour = DateTimeHelper::getOtHour($workTime->start_at, $workTime->end_at);
                     }
                     $totalHourUser += $hour;
                     $userData[] = $hour;
@@ -126,11 +126,4 @@ class OTGridExport extends WTGridExport implements FromArray
         return array_merge($this->headings, $this->importList);
     }
 
-    private function getOtHour($from, $to)
-    {
-
-        $minute = DateTimeHelper::subMinute($from, $to);
-
-        return floor($minute / 15) * 0.25;
-    }
 }

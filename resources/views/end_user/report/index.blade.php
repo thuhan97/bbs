@@ -28,7 +28,7 @@ $type = request('type', $reportType);
         </a>
     </div>
     <form class="mb-2 mb-3" id="formReport">
-        <div class="row">
+        <div class="row mt-4">
             <div class="col-12 col-sm-3 col-md-3 col-xl-2 mb-2">
                 <div class="md-form m-0">
                     {{ Form::select('type', REPORT_SEARCH_TYPE_NAME, $type, ['class'=>'mr-1 mt-md-0 w-30 browser-default custom-select']) }}
@@ -70,9 +70,9 @@ $type = request('type', $reportType);
 
                 <div class="card">
                     <div class="card-header pr-0 pl-0" role="tab" id="headingOne{{$idx}}" data-id="{{$report->id}}">
-                        <a data-toggle="collapse" data-parent="#report" href="#report_item_{{$idx}}"
+                        <a data-toggle="collapse" data-parent="#report" href="#report_item_{{$report->id}}"
                            aria-expanded="true"
-                           aria-controls="report_item_{{$idx}}"
+                           aria-controls="report_item_{{$report->id}}"
                            class="text-black"
                         >
                             <h5 class="mb-0">
@@ -82,12 +82,14 @@ $type = request('type', $reportType);
                                 {{$report->getTitle($type, $year, $month, \Illuminate\Support\Facades\Auth::id())}}
                                 <i class="fas fa-angle-down rotate-icon"></i>
                                 <span class="txt-time float-right mr-2"><i class="fas fa-clock "
-                                                                           title="{{$report->created_at}}"></i> <span class="time-subcribe" data-time="{{$report->created_at}}">{{get_beautiful_time($report->created_at)}}</span></span>
+                                                                           title="{{$report->created_at}}"></i> <span
+                                            class="time-subcribe"
+                                            data-time="{{$report->created_at}}">{{get_beautiful_time($report->created_at)}}</span></span>
 
                             </h5>
                         </a>
                     </div>
-                    <div id="report_item_{{$idx}}" class="collapse row" role="tabpanel"
+                    <div id="report_item_{{$report->id}}" class="collapse row" role="tabpanel"
                          aria-labelledby="headingOne{{$idx}}"
                          data-parent="#report">
                         <div class="col-xl-6 report-item">
@@ -107,7 +109,8 @@ $type = request('type', $reportType);
                                             @else
                                                 @foreach($report->receivers as $receiver)
                                                     <div class="float-left mb-2 report-receiver @if($receiver->id == \Illuminate\Support\Facades\Auth::id()) me @endif">
-                                                        <img src="{{$receiver->avatar}}" class="rounded-circle">
+                                                        <img src="{{$receiver->avatar}}" class="rounded-circle"
+                                                             onerror="this.src='{{URL_IMAGE_NO_IMAGE}}'">
                                                         <span>{{$receiver->name}}</span>
                                                     </div>
                                                 @endforeach
@@ -208,19 +211,10 @@ $type = request('type', $reportType);
                 var $textArea = $('#reply_' + reportId);
                 var content = tinymce.get('reply_' + reportId).getContent();
                 if (content) {
-                    var date = new Date();
-                    var $template = $("#tempReply").children().first().clone();
+                    var avatar = '{{\Illuminate\Support\Facades\Auth::user()->avatar}}';
+                    var name = '{{\Illuminate\Support\Facades\Auth::user()->name}}';
+                    commentReport(reportId, name, avatar, content, true);
 
-                    tinymce.get('reply_' + reportId).setContent('');
-
-                    $template.find('.avatar').attr('src', '{{\Illuminate\Support\Facades\Auth::user()->avatar}}');
-                    $template.find('.avatar').attr('alt', '{{\Illuminate\Support\Facades\Auth::user()->name}}');
-                    $template.find('.full_name').text('{{\Illuminate\Support\Facades\Auth::user()->name}}');
-
-                    $template.find('.created_at').text('vừa xong');
-                    $template.find('.content').html(content);
-
-                    $(this).parent().next().prepend($template);
                     $.ajax({
                         url: '{{route('reply_report')}}',
                         type: 'POST',
@@ -234,9 +228,10 @@ $type = request('type', $reportType);
                     });
                 }
             });
-            $('.card-header').click(function () {
-                var $that = $(this);
-                var reportId = $(this).data('id');
+
+            function openReport(header) {
+                var $that = $(header);
+                var reportId = $(header).data('id');
 
                 var $textArea = $('#reply_' + reportId);
                 if (!$textArea.hasClass('initialized')) {
@@ -257,9 +252,38 @@ $type = request('type', $reportType);
 
                     $textArea.addClass('initialized');
                 }
+            }
+
+            $('.card-header').click(function () {
+                openReport(this);
             });
+
+            if (location.hash) {
+                var aTag = $("a[href='" + location.hash + "']");
+                aTag.click();
+                openReport(aTag.parent()[0]);
+            }
         });
 
+        window.commentReport = function (reportId, name, avatar, content, clearContent) {
+            var date = new Date();
+            var $template = $("#tempReply").children().first().clone();
+            if (clearContent)
+                tinymce.get('reply_' + reportId).setContent('');
+
+            $template.find('.avatar').attr('src', avatar);
+            $template.find('.avatar').attr('alt', name);
+            $template.find('.full_name').text(name);
+
+            $template.find('.created_at').text('vừa xong');
+            $template.find('.content').html(content);
+
+            $("#report_item_" + reportId).find('.replies').prepend($template);
+        }
 
     </script>
+@endpush
+
+@push('extend-css')
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/timepicker/1.3.5/jquery.timepicker.min.css">
 @endpush

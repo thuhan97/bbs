@@ -7,6 +7,7 @@
 
 namespace App\Services;
 
+use App\Helpers\DatabaseHelper;
 use App\Models\Config;
 use App\Models\Group;
 use App\Models\Report;
@@ -133,12 +134,13 @@ class ReportService extends AbstractService implements IReportService
                     }
                 }
             }
-            if (!($type == REPORT_SEARCH_TYPE['team'] && isset($criterias['team_id']))) {
-                $modelInner->orWhereHas('reportReceivers', function ($q) use ($currentUser) {
-                    $q->where('user_id', $currentUser->id);
-                });
+            if (!$currentUser->isMaster()) {
+                if (!($type == REPORT_SEARCH_TYPE['team'] && isset($criterias['team_id']))) {
+                    $modelInner->orWhereHas('reportReceivers', function ($q) use ($currentUser) {
+                        $q->where('user_id', $currentUser->id);
+                    });
+                }
             }
-
         });
         return $model->paginate($perPage);
     }

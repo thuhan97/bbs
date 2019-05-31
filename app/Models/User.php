@@ -82,6 +82,16 @@ class User extends Authenticatable implements JWTSubject
     }
 
     /**
+     * The channels the user receives notification broadcasts on.
+     *
+     * @return string
+     */
+    public function receivesBroadcastNotificationsOn()
+    {
+        return 'users.' . $this->id;
+    }
+
+    /**
      * Encrypt password
      *
      * @param $value

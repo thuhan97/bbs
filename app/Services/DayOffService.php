@@ -368,12 +368,14 @@ class DayOffService extends AbstractService implements IDayOffService
         $dayOff->approver_at = now();
         $dayOff->approve_comment = $request->approve_comment;
         $dayOff->status = STATUS_DAY_OFF['active'];
+
+        $numOffApprove = $this->checkDateUsable($dayOff->start_at, $dayOff->end_at, null, null, true)[0];
         // user create day off = staff -> check remain day off table
         if ($dayOff->title != DAY_OFF_TITLE_DEFAULT && $userDayOff->contract_type == CONTRACT_TYPES['staff']) {
-            $dayOff->number_off = $request->number_off;
+            $dayOff->number_off = $numOffApprove;
 
         } else if ($dayOff->title == DAY_OFF_TITLE_DEFAULT && $userDayOff->contract_type == CONTRACT_TYPES['staff'] && $userDayOff->end_date == null) {
-            $dayOff->number_off = $request->number_off;
+            $dayOff->number_off = $numOffApprove;
             // create new if reamin day off curent year = null
             $remainDayOffCurrentYear = RemainDayoff::where('user_id', $dayOff->user_id)->where('year', date('Y'))->first();
 
@@ -387,20 +389,20 @@ class DayOffService extends AbstractService implements IDayOffService
             // day off exist Current year
             $dayOffPreYear = $remainDayOffPreYear ? $remainDayOffPreYear->remain : DAY_OFF_DEFAULT;
 
-            if ($dayOffFreeCurrentYear >= $request->number_off) {
-                $remainDayOffCurrentYear->day_off_free_female = $dayOffFreeCurrentYear - $request->number_off;
+            if ($dayOffFreeCurrentYear >= $numOffApprove) {
+                $remainDayOffCurrentYear->day_off_free_female = $dayOffFreeCurrentYear - $numOffApprove;
                 $remainDayOffCurrentYear->save();
             } else {
-                if ($dayOffPreYear + $dayOffFreeCurrentYear >= $request->number_off) {
-                    $remainDayOffPreYear->remain = $dayOffPreYear + $dayOffFreeCurrentYear - $request->number_off;
+                if ($dayOffPreYear + $dayOffFreeCurrentYear >= $numOffApprove) {
+                    $remainDayOffPreYear->remain = $dayOffPreYear + $dayOffFreeCurrentYear - $numOffApprove;
                     $remainDayOffPreYear->save();
 
-                } elseif ($dayOffCurrentYear + $dayOffPreYear + $dayOffFreeCurrentYear >= $request->number_off) {
+                } elseif ($dayOffCurrentYear + $dayOffPreYear + $dayOffFreeCurrentYear >= $numOffApprove) {
                     if ($remainDayOffPreYear) {
                         $remainDayOffPreYear->remain = DAY_OFF_DEFAULT;
                         $remainDayOffPreYear->save();
                     }
-                    $remainDayOffCurrentYear->remain = $dayOffCurrentYear + $dayOffPreYear + $dayOffFreeCurrentYear - $request->number_off;
+                    $remainDayOffCurrentYear->remain = $dayOffCurrentYear + $dayOffPreYear + $dayOffFreeCurrentYear - $numOffApprove[0];
                     $remainDayOffCurrentYear->save();
 
                 } else {
@@ -409,8 +411,8 @@ class DayOffService extends AbstractService implements IDayOffService
                         $remainDayOffPreYear->save();
                     }
                     $remainDayOffCurrentYear->remain = DAY_OFF_DEFAULT;
-                    $dayOff->absent = $request->number_off - ($dayOffCurrentYear + $dayOffPreYear + $dayOffFreeCurrentYear);
-                    $dayOff->number_off = $request->number_off - $dayOff->absent;
+                    $dayOff->absent = $numOffApprove - ($dayOffCurrentYear + $dayOffPreYear + $dayOffFreeCurrentYear);
+                    $dayOff->number_off = $numOffApprove - $dayOff->absent;
                     $remainDayOffCurrentYear->save();
                 };
 
@@ -419,7 +421,7 @@ class DayOffService extends AbstractService implements IDayOffService
             }
         } else {
             // user create day off != staff -> insert column absent table day off = total number off
-            $dayOff->absent = $request->number_off;
+            $dayOff->absent = $numOffApprove;
         }
         $dayOff->save();
 

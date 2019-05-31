@@ -1,7 +1,7 @@
 <?php
 $team = \Auth::user()->team();
 
-$logoUrl = ($team && $team->banner) ? lfm_thumbnail($team->banner) : 'http://jvb-corp.com/img/logo.png';
+$logoUrl = ($team && $team->banner) ? lfm_thumbnail($team->banner) : JVB_LOGO_URL;
 $name = $team->name ?? $config->name;
 ?>
 
@@ -10,7 +10,7 @@ $name = $team->name ?? $config->name;
 
     <div class="text-center mb-xl-4">
         <a href="/" class="logo-wrapper waves-effect">
-            <img src="{{$logoUrl}}" class="img-fluid" alt="">
+            <img src="{{$logoUrl}}" class="img-fluid" onerror="this.src='{{JVB_LOGO_URL}}'" alt="">
         </a>
 
         <p><strong class="text-uppercase text-primary">

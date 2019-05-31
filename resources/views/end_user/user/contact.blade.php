@@ -7,14 +7,14 @@
 
 @section('content')
     <!-- Search form -->
-    <form class="mb-4">
+    <form>
         <div class="md-form active-cyan-2 mb-3">
             @include('layouts.partials.frontend.search-input', ['search' => $search, 'text' => __l('Search_contact')])
             <input type="hidden" name="page_size" value="{{$perPage}}">
         </div>
     </form>
     @if($users->isNotEmpty())
-        <p>{{__l('total_user', ['number' => $users->count()])}}</p>
+        <p class="mb-0">{{__l('total_user', ['number' => $users->count()])}}</p>
         <table id="contactTbl" class="table table-striped">
             <colgroup>
                 <col class="d-none d-sm-table-cell" style="width: 30px">
@@ -67,16 +67,16 @@
                     <td class="d-none d-sm-table-cell"
                         onclick="location.href='{{route('contact', ['search' => $team->name ?? ''])}}'">{{$team->name ?? ''}}</td>
                     <td class="d-none d-sm-table-cell">{{JOB_TITLES[$user->jobtitle_id] ?? ''}}</td>
-                    <td class="d-none d-sm-table-cell">{{$user->email}}</td>
+                    <td class="d-none d-sm-table-cell"><a href="mailto:{{$user->email}}"> {{$user->email}}</a></td>
                     <td class="text-center">
                         @if($user->phone)
                             <span class="btn-showinfo btn btn-primary btn-sm">
                                 <i class="fas fas-eyes"></i>
                                 Xem
                             </span>
-                            <span class="info">
-                             {{$user->phone}}
-                        </span>
+                            <a href="tel:{{$user->phone}}" class="info">
+                                {{$user->phone}}
+                            </a>
                         @else
                             <span>{{__l('updating')}}</span>
                         @endif

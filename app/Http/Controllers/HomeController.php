@@ -21,13 +21,11 @@ class HomeController extends Controller
             ->take(2)
             ->get();
 
-        $event = Event::select('id', 'name', 'place', 'event_date', 'event_end_date', 'introduction', 'image_url', 'content', 'created_at', 'deadline_at')
+        $events = Event::select('id', 'name', 'place', 'event_date', 'event_end_date', 'introduction', 'image_url', 'content', 'created_at', 'deadline_at')
             ->where('status', ACTIVE_STATUS)
-            ->whereDate('event_date', '>=', date(DATE_FORMAT))
-            ->orderBy('event_date')
-            ->first();
-
-
+//            ->whereDate('event_date', '>=', date(DATE_FORMAT))
+            ->orderBy('event_date', 'desc')
+            ->take(3)->get();
         $projects = Project::select('id', 'name', 'technical', 'image_url')
             ->where('status', ACTIVE_STATUS)
             ->orderBy('id', 'desc')
@@ -35,7 +33,7 @@ class HomeController extends Controller
             ->get();
 
         $totalPunish = Punishes::whereDate('infringe_date', '>=', date('Y-m-01'))->sum('total_money');
-        return view('end_user.home', compact('posts', 'event', 'projects', 'totalPunish'));
+        return view('end_user.home', compact('posts', 'events', 'projects', 'totalPunish'));
     }
 
 

@@ -25,19 +25,9 @@
     if (session()->has('manager')) {
         $manager = session()->get('manager');
     }
-    $searchStart = date((date('Y')-1).'/01/01', strtotime('tomorrow + 1day'));
+    $searchStart = date((date('Y') - 1) . '/01/01', strtotime('tomorrow + 1day'));
     ?>
     @if(session()->has('success'))
-        <script>
-            swal({
-                title: "Thông báo!",
-                text: "Bạn đã sửa đơn thành công!",
-                icon: "success",
-                button: "Đóng",
-            });
-        </script>
-    @endif
-    @if(session()->has('active'))
         <script>
             swal({
                 title: "Thông báo!",
@@ -59,24 +49,22 @@
     @endif
     <form action="{{ route('day_off_search') }}" method="get" id="form-search">
         <div id="user-login" attr="{{ \Illuminate\Support\Facades\Auth::user()->name }}"></div>
-       {{-- <div class="row mb-3">
-            <div class="col-6 col-sm-2 col-xl-1 no-padding-right">
-                {{ Form::select('year', get_years(), $year ?? date('Y') , ['class'=>'yearselect browser-default custom-select w-100 border-0 select_year option-select p-1']) }}
-            </div>
-            <div class="col-6 col-sm-4 col-xl-2 no-padding-left">
-                {{ Form::select('month', MONTH, $month ?? '', ['class' => 'browser-default custom-select w-100 month option-select','placeholder'=>'Chọn tháng']) }}
-            </div>
-        </div>--}}
+        {{-- <div class="row mb-3">
+             <div class="col-6 col-sm-2 col-xl-1 no-padding-right">
+                 {{ Form::select('year', get_years(), $year ?? date('Y') , ['class'=>'yearselect browser-default custom-select w-100 border-0 select_year option-select p-1']) }}
+             </div>
+             <div class="col-6 col-sm-4 col-xl-2 no-padding-left">
+                 {{ Form::select('month', MONTH, $month ?? '', ['class' => 'browser-default custom-select w-100 month option-select','placeholder'=>'Chọn tháng']) }}
+             </div>
+         </div>--}}
 
 
-
-
-        <div class="row mb-2 ml-1 mb-sm-3">
-            <div class="col-6 col-sm-4 col-xl-2 pr-3 pl-0">
-                <label class=" text-w-400" for="">Từ ngày</label>
+        <div class="row mb-0 ml-1 mb-sm-4 mt-sm-3">
+            <div class="row col-6 col-sm-4 col-xl-4 pr-3 pl-3 pt-2">
+                <label class=" text-w-400 pt-2" for="">Từ ngày</label>
                 <div class="position-relative">
                     <input type="text"
-                           class="form-control border-0 select-item z-"
+                           class="form-control border-0 select-item ml-2"
                            id="search_start_at" autocomplete="off" name="search_start_at"
                            value="{{  $start ?? $searchStart  }}"
                            readonly="readonly">
@@ -85,27 +73,27 @@
 
 
             </div>
-            <div class="col-6 col-sm-4 col-xl-2 pr-3 pl-0">
-                <label class="text-w-400" for="inputZip">Tới ngày</label>
+            <div class="row col-6 col-sm-4 col-xl-4 pr-3 pl-3 pt-2 div-day-off-from-day">
+                <label class="text-w-400 pt-2 label-from-days" for="inputZip">Tới ngày</label>
                 <div class="position-relative">
                     <input type="text"
-                           class="form-control select-item  border-0 "
+                           class="form-control select-item  border-0 ml-2"
                            id="search_end_at" autocomplete="off" name="search_end_at"
                            value="{{ $end ?? ''}}"
-                    readonly>
+                           readonly>
                     <i class="far fa-calendar-alt position-absolute calendar-search"></i>
                 </div>
             </div>
-            <div class="col-sm-2 col-xl-1 no-padding-left mt-3 mt-sm-0">
+            <div class="col-sm-2 col-xl-1 no-padding-left mt-3 mt-sm-0 group-btn-search-day-off">
                 <label class=" text-w-400 d-none d-sm-block" for="inputCity"> &nbsp;</label>
-                <button class="form-control select-item  border-0 btn-secondary" id="result-search"><i
+                <button class="form-control select-item  border-0 btn-secondary btn-secondary-search-day-off-approval" id="result-search"><i
                             class="fas fa-search"></i></button>
             </div>
         </div>
 
-        <div class="d-none d-xl-flex container-fluid col-12 row border-bottom-2 mb-2" style="position: relative;">
+        <div class="d-none d-xl-flex container-fluid col-12 row border-bottom-2 mb-3" style="position: relative;">
             <div class="col-sm-3 col-md-6 col-lg-3 position-relative">
-                <a href="{{ route('day_off_show',['status'=>ALL_DAY_OFF]) }}" class="card bg-primary border-radius-2">
+                <a href="{{ route('day_off_show',['status'=>ALL_DAY_OFF]) }}" class="card bg-primary border-radius-2 day-off-approval-card">
                     <div class="card-body row d-flex justify-content-center px-0 ml-xxl-2">
                         <div class="media mr-xl-1 d-md-flex">
                             <span id="dayoff-option-header-1"
@@ -113,7 +101,7 @@
                                 <i class="fas fa-clipboard-list dayoff-icoin text-primary dayoff-cioin-1-2-3"></i>
                             </span>
                             <div class="media-body text-center text-md-left ml-xl-4">
-                                <h1 class="white-text font-weight-bold">{{ $dataDayOff['total'] < TOTAL_COUNT_DAY_OFF ? ($dataDayOff['total'] == DEFAULT_VALUE ? $dataDayOff['total']: "0".$dataDayOff['total'])  : $dataDayOff['total'] }}</h1>
+                                <h1 class="white-text font-weight-bold content-card-day-off-approval">{{ $dataDayOff['total'] < TOTAL_COUNT_DAY_OFF ? ($dataDayOff['total'] == DEFAULT_VALUE ? $dataDayOff['total']: "0".$dataDayOff['total'])  : $dataDayOff['total'] }}</h1>
                                 <p class="card-subtitle text-white-50 text-size-table">Tổng đơn xin nghỉ</p>
                                 <p class="card-title text-uppercase font-weight-bold card-text white-text text-size-header">
                                     TRONG NĂM {{date('Y')}}</p>
@@ -126,7 +114,7 @@
             </div>
             <div class="col-sm-3 col-md-6 col-lg-3 position-relative ">
                 <a href="{{ route('day_off_show',['status'=>STATUS_DAY_OFF['active']]) }}"
-                   class="card bg-success border-radius-2">
+                   class="card bg-success border-radius-2 day-off-approval-card">
                     <div class="card-body row d-flex justify-content-center px-0 ml-xxl-2">
                         <div class="media mr-lg-5 d-md-flex">
                             <span id="dayoff-option-header-2"
@@ -134,7 +122,7 @@
                                 <i class="fas fa-clipboard-check dayoff-icoin text-success dayoff-cioin-1-2-3"></i>
                             </span>
                             <div class="media-body text-center text-md-left ml-xl-4">
-                                <h1 class="white-text font-weight-bold">{{ $dataDayOff['totalActive'] < TOTAL_COUNT_DAY_OFF ?  ($dataDayOff['totalActive'] == DEFAULT_VALUE ? $dataDayOff['totalActive']: "0".$dataDayOff['totalActive']) : $dataDayOff['totalActive'] }}</h1>
+                                <h1 class="white-text font-weight-bold content-card-day-off-approval">{{ $dataDayOff['totalActive'] < TOTAL_COUNT_DAY_OFF ?  ($dataDayOff['totalActive'] == DEFAULT_VALUE ? $dataDayOff['totalActive']: "0".$dataDayOff['totalActive']) : $dataDayOff['totalActive'] }}</h1>
                                 <p class="card-subtitle text-white-50 text-size-table">Đơn xin nghỉ</p>
                                 <p class="card-title text-uppercase font-weight-bold card-text white-text text-size-header">
                                     ĐÃ DUYỆT</p>
@@ -146,7 +134,7 @@
                 </a>
             </div>
             <div class="col-sm-3 col-md-6 col-lg-3 position-relative">
-                <a href="{{ route('day_off_show',['status'=>STATUS_DAY_OFF['abide']]) }}" class="card border-radius-2"
+                <a href="{{ route('day_off_show',['status'=>STATUS_DAY_OFF['abide']]) }}" class="card border-radius-2 day-off-approval-card"
                    id="bg-yellow">
                     <div class="card-body  row d-flex justify-content-center px-0 ml-xxl-2">
                         <div class="media mr-lg-5  d-md-flex">
@@ -155,7 +143,7 @@
                                <i class="fas fa-clipboard dayoff-icoin text-warning dayoff-cioin-1-2-3"></i>
                             </span>
                             <div class="media-body text-center text-md-left ml-xl-4">
-                                <h1 class="white-text font-weight-bold ">{{ $dataDayOff['totalAbide'] < TOTAL_COUNT_DAY_OFF ? ($dataDayOff['totalAbide'] == DEFAULT_VALUE ? $dataDayOff['totalAbide']: "0".$dataDayOff['totalAbide']) : $dataDayOff['totalAbide'] }}</h1>
+                                <h1 class="white-text font-weight-bold content-card-day-off-approval">{{ $dataDayOff['totalAbide'] < TOTAL_COUNT_DAY_OFF ? ($dataDayOff['totalAbide'] == DEFAULT_VALUE ? $dataDayOff['totalAbide']: "0".$dataDayOff['totalAbide']) : $dataDayOff['totalAbide'] }}</h1>
                                 <p class="card-subtitle text-white-50 text-size-table">Đơn xin nghỉ</p>
                                 <p class="card-title text-uppercase font-weight-bold card-text white-text text-size-header">
                                     CHỜ DUYỆT</p>
@@ -167,7 +155,7 @@
             </div>
             <div class="col-sm-3 col-md-6 col-lg-3 position-relative pr-0">
                 <a href="{{ route('day_off_show',['status'=>STATUS_DAY_OFF['noActive']]) }}"
-                   class="card bg-danger border-radius-2">
+                   class="card bg-danger border-radius-2 day-off-approval-card">
                     <div class="card-body mr-lg-3 row d-flex justify-content-center px-0 ml-xxl-1">
                         <div class="media mr-lg-3 d-md-flex">
                             <span id="dayoff-option-header-4"
@@ -175,7 +163,7 @@
                                 <i class="fas fa-times-circle dayoff-icoin dayoff-icoin-close text-danger size-table"></i>
                             </span>
                             <div class="media-body text-center text-md-left ml-xl-4">
-                                <h1 class="white-text font-weight-bold">{{ $dataDayOff['totalnoActive'] < TOTAL_COUNT_DAY_OFF ? ($dataDayOff['totalnoActive'] == DEFAULT_VALUE ? $dataDayOff['totalnoActive']: "0".$dataDayOff['totalnoActive']) : $dataDayOff['totalnoActive'] }}</h1>
+                                <h1 class="white-text font-weight-bold content-card-day-off-approval">{{ $dataDayOff['totalnoActive'] < TOTAL_COUNT_DAY_OFF ? ($dataDayOff['totalnoActive'] == DEFAULT_VALUE ? $dataDayOff['totalnoActive']: "0".$dataDayOff['totalnoActive']) : $dataDayOff['totalnoActive'] }}</h1>
                                 <p class="card-subtitle text-white-50 text-size-table">Đơn xin nghỉ</p>
                                 <p class="card-title text-uppercase font-weight-bold card-text white-text text-size-header">
                                     KHÔNG DUYỆT</p>
@@ -186,16 +174,20 @@
                 </a>
             </div>
         </div>
-        <br>
-        <div class="row d-none d-xl-flex">
-            <div class="col-sm-8 col-md-4"></div>
-            <div class="col-7 col-sm-2 col-md-4">
-            </div>
-            <div class="col-12 col-md-4">
-            <div class="pl-1">
-                {{ Form::select('status', SHOW_DAY_OFFF, $status ?? ALL_DAY_OFF, ['class' => 'browser-default custom-select w-100 search-day-off border-radius-1 option-select']) }}
-
-            </div>
+        <div class="row mb-4 mb-sm-0">
+            <div class="col-sm-8 col-md-4 d-none d-xl-flex"></div>
+            <div class="col-7 col-sm-2 col-md-2 d-none d-xl-flex"></div>
+            <div class="col-12 col-md-6 row pr-0">
+{{--                <div class="pr-4 pr-sm-0 col-md-4 offset-3">--}}
+                <div class="col-12 col-sm-8 col-lg-7 pr-0">
+                    <a href="{{route('day_off')}}" class="btn btn-primary float-right mb-2 mb-sm-0 mr-0 mr-sm-3"
+                       id="btn-detail-day-off" type="button">
+                        Xem ngày phép
+                    </a>
+                </div>
+                <div class="pl-1 col-md-5 pr-0 d-none d-xl-flex">
+                    {{ Form::select('status', SHOW_DAY_OFFF, $status ?? ALL_DAY_OFF, ['class' => 'browser-default custom-select search-day-off border-radius-1 option-select float-right h-48 mt-1']) }}
+                </div>
             </div>
         </div>
     </form>
@@ -214,7 +206,7 @@
                 <th class="text-center d-none d-xl-table-cell">Nội dung</th>
                 <th class="text-center ">Ngày có phép</th>
                 <th class="text-center  d-none d-sm-table-cell">Ngày không phép</th>
-                <th class="text-center d-none d-sm-table-cell" >Phê duyệt</th>
+                <th class="text-center d-none d-sm-table-cell">Phê duyệt</th>
                 <th class="text-center ">Xem thêm</th>
             </tr>
             </thead>
@@ -242,16 +234,19 @@
                         {{!!!$record->number_off ? ($record->status != STATUS_DAY_OFF['noActive'] ? 'Đang duyệt' : '') : checkNumber($record->number_off).' ngày'}}
                     </td>
                     <td class="text-center d-none d-sm-table-cell">
-                    {{!!! $record->absent == DEFAULT_VALUE  ? ($record->status == STATUS_DAY_OFF['abide'] ? 'Đang duyệt' : (  $record->status == STATUS_DAY_OFF['noActive'] ? '' : checkNumber($record->absent) .' ngày')) :  checkNumber($absence->absent) .' ngày'}}
+                        {{!!! $record->absent == DEFAULT_VALUE  ? ($record->status == STATUS_DAY_OFF['abide'] ? 'Đang duyệt' : (  $record->status == STATUS_DAY_OFF['noActive'] ? '' : checkNumber($record->absent) .' ngày')) :  checkNumber($absence->absent) .' ngày'}}
                     </td>
 
                     <td class="text-center p-0 d-none d-sm-table-cell" style="vertical-align: middle;">
                         @if($record->status == STATUS_DAY_OFF['abide'])
-                            <i data-toggle="tooltip" data-placement="right" title="Chờ phê duyệt" class="fas fa-meh-blank fa-2x text-warning text-center"></i>
+                            <i data-toggle="tooltip" data-placement="right" title="Chờ phê duyệt"
+                               class="fas fa-meh-blank fa-2x text-warning text-center"></i>
                         @elseif($record->status == STATUS_DAY_OFF['active'])
-                            <i data-toggle="tooltip" data-placement="right" title="Đã duyệt đơn" class="fas fa-grin-stars fa-2x text-success"></i>
+                            <i data-toggle="tooltip" data-placement="right" title="Đã duyệt đơn"
+                               class="fas fa-grin-stars fa-2x text-success"></i>
                         @else
-                            <i data-toggle="tooltip" data-placement="right" title="Không duyệt"  class="fas fa-frown fa-2x text-danger"></i>
+                            <i data-toggle="tooltip" data-placement="right" title="Không duyệt"
+                               class="fas fa-frown fa-2x text-danger"></i>
                         @endif
                     </td>
                     <td class="text-center ">
@@ -276,7 +271,7 @@
                 <div class="modal-dialog modal-center" role="document">
                     <div class="modal-content modal-center-display bg-img-day-off" id="bg-img"
                          style="background-image: url({{ asset('img/font/xin_nghi.png') }})">
-                        <div class="modal-header text-center border-bottom-0 p-3">
+                        <div class="modal-header text-center border-bottom-0 pb-0">
                             <h4 class="modal-title w-100 font-weight-bold pt-2">NỘI DUNG ĐƠN</h4>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span class="btn-close-icon" aria-hidden="true">&times;</span>
@@ -287,15 +282,20 @@
                                 <label class="ml-3 text-d-bold" for="exampleFormControlTextarea5">Tên nhân
                                     viên</label>
                                 <div class="ml-3" id="user-day-off"></div>
+
+                            </div>
+                            <div class="mb-2">
+                                <label class="ml-3 text-d-bold" for="exampleFormControlTextarea5">Số ngày nghỉ phép còn lại : </label>
+                                <strong class="" id="number_off_remain"></strong>
+
                             </div>
                             <div class="mb-2 ml-3 ">
                                 <!-- Default input -->
                                 <label class="text-d-bold" for="exampleForm2">Thời gian được tính:</label>
-                                <strong class="" id="number_off">
-                                </strong>
+                                <strong class="" id="number_off"></strong>
                                 <span id="approver_num" class="text-danger"></span>
                             </div>
-                            <div class="mb-3">
+                            <div class="mb-2">
                                 <!-- Default input -->
                                 <label class="ml-3 text-d-bold" for="exampleForm2">Ngày nghỉ:</label>
                                 <div class="ml-3" id="strat_end"></div>
@@ -306,12 +306,12 @@
                                 <div class="ml-3" id="title"></div>
                             </div>
 
-                            <div class="mb-3">
+                            <div class="mb-2">
                                 <label class="ml-3 text-d-bold" for="exampleFormControlTextarea5">Chi tiết lý
                                     do:</label>
                                 <div class="ml-3" id="reason"></div>
                             </div>
-                            <div class="mb-4 pb-2">
+                            <div class="mb-2">
                                 <div class="row">
                                     <div class="form-group col-6 m-0">
                                         <label class="ml-3 text-d-bold" for="inputCity">Người duyệt</label>
@@ -324,12 +324,12 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="mb-3 ml-3" id="remove-app-comment">
+                            <div class="mb-2 ml-3" id="remove-app-comment">
                                 <label class="text-d-bold" for="exampleFormControlTextarea5">Ý kiến người
                                     duyệt</label>
                                 <div class="" id="app-comment"></div>
                             </div>
-                            <div class=" mb-1 pb-4 d-flex justify-content-center border-top-0 rounded mb-0"
+                            <div class=" mb-1 pb-2 d-flex justify-content-center border-top-0 rounded mb-0"
                                  id="btn-submit-form">
                             </div>
                         </div>
@@ -338,7 +338,7 @@
             </div>
         </form>
 
-        <form action="{{ route('delete_day_off') }}" method="post">
+        <form action="{{ route('delete_day_off') }}" method="post" id="close_day_off">
             @csrf
             <div class="modal fade custom-modal" id="basicExampleModal" tabindex="-1" role="dialog"
                  aria-labelledby="exampleModalLabel"
@@ -354,6 +354,7 @@
                                 <span aria-hidden="true">&times;</span>
                             </button>
                         </div>
+                        <input type="hidden" name="approval_coment" id="approval_comment">
                         <div class="d-flex justify-content-center">
                             <button type="submit" class="btn btn-secondary w-25">ĐỒNG Ý</button>
                             <span class="btn btn-primary w-25" data-dismiss="modal">HỦY</span>
@@ -384,7 +385,7 @@
         <script type="text/javascript">
             $(document).ready(function (e) {
 
-                $('.calendar-search').on('click',function () {
+                $('.calendar-search').on('click', function () {
                     $(this).prev().datepicker('show');
                 })
 
@@ -419,7 +420,7 @@
                     }
                 });
 
-                $('#search_start_at , #search_end_at').datepicker({format: 'yyyy/mm/dd',orientation: 'bottom'});
+                $('#search_start_at , #search_end_at').datepicker({format: 'yyyy/mm/dd', orientation: 'bottom'});
                 $('#start_date').datetimepicker({
                     hoursDisabled: '0,1,2,3,4,5,6,7,18,19,20,21,22,23',
                     daysOfWeekDisabled: [0, 6],
@@ -450,12 +451,12 @@
                         'type': 'get',
                         success: function (data) {
                             $('#user-day-off').html(data.userdayoff);
-                            if (data.time){
+                            if (data.time) {
                                 $('#strat_end').html(data.time);
-                            } else{
+                            } else {
                                 $('#strat_end').html(data.data.start_date + ' - ' + data.data.end_date);
                             }
-                            if (data.data.reason){
+                            if (data.data.reason) {
                                 $('#reason').html(data.data.reason.replace(/\n/g, "<br />"));
                             }
                             $('#id-delete').val(data.data.id);
@@ -473,19 +474,18 @@
                             } else {
                                 $('#remove-numoff').hide();
                             }
+                            $('#number_off').html(data.approver_num + ' ngày') ;
+                            $('#number_off_remain').html(data.totalRemain +' ngày' )
                             if (data.data.status == 0) {
-                                $('#app-comment').html('<textarea class="form-control reason_id rounded-0 select-item "id="exampleFormControlTextarea2" rows="3" placeholder="Nhập ý kiến của người duyệt" name="approve_comment"></textarea>');
-                                $('#number_off').html('<input type="text" class="form-control select-item" autocomplete="off" name="number_off" value="" id="number_off">')
-                                $('#btn-submit-form').html('<button type="submit" class="btn  btn-primary">DUYỆT ĐƠN</button> <span class="btn btn-danger btn-send" id="close-day-off" data-toggle="modal" data-target="#basicExampleModal"> HỦY DUYỆT </span>')
-                                $('#approver_num').text('Thời gian  ước tính : '+ data.approver_num +' ngày');
+                                $('#app-comment').html('<textarea class="form-control reason_id rounded-0 select-item "id="exampleFormControlTextarea4" rows="3" placeholder="Nhập ý kiến của người duyệt" name="approve_comment"></textarea>');
+                                $('#approver_num').html('<input type="hidden" class="form-control select-item" autocomplete="off" name="number_off" value="'+ data.approver_num +'" id="">')
+                                $('#btn-submit-form').html('<button type="submit" class="btn  btn-primary">DUYỆT ĐƠN</button> <span class="btn btn-danger btn-send" id="close-day-off" data-target="#basicExampleModal"> HỦY DUYỆT </span>')
+
                             } else {
 
-                                $('#number_off').html('');
                                 $('#btn-submit-form').html('');
-                                (data.data.status == 2 || data.data.status == 0) ? $('#number_off').html(' ') : $('#number_off').html(data.absent + ' ngày') ;
 
                                 $('#app-comment').html(data.data.approve_comment);
-                                $('#approver_num').text(' ');
                             }
                             var urlForm = "{{ route('edit_day_off_detail') }}" + '/' + data.data.id;
 
@@ -496,8 +496,20 @@
                         }
                     });
                 })
-                $('.detail-dayoff').on('click',function () {
+                $('.detail-dayoff').on('click', function () {
                     $(this).addClass('text-primary');
+                })
+                $(document).on('click' , '#close-day-off' , function () {
+                    var comment=$(('#exampleFormControlTextarea4')).val();
+                    if (comment.length < 3){
+                        if (comment.length == 0){
+                            $('#basicExampleModal').modal('show')
+                        }
+                        $('#basicExampleModal').modal('hide')
+                    } else {
+                        $('#basicExampleModal').modal('show')
+                    }
+                    $('#approval_comment').val(comment);
                 })
             });
 

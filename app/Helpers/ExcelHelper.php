@@ -6,7 +6,7 @@ namespace App\Helpers;
 
 class ExcelHelper
 {
-    public static function getExcelRows($length = EXCEL_COLUMN_LENGTH)
+    public static function getExcelCols($length = EXCEL_COLUMN_LENGTH)
     {
         if ($length > EXCEL_COLUMN_LENGTH) {
             $num = floor($length / EXCEL_COLUMN_LENGTH);

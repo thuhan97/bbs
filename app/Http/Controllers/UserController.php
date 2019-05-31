@@ -604,6 +604,8 @@ class UserController extends Controller
             $dayOff = new DayOff();
         }
         $dayOff->fill($request->all());
+        $dayOff->start_at=$request->start_at  . SPACE .  CHECK_TIME_DAY_OFF_START_DATE;
+        $dayOff->end_at=$request->end_at  . SPACE .  CHECK_TIME_DAY_OFF_END_DATE;
         $dayOff->user_id = Auth::id();
         $dayOff->save();
         if ($request->id_hid) {
@@ -676,6 +678,12 @@ class UserController extends Controller
 
         }
         $numOffApprove = $this->userDayOffService->checkDateUsable($dayOff->start_at, $dayOff->end_at, null, null, true);
+
+        $dayOffPreYear = RemainDayoff::where('user_id', $dayOff->user_id)->where('year', date('Y') - PRE_YEAR)->first()->remain ?? DEFAULT_VALUE;
+        $dayOffYear = RemainDayoff::where('user_id',$dayOff->user_id)->where('year', date('Y'))->first();
+        $remainDayoffCurrentYear = $dayOffYear->remain ?? DEFAULT_VALUE;
+        $DayoffFrreCurrentYear = $dayOffYear->day_off_free_female ?? DEFAULT_VALUE;
+        $totalAbsent = $numOffApprove[0] - ($dayOffPreYear + $remainDayoffCurrentYear + $DayoffFrreCurrentYear);
         return response()->json([
             'data' => $dayOff,
             'numoff' => $numOff,
@@ -686,10 +694,11 @@ class UserController extends Controller
             'timeStartEdit' => Carbon::createFromFormat(DATE_TIME_FORMAT, $dayOff->start_at)->format('Y/m/d'),
             'timeEndEdit' => Carbon::createFromFormat(DATE_TIME_FORMAT, $dayOff->end_at)->format('Y/m/d'),
             'time' => $time ?? DEFAULT_VALUE,
-            'approver_num' => is_array($numOffApprove) ? ($numOffApprove[0] > 0 ? $numOffApprove[0] : 0) : ($numOffApprove > 0 ? $numOffApprove : 0)
+            'approver_num'=> $numOffApprove[0],
+            'totalRemain'=>$dayOffPreYear+$remainDayoffCurrentYear+$DayoffFrreCurrentYear,
+            'totalAbsent'=>$totalAbsent > 0 ? $totalAbsent: 0
         ]);
     }
-
     public function editDayOffDetail(Request $request, $id)
     {
         $this->validate($request, [
@@ -708,6 +717,7 @@ class UserController extends Controller
         } else if (isset($request->id_close)) {
             $dayOff = DayOff::findOrFail($request->id_close);
             if ($dayOff->status == STATUS_DAY_OFF['abide']) {
+                $dayOff->approve_comment=$request->approval_coment;
                 $dayOff->status = STATUS_DAY_OFF['noActive'];
                 $dayOff->save();
                 return back()->with('close', '');

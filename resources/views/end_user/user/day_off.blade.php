@@ -14,40 +14,41 @@
 
     @endphp
     <form action="{{ route('day_off') }}" method="get" id="form-search">
-        <div class="row mb-2 ml-1 mb-sm-3">
-            <div class="col-6 col-sm-4 col-xl-2 pr-3 pl-0">
-                <label class=" text-w-400" for="">Từ ngày</label>
-                <div class="position-relative">
-                    <input type="text"
-                           class="form-control border-0 select-item z-"
-                           id="search_start_at" autocomplete="off" name="search_start_at"
-                           value="{{  $searchStratDate ?? $searchStart  }}"
-                           readonly="readonly">
-                    <i class="far fa-calendar-alt position-absolute calendar-search"></i>
-                </div>
+        <div class="row mb-0 ml-1 mb-sm-4 mt-sm-3">
+            <div class="row col-6 col-sm-4 col-xl-4 pr-3 pl-3 pt-2">
+                    <label class="text-w-400 pt-2" for="">Từ ngày</label>
+                    <div class="position-relative">
+                        <input type="text"
+                               class="form-control border-0 select-item z- ml-2"
+                               id="search_start_at" autocomplete="off" name="search_start_at"
+                               value="{{  $searchStratDate ?? $searchStart  }}"
+                               readonly="readonly">
+                        <i class="far fa-calendar-alt position-absolute calendar-search"></i>
+                    </div>
+
 
 
             </div>
-            <div class="col-6 col-sm-4 col-xl-2 pr-3 pl-0">
-                <label class="text-w-400" for="inputZip">Tới ngày</label>
+            <div class="row col-6 col-sm-4 col-xl-4 pr-3 pl-3 pt-2 div-day-off-from-day">
+                <label class="text-w-400 pt-2 label-from-days" for="inputZip">Tới ngày</label>
                 <div class="position-relative">
                     <input type="text"
-                           class="form-control select-item  border-0 "
+                           class="form-control select-item  border-0 ml-2"
                            id="search_end_at" autocomplete="off" name="search_end_at"
                            value="{{ $searchEndDate ?? ''}}"
                            readonly>
                     <i class="far fa-calendar-alt position-absolute calendar-search"></i>
                 </div>
             </div>
-            <div class="col-sm-2 col-xl-1 no-padding-left mt-3 mt-sm-0">
+            <div class="col-sm-2 col-xl-1 no-padding-left mt-3 mt-sm-0 group-btn-search-day-off">
                 <label class=" text-w-400 d-none d-sm-block" for="inputCity"> &nbsp;</label>
-                <button class="form-control select-item  border-0 btn-secondary" id="result-search"><i
+                <button class="form-control select-item  border-0 btn-secondary btn-secondary-search-day-off" id="result-search"><i
                             class="fas fa-search"></i></button>
             </div>
         </div>
         <div class="d-none d-xl-flex container-fluid col-12 row border-bottom-2 mb-3" style="position: relative;">
             <div class="col-sm-3 col-md-6 col-lg-3 position-relative">
-            <span class="card bg-primary border-radius-2">
+            <span class="card bg-primary border-radius-2 day-off-card">
                 <div class="card-body row d-flex justify-content-center px-0 ml-xxl-2">
                     <div class="media ml-2 d-md-flex">
                             <span id="dayoff-option-header-1"
@@ -56,7 +57,7 @@
                                 <i class="fas fa-calendar-alt dayoff-icoin text-primary day-off-icoi"></i>
                             </span>
                         <div class="media-body text-center text-md-left ml-xl-4">
-                            <h1 class="white-text font-weight-bold">{{ $countDayOff['previous_year'] + $countDayOff['current_year'] }}</h1>
+                            <h1 class="white-text font-weight-bold content-card-day-off">{{ $countDayOff['previous_year'] + $countDayOff['current_year'] }}</h1>
                             <p class="card-subtitle text-white-50 text-size-table">Ngày khả dụng</p>
                             <p class="card-title text-uppercase font-weight-bold card-text white-text text-size-header-1">
                                 TÍNH TỪ NĂM TRƯỚC</p>
@@ -69,7 +70,7 @@
             </div>
             <div class="col-sm-3 col-md-6 col-lg-3 position-relative ">
             <span
-                    class="card bg-success border-radius-2">
+                    class="card bg-success border-radius-2 day-off-card">
                 <div class="card-body row d-flex justify-content-center px-0 ml-xxl-2">
                     <div class="media mr-2 d-md-flex">
                             <span id="dayoff-option-header-2"
@@ -78,7 +79,7 @@
                                 <i class="fas fa-calendar-times dayoff-icoin text-success day-off-icoi"></i>
                             </span>
                         <div class="media-body text-center text-md-left ml-xl-4">
-                            <h1 class="white-text font-weight-bold">{{ $countDayOff['previous_year'] + DEFAULT_VALUE }}</h1>
+                            <h1 class="white-text font-weight-bold content-card-day-off">{{ $countDayOff['previous_year'] + DEFAULT_VALUE }}</h1>
                             <p class="card-subtitle text-white-50 text-size-table">Ngày sắp hết hạn</p>
                             <p class="card-title text-uppercase font-weight-bold card-text white-text text-size-header-1">
                                 CUỐI NĂM HỦY</p>
@@ -90,7 +91,7 @@
             </span>
             </div>
             <div class="col-sm-3 col-md-6 col-lg-3 position-relative">
-            <span class="card border-radius-2"
+            <span class="card border-radius-2 day-off-card"
                   id="bg-yellow">
                 <div class="card-body  row d-flex justify-content-center px-0 ml-xxl-2">
                     <div class="media mr-2  d-md-flex">
@@ -100,7 +101,7 @@
                                 <i class="fas fa-calendar-check dayoff-icoin text-warning day-off-icoi"></i>
                             </span>
                         <div class="media-body text-center text-md-left ml-xl-4">
-                            <h1 class="white-text font-weight-bold ">{{ $countDayOff['total'] + DEFAULT_VALUE  }}</h1>
+                            <h1 class="white-text font-weight-bold content-card-day-off">{{ $countDayOff['total'] + DEFAULT_VALUE  }}</h1>
                             <p class="card-subtitle text-white-50 text-size-table">Ngày đã nghỉ</p>
                             <p class="card-title text-uppercase font-weight-bold card-text white-text text-size-header-1">
                                 TRONG NĂM {{date('Y')}}</p>
@@ -111,7 +112,7 @@
             </span>
             </div>
             <div class="col-sm-3 col-md-6 col-lg-3 position-relative pr-0 show-modal">
-            <span class="card bg-danger border-radius-2" style="cursor: pointer">
+            <span class="card bg-danger border-radius-2 day-off-card">
                 <div class="card-body  row d-flex justify-content-center px-0 ml-xxxl-1">
                     <div class="media d-md-flex">
                             <span id="dayoff-option-header-4"
@@ -120,7 +121,7 @@
                                 <i class="fas fa-calendar-plus dayoff-icoin text-danger size-table"></i>
                             </span>
                         <div class="media-body text-center text-md-left ml-xl-4">
-                            <h1 class="white-text font-weight-bold">Đơn</h1>
+                            <h1 class="white-text font-weight-bold content-card-day-off">Đơn</h1>
                             <p class="card-subtitle text-white-50 text-size-table">&nbsp;</p>
                             <p class="card-title text-uppercase font-weight-bold card-text white-text text-size-header-1">
                                 XIN NGHỈ / NGHỈ PHÉP</p>
@@ -136,10 +137,10 @@
             <div class="col-sm-4 col-md-4">
             </div>
             <div class="col-sm-8 text-right col-md-8">
-                <div class="row">
+                <div class="row mb-2">
                     <div class="col-lg-2"></div>
-                    <div class="col-12 col-sm-8 col-lg-6 ">
-                        <div class="pr-1">
+                    <div class="col-12 col-sm-8 col-lg-6 pr-0">
+                        <div class="{{--pr-lg-1 pr-sm-4--}} pr-4 pr-sm-0">
                             <?php
                             $user = \Illuminate\Support\Facades\Auth::user();
                             ?>
@@ -286,24 +287,24 @@
                         <span class="btn-close-icon" aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <div class="modal-header text-center border-bottom-0 p-0">
+                <div class="modal-header text-center border-bottom-0 p-0 modal-center-display">
                     <h6 class="modal-title w-100 font-weight-bold text-danger" id="usable-check"></h6>
                 </div>
                 <div class="modal-body mt-0 pb-0 pt-2 d-flex justify-content-start ml-3" id="toggle-show">
                     <div class="row w-100">
-                        <div class="col-12 col-md-6">
+                        <div class="col-6 col-sm-12 col-md-6 pl-0 pr-0">
                             <div class="custom-control custom-radio">
                                 <input type="radio" class="custom-control-input option-dayoff" id="defaultUnchecked"
                                        name="defaultExampleRadios" checked value="0">
-                                <label class="custom-control-label" for="defaultUnchecked"><h5>Xin nghỉ phép</h5></label>
+                                <label class="custom-control-label" for="defaultUnchecked"><h5 class="mb-h5">Xin nghỉ phép</h5></label>
                             </div>
                         </div>
-                        <div class="col-12 col-md-6">
+                        <div class="col-6 col-sm-12 col-md-6 pl-0 pr-0">
                             <!-- Default checked -->
                             <div class="custom-control custom-radio">
                                 <input type="radio" class="custom-control-input option-dayoff" id="defaultChecked1"
                                        name="defaultExampleRadios" value="1" @if(old('title')) checked @endif>
-                                <label class="custom-control-label " for="defaultChecked1"><h5>Xin nghỉ chế độ</h5></label>
+                                <label class="custom-control-label " for="defaultChecked1"><h5 class="mb-h5">Xin nghỉ chế độ</h5></label>
                             </div>
                         </div>
                     </div>
@@ -400,7 +401,7 @@
                                 <div class="">
                                     <label class="text-w-400" for="exampleForm2">Người duyệt<span
                                                 class="text-danger">*</span></label>
-                                    {{ Form::select('approver_id', $userManager, null, ['class' => 'form-control my-1 mr-1 browser-default custom-select md-form select-item mannager_id check-value']) }}
+                                    {{ Form::select('approver_id', $userManager, null, ['class' => 'form-control my-1 mr-1 browser-default custom-select select-item mannager_id check-value mt-0']) }}
                                     @if ($errors->has('approver_id'))
                                         <div class="mt-1 ml-3">
                                             <span class="help-block text-danger">{{ $errors->first('approver_id') }}</span>
@@ -487,7 +488,7 @@
                                 <div class="">
                                     <label class=" mt-1 text-w-400" for="exampleForm2">Người duyệt<span
                                                 class="text-danger">*</span></label>
-                                    {{ Form::select('approver_id', $userManager, null, ['class' => 'form-control my-1 mr-1 browser-default custom-select md-form select-item mannager_id check-value' ]) }}
+                                    {{ Form::select('approver_id', $userManager, null, ['class' => 'form-control my-1 mr-1 browser-default custom-select select-item mannager_id check-value mt-0' ]) }}
                                     @if ($errors->has('approver_id'))
                                         <div class="mt-1 ml-3">
                                             <span class="help-block text-danger">{{ $errors->first('approver_id') }}</span>
@@ -654,8 +655,6 @@
                 $(this).prev().datepicker('show');
             })
 
-            checkUsable();
-
             $('.option-select').on('change', function () {
                 $("#form-search").submit();
             });
@@ -744,6 +743,9 @@
                 $('#value-rs1').click();
                 $('.id_hide').val(' ');
                 $(".reason_id").html(null);
+                $('#btn-send , #btn-send-day-off').text('Gửi Đơn');
+                checkUsable();
+
             });
 
             var date = $("#start_date").val();
@@ -866,7 +868,12 @@
                         $('#modal-form-detail').modal('hide');
                         $('#toggle-show').attr('style', 'display: none !important');
                         $('.id_hide').val(data.data.id);
+                        $('#usable-check').hide();
                         if (data.data.title == 1) {
+                            if (data.totalAbsent !=0){
+                                $('#usable-check').text('Bạn sẽ bị tính ' + data.totalAbsent + ' ngày nghỉ không phép vì ngày phép không đủ.')
+                                $('#usable-check').show();
+                            }
                             $('#profile').removeClass('active show');
                             $('#home').addClass('active show');
                             $('#start_date').val(data.timeStartEdit)
@@ -908,10 +915,11 @@
             $('.option-dayoff').on('click', function () {
                 var check = $(this).val();
                 if (check == 1) {
-                    $('#usable-check').text(' ')
+                    $('#usable-check').hide();
                     $('#home').removeClass('active show');
                     $('#profile').addClass('active show');
                 } else {
+                    $('#usable-check').show();
                     $('#home').addClass('active show');
                     $('#profile').removeClass('active show');
                 }
@@ -930,19 +938,14 @@
                 'type': 'get',
                 'data': {'start_date': dateStart, 'end_date': dateEnd, 'start_time': timeStart, 'end_time': timeEnd,},
                 success: function (data) {
-                    // console.log(data);
-                    if (data.check) {
+                    $('#usable-check').show();
+                    if (data.check && data.absent != 0) {
                         $('#usable-check').text('Bạn sẽ bị tính ' + data.absent + ' ngày nghỉ không phép vì ngày phép không đủ.')
                     } else {
                         $('#usable-check').text(' ')
                     }
                     ;
-                    if (data.flag) {
-                        $('.ds-end option[value="0"]').attr('disabled', true);
-                        $('.ds-end').val(1);
-                    } else {
-                        $('.ds-end option[value="0"]').attr('disabled', false);
-                    }
+
                 }
             });
         }

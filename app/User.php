@@ -7,6 +7,7 @@
 
 namespace App;
 
+use App\Models\Notification;
 use App\Notifications\UserResetPassword;
 use App\Traits\Eloquent\OrderableTrait;
 use App\Traits\Eloquent\SearchLikeTrait;
@@ -51,14 +52,14 @@ class User extends Authenticatable implements JWTSubject
     /**
      * Sends the password reset notification.
      *
-     * @param  string $token
+     * @param string $token
      *
      * @return void
      */
     public function sendPasswordResetNotification($token)
     {
         $when = now()->addSeconds(30);
-        $this->notify((new UserResetPassword($token, $this->email))->delay($when));
+        $this->notify((new UserResetPassword($token, $this->email, $this->name))->delay($when));
     }
 
     /**
@@ -103,5 +104,10 @@ class User extends Authenticatable implements JWTSubject
             ->orWhere('staff_code', 'like', '%' . $searchTerm . '%')
             ->orWhere('email', 'like', '%' . $searchTerm . '%')
             ->orderBy('name');
+    }
+
+    public function unreadNotifications()
+    {
+        $this->hasMany(Notification::class)->whereNull('read_at');
     }
 }

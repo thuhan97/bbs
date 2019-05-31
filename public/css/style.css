@@ -1222,11 +1222,11 @@ td.blank, .type-1, .type-2 {
     font-weight: bold;
 }
 
-#number_off-error, #title-error, #exampleFormControlTextarea2-error, #approver_id-error, #option_check-error, #exampleFormControlTextarea4-error, #note-error, #start_at-error, #end_at-error, #project_id-error {
+#number_off-error, #title-error, #exampleFormControlTextarea2-error, #approver_id-error, #option_check-error, #exampleFormControlTextarea4-error, #note-error, #start_at-error, #end_at-error, #project_id-error,#reason-error,#explanation_type-error, #ot_type-error {
     color: red;
 }
 
-#project_id-error {
+#project_id-error,#reason-error {
     margin-left: 9%;
 }
 
@@ -1867,15 +1867,22 @@ td.blank, .type-1, .type-2 {
 }
 
 .badge {
-    top: 1px;
-    left: 22px;
+    top: 2px;
+    left: 30px;
     background-color: red;
     color: white;
-    width: 21px;
-    height: 21px;
+    width: 18px;
+    height: 18px;
     border-radius: 50%;
-    padding-top: 4px;
-    padding-left: 4px;
+    /*padding-top: 4px;*/
+    /*padding-left: 4px;*/
+}
+
+#notification {
+    padding: 0;
+    max-height: 500px;
+    min-width: 350px;
+    overflow: auto;
 }
 
 #inputGroup-sizing-default {

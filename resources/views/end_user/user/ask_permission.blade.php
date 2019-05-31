@@ -997,10 +997,10 @@
                 },
                 messages: {
                     work_day: {
-                        required: "Vui lòng chọn ng",
+                        required: "Vui lòng chọn ngày",
                     },
                     note: {
-                        required: "Vui lòng chọn lý do",
+                        required: "Vui lòng nhập lý do",
                     },
                     start_at: {
                         required: "Vui lòng chọn thời gian bắt đầu",

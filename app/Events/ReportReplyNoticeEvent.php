@@ -15,7 +15,7 @@ class ReportReplyNoticeEvent extends NotificationBroadCast
      */
     public function __construct($sender, $toId, $reportId, $replyContent)
     {
-        $url = route('report') . '#report_item_' . $reportId;
+        $url = route('report') . '?type=0#report_item_' . $reportId;
         $this->data = [
             'id' => $reportId,
             'name' => $sender->name,

@@ -48,7 +48,6 @@ class AskPermissionRequest extends FormRequest
         }
 
         if ($this->request->has('permission_ot')) {
-
             $rules['permission_type'] = [
                 'required',
                 Rule::in(array_search('Overtime', WORK_TIME_TYPE))
@@ -58,6 +57,9 @@ class AskPermissionRequest extends FormRequest
             $rules['end_at'] = 'required|after:start_at';
             $rules['work_day'] = 'required|date';
             $rules['note'] = 'required';
+            if ($requestAll['ot_type'] == array_search('Dự án', OT_TYPE)) {
+                $rules['project_id'] = 'required|exists:projects,id';
+            }
         }
 
         if ($this->has('work_time_explanation_id')) {
@@ -77,6 +79,7 @@ class AskPermissionRequest extends FormRequest
             'reason_reject' => 'lý do',
             'ot_type' => 'hình thức',
             'project_name' => 'dự án',
+            'project_id' => 'dự án',
             'start_at' => 'thời gian bắt đầu',
             'end_at' => 'thời gian kết thúc',
             'work_day' => 'ngày làm việc',

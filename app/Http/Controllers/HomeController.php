@@ -23,8 +23,8 @@ class HomeController extends Controller
 
         $events = Event::select('id', 'name', 'place', 'event_date', 'event_end_date', 'introduction', 'image_url', 'content', 'created_at', 'deadline_at')
             ->where('status', ACTIVE_STATUS)
-            ->whereDate('event_date', '>=', date(DATE_FORMAT))
-            ->orderBy('event_date')
+//            ->whereDate('event_date', '>=', date(DATE_FORMAT))
+            ->orderBy('event_date', 'desc')
             ->take(3)->get();
         $projects = Project::select('id', 'name', 'technical', 'image_url')
             ->where('status', ACTIVE_STATUS)

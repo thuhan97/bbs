@@ -538,7 +538,7 @@
                     </button>
                 </div>
                 @include('elements.ask_permission_image')
-                <form action="{{ route('ask_permission.create') }}" method="get">
+                <form action="{{ route('ask_permission.create') }}" method="get" id="permission_late">
                     <div class="d-flex justify-content-center text-area-reason" id="div-reason"></div>
                     <div class="select-day">
                         <div class="row col-12 option-permission"></div>
@@ -572,7 +572,7 @@
                     </button>
                 </div>
                 @include('elements.ask_permission_image')
-                <form action="{{ route('ask_permission.create') }}" method="get">
+                <form action="{{ route('ask_permission.create') }}" method="get" id="permission_early">
                     <div class="d-flex justify-content-center text-area-reason" id="div-reason"></div>
                     <div class="select-day">
                         <div class="row col-12 option-permission"></div>
@@ -606,7 +606,7 @@
                     </button>
                 </div>
                 @include('elements.ask_permission_image')
-                <form action="{{ route('ask_permission.create') }}" method="get">
+                <form action="{{ route('ask_permission.create') }}" method="get" id="ot_id">
                     <div class="d-flex justify-content-center text-area-reason" id="div-reason"></div>
                     <div class="container-fluid my-2">
                         <div class="row">
@@ -894,6 +894,10 @@
                             //     $('.project_id ').prop('disabled', false);
                             // }
 
+                        }else {
+                            $('#start_at').attr('value', '');
+                            $('#end_at').attr('value', '');
+                            $('.permission-reason-ot').empty();
                         }
 
 
@@ -927,8 +931,100 @@
                 $('#project_id').prop('disabled', true)
 
             });
+
+            $('#permission_early').validate({
+                ignore: '[readonly]',
+                rules: {
+                    work_day: {
+                        required: true,
+                    },
+                    note: {
+                        required: true,
+                    },
+                },
+                messages: {
+                    work_day: {
+                        required: "Vui lòng chọn ng",
+                    },
+                    note: {
+                        required: "Vui lòng chọn lý do",
+                    },
+                }
+            });
+
+            $('#permission_late').validate({
+                ignore: '[readonly]',
+                rules: {
+                    work_day: {
+                        required: true,
+                    },
+                    note: {
+                        required: true,
+                    },
+                },
+                messages: {
+                    work_day: {
+                        required: "Vui lòng chọn ng",
+                    },
+                    note: {
+                        required: "Vui lòng chọn lý do",
+                    },
+                }
+            });
+
+            $('#ot_id').validate({
+                ignore: '[readonly]',
+                rules: {
+                    work_day: {
+                        required: true,
+                    },
+                    note: {
+                        required: true,
+                    },
+                    start_at: {
+                        required: true,
+                        time: true,
+                    },
+                    end_at: {
+                        required: true,
+                        time24: true,
+                        time: true,
+                    },
+                    project_id: {
+                        required: true,
+                        min: 1
+                    },
+                    ot_type: {
+                        required: true,
+                    },
+                },
+                messages: {
+                    work_day: {
+                        required: "Vui lòng chọn ng",
+                    },
+                    note: {
+                        required: "Vui lòng chọn lý do",
+                    },
+                    start_at: {
+                        required: "Vui lòng chọn thời gian bắt đầu",
+                    },
+                    end_at: {
+                        required: "Vui lòng chọn thời gian kết thúc",
+                    },
+                    project_id: {
+                        min: "Vui lòng chọn dự án",
+                    },
+                    ot_type: {
+                        required: "Vui lòng chọn hình thức ot",
+                    },
+                }
+            });
+
         });
     </script>
 @endsection
+@push('extend-js')
+    <script src="{{ cdn_asset('js/jquery.validate.min.js') }}"></script>
+@endpush
 
 

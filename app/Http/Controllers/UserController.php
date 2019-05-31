@@ -603,6 +603,8 @@ class UserController extends Controller
             $dayOff = new DayOff();
         }
         $dayOff->fill($request->all());
+        $dayOff->start_at=$request->start_at  . SPACE .  CHECK_TIME_DAY_OFF_START_DATE;
+        $dayOff->end_at=$request->end_at  . SPACE .  CHECK_TIME_DAY_OFF_END_DATE;
         $dayOff->user_id = Auth::id();
         $dayOff->save();
         if ($request->id_hid) {

@@ -218,8 +218,10 @@ class UserController extends Controller
 
     public function workTimeDetailAskPermission(Request $request)
     {
+//        dd($request->all());
         if ($request->has('explanationOtType')) {
-            $workTimeExplanation = OverTime::where('creator_id', Auth::id())->where('work_day', $request['work_day'])->whereIn('status', array_values(WORK_TIME_OT_STATUS))->where('ot_type', $request['explanationOtType'])->first();
+            $workTimeExplanation = OverTime::where('creator_id', Auth::id())->where('work_day', $request['work_day'])->whereIn('status', array_values(WORK_TIME_OT_STATUS))->first();
+//            dd($workTimeExplanation);
         } else if ($request->has('explanationType')) {
             $workTimeExplanation = $this->getWorkTimeExplanation($request['work_day'])->whereIn('status', array_values(WORK_TIME_OT_STATUS))->where('type', $request['explanationType'])->first();
         }

@@ -28,8 +28,10 @@
     <script>
         window.userId = '{{\Illuminate\Support\Facades\Auth::id()}}';
         window.system_image = '{{JVB_LOGO_URL}}';
-        Pusher.logToConsole = true;
-        window.pusher = new Pusher('{{env('PUSHER_APP_KEY')}}', {
+        @if(config('app.env') != 'production')
+            Pusher.logToConsole = true;
+        @endif
+            window.pusher = new Pusher('{{env('PUSHER_APP_KEY')}}', {
             cluster: 'ap1',
             forceTLS: true,
             authEndpoint: '/broadcasting/auth',

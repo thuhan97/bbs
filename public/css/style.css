@@ -1226,6 +1226,10 @@ td.blank, .type-1, .type-2 {
     color: red;
 }
 
+#project_id-error {
+    margin-left: 9%;
+}
+
 #note-error {
     margin-left: 15px;
     margin-top: 10px;

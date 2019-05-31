@@ -58,7 +58,7 @@
 
 <!-- Scripts -->
 <script type="text/javascript" src="{{ cdn_asset('js/mdb.min.js?v=1') }}"></script>
-<script type="text/javascript" src="{{ asset('js/moment-with-locales.min.js') }}"></script>
+<script type="text/javascript" src="{{ cdn_asset('js/moment-with-locales.min.js') }}"></script>
 {{--<script type="text/javascript" src="{{ cdn_asset('/mdb/js/compiled.min.js') }}"></script>--}}
 <script type="text/javascript" src="{{ cdn_asset('js/main.js') }}"></script>
 

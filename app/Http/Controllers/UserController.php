@@ -58,7 +58,8 @@ class UserController extends Controller
 
         if ($request->hasFile('avatar')) {
             $avatar = request()->file('avatar');
-            $avatarName = $avatar->getClientOriginalName();
+            $extension = $avatar->getClientOriginalExtension();
+            $avatarName = Auth::user()->staff_code . '.' . $extension;
             $destinationPath = public_path(URL_IMAGE_AVATAR);
             $data['avatar'] = URL_IMAGE_AVATAR . $avatarName;
             $avatar->move($destinationPath, $avatarName);
@@ -685,7 +686,7 @@ class UserController extends Controller
             'timeStartEdit' => Carbon::createFromFormat(DATE_TIME_FORMAT, $dayOff->start_at)->format('Y/m/d'),
             'timeEndEdit' => Carbon::createFromFormat(DATE_TIME_FORMAT, $dayOff->end_at)->format('Y/m/d'),
             'time' => $time ?? DEFAULT_VALUE,
-            'approver_num'=> is_array($numOffApprove) ? ($numOffApprove[0] > 0 ? $numOffApprove[0] : 0) : ($numOffApprove > 0 ? $numOffApprove : 0)
+            'approver_num' => is_array($numOffApprove) ? ($numOffApprove[0] > 0 ? $numOffApprove[0] : 0) : ($numOffApprove > 0 ? $numOffApprove : 0)
         ]);
     }
 

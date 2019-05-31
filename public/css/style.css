@@ -1222,8 +1222,13 @@ td.blank, .type-1, .type-2 {
     font-weight: bold;
 }
 
-#number_off-error, #title-error, #exampleFormControlTextarea2-error, #approver_id-error, #option_check-error, #exampleFormControlTextarea4-error {
+#number_off-error, #title-error, #exampleFormControlTextarea2-error, #approver_id-error, #option_check-error, #exampleFormControlTextarea4-error, #note-error, #start_at-error, #end_at-error, #project_id-error {
     color: red;
+}
+
+#note-error {
+    margin-left: 15px;
+    margin-top: 10px;
 }
 
 .paginate-center {

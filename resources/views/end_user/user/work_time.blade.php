@@ -568,8 +568,6 @@
                         }
                     });
 
-
-                    $('#start_at,#end_at').prop('disabled', true);
                     $('#ot-project,#ot-other').on('click', function () {
                         var otThis = $(this);
                         if (otThis.attr('id') === 'ot-other') {
@@ -583,7 +581,7 @@
                             $('.checkOtType').attr('value', 2)
                             $('.project_id,#start_at,#end_at').prop('disabled', false)
                         }
-                        // $('.project_id,#start_at,#end_at').prop('disabled', false);
+
                         var lateWorkDay = $('.work_day').val(),
                             explanationOtType = $(this).val();
                         $.ajax({

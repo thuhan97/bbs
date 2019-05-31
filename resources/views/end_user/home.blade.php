@@ -40,7 +40,7 @@
                             <div class="row mb-4">
                                 <div class="col-lg-5">
                                     <div class="view overlay rounded mb-lg-0 mb-4">
-                                        <img class="img-fluid" src="{{$event->image_url}}" alt="{{ $event->name }}">
+                                        <img class="img-fluid img-event-home" src="{{$event->image_url}}" alt="{{ $event->name }}">
                                         <a href="{{route('event_detail', ['id' => $event->id])}}">
                                             <div class="mask rgba-white-slight"></div>
                                         </a>

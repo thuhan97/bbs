@@ -82,8 +82,8 @@ abstract class WTGridExport implements ShouldAutoSize, WithEvents
         [$firtDate, $lastDate] = getStartAndEndDateOfMonth($request->get('month'), $request->get('year'));
 
         $userModel = User::select('id', 'staff_code', 'name', 'contract_type', 'is_remote', 'jobtitle_id', 'start_date')
-            ->where(function ($q) use ($firtDate) {
-                $q->whereDate('start_date', '<', $firtDate)
+            ->where(function ($q) use ($lastDate) {
+                $q->whereDate('start_date', '<=', $lastDate)
                     ->orWhereNull('start_date');
             })
             ->where('status', ACTIVE_STATUS);

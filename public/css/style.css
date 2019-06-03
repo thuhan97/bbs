@@ -1909,6 +1909,6 @@ td.blank, .type-1, .type-2 {
 .master-cursor-initial{
     cursor: initial !important;
 }
-.opacity-master{
+.master-opacity{
     opacity: 0.3;
 }

@@ -115,7 +115,7 @@
             <div class="col-sm-3 col-md-6 col-lg-3 position-relative pr-0 @if($isMaster != MASTER_ROLE) show-modal @endif">
             <span class="card bg-danger border-radius-2 day-off-card @if($isMaster == MASTER_ROLE) master-cursor-initial @endif">
                 <div class="card-body  row d-flex justify-content-center px-0 ml-xxxl-1">
-                    <div class="media d-md-flex @if($isMaster == MASTER_ROLE) opacity-master @endif">
+                    <div class="media d-md-flex @if($isMaster == MASTER_ROLE) master-opacity @endif">
                             <span id="dayoff-option-header-4"
                                   class="d-flex rounded-circle avatar z-depth-1-half mb-3 mx-auto dayoff-header mt-1">
                                 {{--<i class="fas fa-times-circle dayoff-icoin text-danger size-table"></i>--}}

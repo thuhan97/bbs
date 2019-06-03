@@ -8,7 +8,6 @@
 namespace App\Services;
 
 use App\Events\UserRegistered;
-use App\Models\Group;
 use App\Models\Potato;
 use App\Models\Team;
 use App\Models\User;
@@ -28,9 +27,9 @@ class UserService extends AbstractService implements IUserService
     /**
      * UserService constructor.
      *
-     * @param \App\Models\User $model
+     * @param \App\Models\User                            $model
      * @param \App\Repositories\Contracts\IUserRepository $repository
-     * @param IUserTeamRepository $userTeamRepository
+     * @param IUserTeamRepository                         $userTeamRepository
      */
     public function __construct(User $model, IUserRepository $repository, IUserTeamRepository $userTeamRepository)
     {
@@ -73,7 +72,7 @@ class UserService extends AbstractService implements IUserService
     /**
      * @param Request $request
      * @param integer $perPage
-     * @param string $search
+     * @param string  $search
      *
      * @return collection
      */
@@ -108,12 +107,21 @@ class UserService extends AbstractService implements IUserService
      */
     public function getUserManager()
     {
-
-        if (Auth::user()->jobtitle_id == MANAGER_ROLE){
+        $user = Auth::user();
+        if ($user->jobtitle_id == MANAGER_ROLE) {
             return $this->model->where('jobtitle_id', MASTER_ROLE)->pluck('name', 'id');
         }
-       $a=UserTeam::where('user_id',Auth::id())->first()->team_id ?? null;
-        $id = Team::find($a)->group->manager_id ?? null;
-        return $this->model->where('id',$id)->pluck('name','id');
+        if ($user->jobtitle_id == TEAMLEADER_ROLE) {
+            $team = Team::where('leader_id', Auth::id())->first();
+        } else {
+            $team = UserTeam::where('user_id', Auth::id())->first()->team;
+        }
+
+        if ($team) {
+            $id = $team->group->manager_id;
+            return $this->model->where('id', $id)->pluck('name', 'id');
+        } else {
+            return $this->model->where('jobtitle_id', MANAGER_ROLE)->pluck('name', 'id');
+        }
     }
 }

@@ -54,6 +54,11 @@ class UserTeam extends Model
         return $this->hasOne('App\Models\User', 'id', 'user_id');
     }
 
+    public function team()
+    {
+        return $this->belongsTo('App\Models\Team', 'team_id', 'id');
+    }
+
     /**
      * @param $id
      *

@@ -292,14 +292,14 @@
                 </div>
                 <div class="modal-body mt-0 pb-0 pt-2 d-flex justify-content-start ml-3" id="toggle-show">
                     <div class="row w-100">
-                        <div class="col-6 col-sm-12 col-md-6 pl-0 pr-0">
+                        <div class="col-6 col-sm-12 col-md-6 pr-0">
                             <div class="custom-control custom-radio">
                                 <input type="radio" class="custom-control-input option-dayoff" id="defaultUnchecked"
                                        name="defaultExampleRadios" checked value="0">
                                 <label class="custom-control-label" for="defaultUnchecked"><h5 class="mb-h5">Xin nghỉ phép</h5></label>
                             </div>
                         </div>
-                        <div class="col-6 col-sm-12 col-md-6 pl-0 pr-0">
+                        <div class="col-6 col-sm-12 col-md-6 pr-0">
                             <!-- Default checked -->
                             <div class="custom-control custom-radio">
                                 <input type="radio" class="custom-control-input option-dayoff" id="defaultChecked1"

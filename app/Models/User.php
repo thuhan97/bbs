@@ -188,6 +188,11 @@ class User extends Authenticatable implements JWTSubject
         return Group::where('manager_id', $this->attributes['id'])->exists();
     }
 
+    public function isTeamLeader()
+    {
+        return $this->attributes['jobtitle_id'] == TEAMLEADER_ROLE;
+    }
+
     /**
      * Search for course title or subject name
      *

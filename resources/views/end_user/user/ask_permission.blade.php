@@ -441,7 +441,11 @@
                             <th class="text-center d-none d-md-table-cell">{{ $increment+1 }}</th>
                             <th class="text-center mb-with-32" style="padding: 15px">{{ $item['work_day'] ?? '' }}</th>
                             <td>
-                                {{$item->ot_type ? $item->ot_type == 1 ? 'OT Dự án' : 'OT cá nhân' : '' }}
+                                @if($item->ot_type == array_search('Dự án',OT_TYPE))
+                                    OT Dự án
+                                @else
+                                    OT cá nhân
+                                @endif
                             </td>
                             <td class="mb-with-32">{{$item->description_time}}</td>
                             <td class="d-none d-md-table-cell">{!! $item['reason'] !!}</td>
@@ -894,7 +898,7 @@
                             //     $('.project_id ').prop('disabled', false);
                             // }
 
-                        }else {
+                        } else {
                             $('#start_at').attr('value', '');
                             $('#end_at').attr('value', '');
                             $('.permission-reason-ot').empty();

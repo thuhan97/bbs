@@ -1903,4 +1903,6 @@ td.blank, .type-1, .type-2 {
     display: none;
 }
 
-
+.img-event-home {
+    margin: 0 auto;
+}

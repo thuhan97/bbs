@@ -30,11 +30,11 @@ class SuggestionNotifyEvent extends NotificationBroadCast
             'name' => $this->user->name,
             'title' => $this->user->name .SPACE .SUGGESTIONS_TITLE_NOTIFY,
             'content' => $this->record->comment,
-            'image_url' => $this->user->avatar,
+            'image_url' => JVB_LOGO_URL,
             'logo_url' => NOTIFICATION_LOGO[NOTIFICATION_TYPE['suggestions']],
             'logo_id' => NOTIFICATION_TYPE['suggestions'],
             'url' => $url,
-            'from_id' => $this->record->creator_id,
+            'from_id' => DEFAULT_VALUE,
             'to_id' => $this->record->isseus_id,
         ];
 

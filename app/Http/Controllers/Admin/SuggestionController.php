@@ -49,10 +49,10 @@ class SuggestionController extends AdminBaseController
     {
         return [
             'rules' => [
-                'creator_id' => ['required', 'integer'],
+                'creator_id' => 'required|integer',
                 'content' => 'required',
                 'status' => 'nullable|integer|between:0,1',
-                'isseus_id' => 'nullable', 'integer',
+                'isseus_id' => 'nullable|integer',
             ],
             'messages' => [],
             'attributes' => [
@@ -68,10 +68,10 @@ class SuggestionController extends AdminBaseController
     {
         return [
             'rules' => [
-                'creator_id' => ['nullable', 'integer'],
+                'creator_id' => 'nullable|integer',
                 'content' => 'required',
                 'status' => 'nullable|integer|between:0,1',
-                'isseus_id' => 'nullable', 'integer',
+                'isseus_id' => 'nullable|integer',
             ],
             'messages' => [],
             'attributes' => [

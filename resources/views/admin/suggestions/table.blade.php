@@ -41,7 +41,7 @@
                 </td>
                 <td>{{ $record->content }}</td>
                 <td>{{ $record->comment }}</td>
-                <td>{{ $record->suggestions_isseus->name }}</td>
+                <td>{{ $record->suggestions_isseus->name ?? '' }}</td>
                 <td class="text-right">{{ $record->created_at->format('d-m-Y') }}</td>
                 @if ($record->status == 1)
                     <td><span class="label label-info">Yes</span></td>

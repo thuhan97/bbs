@@ -33,6 +33,7 @@ $(function () {
     });
     myChannel.bind('App\\Events\\SuggestionNotifyEvent', function (notice) {
         var data = notice.data;
+        console.log(data);
         myNotify.pushNotify(data.title, data.content, data.image_url, data.url, data.logo_url);
     });
 

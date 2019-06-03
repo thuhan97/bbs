@@ -39,7 +39,7 @@ class NotificationService extends AbstractService implements IUserTeamService
 
         foreach (array_unique($relationIds) as $userId) {
             if ($userId != $currentUser->id) {
-                event(new ReportReplyNoticeEvent($currentUser, $userId, $reportId, $content));
+                event(new ReportReplyNoticeEvent($currentUser, $userId, $report, $content));
             }
         }
 

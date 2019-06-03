@@ -8,13 +8,11 @@
 namespace App\Services;
 
 use App\Events\UserRegistered;
-use App\Models\Potato;
 use App\Models\Team;
 use App\Models\User;
 use App\Models\UserTeam;
 use App\Repositories\Contracts\IUserRepository;
 use App\Repositories\Contracts\IUserTeamRepository;
-use App\Services\Contracts\IPotatoService;
 use App\Services\Contracts\IUserService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;

@@ -97,3 +97,8 @@ $(function () {
         return tmp.textContent || tmp.innerText || "";
     }
 });
+
+//firebase:
+if (Notification.permission === "granted") {
+
+}

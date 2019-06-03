@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="robots" content="noindex, nofollow, noarchive">
     <link rel="icon" type="image/png" href="/favicon.png">
+    <link rel="manifest" href="/manifest.json">
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
@@ -79,9 +80,9 @@
 <script type="text/javascript" src="{{ cdn_asset('js/mdb.min.js?v=1') }}"></script>
 <script type="text/javascript" src="{{ cdn_asset('js/moment-with-locales.min.js') }}"></script>
 {{--<script type="text/javascript" src="{{ cdn_asset('/mdb/js/compiled.min.js') }}"></script>--}}
+@include('layouts.push-notification')
 <script type="text/javascript" src="{{ cdn_asset('js/main.js') }}"></script>
 <script type="text/javascript" src="{{ cdn_asset('js/notify.js') }}"></script>
-
 @stack('extend-js')
 </body>
 </html>

@@ -1,8 +1,6 @@
 <div class="col-md-12">
     <div class="row">
-        <div class="col-md-4" s{{--tyle="    overflow-x: hidden;
-    width: 100%;
-    word-break: break-word;"--}}>
+        <div class="col-md-4">
             <p><b>Tên nhóm: </b>{{ old('name', $record->name) }}</p>
             <br>
             <p><b>Người quản lý :</b> {{  $record->user->name ?? ''  }}</p>

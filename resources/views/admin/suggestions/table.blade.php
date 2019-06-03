@@ -3,8 +3,9 @@
         <colgroup>
             <col style="width: 30px">
             <col style="width: 150px">
-            <col style="">
+            <col style="width: 300px">
             <col style="width: 190px">
+            <col style="width: 150px">
             <col style="width: 150px">
             <col style="width: 100px">
             <col style="width: 40px">
@@ -19,6 +20,8 @@
         <th>Nội dung</th>
         <th>Phản hồi cho người duyệt
         </th>
+        <th>Phản hồi của người duyệt
+        </th>
         <th>Người duyệt
         </th>
         <th>Ngày tạo
@@ -29,8 +32,8 @@
         <tbody>
         @foreach ($records as $record)
             <?php
+            $showLink = route($resourceRoutesAlias . '.show', $record->id);
             $editLink = route($resourceRoutesAlias . '.edit', $record->id);
-
             $deleteLink = route($resourceRoutesAlias . '.destroy', $record->id);
             $formId = 'formDeleteModel_' . $record->id;
             ?>
@@ -39,8 +42,9 @@
                 <td class="table-text">
                     <a href="{{ $editLink }}">{{ $record->user->name ?? '' }}</a>
                 </td>
-                <td>{{ $record->content }}</td>
-                <td>{{ $record->comment }}</td>
+                <td>{{str_limit(strip_tags(nl2br($record->content) ), 44) }}</td>
+                <td> {{str_limit(strip_tags(nl2br($record->comment) ), 25) }}</td>
+                <td> {{str_limit(strip_tags(nl2br($record->isseus_comment) ), 25) }}</td>
                 <td>{{ $record->suggestions_isseus->name ?? '' }}</td>
                 <td class="text-right">{{ $record->created_at->format('d-m-Y') }}</td>
                 @if ($record->status == 1)
@@ -52,6 +56,7 @@
             <!-- we will also add show, edit, and delete buttons -->
                 <td>
                     <div class="btn-group">
+                        <a href="{{ $showLink }}" class="btn btn-info btn-sm"><i class="fa fa-eye"></i></a>
                         <a href="{{ $editLink }}" class="btn btn-info btn-sm"><i class="fa fa-edit"></i></a>
                         <a href="#" class="btn btn-danger btn-sm btnOpenerModalConfirmModelDelete"
                            data-form-id="{{ $formId }}"><i class="fa fa-trash-o"></i></a>
@@ -65,7 +70,6 @@
                         <button type="submit" class="btn btn-danger">Delete</button>
                     </form>
                 </td>
-
             </tr>
         @endforeach
         </tbody>

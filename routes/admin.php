@@ -151,6 +151,7 @@ Route::group([
     // suggestions
     Route::resource('suggestions', 'SuggestionController');
     Route::post('suggestions/deletes', ['as' => 'suggestions.deletes', 'uses' => 'SuggestionController@deletes']);
+    Route::get('suggestions/detail/{id}', 'SuggestionController@detailSuggestions')->name('events.suggestions');
 
 
 });

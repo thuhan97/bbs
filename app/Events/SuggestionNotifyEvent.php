@@ -24,12 +24,12 @@ class SuggestionNotifyEvent extends NotificationBroadCast
     {
         $this->record = $record;
         $this->user = $user;
-        $url = route('list_suggestions');
+        $url = route('detail_suggestions',['id'=>$record->id]);
         $this->data = [
             'id' => $this->record->id,
             'name' => $this->user->name,
-            'title' => $this->user->name .SPACE .SUGGESTIONS_TITLE_NOTIFY,
-            'content' => $this->record->comment,
+            'title' => $this->user->name .SPACE .__('suggestions_title_notify'),
+            'content' => $this->record->comment ?? '',
             'image_url' => JVB_LOGO_URL,
             'logo_url' => NOTIFICATION_LOGO[NOTIFICATION_TYPE['suggestions']],
             'logo_id' => NOTIFICATION_TYPE['suggestions'],

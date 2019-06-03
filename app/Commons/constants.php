@@ -437,7 +437,6 @@ define('NOTIFICATION_LOGO', [
     6 => 'fa fa-book secondary-text',
     7 => 'fa fa-envelope-o secondary-text'
 ]);
-define('SUGGESTIONS_TITLE_NOTIFY','bạn có một đề xuất - góp ý mới cần giải quyết.');
 define('JVB_LOGO_URL', 'http://jvb-corp.com/img/logo.png');
 
 

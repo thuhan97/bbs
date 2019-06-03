@@ -29,6 +29,7 @@ protected $fillable = [
     'status',
     'isseus_id',
     'comment',
+    'isseus_comment'
 ];
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo

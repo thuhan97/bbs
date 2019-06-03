@@ -108,6 +108,9 @@ class UserService extends AbstractService implements IUserService
     public function getUserManager()
     {
         $user = Auth::user();
+        if ($user->jobtitle_id == MASTER_ROLE) {
+            return collect();
+        }
         if ($user->jobtitle_id == MANAGER_ROLE) {
             return $this->model->where('jobtitle_id', MASTER_ROLE)->pluck('name', 'id');
         }

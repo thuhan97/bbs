@@ -73,10 +73,13 @@ class WorkTimeController extends AdminBaseController
      */
     public function import()
     {
+        $users = $this->getUsers();
+
         return view('admin.work_time.import', [
             'resourceAlias' => $this->getResourceAlias(),
             'resourceRoutesAlias' => $this->getResourceRoutesAlias(),
             'resourceTitle' => $this->getResourceTitle(),
+            'users' => ['' => 'Tất cả nhân viên'] + $users,
         ]);
     }
 
@@ -84,6 +87,7 @@ class WorkTimeController extends AdminBaseController
      * @param WorkTimeImportRequest $request
      *
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     * @throws \Illuminate\Validation\ValidationException
      */
     public function importData(WorkTimeImportRequest $request)
     {
@@ -109,18 +113,19 @@ class WorkTimeController extends AdminBaseController
 
         $importFile = request()->file('import_file');// $request->file('import_file');
         //Import from file
-        Excel::import(new WorkTimeImport($startDate, $endDate), $importFile);
+        Excel::import(new WorkTimeImport($startDate, $endDate, $request->get('user_id')), $importFile);
 
         \DB::commit();
         event(new CaculateLateTimeEvent($startDate, $endDate));
         $message = 'Nhập dữ liệu thành công.';
-
+        $users = $this->getUsers();
         return view('admin.work_time.import', [
             'resourceAlias' => $this->getResourceAlias(),
             'resourceRoutesAlias' => $this->getResourceRoutesAlias(),
             'resourceTitle' => $this->getResourceTitle(),
             'import_errors' => $importErrors,
-            'message' => $message
+            'message' => $message,
+            'users' => $users,
         ]);
     }
 
@@ -220,10 +225,15 @@ class WorkTimeController extends AdminBaseController
 
     private function makeRelationData($data = [])
     {
-        $userModel = new User();
-        $data['request_users'] = $userModel->availableUsers()->select(DB::raw("CONCAT(staff_code, ' - ', name) as name"), 'id')->pluck('name', 'id')->toArray();
+        $data['request_users'] = $this->getUsers();
 
         return $data;
+    }
+
+    private function getUsers()
+    {
+        $userModel = new User();
+        return $userModel->availableUsers()->select(DB::raw("CONCAT(staff_code, ' - ', name) as name"), 'id')->pluck('name', 'id')->toArray();
     }
 
     public function exportData(Request $request)

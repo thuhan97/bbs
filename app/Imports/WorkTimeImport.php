@@ -36,9 +36,15 @@ class WorkTimeImport implements ToCollection, WithValidation
      * @param $startDate
      * @param $endDate
      */
-    public function __construct($startDate, $endDate)
+    public function __construct($startDate, $endDate, $userIds = [])
     {
-        $this->users = User::pluck('id', 'staff_code', 'contract_type')->toArray();
+        $isAllUser = ($userIds[0] ?? null) == null;
+        $userModel = User::select('id', 'staff_code', 'contract_type');
+        if (!$isAllUser) {
+            $userModel = $userModel->whereIn('id', $userIds);
+        }
+
+        $this->users = $userModel->pluck('id', 'staff_code', 'contract_type')->toArray();
 
         $this->workTimeService = app()->make(WorkTimeService::class);
 

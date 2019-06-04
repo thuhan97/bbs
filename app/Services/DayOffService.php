@@ -402,7 +402,7 @@ class DayOffService extends AbstractService implements IDayOffService
                         $remainDayOffPreYear->remain = DAY_OFF_DEFAULT;
                         $remainDayOffPreYear->save();
                     }
-                    $remainDayOffCurrentYear->remain = $dayOffCurrentYear + $dayOffPreYear + $dayOffFreeCurrentYear - $numOffApprove[0];
+                    $remainDayOffCurrentYear->remain = $dayOffCurrentYear + $dayOffPreYear + $dayOffFreeCurrentYear - $numOffApprove;
                     $remainDayOffCurrentYear->save();
 
                 } else {

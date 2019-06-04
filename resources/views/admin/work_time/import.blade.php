@@ -165,7 +165,7 @@ $baseRoute = 'admin::work_times';
         }
 
         .datepicker {
-            z-index: initial !important;
+            z-index: 2 !important;
         }
     </style>
     <script>

@@ -344,7 +344,8 @@ class WorkTimeService extends AbstractService implements IWorkTimeService
         if ($startAt) {
             $startAt .= ':00';
             //check đi muộn quá nửa buổi chiều -> nghỉ ngày
-            if ($typeCheck >= 0) {
+//            dd($startAt);
+            if ($typeCheck >= 0 && $startAt >= HAFT_HOUR) {
                 $timeLateAt = $registerAt ?? $this->config->time_afternoon_go_late_at;
                 if ($startAt >= HAFT_AFTERNOON) {
                     $type = WorkTime::TYPES['off'];
@@ -355,10 +356,8 @@ class WorkTimeService extends AbstractService implements IWorkTimeService
                     $type += WorkTime::TYPES['lately'];
                     $notes[] = __('worktimes.lately_afternoon');
                 } //Chấm công buổi chiều, nghỉ sáng
-                else if ($startAt >= HAFT_HOUR) {
-                    if ($typeCheck == 0)
-                        $notes[] = __('worktimes.off_morning');
-                }
+                elseif ($typeCheck == 0)
+                    $notes[] = __('worktimes.off_morning');
             }
             if ($typeCheck <= 0 && $startAt < HAFT_HOUR) {
                 $timeLateAt = $registerAt ?? $this->config->time_morning_go_late_at;
@@ -381,11 +380,12 @@ class WorkTimeService extends AbstractService implements IWorkTimeService
                     if ($typeCheck > 0) {
                         $type = WorkTime::TYPES['off'];
                     }
-                } else if ($endAt < $this->config->afternoon_end_work_at) {
+                } else
+                    if ($endAt < $this->config->afternoon_end_work_at) {
 
-                    $type += WorkTime::TYPES['early'];
-                    $notes[] = __('worktimes.early_afternoon');
-                }
+                        $type += WorkTime::TYPES['early'];
+                        $notes[] = __('worktimes.early_afternoon');
+                    }
             }
             if ($typeCheck <= 0) {
                 if ($endAt < $this->config->morning_end_work_at) {

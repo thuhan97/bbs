@@ -75,11 +75,16 @@ class WorkTimeService extends AbstractService implements IWorkTimeService
         return $model->search($search)->get();
     }
 
-    public function deletes($startDate, $endDate)
+    public function deletes($startDate, $endDate, $isAllUser, $userIds)
     {
-        WorkTime::whereDate('work_day', '>=', $startDate)
-            ->whereDate('work_day', '<=', $endDate)
-            ->delete();
+        $model = WorkTime::whereDate('work_day', '>=', $startDate)
+            ->whereDate('work_day', '<=', $endDate);
+
+        if (!$isAllUser) {
+            $model = $model->whereIn('id', $userIds);
+        }
+
+        $model->delete();
     }
 
     public function importWorkTime($userCode, $staffCode, $work_day, $startAt, $endAt)
@@ -344,7 +349,6 @@ class WorkTimeService extends AbstractService implements IWorkTimeService
         if ($startAt) {
             $startAt .= ':00';
             //check đi muộn quá nửa buổi chiều -> nghỉ ngày
-//            dd($startAt);
             if ($typeCheck >= 0 && $startAt >= HAFT_HOUR) {
                 $timeLateAt = $registerAt ?? $this->config->time_afternoon_go_late_at;
                 if ($startAt >= HAFT_AFTERNOON) {

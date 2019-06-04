@@ -32,7 +32,7 @@ return [
     'regulation' => 'Nội quy/Quy định',
     'work_time' => 'Giờ làm việc',
     'list_share_document' => 'Chia sẻ tài liệu',
-    'list_suggestions' => 'Góp ý',
+    'list_suggestions' => 'Đề xuất & Góp ý',
     'share_experience' => 'Chia sẻ kinh nghiệm',
     'contact' => 'Danh sách nhân viên',
     'day_off' => 'Ngày phép',

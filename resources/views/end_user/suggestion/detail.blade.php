@@ -1,5 +1,6 @@
 @extends('layouts.end_user')
-@section('page-title', 'chi-tiet-de-xuat-gop-y')
+@section('page-title', __l('list_suggestions'))
+
 @section('breadcrumbs')
     {!! Breadcrumbs::render('detail_suggestions',$suggestion) !!}
 @endsection

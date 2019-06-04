@@ -72,24 +72,6 @@ class DayOffController extends AdminBaseController
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
-    {
-        $this->authorize('viewList', $this->getResourceModel());
-        $records = $this->searchRecords($request, $perPage, $search);
-        $recordsExcel = $this->getSearchRecords($request,$perPage , $search,true);
-        return view($this->getResourceIndexPath(), $this->filterSearchViewData($request, [
-            'records' => $records,
-            'recordsExcel'=>$recordsExcel,
-            'search' => $search,
-            'resourceAlias' => $this->getResourceAlias(),
-            'resourceRoutesAlias' => $this->getResourceRoutesAlias(),
-            'resourceTitle' => $this->getResourceTitle(),
-            'perPage' => $perPage,
-            'resourceSearchExtend' => $this->resourceSearchExtend,
-            'addVarsForView' => $this->addVarsSearchViewData()
-        ]));
-    }
-
 
     public function getSearchRecords(Request $request, $perPage = 15, $search = null,$flag=false)
     {
@@ -200,17 +182,11 @@ class DayOffController extends AdminBaseController
 
         return $values;
     }
-
-    public function statisticalDayOffExcel(Request $request)
+    public function exportData(Request $request)
     {
-        if ($request->ids) {
-            $ids = array_unique($request->ids);
-            $datas = $this->service->statisticalDayOffExcel($ids);
-            return Excel::download(new DayOffExcel($datas), STATISTICAL_DAY_OFF_NAME.XLSX_TYPE);
-
-        }
+        $datas = $this->service->statisticalDayOffExcel($request->all());
+        return Excel::download(new DayOffExcel($datas), STATISTICAL_DAY_OFF_NAME.XLSX_TYPE);
     }
-
     private function validationData()
     {
         $questionRequest = new DayOffRequest();

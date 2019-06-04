@@ -32,8 +32,7 @@ class HomeController extends Controller
             ->take(10)
             ->get();
 
-        $totalPunish = Punishes::whereDate('infringe_date', '>=', date('Y-m-01'))->sum('total_money');
-        return view('end_user.home', compact('posts', 'events', 'projects', 'totalPunish'));
+        return view('end_user.home', compact('posts', 'events', 'projects'));
     }
 
 

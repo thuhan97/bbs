@@ -1,3 +1,9 @@
+<?php
+$punishMonth = date('m', strtotime('last week'));
+$totalPunish = App\Models\Punishes::whereMonth('infringe_date', $punishMonth)->sum('total_money');
+
+?>
+
 <div class="mb-4 wow fadeIn">
     <!-- Card -->
     <div class="border border-light card text-center animated fadeInRight" id="punish">
@@ -6,7 +12,7 @@
             <div class="text-center white">
                 <img src="{{get_punish_image($totalPunish)}}" class="image my-5"/>
             </div>
-            <h4 class="card-title text-uppercase mt-4 mb-0">Tiền phạt cả công ty tháng {{date('m')}}</h4>
+            <h4 class="card-title text-uppercase mt-4 mb-0">Tiền phạt cả công ty tháng {{$punishMonth}}</h4>
             <div class="bold punish-counter animated fadeIn" data-count="{{$totalPunish}}">0</div>
         </div>
     </div>

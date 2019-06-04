@@ -31,6 +31,10 @@ $(function () {
             window.commentReport(data.id, data.name, data.image_url, data.content);
         }
     });
+    myChannel.bind('App\\Events\\SuggestionNotifyEvent', function (notice) {
+        var data = notice.data;
+        myNotify.pushNotify(data.title, data.content, data.image_url, data.url, data.logo_url);
+    });
 
     var $notification = $("#notification");
     var $btnBell = $("#btnNotification");

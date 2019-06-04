@@ -2,65 +2,61 @@
     <table class="table table-hover table-bordered">
         <colgroup>
             <col style="width: 30px">
-            <col style="width: 50px">
             <col style="width: 150px">
-            <col style="width: 200px">
-            <col style="">
-            <col style="width: 120px">
+            <col style="width: 300px">
+            <col style="width: 190px">
+            <col style="width: 150px">
+            <col style="width: 150px">
             <col style="width: 100px">
-            <col style="width: 100px">
+            <col style="width: 40px">
             <col style="width: 90px">
-            <col style="width: 100px">
         </colgroup>
-        <thead>
+        <thead class="eventTable">
         <th style="width: 10px;">
-            <button type="button" class="btn btn-default btn-sm checkbox-toggle"><i class="fa fa-square-o "></i>
-            </button>
+            <button type="button" class="btn btn-default btn-sm checkbox-toggle"><i class="fa fa-square-o"></i></button>
         </th>
-        <th>Ảnh thông báo</th>
-        <th>Tên thông báo
-            {!! __admin_sortable('name') !!}
+        <th>Người góp ý
         </th>
-        <th>Tóm tắt</th>
-        <th>Người đăng</th>
+        <th>Nội dung</th>
+        <th>Phản hồi cho người duyệt
+        </th>
+        <th>Phản hồi của người duyệt
+        </th>
+        <th>Người duyệt
+        </th>
         <th>Ngày tạo
-            {!! __admin_sortable('created_at') !!}
         </th>
-        <th>Thông báo
-            {!! __admin_sortable('notify_date') !!}
-        </th>
-        <th>Kích hoạt</th>
-        <th>Actions</th>
+        <th>Trạng thái</th>
+        <th>Chức năng</th>
         </thead>
         <tbody>
         @foreach ($records as $record)
             <?php
+            $showLink = route($resourceRoutesAlias . '.show', $record->id);
             $editLink = route($resourceRoutesAlias . '.edit', $record->id);
-
             $deleteLink = route($resourceRoutesAlias . '.destroy', $record->id);
             $formId = 'formDeleteModel_' . $record->id;
             ?>
             <tr>
                 <td><input type="checkbox" name="ids[]" value="{{ $record->id }}" class="square-blue chkDelete"></td>
-                <td class="text-center">
-                    <img src="{{lfm_thumbnail($record->image_url)}}" width="100">
-                </td>
                 <td class="table-text">
-                    <a href="{{ $editLink }}">{{ $record->name }}</a>
+                    <a href="{{ $editLink }}">{{ $record->user->name ?? '' }}</a>
                 </td>
-                <td>{{ $record->introduction }}</td>
-                <td>{{ $record->author_name }}</td>
-                <td class="text-right">{{ $record->created_at->format(DATE_FORMAT) }}</td>
-                <td><span class="label label-success">{{$record->notify_date}}</span></td>
+                <td>{{str_limit(strip_tags(nl2br($record->content) ), 44) }}</td>
+                <td> {{str_limit(strip_tags(nl2br($record->comment) ), 25) }}</td>
+                <td> {{str_limit(strip_tags(nl2br($record->isseus_comment) ), 25) }}</td>
+                <td>{{ $record->suggestions_isseus->name ?? '' }}</td>
+                <td class="text-right">{{ $record->created_at->format('d-m-Y') }}</td>
                 @if ($record->status == 1)
                     <td><span class="label label-info">Yes</span></td>
                 @else
                     <td><span class="label label-warning">No</span></td>
-            @endif
+                @endif
 
             <!-- we will also add show, edit, and delete buttons -->
                 <td>
                     <div class="btn-group">
+                        <a href="{{ $showLink }}" class="btn btn-info btn-sm"><i class="fa fa-eye"></i></a>
                         <a href="{{ $editLink }}" class="btn btn-info btn-sm"><i class="fa fa-edit"></i></a>
                         <a href="#" class="btn btn-danger btn-sm btnOpenerModalConfirmModelDelete"
                            data-form-id="{{ $formId }}"><i class="fa fa-trash-o"></i></a>
@@ -74,7 +70,6 @@
                         <button type="submit" class="btn btn-danger">Delete</button>
                     </form>
                 </td>
-
             </tr>
         @endforeach
         </tbody>

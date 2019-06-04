@@ -22,7 +22,11 @@ class ReportCreatedNoticeEvent extends NotificationBroadCast
     public function __construct(Report $report, User $receiver)
     {
         $senderName = $report->user->name;
-        $url = route('report') . '#report_item_' . $report->id;
+        $reportId = $report->id;
+        $year = $report->year;
+        $month = $report->month;
+        $url = route('report') . "?type=1&year=$year&month=$month#report_item_$reportId";
+
         $this->data = [
             'id' => $report->id,
             'title' => $senderName . ' gửi báo cáo công việc.',

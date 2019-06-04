@@ -15,6 +15,9 @@ abstract class WTGridExport implements ShouldAutoSize, WithEvents
     protected $ignoreFormatColumns = [
         'B', 'C'
     ];
+    protected $weekends = [
+        'T7', 'CN'
+    ];
 
     protected $records;
     protected $firstDate;
@@ -29,6 +32,45 @@ abstract class WTGridExport implements ShouldAutoSize, WithEvents
     protected $headings;
     protected $importList;
     protected $moreColumnNumber = 3;
+    protected $users;
+
+    protected $weekendBgColor = 'FF00E400';
+
+    protected $borderStyle = [
+        'borders' => [
+            'outline' => [
+                'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+                'color' => ['argb' => 'black'],
+            ],
+        ]
+    ];
+
+    protected $boldTextStyle = [
+        'alignment' => array(
+            'horizontal' => \PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
+        )
+        ,
+        'font' => [
+            'bold' => true
+        ],
+
+    ];
+
+    protected $textCenterStyle = [
+        'alignment' => array(
+            'horizontal' => \PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
+        ),
+    ];
+
+    /**
+     * @var int
+     */
+    protected $totalRow;
+
+    /**
+     * @var \Illuminate\Support\Collection
+     */
+    protected $cols;
 
     /**
      * WorkTimeGridExport constructor.
@@ -37,7 +79,13 @@ abstract class WTGridExport implements ShouldAutoSize, WithEvents
      */
     public function __construct($records, Request $request)
     {
-        $userModel = User::select('id', 'staff_code', 'name', 'contract_type')
+        [$firtDate, $lastDate] = getStartAndEndDateOfMonth($request->get('month'), $request->get('year'));
+
+        $userModel = User::select('id', 'staff_code', 'name', 'contract_type', 'is_remote', 'jobtitle_id', 'start_date')
+            ->where(function ($q) use ($lastDate) {
+                $q->whereDate('start_date', '<=', $lastDate)
+                    ->orWhereNull('start_date');
+            })
             ->where('status', ACTIVE_STATUS);
         $userID = $request->get('user_id', 0);
         if ($userID) {
@@ -52,7 +100,6 @@ abstract class WTGridExport implements ShouldAutoSize, WithEvents
         }
 
         $this->records = $records;
-        [$firtDate, $lastDate] = getStartAndEndDateOfMonth($request->get('month'), $request->get('year'));
         $this->firstDate = $firtDate;
         $this->lastDate = $lastDate;
         $this->dateLists = get_date_list($this->firstDate, $this->lastDate);
@@ -69,54 +116,52 @@ abstract class WTGridExport implements ShouldAutoSize, WithEvents
 
     public function registerEvents(): array
     {
-        $borderStyle = [
-            'borders' => [
-                'outline' => [
-                    'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
-                    'color' => ['argb' => 'black'],
-                ],
-            ]
-        ];
-        $styleArray = [
-            'alignment' => array(
-                'horizontal' => \PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
-            )
-            ,
-            'font' => [
-                'bold' => true
-            ],
-
-        ];
-        $styleArray1 = [
-            'alignment' => array(
-                'horizontal' => \PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
-            ),
-        ];
-
         return [
             BeforeSheet::class => function (BeforeSheet $event) {
 
             },
-            AfterSheet::class => function (AfterSheet $event) use ($borderStyle, $styleArray, $styleArray1) {
-                $count = count($this->users) + 4;
+            AfterSheet::class => function (AfterSheet $event) {
+                $this->totalRow = count($this->users) + 4;
                 $length = count($this->dateLists) + $this->moreColumnNumber;
-                $rows = ExcelHelper::getExcelRows($length);
-                $headingFormat = array_merge($borderStyle, $styleArray);
-                $workTimeFormat = array_merge($borderStyle, $styleArray1);
-                $nameFormat = $borderStyle;
+                $this->cols = collect(ExcelHelper::getExcelCols($length));
 
-                foreach ($rows as $value) {
-                    $event->sheet->getStyle($value . '1')->applyFromArray($headingFormat);
-                    $event->sheet->getStyle($value . '2')->applyFromArray($headingFormat);
-                    for ($i = 0; $count > $i; $i++) {
-                        if (!in_array($value, $this->ignoreFormatColumns))
-                            $event->sheet->getStyle($value . "1:" . $value . $i)->applyFromArray($workTimeFormat);
-                        $event->sheet->getStyle($value . "1:" . $value . $i)->applyFromArray($nameFormat);
-                    }
-                }
-                $event->sheet->insertNewRowBefore(DEFAULT_INSERT_ROW_EXCEL);
+                $this->formatSheet($event);
             },
 
         ];
+    }
+
+    protected function formatSheet(AfterSheet $event)
+    {
+        $sheet = $event->sheet;
+        $headingFormat = array_merge($this->borderStyle, $this->boldTextStyle, $this->textCenterStyle);
+        $workTimeFormat = array_merge($this->boldTextStyle, $this->textCenterStyle);
+        $cellFirst = $this->cols->first() . '1';
+        $cellHeadingLast = $this->cols->last() . '2';
+        $cellLast = $this->cols->last() . $this->totalRow;
+        $sheet->getStyle($cellFirst . ':' . $cellHeadingLast)->applyFromArray($headingFormat);
+        $rowNum = $this->totalRow - 1;
+
+        $this->extendFormatSheet($sheet);
+
+        foreach ($this->cols as $col) {
+            $isWeekend = in_array($sheet->getCell($col . '1')->getValue(), $this->weekends);
+            if ($isWeekend) {
+                $sheet->getStyle($col . "1:" . $col . $rowNum)->getFill()
+                    ->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)
+                    ->getStartColor()->setARGB($this->weekendBgColor);
+            }
+            for ($i = 0; $this->totalRow > $i; $i++) {
+                if (!in_array($col, $this->ignoreFormatColumns))
+                    $sheet->getStyle($col . "1:" . $col . $i)->applyFromArray($workTimeFormat);
+                $sheet->getStyle($col . "1:" . $col . $i)->applyFromArray($this->borderStyle);
+            }
+        }
+        $sheet->insertNewRowBefore(DEFAULT_INSERT_ROW_EXCEL);
+    }
+
+    protected function extendFormatSheet($sheet)
+    {
+
     }
 }

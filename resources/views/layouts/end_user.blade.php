@@ -17,7 +17,7 @@
           integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
     <link href="{{ cdn_asset('css/addons/datatables.min.css') }}" rel="stylesheet">
     <link href="{{ cdn_asset('css/notification.css') }}?v={{date('Ymd')}}-1" rel="stylesheet">
-    <link href="{{ cdn_asset('css/style.css') }}?v={{date('Ymd')}}-1" rel="stylesheet">
+    <link href="{{ cdn_asset('css/style.css') }}?v={{date('Ymd')}}" rel="stylesheet">
 
     <script type="text/javascript" src="{{ cdn_asset('mdb/js/jquery-3.3.1.min.js') }}"></script>
     <script type="text/javascript" src="{{ cdn_asset('mdb/js/popper.min.js') }}"></script>
@@ -28,8 +28,10 @@
     <script>
         window.userId = '{{\Illuminate\Support\Facades\Auth::id()}}';
         window.system_image = '{{JVB_LOGO_URL}}';
-        Pusher.logToConsole = true;
-        window.pusher = new Pusher('{{env('PUSHER_APP_KEY')}}', {
+        @if(config('app.env') != 'production')
+            Pusher.logToConsole = true;
+        @endif
+            window.pusher = new Pusher('{{env('PUSHER_APP_KEY')}}', {
             cluster: 'ap1',
             forceTLS: true,
             authEndpoint: '/broadcasting/auth',
@@ -75,7 +77,7 @@
 
 <!-- Scripts -->
 <script type="text/javascript" src="{{ cdn_asset('js/mdb.min.js?v=1') }}"></script>
-<script type="text/javascript" src="{{ asset('js/moment-with-locales.min.js') }}"></script>
+<script type="text/javascript" src="{{ cdn_asset('js/moment-with-locales.min.js') }}"></script>
 {{--<script type="text/javascript" src="{{ cdn_asset('/mdb/js/compiled.min.js') }}"></script>--}}
 <script type="text/javascript" src="{{ cdn_asset('js/main.js') }}"></script>
 <script type="text/javascript" src="{{ cdn_asset('js/notify.js') }}"></script>

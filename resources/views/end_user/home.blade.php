@@ -40,16 +40,22 @@
                             <div class="row mb-4">
                                 <div class="col-lg-5">
                                     <div class="view overlay rounded mb-lg-0 mb-4">
-                                        <img class="img-fluid" src="{{$event->image_url}}" alt="{{ $event->name }}">
+                                        <img class="img-fluid img-event-home" src="{{$event->image_url}}" alt="{{ $event->name }}">
                                         <a href="{{route('event_detail', ['id' => $event->id])}}">
                                             <div class="mask rgba-white-slight"></div>
                                         </a>
                                     </div>
                                 </div>
                                 <div class="col-lg-7 home-event-content-right">
-                                    <h3 class="font-weight-bold mb-1 home-title-event mb-1-18inch"><strong>[ Sắp diễn ra ] - {{ $event->name }}</strong></h3>
+                                    <h3 class="font-weight-bold mb-1 home-title-event mb-1-18inch">
+                                        @if($event->event_date > date('Y-m-d'))
+                                            <strong>[Sắp diễn ra] - {{ $event->name }}</strong>
+                                            @else
+                                            <strong>{{ $event->name }}</strong>
+                                        @endif
+                                    </h3>
                                     <p class="mb-0">Thời gian tổ chức: <span class="text-danger">{{ $event->event_date }}</span></p>
-                                    <p class="mb-0">Địa điểm tổ chức: <span class="text-danger">{{ $event->place }}</span></p>
+                                    <p class="mb-0">Địa điểm tổ chức: <span class="text-danger">@if($event->place){{str_limit(strip_tags(nl2br($event->place) ), 30) }}@else Bí mật @endif</span></p>
                                     <hr class="my-1 my-3-18inch">
                                     <p class="d-none-15inch">{{str_limit(strip_tags(nl2br($event->introduction) ), 220) }}</p>
                                     <p class="d-none-18inch mb-15ich-0">{{str_limit(strip_tags(nl2br($event->introduction) ), 90) }}</p>

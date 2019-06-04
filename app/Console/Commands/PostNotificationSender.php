@@ -2,14 +2,14 @@
 
 namespace App\Console\Commands;
 
-use App\Events\PostNotify;
-use App\Helpers\NotificationHelper;
-use App\Models\Notification;
 use App\Models\Post;
-use App\Models\User;
+use App\Services\NotificationService;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
 
+/**
+ * @property NotificationService notificationService
+ */
 class PostNotificationSender extends Command
 {
     /**
@@ -34,6 +34,8 @@ class PostNotificationSender extends Command
     public function __construct()
     {
         parent::__construct();
+
+        $this->notificationService = app()->make(NotificationService::class);
     }
 
     /**
@@ -46,21 +48,8 @@ class PostNotificationSender extends Command
         $posts = Post::where('has_notify', 1)
             ->where('is_sent', 0)->where('notify_date', '<=', Carbon::now())
             ->get();
-//        $posts = Post::all();
-        $users = User::where('status', ACTIVE_STATUS)->pluck('id')->toArray();
-        $notifications = [];
-        foreach ($posts as $post) {
-            foreach ($users as $user_id) {
-                $notifications[] =
-                    NotificationHelper::generateNotify($user_id, 'Thông báo', $post->name, 0, NOTIFICATION_TYPE['post'], route('post_detail', $post->id));
-            }
-            broadcast(new PostNotify($post));
-            $post->is_sent = 1;
-            $post->save();
-        }
-        if (count($notifications) > 0) {
-            Notification::insertAll($notifications);
-        }
+
+        $this->notificationService->sendPostNotification($posts);
 
     }
 }

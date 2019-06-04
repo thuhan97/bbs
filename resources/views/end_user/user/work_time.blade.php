@@ -140,7 +140,7 @@
                     </button>
                 </div>
                 @include('elements.ask_permission_image')
-                <form action="{{ route('work_time.ask_permission') }}" method="post">
+                <form action="{{ route('work_time.ask_permission') }}" method="post" id="form-wt-permission">
                     @csrf
                     <div class="d-flex justify-content-center text-area-reason" id="div-reason"></div>
                     <div id="event"></div>
@@ -205,55 +205,67 @@
                     }
 
                     function makeModal() {
+                        $.ajax({
+                            url: '{{ route('work_time.detail_ask_permission') }}',
+                            type: 'GET',
+                            dataType: 'JSON',
+                            data: {
+                                'work_day': getDataTime,
+                                'explanationOtType': 'explanationOtType'
+                            },
+                            success: function (respond) {
+                                if (respond.reason) {
+                                    var note = respond.reason
+                                } else {
+                                    note = ''
+                                }
+
+                                $('#start_at').val(respond.start_at);
+                                $('#end_at').val(respond.end_at);
+                                if (respond.project) {
+                                    respond.project.forEach(function (element) {
+                                        $('.project_id').append('<option value="' + element.id + '">' + element.name + '</option>');
+                                    });
+                                } else {
+                                    respond.forEach(function (element) {
+                                        $('.project_id').append('<option value="' + element.id + '">' + element.name + '</option>');
+                                    });
+
+                                }
+
+                                $(".project_id option").each(function (data) {
+                                    if (respond.project_id === $(this).val()) {
+                                        $(this).attr('selected', true)
+                                    } else {
+                                        $(this).attr('selected', false)
+                                    }
+                                });
+
+                                if (respond.ot_type == 1) {
+                                    $('#ot-project').attr('checked', true)
+                                } else if (respond.ot_type == 2) {
+                                    $('#ot-other').attr('checked', true)
+                                    $('.project_id option[value!="0"]').remove();
+                                }
+                                if (respond.status === 1) {
+                                    $('.title-wt-modal-approve').text('Đơn đã được duyệt');
+                                    $('.wt-textarea-reason,.btn-send-permission,.project_id,.ot_type,#start_at,#end_at').prop('disabled', true);
+                                } else if (respond.status === 0 || respond.status === 2) {
+                                    $('.title-wt-modal-approve').text('Xin phép');
+                                    $('.wt-textarea-reason,.btn-send-permission,.project_id,.ot_type,#start_at,#end_at').prop('disabled', false);
+                                }
+
+                                $('.wt-textarea-reason').text(note)
+                            }
+                        });
+
                         calendar.sDay = el.getElementsByClassName("dayNumber")[0].innerHTML;
-                        if (el.getElementsByClassName("data-id")[0]) {
-                            document.getElementById("div-reason").innerHTML =
-                                '<div class="row col-md-12 append-reason">' +
-                                '<div class="col-md-12 d-flex justify-content-center">' +
-                                '<div class="user col-md-4 pl-0 pr-0 text-center">' +
-                                '    <label for="ot-project" class="wt-input-late">OT dự án </label>' +
-                                '    <input type="radio" id="ot-project" class="user-radio2 radio-modal-work-time wt-input-late" name="ot_type"  style="position: relative;opacity: 1;pointer-events: inherit"/>' +
-                                '</div>' +
-                                '<div class="user col-md-4 pl-0 pr-0 text-center">' +
-                                '    <label for="ot-other">OT cá nhân </label>' +
-                                '    <input id="ot-other" type="radio" class="user-radio3 radio-modal-work-time"  name="ot_type"  style="position: relative;opacity: 1;pointer-events: inherit"/>' +
-                                '</div>' +
-                                '</div>' +
-                                '        <div class="col-md-6">\n' +
-                                '            <div class="form-group ">\n' +
-                                '                <label for="start_at">Thời gian kết thúc *</label>\n' +
-                                '                <div class="input-group date">\n' +
-                                '                    <input type="time" class="form-control pull-right" autocomplete="off"\n' +
-                                '                           name="start_at"\n' +
-                                '                           value=""\n' +
-                                '                           id="start_at">\n' +
-                                '                </div>\n' +
-                                '            </div>\n' +
-                                '        </div>\n' +
-                                '        <div class="col-md-6">\n' +
-                                '            <div class="form-group ">\n' +
-                                '                <label for="end_at">Thời gian bắt đầu *</label>\n' +
-                                '                <div class="input-group date">\n' +
-                                '                    <input type="time" class="form-control pull-right"\n' +
-                                '                           name="end_at" autocomplete="off"\n' +
-                                '                           value=""\n' +
-                                '                           id="end_at">\n' +
-                                '                </div>\n' +
-                                '            </div>\n' +
-                                '        </div>\n' +
-                                '<input type="hidden" name="work_day" class="work_day" value="' + dataWorkDay + '">' +
-                                '<input hidden name="explanation_type" value="4">' +
-                                '<input hidden name="status" value="" class="wt-status">' +
-                                '<textarea class="form-control wt-textarea-reason" name="reason" rows="6" placeholder="Nội dung bạn muốn gửi..."></textarea>' +
-                                '</div>';
-                        } else {
-                        }
                         document.getElementById("div-reason").innerHTML =
                             '<div class="row col-md-12 append-reason">' +
                             '<div class="col-md-12 d-flex justify-content-center row">' +
                             '<div class="row col-12">' +
                             '<div class="user col-md-6 pl-0 pr-0 text-center my-2 mt-3">' +
-                            '    <input type="radio" id="ot-project" class="user-radio2 radio-modal-work-time" name="ot_type"  style="position: relative;opacity: 1;pointer-events: inherit"/>' +
+                            '    <input type="radio" id="ot-project" checked class="user-radio2 radio-modal-work-time" name="ot_type"  style="position: relative;opacity: 1;pointer-events: inherit"/>' +
                             '    <label for="ot-project">OT Dự án </label>' +
                             '</div>' +
                             '<div class="user col-md-6 pl-0 pr-0 text-center my-2 mt-3">' +
@@ -295,6 +307,7 @@
 
                     if (parseInt(calendarYM) >= parseInt(currentMY)) {
                         if (currentFullTime <= fullTime) {
+                            $('#form-wt-permission').attr('id', 'wt-form-day-onward');
                             if (dataWorkDay) {
                                 var workDay = dataWorkDay,
                                     id = dataID,
@@ -368,6 +381,70 @@
                                 $('.user .demo').remove();
                             });
 
+                            $("#ot").on('click', function () {
+                                var work_day = $('.work_day').val();
+                                $.ajax({
+                                    url: '{{ route('work_time.detail_ask_permission') }}',
+                                    type: 'GET',
+                                    dataType: 'JSON',
+                                    data: {
+                                        'work_day': work_day,
+                                        'explanationOtType': 'ot',
+                                    },
+                                    success: function (respond) {
+                                        if (respond.reason) {
+                                            var note = respond.reason
+                                        } else {
+                                            note = ''
+                                        }
+                                        $('#start_at').val(respond.start_at);
+                                        $('#end_at').val(respond.end_at);
+
+                                        setTimeout(function () {
+                                            $(".project_id option").each(function (data) {
+                                                if (parseInt(respond.project_id) === parseInt(data)) {
+                                                    $(this).attr('selected', true)
+                                                } else {
+                                                    $(this).attr('selected', false)
+                                                }
+                                            });
+                                            $(".ot_type option").each(function (data) {
+                                                if (parseInt(respond.ot_type) === parseInt($(this).val())) {
+                                                    $(this).attr('selected', true)
+                                                } else {
+                                                    $(this).attr('selected', false)
+                                                }
+                                            });
+
+                                            $(".ot_type").on('change', function () {
+                                                if (parseInt($(this).val()) > 1) {
+                                                    $('.project_id').prop('disabled', true);
+                                                } else {
+                                                    $('.project_id').prop('disabled', false);
+                                                }
+                                            });
+
+                                            if (respond.ot_type === 2) {
+                                                $('.project_id').prop('disabled', true);
+                                            } else {
+                                                $('.project_id').prop('disabled', false);
+                                            }
+                                        }, 500);
+
+                                        if (respond.status === 1) {
+                                            $('.title-wt-modal-approve').text('Đơn đã được duyệt');
+                                            $('.wt-textarea-reason,.btn-send-permission,.project_id,.ot_type,#start_at,#end_at').prop('disabled', true);
+                                        } else if (respond.status === 0 || respond.status === 2) {
+                                            $('.title-wt-modal-approve').text('Xin phép');
+                                            $('.wt-textarea-reason,.btn-send-permission,.project_id,.ot_type,#start_at,#end_at').prop('disabled', false);
+                                        }
+
+                                        $('.wt-textarea-reason').text(note)
+                                    }
+                                });
+                            });
+
+
                             $('.user-radio1').change(function () {
                                 $('.wt_ask_permission').attr('value', 'true');
                                 $('.wt_ask_permission_ot').attr('value', 'true');
@@ -375,10 +452,7 @@
                                     url: '{{ route('work_time.get_project') }}',
                                     type: 'GET',
                                     dataType: 'JSON',
-                                    data: {
-                                        // 'work_day': lateWorkDay,
-                                        // 'explanationType': explanationType,
-                                    },
+                                    data: {},
                                     success: function (responds) {
                                         responds.forEach(function (element) {
                                             $('.project_id').append('<option value="' + element.id + '">' + element.name + '</option>');
@@ -392,64 +466,108 @@
                                 } else {
                                     $('.ot_type, .project_id,#start_at,#end_at').prop('disabled', true);
                                 }
-                                $(".ot_type").on('change', function () {
-                                    var explanationOtType = $(this).val(),
-                                        work_day = $('.work_day').val();
-                                    if (explanationOtType === '1') {
-                                        $('.wt_ask_permission_ot_project').attr('value', 'true');
-                                    } else {
-                                        $('.wt_ask_permission_ot_project').attr('value', 'false');
-                                    }
-
-                                    $.ajax({
-                                        url: '{{ route('work_time.detail_ask_permission') }}',
-                                        type: 'GET',
-                                        dataType: 'JSON',
-                                        data: {
-                                            'work_day': work_day,
-                                            'explanationOtType': explanationOtType,
-                                        },
-                                        success: function (respond) {
-                                            if (respond.reason) {
-                                                var note = respond.reason
-                                            } else {
-                                                note = ''
-                                            }
-                                            $('#start_at').val(respond.start_at);
-                                            $('#end_at').val(respond.end_at);
-                                            $(".project_id option").each(function (data) {
-                                                if (respond.project_id === $(this).val()) {
-                                                    $(this).attr('selected', true)
-                                                } else {
-                                                    $(this).attr('selected', false)
-                                                }
-                                            });
-                                            $('.project_id').val(respond.project_id);
-                                            if (explanationOtType === '2') {
-                                                $('.project_id').prop('disabled', true);
-                                            } else {
-                                                $('.project_id').prop('disabled', false);
-                                            }
-                                            if (respond.status === 1) {
-                                                $('.title-wt-modal-approve').text('Đơn đã được duyệt');
-                                                $('.wt-textarea-reason,.btn-send-permission,.project_id,.ot_type,#start_at,#end_at').prop('disabled', true);
-                                            } else if (respond.status === 0 || respond.status === 2) {
-                                                $('.title-wt-modal-approve').text('Xin phép');
-                                                $('.wt-textarea-reason,.btn-send-permission,.project_id,.ot_type,#start_at,#end_at').prop('disabled', false);
-                                            }
-
-                                            $('.wt-textarea-reason').text(note)
-                                        }
-                                    });
-                                })
                             });
 
                             $('.ot_type, .project_id,#start_at,#end_at').prop('disabled', true);
                         } else {
+                            $('#form-wt-permission').attr('id', 'wt-form-past-days');
                             makeModal()
                         }
                     }
-                    $('.project_id,#start_at,#end_at').prop('disabled', true);
+
+                    $('#wt-form-day-onward').validate({
+                        rules: {
+                            explanation_type: {
+                                required: true,
+                            },
+                            reason: {
+                                required: true,
+                            },
+                            start_at: {
+                                required: true,
+                            },
+                            end_at: {
+                                required: true,
+                            },
+                            project_id: {
+                                required: true,
+                                min: 1,
+                            },
+                            ot_type: {
+                                required: true,
+                            },
+                        },
+                        messages: {
+                            work_day: {
+                                required: "Vui lòng chọn ngày",
+                            },
+                            reason: {
+                                required: "Vui lòng nhập lý do",
+                            },
+                            start_at: {
+                                required: "Vui lòng chọn thời gian bắt đầu",
+                            },
+                            end_at: {
+                                required: "Vui lòng chọn thời gian kết thúc",
+                            },
+                            project_id: {
+                                min: "Vui lòng chọn dự án",
+                            },
+                            ot_type: {
+                                required: "Vui lòng chọn hình thức ot",
+                            },
+                            explanation_type: {
+                                required: "Vui lòng hình thức",
+                            },
+                        },
+                    });
+
+                    $('#wt-form-past-days').validate({
+                        rules: {
+                            explanation_type: {
+                                required: true,
+                            },
+                            ot_type: {
+                                required: true,
+                            },
+                            reason: {
+                                required: true,
+                            },
+                            project_id: {
+                                min: 1,
+                            },
+                            start_at: {
+                                required: true,
+                            },
+                            end_at: {
+                                required: true,
+                            },
+                        },
+                        messages: {
+                            explanation_type: {
+                                required: "Vui lòng hình thức",
+                            },
+                            work_day: {
+                                required: "Vui lòng chọn ngày",
+                            },
+                            reason: {
+                                required: "Vui lòng nhập lý do",
+                            },
+                            start_at: {
+                                required: "Vui lòng chọn thời gian bắt đầu",
+                            },
+                            end_at: {
+                                required: "Vui lòng chọn thời gian kết thúc",
+                            },
+                            project_id: {
+                                min: "Vui lòng chọn dự án",
+                            },
+                            ot_type: {
+                                required: "Vui lòng chọn hình thức ot",
+                            },
+                        }
+                    });
+
                     $('#ot-project,#ot-other').on('click', function () {
                         var otThis = $(this);
                         if (otThis.attr('id') === 'ot-other') {
@@ -463,7 +581,7 @@
                             $('.checkOtType').attr('value', 2)
                             $('.project_id,#start_at,#end_at').prop('disabled', false)
                         }
-                        // $('.project_id,#start_at,#end_at').prop('disabled', false);
+
                         var lateWorkDay = $('.work_day').val(),
                             explanationOtType = $(this).val();
                         $.ajax({
@@ -495,7 +613,7 @@
                                     $('.title-wt-modal-approve').text('Xin phép');
                                     $('.wt-textarea-reason,.btn-send-permission').prop('disabled', false);
                                 }
-                                
+
                                 $('#start_at').val(respond.start_at);
                                 $('#end_at').val(respond.end_at);
                                 if (respond.status === undefined) {
@@ -535,6 +653,7 @@
                                 $('.wt-textarea-reason').text(note)
                             }
                         });
+
 
                         $('.ot_type, .project_id,#start_at,#end_at').prop('disabled', true);
                         $('.project_id option[value!="0"]').remove();
@@ -728,7 +847,7 @@
                             type_4 = $('#calendar .data-type-4').length,
                             type_5 = $('#calendar .data-type-5').length,
                             earlyOt = type_1 + type_5;
-                            Ot = type_4 + type_5;
+                        Ot = type_4 + type_5;
                         console.log(earlyOt);
                         $("#btn-early-late").text('Số buổi đi muộn: ' + earlyOt);
                         $("#btn-ot").text('Số buổi OT: ' + Ot);
@@ -743,9 +862,28 @@
     </script>
 @endpush
 @push('extend-css')
+    <style>
+        #project_id-error {
+            margin-right: 260px !important;
+            width: 100% !important;
+        }
+
+        #reason-error {
+            margin-left: 8% !important;
+            margin-top: 10px;
+        }
+
+        #explanation_type-error {
+            position: absolute;
+            margin-top: 20px;
+            width: 100%;
+            margin-left: -10px;
+        }
+    </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/timepicker/1.3.5/jquery.timepicker.min.css">
 @endpush
 
 @push('extend-js')
     <script src="https://cdnjs.cloudflare.com/ajax/libs/timepicker/1.3.5/jquery.timepicker.min.js"></script>
+    <script src="{{ cdn_asset('js/jquery.validate.min.js') }}"></script>
 @endpush

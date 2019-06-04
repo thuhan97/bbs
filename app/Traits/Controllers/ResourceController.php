@@ -21,6 +21,7 @@ trait ResourceController
      */
     public function index(Request $request)
     {
+
         $this->authorize('viewList', $this->getResourceModel());
         if ($request->has('is_export') && in_array($request->path(), EXPORT_PATHS)) {
             return $this->exportData($request);
@@ -123,6 +124,7 @@ trait ResourceController
      */
     public function edit($id)
     {
+
         $record = $this->repository->findOne($id);
 
         $this->authorize('update', $record);
@@ -148,7 +150,6 @@ trait ResourceController
      */
     public function update(Request $request, $id)
     {
-//        dd($request->all());
         $record = $this->repository->findOne($id);
 
         $this->authorize('update', $record);
@@ -241,7 +242,6 @@ trait ResourceController
         $records = $this->getSearchRecords($request, $perPage, $search,false);
 
         $records->appends($request->except('page'));
-
         return $records;
     }
 

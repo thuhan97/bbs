@@ -80,6 +80,9 @@ use App\Repositories\WorkTimeRepository;
 use Illuminate\Support\ServiceProvider;
 
 ##AUTO_INSERT_USE##
+use App\Repositories\Contracts\ISuggestionRepository;
+use App\Repositories\SuggestionRepository;
+use App\Models\Suggestion;
 
 class RepositoriesServiceProvider extends ServiceProvider
 {
@@ -93,6 +96,9 @@ class RepositoriesServiceProvider extends ServiceProvider
     public function register()
     {
         ##AUTO_INSERT_BIND##
+		$this->app->bind(ISuggestionRepository::class, function () {
+			return new SuggestionRepository(new Suggestion());
+		});
         $this->app->bind(IGroupRepository::class, function () {
             return new GroupRepository(new Group());
         });
@@ -184,6 +190,7 @@ class RepositoriesServiceProvider extends ServiceProvider
     {
         return [
             ##AUTO_INSERT_NAME##
+			ISuggestionRepository::class,
             IGroupRepository::class,
             IPunishesRepository::class,
             IRulesRepository::class,

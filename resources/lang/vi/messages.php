@@ -83,4 +83,7 @@ return [
     'share_experience_edit' => 'Sửa nội dung',
     'share_experience_detail' => 'Chi tiết',
     'report_deleted' => 'Đã xóa báo cáo',
+    'detail_suggestions' => 'Chi tiết',
+    'success_suggestions' => 'Cập nhật đề xuất - góp ý thành công',
+    'suggestions_title_notify'=>'bạn có một đề xuất - góp ý mới cần giải quyết.'
 ];

@@ -43,6 +43,11 @@
             <i class="fa fa-share-alt"></i> <span>Thông báo</span>
         </a>
     </li>
+    <li class="{{ \App\Utils::checkRoute(['admin::suggestions.index', 'admin::suggestions.create', 'admin::suggestions.edit']) ? 'active': '' }}">
+        <a href="{{ route('admin::suggestions.index') }}">
+            <i class="fa fa-envelope-o" aria-hidden="true"></i> <span>Đề xuất - Góp ý</span>
+        </a>
+    </li>
     <li class="treeview {{ \App\Utils::checkRoute([
     'admin::regulations.index',
     'admin::regulations.create',
@@ -141,4 +146,5 @@
             <i class="fa fa-money"></i> <span>Danh sách vi phạm</span>
         </a>
     </li>
+    <i class="fa fa-envelope-o" aria-hidden="true"></i>
 </ul>

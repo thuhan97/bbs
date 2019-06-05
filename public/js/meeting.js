@@ -67,11 +67,13 @@ $(function () {
         $("#addMeeting .notice-error").hide();
         $("#addMeeting .error").removeClass('error');
         $("#addMeeting")[0].reset();
+        if (selectInit)
+            $('.selectpicker').selectpicker('refresh');
     }
 
     $calendar.fullCalendar({
         header: {
-            left: 'prev,next today',
+            left: 'prev,next today agendaDay,agendaWeek',
             center: 'title',
             right: ''
         },
@@ -86,13 +88,13 @@ $(function () {
         eventLimit: true, // allow "more" link when too many events
         height: 720,
         eventRender: function (eventObj, $el) {
-            $el.popover({
-                title: eventObj.title,
-                content: eventObj.description,
-                trigger: 'hover',
-                placement: 'top',
-                container: 'body'
-            });
+            // $el.popover({
+            //     title: eventObj.title,
+            //     content: eventObj.description,
+            //     trigger: 'hover',
+            //     placement: 'top',
+            //     container: 'body'
+            // });
         },
         viewRender: function (newView, oldView) {
             window.start_date = newView.start.format('Y/M/D');
@@ -130,36 +132,39 @@ $(function () {
                 data: data,
                 type: 'GET',
                 success: function (data) {
-                    $('#id_booking').val(calEvent.id);
-                    $('#start_date').val(calEvent.start.format('YYYY-MM-DD HH:mm:00'));
-                    $('#show-title').text(data.booking.title);
-                    $('#show-content').text(data.booking.content);
-                    $('#show-object').text(data.participants);
-                    $('#show-meeting').text(data.meeting);
-                    $('#time').text(moment(calEvent.start).format('HH:mm') + '-' + moment(calEvent.end).format('HH:mm'));
-                    $('#showModal').modal();
-                    $('#edit').click(function () {
-                        var booking = data.booking;
-                        $('#id').val(booking.id);
-                        $('#title').val(booking.title);
-                        $('#content').val(booking.content);
-                        $('#participants').val(booking.participants);
-                        $('.selectpicker').selectpicker('refresh');
-                        $('#meeting_room_id').val(booking.meeting_room_id);
-                        $('#start_time').val((booking.start_time.substring(0, 5)));
-                        $('#end_time').val(booking.end_time.substring(0, 5));
-                        $('#days_repeat').val(booking.date);
-                        (booking.is_notify == 0) ? $('input[name="is_notify"]').attr('checked', false) : $('input[name="is_notify"]').attr('checked', true);
+                    if (data) {
 
-                        if (data.type == 'PAST') {
-                            $('#repeat').css('display', 'none');
-                        } else {
-                            $('input:radio[name="repeat_type"]').filter('[value=' + booking.repeat_type + ']').attr('checked', true);
-                        }
-                        $('#showModal').modal('hide');
-                        $('#addModal').modal();
+                        $('#id_booking').val(calEvent.id);
+                        $('#start_date').val(calEvent.start.format('YYYY-MM-DD HH:mm:00'));
+                        $('#show-title').text(data.booking.title);
+                        $('#show-content').text(data.booking.content);
+                        $('#show-object').text(data.participants.join(', '));
+                        $('#show-meeting').text(data.meeting);
+                        $('#time').text(moment(calEvent.start).format('HH:mm') + '-' + moment(calEvent.end).format('HH:mm'));
+                        $('#showModal').modal();
+                        $('#edit').click(function () {
+                            var booking = data.booking;
+                            $('#id').val(booking.id);
+                            $('#title').val(booking.title);
+                            $('#content').val(booking.content);
+                            $('#participants').val(booking.participants);
+                            $('.selectpicker').selectpicker('refresh');
+                            $('#meeting_room_id').val(booking.meeting_room_id);
+                            $('#start_time').val((booking.start_time.substring(0, 5)));
+                            $('#end_time').val(booking.end_time.substring(0, 5));
+                            $('#days_repeat').val(booking.date);
+                            (booking.is_notify == 0) ? $('input[name="is_notify"]').attr('checked', false) : $('input[name="is_notify"]').attr('checked', true);
 
-                    });
+                            if (data.type == 'PAST') {
+                                $('#repeat').css('display', 'none');
+                            } else {
+                                $('input:radio[name="repeat_type"]').filter('[value=' + booking.repeat_type + ']').attr('checked', true);
+                            }
+                            $('#showModal').modal('hide');
+                            $('#addModal').modal();
+
+                        });
+                    }
                 }
             });
             // delete
@@ -170,12 +175,12 @@ $(function () {
                     type: 'GET',
                     success: function (data) {
                         $('#deleteModal').modal('hide');
-                        $('#message').text('Bạn đã xóa thành công buổi họp!')
+                        $('#message').text('Bạn đã hủy thành công buổi họp!')
                         $('#deleteSuccessModal').modal();
                     },
                     fail: function (data) {
                         $('#deleteModal').modal('hide');
-                        $('#message').text('Thao tác xóa không thành công!')
+                        $('#message').text('Thao tác hủy không thành công!')
                         $('#deleteSuccessModal').modal();
                     }
                 });
@@ -193,7 +198,7 @@ $('#booking').click(function (event) {
     $.each($(".selectpicker option:selected"), function () {
         participants.push($(this).val());
     });
-    participants = participants.toString();
+
     var meeting_room_id = $('#meeting_room_id').val();
     if (meeting_room_id == 1) $('#color').val('blue');
     else if (meeting_room_id == 2) $('#color').val('green');
@@ -211,12 +216,13 @@ $('#booking').click(function (event) {
     else var url = '/them-phong-hop';
     $("#addMeeting .error").removeClass('error');
     $("#addMeeting .notice-error").hide();
+
     $.ajax({
         url: url,
         type: "post",
         data: {
             "_token": _token,
-            "participants": participants,
+            "participants[]": participants,
             "meeting_room_id": meeting_room_id,
             "title": title,
             "content": content,
@@ -247,14 +253,18 @@ $('#booking').click(function (event) {
                 $("#addMeeting .notice-error").show();
             } else if (data.status == 500) {
                 if (data.duplicate) {
-                    $('#meeting_room_id').css("border", "1px solid red");
-                    alert("Phòng hoặc thời gian bạn chọn cho cuộc họp đã được đặt, vui lòng chọn lại!");
+                    $('#meeting_room_id').addClass("error");
+                    $('#message').html('Phòng họp đã sử dụng trong thời gian được chọn. <br /> Vui lòng chọn lại!')
+                    $('#deleteSuccessModal').modal();
                 }
             } else if (data.success) {
                 console.log(data.success)
                 location.reload();
             }
         },
+        error: function (data) {
+
+        }
     });
 
 });

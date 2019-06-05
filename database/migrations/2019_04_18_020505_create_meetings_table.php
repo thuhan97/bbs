@@ -17,11 +17,12 @@ class CreateMeetingsTable extends Migration
             $table->increments('id');
             $table->integer('meeting_room_id')->unsigned();
             $table->integer('users_id')->unsigned();
-            $table->string('paticipants');
+            $table->integer('preside_id')->nullable();
+            $table->integer('secretary_id')->nullable();
             $table->string('title');
             $table->text('content');
             $table->tinyInteger('is_notify');
-            $table->datetime('date');
+            $table->date('date');
             $table->time('start_time');
             $table->time('end_time');
             $table->string('color');

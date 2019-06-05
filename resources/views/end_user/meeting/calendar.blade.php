@@ -4,32 +4,10 @@
 @endsection
 @section('content')
     <div class="row my-3">
-        <div class="col-5 col-sm-3 pr-0 ">
-            <form>
-                <div class="row">
-                    <div class="input-group col-7 float-left">
-                        <div class="input-group-prepend">
-                            <span class="input-group-text" id="year"></span>
-                        </div>
-                        <select name="month" onChange="" id="month"
-                                class=" mr-1 browser-default custom-select form-control float-right">
-                        </select>
-                    </div>
-                    <div class="input-group col-5">
-                        <div class="input-group-prepend">
-                            <span class="input-group-text" id="basic-addon1">Ngày</span>
-                        </div>
-                        <select name="date" onChange="" id="date"
-                                class=" mr-1 browser-default custom-select form-control float-left">
-                        </select>
-                    </div>
-                </div>
-            </form>
-        </div>
         <div class="col-6 mt-2">
             @foreach($meeting_rooms as $room)
-                <span data-toggle="tooltip" title="{!! nl2br($room->description) !!}">
-                <i class="fa fa-circle ml-0" style="color: {{$room->color}}"></i> {{$room->name}}
+                <span class="mr-3" data-toggle="tooltip" title="{!! nl2br($room->description) !!}">
+                <i class="fa fa-circle ml-0" style="color: {{$room->color}}"></i> Phòng {{$room->name}}
                 </span>
             @endforeach
         </div>
@@ -50,9 +28,8 @@
                 </div>
                 <div class="modal-body">
                     <form action="" id="addMeeting" method="post">
+                        @csrf
                         <input type="hidden" name="id" id="id" value="">
-                        <input type="hidden" name="_token" id="_token" value="{{ csrf_token() }}">
-                        <input type="hidden" name="color" id="color" value="">
                         <input type="hidden" name="days_repeat" id="days_repeat" value="">
                         <div class="row mb-2">
                             <div class="meeting_room_id col-6">
@@ -94,7 +71,7 @@
                             <div class="col-12 users_id">
                                 <label class="ml-0">Chọn người tham gia *</label>
                                 <select class="selectpicker form-control" multiple data-live-search="true"
-                                        name="participants" id="participants" data-none-selected-text
+                                        name="participants[]" id="participants" data-none-selected-text
                                         title="Chọn người tham gia">
                                     @foreach($groups as $group => $users)
                                         <optgroup label="{{$group}}">
@@ -166,20 +143,25 @@
                     <h4 class="text-center font-weight-normal ">Lịch họp</h4>
                     <input type="hidden" name="id" id="id_booking" value="">
                     <input type="hidden" name="start_date" id="start_date" value="">
-                    <h6 class="font-weight-normal ">Tiêu đề:</h6>
-                    <p id="show-title"></p>
+                    <h5 class="font-weight-normal " id="show-title"></h5>
                     <h6 class="font-weight-normal">Nội dung:</h6>
                     <p id="show-content"></p>
-                    <h6 class="font-weight-normal">Đối tượng:</h6>
+                    <h6 class="font-weight-normal">Thành phần tham gia:</h6>
                     <p id="show-object"></p>
-                    <h6 class="font-weight-normal">Phòng họp:</h6>
-                    <p id="show-meeting"></p>
-                    <h6 class="font-weight-normal">Thời gian:</h6>
-                    <p id="time"></p>
+                    <div class="row">
+                        <div class="col-6">
+                            <h6 class="font-weight-normal">Phòng họp:</h6>
+                            <strong id="show-meeting"></strong>
+                        </div>
+                        <div class="col-6">
+                            <h6 class="font-weight-normal">Thời gian:</h6>
+                            <strong id="time"></strong>
+                        </div>
+                    </div>
                 </div>
                 <div class="modal-footer">
-                    <button class="btn btn-primary" id="edit">Sửa lịch</button>
-                    <button class="btn btn-danger" id="deleteMessage">Hủy lịch</button>
+                    <button class="btn btn-primary" id="edit">Thay đổi</button>
+                    <button class="btn btn-danger" id="deleteMessage">Hủy</button>
                 </div>
             </div>
         </div>
@@ -191,11 +173,11 @@
             <div class="modal-content" style="width: 450px;padding: 5px;margin-top: 100px;font-size: 13px;">
 
                 <div class="modal-body">
-                    <h6>Bạn có chắc chắn muốn xóa buổi họp này không?</h6>
+                    <h6>Bạn có chắc chắn muốn hủy buổi họp này không?</h6>
                 </div>
                 <div class="modal-footer">
-                    <button class="btn btn-white" id="cancel">Hủy</button>
-                    <button class="btn btn-danger" id="delete">Xóa</button>
+                    <button class="btn btn-default" id="cancel">Từ bỏ</button>
+                    <button class="btn btn-danger" id="delete">Hủy</button>
                 </div>
             </div>
         </div>
@@ -217,6 +199,7 @@
     </div>
 @endsection
 @push('extend-css')
+    <link href="{{asset_ver('css/bootstrap-glyphicons.css')}}" rel="stylesheet"/>
     <link href="{{asset_ver('bootstrap-select/css/bootstrap-select.css')}}" rel="stylesheet"/>
     <link href="{{asset_ver('bootstrap-datetimepicker/css/bootstrap-timepicker.min.css')}}" rel="stylesheet"/>
     <link href="{{ asset_ver('fullcalendar/fullcalendar.min.css') }}" rel="stylesheet">

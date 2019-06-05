@@ -89,7 +89,11 @@ define('JOB_TITLES', [
     2 => 'Manager',
     3 => 'Giám đốc',
 ]);
-
+define('JOB_TITLES_MEETING', [
+    3 => 'Giám đốc',
+    2 => 'Manager',
+    1 => 'Team leader',
+]);
 define('POSITIONS', [
     0 => 'Lập trình viên',
     1 => 'Kỹ sư cầu nối',
@@ -99,7 +103,12 @@ define('POSITIONS', [
     5 => 'Comtor',
     6 => 'Tester',
 ]);
-
+define('POSITIONS_MEETING', [
+    0 => 'Lập trình viên',
+    1 => 'Kỹ sư cầu nối',
+    4 => 'Chuyên viên',
+    6 => 'Tester',
+]);
 define('SEXS', [
     '' => 'Không xác định',
     1 => 'Nữ',
@@ -435,7 +444,8 @@ define('NOTIFICATION_TYPE', [
     'approve_permission' => 4,
     'report' => 5,
     'comment_report' => 6,
-    'suggestions' => 7
+    'suggestions' => 7,
+    'meeting' => 8,
 ]);
 define('NOTIFICATION_LOGO', [
     0 => 'fa fa-flag black-text',
@@ -445,7 +455,8 @@ define('NOTIFICATION_LOGO', [
     4 => 'fa fa-question info-text',
     5 => 'fa fa-book orange-text',
     6 => 'fa fa-book secondary-text',
-    7 => 'fa fa-envelope-o secondary-text'
+    7 => 'fa fa-envelope-o secondary-text',
+    8 => 'fa fa-comments orange-text',
 ]);
 define('JVB_LOGO_URL', 'http://jvb-corp.com/img/logo.png');
 

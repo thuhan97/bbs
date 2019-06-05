@@ -15,6 +15,7 @@ class CreateBookingsTable extends Migration
     {
         Schema::create('bookings', function (Blueprint $table) {
             $table->increments('id');
+            $table->integer('meeting_id')->nullable();
             $table->integer('meeting_room_id')->unsigned();
             $table->integer('users_id')->unsigned();
             $table->string('participants');
@@ -28,6 +29,7 @@ class CreateBookingsTable extends Migration
             $table->string('color');
             $table->tinyInteger('is_notify');
             $table->timestamps();
+            $table->softDeletes();
 
         });
     }

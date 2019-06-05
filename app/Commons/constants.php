@@ -427,7 +427,7 @@ define('NOTIFICATION_TYPE', [
     'report' => 5,
     'comment_report' => 6,
     'suggestions'=>7,
-    'share'=>10
+    'share'=>11
 ]);
 define('NOTIFICATION_LOGO', [
     0 => 'fa fa-flag black-text',
@@ -438,7 +438,7 @@ define('NOTIFICATION_LOGO', [
     5 => 'fa fa-book orange-text',
     6 => 'fa fa-book secondary-text',
     7 => 'fa fa-envelope-o secondary-text',
-    10=> 'fas fa-share-alt-square text-default'
+    11=> 'fas fa-share-alt-square text-default'
 ]);
 define('JVB_LOGO_URL', 'http://jvb-corp.com/img/logo.png');
 

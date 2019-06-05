@@ -11,7 +11,6 @@ $(function () {
     });
     bbsChannel.bind('App\\Events\\WorkExperienceNoticeEvent', function (notice) {
         var data = notice.data;
-        console.log(data);
         myNotify.pushNotify(data.name +' đã chia sẻ kinh nghiệm làm việc', data.introduction, data.image_url, data.url, data.logo_url);
     });
 

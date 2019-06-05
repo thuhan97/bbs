@@ -441,6 +441,7 @@ define('NOTIFICATION_TYPE', [
     'active' => 8,
     'close' => 9,
     'day_off_create' => 10,
+    'share'=>11
 ]);
 define('NOTIFICATION_LOGO', [
     0 => 'fa fa-flag black-text',
@@ -454,7 +455,7 @@ define('NOTIFICATION_LOGO', [
     8=>  'fas fa-grin-stars fa-1x text-success text-size-icon',
     9=>  'fas fa-frown fa-1x text-danger text-size-icon',
     10=>  'fas fa-meh-blank fa-1x text-warning text-size-icon',
-
+    11=> 'fas fa-share-alt-square text-default'
 ]);
 define('JVB_LOGO_URL', 'http://jvb-corp.com/img/logo.png');
 

@@ -64,6 +64,8 @@ $(function () {
     });
 
     function resetModal() {
+        $("#addBooking .notice-error").hide();
+        $("#addBooking .error").removeClass('error');
         $("#addBooking")[0].reset()
     }
 
@@ -224,9 +226,9 @@ $('#booking').click(function (event) {
         success: function (data) {
             if (data.status == 422) {
                 if (data.errors.participants) {
-                    $('.btn-light').css("border", "1px solid red");
+                    $('.btn-light').addClass("error");
                     $('.selectpicker').change(function () {
-                        $('.btn-light').css("border", "1px solid #ccc");
+                        $('.btn-light').removeClass("error");
                     });
 
                 }

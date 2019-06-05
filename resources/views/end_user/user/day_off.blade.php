@@ -11,7 +11,7 @@
        }
        $dataDayOff= $dayOff ?? $availableDayLeft['data'];
         $searchStart = date((date('Y')-1).'/01/01', strtotime('tomorrow + 1day'));
-
+    $isMaster=auth()->user()->isMaster();
     @endphp
     <form action="{{ route('day_off') }}" method="get" id="form-search">
         <div class="row mb-0 ml-1 mb-sm-4 mt-sm-3">
@@ -111,10 +111,10 @@
                 </div>
             </span>
             </div>
-            <div class="col-sm-3 col-md-6 col-lg-3 position-relative pr-0 show-modal">
-            <span class="card bg-danger border-radius-2 day-off-card">
+            <div class="col-sm-3 col-md-6 col-lg-3 position-relative pr-0 @if(!$isMaster) show-modal @endif">
+            <span class="card bg-danger border-radius-2 day-off-card @if($isMaster) master-cursor-initial @endif">
                 <div class="card-body  row d-flex justify-content-center px-0 ml-xxxl-1">
-                    <div class="media d-md-flex">
+                    <div class="media d-md-flex @if($isMaster) master-opacity @endif">
                             <span id="dayoff-option-header-4"
                                   class="d-flex rounded-circle avatar z-depth-1-half mb-3 mx-auto dayoff-header mt-1">
                                 {{--<i class="fas fa-times-circle dayoff-icoin text-danger size-table"></i>--}}
@@ -280,7 +280,7 @@
          aria-hidden="true">
 
         <div class="modal-dialog modal-center" role="document">
-            <div class="modal-content modal-center-display" id="bg-img" style="background-image: url({{ asset('img/font/xin_nghi.png') }})">
+            <div class="modal-content modal-center-display" id="bg-img" style="background-image: url({{ asset_ver('img/font/xin_nghi.png') }})">
                 <div class="modal-header text-center border-bottom-0 pb-2 p-sm-4">
                     <h4 class="modal-title w-100 font-weight-bold">XIN NGHỈ PHÉP</h4>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -512,7 +512,7 @@
          aria-hidden="true">
         <div class="modal-dialog modal-center" role="document">
             <div class="modal-content modal-center-display" id="bg-img"
-                 style="background-image: url({{ asset('img/font/xin_nghi.png') }})">
+                 style="background-image: url({{ asset_ver('img/font/xin_nghi.png') }})">
                 <div class="modal-header text-center border-bottom-0 p-3">
                     <h4 class="modal-title w-100 font-weight-bold pt-2">NỘI DUNG ĐƠN</h4>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -901,7 +901,6 @@
                 }
             });
         }
-
         function checkDate(start, end, errors, check, btn) {
             var start1 = $(start).val();
             var end1 = $(end).val();

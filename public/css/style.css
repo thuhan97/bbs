@@ -1902,10 +1902,21 @@ td.blank, .type-1, .type-2 {
 .md-form textarea~label.active {
     display: none;
 }
-
+.btn-send-suggestion{
+    width: 158px;
+}
+.space-text-5{
+    text-indent: 5px;
+}
 .img-event-home {
     margin: 0 auto;
 }
 .text-size-icon{
     font-size: 17px;
+}
+.master-cursor-initial{
+    cursor: initial !important;
+}
+.master-opacity{
+    opacity: 0.3;
 }

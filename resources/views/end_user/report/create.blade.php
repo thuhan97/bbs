@@ -92,7 +92,7 @@
 @endsection
 
 @push('extend-js')
-    <script src="{{cdn_asset('/js/tinymce/tinymce.min.js')}}"></script>
+    <script src="{{asset_ver('/js/tinymce/tinymce.min.js')}}"></script>
 
     <script>
         $(document).ready(function () {

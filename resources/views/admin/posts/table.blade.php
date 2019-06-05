@@ -27,7 +27,7 @@
             {!! __admin_sortable('created_at') !!}
         </th>
         <th>Thông báo
-            {!! __admin_sortable('has_notify') !!}
+            {!! __admin_sortable('notify_date') !!}
         </th>
         <th>Kích hoạt</th>
         <th>Actions</th>

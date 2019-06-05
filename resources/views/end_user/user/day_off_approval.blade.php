@@ -270,7 +270,7 @@
                  aria-hidden="true">
                 <div class="modal-dialog modal-center" role="document">
                     <div class="modal-content modal-center-display bg-img-day-off" id="bg-img"
-                         style="background-image: url({{ asset('img/font/xin_nghi.png') }})">
+                         style="background-image: url({{ asset_ver('img/font/xin_nghi.png') }})">
                         <div class="modal-header text-center border-bottom-0 pb-0">
                             <h4 class="modal-title w-100 font-weight-bold pt-2">NỘI DUNG ĐƠN</h4>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -464,64 +464,64 @@
                     $('#approval_comment').val(comment);
                 })
             });
-function load_data(id) {
-    var title = {
-        "1": "Lý do cá nhân",
-        "2": "Nghỉ đám cưới",
-        "3": "Nghỉ đám hiếu",
-        "4": "Nghỉ thai sản",
-    }
-    $.ajax
-    ({
-        'url': '{{ route('day_off_detail') }}' + '/' + id,
-        'type': 'get',
-        success: function (data) {
-            $('#user-day-off').html(data.userdayoff);
-            if (data.time) {
-                $('#strat_end').html(data.time);
-            } else {
-                $('#strat_end').html(data.data.start_date + ' - ' + data.data.end_date);
-            }
-            if (data.data.reason) {
-                $('#reason').html(data.data.reason.replace(/\n/g, "<br />"));
-            }
-            $('#id-delete').val(data.data.id);
-            if (title.hasOwnProperty(data.data.title)) {
-                $('#title').html(title[data.data.title]);
-            }
-            if (data.data.approver_date) {
-                $('#remove-app-date').show();
-                $('#approver_date').html(data.data.approver_date);
-            } else {
-                $('#remove-app-date').hide();
-            }
-            if (data.data.numoff || data.data.absent) {
-                $('#remove-numoff').show();
-            } else {
-                $('#remove-numoff').hide();
-            }
-            $('#number_off').html(data.approver_num + ' ngày') ;
-            $('#number_off_remain').html(data.totalRemain +' ngày' )
-            if (data.data.status == 0) {
-                $('#app-comment').html('<textarea class="form-control reason_id rounded-0 select-item "id="exampleFormControlTextarea4" rows="3" placeholder="Nhập ý kiến của người duyệt" name="approve_comment"></textarea>');
-                $('#approver_num').html('<input type="hidden" class="form-control select-item" autocomplete="off" name="number_off" value="'+ data.approver_num +'" id="">')
-                $('#btn-submit-form').html('<button type="submit" class="btn  btn-primary">DUYỆT ĐƠN</button> <span class="btn btn-danger btn-send" id="close-day-off" data-target="#basicExampleModal"> HỦY DUYỆT </span>')
-
-            } else {
-
-                $('#btn-submit-form').html('');
-
-                $('#app-comment').html(data.data.approve_comment);
-            }
-            var urlForm = "{{ route('edit_day_off_detail') }}" + '/' + data.data.id;
-
-            $('#edit-day-off').attr('action', urlForm);
-
-            $('#id-close').val(data.data.id)
-            $('#modal-form').modal('show');
+    function load_data(id) {
+        var title = {
+            "1": "Lý do cá nhân",
+            "2": "Nghỉ đám cưới",
+            "3": "Nghỉ đám hiếu",
+            "4": "Nghỉ thai sản",
         }
-    });
-}
+        $.ajax
+        ({
+            'url': '{{ route('day_off_detail') }}' + '/' + id,
+            'type': 'get',
+            success: function (data) {
+                $('#user-day-off').html(data.userdayoff);
+                if (data.time) {
+                    $('#strat_end').html(data.time);
+                } else {
+                    $('#strat_end').html(data.data.start_date + ' - ' + data.data.end_date);
+                }
+                if (data.data.reason) {
+                    $('#reason').html(data.data.reason.replace(/\n/g, "<br />"));
+                }
+                $('#id-delete').val(data.data.id);
+                if (title.hasOwnProperty(data.data.title)) {
+                    $('#title').html(title[data.data.title]);
+                }
+                if (data.data.approver_date) {
+                    $('#remove-app-date').show();
+                    $('#approver_date').html(data.data.approver_date);
+                } else {
+                    $('#remove-app-date').hide();
+                }
+                if (data.data.numoff || data.data.absent) {
+                    $('#remove-numoff').show();
+                } else {
+                    $('#remove-numoff').hide();
+                }
+                $('#number_off').html(data.approver_num + ' ngày') ;
+                $('#number_off_remain').html(data.totalRemain +' ngày' )
+                if (data.data.status == 0) {
+                    $('#app-comment').html('<textarea class="form-control reason_id rounded-0 select-item "id="exampleFormControlTextarea4" rows="3" placeholder="Nhập ý kiến của người duyệt" name="approve_comment"></textarea>');
+                    $('#approver_num').html('<input type="hidden" class="form-control select-item" autocomplete="off" name="number_off" value="'+ data.approver_num +'" id="">')
+                    $('#btn-submit-form').html('<button type="submit" class="btn  btn-primary">DUYỆT ĐƠN</button> <span class="btn btn-danger btn-send" id="close-day-off" data-target="#basicExampleModal"> HỦY DUYỆT </span>')
+
+                } else {
+
+                    $('#btn-submit-form').html('');
+
+                    $('#app-comment').html(data.data.approve_comment);
+                }
+                var urlForm = "{{ route('edit_day_off_detail') }}" + '/' + data.data.id;
+
+                $('#edit-day-off').attr('action', urlForm);
+
+                $('#id-close').val(data.data.id)
+                $('#modal-form').modal('show');
+            }
+        });
+    }
         </script>
     </div>
 @endsection

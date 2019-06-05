@@ -477,7 +477,7 @@
          role="dialog" aria-labelledby="myModalLabel"
          aria-hidden="true">
         <div class="modal-dialog modal-center permission-modal-set-center" role="document">
-            <div class="modal-content" id="bg-img" style="background-image: url({{ asset('img/font/xin_nghi.png') }})">
+            <div class="modal-content" id="bg-img" style="background-image: url({{ asset_ver('img/font/xin_nghi.png') }})">
                 <div class="modal-header text-center border-bottom-0 p-3">
                     <h4 class='mg-center mb-2 modal-title w-100 font-weight-bold pt-2 mg-left-10 title-permission'>Nội
                         dung đơn</h4>
@@ -534,7 +534,7 @@
          role="dialog" aria-labelledby="myModalLabel"
          aria-hidden="true">
         <div class="modal-dialog modal-center permission-modal-set-center" role="document">
-            <div class="modal-content" id="bg-img" style="background-image: url({{ asset('img/font/xin_nghi.png') }})">
+            <div class="modal-content" id="bg-img" style="background-image: url({{ asset_ver('img/font/xin_nghi.png') }})">
                 <div class="modal-header text-center border-bottom-0 p-3">
                     <h4 class='mg-center mb-2 modal-title w-100 font-weight-bold pt-2 header-permission-late title-permission'></h4>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -568,7 +568,7 @@
          role="dialog" aria-labelledby="myModalLabel"
          aria-hidden="true">
         <div class="modal-dialog modal-center permission-modal-set-center" role="document">
-            <div class="modal-content" id="bg-img" style="background-image: url({{ asset('img/font/xin_nghi.png') }})">
+            <div class="modal-content" id="bg-img" style="background-image: url({{ asset_ver('img/font/xin_nghi.png') }})">
                 <div class="modal-header text-center border-bottom-0 p-3">
                     <h4 class='mg-center mb-2 modal-title w-100 font-weight-bold pt-2 header-permission-late title-permission'></h4>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -602,7 +602,7 @@
          role="dialog" aria-labelledby="myModalLabel"
          aria-hidden="true">
         <div class="modal-dialog modal-center permission-modal-set-center" role="document">
-            <div class="modal-content" id="bg-img" style="background-image: url({{ asset('img/font/xin_nghi.png') }})">
+            <div class="modal-content" id="bg-img" style="background-image: url({{ asset_ver('img/font/xin_nghi.png') }})">
                 <div class="modal-header text-center border-bottom-0 p-3">
                     <h4 class='mg-center mb-2 modal-title w-100 font-weight-bold pt-2 header-permission-late title-permission'></h4>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -685,11 +685,11 @@
         </div>
     </div>
     @push('extend-css')
-        <link href="{{ cdn_asset('/bootstrap-datepicker/css/bootstrap-datepicker.min.css') }}" rel="stylesheet">
-        <link href="{{ cdn_asset('/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css') }}" rel="stylesheet">
+        <link href="{{ asset_ver('/bootstrap-datepicker/css/bootstrap-datepicker.min.css') }}" rel="stylesheet">
+        <link href="{{ asset_ver('/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css') }}" rel="stylesheet">
     @endpush
-    <script src="{{ cdn_asset('/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js') }}"></script>
-    <script src="{{ cdn_asset('/bootstrap-datepicker/js/bootstrap-datepicker.min.js') }}"></script>
+    <script src="{{ asset_ver('/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js') }}"></script>
+    <script src="{{ asset_ver('/bootstrap-datepicker/js/bootstrap-datepicker.min.js') }}"></script>
     <script type="text/javascript">
         $(function () {
             var date = new Date(),
@@ -1025,7 +1025,7 @@
     </script>
 @endsection
 @push('extend-js')
-    <script src="{{ cdn_asset('js/jquery.validate.min.js') }}"></script>
+    <script src="{{ asset_ver('js/jquery.validate.min.js') }}"></script>
 @endpush
 
 

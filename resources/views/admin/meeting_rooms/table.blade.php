@@ -4,21 +4,22 @@
         <th style="width: 10px;">
             <button type="button" class="btn btn-default btn-sm checkbox-toggle"><i class="fa fa-square-o"></i></button>
         </th>
+        <th style="width: 15px">Màu</th>
         <th style="width: 10%;" class="no-wap">
             Tên
             {!! __admin_sortable('name') !!}
         </th>
         <th style="width: 10%;">
-        	Số ghế
+            Số ghế
             {!! __admin_sortable('seats') !!}
         </th>
 
         <th style="width: 40%;">
-        	Mô tả
+            Mô tả
             {!! __admin_sortable('description') !!}
         </th>
-        <th >
-        	Khác
+        <th>
+            Khác
             {!! __admin_sortable('other') !!}
         </th>
         <th style="width: 120px;">Chức năng</th>
@@ -37,6 +38,8 @@
             ?>
             <tr>
                 <td><input type="checkbox" name="ids[]" value="{{ $record->id }}" class="square-blue chkDelete"></td>
+                <td style="background: {{$record->color}}">
+                </td>
                 <td>{{ $record->name }}</td>
                 <td>{{ $record->seats }}</td>
                 <td>{{ $record->description}}</td>

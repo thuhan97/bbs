@@ -302,7 +302,8 @@ define('REPORT_SEARCH_TYPE', [
 define('EXPORT_PATHS', [
     'admin/work_times',
     'admin/over_times',
-    'admin/approve_permission'
+    'admin/approve_permission',
+    'admin/day_offs'
 ]);
 //define('OVER_TIME_EXPORT_PATHS', [
 //    'admin/over_times'
@@ -322,6 +323,15 @@ define('TOTAL_MONTH', 12);
 define('PRE_YEAR', 1);
 define('PRE_PRE_YEAR', 2);
 define('XLS_TYPE', '.xls');
+
+define('NO_REPEAT',0);
+define('WEEKLY',1);
+define('MONTHLY',2);
+define('YEARLY',3);
+
+define('DUPLICATE',1);
+define('NO_DUPLICATE',0);
+
 define('ADD_DAY_OFF_MONTH', 1);
 define('STT', 'Stt');
 define('ON_TIME', 'Danh sách đi làm đúng giờ');
@@ -338,6 +348,8 @@ define('LATE_OT_USER', 'Đi làm muộn + OT');
 define('TOTAL_MONTH_IN_YEAR', 12);
 define('OFF_TIME', '00:00:00');
 define('SWITCH_TIME', '12:00:00');
+define('PAST',1);
+define('FUTURE',2);
 define('DAY_OFF_MONTH', [
     'day_off_month_Jan' => 1,
     'day_off_month_Feb' => 2,
@@ -425,9 +437,10 @@ define('NOTIFICATION_TYPE', [
     'approve_permission' => 4,
     'report' => 5,
     'comment_report' => 6,
-    'day_off_create' => 7,
+    'suggestions'=>7,
     'active' => 8,
     'close' => 9,
+    'day_off_create' => 10,
 ]);
 define('NOTIFICATION_LOGO', [
     0 => 'fa fa-flag black-text',
@@ -437,11 +450,12 @@ define('NOTIFICATION_LOGO', [
     4 => 'fa fa-question info-text',
     5 => 'fa fa-book orange-text',
     6 => 'fa fa-book secondary-text',
-    7=>  'fas fa-meh-blank fa-1x text-warning text-size-icon',
+    7 => 'fa fa-envelope-o secondary-text',
     8=>  'fas fa-grin-stars fa-1x text-success text-size-icon',
     9=>  'fas fa-frown fa-1x text-danger text-size-icon',
-]);
+    10=>  'fas fa-meh-blank fa-1x text-warning text-size-icon',
 
+]);
 define('JVB_LOGO_URL', 'http://jvb-corp.com/img/logo.png');
 
 define('NOTIFICATION_DAY_OFF', [

@@ -20,7 +20,8 @@ use App\Services\Contracts\IUserService;
 use App\Services\Contracts\IUserTeamService;
 use App\Services\Contracts\IWorkTimeService;
 use App\Services\Contracts\IEventAttendanceService;
-use App\Services\Contracts\IMeetingService;
+use App\Services\Contracts\IMeetingRoomService;
+use App\Services\Contracts\IBookingService;
 use App\Services\DayOffService;
 use App\Services\DeviceService;
 use App\Services\DeviceUserService;
@@ -38,7 +39,8 @@ use App\Services\WorkTimeService;
 use App\Services\WorkTimeRegisterService;
 use App\Services\Contracts\IWorkTimeRegisterService;
 use App\Services\EventAttendanceService;
-use App\Services\MeetingService;
+use App\Services\MeetingRoomService;
+use App\Services\BookingService;
 use Illuminate\Support\ServiceProvider;
 
 class AdditionServiceProvider extends ServiceProvider
@@ -105,8 +107,11 @@ class AdditionServiceProvider extends ServiceProvider
         $this->app->bind(IWorkTimeRegisterService::class, function () {
             return app()->make(WorkTimeRegisterService::class);
         });
-        $this->app->bind(IMeetingService::class, function () {
-            return app()->make(MeetingService::class);
+        $this->app->bind(IMeetingRoomService::class, function () {
+            return app()->make(MeetingRoomService::class);
+        });
+        $this->app->bind(IBookingService::class, function () {
+            return app()->make(BookingService::class);
         });
         $this->app->bind(IOverTimeService::class, function () {
             return app()->make(OverTimeService::class);
@@ -138,7 +143,8 @@ class AdditionServiceProvider extends ServiceProvider
             IDeviceService::class,
             IDeviceUserService::class,
             IWorkTimeRegisterService::class,
-            IMeetingService::class,
+            IMeetingRoomService::class,
+            IBookingService::class,
             IOverTimeService::class,
         ];
     }

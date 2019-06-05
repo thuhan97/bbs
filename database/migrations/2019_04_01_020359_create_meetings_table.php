@@ -1,10 +1,10 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
-class CreateMeetingsTable extends Migration
+class CreateMeetingRoomsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,11 @@ class CreateMeetingsTable extends Migration
      */
     public function up()
     {
-        Schema::create('meetings', function (Blueprint $table) {
+        Schema::create('meeting_rooms', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name');
-            $table->integer('seats')->nullable()->comment('Số ghế');
+            $table->string('color', 20)->comment('Màu trên lịch');
+            $table->integer('seats')->default(0)->comment('Số ghế');
             $table->text('description')->nullable()->comment('Mô tả phòng');
             $table->text('other')->nullable()->comment('Ghi chú khác');
             $table->timestamps();
@@ -31,6 +32,6 @@ class CreateMeetingsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('meetings');
+        Schema::dropIfExists('meeting_rooms');
     }
 }

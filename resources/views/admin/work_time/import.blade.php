@@ -14,24 +14,26 @@ $baseRoute = 'admin::work_times';
     $hasError = isset($import_errors) && is_array($import_errors) && !empty($import_errors);
     ?>
     @if(isset($message))
-        <div class="col-md-12">
-            @if($hasError)
-                <div class="callout callout-danger">
-                    <h4>
-                        <i class="icon fa fa-ban"></i>
-                        Error!
-                    </h4>
-                    {{ $message }}
-                </div>
-            @else
-                <div class="callout callout-success">
-                    <h4>
-                        <i class="icon fa fa-check"></i>
-                        Success!
-                    </h4>
-                    {{ $message }}
-                </div>
-            @endif
+        <div class="row">
+            <div class="col-md-12">
+                @if($hasError)
+                    <div class="callout callout-danger">
+                        <h4>
+                            <i class="icon fa fa-ban"></i>
+                            Error!
+                        </h4>
+                        {{ $message }}
+                    </div>
+                @else
+                    <div class="callout callout-success">
+                        <h4>
+                            <i class="icon fa fa-check"></i>
+                            Success!
+                        </h4>
+                        {{ $message }}
+                    </div>
+                @endif
+            </div>
         </div>
 
     @endif
@@ -121,6 +123,14 @@ $baseRoute = 'admin::work_times';
             </div>
         </div>
     </div>
+    <div class="row">
+        <div class="col-md-4">
+            <div class="form-group margin-b-5 margin-t-5{{ $errors->has('user_id') ? ' has-error' : '' }}">
+                <label for="user_id">Chọn nhân viên</label>
+                {{ Form::select('user_id[]', $users, null, ['id'=> 'user_id', 'class'=>'form-control selectpicker', 'multiple', 'data-live-search'=>'true']) }}
+            </div>
+        </div>
+    </div>
     <div class="form-group{{ ($errors->has('import_file') || $errors->has('ext')) ? ' has-error' : '' }}">
         <label for="importFile">Chọn file</label>
         <input type="file" name="import_file" id="importFile" required
@@ -141,6 +151,11 @@ $baseRoute = 'admin::work_times';
     <a href="/admin/work_times/download-template"><i class="fa fa-download"></i> Tải file mẫu!</a>
 @endsection
 @push('footer-scripts')
+    <link rel="stylesheet" type="text/css"
+          href="/css/bootstrap-select.min.css"/>
+    <script rel="script" src="/js/bootstrap-select.min.js"></script>
+
+
     <style>
         .datepicker-days table tbody tr td:nth-child(1),
         .datepicker-days table thead tr th.dow:nth-child(1),
@@ -148,10 +163,15 @@ $baseRoute = 'admin::work_times';
         .datepicker-days table thead tr th.dow:nth-child(7) {
             background: #e2e2e2;
         }
+
+        .datepicker {
+            z-index: initial !important;
+        }
     </style>
     <script>
 
         $(function () {
+            $("#user_id").selectpicker();
             myDatePicker($("#start_date, #end_date"));
         })
     </script>

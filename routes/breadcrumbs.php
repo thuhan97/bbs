@@ -91,10 +91,10 @@ Breadcrumbs::register('edit_project', function ($breadcrumbs, $project) {
     $breadcrumbs->push(__l('edit_project'), route('project_edit', $project->id));
 
 });
-//Home > Meeting Room
-Breadcrumbs::register('meetings', function ($breadcrumbs) {
+//Home > MeetingRoom Room
+Breadcrumbs::register('meeting_rooms', function ($breadcrumbs) {
     $breadcrumbs->parent('home');
-    $breadcrumbs->push(__l('meetings'), route('meetings'));
+    $breadcrumbs->push(__l('meeting_rooms'), route('meeting_rooms'));
 });
 // Dashboard > Profile
 Breadcrumbs::register('_personal', function ($breadcrumbs) {
@@ -135,6 +135,11 @@ Breadcrumbs::register('list_suggestions', function ($breadcrumbs) {
     $breadcrumbs->parent('home');
     $breadcrumbs->push(__l('list_suggestions'), route('list_suggestions'));
 });
+// Dashboard > list_suggestions/detail_suggestions
+Breadcrumbs::register('detail_suggestions', function ($breadcrumbs, $suggestion) {
+    $breadcrumbs->parent('list_suggestions');
+    $breadcrumbs->push(__l('detail_suggestions'), route('detail_suggestions', ['id' => $suggestion->id]));
+});
 // Dashboard > share_experience
 Breadcrumbs::register('share_experience', function ($breadcrumbs) {
     $breadcrumbs->parent('home');
@@ -159,7 +164,10 @@ Breadcrumbs::register('day_off_approval', function ($breadcrumbs) {
     $breadcrumbs->parent('personal');
     $breadcrumbs->push(__l('day_off_approval'), route('day_off_approval'));
 });
-
+Breadcrumbs::register('bookings', function ($breadcrumbs) {
+    $breadcrumbs->parent('home');
+    $breadcrumbs->push(__l('Phòng họp'), route('bookings'));
+});
 // Admin
 Breadcrumbs::register('admin', function ($breadcrumbs) {
     $breadcrumbs->push(__l('admin_page'), route('admin::index'));
@@ -190,10 +198,11 @@ $resources = [
     'devices' => 'Quản lý thiết bị',
     'deviceusers' => 'Quản lý thiết bị',
     'work_time_statistic' => 'Thống kê thời gian làm việc',
-    'meetings' => 'Phòng họp',
+    'meeting_rooms' => 'Phòng họp',
     'rules' => 'Quy định tiền phạt',
     'punishes' => 'Danh sách tiền phạt',
     'group' => 'Group',
+    'suggestions' => 'Đề xuất - Góp ý'
 ];
 foreach ($resources as $resource => $data) {
     $parent = 'admin';
@@ -203,6 +212,7 @@ foreach ($resources as $resource => $data) {
         $parent = $data['parent'];
     }
     $resource = 'admin::' . $resource;
+
     // List
     Breadcrumbs::register($resource, function ($breadcrumbs) use ($resource, $title, $parent) {
         $breadcrumbs->parent($parent);

@@ -310,7 +310,8 @@ define('REPORT_SEARCH_TYPE', [
 define('EXPORT_PATHS', [
     'admin/work_times',
     'admin/over_times',
-    'admin/approve_permission'
+    'admin/approve_permission',
+    'admin/day_offs'
 ]);
 //define('OVER_TIME_EXPORT_PATHS', [
 //    'admin/over_times'
@@ -446,6 +447,7 @@ define('NOTIFICATION_TYPE', [
     'comment_report' => 6,
     'suggestions' => 7,
     'meeting' => 8,
+    'share'=>11
 ]);
 define('NOTIFICATION_LOGO', [
     0 => 'fa fa-flag black-text',
@@ -457,6 +459,7 @@ define('NOTIFICATION_LOGO', [
     6 => 'fa fa-book secondary-text',
     7 => 'fa fa-envelope-o secondary-text',
     8 => 'fa fa-comments orange-text',
+    11=> 'fas fa-share-alt-square text-default'
 ]);
 define('JVB_LOGO_URL', 'http://jvb-corp.com/img/logo.png');
 

@@ -201,7 +201,7 @@
                         @endif
                     </td>
                     <td class=" text-center">
-                        <p class=" btn-sm m-0 detail-dayoff" style="cursor: pointer" attr="{{ $absence->id }}">Chi
+                        <p id="{{ $absence->id }}" class=" btn-sm m-0 detail-dayoff" style="cursor: pointer" attr="{{ $absence->id }}">Chi
                             tiết >></p>
                     </td>
                 </tr>
@@ -651,6 +651,15 @@
 
     <script type="text/javascript">
         $(document).ready(function () {
+            var hash =window.location.hash;
+            if (hash){
+                var id =$(hash).attr('attr');
+             get_data(id)
+            }
+            $(document).on('click','#notification',function () {
+                location.reload();
+            })
+
             $('.calendar-search').on('click', function () {
                 $(this).prev().datepicker('show');
             })
@@ -797,64 +806,7 @@
 
             $('.detail-dayoff').on('click', function () {
                 var id = $(this).attr('attr');
-                var title = {
-                    "1": "Lý do cá nhân",
-                    "2": "Nghỉ đám cưới",
-                    "3": "Nghỉ đám hiếu",
-                    "4": "Nghỉ thai sản",
-                }
-                $.ajax
-                ({
-                    'url': '{{ route('day_off_detail') }}' + '/' + id,
-                    'type': 'get',
-                    success: function (data) {
-                        $('#approver_id').html(data.approver);
-                        $('#number_off').html(data.data.number_off);
-                        if (data.time){
-                            $('#strat_end').html(data.time);
-                        } else{
-                            $('#strat_end').html(data.data.start_date + ' - ' + data.data.end_date);
-                        }
-                        if (data.data.reason) {
-                            $('#reason').html(data.data.reason.replace(/\n/g, "<br />"));
-                        }
-                        $('#id-delete').val(data.data.id);
-                        if (title.hasOwnProperty(data.data.title)) {
-                            $('#title').html(title[data.data.title]);
-                        }
-                        if (data.data.approver_date) {
-                            $('#remove-app-date').show();
-                            $('#approver_date').html(data.data.approver_date);
-                        } else {
-                            $('#remove-app-date').hide();
-                        }
-                        if (data.data.approve_comment) {
-                            $('#remove-app-comment').show();
-                            $('#app-comment').html(data.data.approve_comment);
-                        } else {
-                            $('#remove-app-comment').hide();
-                        }
-                        if (data.data.numoff || data.data.absent) {
-                            $('#remove-numoff').show();
-                        } else {
-                            $('#remove-numoff').hide();
-                        }
-                        if (data.data.numoff || data.data.absent) {
-                            (data.data.status == 2 || data.data.status == 0) ? $('#number_off').html(' ') : $('#number_off').html(data.absent + ' ngày');
-                            $('#remove-numoff').show();
-                        } else {
-                            $('#remove-numoff').hide();
-                        }
-                        if (data.data.status == 0) {
-                            $('#btn-show-modal').html('<span class="btn btn-danger" data-toggle="modal" data-target="#basicExampleModal">HỦY ĐƠN</span>');
-                            $('#btn-show-modal-edit').html('<span class="btn btn-info" attr=' + data.data.id + '>SỬA ĐƠN</span>');
-                        } else {
-                            $('#btn-show-modal').html('')
-                            $('#btn-show-modal-edit').html('')
-                        }
-                        $('#modal-form-detail').modal('show');
-                    }
-                });
+               get_data(id)
             })
 
             $(document).on('click', '#btn-show-modal-edit', function () {
@@ -949,7 +901,6 @@
                 }
             });
         }
-
         function checkDate(start, end, errors, check, btn) {
             var start1 = $(start).val();
             var end1 = $(end).val();
@@ -978,6 +929,66 @@
                 $(btn).removeAttr('disabled');
                 $(errors).text('');
             }
+        }
+        function get_data(id) {
+            var title = {
+                "1": "Lý do cá nhân",
+                "2": "Nghỉ đám cưới",
+                "3": "Nghỉ đám hiếu",
+                "4": "Nghỉ thai sản",
+            }
+            $.ajax
+            ({
+                'url': '{{ route('day_off_detail') }}' + '/' + id,
+                'type': 'get',
+                success: function (data) {
+                    $('#approver_id').html(data.approver);
+                    $('#number_off').html(data.data.number_off);
+                    if (data.time){
+                        $('#strat_end').html(data.time);
+                    } else{
+                        $('#strat_end').html(data.data.start_date + ' - ' + data.data.end_date);
+                    }
+                    if (data.data.reason) {
+                        $('#reason').html(data.data.reason.replace(/\n/g, "<br />"));
+                    }
+                    $('#id-delete').val(data.data.id);
+                    if (title.hasOwnProperty(data.data.title)) {
+                        $('#title').html(title[data.data.title]);
+                    }
+                    if (data.data.approver_date) {
+                        $('#remove-app-date').show();
+                        $('#approver_date').html(data.data.approver_date);
+                    } else {
+                        $('#remove-app-date').hide();
+                    }
+                    if (data.data.approve_comment) {
+                        $('#remove-app-comment').show();
+                        $('#app-comment').html(data.data.approve_comment);
+                    } else {
+                        $('#remove-app-comment').hide();
+                    }
+                    if (data.data.numoff || data.data.absent) {
+                        $('#remove-numoff').show();
+                    } else {
+                        $('#remove-numoff').hide();
+                    }
+                    if (data.data.numoff || data.data.absent) {
+                        (data.data.status == 2 || data.data.status == 0) ? $('#number_off').html(' ') : $('#number_off').html(data.absent + ' ngày');
+                        $('#remove-numoff').show();
+                    } else {
+                        $('#remove-numoff').hide();
+                    }
+                    if (data.data.status == 0) {
+                        $('#btn-show-modal').html('<span class="btn btn-danger" data-toggle="modal" data-target="#basicExampleModal">HỦY ĐƠN</span>');
+                        $('#btn-show-modal-edit').html('<span class="btn btn-info" attr=' + data.data.id + '>SỬA ĐƠN</span>');
+                    } else {
+                        $('#btn-show-modal').html('')
+                        $('#btn-show-modal-edit').html('')
+                    }
+                    $('#modal-form-detail').modal('show');
+                }
+            });
         }
     </script>
 

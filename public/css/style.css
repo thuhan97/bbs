@@ -1911,6 +1911,9 @@ td.blank, .type-1, .type-2 {
 .img-event-home {
     margin: 0 auto;
 }
+.text-size-icon{
+    font-size: 17px;
+}
 .master-cursor-initial{
     cursor: initial !important;
 }

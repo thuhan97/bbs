@@ -48,7 +48,7 @@ class WorkTimeImport implements ToCollection, WithValidation
 
         $this->workTimeService = app()->make(WorkTimeService::class);
 
-        $this->workTimeService->deletes($startDate, $endDate);
+        $this->workTimeService->deletes($startDate, $endDate, $isAllUser, $userIds);
 
         $this->startDate = date_create($startDate, new \DateTimeZone('UTC'));
         $this->endDate = date_create($endDate, new \DateTimeZone('UTC'));

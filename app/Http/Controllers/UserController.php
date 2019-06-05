@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\DayOffNoticeEvent;
 use App\Helpers\DateTimeHelper;
 use App\Http\Requests\Admin\WorkTimeRequest;
 use App\Http\Requests\ApprovedRequest;
@@ -611,6 +612,7 @@ class UserController extends Controller
         if ($request->id_hid) {
             return redirect(route('day_off'))->with('day_off_edit_success', '');
         } else {
+            event(new DayOffNoticeEvent($dayOff, Auth::user(), NOTIFICATION_DAY_OFF['create']));
             return redirect(route('day_off'))->with('day_off_success', '');
         }
     }
@@ -635,6 +637,7 @@ class UserController extends Controller
         if ($request->id_hid) {
             return redirect(route('day_off'))->with('day_off_edit_success', '');
         } else {
+            event(new DayOffNoticeEvent($dayOff, Auth::user(), NOTIFICATION_DAY_OFF['create']));
             return redirect(route('day_off'))->with('day_off_success', '');
         }
     }
@@ -720,6 +723,7 @@ class UserController extends Controller
                 $dayOff->approve_comment=$request->approval_coment;
                 $dayOff->status = STATUS_DAY_OFF['noActive'];
                 $dayOff->save();
+                event(new DayOffNoticeEvent($dayOff, Auth::user(), NOTIFICATION_DAY_OFF['close']));
                 return back()->with('close', '');
             }
         } else {

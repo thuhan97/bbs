@@ -7,7 +7,7 @@ namespace App\Repositories\Contracts;
  * Author: jvb
  * Date: 2018/10/07 16:46
  */
-interface IRecurRepository extends IBaseRepository
+interface IBookingRepository extends IBaseRepository
 {
-   
+
 }

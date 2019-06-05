@@ -984,7 +984,7 @@
 @endsection
 
 @push('extend-css')
-    <link href="{{ asset_ver('/bootstrap-datepicker/css/bootstrap-datepicker.min.css') }}" rel="stylesheet">
+    <link href="{{ asset_ver('bootstrap-datepicker/css/bootstrap-datepicker.min.css') }}" rel="stylesheet">
     <style>
         #textareaForm {
             height: 150px;
@@ -997,7 +997,7 @@
 @endpush
 
 @push('extend-js')
-    <script src="{{ asset_ver('/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js') }}"></script>
-    <script src="{{ asset_ver('/bootstrap-datepicker/js/bootstrap-datepicker.min.js') }}"></script>
+    <script src="{{ asset_ver('bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js') }}"></script>
+    <script src="{{ asset_ver('bootstrap-datepicker/js/bootstrap-datepicker.min.js') }}"></script>
     <script src="{{ asset_ver('js/jquery.validate.min.js') }}"></script>
 @endpush

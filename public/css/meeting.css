@@ -44,18 +44,6 @@ textarea, textarea::-webkit-input-placeholder {
     padding: 5px;
 }
 
-span {
-    margin-right: 10px;
-}
-
-/*.btn-light.dropdown-toggle{
-    background: #fff !important;
-    box-shadow: none !important;
-    border: 2px solid #ccc;
-    border-radius: .25rem;
-    height: calc(2.25rem + 2px);
-}*/
-
 .btn-light.dropdown-toggle {
     height: calc(2.25rem) !important;
     margin-top: 0 !important;
@@ -85,12 +73,6 @@ span {
     box-shadow: none !important;
 }
 
-.dropdown-menu {
-    position: absolute;
-    top: 0 !important;
-    height: 200px !important;
-}
-
 .fc-event-container {
     text-align: center;
 }
@@ -104,4 +86,17 @@ span {
 
 .input-group-prepend {
     margin-right: -10px !important;
+}
+
+.error {
+    border: 1px solid red !important;
+}
+
+#show-object {
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.modal.show .modal-dialog {
+    overflow: initial !important;
 }

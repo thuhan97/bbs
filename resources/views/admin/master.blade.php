@@ -352,6 +352,6 @@ $teams = \App\Models\Team::select('id', 'name', 'color')->withCount('members')->
         ];
 
     </script>
-    <script src="{{asset_ver('/js/libs/chart.js')}}"></script>
-    <script src="{{asset_ver('/js/admin/dashboard.js')}}"></script>
+    <script src="{{asset_ver('js/libs/chart.js')}}"></script>
+    <script src="{{asset_ver('js/admin/dashboard.js')}}"></script>
 @endpush

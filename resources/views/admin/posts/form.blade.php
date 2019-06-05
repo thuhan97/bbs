@@ -144,8 +144,8 @@
 
 <!-- /.col-md-7 -->
 @push('footer-scripts')
-    <link rel="stylesheet" href="{{ asset_ver('/css/bootstrap-tagsinput.css') }}"/>
-    <script src="{{asset_ver('/js/admin/bootstrap-tagsinput.js')}}"></script>
+    <link rel="stylesheet" href="{{ asset_ver('css/bootstrap-tagsinput.css') }}"/>
+    <script src="{{asset_ver('js/admin/bootstrap-tagsinput.js')}}"></script>
 
     <script>
         $(function () {

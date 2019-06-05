@@ -78,7 +78,7 @@
 <!-- Scripts -->
 <script type="text/javascript" src="{{ asset_ver('js/mdb.min.js?v=1') }}"></script>
 <script type="text/javascript" src="{{ asset_ver('js/moment-with-locales.min.js') }}"></script>
-{{--<script type="text/javascript" src="{{ asset_ver('/mdb/js/compiled.min.js') }}"></script>--}}
+{{--<script type="text/javascript" src="{{ asset_ver('mdb/js/compiled.min.js') }}"></script>--}}
 <script type="text/javascript" src="{{ asset_ver('js/main.js') }}"></script>
 <script type="text/javascript" src="{{ asset_ver('js/notify.js') }}"></script>
 

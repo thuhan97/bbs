@@ -91,7 +91,7 @@ class NotificationService extends AbstractService implements IUserTeamService
         $this->insertNotification($notifications);
     }
 
-    private function insertNotification($notifications)
+    public function insertNotification($notifications)
     {
         if (count($notifications) > 0) {
             Notification::insertAll($notifications);

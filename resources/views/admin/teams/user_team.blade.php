@@ -34,7 +34,7 @@ $_printLink = false;
             <div class="box box-info" id="wrap-edit-box">
 
                 <form class="form" role="form" method="POST"
-                      action="{{ asset_ver('/admin/teams/save-member') }}">
+                      action="{{ asset_ver('admin/teams/save-member') }}">
                     {{ csrf_field() }}
                     <input type="hidden" name="id" value="{{$record->id}}">
                     <div class="box-header with-border">

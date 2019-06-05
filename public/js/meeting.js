@@ -219,7 +219,6 @@ $('#booking').click(function (event) {
 
         success: function (data) {
             if (data.status == 422) {
-                alert("Vui lòng không để trống các trường có viền đỏ!")
                 if (data.errors.participants) {
                     $('.btn-light').css("border", "1px solid red");
                     $('.selectpicker').change(function () {

@@ -449,6 +449,7 @@ define('NOTIFICATION_DAY_OFF', [
     'active' => 1,
     'close' => 2
 ]);
+define('UTF_8','UTF-8');
 
 
 

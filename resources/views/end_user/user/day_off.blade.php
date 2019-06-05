@@ -656,12 +656,8 @@
                 var id =$(hash).attr('attr');
              get_data(id)
             }
-            $('.notify-read-1').on('click',function () {
-                var hash =window.location.hash;
-                if (hash){
-                    var id =$(hash).attr('attr');
-                    get_data(id)
-                }
+            $(document).on('click','#notification',function () {
+                location.reload();
             })
 
             $('.calendar-search').on('click', function () {

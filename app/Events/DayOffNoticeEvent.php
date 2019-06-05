@@ -29,7 +29,7 @@ class DayOffNoticeEvent extends NotificationBroadCast
         $this->toId = $dayoff->user_id;
         $content=$dayoff->approve_comment ?? $dayoff->reason;
         if ($type == NOTIFICATION_DAY_OFF['create']){
-            $vacation=mb_strtolower(VACATION_FULL[$dayoff->title],'UTF-8');
+            $vacation=mb_strtolower(VACATION_FULL[$dayoff->title],UTF_8);
             $title = $user->name .SPACE.__l('day_off').SPACE.$vacation;
             $url = route('day_off_approval'). "#$dayoff->id";
             $this->toId = $dayoff->approver_id;

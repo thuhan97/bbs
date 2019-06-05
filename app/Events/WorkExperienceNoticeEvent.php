@@ -25,7 +25,7 @@ class WorkExperienceNoticeEvent implements ShouldBroadcast
         $this->data = [
             'id' => $workExperience->id,
             'name' =>  $workExperience->user->name,
-            'logo_url' => NOTIFICATION_LOGO[NOTIFICATION_TYPE['post']],
+            'logo_url' => NOTIFICATION_LOGO[NOTIFICATION_TYPE['share']],
             'image_url' => $workExperience->user->avatar,
             'introduction' => $workExperience->introduction,
             'url' => route('view_experience', $workExperience->id),

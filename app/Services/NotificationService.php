@@ -70,7 +70,7 @@ class NotificationService extends AbstractService implements IUserTeamService
             foreach ($users as $user_id) {
                 if ($user_id != $workExperience->creator_id){
                     $notifications[] =
-                        NotificationHelper::generateNotify($user_id,  $workExperience->user->name.SPACE.__l('word_title_notify'),$workExperience->introduction , $workExperience->creator_id, NOTIFICATION_TYPE['post'], route('view_experience', $workExperience->id));
+                        NotificationHelper::generateNotify($user_id,  $workExperience->user->name.SPACE.__l('word_title_notify'),$workExperience->introduction , $workExperience->creator_id, NOTIFICATION_TYPE['share'], route('view_experience', $workExperience->id));
                 }
             }
             broadcast(new WorkExperienceNoticeEvent($workExperience))->toOthers();

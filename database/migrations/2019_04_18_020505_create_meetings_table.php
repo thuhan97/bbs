@@ -21,8 +21,9 @@ class CreateMeetingsTable extends Migration
             $table->string('title');
             $table->text('content');
             $table->tinyInteger('is_notify');
-            $table->datetime('start_date');
-            $table->datetime('end_date');
+            $table->datetime('date');
+            $table->time('start_time');
+            $table->time('end_time');
             $table->string('color');
             $table->timestamps();
         });

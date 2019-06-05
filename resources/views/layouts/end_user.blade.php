@@ -12,18 +12,18 @@
     <title>{{ config('app.name', 'BBS') }} @hasSection('page-title') | @yield('page-title') @endif</title>
 
     <!-- Styles -->
-    <link href="{{ cdn_asset('css/complied.css') }}" rel="stylesheet">
+    <link href="{{ asset_ver('css/complied.css') }}" rel="stylesheet">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css"
           integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
-    <link href="{{ cdn_asset('css/addons/datatables.min.css') }}" rel="stylesheet">
-    <link href="{{ cdn_asset('css/notification.css') }}?v={{date('Ymd')}}-1" rel="stylesheet">
-    <link href="{{ cdn_asset('css/style.css') }}?v={{date('Ymd')}}" rel="stylesheet">
+    <link href="{{ asset_ver('css/addons/datatables.min.css') }}" rel="stylesheet">
+    <link href="{{ asset_ver('css/notification.css') }}?v={{date('Ymd')}}-1" rel="stylesheet">
+    <link href="{{ asset_ver('css/style.css') }}?v={{date('Ymd')}}" rel="stylesheet">
 
-    <script type="text/javascript" src="{{ cdn_asset('mdb/js/jquery-3.3.1.min.js') }}"></script>
-    <script type="text/javascript" src="{{ cdn_asset('mdb/js/popper.min.js') }}"></script>
-    <script type="text/javascript" src="{{ cdn_asset('mdb/js/bootstrap.min.js') }}"></script>
-    <script type="text/javascript" src="{{ cdn_asset('js/addons/datatables.min.js') }}"></script>
-    <script type="text/javascript" src="{{ cdn_asset('js/sweetalert.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset_ver('mdb/js/jquery-3.3.1.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset_ver('mdb/js/popper.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset_ver('mdb/js/bootstrap.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset_ver('js/addons/datatables.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset_ver('js/sweetalert.min.js') }}"></script>
     <script type="text/javascript" src="https://js.pusher.com/4.4/pusher.min.js"></script>
     <script>
         window.userId = '{{\Illuminate\Support\Facades\Auth::id()}}';
@@ -59,7 +59,7 @@
     </div>
 </main>
 <!-- editor -->
-<script src="{{cdn_asset('/js/tinymce/tinymce.min.js')}}"></script>
+<script src="{{asset_ver('js/tinymce/tinymce.min.js')}}"></script>
 <script type="text/javascript">
     (function ($) {
         if (document.head.querySelector('meta[name="csrf-token"]')) {

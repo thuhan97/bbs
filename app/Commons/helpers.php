@@ -40,7 +40,7 @@ if (!function_exists('number_collapse')) {
     }
 }
 
-if (!function_exists('cdn_asset')) {
+if (!function_exists('asset_ver')) {
     /**
      * Generate a cdn asset path.
      *
@@ -48,7 +48,7 @@ if (!function_exists('cdn_asset')) {
      *
      * @return string
      */
-    function cdn_asset($path)
+    function asset_ver($path)
     {
         return \App\Utils::cdnAsset($path);
     }

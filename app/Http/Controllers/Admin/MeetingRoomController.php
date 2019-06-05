@@ -2,28 +2,27 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Models\Meeting;
-use Illuminate\Http\Request;
-use App\Repositories\Contracts\IMeetingRepository;
-use App\Services\Contracts\IMeetingService;
+use App\Models\MeetingRoom;
+use App\Repositories\Contracts\IMeetingRoomRepository;
+use App\Services\Contracts\IMeetingRoomService;
 
-class MeetingController extends AdminBaseController
+class MeetingRoomController extends AdminBaseController
 {
     //
     /**
      * @var  string
      */
-    protected $resourceAlias = 'admin.meetings';
+    protected $resourceAlias = 'admin.meeting_rooms';
     /**
      * @var  string
      */
-    protected $resourceRoutesAlias = 'admin::meetings';
+    protected $resourceRoutesAlias = 'admin::meeting_rooms';
     /**
      * Fully qualified class name
      *
      * @var  string
      */
-    protected $resourceModel = Meeting::class;
+    protected $resourceModel = MeetingRoom::class;
 
     protected $meetingService;
 
@@ -34,23 +33,24 @@ class MeetingController extends AdminBaseController
      */
     protected $resourceTitle = 'Phòng họp';
 
-    public function __construct(IMeetingRepository $repository, IMeetingService $meetingService)
+    public function __construct(IMeetingRoomRepository $repository, IMeetingRoomService $meetingService)
     {
         $this->repository = $repository;
         $this->meetingService = $meetingService;
         parent::__construct();
     }
+
     public function resourceStoreValidationData()
     {
         return [
             'rules' => [
-                'name' => 'required|max:255|unique:meetings,name,NULL,id,deleted_at,NULL',
-                'seats'=> 'numeric'
+                'name' => 'required|max:255|unique:meeting_rooms,name,NULL,id,deleted_at,NULL',
+                'seats' => 'numeric'
             ],
             'messages' => [],
             'attributes' => [
                 'name' => 'tên phòng',
-                'seats'=> 'số ghế'
+                'seats' => 'số ghế'
             ],
             'advanced' => [],
         ];
@@ -60,18 +60,17 @@ class MeetingController extends AdminBaseController
     {
         return [
             'rules' => [
-                'name' => 'required|max:255|unique:meetings,name,'.$record->id.',id,deleted_at,NULL',
-                'seats'=> 'numeric'
+                'name' => 'required|max:255|unique:meeting_rooms,name,' . $record->id . ',id,deleted_at,NULL',
+                'seats' => 'numeric'
             ],
             'messages' => [],
             'attributes' => [
                 'name' => 'tên phòng',
-                'seats'=> 'số ghế',
+                'seats' => 'số ghế',
             ],
             'advanced' => [],
         ];
     }
 
-   
 
 }

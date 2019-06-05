@@ -47,13 +47,13 @@ class BookingCommand extends Command
                     ($type==MONTHLY &&$days==\Carbon::now()->day) ||
                     ($type==YEARLY && $days==\Carbon::now()->format('m-d')))
                         $add=1;
-    
+
                if(isset($add)&&$add==1){
                     $booking=[
                             'title'=>$recur->title,
                             'content'=>$recur->content,
                             'users_id'=>$recur->users_id,
-                            'meetings_id'=>$recur->meetings_id,
+                            'meeting_room_id'=>$recur->meeting_room_id,
                             'start_time'=>$recur->start_time,
                             'end_time'=>$recur->end_time,
                             'date'=>\Carbon::now()->format('Y-m-d'),

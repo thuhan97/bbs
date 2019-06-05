@@ -23,10 +23,10 @@ class BookingService extends AbstractService implements IBookingService
      */
     public function __construct()
     {
-        
+
     }
 
-    
+
 
     /**
      * @param int $id
@@ -56,7 +56,7 @@ class BookingService extends AbstractService implements IBookingService
                 $results[] = [
                     'id' => $booking->id,
                     'title' => $booking->title,
-                    'description' => $booking->meetings_id,
+                    'description' => $booking->meeting_room_id,
                     'start' => $booking->date.' '.$booking->start_time,
                     'end' => $booking->date.' '.$booking->end_time,
                     'textColor'=>'#fff',
@@ -70,7 +70,7 @@ class BookingService extends AbstractService implements IBookingService
     public function getBookingRecurs($start, $end)
     {
         $end=date('Y-m-d',strtotime($end));
-        $results=[];  
+        $results=[];
         $recurs=Recur::where('date','<=',$end)->get();
         foreach($recurs as $recur){
             $startDate=null;
@@ -79,7 +79,7 @@ class BookingService extends AbstractService implements IBookingService
                 $startDate=date('Y-m-d', strtotime( $start.' + '.$days_repeat.' days'));
             }
             elseif($recur->repeat_type==MONTHLY){
-               
+
                 $day= self::getDateOfRecurMonthly($start,$end,$days_repeat );
                 if($day!=null){
                     $startDate=$day;
@@ -98,7 +98,7 @@ class BookingService extends AbstractService implements IBookingService
                 $results[]=[
                     'id'=>$recur->id,
                     'title' => $recur->title,
-                    'description' => $recur->meetings_id,
+                    'description' => $recur->meeting_room_id,
                     'start' => $startDate.' '. $recur->start_time,
                     'end' => $startDate.' '.$recur->end_time,
                     'textColor'=>'#fff',
@@ -109,7 +109,7 @@ class BookingService extends AbstractService implements IBookingService
         return $results;
     }
 
-    
+
     public function getDateOfRecurMonthly($startDate, $endDate, $currentDate){
 
         $startDay=date('d',strtotime($startDate));
@@ -123,7 +123,7 @@ class BookingService extends AbstractService implements IBookingService
             // Ngày lặp thuộc tuần thì tạo ngày lặp cụ thể cho booking
             if($startDay<=$currentDate && $endDay>=$currentDate){
                 $date=$startYear.'-'.$startMonth.'-'.$currentDate;
-            }  
+            }
         }
         else {
             // đầu tuần và cuối tuần khác tháng
@@ -132,7 +132,7 @@ class BookingService extends AbstractService implements IBookingService
             }
             else if($endDay>=$currentDate){
                 $date= $startYear.'-'.$endMonth.'-'.$currentDate;
-            }            
+            }
         }
         if(isset($date)) return $date;
         return null;
@@ -158,11 +158,11 @@ class BookingService extends AbstractService implements IBookingService
         // Ngày lặp lại thuộc tháng 12 thì lấy năm của đầu tuần là năm của booking
             if($currentMonth==12)
                 $date=date('Y-m-d',strtotime($startYear.'-'.$currentDate));
-            
-        // Ngày lặp lại thuộc tháng 1 thì năm của booking được add là năm của ngày cuối tuấn   
+
+        // Ngày lặp lại thuộc tháng 1 thì năm của booking được add là năm của ngày cuối tuấn
             else if ($currentMonth==1)
                 $date=date('Y-m-d',strtotime($endYear.'-'.$currentDate));
-             
+
         }
         // Kiểm tra ngày lặp lại có nằm trong tuần không
          if($firstDayOfWeek<=$date && $date<=$lastDayOfWeek)

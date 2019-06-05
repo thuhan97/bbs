@@ -136,8 +136,8 @@
             <li><a href="{{ route('admin::deviceusers.index') }}"><i class="fa fa-circle"></i> Cấp thiết bị</a></li>
         </ul>
     </li>
-    <li class="{{ \App\Utils::checkRoute(['admin::meetings.index', 'admin::meetings.create', 'admin::meetings.edit']) ? 'active': '' }}">
-        <a href="{{ route('admin::meetings.index') }}">
+    <li class="{{ \App\Utils::checkRoute(['admin::meeting_rooms.index', 'admin::meeting_rooms.create', 'admin::meeting_rooms.edit']) ? 'active': '' }}">
+        <a href="{{ route('admin::meeting_rooms.index') }}">
             <i class="fa fa-bank"></i> <span>Phòng họp</span>
         </a>
     </li>

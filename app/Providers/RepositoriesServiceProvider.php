@@ -12,7 +12,7 @@ use App\Models\Event;
 use App\Models\EventAttendance;
 use App\Models\Feedback;
 use App\Models\Group;
-use App\Models\Meeting;
+use App\Models\MeetingRoom;
 use App\Models\OverTime;
 use App\Models\Post;
 use App\Models\Project;
@@ -41,7 +41,7 @@ use App\Repositories\Contracts\IEventAttendanceRepository;
 use App\Repositories\Contracts\IEventRepository;
 use App\Repositories\Contracts\IFeedbackRepository;
 use App\Repositories\Contracts\IGroupRepository;
-use App\Repositories\Contracts\IMeetingRepository;
+use App\Repositories\Contracts\IMeetingRoomRepository;
 use App\Repositories\Contracts\IOverTimeRepository;
 use App\Repositories\Contracts\IPostRepository;
 use App\Repositories\Contracts\IProjectRepository;
@@ -64,7 +64,7 @@ use App\Repositories\EventAttendanceRepository;
 use App\Repositories\EventRepository;
 use App\Repositories\FeedbackRepository;
 use App\Repositories\GroupRepository;
-use App\Repositories\MeetingRepository;
+use App\Repositories\MeetingRoomRepository;
 use App\Repositories\OverTimeRepository;
 use App\Repositories\PostRepository;
 use App\Repositories\ProjectRepository;
@@ -183,8 +183,8 @@ class RepositoriesServiceProvider extends ServiceProvider
         $this->app->bind(IProjectRepository::class, function () {
             return new ProjectRepository(new Project());
         });
-        $this->app->bind(IMeetingRepository::class, function () {
-            return new MeetingRepository(new Meeting());
+        $this->app->bind(IMeetingRoomRepository::class, function () {
+            return new MeetingRoomRepository(new MeetingRoom());
         });
         $this->app->bind(IRecurRepository::class, function () {
             return new RecurRepository(new Recur());
@@ -221,7 +221,7 @@ class RepositoriesServiceProvider extends ServiceProvider
             IUserTeamRepository::class,
             IWorkTimeRegisterRepository::class,
             IProjectRepository::class,
-            IMeetingRepository::class,
+            IMeetingRoomRepository::class,
             IRecurRepository::class
         ];
     }

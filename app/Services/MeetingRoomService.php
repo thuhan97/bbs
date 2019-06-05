@@ -1,18 +1,17 @@
 <?php
 /**
- * ReportService class
+ * MeetingRoomService class
  * Author: jvb
  * Date: 2019/01/21 03:42
  */
 
 namespace App\Services;
 
-use App\Models\Meeting;
-use App\Repositories\Contracts\IMeetingRepository;
-use App\Services\Contracts\IMeetingService;
-use Illuminate\Http\Request;
+use App\Models\MeetingRoom;
+use App\Repositories\Contracts\IMeetingRoomRepository;
+use App\Services\Contracts\IMeetingRoomService;
 
-class MeetingService extends AbstractService implements IMeetingService
+class MeetingRoomService extends AbstractService implements IMeetingRoomService
 {
     /**
      * ReportService constructor.
@@ -20,11 +19,11 @@ class MeetingService extends AbstractService implements IMeetingService
      * @param \App\Models\Report                            $model
      * @param \App\Repositories\Contracts\IReportRepository $repository
      */
-    public function __construct(Meeting $model, IMeetingRepository $repository)
+    public function __construct(MeetingRoom $model, IMeetingRoomRepository $repository)
     {
         $this->model = $model;
         $this->repository = $repository;
     }
 
-    
+
 }

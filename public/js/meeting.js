@@ -4,10 +4,10 @@ window.addEventListener("load", function () {
     var currentMonth= new Date().getMonth()+1;
     var currentDate= new Date().getDate();
     $('#year').text(currentYear);
-    
+
      for(var i=1;i<=12;i++) {
       var text= (i<10)? "Tháng 0"+i : "Tháng "+i ;
-      
+
        $('#month')
             .append($('<option>', { value : i })
             .text(text));
@@ -20,7 +20,7 @@ window.addEventListener("load", function () {
           .text(text));
     }
     $('#date option[value='+currentDate+']').attr('selected', 'selected');
-   
+
   });
 
      $(function () {
@@ -34,7 +34,7 @@ window.addEventListener("load", function () {
             var data = {
                 start: window.start_date,
                 end: window.end_date,
-            }, 
+            },
             month = $month.children("option:selected").val();
             date= $date.children("option:selected").val();
             data.month=month;
@@ -95,21 +95,21 @@ window.addEventListener("load", function () {
             },
             selectable:true,
             select: function (start, end, allDay=false) {
-                
+
                     //do something when space selected
                     $('#start_time').val(moment(start).format('HH:mm'));
                     $('#end_time').val(moment(end).format(' HH:mm'));
                     $('#days_repeat').val(moment(start).format('YYYY-MM-DD'));
                     //Show 'add event' modal
                     $('#addModal').modal('show');
-                    
-                  
+
+
             },
             eventClick: function(calEvent, jsEvent, view) {
                 console.log(calEvent.start);
                 var data={
                         'id':calEvent.id,
-                        'meetings_id':calEvent.description,
+                        'meeting_room_id':calEvent.description,
                         'start_time':calEvent.start.format('HH:mm:00'),
                         'end_time':calEvent.end.format('HH:mm:00'),
                         'date':calEvent.start.format('YYYY-MM-DD' ),
@@ -134,12 +134,12 @@ window.addEventListener("load", function () {
                                     $('#content').val(booking.content);
                                     $('#participants').val(booking.participants);
                                     $('.selectpicker').selectpicker('refresh');
-                                    $('#meetings_id').val(booking.meetings_id);
+                                    $('#meeting_room_id').val(booking.meeting_room_id);
                                     $('#start_time').val((booking.start_time.substring(0,5)));
                                     $('#end_time').val(booking.end_time.substring(0,5));
                                     $('#days_repeat').val(booking.date);
                                     (booking.is_notify==0)? $('input[name="is_notify"]').attr('checked', false): $('input[name="is_notify"]').attr('checked', true);
-                                   
+
                                     if(data.type=='PAST'){
                                         $('#repeat').css('display','none');
                                     }
@@ -148,7 +148,7 @@ window.addEventListener("load", function () {
                                     }
                                     $('#showModal').modal('hide');
                                     $('#addModal').modal();
-                            
+
                         });
                     }
                 });
@@ -161,16 +161,16 @@ window.addEventListener("load", function () {
                         success:function(data){
                             $('#deleteModal').modal('hide');
                             $('#message').text('Bạn đã xóa thành công buổi họp!')
-                                    $('#deleteSuccessModal').modal();      
+                                    $('#deleteSuccessModal').modal();
                         },
                         fail:function(data){
                             $('#deleteModal').modal('hide');
                             $('#message').text('Thao tác xóa không thành công!')
-                                $('#deleteSuccessModal').modal();       
+                                $('#deleteSuccessModal').modal();
                         }
                  });
-        
-                });      
+
+                });
             },
         });
     });
@@ -180,20 +180,20 @@ window.addEventListener("load", function () {
         var repeat_type= $('[name="repeat_type"]:checked').val();
         var days_repeat=$('#days_repeat').val();
         var participants = [];
-        $.each($(".selectpicker option:selected"), function(){            
+        $.each($(".selectpicker option:selected"), function(){
             participants.push($(this).val());
         });
         participants= participants.toString();
-        var meetings_id= $('#meetings_id').val();
-        if(meetings_id==1) $('#color').val('blue');
-        else if(meetings_id==2) $('#color').val('green');
-        else if(meetings_id==3) $('#color').val('orange');
+        var meeting_room_id= $('#meeting_room_id').val();
+        if(meeting_room_id==1) $('#color').val('blue');
+        else if(meeting_room_id==2) $('#color').val('green');
+        else if(meeting_room_id==3) $('#color').val('orange');
         var start_time= $('#start_time').val();
         var end_time= $('#end_time').val();
         var title= $('#title').val();
         var content= $('#content').val();
         var is_notify=$('input[name="is_notify"]:checked').val();
-        is_notify= (is_notify)?is_notify:"0"; 
+        is_notify= (is_notify)?is_notify:"0";
         var _token= $('#_token').val();
         var color= $('#color').val();
         var id=$('#id').val();
@@ -205,7 +205,7 @@ window.addEventListener("load", function () {
                 data:{
                     "_token":_token,
                     "participants":participants,
-                    "meetings_id":meetings_id,
+                    "meeting_room_id":meeting_room_id,
                     "title":title,
                     "content":content,
                     "start_time":start_time,
@@ -214,9 +214,9 @@ window.addEventListener("load", function () {
                     "is_notify": is_notify,
                     "days_repeat":days_repeat,
                     "color":color
-                    
+
                 },
-                
+
                 success: function(data){
                     if(data.status==422){
                         alert("Vui lòng không để trống các trường có viền đỏ!")
@@ -233,11 +233,11 @@ window.addEventListener("load", function () {
                              el.change(function(){
                                 $(this).css("border","1px solid #ccc    ");
                             });
-                        });    
+                        });
                     }
                     else if(data.status==500){
                         if(data.duplicate){
-                            $('#meetings_id').css("border","1px solid red");
+                            $('#meeting_room_id').css("border","1px solid red");
                             alert("Phòng hoặc thời gian bạn chọn cho cuộc họp đã được đặt, vui lòng chọn lại!");
                         }
                     }
@@ -247,16 +247,16 @@ window.addEventListener("load", function () {
                     }
                 },
         });
-    
+
       });
 
-    
+
     $('#deleteMessage').click(function(){
         $('#showModal').modal('hide');
         $('#deleteModal').modal();
     });
 
-    
+
     $('#ok').click(function(){
         $('#deleteSuccessModal').modal('hide');
         location.reload();
@@ -265,4 +265,3 @@ window.addEventListener("load", function () {
         $('#deleteModal').modal('hide');
         $('#showModal').modal();
     });
-   

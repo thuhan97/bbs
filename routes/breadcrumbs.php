@@ -136,9 +136,9 @@ Breadcrumbs::register('list_suggestions', function ($breadcrumbs) {
     $breadcrumbs->push(__l('list_suggestions'), route('list_suggestions'));
 });
 // Dashboard > list_suggestions/detail_suggestions
-Breadcrumbs::register('detail_suggestions', function ($breadcrumbs,$suggestion) {
+Breadcrumbs::register('detail_suggestions', function ($breadcrumbs, $suggestion) {
     $breadcrumbs->parent('list_suggestions');
-    $breadcrumbs->push( __l('detail_suggestions'), route('detail_suggestions',['id'=>$suggestion->id]));
+    $breadcrumbs->push(__l('detail_suggestions'), route('detail_suggestions', ['id' => $suggestion->id]));
 });
 // Dashboard > share_experience
 Breadcrumbs::register('share_experience', function ($breadcrumbs) {
@@ -164,7 +164,10 @@ Breadcrumbs::register('day_off_approval', function ($breadcrumbs) {
     $breadcrumbs->parent('personal');
     $breadcrumbs->push(__l('day_off_approval'), route('day_off_approval'));
 });
-
+Breadcrumbs::register('bookings', function ($breadcrumbs) {
+    $breadcrumbs->parent('home');
+    $breadcrumbs->push(__l('Phòng họp'), route('bookings'));
+});
 // Admin
 Breadcrumbs::register('admin', function ($breadcrumbs) {
     $breadcrumbs->push(__l('admin_page'), route('admin::index'));
@@ -199,7 +202,7 @@ $resources = [
     'rules' => 'Quy định tiền phạt',
     'punishes' => 'Danh sách tiền phạt',
     'group' => 'Group',
-    'suggestions'=>'Đề xuất - Góp ý'
+    'suggestions' => 'Đề xuất - Góp ý'
 ];
 foreach ($resources as $resource => $data) {
     $parent = 'admin';
@@ -209,6 +212,7 @@ foreach ($resources as $resource => $data) {
         $parent = $data['parent'];
     }
     $resource = 'admin::' . $resource;
+
     // List
     Breadcrumbs::register($resource, function ($breadcrumbs) use ($resource, $title, $parent) {
         $breadcrumbs->parent($parent);

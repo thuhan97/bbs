@@ -322,6 +322,15 @@ define('TOTAL_MONTH', 12);
 define('PRE_YEAR', 1);
 define('PRE_PRE_YEAR', 2);
 define('XLS_TYPE', '.xls');
+
+define('NO_REPEAT',0);
+define('WEEKLY',1);
+define('MONTHLY',2);
+define('YEARLY',3);
+
+define('DUPLICATE',1);
+define('NO_DUPLICATE',0);
+
 define('ADD_DAY_OFF_MONTH', 1);
 define('STT', 'Stt');
 define('ON_TIME', 'Danh sách đi làm đúng giờ');
@@ -338,6 +347,8 @@ define('LATE_OT_USER', 'Đi làm muộn + OT');
 define('TOTAL_MONTH_IN_YEAR', 12);
 define('OFF_TIME', '00:00:00');
 define('SWITCH_TIME', '12:00:00');
+define('PAST',1);
+define('FUTURE',2);
 define('DAY_OFF_MONTH', [
     'day_off_month_Jan' => 1,
     'day_off_month_Feb' => 2,

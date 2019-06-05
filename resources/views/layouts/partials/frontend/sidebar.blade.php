@@ -35,14 +35,14 @@ $name = $team->name ?? $config->name;
             <i class="fas fa-industry mr-3"></i>
             {{__l('Project')}}</a>
 
-        {{--        <a href="#" class="list-group-item list-group-item-action waves-effect disabled">--}}
-        {{--            <i class="fas fa-building mr-3"></i>--}}
-        {{--            Phòng họp</a>--}}
-        {{--        <a href="#" class="list-group-item list-group-item-action waves-effect disabled">--}}
-        {{--            <i class="fas fa-desktop mr-3"></i>--}}
-        {{--            Quản lý thiết bị</a>--}}
-        <a href="{{route('list_share_document')}}"
-           class="list-group-item list-group-item-action waves-effect {{ \App\Utils::checkRoute(['list_share_document']) ? 'active': '' }}">
+        <a href="{{route('bookings')}}" class="list-group-item list-group-item-action waves-effect {{ \App\Utils::checkRoute(['bookings']) ? 'active': '' }}"">
+           <i class="fas fa-building mr-3"></i>
+           {{__l('Phòng họp')}} 
+           </a>
+        <a href="#" class="list-group-item list-group-item-action waves-effect disabled">
+            <i class="fas fa-desktop mr-3"></i>
+            Quản lý thiết bị</a>
+        <a href="{{route('list_share_document')}}" class="list-group-item list-group-item-action waves-effect {{ \App\Utils::checkRoute(['list_share_document']) ? 'active': '' }}">
             <i class="fas fa-file mr-3"></i>
             Chia sẻ tài liệu</a>
         <a href="{{route('share_experience')}}"

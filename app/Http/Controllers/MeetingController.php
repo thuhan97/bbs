@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Booking;
 use App\Models\Meeting;
 use App\Models\MeetingRoom;
-use App\Models\Recur;
 use App\Models\Team;
 use App\Models\User;
-use App\Repositories\Contracts\IRecurRepository;
+use App\Repositories\Contracts\IBookingRepository;
 use App\Services\Contracts\IMeetingService;
 use App\Traits\RESTActions;
 use Illuminate\Http\Request;
@@ -22,12 +22,12 @@ class MeetingController extends Controller
     use RESTActions;
 
     protected $bookingService;
-    protected $recurRepository;
+    protected $bookingRepository;
 
-    public function __construct(IMeetingService $bookingService, IRecurRepository $recurRepository)
+    public function __construct(IMeetingService $bookingService, IBookingRepository $bookingRepository)
     {
         $this->bookingService = $bookingService;
-        $this->recurRepository = $recurRepository;
+        $this->bookingRepository = $bookingRepository;
     }
 
     public function calendar()
@@ -43,7 +43,7 @@ class MeetingController extends Controller
         $end = $request->end;
         $results1 = $this->bookingService->getMeetings($start, $end);
 
-        $results2 = $this->bookingService->getMeetingRecurs($start, $end);
+        $results2 = $this->bookingService->getBookings($start, $end);
         $results = array_merge($results1, $results2);
 
         return $this->respond(['bookings' => $results]);
@@ -107,7 +107,7 @@ class MeetingController extends Controller
                     Meeting::insert($data);
                     $data['repeat_type'] = $request->repeat_type;
                     $data['days_repeat'] = $days_repeat;
-                    Recur::insert($data);
+                    Booking::insert($data);
                 }
                 return response()->json(["success" => true]);
             } else return response()->json(["duplicate" => true, 'status' => 500], 200);
@@ -175,7 +175,7 @@ class MeetingController extends Controller
                     }
                     $data['repeat_type'] = $request->repeat_type;
                     $data['days_repeat'] = $days_repeat;
-                    $booking = Recur::where('id', $id)->update($data);
+                    $booking = Booking::where('id', $id)->update($data);
                 }
                 return response()->json(["success" => true]);
             } else return response()->json(["duplicate" => true, 'status' => 500], 200);
@@ -202,7 +202,7 @@ class MeetingController extends Controller
             'start_time' => $start_time,
             'end_time' => $end_time,
         ];
-        $booking = (count(Meeting::where($condition1)->get()) > 0) ? (Meeting::where($condition1)->first()) : (Recur::where($condition2)->first());
+        $booking = (count(Meeting::where($condition1)->get()) > 0) ? (Meeting::where($condition1)->first()) : (Booking::where($condition2)->first());
         $participants = explode(",", $booking->participants);
         $objects = [];
         foreach ($participants as $user_id) {
@@ -232,7 +232,7 @@ class MeetingController extends Controller
             'start_time' => $start_time,
             'end_time' => $end_time,
         ];
-        $booking = (count(Meeting::where($condition1)->get()) > 0) ? (Meeting::where($condition1)->first()) : (Recur::where($condition2)->first());
+        $booking = (count(Meeting::where($condition1)->get()) > 0) ? (Meeting::where($condition1)->first()) : (Booking::where($condition2)->first());
         $booking->delete();
         return response()->json(["messages" => "success"]);
     }
@@ -246,29 +246,29 @@ class MeetingController extends Controller
 
         $check = NO_DUPLICATE;
 
-        $recur_default = [['id', '<>', $id], ['meeting_room_id', $meeting_room_id]];
+        $booking_default = [['id', '<>', $id], ['meeting_room_id', $meeting_room_id]];
 
         // check theo lich khong lap
-        $recur = [];
+        $booking = [];
         $model = new Meeting();
-        $recur[0] = $model->where('date', $date)->where($recur_default);
-        $model = Recur::where($recur_default);
+        $booking[0] = $model->where('date', $date)->where($booking_default);
+        $model = Booking::where($booking_default);
         // check lich tuan
-        $recur[1] = clone $model->where('repeat_type', WEEKLY)->where('days_repeat', $dayOfWeek);
+        $booking[1] = clone $model->where('repeat_type', WEEKLY)->where('days_repeat', $dayOfWeek);
 
         //check lich theo thang
-        $recur[2] = clone $model->where('repeat_type', MONTHLY)->where('days_repeat', $day);
+        $booking[2] = clone $model->where('repeat_type', MONTHLY)->where('days_repeat', $day);
 
         //check lich theo nam
-        $recur[3] = clone $model->where('repeat_type', YEARLY)->where('days_repeat', $date_month);
+        $booking[3] = clone $model->where('repeat_type', YEARLY)->where('days_repeat', $date_month);
 
         for ($i = 0; $i < 4; $i++) {
-            $recurs = $recur[$i];
-            if (count($recurs->get()) > 0) {
-                $recurs = $recurs->where(function ($q) use ($start_time, $end_time) {
+            $bookings = $booking[$i];
+            if (count($bookings->get()) > 0) {
+                $bookings = $bookings->where(function ($q) use ($start_time, $end_time) {
                     $q->where('start_time', '>=', $end_time)->orWhere('end_time', '<=', $start_time);
                 })->get();
-                if (count($recurs) > 0) $check = NO_DUPLICATE;
+                if (count($bookings) > 0) $check = NO_DUPLICATE;
                 else {
                     $check = DUPLICATE;
                     return $check;

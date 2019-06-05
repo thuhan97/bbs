@@ -3,7 +3,7 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
-use App\Models\Recur;
+use App\Models\Booking;
 use App\Models\Meeting;
 
 class MeetingCommand extends Command
@@ -39,10 +39,10 @@ class MeetingCommand extends Command
      */
     public function handle()
     {
-         $recurs= Recur::where('date'<=\Carbon::now()->format('Y-m-d'));
-            foreach ($recurs as $recur) {
-                $type=$recur->repeat_type;
-                $days=$recur->days_repeat;
+         $bookings= Booking::where('date'<=\Carbon::now()->format('Y-m-d'));
+            foreach ($bookings as $booking) {
+                $type=$booking->repeat_type;
+                $days=$booking->days_repeat;
                 if(($type==WEEKLY &&$days==\Carbon::now()->dayOfWeek) ||
                     ($type==MONTHLY &&$days==\Carbon::now()->day) ||
                     ($type==YEARLY && $days==\Carbon::now()->format('m-d')))
@@ -50,16 +50,16 @@ class MeetingCommand extends Command
 
                if(isset($add)&&$add==1){
                     $booking=[
-                            'title'=>$recur->title,
-                            'content'=>$recur->content,
-                            'users_id'=>$recur->users_id,
-                            'meeting_room_id'=>$recur->meeting_room_id,
-                            'start_time'=>$recur->start_time,
-                            'end_time'=>$recur->end_time,
+                            'title'=>$booking->title,
+                            'content'=>$booking->content,
+                            'users_id'=>$booking->users_id,
+                            'meeting_room_id'=>$booking->meeting_room_id,
+                            'start_time'=>$booking->start_time,
+                            'end_time'=>$booking->end_time,
                             'date'=>\Carbon::now()->format('Y-m-d'),
-                            'participants'=>$recur->participants,
-                            'is_notify'=>$recur->is_notify,
-                            'color'=>$recur->color,
+                            'participants'=>$booking->participants,
+                            'is_notify'=>$booking->is_notify,
+                            'color'=>$booking->color,
                         ];
                     \DB::table('bookings')->insert($booking);
                }

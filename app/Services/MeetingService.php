@@ -8,7 +8,7 @@
 namespace App\Services;
 
 use App\Models\Meeting;
-use App\Models\Recur;
+use App\Models\Booking;
 use App\Services\Contracts\IMeetingService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
@@ -19,7 +19,7 @@ class MeetingService extends AbstractService implements IMeetingService
      * MeetingService constructor.
      *
      * @param \App\Models\Meeting $booking
-     * @param \App\Models\Recur $recur
+     * @param \App\Models\Recur $booking
      */
     public function __construct()
     {
@@ -67,42 +67,42 @@ class MeetingService extends AbstractService implements IMeetingService
         return $results;
     }
 
-    public function getMeetingRecurs($start, $end)
+    public function getBookings($start, $end)
     {
         $end=date('Y-m-d',strtotime($end));
         $results=[];
-        $recurs=Recur::where('date','<=',$end)->get();
-        foreach($recurs as $recur){
+        $bookings=Booking::where('date','<=',$end)->get();
+        foreach($bookings as $booking){
             $startDate=null;
-            $days_repeat= $recur->days_repeat;
-            if($recur->repeat_type==WEEKLY){
+            $days_repeat= $booking->days_repeat;
+            if($booking->repeat_type==WEEKLY){
                 $startDate=date('Y-m-d', strtotime( $start.' + '.$days_repeat.' days'));
             }
-            elseif($recur->repeat_type==MONTHLY){
+            elseif($booking->repeat_type==MONTHLY){
 
                 $day= self::getDateOfRecurMonthly($start,$end,$days_repeat );
                 if($day!=null){
                     $startDate=$day;
                 }
             }
-            else if($recur->repeat_type==YEARLY){
+            else if($booking->repeat_type==YEARLY){
                 $day=self::getDateOfRecurYearly($start,$end, $days_repeat);
                 if($day!==null)
                     $startDate=$day;
             }
             else{
-                 $startDate=$recur->days_repeat;
+                 $startDate=$booking->days_repeat;
 
             }
-            if($startDate!=null && $startDate>$recur->date&& $startDate> \Carbon::now()->format('Y-m-d')){
+            if($startDate!=null && $startDate>$booking->date&& $startDate> \Carbon::now()->format('Y-m-d')){
                 $results[]=[
-                    'id'=>$recur->id,
-                    'title' => $recur->title,
-                    'description' => $recur->meeting_room_id,
-                    'start' => $startDate.' '. $recur->start_time,
-                    'end' => $startDate.' '.$recur->end_time,
+                    'id'=>$booking->id,
+                    'title' => $booking->title,
+                    'description' => $booking->meeting_room_id,
+                    'start' => $startDate.' '. $booking->start_time,
+                    'end' => $startDate.' '.$booking->end_time,
                     'textColor'=>'#fff',
-                    'color'=>$recur->color,
+                    'color'=>$booking->color,
                 ];
             }
         }

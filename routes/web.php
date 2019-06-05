@@ -111,8 +111,9 @@ Route::group([
 
     Route::post('/notification/mark-read', 'NotificationController@markRead')->name('notification_mark_read');
 
+    Route::post('/ngay-nghi/create', 'UserController@dayOffCreate')->name('day_off_create');
     Route::get('/phong-hop', 'BookingController@calendar')->name('bookings');
-    Route::get('/get_calendar', 'BookingController@getCalendar')->name('getCalendarBooking');
+    Route::get('/get_calendar-booking', 'BookingController@getCalendar')->name('getCalendarBooking');
     Route::post('/them-phong-hop', 'BookingController@booking')->name('booking');
     Route::post('/sua-phong-hop/{id}', 'BookingController@update')->name('update_booking');
     Route::get('/get-booking', 'BookingController@getBooking')->name('get_booking');
@@ -203,3 +204,4 @@ Route::group([
     ]);
     Route::get('/demo', $namespace . 'DemoController@index');
 });
+

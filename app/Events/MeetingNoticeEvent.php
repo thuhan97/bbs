@@ -40,7 +40,7 @@ class MeetingNoticeEvent implements ShouldBroadcast
 
         Notification::insertAll($notifications);
         $this->data = [
-            'id' => $meeting,
+            'id' => $meeting->id,
             'title' => $title,
             'content' => $content,
             'image_url' => JVB_LOGO_URL,

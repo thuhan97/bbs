@@ -109,7 +109,7 @@
                         </div>
                         </br>
                         <div id="#repeat" class="mb-2">
-                            <lable class="mr-5">Lặp lại:</lable>
+                            <lable class="mr-2">Lặp lại:</lable>
                             <input type="radio" name="repeat_type" id="non_repeat" value="0" checked
                                    style="display: none;">
                             <div class="form-check form-check-inline">
@@ -211,19 +211,19 @@
     </div>
 @endsection
 @push('extend-css')
-    <link href="{{asset('bootstrap-select/css/bootstrap-select.css')}}" rel="stylesheet"/>
-    <link href="{{asset('bootstrap-datetimepicker/css/bootstrap-timepicker.min.css')}}" rel="stylesheet"/>
-    <link href="{{ asset('fullcalendar/fullcalendar.min.css') }}" rel="stylesheet">
+    <link href="{{asset_ver('bootstrap-select/css/bootstrap-select.css')}}" rel="stylesheet"/>
+    <link href="{{asset_ver('bootstrap-datetimepicker/css/bootstrap-timepicker.min.css')}}" rel="stylesheet"/>
+    <link href="{{ asset_ver('fullcalendar/fullcalendar.min.css') }}" rel="stylesheet">
 
-    <link rel="stylesheet" type="text/css" href="{{asset('css/meeting.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{asset_ver('css/meeting.css')}}">
 @endpush
 @push('extend-js')
-    <script type="text/javascript" src="{{asset('mdb/js/bootstrap.js')}}"></script>
-    <script src="{{asset('bootstrap-select/js/bootstrap-select.js')}}" type="text/javascript"></script>
-    <script src="{{asset('bootstrap-datetimepicker/js/bootstrap-timepicker.min.js')}}" type="text/javascript"></script>
-    <script type="text/javascript" src="{{ asset('js/moment.min.js') }}"></script>
+    <script type="text/javascript" src="{{asset_ver('mdb/js/bootstrap.js')}}"></script>
+    <script src="{{asset_ver('bootstrap-select/js/bootstrap-select.js')}}" type="text/javascript"></script>
+    <script src="{{asset_ver('bootstrap-datetimepicker/js/bootstrap-timepicker.min.js')}}" type="text/javascript"></script>
+    <script type="text/javascript" src="{{ asset_ver('js/moment.min.js') }}"></script>
 
-    <script type="text/javascript" src="{{ asset('fullcalendar/fullcalendar.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset_ver('fullcalendar/fullcalendar.min.js') }}"></script>
     <script type="">
         $(document).ready(function () {
             $('.selectpicker').selectpicker();
@@ -240,6 +240,6 @@
             });
         });
     </script>
-    <script type="text/javascript" src="{{asset('js/meeting.js')}}"></script>
+    <script type="text/javascript" src="{{asset_ver('js/meeting.js')}}"></script>
 
 @endpush

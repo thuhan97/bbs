@@ -131,7 +131,7 @@
          role="dialog" aria-labelledby="myModalLabel"
          aria-hidden="true">
         <div class="modal-dialog modal-center modal-set-center" role="document">
-            <div class="modal-content" id="bg-img" style="background-image: url({{ asset('img/font/xin_nghi.png') }})">
+            <div class="modal-content" id="bg-img" style="background-image: url({{ asset_ver('img/font/xin_nghi.png') }})">
                 <div class="modal-header text-center border-bottom-0 p-3">
                     <h4 class='mg-center mg-left-10 modal-title w-100 font-weight-bold pt-2 title-wt-modal-approve'>Xin
                         phép</h4>
@@ -885,5 +885,5 @@
 
 @push('extend-js')
     <script src="https://cdnjs.cloudflare.com/ajax/libs/timepicker/1.3.5/jquery.timepicker.min.js"></script>
-    <script src="{{ cdn_asset('js/jquery.validate.min.js') }}"></script>
+    <script src="{{ asset_ver('js/jquery.validate.min.js') }}"></script>
 @endpush

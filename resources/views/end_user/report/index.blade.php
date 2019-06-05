@@ -191,7 +191,7 @@ $type = request('type', $reportType);
 
 @endsection
 @push('extend-js')
-    <script type="text/javascript" src="{{ asset('js/date-time-picker.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset_ver('js/date-time-picker.min.js') }}"></script>
 
     <script>
         $(function () {

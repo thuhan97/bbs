@@ -12,9 +12,9 @@
     <title>{{ config('app.name', 'BBS') }}</title>
 
     <!-- Styles -->
-    <link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet">
-    <link href="{{ asset('css/mdb.min.css') }}" rel="stylesheet">
-    <link href="{{ asset('css/style.css') }}" rel="stylesheet">
+    <link href="{{ asset_ver('css/bootstrap.min.css') }}" rel="stylesheet">
+    <link href="{{ asset_ver('css/mdb.min.css') }}" rel="stylesheet">
+    <link href="{{ asset_ver('css/style.css') }}" rel="stylesheet">
 </head>
 <body>
 
@@ -23,10 +23,10 @@
 </div>
 
 <!-- Scripts -->
-<script type="text/javascript" src="{{ asset('js/jquery-3.3.1.min.js') }}"></script>
-<script type="text/javascript" src="{{ asset('js/popper.min.js') }}"></script>
-<script type="text/javascript" src="{{ asset('js/bootstrap.min.js') }}"></script>
-<script type="text/javascript" src="{{ asset('js/mdb.min.js') }}"></script>
+<script type="text/javascript" src="{{ asset_ver('js/jquery-3.3.1.min.js') }}"></script>
+<script type="text/javascript" src="{{ asset_ver('js/popper.min.js') }}"></script>
+<script type="text/javascript" src="{{ asset_ver('js/bootstrap.min.js') }}"></script>
+<script type="text/javascript" src="{{ asset_ver('js/mdb.min.js') }}"></script>
 @yield('js-extend')
 </body>
 </html>

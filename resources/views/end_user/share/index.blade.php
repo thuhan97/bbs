@@ -10,7 +10,7 @@
     {!! Breadcrumbs::render('list_share_document') !!}
 @endsection
 @section('content')
-    <link rel="stylesheet" href="{{URL::asset('css/list_share_document.css')}}">
+    <link rel="stylesheet" href="{{asset_ver('css/list_share_document.css')}}">
     <div class="createReport fixed-action-btn">
         <a href="#" class="button-add btn-lg red waves-effect waves-light text-white" title="Chia sẻ"
            data-target="#feedback" data-toggle="modal">
@@ -83,9 +83,9 @@
          aria-hidden="true">
         <div class="modal-dialog modal-center" role="document">
             <div class="modal-content" id="bg-img"
-                 style="background-image: url({{ asset('img/background_share.png') }})">
+                 style="background-image: url({{ asset_ver('img/background_share.png') }})">
                 <div class="modal-header justify-content-center border-bottom-0 p-3">
-                    <img class="imgHeaderPopup" src="{{ asset('img/header-popup-share.png') }}" alt="img">
+                    <img class="imgHeaderPopup" src="{{ asset_ver('img/header-popup-share.png') }}" alt="img">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <div class="background-close-icon">
                             <span class="btn-close-icon" aria-hidden="true">&times;</span>
@@ -117,6 +117,6 @@
             </div>
         </div>
     </div>
-    <script type="text/javascript" src="{{URL::asset('js/list_share_document.js')}}"></script>
+    <script type="text/javascript" src="{{asset_ver('js/list_share_document.js')}}"></script>
 
 @endsection

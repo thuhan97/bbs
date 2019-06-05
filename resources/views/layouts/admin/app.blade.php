@@ -13,29 +13,29 @@
     <title>{{ config('app.name', 'Laravel') }}</title>
 
     <!-- Bootstrap 3.3.7 -->
-    <link rel="stylesheet" href="{{ cdn_asset('/bootstrap/css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ asset_ver('/bootstrap/css/bootstrap.min.css') }}">
     <!-- Font Awesome -->
-    <link rel="stylesheet" href="{{ cdn_asset('/font-awesome/css/font-awesome.min.css') }}">
+    <link rel="stylesheet" href="{{ asset_ver('/font-awesome/css/font-awesome.min.css') }}">
     <!-- Ionicons -->
     <link rel="stylesheet" href="http://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
 
     <!-- Plugins -->
     <!-- iCheck for checkboxes and radio inputs -->
-    <link href="{{ cdn_asset('/adminlte/plugins/iCheck/all.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{ asset_ver('/adminlte/plugins/iCheck/all.css') }}" rel="stylesheet" type="text/css">
     <!-- Select2 -->
-    <link href="{{ cdn_asset('/adminlte/plugins/select2/css/select2.min.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{ asset_ver('/adminlte/plugins/select2/css/select2.min.css') }}" rel="stylesheet" type="text/css">
     <!-- datetimepicker -->
-    <link href="{{ cdn_asset('/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css') }}"
+    <link href="{{ asset_ver('/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css') }}"
           rel="stylesheet" type="text/css">
     <!-- END - Plugins -->
 
     <!-- Theme CSS -->
-    <link rel="stylesheet" href="{{ cdn_asset('/adminlte/css/AdminLTE.min.css') }}">
+    <link rel="stylesheet" href="{{ asset_ver('/adminlte/css/AdminLTE.min.css') }}">
     <!-- AdminLTE Skin. -->
-    <link rel="stylesheet" href="{{ cdn_asset('/adminlte/css/skins/' . config('adminlte.theme') . '.min.css') }}">
+    <link rel="stylesheet" href="{{ asset_ver('/adminlte/css/skins/' . config('adminlte.theme') . '.min.css') }}">
 
     <!-- Custom CSS -->
-    <link href="{{ cdn_asset('/css/backend.css?version=' . config('adminlte.version')) }}" rel="stylesheet">
+    <link href="{{ asset_ver('/css/backend.css?version=' . config('adminlte.version')) }}" rel="stylesheet">
 </head>
 <body>
 <div id="app">

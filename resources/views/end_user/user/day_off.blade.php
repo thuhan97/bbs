@@ -280,7 +280,7 @@
          aria-hidden="true">
 
         <div class="modal-dialog modal-center" role="document">
-            <div class="modal-content modal-center-display" id="bg-img" style="background-image: url({{ asset('img/font/xin_nghi.png') }})">
+            <div class="modal-content modal-center-display" id="bg-img" style="background-image: url({{ asset_ver('img/font/xin_nghi.png') }})">
                 <div class="modal-header text-center border-bottom-0 pb-2 p-sm-4">
                     <h4 class="modal-title w-100 font-weight-bold">XIN NGHỈ PHÉP</h4>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -512,7 +512,7 @@
          aria-hidden="true">
         <div class="modal-dialog modal-center" role="document">
             <div class="modal-content modal-center-display" id="bg-img"
-                 style="background-image: url({{ asset('img/font/xin_nghi.png') }})">
+                 style="background-image: url({{ asset_ver('img/font/xin_nghi.png') }})">
                 <div class="modal-header text-center border-bottom-0 p-3">
                     <h4 class="modal-title w-100 font-weight-bold pt-2">NỘI DUNG ĐƠN</h4>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -984,7 +984,7 @@
 @endsection
 
 @push('extend-css')
-    <link href="{{ cdn_asset('/bootstrap-datepicker/css/bootstrap-datepicker.min.css') }}" rel="stylesheet">
+    <link href="{{ asset_ver('/bootstrap-datepicker/css/bootstrap-datepicker.min.css') }}" rel="stylesheet">
     <style>
         #textareaForm {
             height: 150px;
@@ -997,7 +997,7 @@
 @endpush
 
 @push('extend-js')
-    <script src="{{ cdn_asset('/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js') }}"></script>
-    <script src="{{ cdn_asset('/bootstrap-datepicker/js/bootstrap-datepicker.min.js') }}"></script>
-    <script src="{{ cdn_asset('js/jquery.validate.min.js') }}"></script>
+    <script src="{{ asset_ver('/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js') }}"></script>
+    <script src="{{ asset_ver('/bootstrap-datepicker/js/bootstrap-datepicker.min.js') }}"></script>
+    <script src="{{ asset_ver('js/jquery.validate.min.js') }}"></script>
 @endpush

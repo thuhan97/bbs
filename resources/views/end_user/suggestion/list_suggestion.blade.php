@@ -79,5 +79,5 @@
             </div>
         </div>
     </div>
-    <script type="text/javascript" src="{{URL::asset('js/list_suggestion.js')}}"></script>
+    <script type="text/javascript" src="{{asset_ver('js/list_suggestion.js')}}"></script>
 @endsection

@@ -10,6 +10,7 @@ namespace App\Services;
 
 use App\Events\PostNotify;
 use App\Events\ReportReplyNoticeEvent;
+use App\Events\WorkExperienceNoticeEvent;
 use App\Helpers\NotificationHelper;
 use App\Models\Notification;
 use App\Models\Report;
@@ -59,6 +60,20 @@ class NotificationService extends AbstractService implements IUserTeamService
             $post->save();
         }
 
+        $this->insertNotification($notifications);
+    }
+    public function sendWorkExperience($workExperience)
+    {
+        $users = User::where('status', ACTIVE_STATUS)->pluck('id')->toArray();
+        $notifications = [];
+
+            foreach ($users as $user_id) {
+                if ($user_id != $workExperience->creator_id){
+                    $notifications[] =
+                        NotificationHelper::generateNotify($user_id,  $workExperience->user->name.SPACE.__l('word_title_notify'),$workExperience->introduction , $workExperience->creator_id, NOTIFICATION_TYPE['post'], route('view_experience', $workExperience->id));
+                }
+            }
+            broadcast(new WorkExperienceNoticeEvent($workExperience))->toOthers();
         $this->insertNotification($notifications);
     }
 

@@ -33,6 +33,11 @@
             <i class="fa fa-anchor"></i> <span>Dự án</span>
         </a>
     </li>
+    <li class="{{ \App\Utils::checkRoute(['admin::meeting_rooms.index', 'admin::meeting_rooms.create', 'admin::meeting_rooms.edit']) ? 'active': '' }}">
+        <a href="{{ route('admin::meeting_rooms.index') }}">
+            <i class="fa fa-bank"></i> <span>Phòng họp</span>
+        </a>
+    </li>
     <li class="{{ \App\Utils::checkRoute(['admin::events.index', 'admin::events.create', 'admin::events.edit']) ? 'active': '' }}">
         <a href="{{ route('admin::events.index') }}">
             <i class="fa fa-calendar"></i> <span>Sự kiện</span>
@@ -135,11 +140,6 @@
             <li><a href="{{ route('admin::devices.index') }}"><i class="fa fa-circle"></i> Quản lý thiết bị</a></li>
             <li><a href="{{ route('admin::deviceusers.index') }}"><i class="fa fa-circle"></i> Cấp thiết bị</a></li>
         </ul>
-    </li>
-    <li class="{{ \App\Utils::checkRoute(['admin::meetings.index', 'admin::meetings.create', 'admin::meetings.edit']) ? 'active': '' }}">
-        <a href="{{ route('admin::meetings.index') }}">
-            <i class="fa fa-bank"></i> <span>Phòng họp</span>
-        </a>
     </li>
     <li class="{{ \App\Utils::checkRoute(['admin::punishes.index', 'admin::punishes.create', 'admin::punishes.edit']) ? 'active': '' }}">
         <a href="{{ route('admin::punishes.index') }}">

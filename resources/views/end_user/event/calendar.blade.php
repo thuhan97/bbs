@@ -29,9 +29,9 @@
 @endsection
 
 @push('extend-js')
-    <link href="{{ asset('fullcalendar/fullcalendar.min.css') }}" rel="stylesheet">
+    <link href="{{ asset_ver('fullcalendar/fullcalendar.min.css') }}" rel="stylesheet">
 
-    <script type="text/javascript" src="{{ asset('fullcalendar/fullcalendar.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset_ver('fullcalendar/fullcalendar.min.js') }}"></script>
 
     <script>
         $(function () {

@@ -138,8 +138,8 @@ Route::group([
     Route::get('work_time_statistic/export', ['as' => 'work_time_statistic.export', 'uses' => 'StatisticController@export']);
     Route::resource('work_time_statistic', 'StatisticController');
     //rooms
-    Route::post('meetings/deletes', ['as' => 'meetings.deletes', 'uses' => 'MeetingController@deletes']);
-    Route::resource('meetings', 'MeetingController');
+    Route::post('meeting_rooms/deletes', ['as' => 'meeting_rooms.deletes', 'uses' => 'MeetingRoomController@deletes']);
+    Route::resource('meeting_rooms', 'MeetingRoomController');
 
     // manager-group
     Route::resource('group', 'GroupController');

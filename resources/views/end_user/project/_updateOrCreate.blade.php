@@ -187,11 +187,11 @@
 
 
 @push('extend-css')
-    <link href="{{ cdn_asset('/bootstrap-datepicker/css/bootstrap-datepicker.min.css') }}" rel="stylesheet">
+    <link href="{{ asset_ver('/bootstrap-datepicker/css/bootstrap-datepicker.min.css') }}" rel="stylesheet">
 @endpush
 
 @push('extend-js')
-    <script src="{{ cdn_asset('/bootstrap-datepicker/js/bootstrap-datepicker.min.js') }}"></script>
+    <script src="{{ asset_ver('/bootstrap-datepicker/js/bootstrap-datepicker.min.js') }}"></script>
 @endpush
 @push('footer-scripts')
     <script>

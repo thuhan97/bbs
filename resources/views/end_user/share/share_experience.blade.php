@@ -22,7 +22,7 @@
                     <a href="#" class="btn-lg red waves-effect waves-light text-white" title="Đăng bài"
                        data-target="#feedback" data-toggle="modal"
                        style="border-radius: 35px;border: 5px solid #FED6D8;font-size: 17px;">
-                        <img class="imgAddExperience" src="{{ asset('img/icon_exp.png') }}"
+                        <img class="imgAddExperience" src="{{ asset_ver('img/icon_exp.png') }}"
                              onerror="this.src='{{URL_IMAGE_NO_IMAGE}}'" alt="avatar image"/>
                         Đăng bài
                     </a>
@@ -112,10 +112,10 @@
 @endsection
 
 @push('extend-css')
-    <link rel="stylesheet" href="{{URL::asset('css/share_experience.css')}}">
+    <link rel="stylesheet" href="{{asset_ver('css/share_experience.css')}}">
 @endpush
 @push('footer-scripts')
-    <script src="{{cdn_asset('/js/end-user-share-experience.js')}}"></script>
+    <script src="{{asset_ver('/js/end-user-share-experience.js')}}"></script>
 
     <script>
         $(function () {

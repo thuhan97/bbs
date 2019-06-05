@@ -8,6 +8,6 @@
 <div class="col-md-2">
     <a class="pull-right export" href="{{ $_listLinkExport }}">
 {{--    <a class="pull-right export" href="javascript:void (0)">--}}
-        <img src="{{URL::asset('img/statistics/export.png')}}" height="50px" >
+        <img src="{{asset_ver('img/statistics/export.png')}}" height="50px" >
     </a>
 </div>

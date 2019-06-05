@@ -103,7 +103,7 @@
     </style>
 @endpush
 @push('extend-js')
-    <script type="text/javascript" src="{{ asset('js/jquery.lazy.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset_ver('js/jquery.lazy.min.js') }}"></script>
     <script>
         $(function () {
             $('.lazy').Lazy();

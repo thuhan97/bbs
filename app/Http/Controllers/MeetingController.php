@@ -2,14 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\BookingMeetingRequest;
 use App\Models\Booking;
+use App\Models\Meeting;
 use App\Models\MeetingRoom;
-use App\Models\Recur;
 use App\Models\User;
-use App\Repositories\Contracts\IRecurRepository;
-use App\Services\Contracts\IBookingService;
+use App\Services\Contracts\IMeetingService;
 use App\Traits\RESTActions;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
 /**
@@ -19,29 +20,27 @@ class MeetingController extends Controller
 {
     use RESTActions;
 
-    protected $bookingService;
-    protected $recurRepository;
+    protected $meetingService;
 
-    public function __construct(IBookingService $bookingService, IRecurRepository $recurRepository)
+    public function __construct(IMeetingService $meetingService)
     {
-        $this->bookingService = $bookingService;
-        $this->recurRepository = $recurRepository;
+        $this->meetingService = $meetingService;
     }
 
     public function calendar()
     {
-        $users = User::all();
+        $groups = $this->meetingService->getUserTree();
         $meeting_rooms = MeetingRoom::all();
-        return view('end_user.meeting.calendar', compact('meeting_rooms', 'users'));
+        return view('end_user.meeting.calendar', compact('meeting_rooms', 'groups'));
     }
 
     public function getCalendar(Request $request)
     {
         $start = $request->start;
         $end = $request->end;
-        $results1 = $this->bookingService->getBookings($start, $end);
+        $results1 = $this->meetingService->getMeetings($start, $end);
 
-        $results2 = $this->bookingService->getBookingRecurs($start, $end);
+        $results2 = $this->meetingService->getBookings($start, $end);
         $results = array_merge($results1, $results2);
 
         return $this->respond(['bookings' => $results]);
@@ -49,138 +48,142 @@ class MeetingController extends Controller
 
     public function booking(Request $request)
     {
-        $rules = [
-            'title' => 'required',
-            'content' => 'required',
-            'participants' => 'required',
-            'meeting_room_id' => 'required',
-            'start_time' => 'required',
-            'end_time' => 'required',
-        ];
-        $messages = [
-            'required' => 'Vui lòng không để trống :attribute .',
-        ];
-        $attributes = [
-            'title' => 'tiêu đề',
-            'content' => 'nội dung',
-            'participants' => 'đối tượng',
-            'meeting_room_id' => 'phòng họp',
-            'start_time' => 'thời gian bắt đầu',
-            'end_time' => 'thời gian kết thúc',
-        ];
-        $validator = Validator::make($request->all(), $rules, $messages, $attributes);
+        $validator = $this->validateRequest($request);
         if ($validator->fails()) {
             return response()->json(["errors" => $validator->errors(), 'status' => 422], 200);
-
-        } else {
-            $meeting_room_id = $request->meeting_room_id;
-            $start_time = $request->start_time;
-            $end_time = $request->end_time;
-            $days_repeat = $request->days_repeat;
-            $check = $this->check($days_repeat, $meeting_room_id, $start_time, $end_time);
-            if ($check == NO_DUPLICATE) {
-                $date = $request->days_repeat;
-                $data = [
-                    'users_id' => \Auth::user()->id,
-                    'title' => $request->title,
-                    'content' => $request->get('content'),
-                    'participants' => $request->participants,
-                    'meeting_room_id' => $request->meeting_room_id,
-                    'start_time' => $request->start_time,
-                    'end_time' => $request->end_time,
-                    'date' => $date,
-                    'color' => $request->color,
-                    'is_notify' => $request->is_notify,
-                ];
-                if ($request->repeat_type == NO_REPEAT) {
-                    Booking::insert($data);
-                } else {
-                    if ($request->repeat_type == YEARLY) {
-                        $days_repeat = date('m-d', strtotime($request->days_repeat));
-                    } else if ($request->repeat_type == MONTHLY) {
-                        $days_repeat = (new \Carbon($request->days_repeat))->day;
-                    } else if ($request->repeat_type == WEEKLY) {
-                        $days_repeat = (new \Carbon($request->days_repeat))->dayOfWeek;
-                    }
-                    Booking::insert($data);
-                    $data['repeat_type'] = $request->repeat_type;
-                    $data['days_repeat'] = $days_repeat;
-                    Recur::insert($data);
-                }
-                return response()->json(["success" => true]);
-            } else return response()->json(["duplicate" => true, 'status' => 500], 200);
         }
+        $meeting_room_id = $request->meeting_room_id;
+        $start_time = $request->start_time;
+        $end_time = $request->end_time;
+        $days_repeat = $request->days_repeat;
 
+        $check = $this->check($days_repeat, $meeting_room_id, $start_time, $end_time);
+
+        if ($check == NO_DUPLICATE) {
+            $room = MeetingRoom::find($meeting_room_id);
+            DB::beginTransaction();
+
+            $date = $request->days_repeat;
+
+            $data = [
+                'users_id' => \Auth::user()->id,
+                'title' => $request->title,
+                'participants' => implode(',', $request->participants),
+                'content' => $request->get('content'),
+                'meeting_room_id' => $meeting_room_id,
+                'start_time' => $request->start_time,
+                'end_time' => $request->end_time,
+                'date' => $date,
+                'color' => $room->color,
+                'is_notify' => $request->is_notify,
+            ];
+
+            $meeting = new Meeting();
+            if ($request->repeat_type == NO_REPEAT) {
+                $meeting->fill($data);
+
+                $meeting->save();
+            } else {
+                if ($request->repeat_type == YEARLY) {
+                    $days_repeat = date('m-d', strtotime($request->days_repeat));
+                } else if ($request->repeat_type == MONTHLY) {
+                    $days_repeat = (new \Carbon($request->days_repeat))->day;
+                } else if ($request->repeat_type == WEEKLY) {
+                    $days_repeat = (new \Carbon($request->days_repeat))->dayOfWeek;
+                }
+                $meeting->fill($data);
+                $meeting->save();
+                $data['repeat_type'] = $request->repeat_type;
+                $data['days_repeat'] = $days_repeat;
+                $data['meeting_id'] = $meeting->id;
+                Booking::insert($data);
+            }
+
+            DB::commit();
+            return response()->json(["success" => true]);
+        } else return response()->json(["duplicate" => true, 'status' => 500], 200);
     }
 
     public function update(Request $request, $id)
     {
-        $rules = [
-            'title' => 'required',
-            'content' => 'required',
-            'participants' => 'required',
-            'meeting_room_id' => 'required',
-            'start_time' => 'required',
-            'end_time' => 'required',
-        ];
-        $messages = [
-            'required' => 'Vui lòng không để trống :attribute .',
-        ];
-        $attributes = [
-            'title' => 'tiêu đề',
-            'content' => 'nội dung',
-            'participants' => 'đối tượng',
-            'meeting_room_id' => 'phòng họp',
-            'start_time' => 'thời gian bắt đầu',
-            'end_time' => 'thời gian kết thúc',
-        ];
-        $validator = Validator::make($request->all(), $rules, $messages, $attributes);
+        $validator = $this->validateRequest($request);
         if ($validator->fails()) {
             return response()->json(["errors" => $validator->errors(), 'status' => 422], 200);
+        }
+        $meeting_room_id = $request->meeting_room_id;
+        $start_time = $request->start_time;
+        $end_time = $request->end_time;
+        $days_repeat = $request->days_repeat;
+        $check = $this->check($days_repeat, $meeting_room_id, $start_time, $end_time, $id);
+        if ($check == NO_DUPLICATE) {
+            $date = $request->days_repeat;
+            $data = [
+                'users_id' => \Auth::user()->id,
+                'title' => $request->title,
+                'content' => $request->get('content'),
+                'participants' => implode(',', $request->participants),
+                'meeting_room_id' => $request->meeting_room_id,
+                'start_time' => $request->start_time,
+                'end_time' => $request->end_time,
+                'date' => $date,
+                'color' => $request->color,
+                'is_notify' => $request->is_notify,
+            ];
 
-        } else {
-            $id = $request->id;
-            $meeting_room_id = $request->meeting_room_id;
-            $start_time = $request->start_time;
-            $end_time = $request->end_time;
-            $days_repeat = $request->days_repeat;
-            $check = $this->check($days_repeat, $meeting_room_id, $start_time, $end_time, $id);
-            if ($check == NO_DUPLICATE) {
-                $date = $request->days_repeat;
-                $data = [
-                    'users_id' => \Auth::user()->id,
-                    'title' => $request->title,
-                    'content' => $request->get('content'),
-                    'participants' => $request->participants,
-                    'meeting_room_id' => $request->meeting_room_id,
-                    'start_time' => $request->start_time,
-                    'end_time' => $request->end_time,
-                    'date' => $date,
-                    'color' => $request->color,
-                    'is_notify' => $request->is_notify,
-                ];
-                if ($request->repeat_type == NO_REPEAT) {
-
-                    $booking = Booking::where('id', $id)->update($data);
-
-                } else {
-                    if ($request->repeat_type == YEARLY) {
-                        $days_repeat = date('m-d', strtotime($request->days_repeat));
-                    } else if ($request->repeat_type == MONTHLY) {
-                        $days_repeat = (new \Carbon($request->days_repeat))->day;
-                    } else if ($request->repeat_type == WEEKLY) {
-                        $days_repeat = (new \Carbon($request->days_repeat))->dayOfWeek;
-                    }
-                    $data['repeat_type'] = $request->repeat_type;
-                    $data['days_repeat'] = $days_repeat;
-                    $booking = Recur::where('id', $id)->update($data);
+            if ($request->repeat_type == NO_REPEAT) {
+                Meeting::where('id', $id)->update($data);
+                Booking::where('meeting_id', $id)->delete();
+            } else {
+                if ($request->repeat_type == YEARLY) {
+                    $days_repeat = date('m-d', strtotime($request->days_repeat));
+                } else if ($request->repeat_type == MONTHLY) {
+                    $days_repeat = (new \Carbon($request->days_repeat))->day;
+                } else if ($request->repeat_type == WEEKLY) {
+                    $days_repeat = (new \Carbon($request->days_repeat))->dayOfWeek;
                 }
-                return response()->json(["success" => true]);
-            } else return response()->json(["duplicate" => true, 'status' => 500], 200);
+                $data['repeat_type'] = $request->repeat_type;
+                $data['days_repeat'] = $days_repeat;
+                $data['deleted_at'] = null;
+
+                Booking::where('meeting_id', $id)->withTrashed()->update($data);
+            }
+            return response()->json(["success" => true]);
+        } else return response()->json(["duplicate" => true, 'status' => 500], 200);
+    }
+
+    public function getMeeting(Request $request)
+    {
+        $id = $request->id;
+        $meeting_room_id = $request->meeting_room_id;
+        $start_time = $request->start_time;
+        $end_time = $request->end_time;
+        $date = $request->date;
+
+        $condition1 = [
+            'id' => $id,
+//            'meeting_room_id' => $meeting_room_id,
+//            'start_time' => $start_time,
+//            'end_time' => $end_time,
+            'date' => $date
+        ];
+        $condition2 = [
+            'id' => $id,
+            'meeting_room_id' => $meeting_room_id,
+            'start_time' => $start_time,
+            'end_time' => $end_time,
+        ];
+
+        $booking = Meeting::where($condition1)->first() ?? Booking::where($condition2)->first();
+
+        if ($booking) {
+            $participantIds = $this->meetingService->getParticipantIds($booking);
+            $users = User::whereIn('id', $participantIds)->orderBy('jobtitle_id', 'desc')->orderBy('staff_code')->pluck('name')->toArray();
+            $meeting = MeetingRoom::find($meeting_room_id)->name;
+            return response()->json(["booking" => $booking, "participants" => $users, "meeting" => $meeting]);
         }
     }
 
-    public function getBooking(Request $request)
+    public function deleteMeeting(Request $request)
     {
         $id = $request->id;
         $meeting_room_id = $request->meeting_room_id;
@@ -200,37 +203,7 @@ class MeetingController extends Controller
             'start_time' => $start_time,
             'end_time' => $end_time,
         ];
-        $booking = (count(Booking::where($condition1)->get()) > 0) ? (Booking::where($condition1)->first()) : (Recur::where($condition2)->first());
-        $participants = explode(",", $booking->participants);
-        $objects = [];
-        foreach ($participants as $user_id) {
-            $objects[] = (User::find($user_id))->name;
-        }
-        $meeting = MeetingRoom::find($meeting_room_id)->name;
-        return response()->json(["booking" => $booking, "participants" => $objects, "meeting" => $meeting]);
-    }
-
-    public function deleteBooking(Request $request)
-    {
-        $id = $request->id;
-        $meeting_room_id = $request->meeting_room_id;
-        $start_time = $request->start_time;
-        $end_time = $request->end_time;
-        $date = $request->date;
-        $condition1 = [
-            'id' => $id,
-            'meeting_room_id' => $meeting_room_id,
-            'start_time' => $start_time,
-            'end_time' => $end_time,
-            'date' => $date
-        ];
-        $condition2 = [
-            'id' => $id,
-            'meeting_room_id' => $meeting_room_id,
-            'start_time' => $start_time,
-            'end_time' => $end_time,
-        ];
-        $booking = (count(Booking::where($condition1)->get()) > 0) ? (Booking::where($condition1)->first()) : (Recur::where($condition2)->first());
+        $booking = Meeting::where($condition1)->first() ?? Booking::where($condition2)->first();
         $booking->delete();
         return response()->json(["messages" => "success"]);
     }
@@ -244,29 +217,29 @@ class MeetingController extends Controller
 
         $check = NO_DUPLICATE;
 
-        $recur_default = [['id', '<>', $id], ['meeting_room_id', $meeting_room_id]];
+        $booking_default = [['id', '<>', $id], ['meeting_room_id', $meeting_room_id]];
 
         // check theo lich khong lap
-        $recur = [];
-        $model = new Booking();
-        $recur[0] = $model->where('date', $date)->where($recur_default);
-        $model = Recur::where($recur_default);
+        $booking = [];
+        $model = new Meeting();
+        $booking[0] = $model->where('date', $date)->where($booking_default);
+        $model = Booking::where($booking_default);
         // check lich tuan
-        $recur[1] = clone $model->where('repeat_type', WEEKLY)->where('days_repeat', $dayOfWeek);
+        $booking[1] = clone $model->where('repeat_type', WEEKLY)->where('days_repeat', $dayOfWeek);
 
         //check lich theo thang
-        $recur[2] = clone $model->where('repeat_type', MONTHLY)->where('days_repeat', $day);
+        $booking[2] = clone $model->where('repeat_type', MONTHLY)->where('days_repeat', $day);
 
         //check lich theo nam
-        $recur[3] = clone $model->where('repeat_type', YEARLY)->where('days_repeat', $date_month);
+        $booking[3] = clone $model->where('repeat_type', YEARLY)->where('days_repeat', $date_month);
 
         for ($i = 0; $i < 4; $i++) {
-            $recurs = $recur[$i];
-            if (count($recurs->get()) > 0) {
-                $recurs = $recurs->where(function ($q) use ($start_time, $end_time) {
+            $bookings = $booking[$i];
+            if (count($bookings->get()) > 0) {
+                $bookings = $bookings->where(function ($q) use ($start_time, $end_time) {
                     $q->where('start_time', '>=', $end_time)->orWhere('end_time', '<=', $start_time);
                 })->get();
-                if (count($recurs) > 0) $check = NO_DUPLICATE;
+                if (count($bookings) > 0) $check = NO_DUPLICATE;
                 else {
                     $check = DUPLICATE;
                     return $check;
@@ -275,4 +248,12 @@ class MeetingController extends Controller
         }
         return $check;
     }
+
+    private function validateRequest(Request $request)
+    {
+        $validateRequest = new BookingMeetingRequest();
+        $validator = Validator::make($request->all(), $validateRequest->rules(), $validateRequest->messages(), $validateRequest->attributes());
+        return $validator;
+    }
+
 }

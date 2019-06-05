@@ -115,7 +115,7 @@
     <link rel="stylesheet" href="{{asset_ver('css/share_experience.css')}}">
 @endpush
 @push('footer-scripts')
-    <script src="{{asset_ver('/js/end-user-share-experience.js')}}"></script>
+    <script src="{{asset_ver('js/end-user-share-experience.js')}}"></script>
 
     <script>
         $(function () {

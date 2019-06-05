@@ -84,13 +84,16 @@ define('MANAGER_ROLE', 2);
 define('MASTER_ROLE', 3);
 
 define('JOB_TITLES', [
-    -1 => 'Trưởng phòng',
     0 => 'Chuyên viên',
     1 => 'Team leader',
     2 => 'Manager',
     3 => 'Giám đốc',
 ]);
-
+define('JOB_TITLES_MEETING', [
+    3 => 'Giám đốc',
+    2 => 'Manager',
+    1 => 'Team leader',
+]);
 define('POSITIONS', [
     0 => 'Lập trình viên',
     1 => 'Kỹ sư cầu nối',
@@ -100,7 +103,12 @@ define('POSITIONS', [
     5 => 'Comtor',
     6 => 'Tester',
 ]);
-
+define('POSITIONS_MEETING', [
+    0 => 'Lập trình viên',
+    1 => 'Kỹ sư cầu nối',
+    4 => 'Chuyên viên',
+    6 => 'Tester',
+]);
 define('SEXS', [
     '' => 'Không xác định',
     1 => 'Nữ',
@@ -324,13 +332,13 @@ define('PRE_YEAR', 1);
 define('PRE_PRE_YEAR', 2);
 define('XLS_TYPE', '.xls');
 
-define('NO_REPEAT',0);
-define('WEEKLY',1);
-define('MONTHLY',2);
-define('YEARLY',3);
+define('NO_REPEAT', 0);
+define('WEEKLY', 1);
+define('MONTHLY', 2);
+define('YEARLY', 3);
 
-define('DUPLICATE',1);
-define('NO_DUPLICATE',0);
+define('DUPLICATE', 1);
+define('NO_DUPLICATE', 0);
 
 define('ADD_DAY_OFF_MONTH', 1);
 define('STT', 'Stt');
@@ -348,8 +356,8 @@ define('LATE_OT_USER', 'Đi làm muộn + OT');
 define('TOTAL_MONTH_IN_YEAR', 12);
 define('OFF_TIME', '00:00:00');
 define('SWITCH_TIME', '12:00:00');
-define('PAST',1);
-define('FUTURE',2);
+define('PAST', 1);
+define('FUTURE', 2);
 define('DAY_OFF_MONTH', [
     'day_off_month_Jan' => 1,
     'day_off_month_Feb' => 2,
@@ -441,7 +449,9 @@ define('NOTIFICATION_TYPE', [
     'active' => 8,
     'close' => 9,
     'day_off_create' => 10,
-    'share'=>11
+    'suggestions' => 7,
+    'share'=>11,
+    'meeting' => 12,
 ]);
 define('NOTIFICATION_LOGO', [
     0 => 'fa fa-flag black-text',
@@ -455,7 +465,8 @@ define('NOTIFICATION_LOGO', [
     8=>  'fas fa-grin-stars fa-1x text-success text-size-icon',
     9=>  'fas fa-frown fa-1x text-danger text-size-icon',
     10=>  'fas fa-meh-blank fa-1x text-warning text-size-icon',
-    11=> 'fas fa-share-alt-square text-default'
+    11=> 'fas fa-share-alt-square text-default',
+    12 => 'fa fa-comments orange-text',
 ]);
 define('JVB_LOGO_URL', 'http://jvb-corp.com/img/logo.png');
 

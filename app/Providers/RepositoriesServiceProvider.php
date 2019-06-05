@@ -27,7 +27,7 @@ use App\Models\UserTeam;
 use App\Models\WorkTime;
 use App\Models\WorkTimeDetail;
 use App\Models\WorkTimeRegister;
-use App\Models\Recur;
+use App\Models\Booking;
 use App\Repositories\ActionDeviceRepository;
 use App\Repositories\AdminRepository;
 use App\Repositories\ConfigRepository;
@@ -56,7 +56,7 @@ use App\Repositories\Contracts\IUserTeamRepository;
 use App\Repositories\Contracts\IWorkTimeDetailRepository;
 use App\Repositories\Contracts\IWorkTimeRegisterRepository;
 use App\Repositories\Contracts\IWorkTimeRepository;
-use App\Repositories\Contracts\IRecurRepository;
+use App\Repositories\Contracts\IBookingRepository;
 use App\Repositories\DayOffRepository;
 use App\Repositories\DeviceRepository;
 use App\Repositories\DeviceUserRepository;
@@ -79,7 +79,7 @@ use App\Repositories\UserTeamRepository;
 use App\Repositories\WorkTimeDetailRepository;
 use App\Repositories\WorkTimeRegisterRepository;
 use App\Repositories\WorkTimeRepository;
-use App\Repositories\RecurRepository;
+use App\Repositories\BookingRepository;
 use Illuminate\Support\ServiceProvider;
 
 ##AUTO_INSERT_USE##
@@ -186,8 +186,8 @@ class RepositoriesServiceProvider extends ServiceProvider
         $this->app->bind(IMeetingRoomRepository::class, function () {
             return new MeetingRoomRepository(new MeetingRoom());
         });
-        $this->app->bind(IRecurRepository::class, function () {
-            return new RecurRepository(new Recur());
+        $this->app->bind(IBookingRepository::class, function () {
+            return new BookingRepository(new Booking());
         });
     }
 
@@ -222,7 +222,7 @@ class RepositoriesServiceProvider extends ServiceProvider
             IWorkTimeRegisterRepository::class,
             IProjectRepository::class,
             IMeetingRoomRepository::class,
-            IRecurRepository::class
+            IBookingRepository::class
         ];
     }
 }

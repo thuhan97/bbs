@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Models\DayOff;
 use App\Models\Event;
+use App\Models\Meeting;
 use App\Models\Post;
 use App\Models\Punishes;
 use App\Models\Regulation;
@@ -12,6 +13,7 @@ use App\Models\User;
 use App\Models\WorkTime;
 use App\Observers\DayOffObserver;
 use App\Observers\EventObserver;
+use App\Observers\MeetingObserver;
 use App\Observers\PostObserver;
 use App\Observers\PunishObserver;
 use App\Observers\RegulationObserver;
@@ -37,6 +39,7 @@ class ObserversProvider extends ServiceProvider
         Punishes::observe(PunishObserver::class);
         Report::observe(ReportObserver::class);
         Regulation::observe(RegulationObserver::class);
+        Meeting::observe(MeetingObserver::class);
     }
 
     /**

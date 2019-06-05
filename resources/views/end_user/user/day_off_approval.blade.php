@@ -366,8 +366,8 @@
 
 
         @push('extend-css')
-            <link href="{{ cdn_asset('/bootstrap-datepicker/css/bootstrap-datepicker.min.css') }}" rel="stylesheet">
-            <link href="{{ cdn_asset('/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css') }}"
+            <link href="{{ asset_ver('bootstrap-datepicker/css/bootstrap-datepicker.min.css') }}" rel="stylesheet">
+            <link href="{{ asset_ver('bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css') }}"
                   rel="stylesheet">
             <style>
                 #textareaForm {
@@ -379,9 +379,9 @@
                 }
             </style>
         @endpush
-        <script src="{{ cdn_asset('/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js') }}"></script>
-        <script src="{{ cdn_asset('/bootstrap-datepicker/js/bootstrap-datepicker.min.js') }}"></script>
-        <script src="{{ cdn_asset('js/jquery.validate.min.js') }}"></script>
+        <script src="{{ asset_ver('bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js') }}"></script>
+        <script src="{{ asset_ver('bootstrap-datepicker/js/bootstrap-datepicker.min.js') }}"></script>
+        <script src="{{ asset_ver('js/jquery.validate.min.js') }}"></script>
         <script type="text/javascript">
             $(document).ready(function (e) {
                var hash =window.location.hash;

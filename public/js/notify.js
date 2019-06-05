@@ -9,6 +9,13 @@ $(function () {
         var data = notice.data;
         myNotify.pushNotify('Thông báo', data.name, null, data.url, data.logo_url);
     });
+
+    bbsChannel.bind('App\\Events\\MeetingNoticeEvent', function (notice) {
+        var data = notice.data;
+        if (data.user_ids.indexOf(userId) >= 0)
+            myNotify.pushNotify(data.title, data.content, null, data.url, data.logo_url);
+    });
+
     bbsChannel.bind('App\\Events\\WorkExperienceNoticeEvent', function (notice) {
         var data = notice.data;
         myNotify.pushNotify(data.name +' đã chia sẻ kinh nghiệm làm việc', data.introduction, data.image_url, data.url, data.logo_url);

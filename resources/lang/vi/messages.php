@@ -83,4 +83,7 @@ return [
     'share_experience_edit' => 'Sửa nội dung',
     'share_experience_detail' => 'Chi tiết',
     'report_deleted' => 'Đã xóa báo cáo',
+    'notify_active_day_off'=>' đã duyệt đơn xin nghỉ phép của bạn',
+    'notify_close_day_off'=>' đã từ chối đơn xin nghỉ phép của bạn',
+    'day_off'=> 'xin nghỉ'
 ];

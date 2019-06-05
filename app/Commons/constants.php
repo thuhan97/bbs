@@ -425,6 +425,9 @@ define('NOTIFICATION_TYPE', [
     'approve_permission' => 4,
     'report' => 5,
     'comment_report' => 6,
+    'day_off_create' => 7,
+    'active' => 8,
+    'close' => 9,
 ]);
 define('NOTIFICATION_LOGO', [
     0 => 'fa fa-flag black-text',
@@ -434,11 +437,18 @@ define('NOTIFICATION_LOGO', [
     4 => 'fa fa-question info-text',
     5 => 'fa fa-book orange-text',
     6 => 'fa fa-book secondary-text',
+    7=>  'fas fa-meh-blank fa-1x text-warning text-size-icon',
+    8=>  'fas fa-grin-stars fa-1x text-success text-size-icon',
+    9=>  'fas fa-frown fa-1x text-danger text-size-icon',
 ]);
 
 define('JVB_LOGO_URL', 'http://jvb-corp.com/img/logo.png');
 
-
+define('NOTIFICATION_DAY_OFF', [
+    'create' => 0,
+    'active' => 1,
+    'close' => 2
+]);
 
 
 

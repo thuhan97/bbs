@@ -7,6 +7,7 @@
 
 namespace App\Services;
 
+use App\Events\DayOffNoticeEvent;
 use App\Models\AdditionalDate;
 use App\Models\CalendarOff;
 use App\Models\DayOff;
@@ -424,6 +425,7 @@ class DayOffService extends AbstractService implements IDayOffService
             $dayOff->absent = $numOffApprove;
         }
         $dayOff->save();
+        event(new DayOffNoticeEvent($dayOff, Auth::user(), NOTIFICATION_DAY_OFF['active']));
 
     }
 

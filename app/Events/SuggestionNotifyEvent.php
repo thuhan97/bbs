@@ -28,7 +28,7 @@ class SuggestionNotifyEvent extends NotificationBroadCast
         $this->data = [
             'id' => $this->record->id,
             'name' => $this->user->name,
-            'title' => $this->user->name .SPACE .__('suggestions_title_notify'),
+            'title' => $this->user->name .SPACE .__l('suggestions_title_notify'),
             'content' => $this->record->comment ?? '',
             'image_url' => JVB_LOGO_URL,
             'logo_url' => NOTIFICATION_LOGO[NOTIFICATION_TYPE['suggestions']],

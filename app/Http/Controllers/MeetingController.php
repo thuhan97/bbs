@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Booking;
+use App\Models\Meeting;
 use App\Models\MeetingRoom;
 use App\Models\Recur;
 use App\Models\Team;
 use App\Models\User;
 use App\Repositories\Contracts\IRecurRepository;
-use App\Services\Contracts\IBookingService;
+use App\Services\Contracts\IMeetingService;
 use App\Traits\RESTActions;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -24,7 +24,7 @@ class MeetingController extends Controller
     protected $bookingService;
     protected $recurRepository;
 
-    public function __construct(IBookingService $bookingService, IRecurRepository $recurRepository)
+    public function __construct(IMeetingService $bookingService, IRecurRepository $recurRepository)
     {
         $this->bookingService = $bookingService;
         $this->recurRepository = $recurRepository;
@@ -41,9 +41,9 @@ class MeetingController extends Controller
     {
         $start = $request->start;
         $end = $request->end;
-        $results1 = $this->bookingService->getBookings($start, $end);
+        $results1 = $this->bookingService->getMeetings($start, $end);
 
-        $results2 = $this->bookingService->getBookingRecurs($start, $end);
+        $results2 = $this->bookingService->getMeetingRecurs($start, $end);
         $results = array_merge($results1, $results2);
 
         return $this->respond(['bookings' => $results]);
@@ -95,7 +95,7 @@ class MeetingController extends Controller
                     'is_notify' => $request->is_notify,
                 ];
                 if ($request->repeat_type == NO_REPEAT) {
-                    Booking::insert($data);
+                    Meeting::insert($data);
                 } else {
                     if ($request->repeat_type == YEARLY) {
                         $days_repeat = date('m-d', strtotime($request->days_repeat));
@@ -104,7 +104,7 @@ class MeetingController extends Controller
                     } else if ($request->repeat_type == WEEKLY) {
                         $days_repeat = (new \Carbon($request->days_repeat))->dayOfWeek;
                     }
-                    Booking::insert($data);
+                    Meeting::insert($data);
                     $data['repeat_type'] = $request->repeat_type;
                     $data['days_repeat'] = $days_repeat;
                     Recur::insert($data);
@@ -163,7 +163,7 @@ class MeetingController extends Controller
                 ];
                 if ($request->repeat_type == NO_REPEAT) {
 
-                    $booking = Booking::where('id', $id)->update($data);
+                    $booking = Meeting::where('id', $id)->update($data);
 
                 } else {
                     if ($request->repeat_type == YEARLY) {
@@ -182,7 +182,7 @@ class MeetingController extends Controller
         }
     }
 
-    public function getBooking(Request $request)
+    public function getMeeting(Request $request)
     {
         $id = $request->id;
         $meeting_room_id = $request->meeting_room_id;
@@ -202,7 +202,7 @@ class MeetingController extends Controller
             'start_time' => $start_time,
             'end_time' => $end_time,
         ];
-        $booking = (count(Booking::where($condition1)->get()) > 0) ? (Booking::where($condition1)->first()) : (Recur::where($condition2)->first());
+        $booking = (count(Meeting::where($condition1)->get()) > 0) ? (Meeting::where($condition1)->first()) : (Recur::where($condition2)->first());
         $participants = explode(",", $booking->participants);
         $objects = [];
         foreach ($participants as $user_id) {
@@ -212,7 +212,7 @@ class MeetingController extends Controller
         return response()->json(["booking" => $booking, "participants" => $objects, "meeting" => $meeting]);
     }
 
-    public function deleteBooking(Request $request)
+    public function deleteMeeting(Request $request)
     {
         $id = $request->id;
         $meeting_room_id = $request->meeting_room_id;
@@ -232,7 +232,7 @@ class MeetingController extends Controller
             'start_time' => $start_time,
             'end_time' => $end_time,
         ];
-        $booking = (count(Booking::where($condition1)->get()) > 0) ? (Booking::where($condition1)->first()) : (Recur::where($condition2)->first());
+        $booking = (count(Meeting::where($condition1)->get()) > 0) ? (Meeting::where($condition1)->first()) : (Recur::where($condition2)->first());
         $booking->delete();
         return response()->json(["messages" => "success"]);
     }
@@ -250,7 +250,7 @@ class MeetingController extends Controller
 
         // check theo lich khong lap
         $recur = [];
-        $model = new Booking();
+        $model = new Meeting();
         $recur[0] = $model->where('date', $date)->where($recur_default);
         $model = Recur::where($recur_default);
         // check lich tuan

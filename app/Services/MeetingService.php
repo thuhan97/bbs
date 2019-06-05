@@ -7,18 +7,18 @@
 
 namespace App\Services;
 
-use App\Models\Booking;
+use App\Models\Meeting;
 use App\Models\Recur;
-use App\Services\Contracts\IBookingService;
+use App\Services\Contracts\IMeetingService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 
-class BookingService extends AbstractService implements IBookingService
+class MeetingService extends AbstractService implements IMeetingService
 {
     /**
-     * BookingService constructor.
+     * MeetingService constructor.
      *
-     * @param \App\Models\Booking $booking
+     * @param \App\Models\Meeting $booking
      * @param \App\Models\Recur $recur
      */
     public function __construct()
@@ -31,7 +31,7 @@ class BookingService extends AbstractService implements IBookingService
     /**
      * @param int $id
      *
-     * @return Booking
+     * @return Meeting
      */
     public function detail($id)
     {
@@ -44,11 +44,11 @@ class BookingService extends AbstractService implements IBookingService
      * @return collection
      */
 
-     public function getBookings($start, $end){
+     public function getMeetings($start, $end){
         $start=date('Y-m-d',strtotime($start));
         $end=date('Y-m-d',strtotime($end));
         $results=[];
-        $bookings=Booking::where('date','>=',$start)
+        $bookings=Meeting::where('date','>=',$start)
                             ->where('date','<=',$end)
                             ->get();
         if ($bookings->isNotEmpty()) {
@@ -67,7 +67,7 @@ class BookingService extends AbstractService implements IBookingService
         return $results;
     }
 
-    public function getBookingRecurs($start, $end)
+    public function getMeetingRecurs($start, $end)
     {
         $end=date('Y-m-d',strtotime($end));
         $results=[];

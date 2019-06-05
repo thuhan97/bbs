@@ -49,7 +49,7 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form action="" id="addBooking" method="post">
+                    <form action="" id="addMeeting" method="post">
                         <input type="hidden" name="id" id="id" value="">
                         <input type="hidden" name="_token" id="_token" value="{{ csrf_token() }}">
                         <input type="hidden" name="color" id="color" value="">
@@ -93,7 +93,7 @@
                         <div class="row mt-1">
                             <div class="col-12 users_id">
                                 <label class="ml-0">Chọn người tham gia *</label>
-                                <select class=" selectpicker form-control" multiple data-live-search="true"
+                                <select class="selectpicker form-control" multiple data-live-search="true"
                                         name="participants" id="participants" data-none-selected-text
                                         title="Chọn người tham gia">
                                     @foreach($groups as $group => $users)

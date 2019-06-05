@@ -4,9 +4,9 @@ namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 use App\Models\Recur;
-use App\Models\Booking;
+use App\Models\Meeting;
 
-class BookingCommand extends Command
+class MeetingCommand extends Command
 {
     /**
      * The name and signature of the console command.

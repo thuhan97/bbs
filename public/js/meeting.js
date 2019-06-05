@@ -12,7 +12,7 @@ window.addEventListener("load", function () {
             .append($('<option>', {value: i})
                 .text(text));
     }
-    ;
+
     $('#month option[value=' + currentMonth + ']').attr('selected', 'selected');
     var i;
     for (i = 1; i <= 31; i++) {
@@ -23,7 +23,7 @@ window.addEventListener("load", function () {
     $('#date option[value=' + currentDate + ']').attr('selected', 'selected');
 
 });
-
+var selectInit = false;
 $(function () {
     window.start_date = null;
     window.end_date = null;
@@ -64,9 +64,9 @@ $(function () {
     });
 
     function resetModal() {
-        $("#addBooking .notice-error").hide();
-        $("#addBooking .error").removeClass('error');
-        $("#addBooking")[0].reset()
+        $("#addMeeting .notice-error").hide();
+        $("#addMeeting .error").removeClass('error');
+        $("#addMeeting")[0].reset();
     }
 
     $calendar.fullCalendar({
@@ -110,6 +110,11 @@ $(function () {
 
             //Show 'add event' modal
             $('#addModal').modal('show');
+            if (!selectInit)
+                setTimeout(function () {
+                    $(".btn-light").click();
+                    selectInit = true;
+                }, 300)
         },
         eventClick: function (calEvent, jsEvent, view) {
             console.log(calEvent.start);
@@ -204,8 +209,8 @@ $('#booking').click(function (event) {
     var id = $('#id').val();
     if (id > 0) var url = '/sua-phong-hop/' + id;
     else var url = '/them-phong-hop';
-    $("#addBooking .error").removeClass('error');
-    $("#addBooking .notice-error").hide();
+    $("#addMeeting .error").removeClass('error');
+    $("#addMeeting .notice-error").hide();
     $.ajax({
         url: url,
         type: "post",
@@ -239,7 +244,7 @@ $('#booking').click(function (event) {
                         $(this).removeClass("error");
                     });
                 });
-                $("#addBooking .notice-error").show();
+                $("#addMeeting .notice-error").show();
             } else if (data.status == 500) {
                 if (data.duplicate) {
                     $('#meeting_room_id').css("border", "1px solid red");

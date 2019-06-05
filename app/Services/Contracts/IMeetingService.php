@@ -2,24 +2,24 @@
 
 namespace App\Services\Contracts;
 
-use App\Models\Booking;
+use App\Models\Meeting;
 use App\Models\Recur;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 
- 
-interface IBookingService extends IBaseService
+
+interface IMeetingService extends IBaseService
 {
-    
+
 
     /**
      * @param $start, $end
      *
      * @return collection
      */
-    public function getBookings($start,$end);    
+    public function getMeetings($start,$end);
 
-    public function getBookingRecurs($start,$end);
+    public function getMeetingRecurs($start,$end);
 
     /**
      * @param int $id
@@ -28,7 +28,7 @@ interface IBookingService extends IBaseService
      */
     public function detail($id);
 
-    
+
 
 
 

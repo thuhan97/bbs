@@ -13,10 +13,12 @@ class MeetingRoomController extends AdminBaseController
      * @var  string
      */
     protected $resourceAlias = 'admin.meeting_rooms';
+
     /**
      * @var  string
      */
     protected $resourceRoutesAlias = 'admin::meeting_rooms';
+
     /**
      * Fully qualified class name
      *
@@ -45,12 +47,16 @@ class MeetingRoomController extends AdminBaseController
         return [
             'rules' => [
                 'name' => 'required|max:255|unique:meeting_rooms,name,NULL,id,deleted_at,NULL',
-                'seats' => 'numeric'
+                'seats' => 'numeric',
+                'description' => 'required',
+                'color' => 'required|max:20',
             ],
             'messages' => [],
             'attributes' => [
                 'name' => 'tên phòng',
-                'seats' => 'số ghế'
+                'seats' => 'số ghế',
+                'color' => 'màu trên lịch',
+                'description' => 'mô tả'
             ],
             'advanced' => [],
         ];
@@ -61,12 +67,17 @@ class MeetingRoomController extends AdminBaseController
         return [
             'rules' => [
                 'name' => 'required|max:255|unique:meeting_rooms,name,' . $record->id . ',id,deleted_at,NULL',
-                'seats' => 'numeric'
+                'seats' => 'numeric',
+                'description' => 'required',
+                'color' => 'required|max:20',
             ],
             'messages' => [],
             'attributes' => [
                 'name' => 'tên phòng',
                 'seats' => 'số ghế',
+                'color' => 'màu trên lịch',
+                'description' => 'mô tả'
+
             ],
             'advanced' => [],
         ];

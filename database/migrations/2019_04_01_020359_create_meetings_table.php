@@ -16,6 +16,7 @@ class CreateMeetingRoomsTable extends Migration
         Schema::create('meeting_rooms', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name');
+            $table->string('color', 20)->comment('Màu trên lịch');
             $table->integer('seats')->default(0)->comment('Số ghế');
             $table->text('description')->nullable()->comment('Mô tả phòng');
             $table->text('other')->nullable()->comment('Ghi chú khác');

@@ -112,12 +112,13 @@ Route::group([
     Route::post('/notification/mark-read', 'NotificationController@markRead')->name('notification_mark_read');
 
     Route::post('/ngay-nghi/create', 'UserController@dayOffCreate')->name('day_off_create');
-    Route::get('/phong-hop', 'BookingController@calendar')->name('bookings');
-    Route::get('/get_calendar-booking', 'BookingController@getCalendar')->name('getCalendarBooking');
-    Route::post('/them-phong-hop', 'BookingController@booking')->name('booking');
-    Route::post('/sua-phong-hop/{id}', 'BookingController@update')->name('update_booking');
-    Route::get('/get-booking', 'BookingController@getBooking')->name('get_booking');
-    Route::get('/delete-booking', 'BookingController@deleteBooking')->name('delete_booking');
+
+    Route::get('/phong-hop', 'MeetingController@calendar')->name('bookings');
+    Route::get('/get_calendar-booking', 'MeetingController@getCalendar')->name('getCalendarBooking');
+    Route::post('/them-phong-hop', 'MeetingController@booking')->name('booking');
+    Route::post('/sua-phong-hop/{id}', 'MeetingController@update')->name('update_booking');
+    Route::get('/get-booking', 'MeetingController@getBooking')->name('get_booking');
+    Route::get('/delete-booking', 'MeetingController@deleteBooking')->name('delete_booking');
 
 });
 

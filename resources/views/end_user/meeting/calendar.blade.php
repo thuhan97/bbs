@@ -27,9 +27,11 @@
             </form>
         </div>
         <div class="col-6 mt-2">
-            <i class="fa fa-circle text-primary ml-3"></i> Phòng họp 01
-            <i class="fa fa-circle text-success ml-3"></i> Phòng họp 02
-            <i class="fa fa-circle text-warning ml-3"></i> Phòng họp 03
+            @foreach($meeting_rooms as $room)
+                <span data-toggle="tooltip" title="{!! nl2br($room->description) !!}">
+                <i class="fa fa-circle ml-0" style="color: {{$room->color}}"></i> {{$room->name}}
+                </span>
+            @endforeach
         </div>
     </div>
 
@@ -48,19 +50,31 @@
                         <input type="hidden" name="_token" id="_token" value="{{ csrf_token() }}">
                         <input type="hidden" name="color" id="color" value="">
                         <input type="hidden" name="days_repeat" id="days_repeat" value="">
+                        <div class="row mb-2">
+                            <div class="meeting_room_id col-6">
+                                <label class="ml-0">Chọn phòng họp *</label>
+                                <select class="form-control browser-default" name="meeting_room_id"
+                                        id="meeting_room_id">
+                                    <option value="">Chọn phòng họp</option>
+                                    @foreach($meeting_rooms as $meeting)
+                                        <option value="{{$meeting->id}}">{{$meeting->name}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
                         <div class="title">
-                            <lable class="m-3">Tiêu đề *</lable>
+                            <lable class="ml-0 mt-3">Tiêu đề *</lable>
                             <input type="text" class="form-control mt-2 mb-3" name="title" id="title"
                                    placeholder="Tiêu đề cuộc họp...">
                         </div>
                         <div class="content">
-                            <lable class="ml-3 mt-1">Nội dung *</lable>
+                            <lable class="ml-0">Nội dung *</lable>
                             <textarea class="form-control mt-2" name="content" id="content"
                                       placeholder="Nội dung cuộc họp ..."></textarea>
                         </div>
                         <div class="row mt-1">
-                            <div class="col-6 users_id">
-                                <label class="ml-3">Chọn đối tượng *</label>
+                            <div class="col-12 users_id">
+                                <label class="ml-0">Chọn người tham gia *</label>
                                 <select class=" selectpicker form-control" multiple data-live-search="true"
                                         name="participants" id="participants" data-none-selected-text
                                         title="Chọn đối tượng">
@@ -69,27 +83,18 @@
                                     @endforeach
                                 </select>
                             </div>
-                            <div class="col-6 meeting_room_id">
-                                <label class="ml-3">Chọn phòng họp *</label>
-                                <select class="form-control browser-default" name="meeting_room_id" id="meeting_room_id">
-                                    <option value="">Chọn phòng họp</option>
-                                    @foreach($meeting_rooms as $meeting)
-                                        <option value="{{$meeting->id}}">{{$meeting->name}}</option>
-                                    @endforeach
-                                </select>
-                            </div>
                         </div>
                         <div class="row mt-1">
                             <div class="col-6 start_time">
 
-                                <label class="ml-3">Thời gian bắt đầu *</label>
+                                <label class="ml-0">Thời gian bắt đầu *</label>
                                 <div class="  timepicker">
                                     <input class="form-control" name="start" id="start_time" data-format="hh:mm"
                                            data-provide="timepicker">
                                 </div>
                             </div>
                             <div class="col-6 mb-1 end_time">
-                                <label class="ml-3">Thời gian kết thúc *</label>
+                                <label class="ml-0">Thời gian kết thúc *</label>
                                 <div class=" bootstrap-timepicker timepicker">
                                     <input class="form-control  timepicker " name="end" id="end_time"
                                            data-format="hh:mm" data-provide="timepicker">
@@ -97,23 +102,33 @@
                             </div>
                         </div>
                         <div id="#repeat">
-                            <lable class="mr-5">Chọn định kỳ:</lable>
+                            <lable class="mr-5">Lặp lại:</lable>
                             <input type="radio" name="repeat_type" id="non_repeat" value="0" checked
                                    style="display: none;">
-                            <label class="radio-inline">
-                                <input type="radio" name="repeat_type" id="year" value="3"><span>Năm</span>
-                            </label>
-                            <label class="radio-inline">
-                                <input type="radio" name="repeat_type" id="month" value="2"><span>Tháng</span>
-                            </label>
-                            <label class="radio-inline">
-                                <input type="radio" name="repeat_type" id="week" value="1"><span>Tuần</span>
-                            </label>
+                            <div class="form-check form-check-inline">
+                                <input type="radio" class="form-check-input" id="materialInline1" name="repeat_type"
+                                       value="1">
+                                <label class="form-check-label" for="materialInline1">Tuần</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input type="radio" class="form-check-input" id="materialInline2" name="repeat_type"
+                                       value="2">
+                                <label class="form-check-label" for="materialInline2">Tháng</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input type="radio" class="form-check-input" id="materialInline3" name="repeat_type"
+                                       value="3">
+                                <label class="form-check-label" for="materialInline3">Năm</label>
+                            </div>
                         </div>
                         </br>
                         <div class="mt-0">
-                            <input type="checkbox" name="is_notify" class="" value="1" checked="true"
-                                   id="is_notify"><span> Chọn thông báo cho các thành viên</span>
+                            <div class="form-check pl-0">
+                                <input type="checkbox" class="form-check-input" id="is_notify" name="is_notify"
+                                       value="1">
+                                <label class="form-check-label" for="is_notify"> Gửi thông báo cho các thành
+                                    viên</label>
+                            </div>
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -202,18 +217,18 @@
     <script type="">
         $(document).ready(function () {
             $('.selectpicker').selectpicker();
+            $('[data-toggle="tooltip"]').tooltip();
+            $('#start_time').timepicker({
+                // 12 or 24 hour
+                showInputs: false,
+                showMeridian: false
+            });
+            $('#end_time').timepicker({
+                // 12 or 24 hour
+                showInputs: false,
+                showMeridian: false
+            });
         });
-        $('#start_time').timepicker({
-            // 12 or 24 hour
-            showInputs: false,
-            showMeridian: false
-        });
-        $('#end_time').timepicker({
-            // 12 or 24 hour
-            showInputs: false,
-            showMeridian: false
-        });
-
     </script>
     <script type="text/javascript" src="{{asset('js/meeting.js')}}"></script>
 

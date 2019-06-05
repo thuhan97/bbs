@@ -19,6 +19,7 @@ class MeetingRoom extends Model
         'name',
         'seats',
         'description',
+        'color',
         'other',
     ];
 

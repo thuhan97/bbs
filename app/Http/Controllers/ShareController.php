@@ -6,11 +6,18 @@ use App\Http\Requests\ShareExperienceRequest;
 use App\Http\Requests\ShareRequest;
 use App\Models\Comment;
 use App\Models\Share;
+use App\Services\NotificationService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class ShareController extends Controller
 {
+    public $notificationService;
+    public function __construct()
+    {
+        $this->notificationService = app()->make(NotificationService::class);
+    }
+
     public function listShareDocument(Request $request)
     {
         $search = $request->get('search');
@@ -80,6 +87,7 @@ class ShareController extends Controller
             $share->creator_id = Auth::user()->id;
             $share->type = SHARE_EXPERIENCE;
             if ($share->save()) {
+                $this->notificationService->sendWorkExperience($share);
                 flash()->success(__l('share_experience_successully'));
             } else {
                 flash()->error(__l('share_experience_error'));

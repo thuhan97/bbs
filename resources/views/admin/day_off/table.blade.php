@@ -67,7 +67,7 @@
                           style="display: none;" class="hidden form-inline">
                         {{ csrf_field() }}
                         {{ method_field('DELETE') }}
-                        <button type="submit" class="btn btn-danger">Delete</button>
+                        <button  type="submit" class="btn btn-danger">Delete</button>
                     </form>
                 </td>
 
@@ -76,16 +76,13 @@
         </tbody>
     </table>
 </div>
-
-<form action="{{ route('admin::statistical-day-off-excel') }}" method="get" id="form-excel">
-    @foreach ($recordsExcel as $record)
-        <input type="hidden" name="ids[]" value="{{ $record->user_id }}">
-    @endforeach
-</form>
 <script>
     $(document).ready(function () {
         $('#btn-submit-excel').on('click',function () {
-            $('#form-excel').submit();
+           $('#export').removeAttrs('disabled');
+        })
+        $('#btn-search').on('click',function () {
+            $('#export').attr('disabled',true);
         })
     })
 </script>

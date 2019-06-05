@@ -16,21 +16,6 @@
             <input type="hidden" name="user_id" value="{{ $record->user_id  }}">
         @endif
         <div class="col-md-12">
-            <div class="form-group margin-b-5 margin-t-5{{ $errors->has('number_off') ? ' has-error' : '' }}">
-                <label for="number_off">Số ngày nghỉ được tính (1 ngày hoặc nửa ngày) *</label>
-                <input type="text" class="form-control" name="number_off" placeholder="Số ngày phép bị trừ"
-                       value="{{ old('number_off', $record->number_off + $record->absent) }}">
-
-                @if ($errors->has('number_off'))
-                    <span class="help-block">
-                    <strong>{{ $errors->first('number_off') }}</strong>
-                </span>
-                @endif
-            </div>
-            <!-- /.form-group -->
-        </div>
-
-        <div class="col-md-12">
             <div class="row">
                 <div class="col-md-6">
                     <div class="form-group margin-b-5 margin-t-5{{ $errors->has('start_at') ? ' has-error' : '' }}">
@@ -181,8 +166,11 @@
 <!-- /.col-md-7 -->
 @push('footer-scripts')
     <script>
-        $(function () {
-            myDateTimePicker($("#start_at, #end_at"));
-        })
+        $('#start_at , #end_at').datetimepicker({
+            hoursDisabled: '0,1,2,3,4,5,6,7,9,10,11,13,14,15,16,17,19,20,21,22,23',
+            minutesDisabled: '5,10,15,20,25,30,35,40,45,50,55',
+            daysOfWeekDisabled: [0, 6],
+        });
+
     </script>
 @endpush

@@ -302,11 +302,15 @@ class DayOffService extends AbstractService implements IDayOffService
     }
 
 
-    public function statisticalDayOffExcel($ids)
+    public function statisticalDayOffExcel($request)
     {
         $result = [];
-        $users = User::whereIn('id', $ids)->whereNull('end_date')->get();
-        $dayOffMonth = $this->statisticalDayOff($ids);
+        $users = User::whereNull('end_date');
+        if ($request['search']){
+            $users ->where('name', 'like', '%' . $request['search'] . '%');
+        }
+        $users=$users->get();
+        $dayOffMonth = $this->statisticalDayOff($request);
         foreach ($users as $keys => $user) {
             $vacationMode = $this->statisticalVacationModeDayOff($user->id);
             $dayOffPreYear = RemainDayoff::where('user_id', $user->id)->where('year', date('Y') - PRE_YEAR)->first();
@@ -319,7 +323,7 @@ class DayOffService extends AbstractService implements IDayOffService
                     if ($value->user_id == $user->id) {
                         for ($i = JANUARY; $i <= DECEMBER; $i++) {
                             if ($value->month == $i) {
-                                $totalMonth{$i} = $value->total;
+                                $totalMonth{$i} = $value->total + $value->total_absfirstOrCreateent;
                             }
                         }
                     }
@@ -333,7 +337,7 @@ class DayOffService extends AbstractService implements IDayOffService
                 'part_time' => $user->contract_type == CONTRACT_TYPES['parttime'] ? 'V' : '',
                 'probation_at' => $user->probation_at ? Carbon::parse($user->probation_at)->format('d-m-Y') : '',
                 'strat_date' => Carbon::parse($user->start_date)->format('d-m-Y'),
-                'remain_day_off_current_year' => $dayOffYearTotal->remain_increment ?? '0',
+                'remain_day_off_current_year' => $dayOffYear->remain_increment ?? '0',
                 'remain_day_off_pre_year' => !empty($dayOffPreYearTotal) && $dayOffPreYear->remain_pre_year > DEFAULT_VALUE ? $dayOffPreYear->remain_pre_year : '0',
                 'day_off_month_Jan' => $totalMonth[1] ?? '0',
                 'day_off_month_Feb' => $totalMonth[2] ?? '0',
@@ -402,7 +406,7 @@ class DayOffService extends AbstractService implements IDayOffService
                         $remainDayOffPreYear->remain = DAY_OFF_DEFAULT;
                         $remainDayOffPreYear->save();
                     }
-                    $remainDayOffCurrentYear->remain = $dayOffCurrentYear + $dayOffPreYear + $dayOffFreeCurrentYear - $numOffApprove[0];
+                    $remainDayOffCurrentYear->remain = $dayOffCurrentYear + $dayOffPreYear + $dayOffFreeCurrentYear - $numOffApprove;
                     $remainDayOffCurrentYear->save();
 
                 } else {
@@ -571,21 +575,26 @@ class DayOffService extends AbstractService implements IDayOffService
     }
 
 
-    private function statisticalDayOff($ids)
+    private function statisticalDayOff($request)
     {
-
         $datas = $this->model::select('day_offs.user_id', 'day_offs.check_free',
             DB::raw('YEAR(start_at) year, MONTH(start_at) month'),
             DB::raw('sum(number_off) as total'),
             DB::raw('sum(absent) as total_absfirstOrCreateent'))
             ->join('users', 'users.id', '=', 'day_offs.user_id')
             ->groupBy('day_offs.user_id', 'day_offs.check_free', 'year', 'month')
-            ->whereIn('day_offs.user_id', $ids)
-            ->where('day_offs.status', STATUS_DAY_OFF['active'])
-            ->whereMonth('day_offs.start_at', '<=', date('m'))
-            ->whereYear('day_offs.start_at', '=', date('Y'))
-            ->whereNull('users.end_date')
-            ->get();
+            ->where('day_offs.status', STATUS_DAY_OFF['active']);
+        if ($request['month']) {
+            $datas->whereMonth('day_offs.start_at', '=', $request['month']);
+        } else {
+            $datas->whereMonth('day_offs.start_at', '<=', date('m'));
+        }
+        if ($request['year']) {
+            $datas->whereYear('day_offs.start_at', '=', $request['year']);
+        } else {
+            $datas->whereYear('day_offs.start_at', '<=', date('Y'));
+        }
+        $datas=$datas->whereNull('users.end_date')->get();
         return $datas;
     }
 

@@ -44,7 +44,9 @@
                         @foreach($list_suggestions as $idx => $suggestion)
                             <tr>
                                 <td class="d-none d-sm-table-cell center">
-                                    {{$idx + 1}}
+                                    <a href="{{route('detail_suggestions', ['id' => $suggestion->id])}}">{{$idx + 1}}
+                                    </a>
+
                                 </td>
                                 <td class="center">
                                     {{$suggestion->user->name ?? ''}}

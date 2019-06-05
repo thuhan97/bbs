@@ -32,7 +32,7 @@ return [
     'regulation' => 'Nội quy/Quy định',
     'work_time' => 'Giờ làm việc',
     'list_share_document' => 'Chia sẻ tài liệu',
-    'list_suggestions' => 'Góp ý',
+    'list_suggestions' => 'Đề xuất & Góp ý',
     'share_experience' => 'Chia sẻ kinh nghiệm',
     'contact' => 'Danh sách nhân viên',
     'day_off' => 'Ngày phép',
@@ -83,4 +83,9 @@ return [
     'share_experience_edit' => 'Sửa nội dung',
     'share_experience_detail' => 'Chi tiết',
     'report_deleted' => 'Đã xóa báo cáo',
+    'detail_suggestions' => 'Chi tiết',
+    'success_suggestions' => 'Cập nhật đề xuất - góp ý thành công',
+    'suggestions_title_notify'=>'bạn có một đề xuất - góp ý mới cần giải quyết.',
+    'word_title_notify'=>'đã chia sẻ kinh nghiệm làm việc',
+
 ];

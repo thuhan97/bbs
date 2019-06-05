@@ -39,17 +39,17 @@
     </div>
 
     <!-- add booking -->
-    <form name="addBooking" action="" id="addBooking" method="post">
-        <div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-            <div class="modal-dialog modal-lg" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h4 class="modal-title text-center w-100" id="myModalLabel">Đặt lịch họp</h4>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
+    <div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title text-center w-100" id="myModalLabel">Đặt lịch họp</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form action="" id="addBooking" method="post">
                         <input type="hidden" name="id" id="id" value="">
                         <input type="hidden" name="_token" id="_token" value="{{ csrf_token() }}">
                         <input type="hidden" name="color" id="color" value="">
@@ -90,22 +90,26 @@
                             <input type="text" class="form-control mt-2 mb-3" name="title" id="title"
                                    placeholder="Tiêu đề cuộc họp...">
                         </div>
-                        <div class="content">
-                            <lable class="ml-0">Nội dung *</lable>
-                            <textarea class="form-control mt-2" name="content" id="content"
-                                      placeholder="Nội dung cuộc họp ..."></textarea>
-                        </div>
                         <div class="row mt-1">
                             <div class="col-12 users_id">
                                 <label class="ml-0">Chọn người tham gia *</label>
                                 <select class=" selectpicker form-control" multiple data-live-search="true"
                                         name="participants" id="participants" data-none-selected-text
-                                        title="Chọn đối tượng">
-                                    @foreach($users as $user)
-                                        <option value="{{$user->id}}">{{$user->name}}</option>
+                                        title="Chọn người tham gia">
+                                    @foreach($groups as $group => $users)
+                                        <optgroup label="{{$group}}">
+                                            @foreach($users as $key => $value)
+                                                <option value="{{$key}}">{{$value}}</option>
+                                            @endforeach
+                                        </optgroup>
                                     @endforeach
                                 </select>
                             </div>
+                        </div>
+                        <div class="content">
+                            <lable class="ml-0">Nội dung *</lable>
+                            <textarea class="form-control mt-2" name="content" id="content"
+                                      placeholder="Nội dung cuộc họp ..."></textarea>
                         </div>
                         </br>
                         <div id="#repeat" class="mb-2">
@@ -135,22 +139,24 @@
                             <div class="form-check pl-0">
                                 <input type="checkbox" class="form-check-input" id="is_notify" name="is_notify" checked
                                        value="1">
-
                                 <label class="form-check-label" for="is_notify"> Gửi thông báo cho các thành
                                     viên</label>
                             </div>
                         </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary waves-effect waves-light" data-dismiss="modal">
-                            Đóng
-                        </button>
-                        <button class="btn btn-primary" id="booking">Lưu</button>
-                    </div>
+                        <p class="text-danger notice-error mt-3 mb-0" style="display: none">* Nội dung trong khung đỏ là
+                            bắt
+                            buộc</p>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary waves-effect waves-light" data-dismiss="modal">
+                        Đóng
+                    </button>
+                    <button class="btn btn-primary" id="booking">Lưu</button>
                 </div>
             </div>
         </div>
-    </form>
+    </div>
 
     <!-- show modal -->
     <div class="modal fade" id="showModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
@@ -220,7 +226,8 @@
 @push('extend-js')
     <script type="text/javascript" src="{{asset_ver('mdb/js/bootstrap.js')}}"></script>
     <script src="{{asset_ver('bootstrap-select/js/bootstrap-select.js')}}" type="text/javascript"></script>
-    <script src="{{asset_ver('bootstrap-datetimepicker/js/bootstrap-timepicker.min.js')}}" type="text/javascript"></script>
+    <script src="{{asset_ver('bootstrap-datetimepicker/js/bootstrap-timepicker.min.js')}}"
+            type="text/javascript"></script>
     <script type="text/javascript" src="{{ asset_ver('js/moment.min.js') }}"></script>
 
     <script type="text/javascript" src="{{ asset_ver('fullcalendar/fullcalendar.min.js') }}"></script>

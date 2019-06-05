@@ -84,7 +84,6 @@ define('MANAGER_ROLE', 2);
 define('MASTER_ROLE', 3);
 
 define('JOB_TITLES', [
-    -1 => 'Trưởng phòng',
     0 => 'Chuyên viên',
     1 => 'Team leader',
     2 => 'Manager',
@@ -323,13 +322,13 @@ define('PRE_YEAR', 1);
 define('PRE_PRE_YEAR', 2);
 define('XLS_TYPE', '.xls');
 
-define('NO_REPEAT',0);
-define('WEEKLY',1);
-define('MONTHLY',2);
-define('YEARLY',3);
+define('NO_REPEAT', 0);
+define('WEEKLY', 1);
+define('MONTHLY', 2);
+define('YEARLY', 3);
 
-define('DUPLICATE',1);
-define('NO_DUPLICATE',0);
+define('DUPLICATE', 1);
+define('NO_DUPLICATE', 0);
 
 define('ADD_DAY_OFF_MONTH', 1);
 define('STT', 'Stt');
@@ -347,8 +346,8 @@ define('LATE_OT_USER', 'Đi làm muộn + OT');
 define('TOTAL_MONTH_IN_YEAR', 12);
 define('OFF_TIME', '00:00:00');
 define('SWITCH_TIME', '12:00:00');
-define('PAST',1);
-define('FUTURE',2);
+define('PAST', 1);
+define('FUTURE', 2);
 define('DAY_OFF_MONTH', [
     'day_off_month_Jan' => 1,
     'day_off_month_Feb' => 2,
@@ -436,7 +435,7 @@ define('NOTIFICATION_TYPE', [
     'approve_permission' => 4,
     'report' => 5,
     'comment_report' => 6,
-    'suggestions'=>7
+    'suggestions' => 7
 ]);
 define('NOTIFICATION_LOGO', [
     0 => 'fa fa-flag black-text',

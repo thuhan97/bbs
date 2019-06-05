@@ -5,11 +5,13 @@ namespace App\Http\Controllers;
 use App\Models\Booking;
 use App\Models\MeetingRoom;
 use App\Models\Recur;
+use App\Models\Team;
 use App\Models\User;
 use App\Repositories\Contracts\IRecurRepository;
 use App\Services\Contracts\IBookingService;
 use App\Traits\RESTActions;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
 /**
@@ -30,9 +32,9 @@ class MeetingController extends Controller
 
     public function calendar()
     {
-        $users = User::all();
+        $groups = $this->getUserTree();
         $meeting_rooms = MeetingRoom::all();
-        return view('end_user.meeting.calendar', compact('meeting_rooms', 'users'));
+        return view('end_user.meeting.calendar', compact('meeting_rooms', 'groups'));
     }
 
     public function getCalendar(Request $request)
@@ -274,5 +276,33 @@ class MeetingController extends Controller
             } else $check = NO_DUPLICATE;
         }
         return $check;
+    }
+
+
+    private function getUserTree()
+    {
+        $results = [];
+        $jobtitles = [];
+        foreach (array_reverse(JOB_TITLES) as $value => $name) {
+            $jobtitles['J-' . $value] = $name;
+        }
+        $results['Chức danh'] = $jobtitles;
+        $positions = [];
+        foreach (POSITIONS as $value => $name) {
+            $positions['P-' . $value] = $name;
+        }
+        $results['Chức vụ'] = $positions;
+
+        $teams = Team::select('teams.id', DB::raw("CONCAT(groups.name, ' - ', teams.name) as name"))
+            ->join('groups', 'groups.id', 'teams.group_id')
+            ->orderBy('groups.name')
+            ->pluck('name', 'id')->toArray();
+
+        $results['Teams'] = $teams;
+
+        $users = User::select('id', DB::raw('CONCAT(staff_code, " - ", name) as name'))->where('status', ACTIVE_STATUS)->orderBy('jobtitle_id', 'desc')->orderBy('staff_code')->pluck('name', 'id')->toArray();
+        $results['Danh sách nhân viên'] = $users;
+
+        return $results;
     }
 }

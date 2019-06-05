@@ -85,12 +85,6 @@ span {
     box-shadow: none !important;
 }
 
-.dropdown-menu {
-    position: absolute;
-    top: 0 !important;
-    height: 200px !important;
-}
-
 .fc-event-container {
     text-align: center;
 }
@@ -104,4 +98,8 @@ span {
 
 .input-group-prepend {
     margin-right: -10px !important;
+}
+
+.error {
+    border: 1px solid red;
 }

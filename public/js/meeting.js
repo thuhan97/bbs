@@ -63,6 +63,10 @@ $(function () {
         renderCalendar();
     });
 
+    function resetModal() {
+        $("#addBooking")[0].reset()
+    }
+
     $calendar.fullCalendar({
         header: {
             left: 'prev,next today',
@@ -96,15 +100,14 @@ $(function () {
         },
         selectable: true,
         select: function (start, end, allDay = false) {
-
+            resetModal();
             //do something when space selected
             $('#start_time').val(moment(start).format('HH:mm'));
             $('#end_time').val(moment(end).format(' HH:mm'));
             $('#days_repeat').val(moment(start).format('YYYY-MM-DD'));
+
             //Show 'add event' modal
             $('#addModal').modal('show');
-
-
         },
         eventClick: function (calEvent, jsEvent, view) {
             console.log(calEvent.start);
@@ -199,6 +202,8 @@ $('#booking').click(function (event) {
     var id = $('#id').val();
     if (id > 0) var url = '/sua-phong-hop/' + id;
     else var url = '/them-phong-hop';
+    $("#addBooking .error").removeClass('error');
+    $("#addBooking .notice-error").hide();
     $.ajax({
         url: url,
         type: "post",
@@ -214,7 +219,6 @@ $('#booking').click(function (event) {
             "is_notify": is_notify,
             "days_repeat": days_repeat,
             "color": color
-
         },
 
         success: function (data) {
@@ -228,11 +232,12 @@ $('#booking').click(function (event) {
                 }
                 $.each(data.errors, function (i, error) {
                     var el = $('#' + i);
-                    el.css("border", "1px solid red");
+                    el.addClass("error");
                     el.change(function () {
-                        $(this).css("border", "1px solid #ccc    ");
+                        $(this).removeClass("error");
                     });
                 });
+                $("#addBooking .notice-error").show();
             } else if (data.status == 500) {
                 if (data.duplicate) {
                     $('#meeting_room_id').css("border", "1px solid red");

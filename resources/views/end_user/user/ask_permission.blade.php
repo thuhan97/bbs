@@ -137,11 +137,12 @@
             <!-- Nav tabs -->
             <ul class="nav nav-tabs md-tabs nav-justified primary-color" role="tablist">
                 <li class="nav-item">
-                    <a class="nav-link active" data-toggle="tab" href="#panelApprove" role="tab">Xin đi
+                    <a class="nav-link active btn-ot-one" data-toggle="tab" href="#panelApprove" role="tab">Xin đi
                         muộn/sớm</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link tab-nav-link-ot" data-toggle="tab" href="#panelOT" role="tab">Xin OT</a>
+                    <a class="nav-link tab-nav-link-ot btn-ask" data-toggle="tab" href="#panelOT" role="tab">Xin
+                        OT</a>
                 </li>
             </ul>
             <!-- Nav tabs -->
@@ -149,7 +150,7 @@
             <!-- Tab panels -->
             <div class="tab-content pb-0">
                 <!-- Panel 1 -->
-                <div class="tab-pane fade in show active" id="panelApprove" role="tabpanel">
+                <div class="tab-pane fade in show active btn-small-ot" id="panelApprove" role="tabpanel">
                     <table id="contactTbl" class="table table-striped table-bordered">
                         <colgroup>
                             <col style="width: 50px">
@@ -192,11 +193,11 @@
                                 <td class="text-center td-approve">
                                     @can('manager')
                                         @if($item['status'] == array_search('Chưa duyệt', OT_STATUS))
-                                            <button class="btn btn-info text-uppercase text-center approve"
+                                            <button class="btn btn-info text-uppercase text-center approve" id="ask-permission-{{ $item['id'] }}"
                                                     data-permission="other"
                                                     data-id="{{ $item['id'] ? $item['id'] : '' }}"
                                                     data-itemType="@if($item->type == 1) Xin đi muộn @elseif($item->type == 2) Xin về sớm @endif">
-                                                Duyệt
+                                                Duyệtt
                                             </button>
                                         @elseif($item['status'] == array_search('Đã duyệt', OT_STATUS))
                                             <i class="fas fa-grin-stars fa-2x text-success"
@@ -227,7 +228,7 @@
                 <!-- Panel 1 -->
 
                 <!-- Panel 2 -->
-                <div class="tab-pane fade" id="panelOT" role="tabpanel">
+                <div class="tab-pane fade btn-small-ask" id="panelOT" role="tabpanel">
 
                     <table id="contactTbl" class="table table-striped table-bordered">
                         <colgroup>
@@ -272,7 +273,7 @@
                                         @if($item['status'] == array_search('Chưa duyệt', OT_STATUS))
 
                                             <button class="btn btn-info text-uppercase text-center approve"
-                                                    data-permission="ot"
+                                                    data-permission="ot" id="ot-{{ $item['id'] }}"
                                                     data-id="{{ $item['id'] ? $item['id'] : '' }}"
                                                     data-itemtype="{{$item->ot_type ? $item->ot_type == array_search('Dự án', OT_TYPE) ? 'OT Dự án' : 'OT cá nhân' : '' }}">
                                                 Duyệt
@@ -317,7 +318,8 @@
             </div>
             <div class="col-md-8 text-right mobile-mg-right-5 float-right my-2 my-sm-0">
                 <button onclick="location.href='{{route("day_off")}}?t=1'"
-                        class="btn btn-success no-box-shadow waves-effect waves-light float-right mr-0 mr-sm-3" id="btn-off">
+                        class="btn btn-success no-box-shadow waves-effect waves-light float-right mr-0 mr-sm-3"
+                        id="btn-off">
                     Xin nghỉ phép
                 </button>
                 <button type="button"
@@ -338,10 +340,10 @@
         <!-- Nav tabs -->
         <ul class="nav nav-tabs md-tabs nav-justified primary-color mt-2" role="tablist">
             <li class="nav-item">
-                <a class="nav-link active" data-toggle="tab" href="#panel555" role="tab">Xin đi muộn/sớm</a>
+                <a class="nav-link active btn-ot-one" data-toggle="tab" href="#panel555" role="tab">Xin đi muộn/sớm</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link tab-nav-link-ot" data-toggle="tab" href="#panel666" role="tab">Xin OT</a>
+                <a class="nav-link tab-nav-link-ot btn-ask" data-toggle="tab" href="#panel666" role="tab">Xin OT</a>
             </li>
         </ul>
         <!-- Nav tabs -->
@@ -349,7 +351,7 @@
         <!-- Tab panels -->
         <div class="tab-content">
             <!-- Panel 1 -->
-            <div class="tab-pane fade in show active" id="panel555" role="tabpanel">
+            <div class="tab-pane fade in show active btn-small-ot" id="panel555" role="tabpanel">
                 <table id="contactTbl" class="table table-striped table-bordered">
                     <colgroup>
                         <col style="width: 50px">
@@ -411,7 +413,7 @@
             <!-- Panel 1 -->
 
             <!-- Panel 2 -->
-            <div class="tab-pane fade" id="panel666" role="tabpanel">
+            <div class="tab-pane fade btn-small-ask" id="panel666" role="tabpanel">
 
                 <table id="contactTbl" class="table table-striped table-bordered">
                     <colgroup>
@@ -477,7 +479,8 @@
          role="dialog" aria-labelledby="myModalLabel"
          aria-hidden="true">
         <div class="modal-dialog modal-center permission-modal-set-center" role="document">
-            <div class="modal-content" id="bg-img" style="background-image: url({{ asset_ver('img/font/xin_nghi.png') }})">
+            <div class="modal-content" id="bg-img"
+                 style="background-image: url({{ asset_ver('img/font/xin_nghi.png') }})">
                 <div class="modal-header text-center border-bottom-0 p-3">
                     <h4 class='mg-center mb-2 modal-title w-100 font-weight-bold pt-2 mg-left-10 title-permission'>Nội
                         dung đơn</h4>
@@ -534,7 +537,8 @@
          role="dialog" aria-labelledby="myModalLabel"
          aria-hidden="true">
         <div class="modal-dialog modal-center permission-modal-set-center" role="document">
-            <div class="modal-content" id="bg-img" style="background-image: url({{ asset_ver('img/font/xin_nghi.png') }})">
+            <div class="modal-content" id="bg-img"
+                 style="background-image: url({{ asset_ver('img/font/xin_nghi.png') }})">
                 <div class="modal-header text-center border-bottom-0 p-3">
                     <h4 class='mg-center mb-2 modal-title w-100 font-weight-bold pt-2 header-permission-late title-permission'></h4>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -568,7 +572,8 @@
          role="dialog" aria-labelledby="myModalLabel"
          aria-hidden="true">
         <div class="modal-dialog modal-center permission-modal-set-center" role="document">
-            <div class="modal-content" id="bg-img" style="background-image: url({{ asset_ver('img/font/xin_nghi.png') }})">
+            <div class="modal-content" id="bg-img"
+                 style="background-image: url({{ asset_ver('img/font/xin_nghi.png') }})">
                 <div class="modal-header text-center border-bottom-0 p-3">
                     <h4 class='mg-center mb-2 modal-title w-100 font-weight-bold pt-2 header-permission-late title-permission'></h4>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -602,7 +607,8 @@
          role="dialog" aria-labelledby="myModalLabel"
          aria-hidden="true">
         <div class="modal-dialog modal-center permission-modal-set-center" role="document">
-            <div class="modal-content" id="bg-img" style="background-image: url({{ asset_ver('img/font/xin_nghi.png') }})">
+            <div class="modal-content" id="bg-img"
+                 style="background-image: url({{ asset_ver('img/font/xin_nghi.png') }})">
                 <div class="modal-header text-center border-bottom-0 p-3">
                     <h4 class='mg-center mb-2 modal-title w-100 font-weight-bold pt-2 header-permission-late title-permission'></h4>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -692,6 +698,31 @@
     <script src="{{ asset_ver('bootstrap-datepicker/js/bootstrap-datepicker.min.js') }}"></script>
     <script type="text/javascript">
         $(function () {
+            var hash = window.location.hash;
+        if (hash){
+            var check=hash.split('-');
+            if (check[0] == '#ot'){
+                $('.btn-ot-one , .btn-small-ot').removeClass('show active');
+                $('.btn-ask , .btn-small-ask').addClass('show active');
+            }
+            var otThis = $(hash);
+            if (otThis.attr('id') === 'btn-reject') {
+                $('.approve-type').attr('value', 2)
+            } else if (otThis.attr('id') === 'btn-approve') {
+                $('.approve-type').attr('value', 1)
+            }
+            var id = otThis.data("id"),
+                permissionType = otThis.data("permission"),
+                itemtype = $(this).data("itemtype");
+            $('.modal-title').text(itemtype)
+            // debugger
+            $('.id').attr('value', id);
+            getData(id,permissionType)
+        }
+            $(document).on('click','#notification',function () {
+                location.reload();
+            })
+
             var date = new Date(),
                 currentDate = date.getDate() + 1,
                 currentMonth = date.getMonth() + 1,
@@ -728,45 +759,13 @@
                 } else if (otThis.attr('id') === 'btn-approve') {
                     $('.approve-type').attr('value', 1)
                 }
-                $('#modal-reject').modal('show');
                 var id = $(this).data("id"),
                     permissionType = $(this).data("permission"),
                     itemtype = $(this).data("itemtype");
                 $('.modal-title').text(itemtype)
                 // debugger
                 $('.id').attr('value', id);
-                $.ajax({
-                    url: '{{ route('ask_permission.approveDetail') }}',
-                    type: 'GET',
-                    dataType: 'JSON',
-                    data: {
-                        'id': id,
-                        'permission-type': permissionType,
-                    },
-                    success: function (respond) {
-                        // $('.id').attr('value', respond.id);
-                        if (permissionType === 'ot') {
-                            $('.creator_id').text(respond.creator_id);
-                            $('.project_id').text(respond.project_id);
-                            $('.start_at').text(respond.start_at);
-                            $('.end_at').text(respond.end_at);
-                            $('.minute').text(respond.minute);
-                            $('.reason').text(respond.reason);
-                        } else if (permissionType === 'other') {
-                            $('.creator_id').text(respond.user_id);
-                            $('.reason').text(respond.note);
-                        }
-                    }
-                });
-                if (permissionType === 'ot') {
-                    $('.content-hidden').prop('hidden', false)
-                    $('.permission-type').attr('value', 'ot')
-                } else {
-                    $('.content-hidden').prop('hidden', true)
-                    $('.permission-type').attr('value', 'other')
-                    // $('.permission-detail').hide()
-                    $('.creator_id,.project_id,.start_at,.end_at,.minute,.reason').empty()
-                }
+                getData(id,permissionType)
             });
 
             $('#work-day-late').on('change', function () {
@@ -1022,6 +1021,44 @@
             });
 
         });
+        function getData(id,permissionType) {
+            $.ajax({
+                url: '{{ route('ask_permission.approveDetail') }}',
+                type: 'GET',
+                dataType: 'JSON',
+                data: {
+                    'id': id,
+                    'permission-type': permissionType,
+                },
+                success: function (respond) {
+                    // $('.id').attr('value', respond.id);
+                    if (respond.status == 0){
+                        $('#modal-reject').modal('show');
+
+                    }
+                    if (permissionType === 'ot') {
+                        $('.creator_id').text(respond.creator_id);
+                        $('.project_id').text(respond.project_id);
+                        $('.start_at').text(respond.start_at);
+                        $('.end_at').text(respond.end_at);
+                        $('.minute').text(respond.minute);
+                        $('.reason').text(respond.reason);
+                    } else if (permissionType === 'other') {
+                        $('.creator_id').text(respond.user_id);
+                        $('.reason').text(respond.note);
+                    }
+                }
+            });
+            if (permissionType === 'ot') {
+                $('.content-hidden').prop('hidden', false)
+                $('.permission-type').attr('value', 'ot')
+            } else {
+                $('.content-hidden').prop('hidden', true)
+                $('.permission-type').attr('value', 'other')
+                // $('.permission-detail').hide()
+                $('.creator_id,.project_id,.start_at,.end_at,.minute,.reason').empty()
+            }
+        }
     </script>
 @endsection
 @push('extend-js')

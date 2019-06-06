@@ -98,5 +98,13 @@ return [
     'active_ask_late'=>'đã duyệt đơn xin đi muộn của bạn',
     'close_ask_soon'=>'đã hủy đơn xin về sớm của bạn',
     'active_ask_soon'=>'đã duyệt đơn xin về sớm của bạn',
-
+    'notify_active_day_off' => ' đã duyệt đơn xin nghỉ phép của bạn',
+    'notify_close_day_off' => ' đã từ chối đơn xin nghỉ phép của bạn',
+    'detail_suggestions' => 'Chi tiết',
+    'success_suggestions' => 'Cập nhật đề xuất - góp ý thành công',
+    'suggestions_title_notify' => 'bạn có một đề xuất - góp ý mới cần giải quyết.',
+    'word_title_notify' => 'đã chia sẻ kinh nghiệm làm việc',
+    'weekly_report_punish' => 'Ngày :day, chưa gửi báo cáo tuần :week.',
+    'no_weekly_report' => 'Bạn chưa gửi báo cáo tuần :week.',
+    'staff_no_weekly_report' => 'Nhân viên :name chưa gửi báo cáo tuần :week.',
 ];

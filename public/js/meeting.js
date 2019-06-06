@@ -88,13 +88,14 @@ $(function () {
         eventLimit: true, // allow "more" link when too many events
         height: 720,
         eventRender: function (eventObj, $el) {
-            // $el.popover({
-            //     title: eventObj.title,
-            //     content: eventObj.description,
-            //     trigger: 'hover',
-            //     placement: 'top',
-            //     container: 'body'
-            // });
+            // if (eventObj.has_me)
+            //     $el.popover({
+            //         title: eventObj.title,
+            //         content: eventObj.description,
+            //         trigger: 'hover',
+            //         placement: 'top',
+            //         container: 'body'
+            //     });
         },
         viewRender: function (newView, oldView) {
             window.start_date = newView.start.format('Y/M/D');
@@ -119,7 +120,6 @@ $(function () {
                 }, 300)
         },
         eventClick: function (calEvent, jsEvent, view) {
-            console.log(calEvent.start);
             var data = {
                 'id': calEvent.id,
                 'meeting_room_id': calEvent.description,
@@ -133,37 +133,45 @@ $(function () {
                 type: 'GET',
                 success: function (data) {
                     if (data) {
-
+                        var booking = data.booking;
                         $('#id_booking').val(calEvent.id);
-                        $('#start_date').val(calEvent.start.format('YYYY-MM-DD HH:mm:00'));
-                        $('#show-title').text(data.booking.title);
-                        $('#show-content').text(data.booking.content);
+                        $('#start_date').val(calEvent.start.format('YYYY-MM-DD'));
+                        $('#show-title').text(booking.title);
+                        $('#show-content').text(booking.content);
                         $('#show-object').text(data.participants.join(', '));
                         $('#show-meeting').text(data.meeting);
-                        $('#time').text(moment(calEvent.start).format('HH:mm') + '-' + moment(calEvent.end).format('HH:mm'));
+                        $('#show-creator').text(booking.creator.name);
+                        $('#show-date-create').text(booking.created_at);
+                        $('#time').text(booking.start_time.substring(0, 5) + ' - ' + booking.end_time.substring(0, 5));
+                        if (booking.users_id == userId) {
+                            $('#showModal').find('.modal-footer').show();
+                            $('#edit').click(function () {
+                                $('#id').val(booking.id);
+                                $('#title').val(booking.title);
+                                $('#content').val(booking.content);
+                                $('#participants').val(booking.participants);
+                                $('.selectpicker').selectpicker('refresh');
+                                $('#meeting_room_id').val(booking.meeting_room_id);
+                                $('#show-creator').val(booking.creator.name);
+                                $('#show-date-create').val(booking.created_at);
+                                $('#start_time').val(moment(calEvent.start).format('HH:mm'));
+                                $('#end_time').val(moment(calEvent.end).format('HH:mm'));
+                                $('#days_repeat').val(booking.date);
+                                (booking.is_notify == 0) ? $('input[name="is_notify"]').attr('checked', false) : $('input[name="is_notify"]').attr('checked', true);
+
+                                if (data.type == 'PAST') {
+                                    $('#repeat').css('display', 'none');
+                                } else {
+                                    $('input:radio[name="repeat_type"]').filter('[value=' + booking.repeat_type + ']').attr('checked', true);
+                                }
+                                $('#showModal').modal('hide');
+                                $('#addModal').modal();
+
+                            });
+                        } else {
+                            $('#showModal').find('.modal-footer').hide();
+                        }
                         $('#showModal').modal();
-                        $('#edit').click(function () {
-                            var booking = data.booking;
-                            $('#id').val(booking.id);
-                            $('#title').val(booking.title);
-                            $('#content').val(booking.content);
-                            $('#participants').val(booking.participants);
-                            $('.selectpicker').selectpicker('refresh');
-                            $('#meeting_room_id').val(booking.meeting_room_id);
-                            $('#start_time').val((booking.start_time.substring(0, 5)));
-                            $('#end_time').val(booking.end_time.substring(0, 5));
-                            $('#days_repeat').val(booking.date);
-                            (booking.is_notify == 0) ? $('input[name="is_notify"]').attr('checked', false) : $('input[name="is_notify"]').attr('checked', true);
-
-                            if (data.type == 'PAST') {
-                                $('#repeat').css('display', 'none');
-                            } else {
-                                $('input:radio[name="repeat_type"]').filter('[value=' + booking.repeat_type + ']').attr('checked', true);
-                            }
-                            $('#showModal').modal('hide');
-                            $('#addModal').modal();
-
-                        });
                     }
                 }
             });
@@ -186,6 +194,12 @@ $(function () {
                 });
 
             });
+        },
+        eventAllow: function (dropLocation, item) {
+            return item.user_id == userId;
+        },
+        eventDrop: function (calEvent, next) {
+            $('#days_repeat').val(calEvent.start.format('YYYY-MM-DD'));
         },
     });
 });
@@ -254,8 +268,11 @@ $('#booking').click(function (event) {
             } else if (data.status == 500) {
                 if (data.duplicate) {
                     $('#meeting_room_id').addClass("error");
-                    $('#message').html('Phòng họp đã sử dụng trong thời gian được chọn. <br /> Vui lòng chọn lại!')
-                    $('#deleteSuccessModal').modal();
+                    $('#alert_message').html('Phòng họp đã sử dụng trong thời gian được chọn. <br /> Vui lòng chọn lại!')
+                    $('#alertModal').modal();
+                } else if (data.unauthorized) {
+                    $('#alert_message').html('Bạn không có quyền sửa lịch họp này!')
+                    $('#alertModal').modal();
                 }
             } else if (data.success) {
                 console.log(data.success)

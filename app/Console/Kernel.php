@@ -5,9 +5,11 @@ namespace App\Console;
 use App\Console\Commands\AddDayOffFree;
 use App\Console\Commands\AddDayOffMonth;
 use App\Console\Commands\HolidayAutoAdd;
+use App\Console\Commands\MeetingCommand;
 use App\Console\Commands\MoveDayOffEndYear;
 use App\Console\Commands\PostNotificationSender;
 use App\Console\Commands\SentMailEvent;
+use App\Console\Commands\WeeklyReportCheck;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
@@ -26,6 +28,8 @@ class Kernel extends ConsoleKernel
         HolidayAutoAdd::class,
         AddDayOffFree::class,
         PostNotificationSender::class,
+        MeetingCommand::class,
+        WeeklyReportCheck::class,
     );
 
     /**
@@ -47,6 +51,7 @@ class Kernel extends ConsoleKernel
         $schedule->command('command:add_day_off_free')->cron('* * 1 * *');
         $schedule->command('command:holiday')->monthly();
         $schedule->command('cron:post-notice')->everyThirtyMinutes();
+        $schedule->command('weekly-report:check')->dailyAt('12:00');
     }
 
     /**

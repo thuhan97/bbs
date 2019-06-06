@@ -321,6 +321,7 @@ define('LATE_MONEY_CONFIG_FOLDER', 'json_config/');
 define('PROJECT_IMAGE_FOLDER', 'projects');
 define('LATE_MONEY_CONFIG', 'config/late_time.json');
 define('LATE_RULE_ID', 0);
+define('WEEKLY_REPORT_RULE_ID', 1);
 
 define('ALL_DAY_OFF', 3);
 define('DAY_OFF_FREE_DEFAULT', 0);
@@ -445,12 +446,11 @@ define('NOTIFICATION_TYPE', [
     'approve_permission' => 4,
     'report' => 5,
     'comment_report' => 6,
-    'suggestions'=>7,
+    'suggestions' => 7,
     'active' => 8,
     'close' => 9,
     'day_off_create' => 10,
-    'suggestions' => 7,
-    'share'=>11,
+    'share' => 11,
     'meeting' => 12,
 ]);
 define('NOTIFICATION_LOGO', [
@@ -462,10 +462,10 @@ define('NOTIFICATION_LOGO', [
     5 => 'fa fa-book orange-text',
     6 => 'fa fa-book secondary-text',
     7 => 'fa fa-envelope-o secondary-text',
-    8=>  'fas fa-grin-stars fa-1x text-success text-size-icon',
-    9=>  'fas fa-frown fa-1x text-danger text-size-icon',
-    10=>  'fas fa-meh-blank fa-1x text-warning text-size-icon',
-    11=> 'fas fa-share-alt-square text-default',
+    8 => 'fas fa-grin-stars fa-1x text-success text-size-icon',
+    9 => 'fas fa-frown fa-1x text-danger text-size-icon',
+    10 => 'fas fa-meh-blank fa-1x text-warning text-size-icon',
+    11 => 'fas fa-share-alt-square text-default',
     12 => 'fa fa-comments orange-text',
 ]);
 define('JVB_LOGO_URL', 'http://jvb-corp.com/img/logo.png');
@@ -475,7 +475,8 @@ define('NOTIFICATION_DAY_OFF', [
     'active' => 1,
     'close' => 2
 ]);
-define('UTF_8','UTF-8');
+define('UTF_8', 'UTF-8');
+
 
 
 

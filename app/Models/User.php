@@ -162,14 +162,16 @@ class User extends Authenticatable implements JWTSubject
 
     public function team()
     {
-        if ($this->attributes['jobtitle_id'] == TEAMLEADER_ROLE) {
-            $team = Team::where('leader_id', $this->attributes['id'])->first();
-            if ($team) return $team;
-        }
-        $userTeam = UserTeam::where('user_id', $this->attributes['id'])->orderBy('id', 'desc')->first();
+        if (isset($this->attributes) && !empty($this->attributes)) {
+            if ($this->attributes['jobtitle_id'] == TEAMLEADER_ROLE) {
+                $team = Team::where('leader_id', $this->attributes['id'])->first();
+                if ($team) return $team;
+            }
+            $userTeam = UserTeam::where('user_id', $this->attributes['id'])->orderBy('id', 'desc')->first();
 
-        if ($userTeam) {
-            return Team::where('id', $userTeam->team_id)->first();
+            if ($userTeam) {
+                return Team::where('id', $userTeam->team_id)->first();
+            }
         }
     }
 
@@ -222,4 +224,11 @@ class User extends Authenticatable implements JWTSubject
         return $this->hasMany(WorkTimeRegister::class)->where('day', '!=', 7);
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function reports()
+    {
+        return $this->hasMany(Report::class);
+    }
 }

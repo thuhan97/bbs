@@ -8,6 +8,7 @@
 
 namespace App\Services;
 
+use App\Events\DontReportNotice;
 use App\Events\PostNotify;
 use App\Events\ReportReplyNoticeEvent;
 use App\Events\WorkExperienceNoticeEvent;
@@ -62,18 +63,19 @@ class NotificationService extends AbstractService implements IUserTeamService
 
         $this->insertNotification($notifications);
     }
+
     public function sendWorkExperience($workExperience)
     {
         $users = User::where('status', ACTIVE_STATUS)->pluck('id')->toArray();
         $notifications = [];
 
-            foreach ($users as $user_id) {
-                if ($user_id != $workExperience->creator_id){
-                    $notifications[] =
-                        NotificationHelper::generateNotify($user_id,  $workExperience->user->name.SPACE.__l('word_title_notify'),$workExperience->introduction , $workExperience->creator_id, NOTIFICATION_TYPE['share'], route('view_experience', $workExperience->id));
-                }
+        foreach ($users as $user_id) {
+            if ($user_id != $workExperience->creator_id) {
+                $notifications[] =
+                    NotificationHelper::generateNotify($user_id, $workExperience->user->name . SPACE . __l('word_title_notify'), $workExperience->introduction, $workExperience->creator_id, NOTIFICATION_TYPE['share'], route('view_experience', $workExperience->id));
             }
-            broadcast(new WorkExperienceNoticeEvent($workExperience))->toOthers();
+        }
+        broadcast(new WorkExperienceNoticeEvent($workExperience))->toOthers();
         $this->insertNotification($notifications);
     }
 
@@ -83,10 +85,39 @@ class NotificationService extends AbstractService implements IUserTeamService
         $notifications = [];
         foreach ($users as $user_id) {
             $notifications[] =
-                NotificationHelper::generateNotify($user_id, 'Nội quy & Quy định', 'Cập nhật ' . $regulation->name, 0,
+                NotificationHelper::generateNotify($user_id, __l('regulation'), 'Cập nhật ' . $regulation->name, 0,
                     NOTIFICATION_TYPE['post'], route('regulation_detail', $regulation->id));
         }
 //        broadcast(new PostNotify($post));
+
+        $this->insertNotification($notifications);
+    }
+
+    public function dontSentWeeklyReport($users, $day, $week)
+    {
+        $title = __l("Report");
+        $notifications = [];
+        $reportUrl = route('report');
+        $createReportUrl = route('create_report');
+        $message = __l('no_weekly_report', ['week' => $week]);
+        foreach ($users as $user) {
+            //toUser
+            $notifications[] =
+                NotificationHelper::generateNotify($user->id, $title, $message, 0,
+                    NOTIFICATION_TYPE['report'], $createReportUrl);
+
+            event(new DontReportNotice($user->id, $title, $message, $createReportUrl));
+            //to manager
+            $team = $user->team();
+            if ($team) {
+                $manageMessage = __l('staff_no_weekly_report', ['name' => $user->name, 'week' => $week]);
+                $notifications[] =
+                    NotificationHelper::generateNotify($team->leader_id, $title, $manageMessage, 0,
+                        NOTIFICATION_TYPE['report'], $reportUrl);
+
+                event(new DontReportNotice($team->leader_id, $title, $manageMessage, $reportUrl));
+            }
+        }
 
         $this->insertNotification($notifications);
     }

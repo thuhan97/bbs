@@ -10,14 +10,12 @@ namespace App\Services;
 use App\Models\AdditionalDate;
 use App\Models\CalendarOff;
 use App\Models\Config;
-use App\Models\Punishes;
 use App\Models\User;
 use App\Models\WorkTime;
 use App\Repositories\Contracts\IWorkTimeRepository;
 use App\Services\Contracts\IWorkTimeService;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 
 /**
  * @property Config config
@@ -28,14 +26,19 @@ class WorkTimeService extends AbstractService implements IWorkTimeService
     const LATE_SECOND_SUFFIX = ':00'; //00 to 59
 
     private $calendarOffs;
+    /**
+     * @var PunishesService
+     */
+    private $punishesService;
 
     /**
      * WorkTimeService constructor.
      *
      * @param \App\Models\WorkTime                            $model
      * @param \App\Repositories\Contracts\IWorkTimeRepository $repository
+     * @param PunishesService                                 $punishesService
      */
-    public function __construct(WorkTime $model, IWorkTimeRepository $repository)
+    public function __construct(WorkTime $model, IWorkTimeRepository $repository, PunishesService $punishesService)
     {
         $this->model = $model;
         $this->repository = $repository;
@@ -47,6 +50,7 @@ class WorkTimeService extends AbstractService implements IWorkTimeService
             ->with('workTimeRegisters')
             ->get();
 
+        $this->punishesService = $punishesService;
     }
 
     /**
@@ -197,94 +201,8 @@ class WorkTimeService extends AbstractService implements IWorkTimeService
     {
         $date = date_create($fromDate);
         $month = $date->format('m');
-        [$firstDate, $endDate] = getStartAndEndDateOfMonth($month, $date->format('Y'));
 
-        //read config file
-        $path = storage_path('app/' . $this->config->late_time_rule_json ?? LATE_MONEY_CONFIG); // ie: /var/www/laravel/app/storage/json/filename.json
-
-        $configs = collect(json_decode(file_get_contents($path), true)['configs']);
-
-        $freeCount = $configs->where('free', true)->count();
-        $aioConfigs = $configs->where('aio', '!=', 0);
-        $eachConfigs = $configs->where('free', false)->where('aio', 0);
-
-        //get late list
-        $model = $this->model
-            ->whereIn('type', [
-                WorkTime::TYPES['lately'],
-                WorkTime::TYPES['lately_ot'],
-            ])
-            ->whereDate('work_day', '>=', $firstDate)
-            ->whereDate('work_day', '<=', $endDate);
-
-        if (!empty($userIds)) $model->whereIn('user_id', $userIds);
-
-        $lateList = $model->orderBy('work_day')
-            ->get()->groupBy('user_id');
-
-        DB::beginTransaction();
-        //clear old data
-        $punish = Punishes::where('rule_id', LATE_RULE_ID)
-            ->whereDate('infringe_date', '>=', $firstDate)
-            ->whereDate('infringe_date', '<=', $endDate);
-        if (!empty($userIds))
-            $punish->whereIn('user_id', $userIds);
-
-        $punish->forceDelete();
-        $addPunishes = [];
-        //caculate
-        foreach ($lateList as $user_id => $workTimes) {
-
-            $lateCount = $workTimes->count();
-            if ($lateCount > $freeCount) {
-                //start caculate
-                if ($lateCount > $aioConfigs->min('name')) {
-                    //Vé tháng
-                    $aio = $aioConfigs->sortByDesc('name')->firstWhere('name', '<=', $lateCount);
-                    if ($aio) {
-                        $date = $workTimes->max('work_day');
-                        $addPunishes[] = [
-                            'rule_id' => LATE_RULE_ID,
-                            'user_id' => $user_id,
-                            'infringe_date' => $date,
-                            'total_money' => $aio['aio'] * self::LATE_UNIT,
-                            'detail' => __l('punish_late_money_aio', [
-                                'number' => $lateCount,
-                                'month' => $month,
-                            ])
-                        ];
-                    }
-                } else {
-                    foreach ($workTimes as $idx => $workTime) {
-                        if ($idx < $freeCount) continue;
-                        $number = $idx + 1;
-                        $config = $eachConfigs->firstWhere('name', $number);
-                        if ($config) {
-                            $times = collect($config['times']);
-                            $time = $times->where('start', '<=', $workTime->start_at)
-                                ->where('end', '>=', $workTime->start_at)
-                                ->first();
-                            if ($time) {
-                                $addPunishes[] = [
-                                    'rule_id' => LATE_RULE_ID,
-                                    'user_id' => $user_id,
-                                    'infringe_date' => $workTime->work_day,
-                                    'total_money' => $time['total'] * self::LATE_UNIT,
-                                    'detail' => __l('punish_late_money', [
-                                        'number' => $number,
-                                        'check_in' => date('h:i', strtotime($workTime->start_at)),
-                                        'month' => $month,
-                                    ])
-                                ];
-                            }
-                        }
-
-                    }
-                }
-            }
-        }
-        Punishes::insertAll($addPunishes);
-        DB::commit();
+        $this->punishesService->calculateLateTime($date->format('Y'), $month, $userIds);
     }
 
     protected function getSearchModel(Request $request, $forExport = false)

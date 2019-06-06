@@ -16,10 +16,13 @@ use App\Models\User;
 use App\Models\UserTeam;
 use App\Services\Contracts\IMeetingService;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class MeetingService extends AbstractService implements IMeetingService
 {
+    const HAS_MEETING_COLOR = 'red';
+
     /**
      * MeetingService constructor.
      *
@@ -57,15 +60,23 @@ class MeetingService extends AbstractService implements IMeetingService
             ->get();
         if ($bookings->isNotEmpty()) {
             foreach ($bookings as $booking) {
-                $results[] = [
+                $inMeeting = in_array(Auth::id(), $this->getParticipantIds($booking));
+                $item = [
                     'id' => $booking->id,
+                    'user_id' => $booking->users_id,
+                    'editable' => Auth::id() == $booking->users_id,
                     'title' => $booking->title,
                     'description' => $booking->meeting_room_id,
                     'start' => $booking->date . ' ' . $booking->start_time,
                     'end' => $booking->date . ' ' . $booking->end_time,
                     'textColor' => '#fff',
                     'color' => $booking->color,
+                    'has_me' => $inMeeting,
                 ];
+
+                if ($inMeeting)
+                    $item['borderColor'] = self::HAS_MEETING_COLOR;
+                $results[] = $item;
             }
         }
         return $results;
@@ -102,15 +113,22 @@ class MeetingService extends AbstractService implements IMeetingService
 
             }
             if ($startDate != null && $startDate > $booking->date && $startDate > Carbon::now()->format('Y-m-d')) {
-                $results[] = [
+                $inMeeting = in_array(Auth::id(), $this->getParticipantIds($booking));
+                $item = [
                     'id' => $booking->id,
+                    'user_id' => $booking->users_id,
+                    'editable' => Auth::id() == $booking->users_id,
                     'title' => $booking->title,
                     'description' => $booking->meeting_room_id,
                     'start' => $startDate . ' ' . $booking->start_time,
                     'end' => $startDate . ' ' . $booking->end_time,
                     'textColor' => '#fff',
                     'color' => $booking->color,
+                    'has_me' => $inMeeting,
                 ];
+                if ($inMeeting)
+                    $item['borderColor'] = self::HAS_MEETING_COLOR;
+                $results[] = $item;
             }
         }
         return $results;
@@ -221,8 +239,8 @@ class MeetingService extends AbstractService implements IMeetingService
         $userTeams = UserTeam::select('id', 'user_id', 'team_id')->get();
         $teams = Team::select('id', 'leader_id', 'name')->get();
 
-        $userIds = [];
-        $participantIds = $meeting->participants;
+        $userIds = [$meeting->users_id];
+        $participantIds = is_array($meeting->participants) ? $meeting->participants : [$meeting->participants];
 
         foreach ($participantIds as $participantId) {
             if (starts_with($participantId, 'J-')) {

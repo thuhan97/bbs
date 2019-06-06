@@ -24,4 +24,9 @@ class Booking extends Model
         'days_repeat',
         'is_notify'
     ];
+
+    public function creator()
+    {
+        return $this->hasOne(User::class, 'id', 'users_id');
+    }
 }

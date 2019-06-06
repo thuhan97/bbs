@@ -144,6 +144,17 @@
                     <input type="hidden" name="id" id="id_booking" value="">
                     <input type="hidden" name="start_date" id="start_date" value="">
                     <h5 class="font-weight-normal " id="show-title"></h5>
+                    <div class="row">
+                        <div class="col-6">
+                            <h6 class="font-weight-normal">Người tạo:</h6>
+                            <p id="show-creator"></p>
+                        </div>
+                        <div class="col-6">
+                            <h6 class="font-weight-normal">Ngày tạo:</h6>
+                            <p id="show-date-create"></p>
+                        </div>
+
+                    </div>
                     <h6 class="font-weight-normal">Nội dung:</h6>
                     <p id="show-content"></p>
                     <h6 class="font-weight-normal">Thành phần tham gia:</h6>
@@ -159,7 +170,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="modal-footer">
+                <div class="modal-footer" style="display: none">
                     <button class="btn btn-primary" id="edit">Thay đổi</button>
                     <button class="btn btn-danger" id="deleteMessage">Hủy</button>
                 </div>
@@ -193,6 +204,25 @@
                 </div>
                 <div class="modal-footer">
                     <button class="btn btn-primary" id="ok">OK</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="alertModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="alert_title">Cảnh báo
+                    </h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <h6 id="alert_message" class="text-center"></h6>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary" data-dismiss="modal" id="ok">OK</button>
                 </div>
             </div>
         </div>

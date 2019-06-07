@@ -219,7 +219,7 @@
                 <th class="text-center d-none d-sm-table-cell">Tới ngày</th>
                 <th class="text-center ">Tiêu đề</th>
                 <th class="text-center d-none d-xl-table-cell">Nội dung</th>
-                <th class="text-center d-none d-xl-table-cell">Nghỉ có lương</th>
+                <th class="text-center d-none d-xl-table-cell">Nghỉ trừ phép</th>
                 <th class="text-center  d-none d-sm-table-cell">Nghỉ không lương</th>
                 <th class="text-center d-none d-sm-table-cell">Phê duyệt</th>
                 <th class="text-center ">Xem thêm</th>

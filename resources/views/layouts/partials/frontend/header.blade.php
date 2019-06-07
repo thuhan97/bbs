@@ -60,11 +60,11 @@ foreach ($notifications as $notification) {
                             <span class="sr-only">(current)</span>
                         </a>
                     </li>
-                    <li class="nav-item d-block d-xl-none {{ \App\Utils::checkRoute(['changePassword']) ? 'active': '' }}">
+                    <li class="nav-item d-block d-lg-none {{ \App\Utils::checkRoute(['changePassword']) ? 'active': '' }}">
                         <a class="nav-link waves-effect"
                            href="{{route('changePassword')}}">{{__l('change_password')}}</a>
                     </li>
-                    <li class="nav-item d-block d-xl-none {{ \App\Utils::checkRoute(['logout']) ? 'active': '' }}">
+                    <li class="nav-item d-block d-lg-none {{ \App\Utils::checkRoute(['logout']) ? 'active': '' }}">
                         <a class="nav-link waves-effect"
                            href="{{route('logout')}}">{{__l('logout')}}
                         </a>

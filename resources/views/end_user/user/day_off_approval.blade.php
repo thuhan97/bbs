@@ -58,38 +58,47 @@
              </div>
          </div>--}}
 
-
-        <div class="row mb-0 ml-1 mb-sm-4 mt-sm-3">
-            <div class="row col-6 col-sm-4 col-xl-4 pr-3 pl-3 pt-2">
-                <label class=" text-w-400 pt-2" for="">Từ ngày</label>
-                <div class="position-relative">
-                    <input type="text"
-                           class="form-control border-0 select-item ml-2"
-                           id="search_start_at" autocomplete="off" name="search_start_at"
-                           value="{{  $start ?? $searchStart  }}"
-                           readonly="readonly">
-                    <i class="far fa-calendar-alt position-absolute calendar-search"></i>
-                </div>
-
-
-            </div>
-            <div class="row col-6 col-sm-4 col-xl-4 pr-3 pl-3 pt-2 div-day-off-from-day">
-                <label class="text-w-400 pt-2 label-from-days" for="inputZip">Tới ngày</label>
-                <div class="position-relative">
-                    <input type="text"
-                           class="form-control select-item  border-0 ml-2"
-                           id="search_end_at" autocomplete="off" name="search_end_at"
-                           value="{{ $end ?? ''}}"
-                           readonly>
-                    <i class="far fa-calendar-alt position-absolute calendar-search"></i>
+        <div class="d-flex mb-3" >
+            <div class="mr-1 mr-md-3">
+                <div class="d-md-flex justify-content-center" >
+                    <div>
+                        <label class="text-w-400 pt-2" for="">Từ ngày</label>
+                    </div>
+                    <div class="position-relative">
+                        <input type="text"
+                               class="form-control border-0 select-item z- ml-2"
+                               id="search_start_at" autocomplete="off" name="search_start_at"
+                               value="{{  $start ?? $searchStart  }}"
+                               readonly="readonly">
+                        <i class="far fa-calendar-alt position-absolute calendar-search"></i>
+                    </div>
                 </div>
             </div>
-            <div class="col-sm-2 col-xl-1 no-padding-left mt-3 mt-sm-0 group-btn-search-day-off">
-                <label class=" text-w-400 d-none d-sm-block" for="inputCity"> &nbsp;</label>
-                <button class="form-control select-item  border-0 btn-secondary btn-secondary-search-day-off-approval" id="result-search"><i
-                            class="fas fa-search"></i></button>
+            <div class="mr-1 mr-md-3">
+                <div class="d-md-flex justify-content-center">
+                    <div>
+                        <label class="text-w-400 pt-2 label-from-days" for="inputZip">Tới ngày</label>
+                    </div>
+                    <div class="position-relative">
+                        <input type="text"
+                               class="form-control select-item  border-0 ml-2"
+                               id="search_end_at" autocomplete="off" name="search_end_at"
+                               value="{{ $end ?? ''}}"
+                               readonly>
+                        <i class="far fa-calendar-alt position-absolute calendar-search"></i>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <div class="d-md-flex justify-content-center">
+                    <div>
+                        <button class="form-control select-item  border-0 btn-secondary" id="result-search"><i class="fas fa-search"></i></button>
+                    </div>
+                </div>
             </div>
         </div>
+
+
 
         <div class="d-none d-xl-flex container-fluid col-12 row border-bottom-2 mb-3" style="position: relative;">
             <div class="col-sm-3 col-md-6 col-lg-3 position-relative">
@@ -174,19 +183,25 @@
                 </a>
             </div>
         </div>
-        <div class="row mb-4 mb-sm-0">
-            <div class="col-sm-8 col-md-4 d-none d-xl-flex"></div>
-            <div class="col-7 col-sm-2 col-md-2 d-none d-xl-flex"></div>
-            <div class="col-12 col-md-6 row pr-0">
-{{--                <div class="pr-4 pr-sm-0 col-md-4 offset-3">--}}
-                <div class="col-12 col-sm-8 col-lg-7 pr-0">
-                    <a href="{{route('day_off')}}" class="btn btn-primary float-right mb-2 mb-sm-0 mr-0 mr-sm-3"
-                       id="btn-detail-day-off" type="button">
-                        Xem ngày phép
-                    </a>
-                </div>
-                <div class="pl-1 col-md-5 pr-0 d-none d-xl-flex">
-                    {{ Form::select('status', SHOW_DAY_OFFF, $status ?? ALL_DAY_OFF, ['class' => 'browser-default custom-select search-day-off border-radius-1 option-select float-right h-48 mt-1']) }}
+        <div class="row mb-2">
+            <div class="col-sm-4 col-md-4">
+            </div>
+            <div class="col-sm-8 text-right col-md-8">
+                <div class="row mb-2">
+                    <div class="col-lg-2"></div>
+                    <div class="col-12 col-sm-8 col-lg-6 pr-0">
+                        <div class="{{--pr-lg-1 pr-sm-4--}} pr-4 pr-sm-0 mb-2">
+
+                            <a href="{{route('day_off')}}" class="btn btn-primary"
+                               id="btn-detail-day-off" type="button">
+                                Xem ngày phép
+                            </a>
+
+                        </div>
+                    </div>
+                    <div class="d-none d-sm-block col-sm-4">
+                        {{ Form::select('status', SHOW_DAY_OFFF, $status ?? ALL_DAY_OFF, ['class' => 'browser-default custom-select search-day-off border-radius-1 option-select float-right h-48 mt-1']) }}
+                    </div>
                 </div>
             </div>
         </div>
@@ -204,8 +219,8 @@
                 <th class="text-center d-none d-sm-table-cell">Tới ngày</th>
                 <th class="text-center ">Tiêu đề</th>
                 <th class="text-center d-none d-xl-table-cell">Nội dung</th>
-                <th class="text-center ">Ngày có phép</th>
-                <th class="text-center  d-none d-sm-table-cell">Ngày không phép</th>
+                <th class="text-center d-none d-xl-table-cell">Nghỉ trừ phép</th>
+                <th class="text-center  d-none d-sm-table-cell">Nghỉ không lương</th>
                 <th class="text-center d-none d-sm-table-cell">Phê duyệt</th>
                 <th class="text-center ">Xem thêm</th>
             </tr>
@@ -230,11 +245,11 @@
                     </td>
                     <td class="text-center ">{{ array_key_exists($record->title, VACATION_FULL) ? VACATION_FULL[$record->title] : ''  }}</td>
                     <td class="text-center d-none d-xl-table-cell">{!! nl2br($record->reason) !!}</td>
-                    <td class="text-center ">
+                    <td class="text-center d-none d-xl-table-cell">
                         {{!!!$record->number_off ? ($record->status != STATUS_DAY_OFF['noActive'] ? 'Đang duyệt' : '') : checkNumber($record->number_off).' ngày'}}
                     </td>
                     <td class="text-center d-none d-sm-table-cell">
-                        {{!!! $record->absent == DEFAULT_VALUE  ? ($record->status == STATUS_DAY_OFF['abide'] ? 'Đang duyệt' : (  $record->status == STATUS_DAY_OFF['noActive'] ? '' : checkNumber($record->absent) .' ngày')) :  checkNumber($absence->absent) .' ngày'}}
+                        {{!!! $record->absent == DEFAULT_VALUE  ? ($record->status == STATUS_DAY_OFF['abide'] ? 'Đang duyệt' : (  $record->status == STATUS_DAY_OFF['noActive'] ? '' : checkNumber($record->absent) .' ngày')) :  checkNumber($record->absent) .' ngày'}}
                     </td>
 
                     <td class="text-center p-0 d-none d-sm-table-cell" style="vertical-align: middle;">
@@ -285,7 +300,7 @@
 
                             </div>
                             <div class="mb-2">
-                                <label class="ml-3 text-d-bold" for="exampleFormControlTextarea5">Số ngày nghỉ phép còn lại : </label>
+                                <label class="ml-3 text-d-bold" for="exampleFormControlTextarea5">Số ngày nghỉ phép tồn : </label>
                                 <strong class="" id="number_off_remain"></strong>
 
                             </div>

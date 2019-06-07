@@ -312,24 +312,24 @@
     @endcan
     @cannot('manager')
         <div class="row m-t-20">
-            <div class="col-md-4">
-                <h2 class="mb-0 mt-2 ml-3">Xin phép cá nhân</h2>
+            <div class="col-xl-5 col-12 d-none d-xxl-block">
+                <h2 class="mb-0 mt-2 ml-3 ">Xin phép cá nhân</h2>
             </div>
-            <div class="col-md-8 text-right mobile-mg-right-5 float-right my-2 my-sm-0">
+            <div class="col-xxl-7 col-12 text-xl-right" id="btn-group-ask">
                 <button onclick="location.href='{{route("day_off")}}?t=1'"
-                        class="btn btn-success no-box-shadow waves-effect waves-light float-right mr-0 mr-sm-3" id="btn-off">
+                        class="btn btn-success no-box-shadow waves-effect waves-light mr-0 mr-sm-3 btn-with" id="btn-off">
                     Xin nghỉ phép
                 </button>
                 <button type="button"
-                        class="d-none d-xl-block btn btn-primary no-box-shadow approve-btn-ot waves-effect waves-light float-right"
+                        class="btn btn-primary no-box-shadow approve-btn-ot waves-effect waves-light btn-with"
                         id="btn-late-ot">
                     Xin OT
                 </button>
-                <button type="button" class="approve-btn-early btn btn-warning no-box-shadow waves-light float-right"
+                <button type="button" class="approve-btn-early btn btn-warning no-box-shadow waves-light btn-with"
                         id="btn-late">
                     Xin về sớm
                 </button>
-                <button type="button" class="approve-btn-late btn btn-danger no-box-shadow waves-light float-right"
+                <button type="button" class="approve-btn-late btn btn-danger no-box-shadow waves-light btn-with"
                         id="btn-late">
                     Xin đi muộn
                 </button>
@@ -616,16 +616,16 @@
                         <div class="row">
                             <input type="hidden" name="ot_id" class="ot_id">
                             <input type="hidden" name="permission_status" class="permission_status">
-                            <div class="col-md-6 text-center mt-3">
+                            <div class="col-6 text-center mt-3">
                                 <input style="position: relative;opacity: 1;pointer-events: inherit"
-                                       class="other-ot ml-5"
+                                       class="other-ot ml-0 ml-md-5"
                                        type="radio" name="ot_type" id="project-ot" checked value="1">
                                 <label for="project-ot">OT dự án</label>
                             </div>
-                            <div class="col-md-6 text-center mt-3">
+                            <div class="col-6 text-center mt-3">
                                 <input style="position: relative;opacity: 1;pointer-events: inherit" class="other-ot"
                                        type="radio" name="ot_type" id="other-ot" value="2">
-                                <label for="other-ot" class="mr-5">Lý do cá nhân</label>
+                                <label for="other-ot" class="mr-0 mr-md-5">Lý do cá nhân</label>
                             </div>
                         </div>
                     </div>
@@ -652,7 +652,7 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-md-5 offset-1 my-2">
+                        <div class="col-md-5 offset-1 my-2 fix-with-phone">
                             <div class="form-group ">
                                 <label for="start_at">Thời gian bắt đầu *</label>
                                 <div class="input-group date">
@@ -663,7 +663,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-5 my-2">
+                        <div class="col-md-5 my-2 fix-with-phone">
                             <div class="form-group">
                                 <label for="end_at">Thời gian kết thúc *</label>
                                 <div class="input-group date">
@@ -889,6 +889,7 @@
                                     $('#other-ot').prop('checked', false)
                                 } else if (otType === 2) {
                                     $('#other-ot').prop('checked', true)
+                                    $('#project_id').prop('disabled', 'disabled');
                                     $('#project-ot').prop('checked', false)
                                 }
                             }
@@ -907,10 +908,10 @@
 
                         if (respond[0].status === 1) {
                             $('.header-permission-ot').text('Đơn đã được duyệt');
-                            $('.permission-reason-ot,.btn-permission-ot,#start_at,#end_at,#project_id').prop('disabled', true);
+                            $('.permission-reason-ot,.btn-permission-ot,#start_at,#end_at').prop('disabled', true);
                         } else {
                             $('.title-permission').text('Xin OT');
-                            $('.permission-reason-ot,.btn-permission-ot,#start_at,#end_at,#project_id').prop('disabled', false);
+                            $('.permission-reason-ot,.btn-permission-ot,#start_at,#end_at').prop('disabled', false);
                         }
                     }
                 });

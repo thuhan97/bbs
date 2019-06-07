@@ -1081,7 +1081,7 @@
     }
 
     .mt-lt-13 {
-        bottom: -10px !important;
+        bottom: 22px !important;
     }
 }
 
@@ -1608,12 +1608,11 @@ td.blank, .type-1, .type-2 {
 
     #search_start_at, #search_end_at {
         margin-left: 0 !important;
-        width: 85%;
+        width: 95%;
     }
-
     .calendar-search {
         top: 11px;
-        right: 30px;
+        right: 18px;
         font-size: 16px;
         z-index: 0;
         color: darkgrey;
@@ -1664,7 +1663,7 @@ td.blank, .type-1, .type-2 {
 
 }
 
-@media only screen and (min-device-width: 1024px) and (max-device-width: 1366px) and (-webkit-min-device-pixel-ratio: 2) and (orientation: portrait) {
+@media only screen and (min-device-width: 800px) and (max-device-width: 1000px) and (-webkit-min-device-pixel-ratio: 2) and (orientation: portrait) {
     #slide-out {
         transform: translateX(0%) !important;
 
@@ -1717,13 +1716,45 @@ td.blank, .type-1, .type-2 {
     }
 }
 
+@media (min-width: 767px) and (max-width: 1367px) {
+    #btn-group-ask{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    #btn-detail-day-off{
+        float: right !important;
+    }
+}
+@media (min-width: 767px) and (max-width: 1023px) {
+    .btn-with{
+        width: 22.3%;
+    }
+}
+@media (min-width: 1024px) and (max-width: 1365px) {
+    .btn-with{
+        width: 23%;
+    }
+}
+@media (min-width: 1366px) and (max-width: 1450px) {
+    .btn-with{
+        width: 23.1%;
+    }
+}
 
 @media (max-width: 575px) {
+    .fix-with-phone{
+        width: 86%;
+        margin: auto;
+    }
     .option-time-day-off {
         width: 100% !important;
         margin-left: 0;
     }
-
+    #result-search{
+        margin-top: 40px;
+        width: 40px !important;
+    }
     .modal-center-display {
         margin: 0 auto;
         width: 92%;
@@ -1746,9 +1777,15 @@ td.blank, .type-1, .type-2 {
     }
 
     .btn {
-        padding: 0.7rem .7rem;
-        font-size: .78rem;
-        margin: .175rem;
+        padding: 0.7rem .6rem;
+        font-size: .68rem;
+        margin: 0.1rem;
+    }
+    .btn-with{
+        width: 48%;
+    }
+    #btn-late{
+        margin: 1px;
     }
 
     .tab-nav-link-ot {
@@ -1919,4 +1956,7 @@ td.blank, .type-1, .type-2 {
 }
 .master-opacity{
     opacity: 0.3;
+}
+#result-search{
+    width: 85px;
 }

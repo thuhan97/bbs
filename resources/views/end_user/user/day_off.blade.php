@@ -14,9 +14,12 @@
     $isMaster=auth()->user()->isMaster();
     @endphp
     <form action="{{ route('day_off') }}" method="get" id="form-search">
-        <div class="row mb-0 ml-1 mb-sm-4 mt-sm-3">
-            <div class="row col-6 col-sm-4 col-xl-4 pr-3 pl-3 pt-2">
+        <div class="d-flex mb-3" >
+            <div class="mr-1 mr-md-3">
+                <div class="d-md-flex justify-content-center" >
+                <div>
                     <label class="text-w-400 pt-2" for="">Từ ngày</label>
+                </div>
                     <div class="position-relative">
                         <input type="text"
                                class="form-control border-0 select-item z- ml-2"
@@ -25,12 +28,13 @@
                                readonly="readonly">
                         <i class="far fa-calendar-alt position-absolute calendar-search"></i>
                     </div>
-
-
-
+                </div>
             </div>
-            <div class="row col-6 col-sm-4 col-xl-4 pr-3 pl-3 pt-2 div-day-off-from-day">
-                <label class="text-w-400 pt-2 label-from-days" for="inputZip">Tới ngày</label>
+            <div class="mr-1 mr-md-3">
+                <div class="d-md-flex justify-content-center">
+                <div>
+                    <label class="text-w-400 pt-2 label-from-days" for="inputZip">Tới ngày</label>
+                </div>
                 <div class="position-relative">
                     <input type="text"
                            class="form-control select-item  border-0 ml-2"
@@ -39,11 +43,14 @@
                            readonly>
                     <i class="far fa-calendar-alt position-absolute calendar-search"></i>
                 </div>
+                </div>
             </div>
-            <div class="col-sm-2 col-xl-1 no-padding-left mt-3 mt-sm-0 group-btn-search-day-off">
-                <label class=" text-w-400 d-none d-sm-block" for="inputCity"> &nbsp;</label>
-                <button class="form-control select-item  border-0 btn-secondary btn-secondary-search-day-off" id="result-search"><i
-                            class="fas fa-search"></i></button>
+            <div>
+                <div class="d-md-flex justify-content-center">
+                <div>
+                    <button class="form-control select-item  border-0 btn-secondary" id="result-search"><i class="fas fa-search"></i></button>
+                </div>
+                </div>
             </div>
         </div>
         <div class="d-none d-xl-flex container-fluid col-12 row border-bottom-2 mb-3" style="position: relative;">
@@ -132,7 +139,6 @@
             </span>
             </div>
         </div>
-
         <div class="row mb-2">
             <div class="col-sm-4 col-md-4">
             </div>
@@ -158,7 +164,6 @@
                 </div>
             </div>
         </div>
-
     </form>
     <div class="">
         <table class="table table-bordered ">
@@ -169,10 +174,10 @@
                 <th class="d-none d-md-table-cell text-center">Tới ngày</th>
                 <th class="text-center">Tiêu đề</th>
                 <th class="text-center d-none d-xl-table-cell">Nội dung</th>
-                <th class=" text-center">Ngày có phép</th>
-                <th class="d-none d-md-table-cell text-center">Ngày không phép</th>
+                <th class=" text-center d-none d-xl-table-cell">Nghỉ có lương</th>
+                <th class="d-none d-md-table-cell text-center">Nghỉ không lương</th>
                 <th class="text-center">Phê duyệt</th>
-                <th class=" text-center">Xem thêm</th>
+                <th width="100px" class=" text-center">Xem thêm</th>
             </tr>
             </thead>
             <tbody>
@@ -188,7 +193,7 @@
                     <td class="d-none d-md-table-cell text-center">
                         {{!!!$absence->number_off ? ($absence->status != STATUS_DAY_OFF['noActive'] ? 'Đang duyệt' : '') : checkNumber($absence->number_off) .' ngày'}}
                     </td>
-                    <td class="text-center">
+                    <td class="text-center d-none d-xl-table-cell">
                         {{!!! $absence->absent == DEFAULT_VALUE  ? ($absence->status == STATUS_DAY_OFF['abide'] ? 'Đang duyệt' : (  $absence->status == STATUS_DAY_OFF['noActive'] ? '' : checkNumber($absence->absent) .' ngày')) :  checkNumber($absence->absent) .' ngày'}}
                     </td>
                     <td class="text-center">
@@ -201,8 +206,7 @@
                         @endif
                     </td>
                     <td class=" text-center">
-                        <p id="{{ $absence->id }}" class=" btn-sm m-0 detail-dayoff" style="cursor: pointer" attr="{{ $absence->id }}">Chi
-                            tiết >></p>
+                        <p id="{{ $absence->id }}" class=" btn-sm m-0 detail-dayoff" style="cursor: pointer" attr="{{ $absence->id }}">Chi tiết</p>
                     </td>
                 </tr>
             @endforeach
@@ -543,12 +547,12 @@
                     </div>
                     <div class="mb-4 pb-2">
                         <div class="row">
-                            <div class="form-group col-6 m-0">
+                            <div class="form-group col-12 col-md-6 m-0">
                                 <label class="ml-3 text-d-bold" for="inputCity">Người duyệt</label>
                                 <div id="approver_id" class="ml-3"></div>
                             </div>
                             <!-- Default input -->
-                            <div class="form-group col-6 m-0" id="remove-app-date">
+                            <div class="form-group col-12 col-md-6 m-0" id="remove-app-date">
                                 <label class="ml-3 text-d-bold" for="inputZip">Ngày duyệt</label>
                                 <div id="approver_date" class="ml-3"></div>
                             </div>

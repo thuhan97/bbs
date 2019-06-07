@@ -164,9 +164,9 @@ Breadcrumbs::register('day_off_approval', function ($breadcrumbs) {
     $breadcrumbs->parent('personal');
     $breadcrumbs->push(__l('day_off_approval'), route('day_off_approval'));
 });
-Breadcrumbs::register('bookings', function ($breadcrumbs) {
+Breadcrumbs::register('meetings', function ($breadcrumbs) {
     $breadcrumbs->parent('home');
-    $breadcrumbs->push(__l('Phòng họp'), route('bookings'));
+    $breadcrumbs->push(__l('Lịch họp'), route('meetings'));
 });
 // Admin
 Breadcrumbs::register('admin', function ($breadcrumbs) {

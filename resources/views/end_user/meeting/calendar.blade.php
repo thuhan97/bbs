@@ -1,6 +1,6 @@
 @extends('layouts.end_user')
 @section('breadcrumbs')
-    {!! Breadcrumbs::render('bookings') !!}
+    {!! Breadcrumbs::render('meetings') !!}
 @endsection
 @section('content')
     <div class="row my-3">

@@ -14,13 +14,15 @@ class AskPermissionNoticeEvent implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
     public $data;
+    public $id;
     /**
      * Create a new event instance.
      *
      * @return void
      */
-    public function __construct($datas,$title,$url,$content)
+    public function __construct($datas,$title,$url,$content,$user_id)
     {
+        $this->id=$user_id;
         $this->data = [
             'id' => $datas->id,
             'name' =>  ($datas->user->name ?? $datas->creator->name).SPACE.$title,
@@ -38,6 +40,6 @@ class AskPermissionNoticeEvent implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-        return new Channel('bbs');
+        return new PrivateChannel('users.'.$this->id);
     }
 }

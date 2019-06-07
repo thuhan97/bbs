@@ -100,8 +100,8 @@ class NotificationService extends AbstractService implements IUserTeamService
         foreach ($users as $user_id) {
             if ($users != Auth::id())
                 $notifications[] = NotificationHelper::generateNotify($user_id,  ($data->user->name ?? $data->creator->name).SPACE.$title,$content, $data->creator_id ?? $data->user_id , NOTIFICATION_TYPE['day_off_create'], $url);
+            broadcast(new AskPermissionNoticeEvent($data,$title,$url,$content,$user_id));
         }
-        broadcast(new AskPermissionNoticeEvent($data,$title,$url,$content));
         $this->insertNotification($notifications);
     }
 

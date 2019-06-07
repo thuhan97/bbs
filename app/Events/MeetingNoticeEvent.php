@@ -27,7 +27,7 @@ class MeetingNoticeEvent implements ShouldBroadcast
      */
     public function __construct(Meeting $meeting, $userIds, $type)
     {
-        $url = route('bookings', ['id' => $meeting->id]);
+        $url = route('meetings', ['id' => $meeting->id]);
         $title = $this->getTitle($meeting, $type);
         $content = $meeting->title;
         $receiverUserIds = [];

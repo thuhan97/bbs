@@ -35,12 +35,12 @@ $name = $team->name ?? $config->name;
             <i class="fas fa-industry mr-3"></i>
             {{__l('Project')}}</a>
 
+        <a href="{{route('meetings')}}"
+           class="list-group-item list-group-item-action waves-effect {{ \App\Utils::checkRoute(['meetings']) ? 'active': '' }}">
+            <i class="fas fa-building mr-3"></i>
+            {{__l('Lịch họp')}}
+        </a>
         @if(config('app.env') != 'production')
-            <a href="{{route('bookings')}}"
-               class="list-group-item list-group-item-action waves-effect {{ \App\Utils::checkRoute(['bookings']) ? 'active': '' }}">
-                <i class="fas fa-building mr-3"></i>
-                {{__l('Phòng họp')}}
-            </a>
             <a href="#" class="list-group-item list-group-item-action waves-effect disabled">
                 <i class="fas fa-desktop mr-3"></i>
                 Quản lý thiết bị

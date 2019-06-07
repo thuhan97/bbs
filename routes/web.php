@@ -113,7 +113,7 @@ Route::group([
 
     Route::post('/ngay-nghi/create', 'UserController@dayOffCreate')->name('day_off_create');
 
-    Route::get('/phong-hop', 'MeetingController@calendar')->name('bookings');
+    Route::get('/lich-hop', 'MeetingController@calendar')->name('meetings');
     Route::get('/get_calendar-booking', 'MeetingController@getCalendar')->name('getCalendarMeeting');
     Route::post('/them-phong-hop', 'MeetingController@booking')->name('booking');
     Route::post('/sua-phong-hop/{id}', 'MeetingController@update')->name('update_booking');

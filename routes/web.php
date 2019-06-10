@@ -115,7 +115,7 @@ Route::group([
 
     Route::get('/lich-hop', 'MeetingController@calendar')->name('meetings');
     Route::get('/get_calendar-booking', 'MeetingController@getCalendar')->name('getCalendarMeeting');
-    Route::post('/them-phong-hop', 'MeetingController@booking')->name('booking');
+    Route::post('/them-phong-hop', 'MeetingController@booking')->name('bookings');
     Route::post('/sua-phong-hop/{id}', 'MeetingController@update')->name('update_booking');
     Route::get('/get-booking', 'MeetingController@getMeeting')->name('get_booking');
     Route::get('/delete-booking', 'MeetingController@deleteMeeting')->name('delete_booking');

@@ -283,7 +283,7 @@
          aria-labelledby="myModalLabel"
          aria-hidden="true">
 
-        <div class="modal-dialog modal-center" role="document">
+        <div class="modal-dialog modal-center modal-ipad approval-ipad-pro" role="document">
             <div class="modal-content modal-center-display" id="bg-img" style="background-image: url({{ asset_ver('img/font/xin_nghi.png') }})">
                 <div class="modal-header text-center border-bottom-0 pb-2 p-sm-4">
                     <h4 class="modal-title w-100 font-weight-bold">XIN NGHỈ PHÉP</h4>
@@ -514,7 +514,7 @@
     <div class="modal fade modal-open custom-modal" id="modal-form-detail" tabindex="-1" role="dialog"
          aria-labelledby="myModalLabel"
          aria-hidden="true">
-        <div class="modal-dialog modal-center" role="document">
+        <div class="modal-dialog modal-center approval-ipad-pro modal-ipad" role="document">
             <div class="modal-content modal-center-display" id="bg-img"
                  style="background-image: url({{ asset_ver('img/font/xin_nghi.png') }})">
                 <div class="modal-header text-center border-bottom-0 p-3">
@@ -583,7 +583,7 @@
              aria-labelledby="exampleModalLabel"
              aria-hidden="true">
             <input type="hidden" value="" name="day_off_id" id="id-delete">
-            <div class="modal-dialog" role="document">
+            <div class="modal-dialog" id="modal-delete-day-off" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="ml-4 modal-title text-center" id="exampleModalLabel">Bạn có chắc chắn muốn xóa đơn

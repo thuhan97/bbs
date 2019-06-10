@@ -283,7 +283,7 @@
             <div class="modal fade modal-open custom-modal" id="modal-form" tabindex="-1" role="dialog"
                  aria-labelledby="myModalLabel"
                  aria-hidden="true">
-                <div class="modal-dialog modal-center" role="document">
+                <div class="modal-dialog modal-center approval-ipad-pro" role="document">
                     <div class="modal-content modal-center-display bg-img-day-off" id="bg-img"
                          style="background-image: url({{ asset_ver('img/font/xin_nghi.png') }})">
                         <div class="modal-header text-center border-bottom-0 pb-0">

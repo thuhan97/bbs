@@ -478,7 +478,7 @@
          role="dialog" aria-labelledby="myModalLabel"
          aria-hidden="true">
         <div class="modal-dialog modal-center permission-modal-set-center" role="document">
-            <div class="modal-content" id="bg-img"
+            <div class="modal-content modal-ipad-pro" id="bg-img"
                  style="background-image: url({{ asset_ver('img/font/xin_nghi.png') }})">
                 <div class="modal-header text-center border-bottom-0 p-3">
                     <h4 class='mg-center mb-2 modal-title w-100 font-weight-bold pt-2 mg-left-10 title-permission'>Nội
@@ -536,7 +536,7 @@
          role="dialog" aria-labelledby="myModalLabel"
          aria-hidden="true">
         <div class="modal-dialog modal-center permission-modal-set-center" role="document">
-            <div class="modal-content" id="bg-img"
+            <div class="modal-content modal-ipad-pro" id="bg-img"
                  style="background-image: url({{ asset_ver('img/font/xin_nghi.png') }})">
                 <div class="modal-header text-center border-bottom-0 p-3">
                     <h4 class='mg-center mb-2 modal-title w-100 font-weight-bold pt-2 header-permission-late title-permission'></h4>
@@ -571,7 +571,7 @@
          role="dialog" aria-labelledby="myModalLabel"
          aria-hidden="true">
         <div class="modal-dialog modal-center permission-modal-set-center" role="document">
-            <div class="modal-content" id="bg-img"
+            <div class="modal-content modal-ipad-pro" id="bg-img"
                  style="background-image: url({{ asset_ver('img/font/xin_nghi.png') }})">
                 <div class="modal-header text-center border-bottom-0 p-3">
                     <h4 class='mg-center mb-2 modal-title w-100 font-weight-bold pt-2 header-permission-late title-permission'></h4>
@@ -606,7 +606,7 @@
          role="dialog" aria-labelledby="myModalLabel"
          aria-hidden="true">
         <div class="modal-dialog modal-center permission-modal-set-center" role="document">
-            <div class="modal-content" id="bg-img"
+            <div class="modal-content modal-ipad-pro" id="bg-img"
                  style="background-image: url({{ asset_ver('img/font/xin_nghi.png') }})">
                 <div class="modal-header text-center border-bottom-0 p-3">
                     <h4 class='mg-center mb-2 modal-title w-100 font-weight-bold pt-2 header-permission-late title-permission'></h4>

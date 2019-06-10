@@ -1,4 +1,8 @@
 @media (min-width: 1600px) {
+    #addModal{
+        top: 110px !important;
+        right: -264px !important;
+    }
     .col-lg {
         -ms-flex-preferred-size: 0;
         flex-basis: 0;
@@ -1588,7 +1592,6 @@ td.blank, .type-1, .type-2 {
         padding-top: 0rem !important;
     }
 
-
 }
 
 @media (min-width: 576px) {
@@ -1715,7 +1718,9 @@ td.blank, .type-1, .type-2 {
         font-size: 1.7rem;
     }
 }
-
+.modal-center-content{
+    margin-left: 30% !important;
+}
 @media (min-width: 767px) and (max-width: 1367px) {
     #btn-group-ask{
         display: flex;
@@ -1725,20 +1730,54 @@ td.blank, .type-1, .type-2 {
     #btn-detail-day-off{
         float: right !important;
     }
+    .modal-center-content {
+        margin-left: 6% !important;
+    }
 }
 @media (min-width: 767px) and (max-width: 1023px) {
     .btn-with{
         width: 22.3%;
+    }
+    .modal-ipad{
+        min-height: calc(90vh - 60px) !important;
+        margin: 0 auto !important;
+    }
+    .bg-img-day-off{
+        max-height: 689px !important;
     }
 }
 @media (min-width: 1024px) and (max-width: 1365px) {
     .btn-with{
         width: 23%;
     }
+    .modal-ipad-pro{
+        top: -186px;
+    }
+    .approval-ipad-pro{
+        margin: 0 !important;
+        top:123px;
+    }
+    .bg-img-day-off{
+        max-height: 688px !important;
+    }
+    #modal-delete-day-off{
+        top: 355px;
+        margin: 0 !important;
+    }
 }
 @media (min-width: 1366px) and (max-width: 1450px) {
     .btn-with{
         width: 23.1%;
+    }
+    #addModal{
+        top: 110px !important;
+        right: -264px !important;
+    }
+}
+@media (min-width: 1200px) {
+    #addModal{
+        top: 55px !important;
+        right: -271px !important;
     }
 }
 
@@ -1851,7 +1890,7 @@ td.blank, .type-1, .type-2 {
 
 @media (max-width: 1400px) {
     .bg-img-day-off {
-        height: 547px;
+        max-height: 547px;
         overflow: auto;
     }
 

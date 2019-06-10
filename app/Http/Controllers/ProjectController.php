@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\ProjectNotify;
 use App\Http\Requests\CreateProjectRequest;
 use App\Models\Project;
+use App\Models\User;
 use App\Services\Contracts\IProjectService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -65,6 +67,11 @@ class ProjectController extends Controller
         $project->leader_id = Auth::id();
         $project->fill($all);
         $project->save();
+        if ($project){
+            $idUsers=User::where('status', ACTIVE_STATUS)->pluck('id')->toArray();
+            broadcast(new ProjectNotify($project,$idUsers))->toOthers();
+
+        }
         flash()->success(__l('project_add_successully'));
 
         return redirect(route('project'));

@@ -62,7 +62,7 @@ class MeetingNoticeEvent implements ShouldBroadcast
                 $action = 'cập nhật';
                 break;
             case 2:
-                $action = 'xóa';
+                $action = 'hủy';
                 break;
             default:
                 return 'Thông báo lịch họp';

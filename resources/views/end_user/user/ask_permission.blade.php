@@ -197,7 +197,7 @@
                                                     data-permission="other"
                                                     data-id="{{ $item['id'] ? $item['id'] : '' }}"
                                                     data-itemType="@if($item->type == 1) Xin đi muộn @elseif($item->type == 2) Xin về sớm @endif">
-                                                Duyệtt
+                                                Duyệt
                                             </button>
                                         @elseif($item['status'] == array_search('Đã duyệt', OT_STATUS))
                                             <i class="fas fa-grin-stars fa-2x text-success"

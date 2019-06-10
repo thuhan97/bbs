@@ -46,16 +46,17 @@ class WeeklyReportCheck extends Command
     public function handle()
     {
         $now = Carbon::now();
-        $day = $now->format('N');
+        $day = (int)$now->format('N');
         //Saturday
         if ($day == 6) return;
 
         $dayFormat = $now->format(DATE_FORMAT);
-        $week = $now->format('W');
+        $week = (int)$now->format('W');
         //check last week
         if ($day != 7) {
             $week--;
         }
+
         $monday = date(DATE_FORMAT, strtotime('monday last week'));
         $mondayD = Carbon::createFromFormat(DATE_FORMAT, $monday);
 

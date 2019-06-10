@@ -134,7 +134,7 @@ class PunishesService extends AbstractService implements IPunishesService
             $punishes = [];
             foreach ($users as $user) {
                 $punishes[] = [
-                    'rule_id' => LATE_RULE_ID,
+                    'rule_id' => WEEKLY_REPORT_RULE_ID,
                     'user_id' => $user->id,
                     'infringe_date' => $day,
                     'total_money' => $penalize,

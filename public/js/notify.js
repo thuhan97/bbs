@@ -10,6 +10,16 @@ $(function () {
         myNotify.pushNotify('Thông báo', data.name, null, data.url, data.logo_url);
     });
 
+    bbsChannel.bind('App\\Events\\MeetingNoticeEvent', function (notice) {
+        var data = notice.data;
+        if (data.user_ids.indexOf(userId) >= 0)
+            myNotify.pushNotify(data.title, data.content, null, data.url, data.logo_url);
+    });
+
+    bbsChannel.bind('App\\Events\\WorkExperienceNoticeEvent', function (notice) {
+        var data = notice.data;
+        myNotify.pushNotify(data.name + ' đã chia sẻ kinh nghiệm làm việc', data.introduction, data.image_url, data.url, data.logo_url);
+    });
 
     var myChannel = pusher.subscribe('private-users.' + userId);
 
@@ -30,6 +40,27 @@ $(function () {
         if (window.commentReport) {
             window.commentReport(data.id, data.name, data.image_url, data.content);
         }
+    });
+
+    myChannel.bind('App\\Events\\DayOffNoticeEvent', function (notice) {
+        var data = notice.data;
+        myNotify.pushNotify(data.title, data.content, data.image_url, data.url, data.logo_url);
+    });
+    myChannel.bind('App\\Events\\SuggestionNotifyEvent', function (notice) {
+        var data = notice.data;
+        myNotify.pushNotify(data.title, data.content, data.image_url, data.url, data.logo_url);
+    });
+    myChannel.bind('App\\Events\\AskPermissionPrivateNoticeEevnt', function (notice) {
+        var data = notice.data;
+        myNotify.pushNotify(data.title, data.content, data.image_url, data.url, data.logo_url);
+    });
+    myChannel.bind('App\\Events\\DontReportNotice', function (notice) {
+        var data = notice.data;
+        myNotify.pushNotify(data.title, data.content, data.image_url, data.url, data.logo_url);
+    });
+    myChannel.bind('App\\Events\\AskPermissionNoticeEvent', function (notice) {
+        var data = notice.data;
+        myNotify.pushNotify(data.name, data.introduction, data.image_url, data.url, data.logo_url);
     });
 
     var $notification = $("#notification");
@@ -98,7 +129,4 @@ $(function () {
     }
 });
 
-//firebase:
-if (Notification.permission === "granted") {
 
-}

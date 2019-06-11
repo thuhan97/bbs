@@ -115,7 +115,7 @@ class UserService extends AbstractService implements IUserService
         if ($user->jobtitle_id == TEAMLEADER_ROLE) {
             $team = Team::where('leader_id', Auth::id())->first();
         } else {
-            $team = UserTeam::where('user_id', Auth::id())->first()->team;
+            $team = UserTeam::where('user_id', Auth::id())->first()->team ?? null;
         }
 
         if ($team) {

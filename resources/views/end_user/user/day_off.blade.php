@@ -11,12 +11,15 @@
        }
        $dataDayOff= $dayOff ?? $availableDayLeft['data'];
         $searchStart = date((date('Y')-1).'/01/01', strtotime('tomorrow + 1day'));
-
+    $isMaster=auth()->user()->isMaster();
     @endphp
     <form action="{{ route('day_off') }}" method="get" id="form-search">
-        <div class="row mb-0 ml-1 mb-sm-4 mt-sm-3">
-            <div class="row col-6 col-sm-4 col-xl-4 pr-3 pl-3 pt-2">
+        <div class="d-flex mb-3" >
+            <div class="mr-1 mr-md-3">
+                <div class="d-md-flex justify-content-center" >
+                <div>
                     <label class="text-w-400 pt-2" for="">Từ ngày</label>
+                </div>
                     <div class="position-relative">
                         <input type="text"
                                class="form-control border-0 select-item z- ml-2"
@@ -25,12 +28,13 @@
                                readonly="readonly">
                         <i class="far fa-calendar-alt position-absolute calendar-search"></i>
                     </div>
-
-
-
+                </div>
             </div>
-            <div class="row col-6 col-sm-4 col-xl-4 pr-3 pl-3 pt-2 div-day-off-from-day">
-                <label class="text-w-400 pt-2 label-from-days" for="inputZip">Tới ngày</label>
+            <div class="mr-1 mr-md-3">
+                <div class="d-md-flex justify-content-center">
+                <div>
+                    <label class="text-w-400 pt-2 label-from-days" for="inputZip">Tới ngày</label>
+                </div>
                 <div class="position-relative">
                     <input type="text"
                            class="form-control select-item  border-0 ml-2"
@@ -39,11 +43,14 @@
                            readonly>
                     <i class="far fa-calendar-alt position-absolute calendar-search"></i>
                 </div>
+                </div>
             </div>
-            <div class="col-sm-2 col-xl-1 no-padding-left mt-3 mt-sm-0 group-btn-search-day-off">
-                <label class=" text-w-400 d-none d-sm-block" for="inputCity"> &nbsp;</label>
-                <button class="form-control select-item  border-0 btn-secondary btn-secondary-search-day-off" id="result-search"><i
-                            class="fas fa-search"></i></button>
+            <div>
+                <div class="d-md-flex justify-content-center">
+                <div>
+                    <button class="form-control select-item  border-0 btn-secondary" id="result-search"><i class="fas fa-search"></i></button>
+                </div>
+                </div>
             </div>
         </div>
         <div class="d-none d-xl-flex container-fluid col-12 row border-bottom-2 mb-3" style="position: relative;">
@@ -111,10 +118,10 @@
                 </div>
             </span>
             </div>
-            <div class="col-sm-3 col-md-6 col-lg-3 position-relative pr-0 show-modal">
-            <span class="card bg-danger border-radius-2 day-off-card">
+            <div class="col-sm-3 col-md-6 col-lg-3 position-relative pr-0 @if(!$isMaster) show-modal @endif">
+            <span class="card bg-danger border-radius-2 day-off-card @if($isMaster) master-cursor-initial @endif">
                 <div class="card-body  row d-flex justify-content-center px-0 ml-xxxl-1">
-                    <div class="media d-md-flex">
+                    <div class="media d-md-flex @if($isMaster) master-opacity @endif">
                             <span id="dayoff-option-header-4"
                                   class="d-flex rounded-circle avatar z-depth-1-half mb-3 mx-auto dayoff-header mt-1">
                                 {{--<i class="fas fa-times-circle dayoff-icoin text-danger size-table"></i>--}}
@@ -132,7 +139,6 @@
             </span>
             </div>
         </div>
-
         <div class="row mb-2">
             <div class="col-sm-4 col-md-4">
             </div>
@@ -158,7 +164,6 @@
                 </div>
             </div>
         </div>
-
     </form>
     <div class="">
         <table class="table table-bordered ">
@@ -169,10 +174,10 @@
                 <th class="d-none d-md-table-cell text-center">Tới ngày</th>
                 <th class="text-center">Tiêu đề</th>
                 <th class="text-center d-none d-xl-table-cell">Nội dung</th>
-                <th class=" text-center">Ngày có phép</th>
-                <th class="d-none d-md-table-cell text-center">Ngày không phép</th>
+                <th class=" text-center d-none d-xl-table-cell">Nghỉ có lương</th>
+                <th class="d-none d-md-table-cell text-center">Nghỉ không lương</th>
                 <th class="text-center">Phê duyệt</th>
-                <th class=" text-center">Xem thêm</th>
+                <th width="100px" class=" text-center">Xem thêm</th>
             </tr>
             </thead>
             <tbody>
@@ -188,7 +193,7 @@
                     <td class="d-none d-md-table-cell text-center">
                         {{!!!$absence->number_off ? ($absence->status != STATUS_DAY_OFF['noActive'] ? 'Đang duyệt' : '') : checkNumber($absence->number_off) .' ngày'}}
                     </td>
-                    <td class="text-center">
+                    <td class="text-center d-none d-xl-table-cell">
                         {{!!! $absence->absent == DEFAULT_VALUE  ? ($absence->status == STATUS_DAY_OFF['abide'] ? 'Đang duyệt' : (  $absence->status == STATUS_DAY_OFF['noActive'] ? '' : checkNumber($absence->absent) .' ngày')) :  checkNumber($absence->absent) .' ngày'}}
                     </td>
                     <td class="text-center">
@@ -201,8 +206,7 @@
                         @endif
                     </td>
                     <td class=" text-center">
-                        <p class=" btn-sm m-0 detail-dayoff" style="cursor: pointer" attr="{{ $absence->id }}">Chi
-                            tiết >></p>
+                        <p id="{{ $absence->id }}" class=" btn-sm m-0 detail-dayoff" style="cursor: pointer" attr="{{ $absence->id }}">Chi tiết</p>
                     </td>
                 </tr>
             @endforeach
@@ -280,7 +284,7 @@
          aria-hidden="true">
 
         <div class="modal-dialog modal-center" role="document">
-            <div class="modal-content modal-center-display" id="bg-img" style="background-image: url({{ asset('img/font/xin_nghi.png') }})">
+            <div class="modal-content modal-center-display" id="bg-img" style="background-image: url({{ asset_ver('img/font/xin_nghi.png') }})">
                 <div class="modal-header text-center border-bottom-0 pb-2 p-sm-4">
                     <h4 class="modal-title w-100 font-weight-bold">XIN NGHỈ PHÉP</h4>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -512,7 +516,7 @@
          aria-hidden="true">
         <div class="modal-dialog modal-center" role="document">
             <div class="modal-content modal-center-display" id="bg-img"
-                 style="background-image: url({{ asset('img/font/xin_nghi.png') }})">
+                 style="background-image: url({{ asset_ver('img/font/xin_nghi.png') }})">
                 <div class="modal-header text-center border-bottom-0 p-3">
                     <h4 class="modal-title w-100 font-weight-bold pt-2">NỘI DUNG ĐƠN</h4>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -543,12 +547,12 @@
                     </div>
                     <div class="mb-4 pb-2">
                         <div class="row">
-                            <div class="form-group col-6 m-0">
+                            <div class="form-group col-12 col-md-6 m-0">
                                 <label class="ml-3 text-d-bold" for="inputCity">Người duyệt</label>
                                 <div id="approver_id" class="ml-3"></div>
                             </div>
                             <!-- Default input -->
-                            <div class="form-group col-6 m-0" id="remove-app-date">
+                            <div class="form-group col-12 col-md-6 m-0" id="remove-app-date">
                                 <label class="ml-3 text-d-bold" for="inputZip">Ngày duyệt</label>
                                 <div id="approver_date" class="ml-3"></div>
                             </div>
@@ -651,6 +655,15 @@
 
     <script type="text/javascript">
         $(document).ready(function () {
+            var hash =window.location.hash;
+            if (hash){
+                var id =$(hash).attr('attr');
+             get_data(id)
+            }
+            $(document).on('click','#notification',function () {
+                location.reload();
+            })
+
             $('.calendar-search').on('click', function () {
                 $(this).prev().datepicker('show');
             })
@@ -797,64 +810,7 @@
 
             $('.detail-dayoff').on('click', function () {
                 var id = $(this).attr('attr');
-                var title = {
-                    "1": "Lý do cá nhân",
-                    "2": "Nghỉ đám cưới",
-                    "3": "Nghỉ đám hiếu",
-                    "4": "Nghỉ thai sản",
-                }
-                $.ajax
-                ({
-                    'url': '{{ route('day_off_detail') }}' + '/' + id,
-                    'type': 'get',
-                    success: function (data) {
-                        $('#approver_id').html(data.approver);
-                        $('#number_off').html(data.data.number_off);
-                        if (data.time){
-                            $('#strat_end').html(data.time);
-                        } else{
-                            $('#strat_end').html(data.data.start_date + ' - ' + data.data.end_date);
-                        }
-                        if (data.data.reason) {
-                            $('#reason').html(data.data.reason.replace(/\n/g, "<br />"));
-                        }
-                        $('#id-delete').val(data.data.id);
-                        if (title.hasOwnProperty(data.data.title)) {
-                            $('#title').html(title[data.data.title]);
-                        }
-                        if (data.data.approver_date) {
-                            $('#remove-app-date').show();
-                            $('#approver_date').html(data.data.approver_date);
-                        } else {
-                            $('#remove-app-date').hide();
-                        }
-                        if (data.data.approve_comment) {
-                            $('#remove-app-comment').show();
-                            $('#app-comment').html(data.data.approve_comment);
-                        } else {
-                            $('#remove-app-comment').hide();
-                        }
-                        if (data.data.numoff || data.data.absent) {
-                            $('#remove-numoff').show();
-                        } else {
-                            $('#remove-numoff').hide();
-                        }
-                        if (data.data.numoff || data.data.absent) {
-                            (data.data.status == 2 || data.data.status == 0) ? $('#number_off').html(' ') : $('#number_off').html(data.absent + ' ngày');
-                            $('#remove-numoff').show();
-                        } else {
-                            $('#remove-numoff').hide();
-                        }
-                        if (data.data.status == 0) {
-                            $('#btn-show-modal').html('<span class="btn btn-danger" data-toggle="modal" data-target="#basicExampleModal">HỦY ĐƠN</span>');
-                            $('#btn-show-modal-edit').html('<span class="btn btn-info" attr=' + data.data.id + '>SỬA ĐƠN</span>');
-                        } else {
-                            $('#btn-show-modal').html('')
-                            $('#btn-show-modal-edit').html('')
-                        }
-                        $('#modal-form-detail').modal('show');
-                    }
-                });
+               get_data(id)
             })
 
             $(document).on('click', '#btn-show-modal-edit', function () {
@@ -949,7 +905,6 @@
                 }
             });
         }
-
         function checkDate(start, end, errors, check, btn) {
             var start1 = $(start).val();
             var end1 = $(end).val();
@@ -979,12 +934,72 @@
                 $(errors).text('');
             }
         }
+        function get_data(id) {
+            var title = {
+                "1": "Lý do cá nhân",
+                "2": "Nghỉ đám cưới",
+                "3": "Nghỉ đám hiếu",
+                "4": "Nghỉ thai sản",
+            }
+            $.ajax
+            ({
+                'url': '{{ route('day_off_detail') }}' + '/' + id,
+                'type': 'get',
+                success: function (data) {
+                    $('#approver_id').html(data.approver);
+                    $('#number_off').html(data.data.number_off);
+                    if (data.time){
+                        $('#strat_end').html(data.time);
+                    } else{
+                        $('#strat_end').html(data.data.start_date + ' - ' + data.data.end_date);
+                    }
+                    if (data.data.reason) {
+                        $('#reason').html(data.data.reason.replace(/\n/g, "<br />"));
+                    }
+                    $('#id-delete').val(data.data.id);
+                    if (title.hasOwnProperty(data.data.title)) {
+                        $('#title').html(title[data.data.title]);
+                    }
+                    if (data.data.approver_date) {
+                        $('#remove-app-date').show();
+                        $('#approver_date').html(data.data.approver_date);
+                    } else {
+                        $('#remove-app-date').hide();
+                    }
+                    if (data.data.approve_comment) {
+                        $('#remove-app-comment').show();
+                        $('#app-comment').html(data.data.approve_comment);
+                    } else {
+                        $('#remove-app-comment').hide();
+                    }
+                    if (data.data.numoff || data.data.absent) {
+                        $('#remove-numoff').show();
+                    } else {
+                        $('#remove-numoff').hide();
+                    }
+                    if (data.data.numoff || data.data.absent) {
+                        (data.data.status == 2 || data.data.status == 0) ? $('#number_off').html(' ') : $('#number_off').html(data.absent + ' ngày');
+                        $('#remove-numoff').show();
+                    } else {
+                        $('#remove-numoff').hide();
+                    }
+                    if (data.data.status == 0) {
+                        $('#btn-show-modal').html('<span class="btn btn-danger" data-toggle="modal" data-target="#basicExampleModal">HỦY ĐƠN</span>');
+                        $('#btn-show-modal-edit').html('<span class="btn btn-info" attr=' + data.data.id + '>SỬA ĐƠN</span>');
+                    } else {
+                        $('#btn-show-modal').html('')
+                        $('#btn-show-modal-edit').html('')
+                    }
+                    $('#modal-form-detail').modal('show');
+                }
+            });
+        }
     </script>
 
 @endsection
 
 @push('extend-css')
-    <link href="{{ cdn_asset('/bootstrap-datepicker/css/bootstrap-datepicker.min.css') }}" rel="stylesheet">
+    <link href="{{ asset_ver('bootstrap-datepicker/css/bootstrap-datepicker.min.css') }}" rel="stylesheet">
     <style>
         #textareaForm {
             height: 150px;
@@ -997,7 +1012,7 @@
 @endpush
 
 @push('extend-js')
-    <script src="{{ cdn_asset('/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js') }}"></script>
-    <script src="{{ cdn_asset('/bootstrap-datepicker/js/bootstrap-datepicker.min.js') }}"></script>
-    <script src="{{ cdn_asset('js/jquery.validate.min.js') }}"></script>
+    <script src="{{ asset_ver('bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js') }}"></script>
+    <script src="{{ asset_ver('bootstrap-datepicker/js/bootstrap-datepicker.min.js') }}"></script>
+    <script src="{{ asset_ver('js/jquery.validate.min.js') }}"></script>
 @endpush

@@ -12,7 +12,7 @@ use App\Models\Event;
 use App\Models\EventAttendance;
 use App\Models\Feedback;
 use App\Models\Group;
-use App\Models\Meeting;
+use App\Models\MeetingRoom;
 use App\Models\OverTime;
 use App\Models\Post;
 use App\Models\Project;
@@ -27,6 +27,7 @@ use App\Models\UserTeam;
 use App\Models\WorkTime;
 use App\Models\WorkTimeDetail;
 use App\Models\WorkTimeRegister;
+use App\Models\Booking;
 use App\Repositories\ActionDeviceRepository;
 use App\Repositories\AdminRepository;
 use App\Repositories\ConfigRepository;
@@ -40,7 +41,7 @@ use App\Repositories\Contracts\IEventAttendanceRepository;
 use App\Repositories\Contracts\IEventRepository;
 use App\Repositories\Contracts\IFeedbackRepository;
 use App\Repositories\Contracts\IGroupRepository;
-use App\Repositories\Contracts\IMeetingRepository;
+use App\Repositories\Contracts\IMeetingRoomRepository;
 use App\Repositories\Contracts\IOverTimeRepository;
 use App\Repositories\Contracts\IPostRepository;
 use App\Repositories\Contracts\IProjectRepository;
@@ -55,6 +56,7 @@ use App\Repositories\Contracts\IUserTeamRepository;
 use App\Repositories\Contracts\IWorkTimeDetailRepository;
 use App\Repositories\Contracts\IWorkTimeRegisterRepository;
 use App\Repositories\Contracts\IWorkTimeRepository;
+use App\Repositories\Contracts\IBookingRepository;
 use App\Repositories\DayOffRepository;
 use App\Repositories\DeviceRepository;
 use App\Repositories\DeviceUserRepository;
@@ -62,7 +64,7 @@ use App\Repositories\EventAttendanceRepository;
 use App\Repositories\EventRepository;
 use App\Repositories\FeedbackRepository;
 use App\Repositories\GroupRepository;
-use App\Repositories\MeetingRepository;
+use App\Repositories\MeetingRoomRepository;
 use App\Repositories\OverTimeRepository;
 use App\Repositories\PostRepository;
 use App\Repositories\ProjectRepository;
@@ -77,9 +79,13 @@ use App\Repositories\UserTeamRepository;
 use App\Repositories\WorkTimeDetailRepository;
 use App\Repositories\WorkTimeRegisterRepository;
 use App\Repositories\WorkTimeRepository;
+use App\Repositories\BookingRepository;
 use Illuminate\Support\ServiceProvider;
 
 ##AUTO_INSERT_USE##
+use App\Repositories\Contracts\ISuggestionRepository;
+use App\Repositories\SuggestionRepository;
+use App\Models\Suggestion;
 
 class RepositoriesServiceProvider extends ServiceProvider
 {
@@ -93,6 +99,9 @@ class RepositoriesServiceProvider extends ServiceProvider
     public function register()
     {
         ##AUTO_INSERT_BIND##
+		$this->app->bind(ISuggestionRepository::class, function () {
+			return new SuggestionRepository(new Suggestion());
+		});
         $this->app->bind(IGroupRepository::class, function () {
             return new GroupRepository(new Group());
         });
@@ -174,8 +183,11 @@ class RepositoriesServiceProvider extends ServiceProvider
         $this->app->bind(IProjectRepository::class, function () {
             return new ProjectRepository(new Project());
         });
-        $this->app->bind(IMeetingRepository::class, function () {
-            return new MeetingRepository(new Meeting());
+        $this->app->bind(IMeetingRoomRepository::class, function () {
+            return new MeetingRoomRepository(new MeetingRoom());
+        });
+        $this->app->bind(IBookingRepository::class, function () {
+            return new BookingRepository(new Booking());
         });
     }
 
@@ -184,6 +196,7 @@ class RepositoriesServiceProvider extends ServiceProvider
     {
         return [
             ##AUTO_INSERT_NAME##
+			ISuggestionRepository::class,
             IGroupRepository::class,
             IPunishesRepository::class,
             IRulesRepository::class,
@@ -208,7 +221,8 @@ class RepositoriesServiceProvider extends ServiceProvider
             IUserTeamRepository::class,
             IWorkTimeRegisterRepository::class,
             IProjectRepository::class,
-            IMeetingRepository::class
+            IMeetingRoomRepository::class,
+            IBookingRepository::class
         ];
     }
 }

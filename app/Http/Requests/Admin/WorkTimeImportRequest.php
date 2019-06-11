@@ -32,6 +32,7 @@ class WorkTimeImportRequest extends FormRequest
             'month' => 'required_without:start_date',
             'start_date' => 'nullable|date',
             'end_date' => 'nullable|required_with:start_date|date|after:start_date|same_month:start_date',
+            'user_id' => 'required|array',
             'import_file' => 'required',
         ];
     }

@@ -41,22 +41,22 @@ class NotificationHelper
         $notification = $notificationBuilder->build();
         $data = $dataBuilder->build();
 
-        $token = "fTzxXJxiqrc:APA91bFCe7OX8e_kqbmoOdE-cgeD_1tTsA1lmvt-ZA8aXjz94BDX9w7V-D8_Kt0e5BF2_U0oG9X38t7yFWWfl2YS9FKs7SOqQPB1MRkzXR2YYYCv6mkTtrMyPMccNy8CFJ3gNIF44IRz";
+        $token = "duaqMxk3vY0:APA91bGoSVaU59CoBOigSjIjMsXcscv9B2KK2qDIDP7YXr6pS0-RLEpkNfmK--4gg0DgygA9r1Yz2smijzFarNKFndB8RjQqE50X-GYFCnetyd45Vb5gFpMBWPyfL_xuZQ-YrAar7M7a";
 
         $downstreamResponse = FCM::sendTo($token, $option, $notification, $data);
 
-        $downstreamResponse->numberSuccess();
-        $downstreamResponse->numberFailure();
-        $downstreamResponse->numberModification();
-
-//return Array - you must remove all this tokens in your database
-        $downstreamResponse->tokensToDelete();
-
-//return Array (key : oldToken, value : new token - you must change the token in your database )
-        $downstreamResponse->tokensToModify();
-
-//return Array - you should try to resend the message to the tokens in the array
-        $downstreamResponse->tokensToRetry();
+//        $downstreamResponse->numberSuccess();
+//        $downstreamResponse->numberFailure();
+//        $downstreamResponse->numberModification();
+//
+////return Array - you must remove all this tokens in your database
+//        $downstreamResponse->tokensToDelete();
+//
+////return Array (key : oldToken, value : new token - you must change the token in your database )
+//        $downstreamResponse->tokensToModify();
+//
+////return Array - you should try to resend the message to the tokens in the array
+//        $downstreamResponse->tokensToRetry();
 
     }
 }

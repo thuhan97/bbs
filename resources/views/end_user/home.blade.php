@@ -4,7 +4,7 @@
 @section('content')
     <div id="home">
         <section class="">
-            <div class="row">
+            <div class="row mt-md-5">
                 @foreach($posts as $post)
                     <div class="col-md-6">
                         <div class="post-item grey lighten-4">
@@ -58,7 +58,7 @@
                                     <p class="mb-0">Địa điểm tổ chức: <span class="text-danger">@if($event->place){{str_limit(strip_tags(nl2br($event->place) ), 30) }}@else Bí mật @endif</span></p>
                                     <hr class="my-1 my-3-18inch">
                                     <p class="d-none-15inch">{{str_limit(strip_tags(nl2br($event->introduction) ), 220) }}</p>
-                                    <p class="d-none-18inch mb-15ich-0">{{str_limit(strip_tags(nl2br($event->introduction) ), 90) }}</p>
+                                    <p class="d-none-18inch mb-15ich-0">{{str_limit(strip_tags(nl2br($event->introduction) ), 56) }}</p>
                                     <a class="btn btn-warning btn-md btn-detail-laptop mt-lt-13" href="{{route('event_detail', ['id' => $event->id])}}">Xem chi tiết</a>
                                 </div>
                             </div>

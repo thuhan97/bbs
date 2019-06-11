@@ -99,7 +99,8 @@ Route::group([
 
     Route::post('/add_suggestions', 'SuggestionController@addSuggestions')->name('add_suggestions');
     Route::get('/de-xuat-gop-y', 'SuggestionController@listSuggestions')->name('list_suggestions')->middleware('can:team-leader');
-    Route::post('/approve_suggestion', 'SuggestionController@approveSuggestion')->name('approve_suggestion')->middleware('can:manager');
+    Route::get('/chi-tiet-de-xuat-gop-y/{id}', 'SuggestionController@detailSuggestions')->name('detail_suggestions')->middleware('can:team-leader');
+    Route::post('/approve_suggestion/{id}', 'SuggestionController@approveSuggestion')->name('approve_suggestion')->middleware('can:manager');
 
     // create day off
     Route::post('/ngay-nghi/create-calendar', 'UserController@dayOffCreateCalendar')->name('day_off_create_calendar');
@@ -109,6 +110,16 @@ Route::group([
     Route::get('/kiem-tra-ngay-phep-con-lai', 'UserController@checkUsable')->name('check-usable-day-offf');
 
     Route::post('/notification/mark-read', 'NotificationController@markRead')->name('notification_mark_read');
+
+    Route::post('/ngay-nghi/create', 'UserController@dayOffCreate')->name('day_off_create');
+
+    Route::get('/lich-hop', 'MeetingController@calendar')->name('meetings');
+    Route::get('/get_calendar-booking', 'MeetingController@getCalendar')->name('getCalendarMeeting');
+    Route::post('/them-phong-hop', 'MeetingController@booking')->name('booking');
+    Route::post('/sua-phong-hop/{id}', 'MeetingController@update')->name('update_booking');
+    Route::get('/get-booking', 'MeetingController@getMeeting')->name('get_booking');
+    Route::get('/delete-booking', 'MeetingController@deleteMeeting')->name('delete_booking');
+
 });
 
 Route::group([

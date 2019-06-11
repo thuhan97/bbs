@@ -40,17 +40,36 @@ if (!function_exists('number_collapse')) {
     }
 }
 
-if (!function_exists('cdn_asset')) {
-    /**
-     * Generate a cdn asset path.
-     *
-     * @param string $path
-     *
-     * @return string
-     */
-    function cdn_asset($path)
+/**
+ * make path with datetime version
+ *
+ * @param      $path
+ * @param bool $secure
+ *
+ * @return string
+ * @author: trinhnv
+ *
+ */
+if (!function_exists('asset_ver')) {
+    function asset_ver($path, $secure = null)
     {
-        return \App\Utils::cdnAsset($path);
+        return get_asset_ver($path, $secure);
+    }
+}
+
+/**
+ * @param      $path
+ * @param null $secure
+ * @param bool $asset_link
+ *
+ * @return string
+ */
+if (!function_exists('get_asset_ver')) {
+    function get_asset_ver($path, $secure = null, $asset_link = false)
+    {
+        $url = '/' . $path;
+
+        return $url . (config('app.debug') ? ('?v=' . date('Ymdhis')) : '');
     }
 }
 

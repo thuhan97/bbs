@@ -36,16 +36,22 @@ class WorkTimeImport implements ToCollection, WithValidation
      * @param $startDate
      * @param $endDate
      */
-    public function __construct($startDate, $endDate)
+    public function __construct($startDate, $endDate, $userIds = [])
     {
-        $this->users = User::pluck('id', 'staff_code', 'contract_type')->toArray();
+        $isAllUser = ($userIds[0] ?? null) == null;
+        $userModel = User::select('id', 'staff_code', 'contract_type');
+        if (!$isAllUser) {
+            $userModel = $userModel->whereIn('id', $userIds);
+        }
+
+        $this->users = $userModel->pluck('id', 'staff_code', 'contract_type')->toArray();
 
         $this->workTimeService = app()->make(WorkTimeService::class);
 
-        $this->workTimeService->deletes($startDate, $endDate);
+        $this->workTimeService->deletes($startDate, $endDate, $isAllUser, $userIds);
 
-        $this->startDate = $startDate;
-        $this->endDate = $endDate;
+        $this->startDate = date_create($startDate, new \DateTimeZone('UTC'));
+        $this->endDate = date_create($endDate, new \DateTimeZone('UTC'));
     }
 
     /**
@@ -93,9 +99,10 @@ class WorkTimeImport implements ToCollection, WithValidation
             $startAt = $row[self::HEADINGS['start_at']];
             $endAt = $row[self::HEADINGS['end_at']];
             $work_day = \PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($row[self::HEADINGS['date']]);
-            if (date_create($this->startDate) <= $work_day && date_create($this->endDate) >= $work_day) {
+            if ($this->startDate <= $work_day && $this->endDate >= $work_day) {
                 return $this->workTimeService->importWorkTime($this->users, $staffCode, $work_day, $startAt, $endAt);
             }
+
         }
     }
 
@@ -106,7 +113,6 @@ class WorkTimeImport implements ToCollection, WithValidation
     {
         if (!empty($data)) {
             WorkTime::insertAll($data);
-
             $data = [];
         }
     }

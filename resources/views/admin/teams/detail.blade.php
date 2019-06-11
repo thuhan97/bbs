@@ -37,7 +37,7 @@
                 </div>
                 <div class="col-md-6">
                     <div class="form-group margin-b-5 margin-t-5">
-                        <a href="{{ URL::asset('/admin/teams/manage-member/'.$record->id) }}"
+                        <a href="{{ asset_ver('admin/teams/manage-member/'.$record->id) }}"
                            class="btn btn-sm btn-primary pull-right">
                             <i class="fa fa-plus"></i> <span>Quản lý thành viên</span>
                         </a>

@@ -1,0 +1,102 @@
+
+#showModal .modal-content {
+    width: 450px;
+    padding: 5px;
+    margin-top: 100px;
+    margin-left: 10%;
+}
+
+#deleteModal .modal-content {
+    width: 450px;
+    padding: 5px;
+    margin-top: 300px !important;
+    margin: auto;
+}
+
+#deleteSuccessModal .modal-content {
+    width: 450px;
+    padding: 5px;
+    margin-top: 300px !important;
+    margin: auto;
+}
+
+select, option {
+    font-size: 13px !important;
+}
+
+input, input::-webkit-input-placeholder {
+    font-size: 13px;
+    color: #ccc;
+    padding: 5px;
+}
+
+.form-control {
+    border: -2px solid #dedede75;
+}
+
+textarea {
+    height: 100px !important;
+}
+
+textarea, textarea::-webkit-input-placeholder {
+    color: #ccc;
+    font-size: 13px;
+    padding: 5px;
+}
+
+.btn-light.dropdown-toggle {
+    height: calc(2.25rem) !important;
+    margin-top: 0 !important;
+    padding: 0 10px !important;
+    font-size: 1rem !important;
+    line-height: 1.5 !important;
+    color: #495057 !important;
+    background-color: #fff !important;
+    background-clip: padding-box !important;
+    border: 2px solid #dedede75;
+    border-radius: .25rem !important;
+    transition: none !important;
+    box-shadow: none !important;
+    position: relative !important;
+    margin-left: 0px !important;
+
+}
+
+.filter-option-inner-inner {
+    font-size: 13px !important;
+    text-transform: none;
+}
+
+.dropdown-toggle.bs-placeholder:active {
+    background: #fff !important;
+    transition: none !important;
+    box-shadow: none !important;
+}
+
+.fc-event-container {
+    text-align: center;
+}
+
+.fc-content .fc-time {
+
+    font-size: 13px !important;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.input-group-prepend {
+    margin-right: -10px !important;
+}
+
+.error {
+    border: 1px solid red !important;
+}
+
+#show-object {
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.modal.show .modal-dialog {
+    overflow: initial !important;
+}

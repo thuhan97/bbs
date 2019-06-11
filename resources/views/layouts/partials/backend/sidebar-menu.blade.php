@@ -33,6 +33,11 @@
             <i class="fa fa-anchor"></i> <span>Dự án</span>
         </a>
     </li>
+    <li class="{{ \App\Utils::checkRoute(['admin::meeting_rooms.index', 'admin::meeting_rooms.create', 'admin::meeting_rooms.edit']) ? 'active': '' }}">
+        <a href="{{ route('admin::meeting_rooms.index') }}">
+            <i class="fa fa-bank"></i> <span>Phòng họp</span>
+        </a>
+    </li>
     <li class="{{ \App\Utils::checkRoute(['admin::events.index', 'admin::events.create', 'admin::events.edit']) ? 'active': '' }}">
         <a href="{{ route('admin::events.index') }}">
             <i class="fa fa-calendar"></i> <span>Sự kiện</span>
@@ -41,6 +46,11 @@
     <li class="{{ \App\Utils::checkRoute(['admin::posts.index', 'admin::posts.create', 'admin::posts.edit']) ? 'active': '' }}">
         <a href="{{ route('admin::posts.index') }}">
             <i class="fa fa-share-alt"></i> <span>Thông báo</span>
+        </a>
+    </li>
+    <li class="{{ \App\Utils::checkRoute(['admin::suggestions.index', 'admin::suggestions.create', 'admin::suggestions.edit']) ? 'active': '' }}">
+        <a href="{{ route('admin::suggestions.index') }}">
+            <i class="fa fa-envelope-o" aria-hidden="true"></i> <span>Đề xuất - Góp ý</span>
         </a>
     </li>
     <li class="treeview {{ \App\Utils::checkRoute([
@@ -131,14 +141,10 @@
             <li><a href="{{ route('admin::deviceusers.index') }}"><i class="fa fa-circle"></i> Cấp thiết bị</a></li>
         </ul>
     </li>
-    <li class="{{ \App\Utils::checkRoute(['admin::meetings.index', 'admin::meetings.create', 'admin::meetings.edit']) ? 'active': '' }}">
-        <a href="{{ route('admin::meetings.index') }}">
-            <i class="fa fa-bank"></i> <span>Phòng họp</span>
-        </a>
-    </li>
     <li class="{{ \App\Utils::checkRoute(['admin::punishes.index', 'admin::punishes.create', 'admin::punishes.edit']) ? 'active': '' }}">
         <a href="{{ route('admin::punishes.index') }}">
             <i class="fa fa-money"></i> <span>Danh sách vi phạm</span>
         </a>
     </li>
+    <i class="fa fa-envelope-o" aria-hidden="true"></i>
 </ul>

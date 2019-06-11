@@ -8,8 +8,11 @@
 
 namespace App\Services;
 
+use App\Events\AskPermissionNoticeEvent;
+use App\Events\DontReportNotice;
 use App\Events\PostNotify;
 use App\Events\ReportReplyNoticeEvent;
+use App\Events\WorkExperienceNoticeEvent;
 use App\Helpers\NotificationHelper;
 use App\Models\Notification;
 use App\Models\Report;
@@ -17,6 +20,7 @@ use App\Models\ReportReceiver;
 use App\Models\ReportReply;
 use App\Models\User;
 use App\Services\Contracts\IUserTeamService;
+use Illuminate\Support\Facades\Auth;
 
 class NotificationService extends AbstractService implements IUserTeamService
 {
@@ -62,13 +66,52 @@ class NotificationService extends AbstractService implements IUserTeamService
         $this->insertNotification($notifications);
     }
 
+    public function sendWorkExperience($workExperience)
+    {
+        $users = User::where('status', ACTIVE_STATUS)->pluck('id')->toArray();
+        $notifications = [];
+
+        foreach ($users as $user_id) {
+            if ($user_id != $workExperience->creator_id) {
+                $notifications[] =
+                    NotificationHelper::generateNotify($user_id, $workExperience->user->name . SPACE . __l('word_title_notify'), $workExperience->introduction, $workExperience->creator_id, NOTIFICATION_TYPE['share'], route('view_experience', $workExperience->id));
+            }
+        }
+        broadcast(new WorkExperienceNoticeEvent($workExperience))->toOthers();
+        $this->insertNotification($notifications);
+    }
+    public function sendAskPermission($data,$type)
+    {
+        $url=route('ask_permission').'#ask-permission-'.$data->id;
+        if ($type == WORK_TIME_TYPE[1]){
+            $content=$data->note;
+            $title=__l('ask').SPACE.mb_strtolower(WORK_TIME_TYPE[1],UTF_8);
+        }elseif ($type == WORK_TIME_TYPE[2]){
+            $content=$data->note;
+            $title=__l('ask').SPACE.mb_strtolower(WORK_TIME_TYPE[2],UTF_8);
+        }else{
+            $content=$data->reason;
+            $title=__l('ask_ot');
+            $url=route('ask_permission').'#ot-'.$data->id;
+        }
+        $users = User::where('jobtitle_id','>', TEAMLEADER_ROLE)->pluck('id')->toArray();
+        $notifications = [];
+
+        foreach ($users as $user_id) {
+            if ($users != Auth::id())
+                $notifications[] = NotificationHelper::generateNotify($user_id,  ($data->user->name ?? $data->creator->name).SPACE.$title,$content, $data->creator_id ?? $data->user_id , NOTIFICATION_TYPE['day_off_create'], $url);
+            broadcast(new AskPermissionNoticeEvent($data,$title,$url,$content,$user_id));
+        }
+        $this->insertNotification($notifications);
+    }
+
     public function sendRegularNotification($regulation)
     {
         $users = User::where('status', ACTIVE_STATUS)->pluck('id')->toArray();
         $notifications = [];
         foreach ($users as $user_id) {
             $notifications[] =
-                NotificationHelper::generateNotify($user_id, 'Nội quy & Quy định', 'Cập nhật ' . $regulation->name, 0,
+                NotificationHelper::generateNotify($user_id, __l('regulation'), 'Cập nhật ' . $regulation->name, 0,
                     NOTIFICATION_TYPE['post'], route('regulation_detail', $regulation->id));
         }
 //        broadcast(new PostNotify($post));
@@ -76,7 +119,36 @@ class NotificationService extends AbstractService implements IUserTeamService
         $this->insertNotification($notifications);
     }
 
-    private function insertNotification($notifications)
+    public function dontSentWeeklyReport($users, $day, $week)
+    {
+        $title = __l("Report");
+        $notifications = [];
+        $reportUrl = route('report');
+        $createReportUrl = route('create_report');
+        $message = __l('no_weekly_report', ['week' => $week]);
+        foreach ($users as $user) {
+            //toUser
+            $notifications[] =
+                NotificationHelper::generateNotify($user->id, $title, $message, 0,
+                    NOTIFICATION_TYPE['report'], $createReportUrl);
+
+            event(new DontReportNotice($user->id, $title, $message, $createReportUrl));
+            //to manager
+            $team = $user->team();
+            if ($team) {
+                $manageMessage = __l('staff_no_weekly_report', ['name' => $user->name, 'week' => $week]);
+                $notifications[] =
+                    NotificationHelper::generateNotify($team->leader_id, $title, $manageMessage, 0,
+                        NOTIFICATION_TYPE['report'], $reportUrl);
+
+                event(new DontReportNotice($team->leader_id, $title, $manageMessage, $reportUrl));
+            }
+        }
+
+        $this->insertNotification($notifications);
+    }
+
+    public function insertNotification($notifications)
     {
         if (count($notifications) > 0) {
             Notification::insertAll($notifications);

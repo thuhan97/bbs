@@ -44,7 +44,9 @@
                         @foreach($list_suggestions as $idx => $suggestion)
                             <tr>
                                 <td class="d-none d-sm-table-cell center">
-                                    {{$idx + 1}}
+                                    <a href="{{route('detail_suggestions', ['id' => $suggestion->id])}}">{{$idx + 1}}
+                                    </a>
+
                                 </td>
                                 <td class="center">
                                     {{$suggestion->user->name ?? ''}}
@@ -77,5 +79,5 @@
             </div>
         </div>
     </div>
-    <script type="text/javascript" src="{{URL::asset('js/list_suggestion.js')}}"></script>
+    <script type="text/javascript" src="{{asset_ver('js/list_suggestion.js')}}"></script>
 @endsection

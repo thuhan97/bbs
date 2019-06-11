@@ -16,6 +16,8 @@ class PostObserver
     public function creating(Post $post)
     {
         $post->slug_name = str_slug($post->name);
+        $post->has_notify = $post->notify_date !== null;
+
     }
 
     /**
@@ -39,6 +41,7 @@ class PostObserver
      */
     public function updating(Post $post)
     {
+        $post->has_notify = $post->notify_date !== null;
     }
 
     /**

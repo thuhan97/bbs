@@ -3,15 +3,47 @@
 namespace App\Services\Contracts;
 
 use App\Models\Meeting;
-use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 
-/**
- * IProjectService contract
- * Author: jvb
- * Date: 2019/01/31 05:00
- */
+
 interface IMeetingService extends IBaseService
 {
-    
+
+
+    /**
+     * @param $start , $end
+     *
+     * @return collection
+     */
+    public function getMeetings($start, $end);
+
+    public function getBookings($start, $end);
+
+    /**
+     * @param $meeting
+     *
+     * @return array
+     */
+    public function getParticipantIds($meeting);
+
+    /**
+     * @param int $id
+     *
+     * @return Meeting
+     */
+    public function detail($id);
+
+    /**
+     * @return mixed
+     */
+    public function getUserTree();
+
+    /**
+     * @param Meeting $meeting
+     * @param int     $type
+     *
+     * @return mixed
+     */
+    public function sendMeetingNotice(Meeting $meeting, $type = 0);
+
 }

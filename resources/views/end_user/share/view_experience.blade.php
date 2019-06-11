@@ -27,5 +27,5 @@
 @endsection
 
 @push('footer-scripts')
-    <script src="{{cdn_asset('/js/end-user-share-experience.js')}}"></script>
+    <script src="{{asset_ver('js/end-user-share-experience.js')}}"></script>
 @endpush

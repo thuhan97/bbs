@@ -105,7 +105,7 @@ interface IDayOffService extends IBaseService
     /**
      * @return mixed Collection
      */
-    public function statisticalDayOffExcel($ids);
+    public function statisticalDayOffExcel($request);
     /**
      * @return integer
      */

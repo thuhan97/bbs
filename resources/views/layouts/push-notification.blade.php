@@ -1,10 +1,5 @@
 <!-- Firebase App (the core Firebase SDK) is always required and must be listed first -->
-<script src="https://www.gstatic.com/firebasejs/6.1.0/firebase-app.js"></script>
-
-<!-- Add Firebase products that you want to use -->
-<script src="https://www.gstatic.com/firebasejs/6.1.0/firebase-auth.js"></script>
-<script src="https://www.gstatic.com/firebasejs/6.1.0/firebase-firestore.js"></script>
-<script src="https://www.gstatic.com/firebasejs/6.1.0/firebase-messaging.js"></script>
+<script src="https://www.gstatic.com/firebasejs/6.1.0/firebase.js"></script>
 
 <script>
     // TODO: Replace the following with your app's Firebase project configuration
@@ -22,7 +17,23 @@
     firebase.initializeApp(firebaseConfig);
 
     const messaging = firebase.messaging();
-    messaging.usePublicVapidKey('{{env('FIREBASE_MESSAGING_VALID_KEY')}}');
+    messaging
+        .requestPermission()
+        .then(function () {
+            console.log("Notification permission granted.");
 
+            // get the token in the form of promise
+            return messaging.getToken()
+        })
+        .then(function (token) {
+            console.log(token);
+            //save token
+        })
+        .catch(function (err) {
+            console.log("Unable to get permission to notify.", err);
+        });
+
+    messaging.onMessage(function (payload) {
+        var notification = new Notification(payload.notification.title, {body: payload.notification.body});
+    });
 </script>
-<script type="text/javascript" src="{{ cdn_asset('js/push-notify.js') }}"></script>

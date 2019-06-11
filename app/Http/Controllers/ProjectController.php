@@ -4,9 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\CreateProjectRequest;
 use App\Models\Project;
+use App\Models\ProjectMember;
+use App\Models\User;
 use App\Services\Contracts\IProjectService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 /**
  * ProjectController
@@ -33,8 +36,7 @@ class ProjectController extends Controller
     public function index(Request $request)
     {
         $projects = $this->service->search($request, $perPage, $search);
-
-        return view('end_user.project.index', compact('projects', 'search', 'perPage'));
+        return view('end_user.project.index', compact('projects', 'search', 'perPage','results'));
     }
 
     /**
@@ -44,8 +46,10 @@ class ProjectController extends Controller
      */
     public function create()
     {
+        $users = User::select('id', DB::raw('CONCAT(staff_code, " - ", name) as name'))->where('status', ACTIVE_STATUS)->orderBy('jobtitle_id', 'desc')->orderBy('staff_code')->pluck('name', 'id')->toArray();
+        $results['Danh sách nhân viên'] = $users;
         $record = new Project();
-        return view('end_user.project.create', compact('record'));
+        return view('end_user.project.create', compact('record','results'));
     }
 
     /**
@@ -60,11 +64,18 @@ class ProjectController extends Controller
             $imageUrl = $request->file('image_upload')->store(PROJECT_IMAGE_FOLDER, 'uploads');
             $all['image_url'] = '/uploads/' . $imageUrl;
         }
-
         $project = new Project();
         $project->leader_id = Auth::id();
         $project->fill($all);
         $project->save();
+        foreach ($request->user_id as $user){
+            $projectMember=new ProjectMember();
+            $projectMember->project_id=$project->id;
+            $projectMember->user_id=$user;
+            $projectMember->save();
+        }
+
+
         flash()->success(__l('project_add_successully'));
 
         return redirect(route('project'));
@@ -77,10 +88,13 @@ class ProjectController extends Controller
      */
     public function edit($id)
     {
+
         $user = Auth::user();
         $record = Project::find($id);
         if ($record && $user->can('edit', $record))
-            return view('end_user.project.update', compact('record'));
+            $users = User::select('id', DB::raw('CONCAT(staff_code, " - ", name) as name'))->where('status', ACTIVE_STATUS)->orderBy('jobtitle_id', 'desc')->orderBy('staff_code')->pluck('name', 'id')->toArray();
+        $results['Danh sách nhân viên'] = $users;
+            return view('end_user.project.update', compact('record','results'));
 
         abort(404);
     }
@@ -100,6 +114,24 @@ class ProjectController extends Controller
         $user = Auth::user();
         $project = Project::find($id);
         if ($project && $user->can('edit', $project)) {
+
+            \DB::beginTransaction();
+            try {
+                foreach ($project->projectMembers as $pro){
+                    $pro->delete();
+                }
+                foreach ($request->user_id as $user) {
+                    $projectMember = new ProjectMember();
+                    $projectMember->project_id = $project->id;
+                    $projectMember->user_id = $user;
+                    $projectMember->save();
+                }
+
+            } catch (Exception $ex) {
+                \DB::rollback();
+            }
+            \DB::commit();
+
             $project->fill($all);
             $project->save();
             flash()->success(__l('project_edit_successully'));

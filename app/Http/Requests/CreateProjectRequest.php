@@ -32,6 +32,7 @@ class CreateProjectRequest extends FormRequest
             'start_date' => 'nullable|date',
             'end_date' => 'nullable|date|after_or_equal:start_date',
             'technical' => 'nullable|max:255',
+            'user_id'=>'required'
         ];
     }
 
@@ -44,6 +45,7 @@ class CreateProjectRequest extends FormRequest
             'end_date' => 'ngày kết thúc',
             'scale' => 'quy mô dự án',
             'amount_of_time' => 'thời gian thực hiện',
+            'user_id' => 'người tham gia',
         ];
     }
 }

@@ -25,6 +25,7 @@
         </div>
     </div>
 </div>
+
 <div class="row">
     <div class="col-md-3">
         <div class="md-form{{ $errors->has('start_date') ? ' has-error' : '' }}">
@@ -55,8 +56,6 @@
             @endif
         </div>
     </div>
-</div>
-<div class="row">
     <div class="col-md-3">
         <div class="md-form{{ $errors->has('scale') ? ' has-error' : '' }}">
             <label for="scale">Quy mô dự án (người/tháng)</label>
@@ -83,6 +82,52 @@
                 <span class="text-danger">
                                 <strong>{{ $errors->first('amount_of_time') }}</strong>
                             </span>
+            @endif
+        </div>
+    </div>
+</div>
+<?php
+$arrayCheck=old('user_id',$record->projectMembers->pluck('user_id')->toArray());
+?>
+<div class="row mt-1">
+    <div class="col-12 users_id">
+        <label class="ml-0">Chọn người tham gia *</label>
+        <select class="selectpicker form-control" multiple data-live-search="true"
+                name="user_id[]" id="participants" data-none-selected-text
+                title="">
+            @foreach($results as $group => $users)
+                <optgroup  label="{{$group}}">
+                    @foreach($users as $key => $value)
+                        <option {{ (count($arrayCheck) && in_array($key,$arrayCheck)) ? 'selected' : ' ' }} value="{{$key}}">{{$value}}</option>
+                    @endforeach
+                </optgroup>
+            @endforeach
+        </select>
+        @if ($errors->has('user_id'))
+            <span class="text-danger">
+                    <strong>{{ $errors->first('user_id') }}</strong>
+                </span>
+        @endif
+    </div>
+</div>
+<div class="row">
+    <!-- /.form-group -->
+    <div class="col-md-6">
+        <div class="md-form{{ $errors->has('image_url') ? ' has-error' : '' }}">
+            <div class="input-group">
+                <input id="image_url" class="form-control" type="text" name="image_url"
+                       value="{{ old('image_url', $record->image_url) }}">
+                <span class="input-group-btn">
+                     <a href="#" for="image_url" class="btn btn-primary" id="btnChoose">
+                       <i class="fa fa-picture-o"></i> Chọn ảnh
+                     </a>
+                              <input type="file" accept="image/*" name="image_upload" class="hidden">
+                   </span>
+            </div>
+            @if ($errors->has('image_url'))
+                <span class="text-danger">
+                    <strong>{{ $errors->first('image_url') }}</strong>
+                </span>
             @endif
         </div>
     </div>
@@ -114,32 +159,6 @@
 
         </div>
 
-    </div>
-</div>
-<div class="row">
-    <!-- /.form-group -->
-    <div class="col-md-8">
-        <div class="md-form{{ $errors->has('image_url') ? ' has-error' : '' }}">
-            <div class="input-group">
-                <input id="image_url" class="form-control" type="text" name="image_url"
-                       value="{{ old('image_url', $record->image_url) }}">
-                <span class="input-group-btn">
-                     <a href="#" for="image_url" class="btn btn-primary" id="btnChoose">
-                       <i class="fa fa-picture-o"></i> Chọn ảnh
-                     </a>
-                              <input type="file" accept="image/*" name="image_upload" class="hidden">
-                   </span>
-            </div>
-            @if ($errors->has('image_url'))
-                <span class="text-danger">
-                    <strong>{{ $errors->first('image_url') }}</strong>
-                </span>
-            @endif
-        </div>
-    </div>
-    <div class="col-md-4">
-        <img id="thumbnail" style="margin-top:15px;max-height:100px;"
-             src="{{$record->image_url}}">
     </div>
 </div>
 <div class="row">
@@ -205,4 +224,12 @@
             });
         });
     </script>
+@endpush
+@push('extend-css')
+    <link href="{{asset_ver('bootstrap-select/css/bootstrap-select.css')}}" rel="stylesheet"/>
+    <link rel="stylesheet" type="text/css" href="{{asset_ver('css/meeting.css')}}">
+@endpush
+@push('extend-js')
+    <script type="text/javascript" src="{{asset_ver('mdb/js/bootstrap.js')}}"></script>
+    <script src="{{asset_ver('bootstrap-select/js/bootstrap-select.js')}}" type="text/javascript"></script>
 @endpush

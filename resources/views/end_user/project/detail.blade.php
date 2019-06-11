@@ -43,6 +43,14 @@
                     <td>{{$project->leader->name}}</td>
                 </tr>
                 <tr>
+                    <td class="font-weight-bold">Thành viên trong dự án</td>
+                    <td>
+                            @foreach($project->projectMembers as $users)
+                                {{ $users->user->name ?? ''}} @if(!$loop->last)/@endif
+                            @endforeach
+                    </td>
+                </tr>
+                <tr>
                     <td class="font-weight-bold">Ngày bắt đầu</td>
                     <td>{{$project->start_date}}</td>
                 </tr>

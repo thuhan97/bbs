@@ -31,7 +31,7 @@
         @if(config('app.env') != 'production')
             Pusher.logToConsole = true;
         @endif
-            window.pusher = new Pusher("{{env('PUSHER_APP_KEY')}}", {
+            window.pusher = new Pusher("0f4e41db62e10f4a02a5", {
             cluster: 'ap1',
             forceTLS: true,
             authEndpoint: '/broadcasting/auth',

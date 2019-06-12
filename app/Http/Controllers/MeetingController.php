@@ -63,9 +63,7 @@ class MeetingController extends Controller
         if ($check == NO_DUPLICATE) {
             $room = MeetingRoom::find($meeting_room_id);
             DB::beginTransaction();
-
             $date = $request->days_repeat;
-
             $data = [
                 'users_id' => \Auth::user()->id,
                 'title' => $request->title,

@@ -1960,3 +1960,17 @@ td.blank, .type-1, .type-2 {
 #result-search{
     width: 85px;
 }
+.fix-with-table{
+    width: 90px;
+}
+.custom-select-table{
+    height: 40px;
+    width: 130px;
+}
+.select-user{
+    width: 196px !important;
+}
+#name-error , #customer-error , #customer-user_id , #customer-mission{
+    color: red;
+    margin-top: 30px;
+}

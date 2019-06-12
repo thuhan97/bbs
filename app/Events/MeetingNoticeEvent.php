@@ -10,6 +10,7 @@ use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Auth;
 
 class MeetingNoticeEvent implements ShouldBroadcast
 {
@@ -35,7 +36,7 @@ class MeetingNoticeEvent implements ShouldBroadcast
             if ($meeting->user_id == $user_id) continue;
             $receiverUserIds[] = $user_id;
             $notifications[] =
-                NotificationHelper::generateNotify($user_id, $title, $content, 0, NOTIFICATION_TYPE['meeting'], $url);
+                NotificationHelper::generateNotify($user_id, $title, $content, Auth::id(), NOTIFICATION_TYPE['meeting'], $url);
         }
 
         Notification::insertAll($notifications);
@@ -43,7 +44,7 @@ class MeetingNoticeEvent implements ShouldBroadcast
             'id' => $meeting->id,
             'title' => $title,
             'content' => $content,
-            'image_url' => JVB_LOGO_URL,
+            'image_url' => Auth::user()->avatar,
             'logo_url' => NOTIFICATION_LOGO[NOTIFICATION_TYPE['meeting']],
             'logo_id' => NOTIFICATION_TYPE['meeting'],
             'url' => $url,

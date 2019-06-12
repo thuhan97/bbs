@@ -452,6 +452,7 @@ define('NOTIFICATION_TYPE', [
     'day_off_create' => 10,
     'share' => 11,
     'meeting' => 12,
+    'project'=>13
 ]);
 define('NOTIFICATION_LOGO', [
     0 => 'fa fa-flag black-text',
@@ -467,6 +468,7 @@ define('NOTIFICATION_LOGO', [
     10 => 'fas fa-meh-blank fa-1x text-warning text-size-icon',
     11 => 'fas fa-share-alt-square text-default',
     12 => 'fa fa-comments orange-text',
+    13 =>'fas fa-cogs fa-1x text-success'
 ]);
 define('JVB_LOGO_URL', 'http://jvb-corp.com/img/logo.png');
 
@@ -479,6 +481,12 @@ define('NOTIFICATION_DAY_OFF', [
 define('UTF_8','UTF-8');
 define('OT_TYPE_DEFAULT',1);
 
+define('MISSION_PROJECT', [
+    0 => 'Lập trình viên',
+    1 => 'Kỹ sư cầu nối',
+    2 => 'Manager',
+    3 => 'Team leader',
+]);
 
 
 

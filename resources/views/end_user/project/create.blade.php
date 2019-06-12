@@ -9,7 +9,7 @@
         <div class="col-xxl-2"></div>
         <div class="col-xxl-8 col-12">
             <div class="card">
-                <form action="{{route('store_project')}}" method="post" enctype="multipart/form-data">
+                <form action="{{route('store_project')}}" method="post" enctype="multipart/form-data" id="form-project">
                     @csrf
                     <div class="card-body">
                         <h4 class="card-title">{{__l('create_project')}}

@@ -46,7 +46,7 @@ class SummaryNotification extends Command
                 $intervalTime = 1;
             else
                 $intervalTime = NOTIFICATION_REPEAT_MINUTE;
-            
+
             $users = User::select('id', 'name', 'last_activity_at')
                 ->where('status', ACTIVE_STATUS)
                 ->where('last_activity_at', '<=', Carbon::now()->subMinute($intervalTime))

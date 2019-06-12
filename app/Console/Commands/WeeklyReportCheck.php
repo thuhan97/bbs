@@ -63,6 +63,7 @@ class WeeklyReportCheck extends Command
         //sql select
         $users = User::select('id', 'name', 'jobtitle_id', 'is_remote')
             ->where('status', ACTIVE_STATUS)
+            ->where('start_date', '<=', $monday)
             ->where('jobtitle_id', '<', TEAMLEADER_ROLE)
             ->where(function ($q) {
                 $q->whereNull('is_remote')->orWhere('is_remote', 0);

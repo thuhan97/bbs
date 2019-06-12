@@ -36,6 +36,8 @@ class ProjectController extends Controller
      */
     public function index(Request $request)
     {
+        $users = User::select('id', DB::raw('CONCAT(staff_code, " - ", name) as name'))->where('status', ACTIVE_STATUS)->orderBy('jobtitle_id', 'desc')->orderBy('staff_code')->pluck('name', 'id')->toArray();
+        $results['Danh sách nhân viên'] = $users;
         $projects = $this->service->search($request, $perPage, $search);
         return view('end_user.project.index', compact('projects', 'search', 'perPage','results'));
     }

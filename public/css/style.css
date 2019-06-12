@@ -2000,14 +2000,23 @@ td.blank, .type-1, .type-2 {
     width: 85px;
 }
 .fix-with-table{
-    width: 90px;
+    width: 110px;
 }
 .custom-select-table{
     height: 40px;
-    width: 130px;
+    width: 120px;
 }
 .select-user{
-    width: 196px !important;
+    width: 180px !important;
+}
+.center-td{
+    line-height: 77px;
+}
+.aqua{
+    background-color: aqua !important;
+}
+.fix-with-remove {
+    padding: .5rem 0.5rem !important;
 }
 #name-error , #customer-error , #customer-user_id , #customer-mission{
     color: red;

@@ -39,18 +39,6 @@
                     <td>{{$project->amount_of_time}} months</td>
                 </tr>
                 <tr>
-                    <td class="font-weight-bold">Leader dự án</td>
-                    <td>{{$project->leader->name}}</td>
-                </tr>
-                <tr>
-                    <td class="font-weight-bold">Thành viên trong dự án</td>
-                    <td>
-                            @foreach($project->projectMembers as $users)
-                                {{ $users->user->name ?? ''}} @if(!$loop->last)/@endif
-                            @endforeach
-                    </td>
-                </tr>
-                <tr>
                     <td class="font-weight-bold">Ngày bắt đầu</td>
                     <td>{{$project->start_date}}</td>
                 </tr>
@@ -65,10 +53,10 @@
                         <span><h5 class="text-center">Tất cả các thành viên trong dự án</h5></span>
                         <table class="table table-bordered table-responsive-md table-striped text-center">
                             <tr>
-                                <th class="text-center" rowspan="2">Tên</th>
-                                <th class="text-center" rowspan="2">Vai trò</th>
+                                <th class="text-center center-td" rowspan="2">Tên</th>
+                                <th class="text-center center-td" rowspan="2">Vai trò</th>
                                 <th class="text-center" colspan="2">Công số</th>
-                                <th class="text-center" colspan="2">Thời gian</th>
+                                <th class="text-center " colspan="2">Thời gian</th>
                             </tr>
                             <tr>
                                 <th class="text-center">Hợp đồng</th>
@@ -110,8 +98,8 @@
             </div>
         </div>
     </div>
-    <div class=" border border-light rounded mb-0 px-4">
-        <div class="mt-4">
+    <div class=" border border-light rounded mb-0">
+        <div class=>
             <h5 class="text-info">Kỹ thuật</h5>
             <p>  {!! nl2br(e($project->technical)) !!}</p>
         </div>

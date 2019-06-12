@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Helpers\NotificationHelper;
 use App\Models\Post;
 use App\Services\NotificationService;
 use Carbon\Carbon;
@@ -45,6 +46,8 @@ class PostNotificationSender extends Command
      */
     public function handle()
     {
+        NotificationHelper::sendPushNotification();
+
         $posts = Post::where('has_notify', 1)
             ->where('is_sent', 0)->where('notify_date', '<=', Carbon::now())
             ->get();

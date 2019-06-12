@@ -185,7 +185,7 @@ return [
         Tymon\JWTAuth\Providers\LaravelServiceProvider::class,
         Zizaco\Entrust\EntrustServiceProvider::class,
         Laravel\Socialite\SocialiteServiceProvider::class,
-
+        LaravelFCM\FCMServiceProvider::class,
     ],
 
     /*
@@ -245,7 +245,8 @@ return [
         'Socialite' => Laravel\Socialite\Facades\Socialite::class,
         'ImageFacade' => App\Facades\ImageFacade::class,
         'Input' => Illuminate\Support\Facades\Input::class,
-
+        'FCM'      => LaravelFCM\Facades\FCM::class,
+        'FCMGroup' => LaravelFCM\Facades\FCMGroup::class, // Optional
     ],
 
 ];

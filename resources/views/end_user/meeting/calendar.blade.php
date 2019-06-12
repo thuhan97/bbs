@@ -138,7 +138,7 @@
     <!-- show modal -->
     <div class="modal fade" id="showModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
         <div class="modal-dialog" role="document">
-            <div class="modal-content" style="width: 450px;padding: 5px;margin-top: 100px;font-size: 13px;">
+            <div class="modal-content modal-center-content" style="width: 450px;padding: 5px;margin-top: 100px;font-size: 13px;">
                 <div class="modal-body">
                     <h4 class="text-center font-weight-normal ">Lịch họp</h4>
                     <input type="hidden" name="id" id="id_booking" value="">
@@ -181,7 +181,7 @@
     <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
         <div class="modal-dialog" role="document">
 
-            <div class="modal-content" style="width: 450px;padding: 5px;margin-top: 100px;font-size: 13px;">
+            <div class="modal-content modal-center-content" style="width: 450px;padding: 5px;margin-top: 100px;font-size: 13px;">
 
                 <div class="modal-body">
                     <h6>Bạn có chắc chắn muốn hủy buổi họp này không?</h6>
@@ -197,7 +197,7 @@
     <div class="modal fade" id="deleteSuccessModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
         <div class="modal-dialog" role="document">
 
-            <div class="modal-content" style="width: 450px;padding: 5px;margin-top: 100px;font-size: 13px;">
+            <div class="modal-content modal-center-content" style="width: 450px;padding: 5px;margin-top: 100px;font-size: 13px;">
 
                 <div class="modal-body">
                     <h6 id="message" class="text-center"></h6>
@@ -210,7 +210,7 @@
     </div>
     <div class="modal fade" id="alertModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
         <div class="modal-dialog" role="document">
-            <div class="modal-content">
+            <div class="modal-content modal-center-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="alert_title">Cảnh báo
                     </h5>

@@ -478,8 +478,10 @@ define('NOTIFICATION_DAY_OFF', [
     'close' => 2
 ]);
 
-define('UTF_8','UTF-8');
-define('OT_TYPE_DEFAULT',1);
+define('UTF_8', 'UTF-8');
+define('OT_TYPE_DEFAULT', 1);
+define('NOTIFICATION_DISABLE', 1);
+define('NOTIFICATION_ENABLE', 0);
 
 define('MISSION_PROJECT', [
     0 => 'Lập trình viên',

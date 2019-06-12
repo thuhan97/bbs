@@ -40,20 +40,6 @@ if (!function_exists('number_collapse')) {
     }
 }
 
-if (!function_exists('asset_ver')) {
-    /**
-     * Generate a cdn asset path.
-     *
-     * @param string $path
-     *
-     * @return string
-     */
-    function asset_ver($path)
-    {
-        return \App\Utils::cdnAsset($path);
-    }
-}
-
 /**
  * make path with datetime version
  *

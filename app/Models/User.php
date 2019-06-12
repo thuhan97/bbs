@@ -231,4 +231,28 @@ class User extends Authenticatable implements JWTSubject
     {
         return $this->hasMany(Report::class);
     }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function unread_notifications()
+    {
+        return $this->hasMany(Notification::class)->whereNull('read_at');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function firebase_tokens()
+    {
+        return $this->hasMany(UserFirebaseToken::class);
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function active_firebase_tokens()
+    {
+        return $this->hasMany(UserFirebaseToken::class)->where('is_disabled', NOTIFICATION_ENABLE);
+    }
 }

@@ -34,24 +34,6 @@ const messaging = firebase.messaging();
  // [END initialize_firebase_in_sw]
  **/
 
-messaging
-    .requestPermission()
-    .then(function () {
-        MsgElem.innerHTML = "Notification permission granted."
-        console.log("Notification permission granted.");
-
-        // get the token in the form of promise
-        return messaging.getToken()
-    })
-    .then(function (token) {
-        // print the token on the HTML page
-        TokenElem.innerHTML = "token is : " + token
-    })
-    .catch(function (err) {
-        ErrElem.innerHTML = ErrElem.innerHTML + "; " + err
-        console.log("Unable to get permission to notify.", err);
-    });
-
 // If you would like to customize notifications that are received in the
 // background (Web app is closed or not in browser focus) then you should
 // implement this optional method.

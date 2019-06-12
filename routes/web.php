@@ -109,6 +109,8 @@ Route::group([
     Route::post('/ngay-nghi/create-day-off-vacation', 'UserController@dayOffCreatevacationVacation')->name('day_off_create_vacation');
     Route::get('/kiem-tra-ngay-phep-con-lai', 'UserController@checkUsable')->name('check-usable-day-offf');
 
+    Route::post('/save-token', 'NotificationController@saveToken')->name('notification_save_token');
+    Route::post('/enable-notification', 'NotificationController@enableNotification')->name('notification_enable_push');
     Route::post('/notification/mark-read', 'NotificationController@markRead')->name('notification_mark_read');
 
     Route::post('/ngay-nghi/create', 'UserController@dayOffCreate')->name('day_off_create');

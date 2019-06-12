@@ -25,25 +25,23 @@ class NotificationHelper
         ];
     }
 
-    public static function sendPushNotification()
+    public static function sendPushNotification(array $devices, $title, $content)
     {
         $optionBuilder = new OptionsBuilder();
         $optionBuilder->setTimeToLive(60 * 20);
 
-        $notificationBuilder = new PayloadNotificationBuilder('my title');
-        $notificationBuilder->setBody('Hello world')
+        $notificationBuilder = new PayloadNotificationBuilder($title);
+        $notificationBuilder->setBody($content)
             ->setSound('default');
 
         $dataBuilder = new PayloadDataBuilder();
-        $dataBuilder->addData(['a_data' => 'my_data']);
+        $dataBuilder->addData(['icon' => JVB_LOGO_URL]);
 
         $option = $optionBuilder->build();
         $notification = $notificationBuilder->build();
         $data = $dataBuilder->build();
 
-        $token = "duaqMxk3vY0:APA91bGoSVaU59CoBOigSjIjMsXcscv9B2KK2qDIDP7YXr6pS0-RLEpkNfmK--4gg0DgygA9r1Yz2smijzFarNKFndB8RjQqE50X-GYFCnetyd45Vb5gFpMBWPyfL_xuZQ-YrAar7M7a";
-
-        $downstreamResponse = FCM::sendTo($token, $option, $notification, $data);
+        $downstreamResponse = FCM::sendTo($devices, $option, $notification, $data);
 
 //        $downstreamResponse->numberSuccess();
 //        $downstreamResponse->numberFailure();

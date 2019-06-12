@@ -12,7 +12,8 @@
         messagingSenderId: "{{env('FIREBASE_SENDER_ID')}}",
         appID: "{{env('FIREBASE_APP_ID')}}",
     };
-
+    window.firebaseToken = null;
+    window.firebaseTokenId = null;
     // Initialize Firebase
     firebase.initializeApp(firebaseConfig);
 
@@ -20,13 +21,22 @@
     messaging
         .requestPermission()
         .then(function () {
-            console.log("Notification permission granted.");
 
             // get the token in the form of promise
             return messaging.getToken()
         })
         .then(function (token) {
-            console.log(token);
+            window.firebaseToken = token;
+            $.ajax({
+                url: '{{route('notification_save_token')}}',
+                method: 'POST',
+                dataType: 'JSON',
+                data: {notify_token: token},
+                success: function (data) {
+                    window.firebaseTokenId = data.id;
+                }
+            });
+
             //save token
         })
         .catch(function (err) {
@@ -34,6 +44,29 @@
         });
 
     messaging.onMessage(function (payload) {
-        var notification = new Notification(payload.notification.title, {body: payload.notification.body});
+        var notification = new Notification(payload.notification.title, {
+            body: payload.notification.body,
+            icon: payload.data.icon || '{{JVB_LOGO_URL}}'
+        });
+
+        notification.onclick = function () {
+            window.open('/');
+        }
+    });
+
+    $(window).on('beforeunload', function () {
+        if (window.firebaseTokenId) {
+            //notification_enable_push
+            $.ajax({
+                url: '{{route('notification_enable_push')}}',
+                method: 'POST',
+                dataType: 'JSON',
+                data: {id: window.firebaseTokenId},
+                async: false,
+                success: function (data) {
+                }
+            });
+        }
+        return;
     });
 </script>

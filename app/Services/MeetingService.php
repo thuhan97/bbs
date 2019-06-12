@@ -204,15 +204,6 @@ class MeetingService extends AbstractService implements IMeetingService
             $positions['P-' . $value] = $name;
         }
         $results['Chức vụ'] = $positions;
-
-        $project=[];
-
-        $projects=Project::whereHas('projectMembers',function ($query){
-            $query->where('user_id',Auth::id());
-        })->where('status',ACTIVE_STATUS)->orderBy('name')
-            ->get();
-
-
         $allProject=Project::select(DB::raw("CONCAT('PR-', projects.id) as id"), 'name')
            ->whereHas('projectMembers',function ($query){
                $query->where('user_id',Auth::id());

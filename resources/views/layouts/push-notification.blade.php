@@ -58,20 +58,20 @@
             }
         });
 
-        $(window).on('beforeunload', function () {
-            if (window.firebaseTokenId) {
-                //notification_enable_push
-                $.ajax({
-                    url: '{{route('notification_enable_push')}}',
-                    method: 'POST',
-                    dataType: 'JSON',
-                    data: {id: window.firebaseTokenId},
-                    async: false,
-                    success: function (data) {
-                    }
-                });
-            }
-            return;
-        });
+        {{--$(window).on('beforeunload', function () {--}}
+        {{--    if (window.firebaseTokenId) {--}}
+        {{--        //notification_enable_push--}}
+        {{--        $.ajax({--}}
+        {{--            url: '{{route('notification_enable_push')}}',--}}
+        {{--            method: 'POST',--}}
+        {{--            dataType: 'JSON',--}}
+        {{--            data: {id: window.firebaseTokenId},--}}
+        {{--            async: false,--}}
+        {{--            success: function (data) {--}}
+        {{--            }--}}
+        {{--        });--}}
+        {{--    }--}}
+        {{--    return;--}}
+        {{--});--}}
     </script>
 @endif

@@ -17,7 +17,7 @@ Auth::routes();
 Route::any('logout', 'Auth\LoginController@logout')->name('logout');
 
 Route::group([
-    'middleware' => ['auth'],
+    'middleware' => ['auth', 'activity'],
 ], function () {
     Route::any('/', 'HomeController@index')->name('default');
     Route::get('/trang-chu', 'HomeController@index');

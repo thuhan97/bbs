@@ -26,5 +26,6 @@ class UserFirebaseToken extends Model
         'userAgent',
         'ip',
         'is_disabled',
+        'push_at',
     ];
 }

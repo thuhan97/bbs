@@ -480,6 +480,7 @@ define('UTF_8', 'UTF-8');
 define('OT_TYPE_DEFAULT', 1);
 define('NOTIFICATION_DISABLE', 1);
 define('NOTIFICATION_ENABLE', 0);
+define('NOTIFICATION_REPEAT_MINUTE', 15);
 
 
 

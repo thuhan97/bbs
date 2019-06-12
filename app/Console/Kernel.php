@@ -54,7 +54,7 @@ class Kernel extends ConsoleKernel
         $schedule->command('command:holiday')->monthly();
         $schedule->command('cron:post-notice')->everyThirtyMinutes();
         $schedule->command('weekly-report:check')->dailyAt('12:00');
-        $schedule->command('notify:summary')->hourly();
+        $schedule->command('notify:summary')->everyMinute();
     }
 
     /**

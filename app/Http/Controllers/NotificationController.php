@@ -29,12 +29,11 @@ class NotificationController extends Controller
         if (!$userToken) {
             $data['ip'] = $request->ip();
             $data['userAgent'] = $request->userAgent();
-            $data['is_disabled'] = NOTIFICATION_DISABLE;
             $userToken = new UserFirebaseToken($data);
             $userToken->save();
         } else {
             //online so disable push notification
-            $userToken->is_disabled = NOTIFICATION_DISABLE;
+            $userToken->push_at = null;
             $userToken->save();
         }
         return response()->json(['success' => true, 'id' => $userToken->id]);

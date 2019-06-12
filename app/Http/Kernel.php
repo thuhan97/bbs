@@ -2,6 +2,7 @@
 
 namespace App\Http;
 
+use App\Http\Middleware\ActivityHistoryUser;
 use App\Http\Middleware\CORS;
 use App\Http\Middleware\DeleteCahe;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
@@ -62,6 +63,7 @@ class Kernel extends HttpKernel
         'admin' => \App\Http\Middleware\RedirectIfNotAdmin::class,
         'guest' => \App\Http\Middleware\RedirectIfAuthenticated::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
-        'delete.cache' => DeleteCahe::class
+        'activity' => ActivityHistoryUser::class,
+        'delete.cache' => DeleteCahe::class,
     ];
 }

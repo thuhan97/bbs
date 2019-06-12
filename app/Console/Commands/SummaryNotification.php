@@ -14,7 +14,7 @@ class SummaryNotification extends Command
      *
      * @var string
      */
-    protected $signature = 'notify:summary';
+    protected $signature = 'notify:summary {--any=}';
 
     /**
      * The console command description.
@@ -41,18 +41,19 @@ class SummaryNotification extends Command
     public function handle()
     {
         if (env('ENABLE_PUSH_NOTIFY')) {
-            $users = User::select('id', 'name')
+            $users = User::select('id', 'name', 'last_activity_at')
                 ->where('status', ACTIVE_STATUS)
                 ->where('last_activity_at', '<=', Carbon::now()->subMinute(NOTIFICATION_REPEAT_MINUTE))
                 ->has('firebase_tokens')
-                ->with('firebase_tokens:user_id,token,push_at')
+                ->with('firebase_tokens')
                 ->has('unread_notifications', '>', 0)
                 ->withCount('unread_notifications')
                 ->get();
+
             foreach ($users as $user) {
                 $devices = [];
                 foreach ($user->firebase_tokens as $firebase_token) {
-                    if ($firebase_token->push_at == null || $firebase_token->push_at <= Carbon::now()->subMinute(NOTIFICATION_REPEAT_MINUTE)) {
+                    if ($this->option('any') || $firebase_token->push_at == null || $firebase_token->push_at <= Carbon::now()->subMinute(NOTIFICATION_REPEAT_MINUTE)) {
                         $devices[] = $firebase_token->token;
                         $firebase_token->push_at = Carbon::now();
                         $firebase_token->save();

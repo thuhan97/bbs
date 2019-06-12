@@ -41,9 +41,15 @@ class SummaryNotification extends Command
     public function handle()
     {
         if (env('ENABLE_PUSH_NOTIFY')) {
+            $anyTime = $this->option('any');
+            if ($anyTime)
+                $intervalTime = 1;
+            else
+                $intervalTime = NOTIFICATION_REPEAT_MINUTE;
+            
             $users = User::select('id', 'name', 'last_activity_at')
                 ->where('status', ACTIVE_STATUS)
-                ->where('last_activity_at', '<=', Carbon::now()->subMinute(NOTIFICATION_REPEAT_MINUTE))
+                ->where('last_activity_at', '<=', Carbon::now()->subMinute($intervalTime))
                 ->has('firebase_tokens')
                 ->with('firebase_tokens')
                 ->has('unread_notifications', '>', 0)
@@ -53,7 +59,7 @@ class SummaryNotification extends Command
             foreach ($users as $user) {
                 $devices = [];
                 foreach ($user->firebase_tokens as $firebase_token) {
-                    if ($this->option('any') || $firebase_token->push_at == null || $firebase_token->push_at <= Carbon::now()->subMinute(NOTIFICATION_REPEAT_MINUTE)) {
+                    if ($anyTime || $firebase_token->push_at == null || $firebase_token->push_at <= Carbon::now()->subMinute($intervalTime)) {
                         $devices[] = $firebase_token->token;
                         $firebase_token->push_at = Carbon::now();
                         $firebase_token->save();

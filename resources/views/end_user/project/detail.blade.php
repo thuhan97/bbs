@@ -65,17 +65,6 @@
                                 <th class="text-center">Kết thúc</th>
                             </tr>
                             <tbody>
-                            <td class="pt-3-half pb-0 ">
-                                {{ $project->leader->name ?? ''}}
-                            </td>
-                            <td class="pt-3-half pb-0" contenteditable="true">
-                                leader
-                            </td>
-                            <td class="pt-3-half pb-0">{{ $projectMember->contract ?? '' }}</td>
-                            <td class="pt-3-half pb-0">{{ $projectMember->reality ?? '' }}</td>
-                            <td class="pt-3-half pb-0">{{ $projectMember->time_start ?? '' }}</td>
-                            <td class="pt-3-half pb-0">{{ $projectMember->time_end ?? '' }}</td>
-
                             @foreach($project->projectMembers as $projectMember)
                             <tr>
                                 <td class="pt-3-half pb-0">

@@ -219,7 +219,7 @@
                     <tbody id="append">
                     <tr>
                         <td class="pt-3-half pb-0"  >
-                            {{ Form::select('user_id[]', $results, null , ['class'=>'select-user custom-select-table browser-default custom-select custom-select-lg mb-3', 'placeholder'=>'Vui lòng chọn','required']) }}
+                            {{ Form::select('user_id[]', $results, auth()->id() , ['class'=>'select-user custom-select-table browser-default custom-select custom-select-lg mb-3', 'placeholder'=>'Vui lòng chọn','required']) }}
                         </td>
                         <td class="pt-3-half pb-0"  >
                             {{ Form::select('mission[]', MISSION_PROJECT, null , ['class'=>'custom-select-table browser-default custom-select custom-select-lg mb-3', 'placeholder'=>'Vui lòng chọn','required']) }}

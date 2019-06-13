@@ -69,7 +69,7 @@ if (!function_exists('get_asset_ver')) {
     {
         $url = '/' . $path;
 
-        return $url . (config('app.debug') ? ('?v=' . date('Ymdhis')) : '');
+        return $url . (config('app.debug') ? ('?v=' . date('Ymdhis')) : date(DATE_FORMAT));
     }
 }
 

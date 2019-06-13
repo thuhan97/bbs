@@ -292,7 +292,7 @@
                                 <span class="btn-close-icon" aria-hidden="true">&times;</span>
                             </button>
                         </div>
-                        <div class="modal-body mx-3 mt-0 pb-0">
+                        <div class="modal-body mx-3 mt-0 p-0">
                             <div class="mb-3">
                                 <label class="ml-3 text-d-bold" for="exampleFormControlTextarea5">Tên nhân
                                     viên</label>

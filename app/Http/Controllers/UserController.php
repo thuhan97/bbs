@@ -296,6 +296,8 @@ class UserController extends Controller
 
     public function askPermission()
     {
+        $queryDate = date('Y-m-01', strtotime('- 90 days'));
+        $oneYearAgo = date(DATE_FORMAT, strtotime('- 1 years'));
         $query = WorkTimesExplanation::select(
             'work_times_explanation.id', 'work_times_explanation.work_day', 'work_times_explanation.type',
             'work_times_explanation.ot_type', 'work_times_explanation.note', 'work_times_explanation.status as work_times_explanation_status',
@@ -306,27 +308,29 @@ class UserController extends Controller
             })->leftJoin('users', function ($join) {
                 $join->on('users.id', '=', 'ot_times.approver_id');
             })
-            ->whereYear('work_times_explanation.work_day', date('Y'));
+            ->whereDate('work_times_explanation.work_day', '>=', $queryDate);
+
         $queryLeader = clone $query;
         $dataLeader = $queryLeader->groupBy('work_times_explanation.work_day', 'work_times_explanation.type',
             'work_times_explanation.ot_type', 'work_times_explanation.note', 'work_times_explanation.user_id', 'ot_times.creator_id')
             ->where('user_id', '!=', Auth::id())
             ->orderBy('work_times_explanation.status', 'asc')
-            ->orderBy('work_times_explanation.updated_at', 'desc')
-            ->paginate(PAGINATE_DAY_OFF, ['*'], 'approver-page');
-//
-//        $datas = $query->where('user_id', Auth::id())
-//            ->groupBy('work_times_explanation.work_day', 'work_times_explanation.type',
-//                'work_times_explanation.ot_type', 'work_times_explanation.note', 'work_times_explanation.user_id', 'ot_times.creator_id')
-//            ->orderBy('work_times_explanation.created_at', 'desc')
-//            ->paginate(PAGINATE_DAY_OFF, ['*'], 'user-page');
-//        $workTimeExplanation = WorkTimesExplanation::where('user_id', Auth::id())->where('work_day', date('Y-m-d'))->first();
+            ->orderBy('work_times_explanation.updated_at', 'desc')->get();
 
+        $askPermission = $this->permissionGetExplanation()->where('user_id', Auth::id())
+            ->whereDate('created_at', '>=', $oneYearAgo)
+            ->get();
+        $otTimes = $this->permissionGetOverTime()->where('creator_id', Auth::id())
+            ->whereDate('created_at', '>=', $oneYearAgo)
+            ->orderBy('created_at', 'desc')->get();
 
-        $askPermission = $this->permissionGetExplanation()->where('user_id', Auth::id())->get();
-        $otTimes = $this->permissionGetOverTime()->where('creator_id', Auth::id())->orderBy('created_at', 'desc')->get();
-        $managerApproveOther = $this->permissionGetExplanation()->orderBy('status', 'asc')->orderBy('updated_at', 'desc')->get();
-        $managerApproveOT = $this->permissionGetOverTime()->orderBy('status', 'asc')->get();
+        $managerApproveOther = $this->permissionGetExplanation()
+            ->whereDate('created_at', '>=', $queryDate)
+            ->orderBy('status', 'asc')->orderBy('updated_at', 'desc')->get();
+        $managerApproveOT = $this->permissionGetOverTime()
+            ->whereDate('created_at', '>=', $queryDate)
+            ->orderBy('status', 'asc')->get();
+
         return view('end_user.user.ask_permission', compact('askPermission', 'otTimes', 'dataLeader', 'managerApproveOther', 'managerApproveOT'));
     }
 
@@ -364,7 +368,7 @@ class UserController extends Controller
             }
             $overTime = OverTime::where('creator_id', Auth::id())->where('work_day', $request['work_day'])->first();
             if ($overTime == null && $request['permission_status'] == null) {
-               $overTime= OverTime::create([
+                $overTime = OverTime::create([
                     'creator_id' => Auth::id(),
                     'work_day' => $request['work_day'],
                     'reason' => $request['note'],
@@ -375,7 +379,7 @@ class UserController extends Controller
                     'project_id' => $request['project_id'],
                     'project_name' => $project,
                 ]);
-                $this->notificationService->sendAskPermission($overTime,WORK_TIME_TYPE[4]);
+                $this->notificationService->sendAskPermission($overTime, WORK_TIME_TYPE[4]);
                 return back()->with('create_permission_success', 'create_permission_success');
             } else if ($request['permission_status'] == array_search('Bình thường', WORK_TIME_TYPE)) {
                 OverTime::where('id', $request['ot_id'])->update(['reason' => $request['note'], 'ot_type' => $request['ot_type'], 'start_at' => $request['start_at'], 'end_at' => $request['end_at'], 'minute' => $minute, 'project_name' => $project, 'project_id' => $request['project_id']]);
@@ -391,17 +395,17 @@ class UserController extends Controller
                 $workTimeExplanation->update(['ot_type' => $request['ot_type'], 'note' => $request['note'], 'work_day' => $request['work_day']]);
                 return back()->with('create_permission_success', '');
             } else {
-                $workTimeExplanation=WorkTimesExplanation::create([
-                    $workTimeExplanation= 'user_id' => Auth::id(),
+                $workTimeExplanation = WorkTimesExplanation::create([
+                    $workTimeExplanation = 'user_id' => Auth::id(),
                     'work_day' => $request['work_day'],
                     'type' => $request['permission_type'],
                     'ot_type' => $request['ot_type'],
                     'note' => $request['note'],
                 ]);
-                if ($workTimeExplanation->type == 1){
-                    $this->notificationService->sendAskPermission($workTimeExplanation,WORK_TIME_TYPE[1]);
-                }else{
-                    $this->notificationService->sendAskPermission($workTimeExplanation,WORK_TIME_TYPE[2]);
+                if ($workTimeExplanation->type == 1) {
+                    $this->notificationService->sendAskPermission($workTimeExplanation, WORK_TIME_TYPE[1]);
+                } else {
+                    $this->notificationService->sendAskPermission($workTimeExplanation, WORK_TIME_TYPE[2]);
                 }
             }
             return back()->with('create_permission_success', 'create_permission_success');
@@ -448,29 +452,29 @@ class UserController extends Controller
     public function approvePermission(ApprovePermissionRequest $request)
     {
         if ($request['permission_type'] == 'ot') {
-            $overTime=OverTime::findOrFail($request['id']);
-                $overTime->status = $request['approve_type'];
-               $overTime->note_respond = $request['reason_approve'];
-                $overTime->approver_id = Auth::id();
-               $overTime->approver_at = Carbon::now();
+            $overTime = OverTime::findOrFail($request['id']);
+            $overTime->status = $request['approve_type'];
+            $overTime->note_respond = $request['reason_approve'];
+            $overTime->approver_id = Auth::id();
+            $overTime->approver_at = Carbon::now();
             $overTime->save();
-            if ($overTime->status ==ACTIVE_STATUS){
-                event(new AskPermissionPrivateNoticeEevnt($overTime, $request['permission_type'],ACTIVE_STATUS));
-            }else{
-                event(new AskPermissionPrivateNoticeEevnt($overTime, $request['permission_type'],UNACTIVE_STATUS));
+            if ($overTime->status == ACTIVE_STATUS) {
+                event(new AskPermissionPrivateNoticeEevnt($overTime, $request['permission_type'], ACTIVE_STATUS));
+            } else {
+                event(new AskPermissionPrivateNoticeEevnt($overTime, $request['permission_type'], UNACTIVE_STATUS));
             }
             return back()->with('reject_success', '');
         } elseif ($request['permission_type'] == 'other') {
-            $workTimesExplanation= WorkTimesExplanation::findOrFail($request['id']);
+            $workTimesExplanation = WorkTimesExplanation::findOrFail($request['id']);
 
             $workTimesExplanation->status = $request['approve_type'];
-                    $workTimesExplanation->approver_id = Auth::id();
-                   $workTimesExplanation->reason_reject = $request['reason_approve'];
+            $workTimesExplanation->approver_id = Auth::id();
+            $workTimesExplanation->reason_reject = $request['reason_approve'];
             $workTimesExplanation->save();
-            if ($workTimesExplanation->status == ACTIVE_STATUS){
-                event(new AskPermissionPrivateNoticeEevnt($workTimesExplanation, $request['permission_type'],ACTIVE_STATUS));
-            }else{
-                event(new AskPermissionPrivateNoticeEevnt($workTimesExplanation, $request['permission_type'],UNACTIVE_STATUS));
+            if ($workTimesExplanation->status == ACTIVE_STATUS) {
+                event(new AskPermissionPrivateNoticeEevnt($workTimesExplanation, $request['permission_type'], ACTIVE_STATUS));
+            } else {
+                event(new AskPermissionPrivateNoticeEevnt($workTimesExplanation, $request['permission_type'], UNACTIVE_STATUS));
             }
         }
         return back()->with('approver_success', '');
@@ -627,8 +631,8 @@ class UserController extends Controller
             $dayOff = new DayOff();
         }
         $dayOff->fill($request->all());
-        $dayOff->start_at=$request->start_at  . SPACE .  CHECK_TIME_DAY_OFF_START_DATE;
-        $dayOff->end_at=$request->end_at  . SPACE .  CHECK_TIME_DAY_OFF_END_DATE;
+        $dayOff->start_at = $request->start_at . SPACE . CHECK_TIME_DAY_OFF_START_DATE;
+        $dayOff->end_at = $request->end_at . SPACE . CHECK_TIME_DAY_OFF_END_DATE;
         $dayOff->user_id = Auth::id();
         $dayOff->save();
         if ($request->id_hid) {
@@ -705,7 +709,7 @@ class UserController extends Controller
         $numOffApprove = $this->userDayOffService->checkDateUsable($dayOff->start_at, $dayOff->end_at, null, null, true);
 
         $dayOffPreYear = RemainDayoff::where('user_id', $dayOff->user_id)->where('year', date('Y') - PRE_YEAR)->first()->remain ?? DEFAULT_VALUE;
-        $dayOffYear = RemainDayoff::where('user_id',$dayOff->user_id)->where('year', date('Y'))->first();
+        $dayOffYear = RemainDayoff::where('user_id', $dayOff->user_id)->where('year', date('Y'))->first();
         $remainDayoffCurrentYear = $dayOffYear->remain ?? DEFAULT_VALUE;
         $DayoffFrreCurrentYear = $dayOffYear->day_off_free_female ?? DEFAULT_VALUE;
         $totalAbsent = $numOffApprove[0] - ($dayOffPreYear + $remainDayoffCurrentYear + $DayoffFrreCurrentYear);
@@ -719,11 +723,12 @@ class UserController extends Controller
             'timeStartEdit' => Carbon::createFromFormat(DATE_TIME_FORMAT, $dayOff->start_at)->format('Y/m/d'),
             'timeEndEdit' => Carbon::createFromFormat(DATE_TIME_FORMAT, $dayOff->end_at)->format('Y/m/d'),
             'time' => $time ?? DEFAULT_VALUE,
-            'approver_num'=> $numOffApprove[0],
-            'totalRemain'=>$dayOffPreYear+$remainDayoffCurrentYear+$DayoffFrreCurrentYear,
-            'totalAbsent'=>$totalAbsent > 0 ? $totalAbsent: 0
+            'approver_num' => $numOffApprove[0],
+            'totalRemain' => $dayOffPreYear + $remainDayoffCurrentYear + $DayoffFrreCurrentYear,
+            'totalAbsent' => $totalAbsent > 0 ? $totalAbsent : 0
         ]);
     }
+
     public function editDayOffDetail(Request $request, $id)
     {
         $this->validate($request, [
@@ -742,7 +747,7 @@ class UserController extends Controller
         } else if (isset($request->id_close)) {
             $dayOff = DayOff::findOrFail($request->id_close);
             if ($dayOff->status == STATUS_DAY_OFF['abide']) {
-                $dayOff->approve_comment=$request->approval_coment;
+                $dayOff->approve_comment = $request->approval_coment;
                 $dayOff->status = STATUS_DAY_OFF['noActive'];
                 $dayOff->save();
                 event(new DayOffNoticeEvent($dayOff, Auth::user(), NOTIFICATION_DAY_OFF['close']));

@@ -1,5 +1,5 @@
-@section('page-title', __l('ask_permission'))
 @extends('layouts.end_user')
+@section('page-title', __l('ask_permission'))
 @section('breadcrumbs')
     {!! Breadcrumbs::render('ask_permission') !!}
 @endsection
@@ -151,7 +151,7 @@
             <div class="tab-content pb-0">
                 <!-- Panel 1 -->
                 <div class="tab-pane fade in show active btn-small-ot" id="panelApprove" role="tabpanel">
-                    <table id="contactTbl" class="table table-striped table-bordered">
+                    <table class="contactTbl table table-striped table-bordered">
                         <colgroup>
                             <col style="width: 50px">
                             <col style="width: 120px">
@@ -193,7 +193,8 @@
                                 <td class="text-center td-approve">
                                     @can('manager')
                                         @if($item['status'] == array_search('Chưa duyệt', OT_STATUS))
-                                            <button class="btn btn-info text-uppercase text-center approve" id="ask-permission-{{ $item['id'] }}"
+                                            <button class="btn btn-info text-uppercase text-center approve"
+                                                    id="ask-permission-{{ $item['id'] }}"
                                                     data-permission="other"
                                                     data-id="{{ $item['id'] ? $item['id'] : '' }}"
                                                     data-itemType="@if($item->type == 1) Xin đi muộn @elseif($item->type == 2) Xin về sớm @endif">
@@ -222,7 +223,6 @@
                         @endforeach
                         </tbody>
                     </table>
-                    {{$dataLeader->render('end_user.paginate') }}
                     <br>
                 </div>
                 <!-- Panel 1 -->
@@ -230,7 +230,7 @@
                 <!-- Panel 2 -->
                 <div class="tab-pane fade btn-small-ask" id="panelOT" role="tabpanel">
 
-                    <table id="contactTbl" class="table table-striped table-bordered">
+                    <table class="contactTbl table table-striped table-bordered">
                         <colgroup>
                             <col style="width: 50px">
                             <col style="width: 100px">
@@ -301,7 +301,6 @@
                         @endforeach
                         </tbody>
                     </table>
-                    {{$dataLeader->render('end_user.paginate') }}
                     <br>
 
                 </div>
@@ -318,7 +317,8 @@
             </div>
             <div class="col-xxl-7 col-12 text-xl-right" id="btn-group-ask">
                 <button onclick="location.href='{{route("day_off")}}?t=1'"
-                        class="btn btn-success no-box-shadow waves-effect waves-light mr-0 mr-sm-3 btn-with" id="btn-off">
+                        class="btn btn-success no-box-shadow waves-effect waves-light mr-0 mr-sm-3 btn-with"
+                        id="btn-off">
                     Xin nghỉ phép
                 </button>
                 <button type="button"
@@ -351,7 +351,7 @@
         <div class="tab-content">
             <!-- Panel 1 -->
             <div class="tab-pane fade in show active btn-small-ot" id="panel555" role="tabpanel">
-                <table id="contactTbl" class="table table-striped table-bordered">
+                <table class="contactTbl table table-striped table-bordered">
                     <colgroup>
                         <col style="width: 50px">
                         <col style="width: 120px">
@@ -414,7 +414,7 @@
             <!-- Panel 2 -->
             <div class="tab-pane fade btn-small-ask" id="panel666" role="tabpanel">
 
-                <table id="contactTbl" class="table table-striped table-bordered">
+                <table class="contactTbl table table-striped table-bordered">
                     <colgroup>
                         <col style="width: 50px">
                         <col style="width: 120px">
@@ -473,7 +473,6 @@
         </div>
         <!-- Tab panels -->
     @endcan
-    {{--{{ $datas->render('end_user.paginate') }}--}}
     <div class="modal fade reject" id="modal-reject" tabindex="-1"
          role="dialog" aria-labelledby="myModalLabel"
          aria-hidden="true">
@@ -689,36 +688,41 @@
             </div>
         </div>
     </div>
-    @push('extend-css')
-        <link href="{{ asset_ver('bootstrap-datepicker/css/bootstrap-datepicker.min.css') }}" rel="stylesheet">
-        <link href="{{ asset_ver('bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css') }}" rel="stylesheet">
-    @endpush
+@endsection
+@push('extend-css')
+    <link href="{{ asset_ver('bootstrap-datepicker/css/bootstrap-datepicker.min.css') }}" rel="stylesheet">
+    <link href="{{ asset_ver('bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css') }}" rel="stylesheet">
+@endpush
+@push('extend-js')
+    <script src="{{ asset_ver('js/jquery.validate.min.js') }}"></script>
     <script src="{{ asset_ver('bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js') }}"></script>
     <script src="{{ asset_ver('bootstrap-datepicker/js/bootstrap-datepicker.min.js') }}"></script>
     <script type="text/javascript">
         $(function () {
+            myDataTable($('.contactTbl'));
+
             var hash = window.location.hash;
-        if (hash){
-            var check=hash.split('-');
-            if (check[0] == '#ot'){
-                $('.btn-ot-one , .btn-small-ot').removeClass('show active');
-                $('.btn-ask , .btn-small-ask').addClass('show active');
+            if (hash) {
+                var check = hash.split('-');
+                if (check[0] == '#ot') {
+                    $('.btn-ot-one , .btn-small-ot').removeClass('show active');
+                    $('.btn-ask , .btn-small-ask').addClass('show active');
+                }
+                var otThis = $(hash);
+                if (otThis.attr('id') === 'btn-reject') {
+                    $('.approve-type').attr('value', 2)
+                } else if (otThis.attr('id') === 'btn-approve') {
+                    $('.approve-type').attr('value', 1)
+                }
+                var id = otThis.data("id"),
+                    permissionType = otThis.data("permission"),
+                    itemtype = $(this).data("itemtype");
+                $('.modal-title').text(itemtype)
+                // debugger
+                $('.id').attr('value', id);
+                getData(id, permissionType)
             }
-            var otThis = $(hash);
-            if (otThis.attr('id') === 'btn-reject') {
-                $('.approve-type').attr('value', 2)
-            } else if (otThis.attr('id') === 'btn-approve') {
-                $('.approve-type').attr('value', 1)
-            }
-            var id = otThis.data("id"),
-                permissionType = otThis.data("permission"),
-                itemtype = $(this).data("itemtype");
-            $('.modal-title').text(itemtype)
-            // debugger
-            $('.id').attr('value', id);
-            getData(id,permissionType)
-        }
-            $(document).on('click','#notification',function () {
+            $(document).on('click', '#notification', function () {
                 location.reload();
             })
 
@@ -764,7 +768,7 @@
                 $('.modal-title').text(itemtype)
                 // debugger
                 $('.id').attr('value', id);
-                getData(id,permissionType)
+                getData(id, permissionType)
             });
 
             $('#work-day-late').on('change', function () {
@@ -1021,7 +1025,8 @@
             });
 
         });
-        function getData(id,permissionType) {
+
+        function getData(id, permissionType) {
             $.ajax({
                 url: '{{ route('ask_permission.approveDetail') }}',
                 type: 'GET',
@@ -1032,7 +1037,7 @@
                 },
                 success: function (respond) {
                     // $('.id').attr('value', respond.id);
-                    if (respond.status == 0){
+                    if (respond.status == 0) {
                         $('#modal-reject').modal('show');
 
                     }
@@ -1060,9 +1065,6 @@
             }
         }
     </script>
-@endsection
-@push('extend-js')
-    <script src="{{ asset_ver('js/jquery.validate.min.js') }}"></script>
 @endpush
 
 

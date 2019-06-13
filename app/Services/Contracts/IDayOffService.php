@@ -28,7 +28,7 @@ interface IDayOffService extends IBaseService
      *
      * @return array
      */
-    public function getDayOffUser($request,$userId,$check=false);
+    public function getDayOffUser($request, $userId, $check = false);
 
     /**
      * Update the status (from not approved to approved) of a user)
@@ -69,34 +69,42 @@ interface IDayOffService extends IBaseService
      * @return mixed Collection contain all the approval
      */
     public function listApprovals($minJobTitle = 1);
+
     /**
      * @return mixed Collection
      */
     public function showList($status);
+
     /**
      * @return mixed Collection
      */
-    public function getDataSearch($start,$end,$status,$search='');
+    public function getDataSearch($start, $end, $status, $search = '');
+
     /**
      * @return mixed Collection
      */
     public function getOneData($id);
+
     /**
      * @return mixed Collection
      */
-    public function  searchStatus ($start,$end,$status);
+    public function searchStatus($start, $end, $status);
+
     /**
      * @return mixed Collection
      */
-    public function countDayOff($id,$check=false);
+    public function countDayOff($id, $check = false);
+
     /**
      * @return mixed Collection
      */
     public function countDayOffUserLogin();
+
     /**
      * @return mixed Collection
      */
-    public function calculateDayOff($request,$id);
+    public function calculateDayOff($request, $id);
+
     /**
      * @return mixed Collection
      */
@@ -106,9 +114,10 @@ interface IDayOffService extends IBaseService
      * @return mixed Collection
      */
     public function statisticalDayOffExcel($request);
+
     /**
      * @return integer
      */
-    public function checkDateUsable($startDate,$endDate,$startTime,$endTime,$flag=false);
+    public function checkDateUsable($startDate, $endDate, $startTime, $endTime, $flag = false);
 
 }

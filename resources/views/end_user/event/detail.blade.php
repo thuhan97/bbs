@@ -102,7 +102,6 @@
 @push('extend-js')
     <script>
         $(document).ready(function () {
-            $('.dataTables_length').addClass('bs-select');
         });
     </script>
 @endpush

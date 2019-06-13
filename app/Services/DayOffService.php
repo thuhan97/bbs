@@ -12,7 +12,9 @@ use App\Models\AdditionalDate;
 use App\Models\CalendarOff;
 use App\Models\DayOff;
 use App\Models\RemainDayoff;
+use App\Models\Team;
 use App\Models\User;
+use App\Models\UserTeam;
 use App\Repositories\Contracts\IDayOffRepository;
 use App\Services\Contracts\IDayOffService;
 use Carbon\Carbon;
@@ -25,7 +27,7 @@ class DayOffService extends AbstractService implements IDayOffService
     /**
      * DayOffService constructor.
      *
-     * @param \App\Models\DayOff $model
+     * @param \App\Models\DayOff                            $model
      * @param \App\Repositories\Contracts\IDayOffRepository $repository
      */
     public function __construct(DayOff $model, IDayOffRepository $repository)
@@ -38,10 +40,10 @@ class DayOffService extends AbstractService implements IDayOffService
      * Query a list of day off
      *
      * @param Request $request
-     * @param array $moreConditions
-     * @param array $fields
-     * @param string $search
-     * @param int $perPage
+     * @param array   $moreConditions
+     * @param array   $fields
+     * @param string  $search
+     * @param int     $perPage
      *
      * @return mixed
      */
@@ -307,10 +309,10 @@ class DayOffService extends AbstractService implements IDayOffService
     {
         $result = [];
         $users = User::whereNull('end_date');
-        if ($request['search']){
-            $users ->where('name', 'like', '%' . $request['search'] . '%');
+        if ($request['search']) {
+            $users->where('name', 'like', '%' . $request['search'] . '%');
         }
-        $users=$users->get();
+        $users = $users->get();
         $dayOffMonth = $this->statisticalDayOff($request);
         foreach ($users as $keys => $user) {
             $vacationMode = $this->statisticalVacationModeDayOff($user->id);
@@ -434,20 +436,20 @@ class DayOffService extends AbstractService implements IDayOffService
     }
 
 
-    public function checkDateUsable($startDate, $endDate, $startTime, $endTime,$flag=false)
+    public function checkDateUsable($startDate, $endDate, $startTime, $endTime, $flag = false)
     {
-        if ($flag){
-            $start=Carbon::createFromFormat(DATE_TIME_FORMAT, $startDate)->format(DATE_FORMAT_DAY_OFF) ;
-            $end=Carbon::createFromFormat(DATE_TIME_FORMAT, $endDate)->format(DATE_FORMAT_DAY_OFF) ;
-            $stratTimeDayOff= Carbon::createFromFormat(DATE_TIME_FORMAT, $startDate)->format(TIME_FORMAT);
-            $endTimeDayOff= Carbon::createFromFormat(DATE_TIME_FORMAT, $endDate)->format(TIME_FORMAT);
-            $startDateDayOff=Carbon::createFromFormat(DATE_TIME_FORMAT, $startDate)->format(DATE_FORMAT_SLASH) ;
-            $endDateDayOff=Carbon::createFromFormat(DATE_TIME_FORMAT, $endDate)->format(DATE_FORMAT_SLASH) ;
-        }else{
+        if ($flag) {
+            $start = Carbon::createFromFormat(DATE_TIME_FORMAT, $startDate)->format(DATE_FORMAT_DAY_OFF);
+            $end = Carbon::createFromFormat(DATE_TIME_FORMAT, $endDate)->format(DATE_FORMAT_DAY_OFF);
+            $stratTimeDayOff = Carbon::createFromFormat(DATE_TIME_FORMAT, $startDate)->format(TIME_FORMAT);
+            $endTimeDayOff = Carbon::createFromFormat(DATE_TIME_FORMAT, $endDate)->format(TIME_FORMAT);
+            $startDateDayOff = Carbon::createFromFormat(DATE_TIME_FORMAT, $startDate)->format(DATE_FORMAT_SLASH);
+            $endDateDayOff = Carbon::createFromFormat(DATE_TIME_FORMAT, $endDate)->format(DATE_FORMAT_SLASH);
+        } else {
             $checkStart = $startTime == DEFAULT_VALUE ? CHECK_TIME_DAY_OFF_USABLE_START[0] : CHECK_TIME_DAY_OFF_USABLE_START[1];
             $checkEnd = $endTime == DEFAULT_VALUE ? CHECK_TIME_DAY_OFF_USABLE_END[0] : CHECK_TIME_DAY_OFF_USABLE_END[1];
-            $start=$startDate . ' ' . $checkStart;
-            $end=$endDate . ' ' . $checkEnd;
+            $start = $startDate . ' ' . $checkStart;
+            $end = $endDate . ' ' . $checkEnd;
         }
         $from = Carbon::createFromFormat(DATE_FORMAT_DAY_OFF, $start);
         $to = Carbon::createFromFormat(DATE_FORMAT_DAY_OFF, $end);
@@ -455,23 +457,22 @@ class DayOffService extends AbstractService implements IDayOffService
             return false;
         }
         $numberDate = $to->diffInDays($from) + REMAIN_DAY_OFF_DEFAULT;
-        if ($flag){
-            if ($stratTimeDayOff ==CHECK_TIME_DAY_OFF_START_DATE){
-                $stratTimeDayOff=CHECK_TIME_DAY_OFF_USABLE_START[0];
+        if ($flag) {
+            if ($stratTimeDayOff == CHECK_TIME_DAY_OFF_START_DATE) {
+                $stratTimeDayOff = CHECK_TIME_DAY_OFF_USABLE_START[0];
             }
-            if ($endTimeDayOff ==CHECK_TIME_DAY_OFF_END_DATE){
-                $endTimeDayOff=TIME_END_DATE;
+            if ($endTimeDayOff == CHECK_TIME_DAY_OFF_END_DATE) {
+                $endTimeDayOff = TIME_END_DATE;
             }
-            $e=Carbon::createFromFormat(DATE_FORMAT_DAY_OFF, $startDateDayOff .' '.$stratTimeDayOff);
-            $f=Carbon::createFromFormat(DATE_FORMAT_DAY_OFF, $endDateDayOff.' '.$endTimeDayOff);
-            $day = ($e->diffInHours($f))/HOURS_OF_DAY ;
-        }else{
+            $e = Carbon::createFromFormat(DATE_FORMAT_DAY_OFF, $startDateDayOff . ' ' . $stratTimeDayOff);
+            $f = Carbon::createFromFormat(DATE_FORMAT_DAY_OFF, $endDateDayOff . ' ' . $endTimeDayOff);
+            $day = ($e->diffInHours($f)) / HOURS_OF_DAY;
+        } else {
             if ($startTime == DEFAULT_VALUE && $endTime != DEFAULT_VALUE) {
-                $day = ($to->diffInHours($from) + ONE_HOURS)  / HOURS_OF_DAY;
-            }elseif ($startTime == REMAIN_DAY_OFF_DEFAULT  && $endTime == REMAIN_DAY_OFF_DEFAULT){
-                $day = ($to->diffInHours($from) + ONE_HOURS)  / HOURS_OF_DAY;
-            }
-            else {
+                $day = ($to->diffInHours($from) + ONE_HOURS) / HOURS_OF_DAY;
+            } elseif ($startTime == REMAIN_DAY_OFF_DEFAULT && $endTime == REMAIN_DAY_OFF_DEFAULT) {
+                $day = ($to->diffInHours($from) + ONE_HOURS) / HOURS_OF_DAY;
+            } else {
                 $day = ($to->diffInHours($from) + INT_HALT_DATE) / HOURS_OF_DAY;
             }
         }
@@ -491,24 +492,24 @@ class DayOffService extends AbstractService implements IDayOffService
                 $checkAdditional = $checkAdditional + REMAIN_DAY_OFF_DEFAULT;
             }
         }
-        $check=false;
+        $check = false;
         $calender = CalendarOff::all();
         foreach ($calender as $keys => $value) {
             $numCalenderOffStart = Carbon::createFromFormat(DATE_FORMAT, $value->date_off_from)->format(DATE_FORMAT);
             $numCalenderOffEnd = Carbon::createFromFormat(DATE_FORMAT, $value->date_off_to)->format(DATE_FORMAT);
             for ($i = DEFAULT_VALUE; $i < $numberDate; $i++) {
-                $convertDayCheckStart = Carbon::createFromFormat(DATE_FORMAT_DAY_OFF,  $start)->addDay($i)->format(DATE_FORMAT);
-                $convertDayCheckEnd = Carbon::createFromFormat(DATE_FORMAT_DAY_OFF,  $end)->addDay($i)->format(DATE_FORMAT);
+                $convertDayCheckStart = Carbon::createFromFormat(DATE_FORMAT_DAY_OFF, $start)->addDay($i)->format(DATE_FORMAT);
+                $convertDayCheckEnd = Carbon::createFromFormat(DATE_FORMAT_DAY_OFF, $end)->addDay($i)->format(DATE_FORMAT);
                 if (strtotime($convertDayCheckStart) >= strtotime($numCalenderOffStart) && strtotime($convertDayCheckStart) <= strtotime($numCalenderOffEnd)) {
                     array_push($totalCalendarOff, $i);
                 }
             }
-                if (strtotime($to->format(DATE_FORMAT)) <= strtotime($numCalenderOffEnd) && strtotime($to->format(DATE_FORMAT)) >= strtotime($numCalenderOffStart)){
-                    $check=true;
-                }
+            if (strtotime($to->format(DATE_FORMAT)) <= strtotime($numCalenderOffEnd) && strtotime($to->format(DATE_FORMAT)) >= strtotime($numCalenderOffStart)) {
+                $check = true;
+            }
         }
-        $totalDayOff=($day+ $checkAdditional) - (count($total)+count($totalCalendarOff));
-        return  [$totalDayOff,$check];
+        $totalDayOff = ($day + $checkAdditional) - (count($total) + count($totalCalendarOff));
+        return [$totalDayOff, $check];
     }
 
     /**
@@ -549,9 +550,25 @@ class DayOffService extends AbstractService implements IDayOffService
             DB::raw('DATE_FORMAT(day_offs.approver_at, "%d/%m/%Y (%H:%i)") as approver_date'), 'users.name')
             ->join('users', 'users.id', '=', 'day_offs.user_id');
         if ($check) {
-            $data = $data->where('day_offs.approver_id', Auth::id())
-                ->where('day_offs.user_id', '<>', Auth::id())
-                ->orderBy('day_offs.id', DESC);
+            $user = Auth::user();
+            if ($user->isTeamLeader()) {
+                $team = Team::where('leader_id', $user->id)->first();
+                if ($team) {
+                    $userIds = UserTeam::where('team_id', $team->id)->pluck('user_id')->toArray();
+                    $data = $data->whereIn('day_offs.user_id', $userIds);
+                } else {
+                    $data = $data
+                        ->where('day_offs.approver_id', Auth::id())
+                        ->where('day_offs.user_id', '<>', Auth::id());
+                }
+            } else {
+                $data = $data
+                    ->where('day_offs.approver_id', Auth::id())
+                    ->where('day_offs.user_id', '<>', Auth::id());
+            }
+
+
+            $data->orderBy('day_offs.id', DESC);
             return $data;
         } else {
             $data = $data->where('day_offs.id', $id);
@@ -596,7 +613,7 @@ class DayOffService extends AbstractService implements IDayOffService
         } else {
             $datas->whereYear('day_offs.start_at', '<=', date('Y'));
         }
-        $datas=$datas->whereNull('users.end_date')->get();
+        $datas = $datas->whereNull('users.end_date')->get();
         return $datas;
     }
 

@@ -196,7 +196,7 @@ $(function () {
             });
         },
         eventAllow: function (dropLocation, item) {
-            return item.user_id == userId;
+            return item.user_id == userId && item.end.diff(new Date()) >= 0;
         },
         eventDrop: function (calEvent, next) {
             $('#days_repeat').val(calEvent.start.format('YYYY-MM-DD'));

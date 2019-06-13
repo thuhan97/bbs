@@ -1,8 +1,9 @@
 @media (min-width: 1600px) {
-    #addModal{
+    #addModal {
         top: 110px !important;
         right: -264px !important;
     }
+
     .col-lg {
         -ms-flex-preferred-size: 0;
         flex-basis: 0;
@@ -369,21 +370,21 @@
     line-height: 40px;
 }
 
-#contactTbl tbody td, #contactTbl tbody th {
+.contactTbl tbody td, .contactTbl tbody th {
     vertical-align: middle;
     padding: 0.5rem 0.5rem;
 }
 
-#contactTbl .td-approve {
+.contactTbl .td-approve {
     padding: 0;
 }
 
-#contactTbl .td-approve .btn-info {
+.contactTbl .td-approve .btn-info {
     padding: 8px 15px;
 
 }
 
-#contactTbl .avatar {
+.contactTbl .avatar {
     width: 40px;
     height: 40px;
 }
@@ -1108,12 +1109,12 @@
     }
 
     .mb-1-18inch {
-        margin-bottom: 1rem!important;
+        margin-bottom: 1rem !important;
     }
 
     .my-3-18inch {
-        margin-bottom: 1rem!important;
-        margin-top: 1rem!important;
+        margin-bottom: 1rem !important;
+        margin-top: 1rem !important;
     }
 }
 
@@ -1226,11 +1227,11 @@ td.blank, .type-1, .type-2 {
     font-weight: bold;
 }
 
-#number_off-error, #title-error, #exampleFormControlTextarea2-error, #approver_id-error, #option_check-error, #exampleFormControlTextarea4-error, #note-error, #start_at-error, #end_at-error, #project_id-error,#reason-error,#explanation_type-error, #ot_type-error {
+#number_off-error, #title-error, #exampleFormControlTextarea2-error, #approver_id-error, #option_check-error, #exampleFormControlTextarea4-error, #note-error, #start_at-error, #end_at-error, #project_id-error, #reason-error, #explanation_type-error, #ot_type-error {
     color: red;
 }
 
-#project_id-error,#reason-error {
+#project_id-error, #reason-error {
     margin-left: 9%;
 }
 
@@ -1613,6 +1614,7 @@ td.blank, .type-1, .type-2 {
         margin-left: 0 !important;
         width: 95%;
     }
+
     .calendar-search {
         top: 11px;
         right: 18px;
@@ -1718,82 +1720,100 @@ td.blank, .type-1, .type-2 {
         font-size: 1.7rem;
     }
 }
-.modal-center-content{
+
+.modal-center-content {
     margin-left: 30% !important;
 }
+
 @media (min-width: 767px) and (max-width: 1367px) {
-    #btn-group-ask{
+    #btn-group-ask {
         display: flex;
         align-items: center;
         justify-content: center;
     }
-    #btn-detail-day-off{
+
+    #btn-detail-day-off {
         float: right !important;
     }
+
     .modal-center-content {
         margin-left: 6% !important;
     }
 }
+
 @media (min-width: 767px) and (max-width: 1023px) {
-    .btn-with{
+    .btn-with {
         width: 22.3%;
     }
-    .modal-ipad{
+
+    .modal-ipad {
         min-height: calc(90vh - 60px) !important;
         margin: 0 auto !important;
     }
-    .bg-img-day-off{
+
+    .bg-img-day-off {
         max-height: 689px !important;
     }
 }
+
 @media (min-width: 1024px) and (max-width: 1365px) {
-    .btn-with{
+    .btn-with {
         width: 23%;
     }
-    .modal-ipad-pro{
+
+    .modal-ipad-pro {
         top: -186px;
     }
-    .approval-ipad-pro{
+
+    .approval-ipad-pro {
         margin: 0 !important;
-        top:123px;
+        top: 123px;
     }
-    .bg-img-day-off{
+
+    .bg-img-day-off {
         max-height: 688px !important;
     }
-    #modal-delete-day-off{
+
+    #modal-delete-day-off {
         top: 355px;
         margin: 0 !important;
     }
 }
+
 @media (min-width: 1366px) and (max-width: 1450px) {
-    .btn-with{
+    .btn-with {
         width: 23.1%;
     }
-    #addModal{
+
+    #addModal {
         top: 110px !important;
         right: -264px !important;
     }
 }
+
 @media (min-width: 1200px) {
-    #addModal{
+    #addModal {
         top: 55px !important;
         right: -271px !important;
     }
 }
 
 @media (max-width: 575px) {
-    .fix-with-phone{
+    .fix-with-phone {
         width: 86%;
         margin: auto;
     }
+
     .option-time-day-off {
         width: 100% !important;
         margin-left: 0;
     }
-    #result-search{
+
+    #result-search {
         margin-top: 40px;
         width: 40px !important;
     }
+
     .modal-center-display {
         margin: 0 auto;
         width: 92%;
@@ -1820,10 +1840,12 @@ td.blank, .type-1, .type-2 {
         font-size: .68rem;
         margin: 0.1rem;
     }
-    .btn-with{
+
+    .btn-with {
         width: 48%;
     }
-    #btn-late{
+
+    #btn-late {
         margin: 1px;
     }
 
@@ -1922,6 +1944,11 @@ td.blank, .type-1, .type-2 {
     .label-from-days {
         margin-left: 6px;
     }
+
+    #addModal .modal-body {
+        overflow-y: auto;
+        max-height: 350px;
+    }
 }
 
 @media (min-width: 1024px) {
@@ -1975,27 +2002,34 @@ td.blank, .type-1, .type-2 {
     resize: none;
 }
 
-.md-form textarea~label.active {
+.md-form textarea ~ label.active {
     display: none;
 }
-.btn-send-suggestion{
+
+.btn-send-suggestion {
     width: 158px;
 }
-.space-text-5{
+
+.space-text-5 {
     text-indent: 5px;
 }
+
 .img-event-home {
     margin: 0 auto;
 }
-.text-size-icon{
+
+.text-size-icon {
     font-size: 17px;
 }
-.master-cursor-initial{
+
+.master-cursor-initial {
     cursor: initial !important;
 }
-.master-opacity{
+
+.master-opacity {
     opacity: 0.3;
 }
-#result-search{
+
+#result-search {
     width: 85px;
 }

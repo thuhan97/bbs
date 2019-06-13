@@ -272,13 +272,13 @@ class ImageHelper
     public static function generateImageUrl($imagePath)
     {
         if (!$imagePath) {
-            $imagePath = URL_IMAGE_NO_IMAGE;
+            $imagePath = URL_IMAGE_NO_AVATAR;
         }
         if (starts_with($imagePath, '/')) {
             $imagePath = ltrim($imagePath, '/');
         }
         if (!file_exists($imagePath)) {
-            $imagePath = URL_IMAGE_NO_IMAGE;
+            $imagePath = URL_IMAGE_NO_AVATAR;
         }
         return $imagePath;
     }

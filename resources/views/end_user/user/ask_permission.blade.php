@@ -310,7 +310,7 @@
             <!-- Tab panels -->
         @endif
     @endcan
-    @cannot('manager')
+    @cannot('master')
         <div class="row m-t-20">
             <div class="col-xl-5 col-12 d-none d-xxl-block">
                 <h2 class="mb-0 mt-2 ml-3 ">Xin phép cá nhân</h2>

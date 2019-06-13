@@ -47,7 +47,7 @@
                     <th class="d-none d-sm-table-cell" scope="row">{{$id + 1}}</th>
                     <td class="text-center">
                         <img class="avatar lazy img-fluid z-depth-1 rounded-circle" data-src="{{$user->avatar}}"
-                             src="{{URL_IMAGE_NO_IMAGE}}" onerror="this.src='{{URL_IMAGE_NO_IMAGE}}'">
+                             src="{{URL_IMAGE_NO_AVATAR}}" onerror="this.src='{{URL_IMAGE_NO_AVATAR}}'">
                     </td>
                     <td class="d-none d-sm-table-cell">{{$user->staff_code}}</td>
                     <?php

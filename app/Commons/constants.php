@@ -37,7 +37,8 @@ define('LANG_VN', 'vi');
 
 define('EXPIRE_POTATO_DEFAULT', 6);
 
-define('URL_IMAGE_NO_IMAGE', '/dist/img/no-avatar.png');
+define('URL_IMAGE_NO_AVATAR', '/dist/img/no-avatar.png');
+define('URL_IMAGE_NO_IMAGE', '/dist/img/No_Image_Available.jpg');
 define('UPLOAD_PATH', '/uploads');
 define('URL_IMAGE_AVATAR', UPLOAD_PATH . '/avatar/');
 define('URL_IMAGE_PROJECT', 'adminlte/img/projects_img/');

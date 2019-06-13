@@ -74,7 +74,7 @@ foreach ($notifications as $notification) {
                 <ul class="navbar-nav nav-flex-icons">
                     <li class="nav-item d-none d-sm-block">
                         <a class="nav-link waves-effect waves-light" id="nav_bar_avatar">
-                            <img src="{{Auth::user()->avatar}}" onerror="this.src='{{URL_IMAGE_NO_IMAGE}}'"
+                            <img src="{{Auth::user()->avatar}}" onerror="this.src='{{URL_IMAGE_NO_AVATAR}}'"
                                  class="rounded-circle z-depth-0" alt="avatar image">
                         </a>
                     </li>

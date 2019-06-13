@@ -106,7 +106,7 @@ class User extends Authenticatable implements JWTSubject
     public function getAvatarAttribute()
     {
         if (empty($this->attributes['avatar']))
-            return URL_IMAGE_NO_IMAGE;
+            return URL_IMAGE_NO_AVATAR;
         return $this->attributes['avatar'];
     }
 

@@ -196,7 +196,7 @@ $teams = \App\Models\Team::select('id', 'name', 'color')->withCount('members')->
                         <ul class="users-list clearfix">
                             @foreach($probationStaffs as $probationStaff)
                                 <li>
-                                    <img src="{{$probationStaff->avatar}}" onerror="this.src='{{URL_IMAGE_NO_IMAGE}}'"
+                                    <img src="{{$probationStaff->avatar}}" onerror="this.src='{{URL_IMAGE_NO_AVATAR}}'"
                                          alt="{{$probationStaff->name}}">
                                     <a class="users-list-name" href="#">{{$probationStaff->name}}</a>
                                     <span class="users-list-date">{{$probationStaff->probation_at}}</span>

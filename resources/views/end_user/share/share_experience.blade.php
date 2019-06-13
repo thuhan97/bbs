@@ -23,7 +23,7 @@
                        data-target="#feedback" data-toggle="modal"
                        style="border-radius: 35px;border: 5px solid #FED6D8;font-size: 17px;">
                         <img class="imgAddExperience" src="{{ asset_ver('img/icon_exp.png') }}"
-                             onerror="this.src='{{URL_IMAGE_NO_IMAGE}}'" alt="avatar image"/>
+                             onerror="this.src='{{URL_IMAGE_NO_AVATAR}}'" alt="avatar image"/>
                         Đăng bài
                     </a>
                 </div>
@@ -31,7 +31,7 @@
                     <div class="posts">
                         <div class="content-share-experience">
                             <div class="userImage">
-                                <img src="{{$experience->user->avatar}}" onerror="this.src='{{URL_IMAGE_NO_IMAGE}}'"
+                                <img src="{{$experience->user->avatar}}" onerror="this.src='{{URL_IMAGE_NO_AVATAR}}'"
                                      alt="avatar image"/>
                             </div>
                             <div class="info-user-post">

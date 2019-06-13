@@ -110,7 +110,7 @@ $type = request('type', $reportType);
                                                 @foreach($report->receivers as $receiver)
                                                     <div class="float-left mb-2 report-receiver @if($receiver->id == \Illuminate\Support\Facades\Auth::id()) me @endif">
                                                         <img src="{{$receiver->avatar}}" class="rounded-circle"
-                                                             onerror="this.src='{{URL_IMAGE_NO_IMAGE}}'">
+                                                             onerror="this.src='{{URL_IMAGE_NO_AVATAR}}'">
                                                         <span>{{$receiver->name}}</span>
                                                     </div>
                                                 @endforeach

@@ -2,7 +2,6 @@
 
 namespace App\Policies;
 
-use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class UsersPolicy
@@ -17,6 +16,14 @@ class UsersPolicy
     public function __construct()
     {
         //
+    }
+
+    public function master($user)
+    {
+        if ($user->jobtitle_id == MASTER_ROLE) {
+            return true;
+        }
+        return null;
     }
 
     public function manager($user)

@@ -10,7 +10,7 @@ $name = $team->name ?? $config->name;
 
     <div class="text-center mb-xl-4">
         <a href="/" class="logo-wrapper waves-effect">
-            <img src="{{$logoUrl}}" class="img-fluid" alt="">
+            <img src="{{$logoUrl}}" onerror="this.src='{{JVB_LOGO_URL}}'" class="img-fluid" alt="">
         </a>
 
         <p><strong class="text-uppercase text-primary">

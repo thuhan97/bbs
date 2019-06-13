@@ -26,6 +26,7 @@ class AuthServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->registerPolicies();
+        Gate::define('master', 'App\Policies\UsersPolicy@master');
         Gate::define('manager', 'App\Policies\UsersPolicy@manager');
         Gate::define('team-leader', 'App\Policies\UsersPolicy@teamLeader');
         Gate::define('HCNS', 'App\Policies\UsersPolicy@HCNS');

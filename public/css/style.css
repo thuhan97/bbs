@@ -384,7 +384,7 @@
 
 }
 
-.contactTbl .avatar {
+#contactTbl .avatar, .contactTbl .avatar {
     width: 40px;
     height: 40px;
 }

@@ -61,16 +61,47 @@ class WorkTimeImport implements ToCollection, WithValidation
      */
     public function collection(Collection $rows)
     {
-        $results = [];
+        $datas = [];
         foreach ($rows as $index => $row) {
             if ($index >= self::START_ROW) {
-                $item = $this->mappingData($row);
-                if ($item) {
-                    $results[] = $item;
+                $item = $this->readRow($row);
 
-                    if ($index % 100 === 0) {
-                        $this->insertData($results);
-                    }
+                if ($item) {
+                    $datas[] = $item;
+                }
+            }
+        }
+        $dataCollection = collect($datas)->groupBy('user_id');
+        $workDayDatas = [];
+        foreach ($dataCollection as $userId => $items) {
+            $workDays = $items->groupBy('work_day');
+            foreach ($workDays as $day => $checkIns) {
+                $times = [];
+                foreach ($checkIns as $time) {
+                    $times[] = $time['start_at'];
+                    $times[] = $time['end_at'];
+                }
+                $timeColection = collect($times);
+
+                $workDayData = [
+                    'user_id' => $userId,
+                    'staff_code' => $items->first()['staff_code'],
+                    'work_day' => $day,
+                    'start_at' => $timeColection->min(),
+                    'end_at' => $timeColection->max(),
+                ];
+
+                $workDayDatas[] = $workDayData;
+            }
+        }
+        $results = [];
+
+        foreach ($workDayDatas as $index => $row) {
+            $item = $this->mappingData($row);
+            if ($item) {
+                $results[] = $item;
+                if ($index % 100 === 0) {
+                    $this->insertData($results);
                 }
             }
         }
@@ -91,14 +122,42 @@ class WorkTimeImport implements ToCollection, WithValidation
      * @return array
      * @throws \Exception
      */
-    private function mappingData(collection $row)
+    private function readRow(collection $row)
     {
         $staffCode = $row[self::HEADINGS['staff_code']];
         if (array_key_exists($staffCode, $this->users)) {
 
+            $userId = $this->users[$staffCode];
             $startAt = $row[self::HEADINGS['start_at']];
             $endAt = $row[self::HEADINGS['end_at']];
-            $work_day = \PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($row[self::HEADINGS['date']]);
+
+            $work_day = \PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($row[self::HEADINGS['date']])->format(DATE_FORMAT);
+
+            return [
+                'user_id' => $userId,
+                'staff_code' => $staffCode,
+                'work_day' => $work_day,
+                'start_at' => $startAt,
+                'end_at' => $endAt,
+            ];
+        }
+    }
+
+    /**
+     * @param Collection $row
+     *
+     * @return array
+     * @throws \Exception
+     */
+    private function mappingData(array $row)
+    {
+
+        $staffCode = $row['staff_code'];
+        if (array_key_exists($staffCode, $this->users)) {
+
+            $startAt = $row['start_at'];
+            $endAt = $row['end_at'];
+            $work_day = date_create_from_format(DATE_FORMAT, $row['work_day']);
             if ($this->startDate <= $work_day && $this->endDate >= $work_day) {
                 return $this->workTimeService->importWorkTime($this->users, $staffCode, $work_day, $startAt, $endAt);
             }

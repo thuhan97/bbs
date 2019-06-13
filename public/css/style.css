@@ -1173,6 +1173,11 @@ table.calendarTable td {
 
 }
 
+#calendar tr td.type1,
+#calendar tr td.type5 {
+    color: white;
+}
+
 .dayNumber {
     font-size: 1.7em;
     font-weight: bold;

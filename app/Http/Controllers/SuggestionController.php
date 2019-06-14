@@ -47,16 +47,21 @@ class SuggestionController extends Controller
             } else {
                 $suggestion->status = NOT_APPROVE_SUGGESTION;
             }
-            if($suggestion->update()){
+            if ($suggestion->update()) {
                 return $suggestion->status;
-            }else{
+            } else {
                 return $check;
             }
         }
     }
-    public function detailSuggestions($id){
-       $suggestion=Suggestion::findOrFail($id);
-           return view('end_user.suggestion.detail', compact('suggestion'));
+
+    public function detailSuggestions($id)
+    {
+        $suggestion = Suggestion::findOrFail($id);
+        if ($suggestion) {
+            return view('end_user.suggestion.detail', compact('suggestion'));
+        }
+        abort(404);
 
     }
 }

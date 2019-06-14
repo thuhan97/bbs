@@ -140,12 +140,12 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content modal-center-content"
                  style="width: 450px;padding: 5px;margin-top: 100px;font-size: 13px;">
+                <div class="modal-header text-center">
+                    <h4 class="font-weight-normal " id="show-title">Lịch họp</h4>
+                </div>
                 <div class="modal-body">
-                    <h4 class="text-center font-weight-normal ">Lịch họp</h4>
                     <input type="hidden" name="id" id="id_booking" value="">
                     <input type="hidden" name="start_date" id="start_date" value="">
-                    <h5 class="font-weight-normal " id="show-title"></h5>
-
                     <h6 class="font-weight-normal">Nội dung:</h6>
                     <p id="show-content"></p>
                     <h6 class="font-weight-normal">Thành phần tham gia:</h6>

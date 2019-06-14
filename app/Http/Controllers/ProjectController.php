@@ -150,7 +150,7 @@ class ProjectController extends Controller
         }
         abort(404);
     }
-    public function checkNameUnique($name,$id=null){
+    public function checkNameUnique($id=DEFAULT_VALUE,$name){
        $nameProject=Project::where('name',$name)->first()->name ?? null;
         if ($id){
           $project=Project::find($id);

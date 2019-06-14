@@ -150,8 +150,14 @@ class ProjectController extends Controller
         }
         abort(404);
     }
-    public function checkNameUnique($name){
-       $nameProject=Project::where('name',$name)->first();
+    public function checkNameUnique($name,$id=null){
+       $nameProject=Project::where('name',$name)->first()->name ?? null;
+        if ($id){
+          $project=Project::find($id);
+          if ($project->name == $nameProject){
+              return response(['success' => false]);  
+          }
+        }
        if ($nameProject) {
            return response(['success' => true]);
        }else{
@@ -184,8 +190,6 @@ class ProjectController extends Controller
 
             }
         }
-
-
     }
 
 }

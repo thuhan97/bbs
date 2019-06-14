@@ -346,10 +346,11 @@
             $(this).parents('tr').detach();
         });
 $('#name-project').on('change',function () {
+    var id ='{{ $record->id }}';
     var name=$(this).val();
     $.ajax
     ({
-        'url': '{{ route('project_unique') }}' + '/' + name,
+        'url': '{{ route('project_unique') }}' + '/' + name+ '/' + id,
         'type': 'get',
         success: function (data) {
             if (data.success){

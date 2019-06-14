@@ -150,7 +150,8 @@
                     <p id="show-content"></p>
                     <h6 class="font-weight-normal">Thành phần tham gia:</h6>
                     <p id="show-object"></p>
-                    <div class="row">
+                    <hr/>
+                    <div class="row mb-2">
                         <div class="col-6">
                             <h6 class="font-weight-normal">Phòng họp:</h6>
                             <strong id="show-meeting"></strong>

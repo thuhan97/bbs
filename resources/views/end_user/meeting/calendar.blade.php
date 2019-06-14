@@ -138,23 +138,14 @@
     <!-- show modal -->
     <div class="modal fade" id="showModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
         <div class="modal-dialog" role="document">
-            <div class="modal-content modal-center-content" style="width: 450px;padding: 5px;margin-top: 100px;font-size: 13px;">
+            <div class="modal-content modal-center-content"
+                 style="width: 450px;padding: 5px;margin-top: 100px;font-size: 13px;">
                 <div class="modal-body">
                     <h4 class="text-center font-weight-normal ">Lịch họp</h4>
                     <input type="hidden" name="id" id="id_booking" value="">
                     <input type="hidden" name="start_date" id="start_date" value="">
                     <h5 class="font-weight-normal " id="show-title"></h5>
-                    <div class="row">
-                        <div class="col-6">
-                            <h6 class="font-weight-normal">Người tạo:</h6>
-                            <p id="show-creator"></p>
-                        </div>
-                        <div class="col-6">
-                            <h6 class="font-weight-normal">Ngày tạo:</h6>
-                            <p id="show-date-create"></p>
-                        </div>
 
-                    </div>
                     <h6 class="font-weight-normal">Nội dung:</h6>
                     <p id="show-content"></p>
                     <h6 class="font-weight-normal">Thành phần tham gia:</h6>
@@ -169,6 +160,17 @@
                             <strong id="time"></strong>
                         </div>
                     </div>
+                    <div class="row">
+                        <div class="col-6">
+                            <h6 class="font-weight-normal">Người tạo:</h6>
+                            <p id="show-creator"></p>
+                        </div>
+                        <div class="col-6">
+                            <h6 class="font-weight-normal">Ngày tạo:</h6>
+                            <p id="show-date-create"></p>
+                        </div>
+
+                    </div>
                 </div>
                 <div class="modal-footer" style="display: none">
                     <button class="btn btn-primary" id="edit">Thay đổi</button>
@@ -181,7 +183,8 @@
     <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
         <div class="modal-dialog" role="document">
 
-            <div class="modal-content modal-center-content" style="width: 450px;padding: 5px;margin-top: 100px;font-size: 13px;">
+            <div class="modal-content modal-center-content"
+                 style="width: 450px;padding: 5px;margin-top: 100px;font-size: 13px;">
 
                 <div class="modal-body">
                     <h6>Bạn có chắc chắn muốn hủy buổi họp này không?</h6>
@@ -197,7 +200,8 @@
     <div class="modal fade" id="deleteSuccessModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
         <div class="modal-dialog" role="document">
 
-            <div class="modal-content modal-center-content" style="width: 450px;padding: 5px;margin-top: 100px;font-size: 13px;">
+            <div class="modal-content modal-center-content"
+                 style="width: 450px;padding: 5px;margin-top: 100px;font-size: 13px;">
 
                 <div class="modal-body">
                     <h6 id="message" class="text-center"></h6>

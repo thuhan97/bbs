@@ -54,7 +54,7 @@
             });
 
             notification.onclick = function () {
-                window.open('/');
+                window.open('{{env('APP_URL')}}');
             }
         });
 

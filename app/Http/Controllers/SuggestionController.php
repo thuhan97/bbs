@@ -37,24 +37,26 @@ class SuggestionController extends Controller
         return redirect()->route('default');
     }
 
-    public function approveSuggestion(request $request, $id)
+    public function approveSuggestion(request $request)
     {
-        $suggestion = Suggestion::findOrFail($id);
-        $suggestion->fill($request->all());
-        if ($request->status == null) {
-            $suggestion->status = DEFAULT_VALUE;
+        if (!empty($request)) {
+            $suggestion = Suggestion::findOrFail($request->data);
+            $check = $suggestion->status;
+            if ($request->data_status == NOT_APPROVE_SUGGESTION) {
+                $suggestion->status = APPROVE_SUGGESTION;
+            } else {
+                $suggestion->status = NOT_APPROVE_SUGGESTION;
+            }
+            if($suggestion->update()){
+                return $suggestion->status;
+            }else{
+                return $check;
+            }
         }
-        $suggestion->save();
-        return redirect()->route('list_suggestions')->with('success', __l('success_suggestions'));
     }
-
-    public function detailSuggestions($id)
-    {
-        $suggestion = Suggestion::findOrFail($id);
-        if ($suggestion) {
-            return view('end_user.suggestion.detail', compact('suggestion'));
-        }
-        abort(404);
+    public function detailSuggestions($id){
+       $suggestion=Suggestion::findOrFail($id);
+           return view('end_user.suggestion.detail', compact('suggestion'));
 
     }
 }

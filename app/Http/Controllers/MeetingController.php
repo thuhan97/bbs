@@ -123,6 +123,7 @@ class MeetingController extends Controller
 
         if ($check == NO_DUPLICATE) {
             $date = $request->days_repeat;
+            $room = MeetingRoom::find($meeting_room_id);
 
             $data = [
                 'title' => $request->title,
@@ -132,7 +133,7 @@ class MeetingController extends Controller
                 'start_time' => $request->start_time,
                 'end_time' => $request->end_time,
                 'date' => $date,
-                'color' => $request->color,
+                'color' => $room->color,
                 'is_notify' => $request->is_notify,
             ];
 

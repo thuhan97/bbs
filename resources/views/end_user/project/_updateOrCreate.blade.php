@@ -1,7 +1,7 @@
 <div class="row">
     <div class="col-md-6">
         <div class="md-form margin-b-5 {{ $errors->has('name') ? ' has-error' : '' }}">
-            <input type="text" class="form-control" name="name"
+            <input type="text" class="form-control" name="name" id="name-project"
                    value="{{ old('name', $record->name) }}" required>
             <label for="name">Tên dự án *</label>
             @if ($errors->has('name'))
@@ -9,6 +9,9 @@
                     <strong>{{ $errors->first('name') }}</strong>
                 </span>
             @endif
+            <span class="text-danger">
+                    <strong id="error-name"></strong>
+                </span>
         </div>
     </div>
     <div class="col-md-6">
@@ -342,5 +345,23 @@
         $tableID.on('click', '.table-remove', function () {
             $(this).parents('tr').detach();
         });
+$('#name-project').on('change',function () {
+    var name=$(this).val();
+    $.ajax
+    ({
+        'url': '{{ route('project_unique') }}' + '/' + name,
+        'type': 'get',
+        success: function (data) {
+            if (data.success){
+                $('#error-name').text('Tên dự án phải là duy nhất');
+                $('.btn-send').attr('disabled',true);
+            }else {
+                $('#error-name').text(' ');
+                $('.btn-send').removeAttr('disabled');
+            }
+        }
+    });
+})
+
     })
 </script>

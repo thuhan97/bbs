@@ -272,9 +272,9 @@ class MeetingService extends AbstractService implements IMeetingService
                 $userIds[] = $leaderId;
 
             } elseif (starts_with($participantId, 'PR-')) {
-                $membersId = str_replace('PR-', '', $participantId);
-                $selectUsers = $projectMembers->where('project_id', $membersId)->pluck('user_id')->toArray();
-                $leaderId = $project->Where('id', $membersId)->first()->leader_id ?? '';
+                $projectId = str_replace('PR-', '', $participantId);
+                $selectUsers = $projectMembers->where('project_id', $projectId)->pluck('user_id')->toArray();
+                $leaderId = $project->Where('id', $projectId)->first()->leader_id ?? '';
                 $userIds += $selectUsers;
                 $userIds[] = $leaderId;
 

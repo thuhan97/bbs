@@ -71,24 +71,7 @@ class ProjectController extends Controller
         $project->leader_id = Auth::id();
         $project->fill($all);
         $project->save();
-        if ($request->user_id){
-            for ($i=0 ; $i < count($request->user_id) ; $i++){
-                $projectMember=new ProjectMember();
-                $projectMember->project_id=$project->id;
-                $projectMember->user_id=$request->user_id[$i];
-                $projectMember->mission=$request->mission[$i];
-                $projectMember->contract=$request->contract[$i] ?? null;
-                $projectMember->reality=$request->reality[$i] ?? null;
-                $projectMember->time_start=$request->time_start[$i] ?? null;
-                $projectMember->time_end=$request->time_end[$i] ?? null;
-                $projectMember->save();
-                if ($project->leader_id != $request->user_id[$i]){
-                    broadcast(new ProjectNotify($project,$request->user_id[$i]))->toOthers();
-
-                }
-            }
-        }
-
+        $this->saveProjectMember($project,$request,true,null);
         flash()->success(__l('project_add_successully'));
 
         return redirect(route('project'));
@@ -129,30 +112,15 @@ class ProjectController extends Controller
         if ($project && $user->can('edit', $project)) {
             \DB::beginTransaction();
             try {
-                $check=[];
+                $checkUserIds=[];
                 foreach ($project->projectMembers as $pro){
-                    $checks[]=$pro->user_id;
+                    $checkUserIds[]=$pro->user_id;
                     $pro->delete();
                 }
-                if ($request->user_id){
-                    for ($i=0 ; $i < count($request->user_id) ; $i++){
-                        $projectMember=new ProjectMember();
-                        $projectMember->project_id=$project->id;
-                        $projectMember->user_id=$request->user_id[$i];
-                        $projectMember->mission=$request->mission[$i];
-                        $projectMember->contract=$request->contract[$i] ?? null;
-                        $projectMember->reality=$request->reality[$i] ?? null;
-                        $projectMember->time_start=$request->time_start[$i] ?? null;
-                        $projectMember->time_end=$request->time_end[$i] ?? null;
-                        $projectMember->save();
-                        if ($project->leader_id != $request->user_id[$i]  && !in_array($request->user_id[$i],$checks)){
-                            broadcast(new ProjectNotify($project,$request->user_id[$i]))->toOthers();
-                        }
-                    }
-                }
-                foreach ($checks as $check){
-                    if (!in_array($check,$request->user_id)){
-                        broadcast(new ProjectNotify($project,$check,true))->toOthers();
+                $this->saveProjectMember($project,$request,false,$checkUserIds);
+                foreach ($checkUserIds as $checkUserId){
+                    if (!in_array($checkUserId,$request->user_id)){
+                        broadcast(new ProjectNotify($project,$checkUserId,true))->toOthers();
                     }
                 }
             } catch (Exception $ex) {
@@ -181,6 +149,43 @@ class ProjectController extends Controller
             return view('end_user.project.detail', compact('project'));
         }
         abort(404);
+    }
+    public function checkNameUnique($name){
+       $nameProject=Project::where('name',$name)->first();
+       if ($nameProject) {
+           return response(['success' => true]);
+       }else{
+             return response(['success' => false]);
+       }
+
+    }
+
+    private function saveProjectMember($project,$request,$isCreate=false,$checkUserId=null){
+        if ($request->user_id){
+            foreach ($request->user_id as $key => $userID){
+                $projectMember=new ProjectMember();
+                $projectMember->project_id=$project->id;
+                $projectMember->user_id=$userID;
+                $projectMember->mission=$request->mission[$key] ?? null;
+                $projectMember->contract=$request->contract[$key] ?? null;
+                $projectMember->reality=$request->reality[$key] ?? null;
+                $projectMember->time_start=$request->time_start[$key] ?? null;
+                $projectMember->time_end=$request->time_end[$key] ?? null;
+                $projectMember->save();
+                if ($isCreate){
+                    if ($project->leader_id != $userID){
+                        broadcast(new ProjectNotify($project,$userID))->toOthers();
+                    }
+                }else{
+                    if ($project->leader_id != $userID  && !in_array($userID,$checkUserId)){
+                        broadcast(new ProjectNotify($project,$userID))->toOthers();
+                    }
+                }
+
+            }
+        }
+
+
     }
 
 }

@@ -17,7 +17,7 @@ class ProjectNotify implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
     public $data;
-    public $id;
+    public $userId;
     /**
      * Create a new event instance.
      *
@@ -42,7 +42,7 @@ class ProjectNotify implements ShouldBroadcast
             'logo_id' => NOTIFICATION_TYPE['project'],
             'url' => $url,
         ];
-        $this->id=$userIds;
+        $this->userId=$userIds;
     }
 
     /**
@@ -52,6 +52,6 @@ class ProjectNotify implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-        return new PrivateChannel('users.'.$this->id);
+        return new PrivateChannel('users.'.$this->userId);
     }
 }

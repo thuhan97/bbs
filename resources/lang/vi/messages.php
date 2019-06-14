@@ -107,4 +107,8 @@ return [
     'weekly_report_punish' => 'Ngày :day, chưa gửi báo cáo tuần :week.',
     'no_weekly_report' => 'Bạn chưa gửi báo cáo tuần :week.',
     'staff_no_weekly_report' => 'Nhân viên :name chưa gửi báo cáo tuần :week.',
+    'device' => 'Quản lý thiết bị',
+    'device_create_success' => 'Bạn đã gửi đề xuất thành công vui lòng chờ phản hồi',
+    'device_create_not_success' => 'Bạn chưa thuộc Team hoặc Group nào !',
+
 ];

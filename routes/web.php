@@ -122,6 +122,11 @@ Route::group([
     Route::get('/get-booking', 'MeetingController@getMeeting')->name('get_booking');
     Route::get('/delete-booking', 'MeetingController@deleteMeeting')->name('delete_booking');
 
+    //device
+    Route::get('/de-xuat-thiet-bi', 'DeviceController@index')->name('device_index');
+    //device->create
+    Route::post('/gui-de-xuat-thiet-bi', 'DeviceController@create')->name('device_create');
+
 });
 
 Route::group([

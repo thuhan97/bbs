@@ -2038,3 +2038,8 @@ td.blank, .type-1, .type-2 {
 #result-search {
     width: 85px;
 }
+.center-btn-td{
+    padding-top: 0.25rem !important;
+    padding-bottom: 0.25rem !important;
+    vertical-align: middle !important;
+}

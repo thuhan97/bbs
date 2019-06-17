@@ -57,7 +57,7 @@ class ReportService extends AbstractService implements IReportService
                 'report_type',
                 'report_date',
                 'color_tag',
-                'created_at',
+                'reports.created_at',
                 'updated_at',
             ])
             ->where(function ($q) use ($currentUser) {
@@ -72,6 +72,7 @@ class ReportService extends AbstractService implements IReportService
             }, 'reportReplies' => function ($q) {
                 $q->orderBy('report_reply.id', 'desc');
             }])
+            ->withCount('reportReplies')
             ->orderBy('id', 'desc');
 
         if (isset($criterias['date_from'])) {

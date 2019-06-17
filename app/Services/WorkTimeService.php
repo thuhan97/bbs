@@ -95,6 +95,7 @@ class WorkTimeService extends AbstractService implements IWorkTimeService
     {
         $userId = $userCode[$staffCode];
         $user = $this->users->firstWhere('id', $userId);
+
         if ($user) {
             $workTime = $this->getWorkTime($user, $work_day, $startAt, $endAt);
 

@@ -30,12 +30,13 @@ class NotificationController extends Controller
             $data['ip'] = $request->ip();
             $data['userAgent'] = $request->userAgent();
             $userToken = new UserFirebaseToken($data);
-            $userToken->save();
+            $userToken->last_activity_at = Carbon::now();
         } else {
             //online so disable push notification
             $userToken->push_at = null;
-            $userToken->save();
+            $userToken->last_activity_at = Carbon::now();
         }
+        $userToken->save();
         return response()->json(['success' => true, 'id' => $userToken->id]);
     }
 

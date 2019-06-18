@@ -40,7 +40,7 @@ class HolidayAutoAdd extends Command
     public function handle()
     {
         $calendarOffs = CalendarOff::where('is_repeat', CalendarOff::REPEAT)
-            ->whereDate('date_off_from', '<', date(DATE_FORMAT))
+            ->whereDate('date_off_to', '<', date(DATE_FORMAT))
             ->get();
         foreach ($calendarOffs as $calendarOff){
             $calendarOff->date_off_from = DateTimeHelper::getDateNextYear($calendarOff->date_off_from);

@@ -4,6 +4,7 @@ namespace App\Console\Commands;
 
 use App\Helpers\NotificationHelper;
 use App\Models\User;
+use App\Models\UserFirebaseToken;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
 

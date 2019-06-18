@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Models\CalendarOff;
 use App\Models\User;
 use App\Services\PunishesService;
 use Carbon\Carbon;
@@ -48,18 +49,34 @@ class WeeklyReportCheck extends Command
         $now = Carbon::now();
         $day = (int)$now->format('N');
         //Saturday
-        if ($day == 6) return;
-
+        if ($day == 6) {
+            return;
+        }
         $dayFormat = $now->format(DATE_FORMAT);
+        $calendarOffs = CalendarOff::all();
+        //check is holiday
+        if ($calendarOffs->where('date_off_from', '<=', $dayFormat)->where('date_off_to', '>=', $dayFormat)->first()) {
+            return;
+        }
         $week = (int)$now->format('W');
         //check last week
         if ($day != 7) {
             $week--;
         }
-
         $monday = date(DATE_FORMAT, strtotime('monday last week'));
         $mondayD = Carbon::createFromFormat(DATE_FORMAT, $monday);
-
+        //get total number workday in week
+        $startEndDate = getStartAndEndDate($week, $mondayD->year, false);
+        $startDate = $startEndDate['week_start'];
+        $endDate = $startEndDate['week_end'];
+        $dateLists = get_date_list($startDate, $endDate);
+        $totalWorkDay = 0;
+        foreach ($dateLists as $item) {
+            if (!$calendarOffs->where('date_off_from', '<=', $item)->where('date_off_to', '>=', $item)->first())
+                $totalWorkDay++;
+        }
+        //workday in week are too short
+        if ($totalWorkDay < 2) return;
         //sql select
         $users = User::select('id', 'name', 'jobtitle_id', 'is_remote')
             ->where('status', ACTIVE_STATUS)

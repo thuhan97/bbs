@@ -25,7 +25,7 @@ class NotificationHelper
         ];
     }
 
-    public static function sendPushNotification(array $devices, $title, $content)
+    public static function sendPushNotification(array $devices, $title, $content, $url = null)
     {
         $optionBuilder = new OptionsBuilder();
         $optionBuilder->setTimeToLive(60 * 20);
@@ -35,7 +35,10 @@ class NotificationHelper
             ->setSound('default');
 
         $dataBuilder = new PayloadDataBuilder();
-        $dataBuilder->addData(['icon' => JVB_LOGO_URL]);
+        $dataBuilder->addData([
+            'icon' => JVB_LOGO_URL,
+            'url' => $url
+        ]);
 
         $option = $optionBuilder->build();
         $notification = $notificationBuilder->build();

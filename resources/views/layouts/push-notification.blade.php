@@ -54,7 +54,7 @@
             });
 
             notification.onclick = function () {
-                window.open('{{env('APP_URL')}}');
+                window.open(payload.data.url || '{{env('APP_URL')}}');
             }
         });
 

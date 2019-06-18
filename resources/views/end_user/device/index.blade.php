@@ -141,9 +141,11 @@ $isManager=auth()->user()->isManager();
             @endforeach
             </tbody>
         </table>
-
-
-
+    <div class="float-right">
+        <div class="no-margin text-center">
+            {!! $providedDevic->render() !!}
+        </div>
+    </div>
     <!-- Modal -->
     <div class="modal fade device-create-modal" id="feedback" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
          aria-hidden="true">
@@ -217,23 +219,23 @@ $isManager=auth()->user()->isManager();
                     @csrf
                 <div class="modal-body">
                     <div>
-                        <p class="bold">Người đề xuất :</p>
+                        <p class="bold">-Người đề xuất :</p>
                         <span id="name-device"></span>
                     </div>
                     <div>
-                        <p class="bold">Tiêu đề :</p>
+                        <p class="bold">-Tiêu đề :</p>
                         <span id="title-devide"></span>
                     </div>
                     <div>
-                        <p class="bold">Thiết bị đề xuất :</p>
+                        <p class="bold">-Thiết bị đề xuất :</p>
                         <span id="type-device"></span>
                     </div>
                     <div>
-                        <p class="bold">Nội dung yêu cầu :</p>
+                        <p class="bold">-Nội dung yêu cầu :</p>
                         <span id="content-device"></span>
                     </div>
                     <div>
-                        <p class="bold">Ngày đề xuất :</p>
+                        <p class="bold">-Ngày đề xuất :</p>
                         <span id="content-date"></span>
                     </div>
                 </div>
@@ -394,11 +396,11 @@ $isManager=auth()->user()->isManager();
             function renderViewApproval(id) {
                 var html='';
                 html+= '<div>'
-                html+= ' <p class="bold">Ý kiến phê duyệt :</p>'
+                html+= ' <p class="bold">-Ý kiến phê duyệt :</p>'
                 html+= ' <textarea class="form-control" name="approval_manager"></textarea>'
                 html+= '</div>'
                 html+= '<div>'
-                html+= ' <p class="bold">Trạng thái</p>'
+                html+= ' <p class="bold">-Trạng thái</p>'
                 html+= '<div class="custom-control custom-radio">'
                 html+= ' <input type="radio" class="custom-control-input" checked="checked" id="defaultChecked" value="3" name="status">'
                 html+= '<label class="custom-control-label" for="defaultChecked">Duyệt đơn</label>'
@@ -415,20 +417,20 @@ $isManager=auth()->user()->isManager();
                 var html='';
                 if (status ==1){
                     html+= '<div>'
-                    html+= ' <p class="bold">Ngày hẹn trả :</p>'
+                    html+= ' <p class="bold">-Ngày hẹn trả :</p>'
                     html+= ' <span>'+ returnDate +'</span>'
                     html+= '</div>'
                 }
                 html+= '<div>'
-                html+= ' <p class="bold">Ý kiến phê duyệt của Manager :</p>'
+                html+= ' <p class="bold">-Ý kiến phê duyệt của Manager :</p>'
                 html+= ' <span>'+ comment  +'</span>'
                 html+= '</div>'
                 html+= '<div>'
-                html+= ' <p class="bold">Ý kiến phê duyệt của HCNS :</p>'
+                html+= ' <p class="bold">-Ý kiến phê duyệt của HCNS :</p>'
                 html+= ' <span>'+ hcnv_comment +'</span>'
                 html+= '</div>'
                 html+= '<div>'
-                html+= ' <p class="bold">Trạng thái</p>'
+                html+= ' <p class="bold">-Trạng thái</p>'
                 html+=  '<span>'+ checkStatus(status) +'</span>'
                 html+= '</div>'
                 return html;

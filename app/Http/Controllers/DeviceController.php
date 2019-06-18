@@ -39,7 +39,7 @@ class DeviceController extends Controller
                     });
             });
         }
-        $providedDevic = $providedDevic->get();
+        $providedDevic = $providedDevic->paginate(DEFAULT_PAGE_SIZE);
         return view('end_user.device.index', compact('providedDevic'));
     }
 

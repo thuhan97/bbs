@@ -40,12 +40,10 @@ $name = $team->name ?? $config->name;
             <i class="fas fa-building mr-3"></i>
             {{__l('Lịch họp')}}
         </a>
-        @if(config('app.env') != 'production')
-            <a href="#" class="list-group-item list-group-item-action waves-effect disabled">
+            <a href="{{ route('device_index') }}" class="list-group-item list-group-item-action waves-effect {{ \App\Utils::checkRoute(['device_index']) ? 'active': '' }}">
                 <i class="fas fa-desktop mr-3"></i>
-                Quản lý thiết bị
+                Đề xuất thiết bị
             </a>
-        @endif
 
         <a href="{{route('list_share_document')}}"
            class="list-group-item list-group-item-action waves-effect {{ \App\Utils::checkRoute(['list_share_document']) ? 'active': '' }}">

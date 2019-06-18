@@ -139,6 +139,7 @@
         <ul class="treeview-menu">
             <li><a href="{{ route('admin::devices.index') }}"><i class="fa fa-circle"></i> Quản lý thiết bị</a></li>
             <li><a href="{{ route('admin::deviceusers.index') }}"><i class="fa fa-circle"></i> Cấp thiết bị</a></li>
+            <li><a href="{{ route('admin::provided_device.index') }}"><i class="fa fa-circle"></i> Yêu cầu cấp thiết bị</a></li>
         </ul>
     </li>
     <li class="{{ \App\Utils::checkRoute(['admin::punishes.index', 'admin::punishes.create', 'admin::punishes.edit']) ? 'active': '' }}">

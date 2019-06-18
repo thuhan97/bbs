@@ -1,9 +1,9 @@
-<?php
+<?php 
 /**
- * UserModel class
- * Author: jvb
- * Date: 2018/07/16 10:34
- */
+* ProvidedDeviceModel class
+* Author: jvb
+* Date: 2019/06/17 14:30
+*/
 
 namespace App\Models;
 
@@ -18,7 +18,7 @@ use Tymon\JWTAuth\Contracts\JWTSubject;
 
 class ProvidedDevice extends Model
 {
-    use Notifiable, SoftDeletes, FillableFields, OrderableTrait, SearchLikeTrait;
+    use SoftDeletes, FillableFields, OrderableTrait, SearchLikeTrait;
 
     protected $table = 'provided_device';
 
@@ -42,9 +42,32 @@ class ProvidedDevice extends Model
     protected $hidden = [
         'created_at', 'updated_at', 'deleted_at',
     ];
+
+    public function scopeSearch($query, $searchTerm)
+    {
+        $data= $query->where(function ($q) use ($searchTerm) {
+            if ($searchTerm){
+                $q=$q->orWhere('provided_device.title', 'like', '%' . $searchTerm . '%')
+                    ->orWhere('provided_device.approval_manager', 'like', '%' . $searchTerm . '%')
+                    ->orWhere('provided_device.approval_hcnv', 'like', '%' . $searchTerm . '%')
+                    ->orWhere('provided_device.content', 'like', '%' . $searchTerm . '%')
+                    ->orWhere('users.name', 'like', '%' . $searchTerm . '%');
+            }
+        });
+        $data=$data->join('users', 'users.id','=','provided_device.user_id')
+            ->select('provided_device.*')
+            ->orderBy('provided_device.id', 'desc');
+
+        return null;
+
+    }
     public function user()
     {
         return $this->belongsTo(User::class);//->where('status', ACTIVE_STATUS);
+    }
+    public function manager()
+    {
+        return $this->belongsTo(User::class,'manager_id','id');//->where('status', ACTIVE_STATUS);
     }
 
 }

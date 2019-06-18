@@ -32,7 +32,7 @@ class ProvidedDeviceRequest extends FormRequest
             'hcns_id' => 'nullable|integer',
             'approval_hcnv' => 'nullable',
             'status' => 'nullable|integer',
-            'types_device'=>'required|integer'
+            'type_device'=>'required|integer'
 
         ];
     }

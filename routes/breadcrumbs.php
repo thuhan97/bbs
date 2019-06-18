@@ -207,7 +207,8 @@ $resources = [
     'rules' => 'Quy định tiền phạt',
     'punishes' => 'Danh sách tiền phạt',
     'group' => 'Group',
-    'suggestions' => 'Đề xuất - Góp ý'
+    'suggestions' => 'Đề xuất - Góp ý',
+    'provided_device'=>'Yêu cầu cấp thiết bị'
 ];
 foreach ($resources as $resource => $data) {
     $parent = 'admin';

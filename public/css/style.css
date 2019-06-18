@@ -1232,7 +1232,7 @@ td.blank, .type-1, .type-2 {
     font-weight: bold;
 }
 
-#number_off-error, #title-error, #exampleFormControlTextarea2-error, #approver_id-error, #option_check-error, #exampleFormControlTextarea4-error, #note-error, #start_at-error, #end_at-error, #project_id-error, #reason-error, #explanation_type-error, #ot_type-error {
+#number_off-error, #title-error, #exampleFormControlTextarea2-error, #approver_id-error, #option_check-error, #exampleFormControlTextarea4-error, #note-error, #start_at-error, #end_at-error, #project_id-error, #reason-error, #explanation_type-error, #ot_type-error ,#content-error,#type_device-error {
     color: red;
 }
 
@@ -1736,7 +1736,6 @@ td.blank, .type-1, .type-2 {
         align-items: center;
         justify-content: center;
     }
-
     #btn-detail-day-off {
         float: right !important;
     }
@@ -1750,6 +1749,9 @@ td.blank, .type-1, .type-2 {
     .btn-with {
         width: 22.3%;
     }
+    #feedback{
+        margin-top: -20px;
+    }
 
     .modal-ipad {
         min-height: calc(90vh - 60px) !important;
@@ -1759,13 +1761,26 @@ td.blank, .type-1, .type-2 {
     .bg-img-day-off {
         max-height: 689px !important;
     }
+    #btn-show-modal-create{
+        position: relative !important;
+        right: 11px !important;
+        bottom: 10px;
+    }
 }
 
 @media (min-width: 1024px) and (max-width: 1365px) {
+
+    #btn-show-modal-create{
+        position: relative !important;
+        right: 8px !important;
+        bottom: 10px;
+    }
     .btn-with {
         width: 23%;
     }
-
+    #feedback{
+        margin-top: -219px;
+    }
     .modal-ipad-pro {
         top: -186px;
     }
@@ -1783,13 +1798,19 @@ td.blank, .type-1, .type-2 {
         top: 355px;
         margin: 0 !important;
     }
+    .device-create-modal{
+         margin-top: -229 !important;
+        margin-left: 5px;
+    }
 }
 
 @media (min-width: 1366px) and (max-width: 1450px) {
     .btn-with {
         width: 23.1%;
     }
-
+    #feedback{
+        margin-left: 285px;
+    }
     #addModal {
         top: 110px !important;
         right: -264px !important;
@@ -1801,14 +1822,21 @@ td.blank, .type-1, .type-2 {
         top: 55px !important;
         right: -271px !important;
     }
+
 }
 
 @media (max-width: 575px) {
+    .fixed-action-btn{
+        bottom: 7px !important;
+    }
     .fix-with-phone {
         width: 86%;
         margin: auto;
     }
-
+    #feedback{
+        height: 630px;
+        overflow: auto;
+    }
     .option-time-day-off {
         width: 100% !important;
         margin-left: 0;

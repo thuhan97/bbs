@@ -39,6 +39,11 @@ Route::group([
     Route::post('deviceusers/deletes', ['as' => 'deviceusers.deletes', 'uses' => 'DeviceUserController@deletes']);
     Route::resource('deviceusers', 'DeviceUserController');
 
+
+    //DeviceUser
+    Route::post('provided_device/deletes', ['as' => 'provided_device.deletes', 'uses' => 'ProvidedDeviceController@deletes']);
+    Route::resource('provided_device', 'ProvidedDeviceController');
+
     //ActionDevice
 //    Route::resource('ActionDevice', 'ActionDeviceController');
 

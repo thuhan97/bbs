@@ -453,6 +453,7 @@ define('NOTIFICATION_TYPE', [
     'day_off_create' => 10,
     'share' => 11,
     'meeting' => 12,
+    'device'=>13
 ]);
 define('NOTIFICATION_LOGO', [
     0 => 'fa fa-flag black-text',
@@ -468,6 +469,7 @@ define('NOTIFICATION_LOGO', [
     10 => 'fas fa-meh-blank fa-1x text-warning text-size-icon',
     11 => 'fas fa-share-alt-square text-default',
     12 => 'fa fa-comments orange-text',
+    13=>'fas fa-desktop cyan-text'
 ]);
 define('JVB_LOGO_URL', 'http://jvb-corp.com/img/logo.png');
 
@@ -482,6 +484,15 @@ define('OT_TYPE_DEFAULT', 1);
 define('NOTIFICATION_DISABLE', 1);
 define('NOTIFICATION_ENABLE', 0);
 define('NOTIFICATION_REPEAT_MINUTE', 15);
+define('DATE_TIME_FORMAT_VI', 'd/m/Y');
+define('DEVICE_STATUS_ABIDE',2);
+define('INCREMENT',1);
+define('ARRAY_STATUS_DEVICE',[0,1,3]);
+define('TYPE_DEVICE', [
+    'send' => 1,
+    'manager_approval' => 2,
+    'administrative_approval' => 3
+]);
 
 
 

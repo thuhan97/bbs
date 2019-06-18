@@ -126,6 +126,12 @@ Route::group([
     Route::get('/de-xuat-thiet-bi', 'DeviceController@index')->name('device_index');
     //device->create
     Route::post('/gui-de-xuat-thiet-bi', 'DeviceController@create')->name('device_create');
+    //device->delete
+    Route::post('/xoa-de-xuat-thiet-bi', 'DeviceController@delete')->name('device_delete');
+    //device->edit
+    Route::get('/chinh-sua-de-xuat-thiet-bi/{id?}', 'DeviceController@edit')->name('device_edit');
+    //device->approval
+    Route::post('/phe-duyet-de-xuat-thiet-bi/{id?}', 'DeviceController@approval')->name('device_approval');
 
 });
 

@@ -97,9 +97,9 @@ Breadcrumbs::register('meeting_rooms', function ($breadcrumbs) {
     $breadcrumbs->push(__l('meeting_rooms'), route('meeting_rooms'));
 });
 // Dashboard > Profile
-Breadcrumbs::register('_personal', function ($breadcrumbs) {
+Breadcrumbs::register('link', function ($breadcrumbs) {
     $breadcrumbs->parent('personal');
-    $breadcrumbs->push(__l('personal_brief'), route('personal'));
+    $breadcrumbs->push(__l('link'), route('personal'));
 });
 
 Breadcrumbs::register('profile', function ($breadcrumbs) {

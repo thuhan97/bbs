@@ -1799,7 +1799,7 @@ td.blank, .type-1, .type-2 {
         margin: 0 !important;
     }
     .device-create-modal{
-         margin-top: -229 !important;
+         margin-top: -229px !important;
         margin-left: 5px;
     }
 }
@@ -2065,6 +2065,19 @@ td.blank, .type-1, .type-2 {
 
 #result-search {
     width: 85px;
+}
+@media (min-width: 1700px) {
+
+    .fix-with-detail {
+        max-width: 11% !important;
+    }
+
+}
+.fixed-with-size {
+    background-repeat: no-repeat;
+    border-radius: 12px;
+    height: 150px;
+    width: 151px;
 }
 
 .center-btn-td{

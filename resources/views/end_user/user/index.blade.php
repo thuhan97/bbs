@@ -1,6 +1,6 @@
 @extends('layouts.end_user')
 @section('breadcrumbs')
-    {!! Breadcrumbs::render('_personal') !!}
+    {!! Breadcrumbs::render('link') !!}
 @endsection
 @section('content')
     <div class="row m-auto">

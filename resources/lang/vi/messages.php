@@ -28,7 +28,7 @@ return [
     'create_project' => 'Tạo mới dự án',
     'edit_project' => 'Sửa dự án',
     'change_password' => 'Đổi mật khẩu',
-    'personal_brief' => 'Hồ sơ cá nhân',
+    'link' => 'Liên kết',
     'regulation' => 'Nội quy/Quy định',
     'work_time' => 'Giờ làm việc',
     'list_share_document' => 'Chia sẻ tài liệu',

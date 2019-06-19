@@ -484,13 +484,13 @@ define('NOTIFICATION_DISABLE', 1);
 define('NOTIFICATION_ENABLE', 0);
 
 define('MISSION_PROJECT', [
-    0 => 'Others',
-    1 => 'Compter',
-    2 => 'Tester',
+    0 => 'Project Manager',
+    1 => 'Team Leader',
+    2 => 'BrSE',
     3 => 'Developer',
-    4 => 'BrSE',
-    5 => 'Team Leader',
-    6 => 'Project Manager',
+    4 => 'Tester',
+    5 => 'Compter',
+    6 => 'Others',
 ]);
 
 

@@ -484,10 +484,13 @@ define('NOTIFICATION_DISABLE', 1);
 define('NOTIFICATION_ENABLE', 0);
 
 define('MISSION_PROJECT', [
-    0 => 'Lập trình viên',
-    1 => 'Kỹ sư cầu nối',
-    2 => 'Manager',
-    3 => 'Team leader',
+    0 => 'Others',
+    1 => 'Compter',
+    2 => 'Tester',
+    3 => 'Developer',
+    4 => 'BrSE',
+    5 => 'Team Leader',
+    6 => 'Project Manager',
 ]);
 
 

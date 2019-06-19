@@ -84,6 +84,7 @@ Route::group([
     Route::get('/du-an/{id}', 'ProjectController@detail')->where(['id' => '\d+'])->name('project_detail');
     Route::get('/sua-du-an/{id}', 'ProjectController@edit')->where(['id' => '\d+'])->name('project_edit');
     Route::post('/sua-du-an/{id}', 'ProjectController@update')->where(['id' => '\d+'])->name('project_update');
+    Route::get('/project-name-unique/{id?}/{name?}', 'ProjectController@checkNameUnique')->where(['id' => '\d+'])->name('project_unique');
 
     Route::get('/chia-se-tai-lieu', 'ShareController@listShareDocument')->name('list_share_document');
     Route::get('/chia-se-tai-lieu', 'ShareController@listShareDocument')->name('list_share_document');
@@ -100,7 +101,7 @@ Route::group([
     Route::post('/add_suggestions', 'SuggestionController@addSuggestions')->name('add_suggestions');
     Route::get('/de-xuat-gop-y', 'SuggestionController@listSuggestions')->name('list_suggestions')->middleware('can:team-leader');
     Route::get('/chi-tiet-de-xuat-gop-y/{id}', 'SuggestionController@detailSuggestions')->name('detail_suggestions')->middleware('can:team-leader');
-    Route::post('/approve_suggestion/{id}', 'SuggestionController@approveSuggestion')->name('approve_suggestion')->middleware('can:manager');
+    Route::post('/approve_suggestion/', 'SuggestionController@approveSuggestion')->name('approve_suggestion')->middleware('can:manager');
 
     // create day off
     Route::post('/ngay-nghi/create-calendar', 'UserController@dayOffCreateCalendar')->name('day_off_create_calendar');
@@ -121,6 +122,17 @@ Route::group([
     Route::post('/sua-phong-hop/{id}', 'MeetingController@update')->name('update_booking');
     Route::get('/get-booking', 'MeetingController@getMeeting')->name('get_booking');
     Route::get('/delete-booking', 'MeetingController@deleteMeeting')->name('delete_booking');
+
+    //device
+    Route::get('/de-xuat-thiet-bi', 'DeviceController@index')->name('device_index');
+    //device->create
+    Route::post('/gui-de-xuat-thiet-bi', 'DeviceController@create')->name('device_create');
+    //device->delete
+    Route::post('/xoa-de-xuat-thiet-bi', 'DeviceController@delete')->name('device_delete');
+    //device->edit
+    Route::get('/chinh-sua-de-xuat-thiet-bi/{id?}', 'DeviceController@edit')->name('device_edit');
+    //device->approval
+    Route::post('/phe-duyet-de-xuat-thiet-bi/{id?}', 'DeviceController@approval')->name('device_approval');
 
 });
 

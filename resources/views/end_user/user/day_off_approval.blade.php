@@ -244,7 +244,7 @@
                         {{ $record->title != DAY_OFF_TITLE_DEFAULT ? \App\Helpers\DateTimeHelper::checkTileDayOffGetDate($record->end_at) : $record->end_date  }}
                     </td>
                     <td class="text-center ">{{ array_key_exists($record->title, VACATION_FULL) ? VACATION_FULL[$record->title] : ''  }}</td>
-                    <td class="text-center d-none d-xl-table-cell">{!! nl2br($record->reason) !!}</td>
+                    <td class="text-center d-none d-xl-table-cell">{{str_limit(strip_tags(nl2br($record->reason) ), 30) }}</td>
                     <td class="text-center d-none d-xl-table-cell">
                         {{!!!$record->number_off ? ($record->status != STATUS_DAY_OFF['noActive'] ? 'Đang duyệt' : '') : checkNumber($record->number_off).' ngày'}}
                     </td>

@@ -39,10 +39,6 @@
                     <td>{{$project->amount_of_time}} months</td>
                 </tr>
                 <tr>
-                    <td class="font-weight-bold">Leader dự án</td>
-                    <td>{{$project->leader->name}}</td>
-                </tr>
-                <tr>
                     <td class="font-weight-bold">Ngày bắt đầu</td>
                     <td>{{$project->start_date}}</td>
                 </tr>
@@ -51,10 +47,48 @@
                     <td>{{$project->end_date}}</td>
                 </tr>
             </table>
+            <div class="card">
+                <div class="card-body">
+                    <div id="table" class="table-editable">
+                        <span><h5 class="text-center">Tất cả các thành viên trong dự án</h5></span>
+                        <table class="table table-bordered table-responsive-md table-striped text-center">
+                            <tr>
+                                <th class="text-center center-td" rowspan="2">Tên</th>
+                                <th class="text-center center-td" rowspan="2">Vai trò</th>
+                                <th class="text-center" colspan="2">Công số</th>
+                                <th class="text-center " colspan="2">Thời gian</th>
+                            </tr>
+                            <tr>
+                                <th class="text-center">Hợp đồng</th>
+                                <th class="text-center">Thực tế</th>
+                                <th class="text-center">Bắt đầu</th>
+                                <th class="text-center">Kết thúc</th>
+                            </tr>
+                            <tbody>
+                            @foreach($project->projectMembers as $projectMember)
+                            <tr>
+                                <td class="pt-3-half pb-0">
+                                    {{ $projectMember->user->name ?? ''}}
+                                </td>
+                                <td class="pt-3-half pb-0">
+                                    {{ array_key_exists($projectMember->mission,MISSION_PROJECT) ? MISSION_PROJECT[$projectMember->mission] : '' }}
+                                </td>
+                                <td class="pt-3-half pb-0">{{ $projectMember->contract ?? '' }}</td>
+                                <td class="pt-3-half pb-0">{{ $projectMember->reality ?? '' }}</td>
+                                <td class="pt-3-half pb-0">{{ $projectMember->time_start ?? '' }}</td>
+                                <td class="pt-3-half pb-0">{{ $projectMember->time_end ?? '' }}</td>
+                            </tr>
+                            @endforeach
+                            <!-- This is our clonable table line -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
-    <div class=" border border-light rounded mb-0 px-4">
-        <div class="mt-4">
+    <div class=" border border-light rounded mb-0">
+        <div class=>
             <h5 class="text-info">Kỹ thuật</h5>
             <p>  {!! nl2br(e($project->technical)) !!}</p>
         </div>

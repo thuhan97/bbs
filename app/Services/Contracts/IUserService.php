@@ -30,13 +30,17 @@ interface IUserService extends IBaseService
      * @param Request $request
      * @param integer $perPage
      * @param string  $search
+     * @param bool    $isGetAll
      *
      * @return collection
      */
-    public function getContact(Request $request, &$perPage, &$search);
+    public function getContact(Request $request, &$perPage, &$search, $isGetAll = true);
+
     /**
      *
      * @return collection
      */
     public function getUserManager();
+
+    public function detail($id);
 }

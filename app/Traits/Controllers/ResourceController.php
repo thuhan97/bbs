@@ -21,7 +21,6 @@ trait ResourceController
      */
     public function index(Request $request)
     {
-
         $this->authorize('viewList', $this->getResourceModel());
         if ($request->has('is_export') && in_array($request->path(), EXPORT_PATHS)) {
             return $this->exportData($request);

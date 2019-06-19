@@ -9,7 +9,6 @@ use App\Traits\ParseRequestSearch;
 use App\Traits\RESTActions;
 use App\Transformers\UserTransformer;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 
 /**
  * UserController
@@ -45,20 +44,22 @@ class UserController extends Controller
      */
     public function index(Request $request)
     {
-        $criteria = $this->parseRequest($request);
-        $collections = $this->repository->findBy($criteria);
+        $collections = $this->service->getContact($request, $perPage, $search, false);
         return $this->respondTransformer($collections);
     }
 
     /**
-     * Get total potato
+     * @param $id
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function getPotato()
+    public function detail($id)
     {
-        $total = $this->service->getPotato(Auth::id());
-        return $this->respond(['total' => $total]);
+        $report = $this->service->detail($id);
+        if ($report != null) {
+            return $this->respondTransformer($report);
+        }
+        return $this->respondNotfound();
     }
 
 }

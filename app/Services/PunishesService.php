@@ -11,7 +11,10 @@ use App\Models\Config;
 use App\Models\Punishes;
 use App\Models\Rules;
 use App\Models\WorkTime;
+use App\Repositories\Contracts\IPunishesRepository;
 use App\Services\Contracts\IPunishesService;
+use Illuminate\Http\Request;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 
 /**
@@ -21,14 +24,41 @@ use Illuminate\Support\Facades\DB;
  */
 class PunishesService extends AbstractService implements IPunishesService
 {
-    public function __construct()
+    public function __construct(IPunishesRepository $repository)
     {
         $this->config = Config::first();
         $this->rules = Rules::all();
         $this->notificationService = app()->make(NotificationService::class);
+
+        $this->repository = $repository;
     }
 
     const THOUSAND_UNIT = 1000;
+
+    public function detail($id)
+    {
+        return $this->repository->findOneBy([
+            'id' => $id,
+        ]);
+    }
+
+    /**
+     * @param Request $request
+     * @param         $userId
+     * @param integer $perPage
+     * @param string  $search
+     *
+     * @return collection
+     */
+    public function search(Request $request, $userId, &$perPage, &$search)
+    {
+        $criterias = $request->only('page', 'page_size', 'search');
+        $criterias['user_id'] = $userId;
+        $perPage = $criterias['page_size'] ?? DEFAULT_PAGE_SIZE;
+        $search = $criterias['search'] ?? '';
+
+        return $this->repository->findBy($criterias);
+    }
 
     public function calculateLateTime($year, $month, $userIds = [])
     {

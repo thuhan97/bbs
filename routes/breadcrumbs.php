@@ -178,6 +178,11 @@ Breadcrumbs::register('work_time_statistic', function ($breadcrumbs) {
     $breadcrumbs->parent('home');
     $breadcrumbs->push(__l('day_off_approval'), route('admin::work_time_statistic'));
 });
+// Dashboard > day_off_approval
+Breadcrumbs::register('device', function ($breadcrumbs) {
+    $breadcrumbs->parent('home');
+    $breadcrumbs->push(__l('device'), route('device_index'));
+});
 
 
 // Admin / {Resource} / {List|Edit|Create}
@@ -202,7 +207,8 @@ $resources = [
     'rules' => 'Quy định tiền phạt',
     'punishes' => 'Danh sách tiền phạt',
     'group' => 'Group',
-    'suggestions' => 'Đề xuất - Góp ý'
+    'suggestions' => 'Đề xuất - Góp ý',
+    'provided_device'=>'Yêu cầu cấp thiết bị'
 ];
 foreach ($resources as $resource => $data) {
     $parent = 'admin';

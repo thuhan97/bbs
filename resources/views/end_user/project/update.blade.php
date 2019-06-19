@@ -20,7 +20,7 @@
                             <br/>
                             <div class="text-right">
                                 <a href="{{route('project')}}" class="btn btn-warning">Hủy</a>
-                                <button type="submit" class="btn btn-success">Cập nhật</button>
+                                <button type="submit" class="btn btn-success btn-send">Cập nhật</button>
                             </div>
                         </div>
                     </div>

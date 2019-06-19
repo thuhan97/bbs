@@ -1770,11 +1770,11 @@ td.blank, .type-1, .type-2 {
 
 @media (min-width: 1024px) and (max-width: 1365px) {
 
-    #btn-show-modal-create{
+   /* #btn-show-modal-create{
         position: relative !important;
         right: 8px !important;
         bottom: 10px;
-    }
+    }*/
     .btn-with {
         width: 23%;
     }

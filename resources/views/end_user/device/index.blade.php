@@ -39,7 +39,7 @@ $isManager=auth()->user()->isManager();
         </div>
     </div>
     @endif
-    <table id="dtMaterialDesignExample" class="table table-striped" cellspacing="0" width="100%">
+    <table id="dtMaterialDesignExample" class="tableq table-striped" cellspacing="0" width="100%">
             <thead>
             <tr>
                 <th class="d-none d-xxl-table-cell" scope="col">
@@ -459,7 +459,7 @@ $isManager=auth()->user()->isManager();
                 $('input').removeClass('form-control-sm');
             });
             $('#dtMaterialDesignExample_wrapper .dataTables_length').addClass('d-flex flex-row');
-            $('#dtMaterialDesignExample_wrapper .dataTables_filter').addClass('md-form');
+            $('#dtMaterialDesignExample_wrapper .dataTables_filter').addClass('md-form m-0');
             $('#dtMaterialDesignExample_wrapper select').removeClass(
                 'custom-select custom-select-sm form-control form-control-sm');
             $('#dtMaterialDesignExample_wrapper select').addClass('mdb-select');

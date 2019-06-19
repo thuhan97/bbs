@@ -493,6 +493,13 @@ define('TYPE_DEVICE', [
     'manager_approval' => 2,
     'administrative_approval' => 3
 ]);
+define('STATUS_DEVICE',[
+    'not_active'=>0,
+    'active' => 1,
+    'approving' => 2,
+    'approved '=>3,
+    'done'=>4
+]);
 
 
 

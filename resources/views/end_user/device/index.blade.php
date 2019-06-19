@@ -22,11 +22,6 @@ $isManager=auth()->user()->isManager();
             {{ session()->get('not_success') }}
         </div>
     @endif
-    <form class="mb-0">
-        <div class="md-form active-cyan-2 mb-3">
-            @include('layouts.partials.frontend.search-input', ['search' => '', 'text' => __l('Search')])
-        </div>
-    </form>
     @if(!$isMaster || !$isManager)
     <div class="mt-4 col-md-10">
         <div class="content">
@@ -44,7 +39,7 @@ $isManager=auth()->user()->isManager();
         </div>
     </div>
     @endif
-        <table class="table table-hover">
+    <table id="dtMaterialDesignExample" class="table table-striped" cellspacing="0" width="100%">
             <thead>
             <tr>
                 <th class="d-none d-xxl-table-cell" scope="col">
@@ -113,15 +108,18 @@ $isManager=auth()->user()->isManager();
                         {{ $value->return_date ?? '' }}
                     </td>
                     <td class="text-center">
-                        @if($value->status == STATUS_DAY_OFF['abide'])
+                        @if($value->status == STATUS_DEVICE['not_active'])
                             <i data-toggle="tooltip" data-placement="right" title="Không duyệt"
                                class="fas fa-frown fa-2x text-danger"></i>
-                        @elseif($value->status == STATUS_DAY_OFF['noActive'])
+                        @elseif($value->status == STATUS_DEVICE['approving'])
                             <i data-toggle="tooltip" data-placement="right" title="Chờ phê duyệt"
                                class="fas fa-meh-blank fa-2x text-warning text-center"></i>
+                        @elseif($value->status == STATUS_DEVICE['done'])
+                            <i data-toggle="tooltip" data-placement="right" title="Đã nhận thiết bị"
+                               class="far fa-laugh-squint fa-2x text-success"></i>
                         @else
                             <i data-toggle="tooltip" data-placement="right" title="Đã duyệt đơn"
-                               class="fas fa-grin-stars fa-2x text-success"></i>
+                               class="fas fa-grin-stars fa-2x text-primary"></i>
                         @endif
 
                     </td>
@@ -141,11 +139,6 @@ $isManager=auth()->user()->isManager();
             @endforeach
             </tbody>
         </table>
-    <div class="float-right">
-        <div class="no-margin text-center">
-            {!! $providedDevic->render() !!}
-        </div>
-    </div>
     <!-- Modal -->
     <div class="modal fade device-create-modal" id="feedback" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
          aria-hidden="true">
@@ -356,7 +349,8 @@ $isManager=auth()->user()->isManager();
 
             })
             function getData(id) {
-                var jobtitleId='{{ auth()->user()->jobtitle_id }}'
+                var jobtitleId='{{ auth()->user()->jobtitle_id }}';
+                var idUserLogin='{{ auth()->id() }}'
                 var typesDevice = {
                     "0": "Case",
                     "1": "Màn hình",
@@ -372,21 +366,26 @@ $isManager=auth()->user()->isManager();
                     'url': '{{ route('device_edit') }}' + '/' + id,
                     'type': 'get',
                     success: function (data) {
-                        $('#btn-send-form').remove();
+                        $('.btn-send-form').remove();
                         $('#name-device').text(data.name);
                         $('#title-devide').html(data.data.title.replace(/\n/g, "<br />"));
                         $('#content-device').html(data.data.content)
                         $('#content-date').html(data.date_create)
+                        $('#content-date').append('<input type="hidden" name="id_check" id="id-check" value="'+ data.data.id +'">');
                         if (typesDevice.hasOwnProperty(data.data.type_device)) {
                             $('#type-device').html(typesDevice[data.data.type_device]);
                         }
                         if (jobtitleId >= 2 && data.data.status ==2){
                             $('#content-date').append(renderViewApproval(data.data.id));
-                            $('#footer-approval').append('<button id="btn-send-form" type="submit" class="btn btn-primary">DUYỆT</button>');
+                            $('#footer-approval').append('<button id="" type="submit" class="btn btn-primary btn-send-form">DUYỆT</button>');
                         }else {
                             var comment=data.data.approval_manager ? data.data.approval_manager : '';
                             var hcnvComment=data.data.approval_hcnv ? data.data.approval_hcnv:  '';
                             $('#content-date').append(renderViewApprovalStatus(data.data.status,data.return_date,hcnvComment,comment));
+                            if (data.data.status == 1 && data.data.user_id == idUserLogin){
+                                $('#footer-approval').append('<input class="btn btn-primary btn-send-form" id="coffee-submit" type="submit" name="done" value="ĐÃ NHẬN">');
+
+                            }
                         }
                         $('#exampleModal').modal('show')
                     }
@@ -409,7 +408,7 @@ $isManager=auth()->user()->isManager();
                 html+= '<input type="radio" class="custom-control-input" id="defaultUnchecked" name="status" value="0">'
                 html+= '<label class="custom-control-label" for="defaultUnchecked">Hủy đơn</label>'
                 html+= ' </div>'
-                html+= '<input type="hidden" name="id_check" id="id-check" value="'+ id +'">'
+               /* html+= '<input type="hidden" name="id_check" id="id-check" value="'+ id +'">'*/
                 html+= '</div>'
                 return html;
             }
@@ -445,8 +444,33 @@ $isManager=auth()->user()->isManager();
                         return 'Chờ duyệt'
                     case 3:
                         return 'Manager đã duyệt'
+                    case 4:
+                        return 'Đã nhận thiết bị'
                 }
             }
+
+            //dataTables
+            $('#dtMaterialDesignExample').DataTable();
+            $('#dtMaterialDesignExample_wrapper').find('label').each(function () {
+                $(this).parent().append($(this).children());
+            });
+            $('#dtMaterialDesignExample_wrapper .dataTables_filter').find('input').each(function () {
+                $('input').attr("placeholder", "Search");
+                $('input').removeClass('form-control-sm');
+            });
+            $('#dtMaterialDesignExample_wrapper .dataTables_length').addClass('d-flex flex-row');
+            $('#dtMaterialDesignExample_wrapper .dataTables_filter').addClass('md-form');
+            $('#dtMaterialDesignExample_wrapper select').removeClass(
+                'custom-select custom-select-sm form-control form-control-sm');
+            $('#dtMaterialDesignExample_wrapper select').addClass('mdb-select');
+            $('#dtMaterialDesignExample_wrapper .mdb-select').materialSelect();
+            $('#dtMaterialDesignExample_wrapper .dataTables_filter').find('label').remove();
+
+        })
+        $('#dtMaterialDesignExample').dataTable({
+            "bInfo": false, //Dont display info e.g. "Showing 1 to 4 of 4 entries"
+            "paging": false,//Dont want paging
+            "bPaginate": false,//Dont want paging
         })
     </script>
 @endpush

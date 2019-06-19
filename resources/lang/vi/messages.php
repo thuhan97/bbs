@@ -110,7 +110,7 @@ return [
     'device' => 'Quản lý thiết bị',
     'device_create_success' => 'Bạn đã gửi đề xuất thành công vui lòng chờ phản hồi',
     'device_delete_success' => 'Bạn đã xóa đề xuất thành công',
-    'device_create_not_success' => 'Bạn chưa thuộc Team hoặc Group nào !',
+    'device_done' => 'Cập nhật dữ liệu thành công',
     'device_edit_success'=>'Bạn đã chỉnh sửa đề xuất thành công vui lòng chờ phản hồi',
     'device_approvel_success'=>'Bạn đã duyệt đơn thành công',
     'device_suggest'=>'đề xuất xin cấp thiết bị mới',

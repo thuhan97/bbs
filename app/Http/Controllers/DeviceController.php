@@ -24,22 +24,7 @@ class DeviceController extends Controller
         } else {
             $providedDevic = ProvidedDevice::where('user_id', Auth::id());
         }
-        $search = $request->search;
-        if ($search) {
-            $providedDevic = $providedDevic->where(function ($query) use ($search) {
-                $query->where('title', 'LIKE', '%' . $search . '%')
-                    ->orwhere('content', 'LIKE', '%' . $search . '%')
-                    ->orwhere('approval_manager', 'LIKE', '%' . $search . '%')
-                    ->orwhere('approval_hcnv', 'LIKE', '%' . $search . '%')
-                    ->orWhereHas('manager', function ($query) use ($search) {
-                        $query->where('name', 'LIKE', '%' . $search . '%');
-                    })
-                    ->orWhereHas('user', function ($query) use ($search) {
-                        $query->where('name', 'LIKE', '%' . $search . '%');
-                    });
-            });
-        }
-        $providedDevic = $providedDevic->paginate(DEFAULT_PAGE_SIZE);
+        $providedDevic = $providedDevic->get();
         return view('end_user.device.index', compact('providedDevic'));
     }
 
@@ -50,12 +35,7 @@ class DeviceController extends Controller
      */
     public function create(ProvidedDeviceRequest $request)
     {
-        $user = Auth::user();
-        if ($user->jobtitle_id == TEAMLEADER_ROLE) {
-            $team = Team::where('leader_id', Auth::id())->first();
-        } else if ($user->jobtitle_id == STAFF_CONTRACT_TYPES) {
-            $team = UserTeam::where('user_id', Auth::id())->first()->team ?? null;
-        }
+        $team = Auth::user()->team();
         $managerId = $team->group->manager_id ?? null;
         if ($managerId) {
             $providedDevic = new ProvidedDevice();
@@ -73,10 +53,8 @@ class DeviceController extends Controller
             }
             event(new ProvidedDeviceNoticeEvent($providedDevic, TYPE_DEVICE['send']));
             return back()->with('success', __l('device_create_success'));
-        } else {
-
-            return back()->with('not_success', __l('device_create_not_success'));
         }
+        abort(404);
     }
     public function delete(Request $request)
     {
@@ -91,7 +69,7 @@ class DeviceController extends Controller
     {
         $userLogin=Auth::user();
         $providedDevic = ProvidedDevice::findOrFail($id);
-        if ($userLogin->isMaster() || Auth::id() == $providedDevic->manager_id || Auth::id() == $providedDevic->user_id){
+        if ($providedDevic && $userLogin->can('view', $providedDevic)){
             return response([
                 'success' => 200,
                 'data' => $providedDevic->toArray(),
@@ -107,6 +85,11 @@ class DeviceController extends Controller
     public function approval(Request $request)
     {
         $providedDevic = ProvidedDevice::findOrFail($request->id_check);
+        if ($request->has('done')) {
+            $providedDevic->status = STATUS_DEVICE['done'];
+            $providedDevic->save();
+            return back()->with('success', __l('device_done'));
+        }
         $providedDevic->fill($request->all());
         $providedDevic->save();
         event(new ProvidedDeviceNoticeEvent($providedDevic,  TYPE_DEVICE['manager_approval']));

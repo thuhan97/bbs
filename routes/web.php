@@ -59,7 +59,7 @@ Route::group([
     Route::post('/chinh-sua-ngay-nghi/{id?}', 'UserController@editDayOffDetail')->name('edit_day_off_detail');
     Route::post('/xoa-don-xin-nghi/', 'UserController@deleteOrCloseDayOff')->name('delete_day_off');
 
-    Route::get('/cong-no', 'PunishesController@index')->name('punish');
+    Route::get('/tien-phat', 'PunishesController@index')->name('punish');
     Route::get('/noi-quy-quy-dinh', 'RegulationController@index')->name('regulation');
     Route::get('/noi-quy-quy-dinh/{id}', 'RegulationController@detail')->where(['id' => '\d+'])->name('regulation_detail');
     Route::get('/tai-noi-quy-quy-dinh/{id}', 'RegulationController@download')->where(['id' => '\d+'])->name('regulation_download');

@@ -124,10 +124,36 @@
         </span>
         <br>
     @endif
+
+    @cannot('master')
+        <div class="row">
+            <div class="d-block d-sm-none col-xxl-7 col-12 text-xl-right" id="btn-group-ask">
+                <button onclick="location.href='{{route("day_off")}}?t=1'"
+                        class="btn btn-success no-box-shadow waves-effect waves-light mr-0 mr-sm-3 btn-with"
+                        id="btn-off">
+                    Xin nghỉ phép
+                </button>
+                <button type="button"
+                        class="btn btn-primary no-box-shadow approve-btn-ot waves-effect waves-light btn-with"
+                        id="btn-late-ot">
+                    Xin OT
+                </button>
+                <button type="button" class="approve-btn-early btn btn-warning no-box-shadow waves-light btn-with"
+                        id="btn-late">
+                    Xin về sớm
+                </button>
+                <button type="button" class="approve-btn-late btn btn-danger no-box-shadow waves-light btn-with"
+                        id="btn-late">
+                    Xin đi muộn
+                </button>
+            </div>
+        </div>
+    @endcan
+
     <div class="row mb-3 mt-3">
         <div class="col-md-4">
             @can('team-leader')
-                <h2 class="mobile-font-17 mb-0 ml-3">Danh sách xin phép</h2>
+                <h2 class="mobile-font-17 mb-0">Danh sách xin phép</h2>
             @endcan
         </div>
     </div>
@@ -135,7 +161,7 @@
     @can('team-leader')
         @if($managerApproveOther || $managerApproveOT)
             <!-- Nav tabs -->
-            <ul class="nav nav-tabs md-tabs nav-justified primary-color" role="tablist">
+            <ul class="nav nav-tabs md-tabs nav-justified primary-color m-0" role="tablist">
                 <li class="nav-item">
                     <a class="nav-link active btn-ot-one" data-toggle="tab" href="#panelApprove" role="tab">Xin đi
                         muộn/sớm</a>
@@ -148,7 +174,7 @@
             <!-- Nav tabs -->
 
             <!-- Tab panels -->
-            <div class="tab-content pb-0">
+            <div class="tab-content mt-2 p-0">
                 <!-- Panel 1 -->
                 <div class="tab-pane fade in show active btn-small-ot" id="panelApprove" role="tabpanel">
                     <table class="contactTbl table table-striped table-bordered">
@@ -311,11 +337,11 @@
         @endif
     @endcan
     @cannot('master')
-        <div class="row m-t-20">
-            <div class="col-xl-5 col-12 d-none d-xxl-block">
-                <h2 class="mb-0 mt-2 ml-3 ">Xin phép cá nhân</h2>
+        <div class="row m-t-20 mb-3">
+            <div class="col-xl-5 col-12">
+                <h2 class="mb-2 mt-2">Xin phép cá nhân</h2>
             </div>
-            <div class="col-xxl-7 col-12 text-xl-right" id="btn-group-ask">
+            <div class="d-none d-sm-block col-xxl-7 col-12 text-xl-right" id="btn-group-ask">
                 <button onclick="location.href='{{route("day_off")}}?t=1'"
                         class="btn btn-success no-box-shadow waves-effect waves-light mr-0 mr-sm-3 btn-with"
                         id="btn-off">
@@ -337,7 +363,7 @@
             </div>
         </div>
         <!-- Nav tabs -->
-        <ul class="nav nav-tabs md-tabs nav-justified primary-color mt-2" role="tablist">
+        <ul class="nav nav-tabs md-tabs nav-justified primary-color m-0" role="tablist">
             <li class="nav-item">
                 <a class="nav-link active btn-ot-one" data-toggle="tab" href="#panel555" role="tab">Xin đi muộn/sớm</a>
             </li>
@@ -348,7 +374,7 @@
         <!-- Nav tabs -->
 
         <!-- Tab panels -->
-        <div class="tab-content">
+        <div class="tab-content mt-2 p-0">
             <!-- Panel 1 -->
             <div class="tab-pane fade in show active btn-small-ot" id="panel555" role="tabpanel">
                 <table class="contactTbl table table-striped table-bordered">

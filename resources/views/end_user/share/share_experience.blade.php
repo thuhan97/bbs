@@ -8,63 +8,66 @@
     {!! Breadcrumbs::render('share_experience') !!}
 @endsection
 @section('content')
-
-    <div class="mt-4 col-md-10">
-        <form class="mb-4">
-            <div class="md-form active-cyan-2 mb-3">
-                @include('layouts.partials.frontend.search-input', ['search' => $search, 'text' => __l('Search')])
-                <input type="hidden" name="page_size" value="{{$perPage}}">
-            </div>
-        </form>
-        <div class="content">
-            <div class="tab-pane active">
-                <div class="createReport fixed-action-btn">
-                    <a href="#" class="btn-lg red waves-effect waves-light text-white" title="Đăng bài"
-                       data-target="#feedback" data-toggle="modal"
-                       style="border-radius: 35px;border: 5px solid #FED6D8;font-size: 17px;">
-                        <img class="imgAddExperience" src="{{ asset_ver('img/icon_exp.png') }}"
-                             onerror="this.src='{{URL_IMAGE_NO_AVATAR}}'" alt="avatar image"/>
-                        Đăng bài
-                    </a>
+    <div class="row">
+        <div class="mt-4 col-12 col-md-10">
+            <form class="mb-4">
+                <div class="md-form active-cyan-2 mb-3">
+                    @include('layouts.partials.frontend.search-input', ['search' => $search, 'text' => __l('Search')])
+                    <input type="hidden" name="page_size" value="{{$perPage}}">
                 </div>
-                @foreach($list_experience as $experience)
-                    <div class="posts">
-                        <div class="content-share-experience">
-                            <div class="userImage">
-                                <img src="{{$experience->user->avatar}}" onerror="this.src='{{URL_IMAGE_NO_AVATAR}}'"
-                                     alt="avatar image"/>
-                            </div>
-                            <div class="info-user-post">
-                                <p class="">
-                                <?php echo isset($experience->user->name) ? $experience->user->name : ''; ?>
-                                @if($experience->creator_id == Auth::user()->id)
-                                    <div class="dropdown">
-                                        <i class="fa fa-ellipsis-h" data-toggle="dropdown" aria-haspopup="true"
-                                           aria-expanded="false"></i>
-                                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                            <a class="dropdown-item"
-                                               href="{{ route('edit_experience', $experience->id) }}">Sửa bài viết</a>
-                                            <a class="dropdown-item"
-                                               href="{{ route('deleted_experience', $experience->id) }}">Xóa bài
-                                                viết</a>
-                                        </div>
-                                    </div>
-                                    @endif
-                                    </p>
-                                    <span class="date sub-text">{{date_format($experience->created_at,"Y-m-d")}}</span>
-                            </div>
-                            <div class="content-posts">
-                                <p>{!! nl2br($experience->introduction) !!}</p>
-                            </div>
-                            <p class="show-more">
-                                <a class="js-show-more" href="{{ route('view_experience',$experience->id) }}"
-                                   title="Xem Thêm Nội Dung" id="myBtn">Xem Thêm</a>
-                            </p>
-                        </div>
+            </form>
+            <div class="content">
+                <div class="tab-pane active">
+                    <div class="createReport fixed-action-btn">
+                        <a href="#" class="btn-lg red waves-effect waves-light text-white" title="Đăng bài"
+                           data-target="#feedback" data-toggle="modal"
+                           style="border-radius: 35px;border: 5px solid #FED6D8;font-size: 17px;">
+                            <img class="imgAddExperience" src="{{ asset_ver('img/icon_exp.png') }}"
+                                 onerror="this.src='{{URL_IMAGE_NO_AVATAR}}'" alt="avatar image"/>
+                            Đăng bài
+                        </a>
                     </div>
-                @endforeach
-                <div class="row">
-                    {{ $list_experience->links() }}
+                    @foreach($list_experience as $experience)
+                        <div class="posts">
+                            <div class="content-share-experience">
+                                <div class="userImage">
+                                    <img src="{{$experience->user->avatar}}"
+                                         onerror="this.src='{{URL_IMAGE_NO_AVATAR}}'"
+                                         alt="avatar image"/>
+                                </div>
+                                <div class="info-user-post">
+                                    <p class="">
+                                    <?php echo isset($experience->user->name) ? $experience->user->name : ''; ?>
+                                    @if($experience->creator_id == Auth::user()->id)
+                                        <div class="dropdown">
+                                            <i class="fa fa-ellipsis-h" data-toggle="dropdown" aria-haspopup="true"
+                                               aria-expanded="false"></i>
+                                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                                <a class="dropdown-item"
+                                                   href="{{ route('edit_experience', $experience->id) }}">Sửa bài
+                                                    viết</a>
+                                                <a class="dropdown-item"
+                                                   href="{{ route('deleted_experience', $experience->id) }}">Xóa bài
+                                                    viết</a>
+                                            </div>
+                                        </div>
+                                        @endif
+                                        </p>
+                                        <span class="date sub-text">{{date_format($experience->created_at,"Y-m-d")}}</span>
+                                </div>
+                                <div class="content-posts">
+                                    <p>{!! nl2br($experience->introduction) !!}</p>
+                                </div>
+                                <p class="show-more">
+                                    <a class="js-show-more" href="{{ route('view_experience',$experience->id) }}"
+                                       title="Xem Thêm Nội Dung" id="myBtn">Xem Thêm</a>
+                                </p>
+                            </div>
+                        </div>
+                    @endforeach
+                    <div class="row">
+                        {{ $list_experience->links() }}
+                    </div>
                 </div>
             </div>
         </div>

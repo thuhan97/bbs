@@ -409,7 +409,8 @@
 }
 
 .sidebar-fixed .logo-wrapper {
-    padding: 2rem 2rem 1rem 2rem;
+    margin-top: 1rem;
+    padding: 1rem 2rem 1rem 2rem;
 }
 
 .sidebar-fixed .logo-wrapper img {
@@ -574,8 +575,8 @@
 .fixed-action-btn {
     position: fixed;
     z-index: 998;
-    right: 35px;
-    bottom: 35px;
+    right: 24px;
+    bottom: 24px;
     margin-bottom: 0;
     padding-top: 15px;
 }
@@ -1232,7 +1233,7 @@ td.blank, .type-1, .type-2 {
     font-weight: bold;
 }
 
-#number_off-error, #title-error, #exampleFormControlTextarea2-error, #approver_id-error, #option_check-error, #exampleFormControlTextarea4-error, #note-error, #start_at-error, #end_at-error, #project_id-error, #reason-error, #explanation_type-error, #ot_type-error ,#content-error,#type_device-error {
+#number_off-error, #title-error, #exampleFormControlTextarea2-error, #approver_id-error, #option_check-error, #exampleFormControlTextarea4-error, #note-error, #start_at-error, #end_at-error, #project_id-error, #reason-error, #explanation_type-error, #ot_type-error, #content-error, #type_device-error {
     color: red;
 }
 
@@ -1656,7 +1657,6 @@ td.blank, .type-1, .type-2 {
 
     .sidebar-fixed {
         box-shadow: none;
-        margin-top: -16px
     }
 
     #main-nav {
@@ -1736,6 +1736,7 @@ td.blank, .type-1, .type-2 {
         align-items: center;
         justify-content: center;
     }
+
     #btn-detail-day-off {
         float: right !important;
     }
@@ -1749,7 +1750,8 @@ td.blank, .type-1, .type-2 {
     .btn-with {
         width: 22.3%;
     }
-    #feedback{
+
+    #feedback {
         margin-top: -20px;
     }
 
@@ -1761,7 +1763,8 @@ td.blank, .type-1, .type-2 {
     .bg-img-day-off {
         max-height: 689px !important;
     }
-    #btn-show-modal-create{
+
+    #btn-show-modal-create {
         position: relative !important;
         right: 11px !important;
         bottom: 10px;
@@ -1770,17 +1773,19 @@ td.blank, .type-1, .type-2 {
 
 @media (min-width: 1024px) and (max-width: 1365px) {
 
-   /* #btn-show-modal-create{
-        position: relative !important;
-        right: 8px !important;
-        bottom: 10px;
-    }*/
+    /* #btn-show-modal-create{
+         position: relative !important;
+         right: 8px !important;
+         bottom: 10px;
+     }*/
     .btn-with {
         width: 23%;
     }
-    #feedback{
+
+    #feedback {
         margin-top: -219px;
     }
+
     .modal-ipad-pro {
         top: -186px;
     }
@@ -1798,8 +1803,9 @@ td.blank, .type-1, .type-2 {
         top: 355px;
         margin: 0 !important;
     }
-    .device-create-modal{
-         margin-top: -229px !important;
+
+    .device-create-modal {
+        margin-top: -229px !important;
         margin-left: 5px;
     }
 }
@@ -1808,9 +1814,11 @@ td.blank, .type-1, .type-2 {
     .btn-with {
         width: 23.1%;
     }
-    #feedback{
+
+    #feedback {
         margin-left: 285px;
     }
+
     #addModal {
         top: 110px !important;
         right: -264px !important;
@@ -1826,17 +1834,20 @@ td.blank, .type-1, .type-2 {
 }
 
 @media (max-width: 575px) {
-    .fixed-action-btn{
+    .fixed-action-btn {
         bottom: 7px !important;
     }
+
     .fix-with-phone {
         width: 86%;
         margin: auto;
     }
-    #feedback{
+
+    #feedback {
         height: 630px;
         overflow: auto;
     }
+
     .option-time-day-off {
         width: 100% !important;
         margin-left: 0;
@@ -2066,6 +2077,7 @@ td.blank, .type-1, .type-2 {
 #result-search {
     width: 85px;
 }
+
 @media (min-width: 1700px) {
 
     .fix-with-detail {
@@ -2073,6 +2085,7 @@ td.blank, .type-1, .type-2 {
     }
 
 }
+
 .fixed-with-size {
     background-repeat: no-repeat;
     border-radius: 12px;
@@ -2080,32 +2093,38 @@ td.blank, .type-1, .type-2 {
     width: 151px;
 }
 
-.center-btn-td{
+.center-btn-td {
     padding-top: 0.25rem !important;
     padding-bottom: 0.25rem !important;
     vertical-align: middle !important;
 }
 
-.fix-with-table{
+.fix-with-table {
     width: 110px;
 }
-.custom-select-table{
+
+.custom-select-table {
     height: 40px;
     width: 120px;
 }
-.select-user{
+
+.select-user {
     width: 180px !important;
 }
-.center-td{
+
+.center-td {
     line-height: 77px;
 }
-.aqua{
+
+.aqua {
     background-color: aqua !important;
 }
+
 .fix-with-remove {
     padding: .5rem 0.5rem !important;
 }
-#name-error , #customer-error , #customer-user_id , #customer-mission{
+
+#name-error, #customer-error, #customer-user_id, #customer-mission {
     color: red;
     margin-top: 30px;
 }

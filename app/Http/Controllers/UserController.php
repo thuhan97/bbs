@@ -441,9 +441,12 @@ class UserController extends Controller
         } else if ($request['type'] == array_search('Đi muộn', WORK_TIME_TYPE) || $request['type'] == array_search('Về Sớm', WORK_TIME_TYPE)) {
             $datas = WorkTimesExplanation::where('work_day', $request['data'])->where('status', '!=', array_search('Từ chối', OT_STATUS))->where('type', $request['type'])->where('user_id', Auth::id())->first();
         }
-        $projects=Project::whereHas('projectMembers',function ($query){
-                        $query->where('user_id',Auth::id());
-                    })->where('status',ACTIVE_STATUS)->orderBy('name')
+        $projects = Project::
+            //Todo: comment out
+//        whereHas('projectMembers', function ($query) {
+//            $query->where('user_id', Auth::id());
+//        })->
+        where('status', ACTIVE_STATUS)->orderBy('name')
             ->get();
         if ($datas) {
             return [$datas, $projects];

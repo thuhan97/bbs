@@ -6,7 +6,7 @@ $name = $team->name ?? $config->name;
 ?>
 
 <!-- Sidebar -->
-<div class="sidebar fixed sidebar-fixed position-fixed" id="slide-out">
+<div class="sidebar fixed sidebar-fixed position-fixed" id="slide-out" style="transform: translateX(-100%);">
 
     <div class="text-center mb-xl-4">
         <a href="/" class="logo-wrapper waves-effect">
@@ -40,11 +40,6 @@ $name = $team->name ?? $config->name;
             <i class="fas fa-building mr-3"></i>
             {{__l('Lịch họp')}}
         </a>
-            <a href="{{ route('device_index') }}" class="list-group-item list-group-item-action waves-effect {{ \App\Utils::checkRoute(['device_index']) ? 'active': '' }}">
-                <i class="fas fa-desktop mr-3"></i>
-                Đề xuất thiết bị
-            </a>
-
         <a href="{{route('list_share_document')}}"
            class="list-group-item list-group-item-action waves-effect {{ \App\Utils::checkRoute(['list_share_document']) ? 'active': '' }}">
             <i class="fas fa-file mr-3"></i>
@@ -52,10 +47,7 @@ $name = $team->name ?? $config->name;
         <a href="{{route('share_experience')}}"
            class="list-group-item list-group-item-action waves-effect {{ \App\Utils::checkRoute(['share_experience']) ? 'active': '' }}">
             <i class="fas fa-book mr-3"></i>
-            Kinh nghiệm làm việc</a><!--
-        <a href="{{route('post')}}"
-           class="list-group-item list-group-item-action waves-effect {{ \App\Utils::checkRoute(['post', 'post_detail']) ? 'active': '' }}">
-            <i class="fas fa-bell mr-3"></i>{{__l('Post')}}</a> -->
+            Kinh nghiệm làm việc</a>
         @can('team-leader')
             <a href="{{route('list_suggestions')}}"
                class="list-group-item list-group-item-action waves-effect {{ \App\Utils::checkRoute(['list_suggestions']) ? 'active': '' }}">
@@ -64,6 +56,11 @@ $name = $team->name ?? $config->name;
         <a href="{{route('event')}}"
            class="list-group-item list-group-item-action waves-effect {{ \App\Utils::checkRoute(['event', 'event_detail']) ? 'active': '' }}">
             <i class="fas fa-calendar mr-3"></i> {{__l('Event')}}</a>
+        <a href="{{ route('device_index') }}"
+           class="list-group-item list-group-item-action waves-effect {{ \App\Utils::checkRoute(['device_index']) ? 'active': '' }}">
+            <i class="fas fa-desktop mr-3"></i>
+            Đề xuất thiết bị
+        </a>
     </div>
 </div>
 <!-- Sidebar -->

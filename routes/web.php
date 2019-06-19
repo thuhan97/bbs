@@ -101,7 +101,7 @@ Route::group([
     Route::post('/add_suggestions', 'SuggestionController@addSuggestions')->name('add_suggestions');
     Route::get('/de-xuat-gop-y', 'SuggestionController@listSuggestions')->name('list_suggestions')->middleware('can:team-leader');
     Route::get('/chi-tiet-de-xuat-gop-y/{id}', 'SuggestionController@detailSuggestions')->name('detail_suggestions')->middleware('can:team-leader');
-    Route::post('/approve_suggestion/{id}', 'SuggestionController@approveSuggestion')->name('approve_suggestion')->middleware('can:manager');
+    Route::post('/approve_suggestion/', 'SuggestionController@approveSuggestion')->name('approve_suggestion')->middleware('can:manager');
 
     // create day off
     Route::post('/ngay-nghi/create-calendar', 'UserController@dayOffCreateCalendar')->name('day_off_create_calendar');

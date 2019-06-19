@@ -16,6 +16,11 @@ Route::group([
     'as' => 'api::',
 //    'middleware' => ['auth'],
 ], function () {
+
+
+    Route::get('/test', function () {
+        return response()->json(['ok']);
+    });
     Route::post('/login', 'AuthController@login')->name('login');
 
     Route::group([

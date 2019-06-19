@@ -2,22 +2,18 @@
 
 namespace App\Console\Commands;
 
-use App\Models\Post;
-use App\Services\NotificationService;
+use App\Models\UserFirebaseToken;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
 
-/**
- * @property NotificationService notificationService
- */
-class PostNotificationSender extends Command
+class DeleteFirebaseToken extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'cron:post-notice';
+    protected $signature = 'notify:clear_old_device';
 
     /**
      * The console command description.
@@ -34,8 +30,6 @@ class PostNotificationSender extends Command
     public function __construct()
     {
         parent::__construct();
-
-        $this->notificationService = app()->make(NotificationService::class);
     }
 
     /**
@@ -45,11 +39,9 @@ class PostNotificationSender extends Command
      */
     public function handle()
     {
-        $posts = Post::where('has_notify', 1)
-            ->where('is_sent', 0)->where('notify_date', '<=', Carbon::now())
-            ->get();
-
-        $this->notificationService->sendPostNotification($posts);
+        //delete token over 1 month
+        $now = Carbon::now();
+        UserFirebaseToken::where('last_activity_at', '<=', $now->subMonth())->delete();
 
     }
 }

@@ -891,6 +891,7 @@
                                     $('#other-ot').prop('checked', false)
                                 } else if (otType === 2) {
                                     $('#other-ot').prop('checked', true)
+                                    $('#other-ot').prop('checked', true)
                                     $('#project_id').prop('disabled', 'disabled');
                                     $('#project-ot').prop('checked', false)
                                 }

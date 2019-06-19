@@ -39,7 +39,7 @@
                 <th class="d-none d-sm-table-cell">#</th>
                 <th>Tên</th>
                 <th class="d-none d-sm-table-cell">Khách hàng</th>
-                <th>Leader</th>
+                <th>Người tạo dự án</th>
                 <th class="d-none d-sm-table-cell text-center">Bắt đầu</th>
                 <th class="d-none d-sm-table-cell text-center">Kết thúc</th>
                 <th class="d-none d-sm-table-cell">Trạng thái</th>

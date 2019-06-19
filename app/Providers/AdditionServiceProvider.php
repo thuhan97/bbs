@@ -7,40 +7,42 @@ use App\Services\Contracts\IActionDeviceService;
 use App\Services\Contracts\IDayOffService;
 use App\Services\Contracts\IDeviceService;
 use App\Services\Contracts\IDeviceUserService;
+use App\Services\Contracts\IEventAttendanceService;
 use App\Services\Contracts\IEventService;
 use App\Services\Contracts\IFeedbackService;
+use App\Services\Contracts\IMeetingRoomService;
+use App\Services\Contracts\IMeetingService;
 use App\Services\Contracts\IOverTimeService;
 use App\Services\Contracts\IPostService;
 use App\Services\Contracts\IProjectService;
+use App\Services\Contracts\IPunishesService;
 use App\Services\Contracts\IRegulationService;
 use App\Services\Contracts\IReportService;
 use App\Services\Contracts\IStatisticService;
 use App\Services\Contracts\ITeamService;
 use App\Services\Contracts\IUserService;
 use App\Services\Contracts\IUserTeamService;
+use App\Services\Contracts\IWorkTimeRegisterService;
 use App\Services\Contracts\IWorkTimeService;
-use App\Services\Contracts\IEventAttendanceService;
-use App\Services\Contracts\IMeetingRoomService;
-use App\Services\Contracts\IMeetingService;
 use App\Services\DayOffService;
 use App\Services\DeviceService;
 use App\Services\DeviceUserService;
+use App\Services\EventAttendanceService;
 use App\Services\EventService;
 use App\Services\FeedbackService;
+use App\Services\MeetingRoomService;
+use App\Services\MeetingService;
 use App\Services\OverTimeService;
 use App\Services\PostService;
 use App\Services\ProjectService;
+use App\Services\PunishesService;
 use App\Services\RegulationService;
 use App\Services\ReportService;
 use App\Services\StatisticService;
 use App\Services\TeamService;
 use App\Services\UserService;
-use App\Services\WorkTimeService;
 use App\Services\WorkTimeRegisterService;
-use App\Services\Contracts\IWorkTimeRegisterService;
-use App\Services\EventAttendanceService;
-use App\Services\MeetingRoomService;
-use App\Services\MeetingService;
+use App\Services\WorkTimeService;
 use Illuminate\Support\ServiceProvider;
 
 class AdditionServiceProvider extends ServiceProvider
@@ -116,6 +118,9 @@ class AdditionServiceProvider extends ServiceProvider
         $this->app->bind(IOverTimeService::class, function () {
             return app()->make(OverTimeService::class);
         });
+        $this->app->bind(IPunishesService::class, function () {
+            return app()->make(PunishesService::class);
+        });
     }
 
     /**
@@ -146,6 +151,7 @@ class AdditionServiceProvider extends ServiceProvider
             IMeetingRoomService::class,
             IMeetingService::class,
             IOverTimeService::class,
+            IPunishesService::class,
         ];
     }
 }

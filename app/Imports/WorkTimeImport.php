@@ -72,28 +72,34 @@ class WorkTimeImport implements ToCollection, WithValidation
             }
         }
         $dataCollection = collect($datas)->groupBy('user_id');
+
         $workDayDatas = [];
         foreach ($dataCollection as $userId => $items) {
             $workDays = $items->groupBy('work_day');
+
             foreach ($workDays as $day => $checkIns) {
                 $times = [];
                 foreach ($checkIns as $time) {
                     $times[] = $time['start_at'];
                     $times[] = $time['end_at'];
                 }
-                $timeColection = collect($times);
+
+                $checkInTime = $this->getCheckInTime($times);
+                $checkOutTime = $this->getCheckOutTime($times);
 
                 $workDayData = [
                     'user_id' => $userId,
                     'staff_code' => $items->first()['staff_code'],
                     'work_day' => $day,
-                    'start_at' => $timeColection->min(),
-                    'end_at' => $timeColection->max(),
+                    'start_at' => $checkInTime,
+                    'end_at' => $checkOutTime,
                 ];
 
                 $workDayDatas[] = $workDayData;
             }
+
         }
+
         $results = [];
 
         foreach ($workDayDatas as $index => $row) {
@@ -151,17 +157,15 @@ class WorkTimeImport implements ToCollection, WithValidation
      */
     private function mappingData(array $row)
     {
-
         $staffCode = $row['staff_code'];
         if (array_key_exists($staffCode, $this->users)) {
 
             $startAt = $row['start_at'];
             $endAt = $row['end_at'];
-            $work_day = date_create_from_format(DATE_FORMAT, $row['work_day']);
+            $work_day = new \DateTime($row['work_day'], new \DateTimeZone('UTC'));
             if ($this->startDate <= $work_day && $this->endDate >= $work_day) {
                 return $this->workTimeService->importWorkTime($this->users, $staffCode, $work_day, $startAt, $endAt);
             }
-
         }
     }
 
@@ -176,5 +180,33 @@ class WorkTimeImport implements ToCollection, WithValidation
         }
     }
 
+    private function getCheckInTime($timeColection)
+    {
+        $timeColection = array_values(array_filter($timeColection));
+        if (count($timeColection) > 1) {
+            return collect($timeColection)->min();
+        } else if (count($timeColection) == 1) {
+            $time = $timeColection[0];
+            if ($time >= HAFT_AFTERNOON) {
+                return null;
+            }
+            return $time;
+        }
+
+    }
+
+    private function getCheckOutTime($timeColection)
+    {
+        $timeColection = array_values(array_filter($timeColection));
+        if (count($timeColection) > 1) {
+            return collect($timeColection)->max();
+        } else if (count($timeColection) == 1) {
+            $time = $timeColection[0];
+            if ($time < HAFT_AFTERNOON) {
+                return null;
+            }
+            return $time;
+        }
+    }
 
 }

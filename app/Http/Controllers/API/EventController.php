@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Repositories\Contracts\IEventAttendanceRepository;
+use App\Services\Contracts\IEventAttendanceService;
 use App\Services\Contracts\IEventService;
 use App\Traits\RESTActions;
 use App\Transformers\EventTransformer;
@@ -16,20 +18,34 @@ class EventController extends Controller
      * @var IEventService
      */
     private $eventService;
+    /**
+     * @var IEventAttendanceRepository
+     */
+    private $eventAttendanceRepository;
+    /**
+     * @var IEventAttendanceService
+     */
+    private $eventAttendanceService;
 
     /**
      * EventController constructor.
      *
-     * @param IEventService    $eventService
-     * @param EventTransformer $transformer
+     * @param IEventService              $eventService
+     * @param IEventAttendanceRepository $eventAttendanceRepository
+     * @param IEventAttendanceService    $eventAttendanceService
+     * @param EventTransformer           $transformer
      */
     public function __construct(
         IEventService $eventService,
+        IEventAttendanceRepository $eventAttendanceRepository,
+        IEventAttendanceService $eventAttendanceService,
         EventTransformer $transformer
     )
     {
         $this->eventService = $eventService;
         $this->transformer = $transformer;
+        $this->eventAttendanceRepository = $eventAttendanceRepository;
+        $this->eventAttendanceService = $eventAttendanceService;
     }
 
     /**
@@ -41,6 +57,20 @@ class EventController extends Controller
     {
         $events = $this->eventService->search($request, $perPage, $search);
         return $this->respondTransformer($events);
+    }
+
+    /**
+     * @param $id
+     *
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function detail($id)
+    {
+        $event = $this->eventService->detail($id);
+        if ($event != null) {
+            return $this->respondTransformer($event);
+        }
+        return $this->respondNotfound();
     }
 
 }

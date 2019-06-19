@@ -9,6 +9,9 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
+    <meta property="og:image" content="{{JVB_LOGO_URL}}">
+    <meta itemprop="image" content="{{JVB_LOGO_URL}}">
+
     <title>{{ config('app.name', 'BBS') }}</title>
 
     <!-- Styles -->

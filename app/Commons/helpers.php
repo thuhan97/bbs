@@ -263,12 +263,12 @@ if (!function_exists('getMonthFormWeek')) {
 }
 
 if (!function_exists('getStartAndEndDate')) {
-    function getStartAndEndDate($week, $year)
+    function getStartAndEndDate($week, $year, $getWeekend = true)
     {
         $dto = new DateTime();
         $dto->setISODate($year, $week);
         $ret['week_start'] = $dto->format('Y-m-d');
-        $dto->modify('+6 days');
+        $dto->modify($getWeekend ? '+6 days' : '+4 days');
         $ret['week_end'] = $dto->format('Y-m-d');
 
         return $ret;

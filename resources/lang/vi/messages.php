@@ -116,5 +116,7 @@ return [
     'device_suggest'=>'đề xuất xin cấp thiết bị mới',
     'device_manager_approvel'=>'phản hồi đề xuất xin cấp thiết bị của bạn',
     'device_administrative'=>'HCNS đã phản hồi đề xuất xin cấp thiết bị của bạn',
-
+    'create_project' => 'Thêm mới',
+    'create_project_notify' => 'đã thêm bạn vào dự án',
+    'delete_user_project' => 'đã xóa bạn ra khỏi dự án',
 ];

@@ -13,7 +13,7 @@ use App\Traits\Models\FillableFields;
 
 class UserFirebaseToken extends Model
 {
-    use  FillableFields, OrderableTrait, SearchLikeTrait;
+    use FillableFields, OrderableTrait, SearchLikeTrait;
 
     protected $table = 'user_firebase_tokens';
 
@@ -27,5 +27,6 @@ class UserFirebaseToken extends Model
         'ip',
         'is_disabled',
         'push_at',
+        'last_activity_at',
     ];
 }

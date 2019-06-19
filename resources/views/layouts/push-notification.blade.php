@@ -41,7 +41,7 @@
                     }
                 });
 
-                //save token
+                //save tokenNgười tạo
             })
             .catch(function (err) {
                 console.log("Unable to get permission to notify.", err);
@@ -54,7 +54,7 @@
             });
 
             notification.onclick = function () {
-                window.open('/');
+                window.open(payload.data.url || '{{env('APP_URL')}}');
             }
         });
 

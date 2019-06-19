@@ -84,6 +84,10 @@ class Project extends Model
     {
         return $this->hasOne('App\Models\User', 'id', 'leader_id');
     }
+    public function projectMembers()
+    {
+        return $this->hasMany(ProjectMember::class);
+    }
 
     /**
      * @return mixed

@@ -72,9 +72,11 @@ class UserService extends AbstractService implements IUserService
      * @param integer $perPage
      * @param string  $search
      *
+     * @param bool    $isGetAll
+     *
      * @return collection
      */
-    public function getContact(Request $request, &$perPage, &$search)
+    public function getContact(Request $request, &$perPage, &$search, $isGetAll = true)
     {
         $userModels = User::where('status', ACTIVE_STATUS)
             ->where(function ($q) use ($request) {
@@ -94,8 +96,14 @@ class UserService extends AbstractService implements IUserService
                 }
 
             })->orderBy('jobtitle_id', 'desc')->orderBy('staff_code');
+        if ($isGetAll) {
+            return $userModels->get();
+        } else {
+            $perPage = $request->get('page_size', DEFAULT_PAGE_SIZE);
 
-        return $userModels->get();
+            return $userModels->paginate($perPage);
+        }
+
     }
 
     /**
@@ -124,5 +132,12 @@ class UserService extends AbstractService implements IUserService
         } else {
             return $this->model->where('jobtitle_id', MANAGER_ROLE)->pluck('name', 'id');
         }
+    }
+
+    public function detail($id)
+    {
+        return $this->repository->findOneBy([
+            'id' => $id,
+        ]);
     }
 }

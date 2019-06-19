@@ -23,10 +23,9 @@ class ProjectService extends AbstractService implements IProjectService
 
     public function detail($id)
     {
-        $project = $this->repository->findOneBy([
+        return $this->repository->findOneBy([
             'id' => $id,
         ]);
-        return $project;
     }
 
     /**
@@ -53,8 +52,5 @@ class ProjectService extends AbstractService implements IProjectService
             'status',
 
         ]);
-
     }
-
-
 }

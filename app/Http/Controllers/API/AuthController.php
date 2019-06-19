@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\RegisterFormRequest;
+use App\Http\Resources\UserResource;
 use App\Models\User;
 use App\Repositories\Contracts\IUserRepository;
 use App\Services\Contracts\IPotatoService;
@@ -11,10 +12,8 @@ use App\Services\Contracts\IUserService;
 use App\Traits\ParseRequestSearch;
 use App\Traits\RESTActions;
 use App\Transformers\UserTransformer;
-use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Tymon\JWTAuth\Exceptions\JWTException;
 use Tymon\JWTAuth\Exceptions\TokenInvalidException;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
@@ -27,10 +26,6 @@ class AuthController extends Controller
 {
     use RESTActions;
     use ParseRequestSearch;
-    /**
-     * @var \App\Services\Contracts\IPotatoService
-     */
-    private $potatoService;
 
     /**
      * AuthController constructor.
@@ -65,65 +60,29 @@ class AuthController extends Controller
     /**
      * @param \Illuminate\Http\Request $request
      *
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function checkActivate(Request $request)
-    {
-        $this->validate($request, [
-            'email' => 'required|email',
-        ]);
-        $user = User::where('email', $request->get('email'))
-            ->where('is_active', User::UN_ACTIVE)
-            ->whereNotNull('activate_code')
-            ->first();
-
-        return $this->respond([
-            'available' => isset($user)
-        ]);
-    }
-
-    /**
-     * @param \Illuminate\Http\Request $request
-     *
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function activate(Request $request)
-    {
-        $this->validate($request, [
-            'email' => 'required|email|exists:users,email',
-            'activate_code' => 'required|exists:users,activate_code'
-        ]);
-        $success = $this->service->active($request->only('email', 'activate_code'));
-
-        return $this->respond($success);
-    }
-
-    /**
-     * @param \Illuminate\Http\Request $request
-     *
-     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
+     * @return UserResource|\Illuminate\Http\JsonResponse
+     * @throws \Illuminate\Validation\ValidationException
      */
     public function login(Request $request)
     {
-        $this->tryLogout();
+        $this->validate($request, [
+            'email' => 'required',
+            'password' => 'required'
+        ]);
 
-        $credentials = $request->only('email', 'password');
-        if (!$token = JWTAuth::attempt($credentials)) {
-            return $this->respondFail('Authentication failed');
+        if (!$token = JWTAuth::attempt($request->only(['email', 'password']))) {
+            return response()->json([
+                'errors' => [
+                    'email' => ['There is something wrong! We could not verify details']
+                ]], 422);
         }
 
-        $user = $this->repository->findOneBy(['email' => $request->get('email')]);
-        if ($user->is_active == User::IS_ACTIVE) {
-            $user->last_logged_at = Carbon::now();
-            $user->save();
-
-            $dataResponse = ['user' => $user->toArray()];
-            $dataResponse['token'] = $token;
-
-            return $this->respond($dataResponse);
-        } else {
-            return $this->respondAuthFail(__('messages.account_not_active'));
-        }
+        return (new UserResource($request->user()))
+            ->additional([
+                'meta' => [
+                    'token' => $token
+                ]
+            ]);
     }
 
     /**
@@ -137,22 +96,7 @@ class AuthController extends Controller
      */
     public function logout(Request $request)
     {
-        $this->validate($request, ['token' => 'required']);
-
-        try {
-            JWTAuth::invalidate($request->input('token'));
-            return $this->respond([
-                'status' => 'success',
-                'msg' => 'You have successfully logged out.'
-            ]);
-        } catch (JWTException $e) {
-            // something went wrong whilst attempting to encode the token
-            return
-                $this->respond([
-                    'status' => 'error',
-                    'msg' => 'Failed to logout, please try again.'
-                ], 400);
-        }
+        \auth()->logout();
     }
 
     //AuthController

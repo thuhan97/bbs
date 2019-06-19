@@ -84,6 +84,7 @@ Route::group([
     Route::get('/du-an/{id}', 'ProjectController@detail')->where(['id' => '\d+'])->name('project_detail');
     Route::get('/sua-du-an/{id}', 'ProjectController@edit')->where(['id' => '\d+'])->name('project_edit');
     Route::post('/sua-du-an/{id}', 'ProjectController@update')->where(['id' => '\d+'])->name('project_update');
+    Route::get('/project-name-unique/{id?}/{name?}', 'ProjectController@checkNameUnique')->where(['id' => '\d+'])->name('project_unique');
 
     Route::get('/chia-se-tai-lieu', 'ShareController@listShareDocument')->name('list_share_document');
     Route::get('/chia-se-tai-lieu', 'ShareController@listShareDocument')->name('list_share_document');

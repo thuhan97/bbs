@@ -107,4 +107,7 @@ return [
     'weekly_report_punish' => 'Ngày :day, chưa gửi báo cáo tuần :week.',
     'no_weekly_report' => 'Bạn chưa gửi báo cáo tuần :week.',
     'staff_no_weekly_report' => 'Nhân viên :name chưa gửi báo cáo tuần :week.',
+    'create_project' => 'Thêm mới',
+    'create_project_notify' => 'đã thêm bạn vào dự án',
+    'delete_user_project' => 'đã xóa bạn ra khỏi dự án',
 ];

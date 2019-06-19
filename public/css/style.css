@@ -2038,3 +2038,26 @@ td.blank, .type-1, .type-2 {
 #result-search {
     width: 85px;
 }
+.fix-with-table{
+    width: 110px;
+}
+.custom-select-table{
+    height: 40px;
+    width: 120px;
+}
+.select-user{
+    width: 180px !important;
+}
+.center-td{
+    line-height: 77px;
+}
+.aqua{
+    background-color: aqua !important;
+}
+.fix-with-remove {
+    padding: .5rem 0.5rem !important;
+}
+#name-error , #customer-error , #customer-user_id , #customer-mission{
+    color: red;
+    margin-top: 30px;
+}

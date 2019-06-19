@@ -1,7 +1,7 @@
 <div class="row">
     <div class="col-md-6">
         <div class="md-form margin-b-5 {{ $errors->has('name') ? ' has-error' : '' }}">
-            <input type="text" class="form-control" name="name"
+            <input type="text" class="form-control" name="name" id="name-project"
                    value="{{ old('name', $record->name) }}" required>
             <label for="name">Tên dự án *</label>
             @if ($errors->has('name'))
@@ -9,6 +9,9 @@
                     <strong>{{ $errors->first('name') }}</strong>
                 </span>
             @endif
+            <span class="text-danger">
+                    <strong id="error-name"></strong>
+                </span>
         </div>
     </div>
     <div class="col-md-6">
@@ -25,6 +28,7 @@
         </div>
     </div>
 </div>
+
 <div class="row">
     <div class="col-md-3">
         <div class="md-form{{ $errors->has('start_date') ? ' has-error' : '' }}">
@@ -55,13 +59,11 @@
             @endif
         </div>
     </div>
-</div>
-<div class="row">
     <div class="col-md-3">
         <div class="md-form{{ $errors->has('scale') ? ' has-error' : '' }}">
             <label for="scale">Quy mô dự án (người/tháng)</label>
             <input id="scale" type="number" class="form-control" name="scale"
-                   value="{{ old('scale', $record->scale) }}">
+                   value="{{ old('scale', $record->scale) }}" step=0.1>
 
             @if ($errors->has('scale'))
                 <span class="text-danger">
@@ -83,6 +85,30 @@
                 <span class="text-danger">
                                 <strong>{{ $errors->first('amount_of_time') }}</strong>
                             </span>
+            @endif
+        </div>
+    </div>
+</div>
+
+
+<div class="row">
+    <!-- /.form-group -->
+    <div class="col-md-6">
+        <div class="md-form{{ $errors->has('image_url') ? ' has-error' : '' }}">
+            <div class="input-group">
+                <input id="image_url" class="form-control" type="text" name="image_url"
+                       value="{{ old('image_url', $record->image_url) }}">
+                <span class="input-group-btn">
+                     <a href="#" for="image_url" class="btn btn-primary" id="btnChoose">
+                       <i class="fa fa-picture-o"></i> Chọn ảnh
+                     </a>
+                              <input type="file" accept="image/*" name="image_upload" class="hidden">
+                   </span>
+            </div>
+            @if ($errors->has('image_url'))
+                <span class="text-danger">
+                    <strong>{{ $errors->first('image_url') }}</strong>
+                </span>
             @endif
         </div>
     </div>
@@ -116,32 +142,107 @@
 
     </div>
 </div>
-<div class="row">
-    <!-- /.form-group -->
-    <div class="col-md-8">
-        <div class="md-form{{ $errors->has('image_url') ? ' has-error' : '' }}">
-            <div class="input-group">
-                <input id="image_url" class="form-control" type="text" name="image_url"
-                       value="{{ old('image_url', $record->image_url) }}">
-                <span class="input-group-btn">
-                     <a href="#" for="image_url" class="btn btn-primary" id="btnChoose">
-                       <i class="fa fa-picture-o"></i> Chọn ảnh
-                     </a>
-                              <input type="file" accept="image/*" name="image_upload" class="hidden">
-                   </span>
+@if($record->id)
+<div class="card my-3">
+    <div class="card-body">
+        <div id="table" class="table-editable">
+            <span><h5 class="text-center mb-0">Thành viên trong dự án</h5></span>
+            <div class="float-right">
+                <a href="#" onclick=""
+                   class="mt-0 btn-floating btn-lg aqua waves-effect waves-light text-white"
+                   title="Tạo dự án">
+                    <i id="btn-add" class="fas fa-plus"></i>
+                </a>
             </div>
-            @if ($errors->has('image_url'))
-                <span class="text-danger">
-                    <strong>{{ $errors->first('image_url') }}</strong>
-                </span>
-            @endif
+            <table class="table table-bordered table-responsive-md table-striped text-center">
+                <tr>
+                    <th class="text-center center-td" rowspan="2">Tên</th>
+                    <th class="text-center center-td" rowspan="2">Vai trò</th>
+                    <th class="text-center" colspan="2">Công số</th>
+                    <th class="text-center" colspan="2">Thời gian</th>
+                    <th class="text-center center-td" rowspan="2">Thao tác</th>
+                </tr>
+                <tr>
+                    <th class="text-center">Hợp đồng</th>
+                    <th class="text-center">Thực tế</th>
+                    <th class="text-center">Bắt đầu</th>
+                    <th class="text-center">Kết thúc</th>
+                </tr>
+                <tbody id="append">
+                @foreach($record->projectMembers as $projectMember)
+                <tr>
+                    <td class="pt-3-half pb-0"  >
+                        {{ Form::select('user_id[]', $results, $projectMember->user_id , ['class'=>'select-user custom-select-table browser-default custom-select custom-select-lg mb-3','required']) }}
+                        </td>
+                    <td class="pt-3-half pb-0"  >
+                        {{ Form::select('mission[]', MISSION_PROJECT, $projectMember->mission , ['class'=>'custom-select-table browser-default custom-select custom-select-lg mb-3','required']) }}
+                    </td>
+                    <td class="pt-3-half pb-0"  ><input name="contract[]" class="form-control fix-with-table" type="text" value="{{ $projectMember->contract }}" oninput="this.value = this.value.replace(/[^0-9.]/g, ''); this.value = this.value.replace(/(\..*)\./g, '$1');" ></td>
+                    <td class="pt-3-half pb-0"  ><input name="reality[]" class="form-control fix-with-table" type="text" value="{{ $projectMember->reality }}" oninput="this.value = this.value.replace(/[^0-9.]/g, ''); this.value = this.value.replace(/(\..*)\./g, '$1');"></td>
+                    <td class="pt-3-half pb-0"  ><input readonly="readonly" name="time_start[]" class="form-control fix-with-table time-start" value="{{ $projectMember->time_start }}"type="text"></td>
+                    <td class="pt-3-half pb-0"  ><input readonly="readonly" name="time_end[]" class="form-control fix-with-table time-end"  value="{{ $projectMember->time_end }}"type="text"></td>
+                    <td>
+                        <span class="table-remove"><button type="button" class="fix-with-remove btn btn-danger btn-rounded btn-sm my-0">Remove</button></span>
+                    </td>
+                </tr>
+                @endforeach
+                <!-- This is our clonable table line -->
+                </tbody>
+
+            </table>
         </div>
     </div>
-    <div class="col-md-4">
-        <img id="thumbnail" style="margin-top:15px;max-height:100px;"
-             src="{{$record->image_url}}">
-    </div>
 </div>
+@else
+    <div class="card my-3">
+        <div class="card-body">
+            <div id="table" class="table-editable">
+                <span><h4 class="mb-0 text-center">Thành viên trong dự án</h4></span>
+                <div class="float-right">
+                    <a href="#" onclick=""
+                       class="mt-0 btn-floating btn-lg aqua waves-effect waves-light text-white"
+                       title="Tạo dự án">
+                        <i id="btn-add" class="fas fa-plus"></i>
+                    </a>
+                </div>
+                <table class="table table-bordered table-responsive-md table-striped text-center">
+                    <tr>
+                        <th class="text-center center-td" rowspan="2">Tên</th>
+                        <th class="text-center center-td" rowspan="2">Vai trò</th>
+                        <th class="text-center" colspan="2">Công số</th>
+                        <th class="text-center" colspan="2">Thời gian</th>
+                        <th class="text-center center-td" rowspan="2">Thao tác</th>
+                    </tr>
+                    <tr>
+                        <th class="text-center">Hợp đồng</th>
+                        <th class="text-center">Thực tế</th>
+                        <th class="text-center">Bắt đầu</th>
+                        <th class="text-center">Kết thúc</th>
+                    </tr>
+                    <tbody id="append">
+                    <tr>
+                        <td class="pt-3-half pb-0"  >
+                            {{ Form::select('user_id[]', $results, auth()->id() , ['class'=>'select-user custom-select-table browser-default custom-select custom-select-lg mb-3', 'placeholder'=>'Vui lòng chọn','required']) }}
+                        </td>
+                        <td class="pt-3-half pb-0"  >
+                            {{ Form::select('mission[]', MISSION_PROJECT, null , ['class'=>'custom-select-table browser-default custom-select custom-select-lg mb-3', 'placeholder'=>'Vui lòng chọn','required']) }}
+                        </td>
+                        <td class="pt-3-half pb-0"  ><input name="contract[]" class="form-control fix-with-table" type="text" oninput="this.value = this.value.replace(/[^0-9.]/g, ''); this.value = this.value.replace(/(\..*)\./g, '$1');" ></td>
+                        <td class="pt-3-half pb-0"  ><input name="reality[]" class="form-control fix-with-table" type="text" oninput="this.value = this.value.replace(/[^0-9.]/g, ''); this.value = this.value.replace(/(\..*)\./g, '$1');" ></td>
+                        <td class="pt-3-half pb-0"  ><input readonly="readonly" name="time_start[]" class="form-control fix-with-table time-start" type="text"></td>
+                        <td class="pt-3-half pb-0"  ><input readonly="readonly" name="time_end[]" class="form-control fix-with-table time-end" type="text"></td>
+                        <td>
+                            <span class="table-remove"><button type="button" class="fix-with-remove btn btn-danger btn-rounded btn-sm my-0">Remove</button></span>
+                        </td>
+                    </tr>
+                        <!-- This is our clonable table line -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    @endif
+
 <div class="row">
     <div class="col-md-6">
         <div class="md-form{{ $errors->has('technical') ? ' has-error' : '' }}">
@@ -175,7 +276,7 @@
 </div>
 <div class="md-form{{ $errors->has('description') ? ' has-error' : '' }}">
     <label for="description">Mô tả</label>
-    <textarea id="description" class="md-textarea form-control" name="description"
+    <textarea required id="description" class="md-textarea form-control" name="description"
               rows="5">{{ old('description', $record->description) }}</textarea>
 
     @if ($errors->has('description'))
@@ -184,7 +285,6 @@
                             </span>
     @endif
 </div>
-
 
 @push('extend-css')
     <link href="{{ asset_ver('bootstrap-datepicker/css/bootstrap-datepicker.min.css') }}" rel="stylesheet">
@@ -196,7 +296,7 @@
 @push('footer-scripts')
     <script>
         $(function () {
-            $('#start_date , #end_date').datepicker({
+            $('#start_date , .time-end, .time-start, #end_date').datepicker({
                 format: 'yyyy/mm/dd',
                 autoclose: true
             });
@@ -206,3 +306,63 @@
         });
     </script>
 @endpush
+@push('extend-css')
+    <link href="{{asset_ver('bootstrap-select/css/bootstrap-select.css')}}" rel="stylesheet"/>
+    <link rel="stylesheet" type="text/css" href="{{asset_ver('css/meeting.css')}}">
+@endpush
+@push('extend-js')
+    <script type="text/javascript" src="{{asset_ver('mdb/js/bootstrap.js')}}"></script>
+    <script src="{{asset_ver('bootstrap-select/js/bootstrap-select.js')}}" type="text/javascript"></script>
+    <script src="{{ asset_ver('js/jquery.validate.min.js') }}"></script>
+@endpush
+<script>
+    $(document).ready(function () {
+        var html = '';
+        <!-- This is our clonable table line -->
+        html += '<tr>';
+        html += '<td class="pt-3-half pb-0"  >'
+        html += '{{ Form::select('user_id[]', $results, null , ['class'=>'select-user custom-select-table browser-default custom-select custom-select-lg mb-3', 'placeholder'=>'Vui lòng chọn','required']) }}'
+        html += '</td>'
+        html += '<td class="pt-3-half pb-0"  >'
+        html += '{{ Form::select('mission[]', MISSION_PROJECT, null , ['class'=>'custom-select-table browser-default custom-select custom-select-lg mb-3', 'placeholder'=>'Vui lòng chọn','required']) }}'
+        html += '</td>'
+        html += '<td class="pt-3-half pb-0"  ><input name="contract[]" class="fix-with-table form-control" type="text" oninput="this.value = this.value.replace(/[^0-9.]/g, \'\'); this.value = this.value.replace(/(\\..*)\\./g, \'$1\');" ></td>'
+        html += '<td class="pt-3-half pb-0"  ><input name="reality[]" class="fix-with-table form-control" type="text" oninput="this.value = this.value.replace(/[^0-9.]/g, \'\'); this.value = this.value.replace(/(\\..*)\\./g, \'$1\');" ></td>'
+        html += '<td class="pt-3-half pb-0"  ><input readonly="readonly" name="time_start[]" class="fix-with-table form-control time-start" type="text"></td>'
+        html += '<td class="pt-3-half pb-0"  ><input readonly="readonly" name="time_end[]" class="fix-with-table form-control time-end" type="text"></td>'
+        html += '<td>'
+        html += '<span class="table-remove"><button type="button" class="fix-with-remove btn btn-danger btn-rounded btn-sm my-0">Remove</button></span>'
+        html += '</td>'
+
+        $('#btn-add').on('click', function () {
+            $('#append').append(html)
+            $('.time-end, .time-start').datepicker({
+                format: 'yyyy/mm/dd',
+                autoclose: true
+            });
+        })
+        const $tableID = $('#table');
+        $tableID.on('click', '.table-remove', function () {
+            $(this).parents('tr').detach();
+        });
+$('#name-project').on('change',function () {
+    var id ='{{ $record->id ?? 0 }}';
+    var name=$(this).val();
+    $.ajax
+    ({
+        'url': '{{ route('project_unique') }}' + '/' + id+ '/' + name,
+        'type': 'get',
+        success: function (data) {
+            if (data.success){
+                $('#error-name').text('Tên dự án phải là duy nhất');
+                $('.btn-send').attr('disabled',true);
+            }else {
+                $('#error-name').text(' ');
+                $('.btn-send').removeAttr('disabled');
+            }
+        }
+    });
+})
+
+    })
+</script>

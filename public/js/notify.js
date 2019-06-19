@@ -9,11 +9,9 @@ $(function () {
         var data = notice.data;
         myNotify.pushNotify('Thông báo', data.name, null, data.url, data.logo_url);
     });
-
     bbsChannel.bind('App\\Events\\MeetingNoticeEvent', function (notice) {
         var data = notice.data;
-        if (data.user_ids.indexOf(userId) >= 0)
-            myNotify.pushNotify(data.title, data.content, null, data.url, data.logo_url);
+            myNotify.pushNotify(data.title, data.content, data.image_url, data.url, data.logo_url);
     });
 
     bbsChannel.bind('App\\Events\\WorkExperienceNoticeEvent', function (notice) {
@@ -62,6 +60,11 @@ $(function () {
         var data = notice.data;
         myNotify.pushNotify(data.name, data.introduction, data.image_url, data.url, data.logo_url);
     });
+    myChannel.bind('App\\Events\\ProjectNotify', function (notice) {
+        var data = notice.data;
+        myNotify.pushNotify(data.title, data.content,data.image_url,data.url, data.logo_url);
+    });
+
 
     var $notification = $("#notification");
     var $btnBell = $("#btnNotification");

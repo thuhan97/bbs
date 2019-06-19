@@ -38,19 +38,16 @@ class AuthController extends Controller
      * @param \App\Repositories\Contracts\IUserRepository $repository
      * @param \App\Services\Contracts\IUserService        $service
      * @param \App\Transformers\UserTransformer           $transformer
-     * @param \App\Services\Contracts\IPotatoService      $potatoService
      */
     public function __construct(
         IUserRepository $repository,
         IUserService $service,
-        UserTransformer $transformer,
-        IPotatoService $potatoService
+        UserTransformer $transformer
     )
     {
         $this->repository = $repository;
         $this->service = $service;
         $this->transformer = $transformer;
-        $this->potatoService = $potatoService;
     }
 
     /**

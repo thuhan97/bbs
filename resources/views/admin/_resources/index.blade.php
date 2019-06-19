@@ -58,7 +58,7 @@ if (count($records) > 0) {
                                 <button type="submit" class="btn btn-primary"><i class="fa fa-search"></i></button>
                             </div>
                         </div>
-                        <a href="{{ $_createLink }}" class="btn btn-sm btn-primary pull-right">
+                        <a href="{{ $_createLink }}" class="btn btn-sm btn-primary pull-right toggle-create">
                             <i class="fa fa-plus"></i> <span>Thêm mới</span>
                         </a>
                     @endif

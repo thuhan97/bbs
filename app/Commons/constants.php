@@ -453,7 +453,8 @@ define('NOTIFICATION_TYPE', [
     'day_off_create' => 10,
     'share' => 11,
     'meeting' => 12,
-    'project'=>13
+    'device'=>13,
+    'project'=>14
 ]);
 define('NOTIFICATION_LOGO', [
     0 => 'fa fa-flag black-text',
@@ -469,7 +470,8 @@ define('NOTIFICATION_LOGO', [
     10 => 'fas fa-meh-blank fa-1x text-warning text-size-icon',
     11 => 'fas fa-share-alt-square text-default',
     12 => 'fa fa-comments orange-text',
-    13 =>'fas fa-cogs fa-1x text-success'
+    13=>'fas fa-desktop cyan-text',
+    14 =>'fas fa-cogs fa-1x text-success'
 ]);
 define('JVB_LOGO_URL', 'http://jvb-corp.com/img/logo.png');
 
@@ -484,6 +486,22 @@ define('OT_TYPE_DEFAULT', 1);
 define('NOTIFICATION_DISABLE', 1);
 define('NOTIFICATION_ENABLE', 0);
 define('NOTIFICATION_REPEAT_MINUTE', 15);
+define('DATE_TIME_FORMAT_VI', 'd/m/Y');
+define('DEVICE_STATUS_ABIDE',2);
+define('INCREMENT',1);
+define('ARRAY_STATUS_DEVICE',[0,1,3]);
+define('TYPE_DEVICE', [
+    'send' => 1,
+    'manager_approval' => 2,
+    'administrative_approval' => 3
+]);
+define('STATUS_DEVICE',[
+    'not_active'=>0,
+    'active' => 1,
+    'approving' => 2,
+    'approved '=>3,
+    'done'=>4
+]);
 
 define('MISSION_PROJECT', [
     0 => 'Project Manager',

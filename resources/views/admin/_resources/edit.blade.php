@@ -51,9 +51,9 @@ $_printLink = false;
                             <a href="{{ $_listLink }}" class="btn btn-sm btn-primary margin-r-5 margin-l-5">
                                 <i class="fa fa-search"></i> <span>Danh sách</span>
                             </a>
-                            <a href="{{ $_createLink }}" class="btn btn-sm btn-success margin-r-5 margin-l-5">
+                                <a href="{{ $_createLink }}" class="btn btn-sm btn-success margin-r-5 margin-l-5 toggle-create">
                                 <i class="fa fa-plus"></i> <span>Thêm mới</span>
-                            </a>
+                                 </a>
                             @if ($_printLink)
                                 <a href="{{ $_printLink }}" target="_blank"
                                    class="btn btn-sm btn-default margin-r-5 margin-l-5">

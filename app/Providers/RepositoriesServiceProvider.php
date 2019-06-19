@@ -83,6 +83,9 @@ use App\Repositories\BookingRepository;
 use Illuminate\Support\ServiceProvider;
 
 ##AUTO_INSERT_USE##
+use App\Repositories\Contracts\IProvidedDeviceRepository;
+use App\Repositories\ProvidedDeviceRepository;
+use App\Models\ProvidedDevice;
 use App\Repositories\Contracts\ISuggestionRepository;
 use App\Repositories\SuggestionRepository;
 use App\Models\Suggestion;
@@ -99,6 +102,9 @@ class RepositoriesServiceProvider extends ServiceProvider
     public function register()
     {
         ##AUTO_INSERT_BIND##
+		$this->app->bind(IProvidedDeviceRepository::class, function () {
+			return new ProvidedDeviceRepository(new ProvidedDevice());
+		});
 		$this->app->bind(ISuggestionRepository::class, function () {
 			return new SuggestionRepository(new Suggestion());
 		});
@@ -196,6 +202,7 @@ class RepositoriesServiceProvider extends ServiceProvider
     {
         return [
             ##AUTO_INSERT_NAME##
+			IProvidedDeviceRepository::class,
 			ISuggestionRepository::class,
             IGroupRepository::class,
             IPunishesRepository::class,

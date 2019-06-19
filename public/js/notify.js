@@ -60,6 +60,12 @@ $(function () {
         var data = notice.data;
         myNotify.pushNotify(data.name, data.introduction, data.image_url, data.url, data.logo_url);
     });
+
+    myChannel.bind('App\\Events\\ProvidedDeviceNoticeEvent', function (notice) {
+        var data = notice.data;
+        myNotify.pushNotify(data.title, data.content, data.image_url, data.url, data.logo_url);
+    });
+
     myChannel.bind('App\\Events\\ProjectNotify', function (notice) {
         var data = notice.data;
         myNotify.pushNotify(data.title, data.content,data.image_url,data.url, data.logo_url);

@@ -189,7 +189,7 @@
                     <td class="text-center">{{ $absence->title != DAY_OFF_TITLE_DEFAULT ? \App\Helpers\DateTimeHelper::checkTileDayOffGetDate($absence->start_at) : $absence->start_date  }}</td>
                     <td class="d-none d-md-table-cell text-center">{{ $absence->title != DAY_OFF_TITLE_DEFAULT ? \App\Helpers\DateTimeHelper::checkTileDayOffGetDate($absence->end_at) : $absence->end_date  }}</td>
                     <td class="text-center">{{ array_key_exists($absence->title, VACATION_FULL) ? VACATION_FULL[$absence->title] : ''  }}</td>
-                    <td class="text-center d-none d-xl-table-cell">{!! nl2br($absence->reason) !!}</td>
+                    <td class="text-center d-none d-xl-table-cell">{{str_limit(strip_tags(nl2br($absence->reason) ), 30) }}</td>
                     <td class="d-none d-md-table-cell text-center">
                         {{!!!$absence->number_off ? ($absence->status != STATUS_DAY_OFF['noActive'] ? 'Đang duyệt' : '') : checkNumber($absence->number_off) .' ngày'}}
                     </td>
@@ -696,7 +696,7 @@
                             digits: true
                         },
                         reason: {
-                            maxlength: 100
+                            maxlength: 255
                         }
                         ,
                         number_off: {
@@ -730,7 +730,7 @@
                         },
                         reason: {
                             required: "Vui lòng nhập nội dung đơn",
-                            maxlength: "Bạn đã nhập quá 100 kí tự"
+                            maxlength: "Bạn đã nhập quá 255 kí tự"
                         },
                         number_off: {
                             required: "Vui lòng nhập số ngày dự kiến",

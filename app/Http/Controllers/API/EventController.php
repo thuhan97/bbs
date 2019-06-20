@@ -7,6 +7,7 @@ use App\Repositories\Contracts\IEventAttendanceRepository;
 use App\Services\Contracts\IEventAttendanceService;
 use App\Services\Contracts\IEventService;
 use App\Traits\RESTActions;
+use App\Transformers\EventAttendanceListTransformer;
 use App\Transformers\EventTransformer;
 use Illuminate\Http\Request;
 
@@ -68,7 +69,7 @@ class EventController extends Controller
     {
         $event = $this->eventService->detail($id);
         if ($event != null) {
-            return $this->respondTransformer($event);
+            return $this->respondTransformer($event, new EventAttendanceListTransformer(), 'event');
         }
         return $this->respondNotfound();
     }

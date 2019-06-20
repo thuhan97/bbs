@@ -14,6 +14,11 @@ class UserTransformer extends Fractal\TransformerAbstract
 {
     public function transform(User $item)
     {
-        return $item->toArray();
+        $data = $item->toArray();
+        $team = $item->team();
+        $data['team_name'] = $team->name ?? '';
+        $data['group_name'] = $team->group->name ?? '';
+        $data['job_name'] = JOB_TITLES[$item->jobtitle_id] ?? '';
+        return $data;
     }
 }

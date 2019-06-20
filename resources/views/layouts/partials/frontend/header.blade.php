@@ -168,7 +168,7 @@ foreach ($notifications as $notification) {
         $(function () {
             var totalNotification = '{{$notificationCount}}' || 0;
             var titleBlink = null;
-            if (totalNotification) {
+            if (totalNotification != 0) {
                 var originalTitle = document.title;
                 var showNotice = false;
                 titleBlink = setInterval(function () {

@@ -111,7 +111,7 @@ foreach ($notifications as $notification) {
                                                  src="{{ $notification->sender->avatar ?? JVB_LOGO_URL}}"/>
                                         </div>
                                         <div class="notice-content ">
-                                            <div class="wrap-text notice-title">{{$notification->title}}</div>
+                                            <div class="wrap-text notice-title" title="{{$notification->title}}">{{$notification->title}}</div>
                                             <div class="text-gray wrap-text notice-text">{!! strip_tags($notification->content) !!}</div>
                                             <div class="text-gray">
                                                 <i>

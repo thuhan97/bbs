@@ -1,4 +1,4 @@
-<?php 
+<?php
 /**
 * ProvidedDeviceModel class
 * Author: jvb
@@ -28,6 +28,7 @@ class ProvidedDevice extends Model
         'content',
         'return_date',
         'approval_manager',
+        'approved_at',
         'manager_id',
         'approval_hcnv',
         'status',

@@ -1,18 +1,13 @@
 <div class="table-responsive list-records">
     <table class="table table-hover table-bordered">
         <colgroup>
-            <col style="width: 30px">
-            <col style="width: 180px">
-            <col style="width: 80px">
-            <col style="width: 200px">
-            <col style="width: 200px">
+            <col style="width: 50px">
+            <col style="width: 120px">
             <col style="width: 150px">
-            <col style="width: 200px">
+            <col style="">
             <col style="width: 120px">
-            <col style="width: 200px">
             <col style="width: 120px">
-            <col style="width: 100px">
-            <col style="width: 70px">
+            <col style="width: 120px">
         </colgroup>
         <thead>
         <th style="width: 10px;">
@@ -20,13 +15,9 @@
         </th>
         <th>Nhân viên</th>
         <th>Thiết bị yêu cầu</th>
-        <th>tiêu đề</th>
-        <th>nội dung</th>
-        <th>Manager phê duyệt</th>
-        <th>Ý kiến Manager</th>
-        <th>Ngày hẹn trả</th>
-        <th>Ý kiến HCNS</th>
+        <th>Tiêu đề</th>
         <th>Ngày tạo</th>
+        <th>Ngày hẹn trả</th>
         <th>Trạng thái</th>
         <th style="width: 100px;">Chức năng</th>
         </thead>
@@ -41,6 +32,7 @@
             ?>
             <tr>
                 <td><input type="checkbox" name="ids[]" value="{{ $record->id }}" class="square-blue chkDelete"></td>
+                <td class="text-right">{{ $record->created_at->format('Y-m-d') }}</td>
                 <td class="table-text">
                     <a href="{{ $userLink }}">{{ $record->user->name ?? '' }}</a>
                 </td>
@@ -48,12 +40,7 @@
                     {{ array_key_exists($record->type_device,TYPES_DEVICE) ? TYPES_DEVICE[$record->type_device] : '' }}
                 </td>
                 <td class="text-right">{{ $record->title }}</td>
-                <td class="text-right"> {{str_limit(strip_tags(nl2br($record->content) ), 25) }}</td>
-                <td class="text-right">{{ $record->manager['name'] }}</td>
-                <td class="text-right">{{str_limit(strip_tags(nl2br($record->approval_manager) ), 25) }}</td>
                 <td class="text-right">{{ $record->return_date }}</td>
-                <td class="text-right"> {{str_limit(strip_tags(nl2br($record->approval_hcnv) ), 25) }}</td>
-                <td class="text-right">{{ $record->created_at->format('Y-m-d') }}</td>
                 <td class="text-center">
                     @if($record->status == STATUS_DAY_OFF['abide'])
                         <span class="label label-danger">close</span>
@@ -63,7 +50,7 @@
                         <span class="label label-warning">no</span>
                     @endif
                 </td>
-            <!-- we will also add show, edit, and delete buttons -->
+                <!-- we will also add show, edit, and delete buttons -->
                 <td>
                     <div class="btn-group">
                         <a href="{{ $editLink }}" class="btn btn-info btn-sm"><i class="fa fa-edit"></i></a>
@@ -76,7 +63,7 @@
                           style="display: none;" class="hidden form-inline">
                         {{ csrf_field() }}
                         {{ method_field('DELETE') }}
-                        <button  type="submit" class="btn btn-danger">Delete</button>
+                        <button type="submit" class="btn btn-danger">Delete</button>
                     </form>
                 </td>
 
@@ -87,11 +74,11 @@
 </div>
 <script>
     $(document).ready(function () {
-        $('#btn-submit-excel').on('click',function () {
-           $('#export').removeAttrs('disabled');
+        $('#btn-submit-excel').on('click', function () {
+            $('#export').removeAttrs('disabled');
         })
-        $('#btn-search').on('click',function () {
-            $('#export').attr('disabled',true);
+        $('#btn-search').on('click', function () {
+            $('#export').attr('disabled', true);
         })
         $('.toggle-create').remove();
     })

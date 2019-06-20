@@ -48,6 +48,7 @@
             });
 
         messaging.onMessage(function (payload) {
+            $("link[rel*='icon']").attr("href", "favicon-n.png");
             var notification = new Notification(payload.notification.title, {
                 body: payload.notification.body,
                 icon: payload.data.icon || '{{JVB_LOGO_URL}}'
@@ -57,21 +58,5 @@
                 window.open(payload.data.url || '{{env('APP_URL')}}');
             }
         });
-
-        {{--$(window).on('beforeunload', function () {--}}
-        {{--    if (window.firebaseTokenId) {--}}
-        {{--        //notification_enable_push--}}
-        {{--        $.ajax({--}}
-        {{--            url: '{{route('notification_enable_push')}}',--}}
-        {{--            method: 'POST',--}}
-        {{--            dataType: 'JSON',--}}
-        {{--            data: {id: window.firebaseTokenId},--}}
-        {{--            async: false,--}}
-        {{--            success: function (data) {--}}
-        {{--            }--}}
-        {{--        });--}}
-        {{--    }--}}
-        {{--    return;--}}
-        {{--});--}}
     </script>
 @endif

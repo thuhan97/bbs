@@ -6,7 +6,9 @@ foreach ($notifications as $notification) {
     if ($notification->read_at == null)
         $notificationCount++;
 }
+
 ?>
+
 <header>
     <!-- Navbar -->
     {{--<nav class="navbar fixed-top navbar-expand-lg navbar-light white scrolling-navbar">--}}
@@ -111,7 +113,8 @@ foreach ($notifications as $notification) {
                                                  src="{{ $notification->sender->avatar ?? JVB_LOGO_URL}}"/>
                                         </div>
                                         <div class="notice-content ">
-                                            <div class="wrap-text notice-title" title="{{$notification->title}}">{{$notification->title}}</div>
+                                            <div class="wrap-text notice-title"
+                                                 title="{{$notification->title}}">{{$notification->title}}</div>
                                             <div class="text-gray wrap-text notice-text">{!! strip_tags($notification->content) !!}</div>
                                             <div class="text-gray">
                                                 <i>
@@ -163,7 +166,23 @@ foreach ($notifications as $notification) {
 @push('extend-js')
     <script>
         $(function () {
+            var totalNotification = '{{$notificationCount}}' || 0;
+            var titleBlink = null;
+            if (totalNotification) {
+                var originalTitle = document.title;
+                var showNotice = false;
+                titleBlink = setInterval(function () {
+                    if (showNotice) {
+                        document.title = '(' + totalNotification + ') ' + originalTitle;
+                    } else {
+                        document.title = originalTitle;
+                    }
+                    showNotice ^= true;
+                }, 2000);
+            }
+
             $("#btnNotification").click(function () {
+                if (titleBlink) clearInterval(titleBlink);
                 if ($(".lblNotifyBagde").attr('data-count') == 0) {
                     $("#notification .dropdown-item").removeClass('notify-read-0').addClass('notify-read-1');
                 } else {

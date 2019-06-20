@@ -36,10 +36,8 @@ class ProjectController extends Controller
      */
     public function index(Request $request)
     {
-        $users = User::select('id', DB::raw('CONCAT(staff_code, " - ", name) as name'))->where('status', ACTIVE_STATUS)->orderBy('jobtitle_id', 'desc')->orderBy('staff_code')->pluck('name', 'id')->toArray();
-        $results['Danh sách nhân viên'] = $users;
         $projects = $this->service->search($request, $perPage, $search);
-        return view('end_user.project.index', compact('projects', 'search', 'perPage','results'));
+        return view('end_user.project.index', compact('projects', 'search', 'perPage'));
     }
 
     /**
@@ -49,10 +47,9 @@ class ProjectController extends Controller
      */
     public function create()
     {
-        $users = User::select('id', DB::raw('CONCAT(staff_code, " - ", name) as name'))->where('status', ACTIVE_STATUS)->orderBy('jobtitle_id', 'desc')->orderBy('staff_code')->pluck('name', 'id')->toArray();
-        $results['Danh sách nhân viên'] = $users;
+        $users = $this->getUserList();
         $record = new Project();
-        return view('end_user.project.create', compact('record','results'));
+        return view('end_user.project.create', compact('record', 'users'));
     }
 
     /**
@@ -71,10 +68,10 @@ class ProjectController extends Controller
         $project->leader_id = Auth::id();
         $project->fill($all);
         $project->save();
-        $this->saveProjectMember($project,$request,true,null);
+        $this->saveProjectMember($project, $request, true, null);
         flash()->success(__l('project_add_successully'));
 
-        return redirect(route('project'));
+        return redirect(route('project_detail', $project->id));
     }
 
     /**
@@ -84,14 +81,12 @@ class ProjectController extends Controller
      */
     public function edit($id)
     {
-
         $user = Auth::user();
         $record = Project::find($id);
-        if ($record && $user->can('edit', $record))
-            $users = User::select('id', DB::raw('CONCAT(staff_code, " - ", name) as name'))->where('status', ACTIVE_STATUS)->orderBy('jobtitle_id', 'desc')->orderBy('staff_code')->pluck('name', 'id')->toArray();
-        $results['Danh sách nhân viên'] = $users;
-            return view('end_user.project.update', compact('record','results'));
-
+        if ($record && $user->can('edit', $record)) {
+            $users = $this->getUserList();
+            return view('end_user.project.update', compact('record', 'users'));
+        }
         abort(404);
     }
 
@@ -112,15 +107,15 @@ class ProjectController extends Controller
         if ($project && $user->can('edit', $project)) {
             \DB::beginTransaction();
             try {
-                $checkUserIds=[];
-                foreach ($project->projectMembers as $pro){
-                    $checkUserIds[]=$pro->user_id;
+                $checkUserIds = [];
+                foreach ($project->projectMembers as $pro) {
+                    $checkUserIds[] = $pro->user_id;
                     $pro->delete();
                 }
-                $this->saveProjectMember($project,$request,false,$checkUserIds);
-                foreach ($checkUserIds as $checkUserId){
-                    if (!in_array($checkUserId,$request->user_id)){
-                        broadcast(new ProjectNotify($project,$checkUserId,true))->toOthers();
+                $this->saveProjectMember($project, $request, false, $checkUserIds);
+                foreach ($checkUserIds as $checkUserId) {
+                    if (!in_array($checkUserId, $request->user_id)) {
+                        broadcast(new ProjectNotify($project, $checkUserId, true))->toOthers();
                     }
                 }
             } catch (Exception $ex) {
@@ -131,7 +126,7 @@ class ProjectController extends Controller
             \DB::commit();
 
             flash()->success(__l('project_edit_successully'));
-            return redirect(route('project'));
+            return redirect(route('project_detail', $id));
         }
         abort(404);
     }
@@ -150,46 +145,54 @@ class ProjectController extends Controller
         }
         abort(404);
     }
-    public function checkNameUnique($id=DEFAULT_VALUE,$name){
-       $nameProject=Project::where('name',$name)->first()->name ?? null;
-        if ($id){
-          $project=Project::find($id);
-          if ($project->name == $nameProject){
-              return response(['success' => false]);  
-          }
+
+    public function checkNameUnique($id = DEFAULT_VALUE, $name)
+    {
+        $nameProject = Project::where('name', $name)->first()->name ?? null;
+        if ($id) {
+            $project = Project::find($id);
+            if ($project->name == $nameProject) {
+                return response(['success' => false]);
+            }
         }
-       if ($nameProject) {
-           return response(['success' => true]);
-       }else{
-             return response(['success' => false]);
-       }
+        if ($nameProject) {
+            return response(['success' => true]);
+        } else {
+            return response(['success' => false]);
+        }
 
     }
 
-    private function saveProjectMember($project,$request,$isCreate=false,$checkUserId=null){
-        if ($request->user_id){
-            foreach ($request->user_id as $key => $userID){
-                $projectMember=new ProjectMember();
-                $projectMember->project_id=$project->id;
-                $projectMember->user_id=$userID;
-                $projectMember->mission=$request->mission[$key] ?? null;
-                $projectMember->contract=$request->contract[$key] ?? null;
-                $projectMember->reality=$request->reality[$key] ?? null;
-                $projectMember->time_start=$request->time_start[$key] ?? null;
-                $projectMember->time_end=$request->time_end[$key] ?? null;
+    private function saveProjectMember($project, $request, $isCreate = false, $checkUserId = null)
+    {
+        if ($request->user_id) {
+            foreach ($request->user_id as $key => $userID) {
+                $projectMember = new ProjectMember();
+                $projectMember->project_id = $project->id;
+                $projectMember->user_id = $userID;
+                $projectMember->mission = $request->mission[$key] ?? null;
+                $projectMember->contract = $request->contract[$key] ?? null;
+                $projectMember->reality = $request->reality[$key] ?? null;
+                $projectMember->time_start = $request->time_start[$key] ?? null;
+                $projectMember->time_end = $request->time_end[$key] ?? null;
                 $projectMember->save();
-                if ($isCreate){
-                    if ($project->leader_id != $userID){
-                        broadcast(new ProjectNotify($project,$userID))->toOthers();
+                if ($isCreate) {
+                    if ($project->leader_id != $userID) {
+                        broadcast(new ProjectNotify($project, $userID))->toOthers();
                     }
-                }else{
-                    if ($project->leader_id != $userID  && !in_array($userID,$checkUserId)){
-                        broadcast(new ProjectNotify($project,$userID))->toOthers();
+                } else {
+                    if ($project->leader_id != $userID && !in_array($userID, $checkUserId)) {
+                        broadcast(new ProjectNotify($project, $userID))->toOthers();
                     }
                 }
 
             }
         }
+    }
+
+    private function getUserList()
+    {
+        return User::select('id', DB::raw('CONCAT(staff_code, " - ", name) as name'))->where('status', ACTIVE_STATUS)->orderBy('jobtitle_id', 'desc')->orderBy('staff_code')->pluck('name', 'id')->toArray();
     }
 
 }

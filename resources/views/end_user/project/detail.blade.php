@@ -47,59 +47,63 @@
                     <td>{{$project->end_date}}</td>
                 </tr>
             </table>
-            <div class="card">
-                <div class="card-body">
-                    <div id="table" class="table-editable">
-                        <span><h5 class="text-center">Tất cả các thành viên trong dự án</h5></span>
-                        <table class="table table-bordered table-responsive-md table-striped text-center">
-                            <tr>
-                                <th class="text-center center-td" rowspan="2">Tên</th>
-                                <th class="text-center center-td" rowspan="2">Vai trò</th>
-                                <th class="text-center" colspan="2">Công số</th>
-                                <th class="text-center " colspan="2">Thời gian</th>
-                            </tr>
-                            <tr>
-                                <th class="text-center">Hợp đồng</th>
-                                <th class="text-center">Thực tế</th>
-                                <th class="text-center">Bắt đầu</th>
-                                <th class="text-center">Kết thúc</th>
-                            </tr>
-                            <tbody>
-                            @foreach($project->projectMembers as $projectMember)
-                            <tr>
-                                <td class="pt-3-half pb-0">
-                                    {{ $projectMember->user->name ?? ''}}
-                                </td>
-                                <td class="pt-3-half pb-0">
-                                    {{ array_key_exists($projectMember->mission,MISSION_PROJECT) ? MISSION_PROJECT[$projectMember->mission] : '' }}
-                                </td>
-                                <td class="pt-3-half pb-0">{{ $projectMember->contract ?? '' }}</td>
-                                <td class="pt-3-half pb-0">{{ $projectMember->reality ?? '' }}</td>
-                                <td class="pt-3-half pb-0">{{ $projectMember->time_start ?? '' }}</td>
-                                <td class="pt-3-half pb-0">{{ $projectMember->time_end ?? '' }}</td>
-                            </tr>
-                            @endforeach
-                            <!-- This is our clonable table line -->
-                            </tbody>
-                        </table>
+            @if($project->projectMembers->count() > 0)
+                <div class="card">
+                    <div class="card-body">
+                        <div id="table" class="table-editable">
+                            <span><h5 class="text-center">Danh sách thành viên trong dự án</h5></span>
+                            <table class="table table-bordered">
+                                <thead>
+                                <tr>
+                                    <th class="text-center center-td" rowspan="2">Tên</th>
+                                    <th class="text-center center-td" rowspan="2">Vai trò</th>
+                                    <th class="text-center" colspan="2">Công số</th>
+                                    <th class="text-center " colspan="2">Thời gian</th>
+                                </tr>
+                                <tr>
+                                    <th class="text-center">Hợp đồng</th>
+                                    <th class="text-center">Thực tế</th>
+                                    <th class="text-center">Bắt đầu</th>
+                                    <th class="text-center">Kết thúc</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                @foreach($project->projectMembers as $projectMember)
+                                    <tr>
+                                        <td>{{ $projectMember->user->name ?? ''}}</td>
+                                        <td>{{ array_key_exists($projectMember->mission, MISSION_PROJECT) ? MISSION_PROJECT[$projectMember->mission] : '' }}</td>
+                                        <td class="text-right">{{ $projectMember->contract }}</td>
+                                        <td class="text-right">{{ $projectMember->reality }}</td>
+                                        <td class="text-right">{{ $projectMember->time_start }}</td>
+                                        <td class="text-right">{{ $projectMember->time_end }}</td>
+                                    </tr>
+                                @endforeach
+                                <!-- This is our clonable table line -->
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
+                </div>
+            @else
+                <h3 class="my-4">Chưa có thông tin về thành viên của dự án</h3>
+            @endif
+            <div class=" border border-light rounded my-3 p-4">
+                <div class=>
+                    <h5 class="text-info">Kỹ thuật</h5>
+                    <p>  {!! nl2br(e($project->technical)) !!}</p>
+                </div>
+                <div class="mt-4">
+                    <h5 class="text-info">Công cụ sử dụng</h5>
+                    <span id="font-top-subtitle"> {!! nl2br(e($project->tools)) !!} </span>
+                </div>
+                <div class="mt-4">
+                    <h5 class="text-info">Mô tả</h5>
+                    <p>{!! $project->description !!}</p>
                 </div>
             </div>
         </div>
+
     </div>
-    <div class=" border border-light rounded mb-0">
-        <div class=>
-            <h5 class="text-info">Kỹ thuật</h5>
-            <p>  {!! nl2br(e($project->technical)) !!}</p>
-        </div>
-        <div class="mt-4">
-            <h5 class="text-info">Công cụ sử dụng</h5>
-            <span id="font-top-subtitle"> {!! nl2br(e($project->tools)) !!} </span>
-        </div>
-        <div class="mt-4">
-            <h5 class="text-info">Mô tả</h5>
-            <p>{!! $project->description !!}</p>
-        </div>
-    </div>
+
     <br/>
 @endsection

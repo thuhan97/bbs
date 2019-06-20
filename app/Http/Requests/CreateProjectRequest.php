@@ -29,8 +29,8 @@ class CreateProjectRequest extends FormRequest
         return [
             'name' => 'required|max:255|unique:projects,name,'. $this->id,
             'customer' => 'required|max:255',
-            'scale' => 'nullable|numeric',
-            'amount_of_time' => 'nullable|numeric|min:1',
+            'scale' => 'nullable|numeric|min:0',
+            'amount_of_time' => 'nullable|numeric|min:0',
             'start_date' => 'nullable|date',
             'end_date' => 'nullable|date|after_or_equal:start_date',
             'technical' => 'nullable|max:255',

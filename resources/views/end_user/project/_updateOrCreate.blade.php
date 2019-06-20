@@ -17,7 +17,7 @@
     <div class="col-md-6">
         <div class="md-form {{ $errors->has('customer') ? ' has-error' : '' }}">
             <label for="customer">Tên khách hàng *</label>
-            <input type="text" class="form-control" name="customer"
+            <input id="customer" type="text" class="form-control" name="customer"
                    value="{{ old('customer', $record->customer) }}" required>
 
             @if ($errors->has('customer'))
@@ -62,7 +62,7 @@
     <div class="col-md-3">
         <div class="md-form{{ $errors->has('scale') ? ' has-error' : '' }}">
             <label for="scale">Quy mô dự án (người/tháng)</label>
-            <input id="scale" type="number" class="form-control" name="scale"
+            <input id="scale" type="text" class="form-control" name="scale"
                    value="{{ old('scale', $record->scale) }}" step=0.1>
 
             @if ($errors->has('scale'))
@@ -78,7 +78,7 @@
         <div class="md-form {{ $errors->has('amount_of_time') ? ' has-error' : '' }}">
             <label for="amount_of_time">Thời gian (tháng)</label>
             <input id="amount_of_time" class="form-control" name="amount_of_time"
-                   type="number"
+                   type="text"
                    value="{{ old('amount_of_time', $record->amount_of_time) }}">
 
             @if ($errors->has('amount_of_time'))
@@ -142,106 +142,6 @@
 
     </div>
 </div>
-@if($record->id)
-<div class="card my-3">
-    <div class="card-body">
-        <div id="table" class="table-editable">
-            <span><h5 class="text-center mb-0">Thành viên trong dự án</h5></span>
-            <div class="float-right">
-                <a href="#" onclick=""
-                   class="mt-0 btn-floating btn-lg aqua waves-effect waves-light text-white"
-                   title="Tạo dự án">
-                    <i id="btn-add" class="fas fa-plus"></i>
-                </a>
-            </div>
-            <table class="table table-bordered table-responsive-md table-striped text-center">
-                <tr>
-                    <th class="text-center center-td" rowspan="2">Tên</th>
-                    <th class="text-center center-td" rowspan="2">Vai trò</th>
-                    <th class="text-center" colspan="2">Công số</th>
-                    <th class="text-center" colspan="2">Thời gian</th>
-                    <th class="text-center center-td" rowspan="2">Thao tác</th>
-                </tr>
-                <tr>
-                    <th class="text-center">Hợp đồng</th>
-                    <th class="text-center">Thực tế</th>
-                    <th class="text-center">Bắt đầu</th>
-                    <th class="text-center">Kết thúc</th>
-                </tr>
-                <tbody id="append">
-                @foreach($record->projectMembers as $projectMember)
-                <tr>
-                    <td class="pt-3-half pb-0"  >
-                        {{ Form::select('user_id[]', $results, $projectMember->user_id , ['class'=>'select-user custom-select-table browser-default custom-select custom-select-lg mb-3','required']) }}
-                        </td>
-                    <td class="pt-3-half pb-0"  >
-                        {{ Form::select('mission[]', MISSION_PROJECT, $projectMember->mission , ['class'=>'custom-select-table browser-default custom-select custom-select-lg mb-3','required']) }}
-                    </td>
-                    <td class="pt-3-half pb-0"  ><input name="contract[]" class="form-control fix-with-table" type="text" value="{{ $projectMember->contract }}" oninput="this.value = this.value.replace(/[^0-9.]/g, ''); this.value = this.value.replace(/(\..*)\./g, '$1');" ></td>
-                    <td class="pt-3-half pb-0"  ><input name="reality[]" class="form-control fix-with-table" type="text" value="{{ $projectMember->reality }}" oninput="this.value = this.value.replace(/[^0-9.]/g, ''); this.value = this.value.replace(/(\..*)\./g, '$1');"></td>
-                    <td class="pt-3-half pb-0"  ><input readonly="readonly" name="time_start[]" class="form-control fix-with-table time-start" value="{{ $projectMember->time_start }}"type="text"></td>
-                    <td class="pt-3-half pb-0"  ><input readonly="readonly" name="time_end[]" class="form-control fix-with-table time-end"  value="{{ $projectMember->time_end }}"type="text"></td>
-                    <td>
-                        <span class="table-remove"><button type="button" class="fix-with-remove btn btn-danger btn-rounded btn-sm my-0">Remove</button></span>
-                    </td>
-                </tr>
-                @endforeach
-                <!-- This is our clonable table line -->
-                </tbody>
-
-            </table>
-        </div>
-    </div>
-</div>
-@else
-    <div class="card my-3">
-        <div class="card-body">
-            <div id="table" class="table-editable">
-                <span><h4 class="mb-0 text-center">Thành viên trong dự án</h4></span>
-                <div class="float-right">
-                    <a href="#" onclick=""
-                       class="mt-0 btn-floating btn-lg aqua waves-effect waves-light text-white"
-                       title="Tạo dự án">
-                        <i id="btn-add" class="fas fa-plus"></i>
-                    </a>
-                </div>
-                <table class="table table-bordered table-responsive-md table-striped text-center">
-                    <tr>
-                        <th class="text-center center-td" rowspan="2">Tên</th>
-                        <th class="text-center center-td" rowspan="2">Vai trò</th>
-                        <th class="text-center" colspan="2">Công số</th>
-                        <th class="text-center" colspan="2">Thời gian</th>
-                        <th class="text-center center-td" rowspan="2">Thao tác</th>
-                    </tr>
-                    <tr>
-                        <th class="text-center">Hợp đồng</th>
-                        <th class="text-center">Thực tế</th>
-                        <th class="text-center">Bắt đầu</th>
-                        <th class="text-center">Kết thúc</th>
-                    </tr>
-                    <tbody id="append">
-                    <tr>
-                        <td class="pt-3-half pb-0"  >
-                            {{ Form::select('user_id[]', $results, auth()->id() , ['class'=>'select-user custom-select-table browser-default custom-select custom-select-lg mb-3', 'placeholder'=>'Vui lòng chọn','required']) }}
-                        </td>
-                        <td class="pt-3-half pb-0"  >
-                            {{ Form::select('mission[]', MISSION_PROJECT, null , ['class'=>'custom-select-table browser-default custom-select custom-select-lg mb-3', 'placeholder'=>'Vui lòng chọn','required']) }}
-                        </td>
-                        <td class="pt-3-half pb-0"  ><input name="contract[]" class="form-control fix-with-table" type="text" oninput="this.value = this.value.replace(/[^0-9.]/g, ''); this.value = this.value.replace(/(\..*)\./g, '$1');" ></td>
-                        <td class="pt-3-half pb-0"  ><input name="reality[]" class="form-control fix-with-table" type="text" oninput="this.value = this.value.replace(/[^0-9.]/g, ''); this.value = this.value.replace(/(\..*)\./g, '$1');" ></td>
-                        <td class="pt-3-half pb-0"  ><input readonly="readonly" name="time_start[]" class="form-control fix-with-table time-start" type="text"></td>
-                        <td class="pt-3-half pb-0"  ><input readonly="readonly" name="time_end[]" class="form-control fix-with-table time-end" type="text"></td>
-                        <td>
-                            <span class="table-remove"><button type="button" class="fix-with-remove btn btn-danger btn-rounded btn-sm my-0">Remove</button></span>
-                        </td>
-                    </tr>
-                        <!-- This is our clonable table line -->
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
-    @endif
 
 <div class="row">
     <div class="col-md-6">
@@ -285,6 +185,97 @@
                             </span>
     @endif
 </div>
+<div class="card my-3">
+    <div class="card-body">
+        <div id="table" class="table-editable">
+            <span><h3 class="text-center mb-0">Thành viên trong dự án</h3></span>
+            <div class="float-right">
+                    <span id="btn-add"
+                          class="mr-0 btn btn-info waves-effect waves-light text-white"
+                          title="Tạo dự án">
+                        Thêm thành viên
+                    </span>
+            </div>
+            <table class="table table-bordered table-responsive-md table-striped text-center">
+                <thead>
+                <tr>
+                    <th class="text-center center-td" rowspan="2">Tên</th>
+                    <th class="text-center center-td" rowspan="2">Vai trò</th>
+                    <th class="text-center" colspan="2">Công số</th>
+                    <th class="text-center" colspan="2">Thời gian</th>
+                    <th class="text-center center-td" rowspan="2"></th>
+                </tr>
+                <tr>
+                    <th class="text-center">Hợp đồng</th>
+                    <th class="text-center">Thực tế</th>
+                    <th class="text-center">Bắt đầu</th>
+                    <th class="text-center">Kết thúc</th>
+                </tr>
+                </thead>
+                <tbody id="append">
+                @if($record->id)
+                    @foreach($record->projectMembers as $projectMember)
+                        <tr>
+                            <td class="pt-3-half pb-0">
+                                {{ Form::select('user_id[]', $users, $projectMember->user_id , ['class'=>'select-user custom-select-table browser-default custom-select custom-select-lg mb-3','required']) }}
+                            </td>
+                            <td class="pt-3-half pb-0">
+                                {{ Form::select('mission[]', MISSION_PROJECT, $projectMember->mission , ['class'=>'custom-select-table browser-default custom-select custom-select-lg mb-3','required']) }}
+                            </td>
+                            <td class="pt-3-half pb-0"><input name="contract[]" class="form-control fix-with-table"
+                                                              type="text" value="{{ $projectMember->contract }}"
+                                                              oninput="this.value = this.value.replace(/[^0-9.]/g, ''); this.value = this.value.replace(/(\..*)\./g, '$1');">
+                            </td>
+                            <td class="pt-3-half pb-0"><input name="reality[]" class="form-control fix-with-table"
+                                                              type="text" value="{{ $projectMember->reality }}"
+                                                              oninput="this.value = this.value.replace(/[^0-9.]/g, ''); this.value = this.value.replace(/(\..*)\./g, '$1');">
+                            </td>
+                            <td class="pt-3-half pb-0"><input readonly="readonly" name="time_start[]"
+                                                              class="form-control fix-with-table time-start"
+                                                              value="{{ $projectMember->time_start }}" type="text"></td>
+                            <td class="pt-3-half pb-0"><input readonly="readonly" name="time_end[]"
+                                                              class="form-control fix-with-table time-end"
+                                                              value="{{ $projectMember->time_end }}" type="text"></td>
+                            <td>
+                                <span class="table-remove"><button type="button"
+                                                                   class="fix-with-remove btn btn-danger btn-rounded btn-sm my-0">Xóa</button></span>
+                            </td>
+                        </tr>
+                    @endforeach
+                @else
+                    <tr>
+                        <td class="pt-3-half pb-0">
+                            {{ Form::select('user_id[]', $users, auth()->id(), ['class'=>'select-user custom-select-table browser-default custom-select custom-select-lg mb-3', 'placeholder'=>'Vui lòng chọn','required']) }}
+                        </td>
+                        <td class="pt-3-half pb-0">
+                            {{ Form::select('mission[]', MISSION_PROJECT, 1, ['class'=>'custom-select-table browser-default custom-select custom-select-lg mb-3', 'placeholder'=>'Vui lòng chọn','required']) }}
+                        </td>
+                        <td class="pt-3-half pb-0"><input name="contract[]" class="form-control fix-with-table"
+                                                          type="text"
+                                                          oninput="this.value = this.value.replace(/[^0-9.]/g, ''); this.value = this.value.replace(/(\..*)\./g, '$1');">
+                        </td>
+                        <td class="pt-3-half pb-0"><input name="reality[]" class="form-control fix-with-table"
+                                                          type="text"
+                                                          oninput="this.value = this.value.replace(/[^0-9.]/g, ''); this.value = this.value.replace(/(\..*)\./g, '$1');">
+                        </td>
+                        <td class="pt-3-half pb-0"><input readonly="readonly" name="time_start[]"
+                                                          class="form-control fix-with-table time-start" type="text">
+                        </td>
+                        <td class="pt-3-half pb-0"><input readonly="readonly" name="time_end[]"
+                                                          class="form-control fix-with-table time-end" type="text"></td>
+                        <td>
+                            <span class="table-remove"><button type="button"
+                                                               class="fix-with-remove btn btn-danger btn-rounded btn-sm my-0">Xóa</button></span>
+                        </td>
+                    </tr>
+                @endif
+                <!-- This is our clonable table line -->
+                </tbody>
+
+            </table>
+        </div>
+    </div>
+</div>
 
 @push('extend-css')
     <link href="{{ asset_ver('bootstrap-datepicker/css/bootstrap-datepicker.min.css') }}" rel="stylesheet">
@@ -321,17 +312,17 @@
         <!-- This is our clonable table line -->
         html += '<tr>';
         html += '<td class="pt-3-half pb-0"  >'
-        html += '{{ Form::select('user_id[]', $results, null , ['class'=>'select-user custom-select-table browser-default custom-select custom-select-lg mb-3', 'placeholder'=>'Vui lòng chọn','required']) }}'
+        html += '{{ Form::select('user_id[]', $users, null , ['class'=>'select-user custom-select-table browser-default custom-select custom-select-lg mb-3', 'placeholder' => 'Chọn nhân viên','required']) }}'
         html += '</td>'
         html += '<td class="pt-3-half pb-0"  >'
-        html += '{{ Form::select('mission[]', MISSION_PROJECT, null , ['class'=>'custom-select-table browser-default custom-select custom-select-lg mb-3', 'placeholder'=>'Vui lòng chọn','required']) }}'
+        html += '{{ Form::select('mission[]', MISSION_PROJECT, null , ['class'=>'custom-select-table browser-default custom-select custom-select-lg mb-3', 'placeholder'=>'Chọn vai trò','required']) }}'
         html += '</td>'
         html += '<td class="pt-3-half pb-0"  ><input name="contract[]" class="fix-with-table form-control" type="text" oninput="this.value = this.value.replace(/[^0-9.]/g, \'\'); this.value = this.value.replace(/(\\..*)\\./g, \'$1\');" ></td>'
         html += '<td class="pt-3-half pb-0"  ><input name="reality[]" class="fix-with-table form-control" type="text" oninput="this.value = this.value.replace(/[^0-9.]/g, \'\'); this.value = this.value.replace(/(\\..*)\\./g, \'$1\');" ></td>'
         html += '<td class="pt-3-half pb-0"  ><input readonly="readonly" name="time_start[]" class="fix-with-table form-control time-start" type="text"></td>'
         html += '<td class="pt-3-half pb-0"  ><input readonly="readonly" name="time_end[]" class="fix-with-table form-control time-end" type="text"></td>'
         html += '<td>'
-        html += '<span class="table-remove"><button type="button" class="fix-with-remove btn btn-danger btn-rounded btn-sm my-0">Remove</button></span>'
+        html += '<span class="table-remove"><button type="button" class="fix-with-remove btn btn-danger btn-rounded btn-sm my-0">Xóa</button></span>'
         html += '</td>'
 
         $('#btn-add').on('click', function () {
@@ -345,24 +336,24 @@
         $tableID.on('click', '.table-remove', function () {
             $(this).parents('tr').detach();
         });
-$('#name-project').on('change',function () {
-    var id ='{{ $record->id ?? 0 }}';
-    var name=$(this).val();
-    $.ajax
-    ({
-        'url': '{{ route('project_unique') }}' + '/' + id+ '/' + name,
-        'type': 'get',
-        success: function (data) {
-            if (data.success){
-                $('#error-name').text('Tên dự án phải là duy nhất');
-                $('.btn-send').attr('disabled',true);
-            }else {
-                $('#error-name').text(' ');
-                $('.btn-send').removeAttr('disabled');
-            }
-        }
-    });
-})
+        $('#name-project').on('change', function () {
+            var id = '{{ $record->id ?? 0 }}';
+            var name = $(this).val();
+            $.ajax
+            ({
+                'url': '{{ route('project_unique') }}' + '/' + id + '/' + name,
+                'type': 'get',
+                success: function (data) {
+                    if (data.success) {
+                        $('#error-name').text('Tên dự án phải là duy nhất');
+                        $('.btn-send').attr('disabled', true);
+                    } else {
+                        $('#error-name').text(' ');
+                        $('.btn-send').removeAttr('disabled');
+                    }
+                }
+            });
+        })
 
     })
 </script>

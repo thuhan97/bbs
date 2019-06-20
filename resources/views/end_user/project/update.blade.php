@@ -6,8 +6,8 @@
 @endsection
 @section('content')
     <div class="row">
-        <div class="col-xxl-2"></div>
-        <div class="col-xxl-8 col-12">
+        <div class="col-xxl-1"></div>
+        <div class="col-xxl-10 col-12">
             <div class="card">
                 <form action="{{route('project_update', $record->id)}}" method="post" enctype="multipart/form-data">
                     @csrf

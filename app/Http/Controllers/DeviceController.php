@@ -5,8 +5,6 @@ namespace App\Http\Controllers;
 use App\Events\ProvidedDeviceNoticeEvent;
 use App\Http\Requests\ProvidedDeviceRequest;
 use App\Models\ProvidedDevice;
-use App\Models\Team;
-use App\Models\UserTeam;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -56,6 +54,7 @@ class DeviceController extends Controller
         }
         abort(404);
     }
+
     public function delete(Request $request)
     {
         if ($request->id) {
@@ -67,9 +66,9 @@ class DeviceController extends Controller
 
     public function edit($id)
     {
-        $userLogin=Auth::user();
+        $userLogin = Auth::user();
         $providedDevic = ProvidedDevice::findOrFail($id);
-        if ($providedDevic && $userLogin->can('view', $providedDevic)){
+        if ($providedDevic && $userLogin->can('view', $providedDevic)) {
             return response([
                 'success' => 200,
                 'data' => $providedDevic->toArray(),
@@ -90,9 +89,13 @@ class DeviceController extends Controller
             $providedDevic->save();
             return back()->with('success', __l('device_done'));
         }
-        $providedDevic->fill($request->all());
+        $data = $request->all();
+        $status = $request->get('status');
+        if ($status == STATUS_DEVICE['approved'])
+            $data['approved_at'] = Carbon::now();
+        $providedDevic->fill($data);
         $providedDevic->save();
-        event(new ProvidedDeviceNoticeEvent($providedDevic,  TYPE_DEVICE['manager_approval']));
+        event(new ProvidedDeviceNoticeEvent($providedDevic, TYPE_DEVICE['manager_approval']));
         return back()->with('success', __l('device_approvel_success'));
     }
 

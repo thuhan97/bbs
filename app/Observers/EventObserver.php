@@ -2,6 +2,7 @@
 
 namespace App\Observers;
 
+use App\Models\Config;
 use App\Models\Event;
 
 class EventObserver
@@ -27,7 +28,11 @@ class EventObserver
      */
     public function created(Event $event)
     {
-        //
+        $config = Config::first();
+        if ($config) {
+            $config->lastest_event_image = $event->image_url;
+            $config->save();
+        }
     }
 
     /**

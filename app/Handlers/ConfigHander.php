@@ -14,6 +14,10 @@ class ConfigHander
 {
     public function userField()
     {
-        return AuthAdmin::user()->id;
+        if (AuthAdmin::check()) {
+            return AuthAdmin::user()->id;
+        } else {
+            abort(401);
+        }
     }
 }

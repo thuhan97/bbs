@@ -1,4 +1,7 @@
-<!DOCTYPE html>
+<?php
+$imageUrl = url($config->lastest_event_image);
+?>
+        <!DOCTYPE html>
 <html lang="{{ app()->getLocale() }}">
 <head>
     <meta charset="utf-8">
@@ -9,8 +12,8 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <meta property="og:image" content="{{JVB_LOGO_URL}}">
-    <meta itemprop="image" content="{{JVB_LOGO_URL}}">
+    <meta property="og:image" content="{{$imageUrl}}">
+    <meta itemprop="image" content="{{$imageUrl}}">
 
     <title>{{ config('app.name', 'BBS') }}</title>
 

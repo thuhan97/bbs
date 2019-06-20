@@ -43,6 +43,7 @@ class Config extends Model
         'weekly_report_title',
         'html_weekly_report_template',
         'late_time_rule_json',
+        'lastest_event_image',
     ];
 
     public function setWorkDaysAttribute($value)

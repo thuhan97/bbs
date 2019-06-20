@@ -37,20 +37,9 @@ $isStaff = !auth()->user()->isManager();
         <div class="row">
             <div class="col-sm-12 col-xxl-10">
                 <table class="table table-bordered">
-                    <colgroup>
-                        <col class="d-none d-md-table-cell" style="width: 100px"/>
-                        @if($isMaster || $isManager)
-                            <col style="width: 250px"/>
-                        @endif
-                        <col style="min-width: 350px"/>
-                        <col class="d-none d-md-table-cell" style=""/>
-                        <col class="d-none d-md-table-cell" style=""/>
-                        <col style="width: 150px"/>
-                        <col style="width: 120px"/>
-                    </colgroup>
                     <thead>
                     <tr>
-                        <th class="d-none d-md-table-cell">
+                        <th class="d-none d-md-table-cell" style="max-width: 70px">
                             #
                         </th>
                         @if($isMaster || $isManager)

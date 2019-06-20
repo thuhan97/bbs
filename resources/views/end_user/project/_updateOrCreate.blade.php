@@ -312,10 +312,10 @@
         <!-- This is our clonable table line -->
         html += '<tr>';
         html += '<td class="pt-3-half pb-0"  >'
-        html += '{{ Form::select('user_id[]', $users, null , ['class'=>'select-user custom-select-table browser-default custom-select custom-select-lg mb-3', 'placeholder' => 'Chọn nhân viên','required']) }}'
+        html += '{{ Form::select('user_id[]', $users, null, ['class'=>'select-user custom-select-table browser-default custom-select custom-select-lg mb-3', 'placeholder' => 'Chọn nhân viên','required']) }}'
         html += '</td>'
         html += '<td class="pt-3-half pb-0"  >'
-        html += '{{ Form::select('mission[]', MISSION_PROJECT, null , ['class'=>'custom-select-table browser-default custom-select custom-select-lg mb-3', 'placeholder'=>'Chọn vai trò','required']) }}'
+        html += '{{ Form::select('mission[]', MISSION_PROJECT, 3, ['class'=>'custom-select-table browser-default custom-select custom-select-lg mb-3', 'placeholder'=>'Chọn vai trò','required']) }}'
         html += '</td>'
         html += '<td class="pt-3-half pb-0"  ><input name="contract[]" class="fix-with-table form-control" type="text" oninput="this.value = this.value.replace(/[^0-9.]/g, \'\'); this.value = this.value.replace(/(\\..*)\\./g, \'$1\');" ></td>'
         html += '<td class="pt-3-half pb-0"  ><input name="reality[]" class="fix-with-table form-control" type="text" oninput="this.value = this.value.replace(/[^0-9.]/g, \'\'); this.value = this.value.replace(/(\\..*)\\./g, \'$1\');" ></td>'

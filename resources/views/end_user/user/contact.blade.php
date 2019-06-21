@@ -15,7 +15,7 @@
     </form>
     @if($users->isNotEmpty())
         <p class="mb-0">{{__l('total_user', ['number' => $users->count()])}}</p>
-        <table id="contactTbl" class="table table-striped">
+        <table id="contactTbl" class=" contactTbl table table-striped">
             <colgroup>
                 <col class="d-none d-sm-table-cell" style="width: 30px">
                 <col style="width: 60px">
@@ -53,7 +53,13 @@
                     <?php
                     $team = $user->team();
                     ?>
-                    <td>{{$user->name}}</td>
+                    <td>{{$user->name}}
+                        <?php
+                        $birthDay = date("d/m", strtotime($user->birthday));
+                        ?>
+                        @if($birthDay == date("d/m"))
+                            <i class="fas fa-birthday-cake text-warning"></i>
+                        @endif</td>
                     <td class="d-none d-sm-table-cell"
                         onclick="location.href='{{route('contact', ['search' => $team->group_name ?? ''])}}'">
                         @if($team)

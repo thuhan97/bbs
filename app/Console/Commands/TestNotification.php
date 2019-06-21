@@ -13,7 +13,7 @@ class TestNotification extends Command
      *
      * @var string
      */
-    protected $signature = 'notify:test {--title=} {--content=} ';
+    protected $signature = 'notify:test {--title=} {--content=} {--url=}';
 
     /**
      * The console command description.
@@ -41,6 +41,7 @@ class TestNotification extends Command
     {
         $title = $this->option('title') ?? 'Test';
         $content = $this->option('content') ?? 'Test messages.';
+        $url = $this->option('url');
 
         $users = User::select('id', 'name', 'last_activity_at')
             ->where('status', ACTIVE_STATUS)
@@ -54,7 +55,7 @@ class TestNotification extends Command
                 $devices[] = $firebase_token->token;
             }
             if (!empty($devices)) {
-                NotificationHelper::sendPushNotification($devices, $title, $content);
+                NotificationHelper::sendPushNotification($devices, $title, $content, $url);
             }
         }
     }

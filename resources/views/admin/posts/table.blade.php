@@ -1,3 +1,6 @@
+<div class="text-right">
+    <a href="{{route('admin::posts.broadcast')}}" class="btn btn-success btn-table">Gửi thông báo nhanh</a>
+</div>
 <div class="table-responsive list-records">
     <table class="table table-hover table-bordered">
         <colgroup>

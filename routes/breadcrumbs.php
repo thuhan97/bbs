@@ -257,3 +257,7 @@ Breadcrumbs::register('admin::work_times.import', function ($breadcrumbs) {
     $breadcrumbs->parent('admin::work_times');
     $breadcrumbs->push('Nhập dữ liệu từ máy chấm công', route('admin::work_times.import'));
 });
+Breadcrumbs::register('admin::posts.broadcast', function ($breadcrumbs) {
+    $breadcrumbs->parent('admin::posts');
+    $breadcrumbs->push('Thông báo nhanh', route('admin::posts.broadcast'));
+});

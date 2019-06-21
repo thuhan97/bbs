@@ -2,9 +2,13 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Helpers\NotificationHelper;
+use App\Http\Requests\SendBroadcastRequest;
 use App\Models\Post;
+use App\Models\User;
 use App\Repositories\Contracts\IPostRepository;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 /**
  * PostController
@@ -88,5 +92,55 @@ class PostController extends AdminBaseController
         }
 
         return $data;
+    }
+
+    public function broadcast()
+    {
+        $users = $this->getUsers();
+
+        return view('admin.posts.broadcast', [
+            'resourceAlias' => $this->getResourceAlias(),
+            'resourceRoutesAlias' => $this->getResourceRoutesAlias(),
+            'resourceTitle' => $this->getResourceTitle(),
+            'users' => ['' => 'Tất cả nhân viên'] + $users,
+        ]);
+    }
+
+    public function sendBroadcast(SendBroadcastRequest $request)
+    {
+        $userIds = $request->get('users_id');
+        $title = $request->get('title');
+        $content = $request->get('content');
+        $url = $request->get('url', url());
+
+        $userModel = User::select('id', 'name', 'last_activity_at')
+            ->where('status', ACTIVE_STATUS)
+            ->has('firebase_tokens')
+            ->with('firebase_tokens');
+        //
+        if (empty($userIds) || $userIds[0] == null) {
+            //nothing
+        } else {
+            $userModel = $userModel->whereIn('id', $userIds);
+        }
+        $users = $userModel->get();
+
+        foreach ($users as $user) {
+            $devices = [];
+            foreach ($user->firebase_tokens as $firebase_token) {
+                $devices[] = $firebase_token->token;
+            }
+            if (!empty($devices)) {
+                NotificationHelper::sendPushNotification($devices, $title, $content, $url);
+            }
+        }
+        flash()->success('Gửi thông báo thành công!');
+        return redirect(route('admin::posts.broadcast'));
+    }
+
+    private function getUsers()
+    {
+        $userModel = new User();
+        return $userModel->availableUsers()->select(DB::raw("CONCAT(staff_code, ' - ', name) as name"), 'id')->pluck('name', 'id')->toArray();
     }
 }

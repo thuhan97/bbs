@@ -101,6 +101,8 @@ Route::group([
     Route::get('configs-dayadd-delete', 'ConfigController@additionalDateDelete')->name('configs.delete_dayadd');
 
     //post
+    Route::get('posts/broadcast', ['as' => 'posts.broadcast', 'uses' => 'PostController@broadcast']);
+    Route::post('posts/sendBroadcast', ['as' => 'posts.sendBroadcast', 'uses' => 'PostController@sendBroadcast']);
     Route::post('posts/deletes', ['as' => 'posts.deletes', 'uses' => 'PostController@deletes']);
     Route::resource('posts', 'PostController');
 

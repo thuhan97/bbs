@@ -36,7 +36,7 @@ class NotificationHelper
 
         $dataBuilder = new PayloadDataBuilder();
         $dataBuilder->addData([
-            'icon' => JVB_LOGO_URL,
+            'icon' => url(JVB_LOGO_PATH),
             'url' => $url
         ]);
 

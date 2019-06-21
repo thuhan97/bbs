@@ -474,6 +474,7 @@ define('NOTIFICATION_LOGO', [
     14 => 'fas fa-cogs fa-1x text-success'
 ]);
 define('JVB_LOGO_URL', 'http://jvb-corp.com/img/logo.png');
+define('JVB_LOGO_PATH', '/img/jvb-logo.png');
 
 define('NOTIFICATION_DAY_OFF', [
     'create' => 0,

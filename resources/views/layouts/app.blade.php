@@ -1,11 +1,14 @@
-<?php
-$imageUrl = url($config->lastest_event_image);
-?>
-        <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="{{ app()->getLocale() }}">
 <head>
-    <meta property="og:image" content="{{$imageUrl}}">
-    <meta itemprop="image" content="{{$imageUrl}}">
+    @if($config->lastest_event_image)
+        <?php
+        $imageUrl = url($config->lastest_event_image);
+        ?>
+        <meta property="og:image" content="{{$imageUrl}}">
+        <meta itemprop="image" content="{{$imageUrl}}">
+    @endif
+
     @include('layouts.partials.frontend.meta')
 
     <title>{{ config('app.name', 'BBS') }}</title>

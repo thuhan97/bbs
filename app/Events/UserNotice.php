@@ -2,6 +2,7 @@
 
 namespace App\Events;
 
+use App\Helpers\NotificationHelper;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
@@ -14,7 +15,7 @@ class UserNotice implements ShouldBroadcast
 
     private $userId;
 
-    public $message;
+    public $data;
 
     /**
      * Create a new event instance.
@@ -22,10 +23,26 @@ class UserNotice implements ShouldBroadcast
      * @param $userId
      * @param $message
      */
-    public function __construct($userId, $message)
+    public function __construct($user, $title, $content, $url, $withFirebase = true)
     {
-        $this->userId = $userId;
-        $this->message = $message;
+        $this->userId = $user->id;
+        $this->data = [
+            'title' => $title,
+            'content' => $content,
+            'logo_url' => NOTIFICATION_LOGO[NOTIFICATION_TYPE['post']],
+            'logo_id' => NOTIFICATION_TYPE['post'],
+            'url' => $url,
+        ];
+
+        if ($withFirebase) {
+            $devices = [];
+            foreach ($user->firebase_tokens as $firebase_token) {
+                $devices[] = $firebase_token->token;
+            }
+            if (!empty($devices)) {
+                NotificationHelper::sendPushNotification($devices, $title, $content, $url);
+            }
+        }
     }
 
     /**

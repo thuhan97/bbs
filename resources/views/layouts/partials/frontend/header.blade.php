@@ -166,23 +166,32 @@ foreach ($notifications as $notification) {
 @push('extend-js')
     <script>
         $(function () {
+            window.titleBlink = null;
+            var originalTitle = document.title;
+            window.blinkNotificationCount = function () {
+                if (window.titleBlink == null) {
+                    var showNotice = false;
+                    window.titleBlink = setInterval(function () {
+                        totalNotification = $(".lblNotifyBagde").attr('data-count');
+                        if (showNotice) {
+                            document.title = '(' + totalNotification + ') ' + originalTitle;
+                        } else {
+                            document.title = originalTitle;
+                        }
+                        showNotice ^= true;
+                    }, 2000);
+                }
+            }
             var totalNotification = '{{$notificationCount}}' || 0;
-            var titleBlink = null;
             if (totalNotification != 0) {
-                var originalTitle = document.title;
-                var showNotice = false;
-                titleBlink = setInterval(function () {
-                    if (showNotice) {
-                        document.title = '(' + totalNotification + ') ' + originalTitle;
-                    } else {
-                        document.title = originalTitle;
-                    }
-                    showNotice ^= true;
-                }, 2000);
+                blinkNotificationCount();
             }
 
             $("#btnNotification").click(function () {
-                if (titleBlink) clearInterval(titleBlink);
+                if (window.titleBlink) {
+                    clearInterval(window.titleBlink);
+                    window.titleBlink = null;
+                }
                 $("#favicon").attr("href", "/img/favicons/favicon.ico");
                 document.title = originalTitle;
 

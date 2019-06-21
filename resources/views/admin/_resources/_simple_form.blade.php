@@ -13,7 +13,7 @@
                       enctype="multipart/form-data">
                     @csrf
                     <div class="box-header with-border">
-                        <h3 class="box-title">Import data</h3>
+                        <h3 class="box-title"></h3>
 
                         <div class="box-tools">
                             <a href="{{route($baseRoute . '.index')}}"

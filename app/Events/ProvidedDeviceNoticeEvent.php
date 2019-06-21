@@ -2,13 +2,10 @@
 
 namespace App\Events;
 
-use Illuminate\Broadcasting\Channel;
-use Illuminate\Queue\SerializesModels;
-use Illuminate\Broadcasting\PrivateChannel;
-use Illuminate\Broadcasting\PresenceChannel;
-use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Broadcasting\InteractsWithSockets;
-use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
+use Illuminate\Broadcasting\PrivateChannel;
+use Illuminate\Foundation\Events\Dispatchable;
+use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Auth;
 
 class ProvidedDeviceNoticeEvent extends NotificationBroadCast
@@ -24,37 +21,37 @@ class ProvidedDeviceNoticeEvent extends NotificationBroadCast
      *
      * @return void
      */
-    public function __construct($providedDevic,$type)
+    public function __construct($providedDevic, $type)
     {
-        $user=Auth::user();
-        $url = route('device_index'). "#$providedDevic->id";
-        $logoId=NOTIFICATION_TYPE['device'];
-        $logoUrld=NOTIFICATION_LOGO[NOTIFICATION_TYPE['device']];
-        if ($type == TYPE_DEVICE['send']){
-            $title = $user->name .SPACE.__l('device_suggest');
+        $user = Auth::user();
+        $url = route('device_index') . "#$providedDevic->id";
+        $logoId = NOTIFICATION_TYPE['device'];
+        $logoUrld = NOTIFICATION_LOGO[NOTIFICATION_TYPE['device']];
+        if ($type == TYPE_DEVICE['send']) {
+            $title = $user->name . SPACE . __l('device_suggest');
             $this->toId = $providedDevic->manager_id;
-            $id=$providedDevic->manager_id;
-            $content=$providedDevic->title ?? '';
+            $id = $providedDevic->manager_id;
+            $content = $providedDevic->title ?? '';
 
-        }elseif ($type == TYPE_DEVICE['manager_approval']){
-            $title = $user->name .SPACE.__l('device_manager_approvel');
+        } elseif ($type == TYPE_DEVICE['manager_approval']) {
+            $title = $user->name . SPACE . __l('device_manager_approvel');
             $this->toId = $providedDevic->user_id;
-            $id=$providedDevic->user_id;
-            $content=$providedDevic->approval_manager ?? '';
-        }else{
-            $title =__l('device_administrative');
+            $id = $providedDevic->user_id;
+            $content = $providedDevic->approval_manager ?? '';
+        } else {
+            $title = __l('device_administrative');
             $this->toId = $providedDevic->user_id;
-            $id=$providedDevic->user_id;
-            $content=$providedDevic->approval_hcnv ?? '';
-            $jvbLogo=JVB_LOGO_URL;
+            $id = $providedDevic->user_id;
+            $content = $providedDevic->approval_hcnv ?? '';
+            $jvbLogo = JVB_LOGO_URL;
         }
         $this->data = [
-            'id' =>  $providedDevic->id,
+            'id' => $providedDevic->id,
             'name' => $user->name,
             'title' => $title,
             'content' => $content,
             'image_url' => $jvbLogo ?? $user->avatar,
-            'logo_url' =>$logoUrld,
+            'logo_url' => $logoUrld,
             'logo_id' => $logoId,
             'url' => $url,
             'from_id' => $user->id,
@@ -71,6 +68,6 @@ class ProvidedDeviceNoticeEvent extends NotificationBroadCast
      */
     public function broadcastOn()
     {
-        return new PrivateChannel('users.' .$this->toId);
+        return new PrivateChannel('users.' . $this->toId);
     }
 }

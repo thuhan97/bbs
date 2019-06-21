@@ -11,7 +11,7 @@ $(function () {
     });
     bbsChannel.bind('App\\Events\\MeetingNoticeEvent', function (notice) {
         var data = notice.data;
-            myNotify.pushNotify(data.title, data.content, data.image_url, data.url, data.logo_url);
+        myNotify.pushNotify(data.title, data.content, data.image_url, data.url, data.logo_url);
     });
 
     bbsChannel.bind('App\\Events\\WorkExperienceNoticeEvent', function (notice) {
@@ -25,8 +25,9 @@ $(function () {
     myChannel.bind('App\\Models\\User.' + userId, function (data) {
         console.log(JSON.stringify(data));
     });
-    myChannel.bind('App\\Events\\UserNotice', function (data) {
-        console.log(JSON.stringify(data));
+    myChannel.bind('App\\Events\\UserNotice', function (notice) {
+        var data = notice.data;
+        myNotify.pushNotify(data.title, data.content, data.image_url, data.url, data.logo_url, true);
     });
     myChannel.bind('App\\Events\\ReportCreatedNoticeEvent', function (notice) {
         var data = notice.data;
@@ -68,7 +69,7 @@ $(function () {
 
     myChannel.bind('App\\Events\\ProjectNotify', function (notice) {
         var data = notice.data;
-        myNotify.pushNotify(data.title, data.content,data.image_url,data.url, data.logo_url);
+        myNotify.pushNotify(data.title, data.content, data.image_url, data.url, data.logo_url);
     });
 
 
@@ -80,7 +81,7 @@ $(function () {
 
     };
 
-    MyNotify.prototype.pushNotify = function (title, content, image, link, icon) {
+    MyNotify.prototype.pushNotify = function (title, content, image, link, icon, disableNotification) {
         if (!image) image = window.system_image;
         if (!link) link = location.origin;
         if (!icon) icon = 'fa fa-flag black-text';
@@ -104,11 +105,12 @@ $(function () {
 
         this.ringing();
         //web notification
-
-        if (Notification.permission === "granted") {
-            var notification = new Notification("[BBS] " + title, {body: content, icon: image});
-            notification.onclick = function () {
-                window.open(link);
+        if (!disableNotification) {
+            if (Notification.permission === "granted") {
+                var notification = new Notification("[BBS] " + title, {body: content, icon: image});
+                notification.onclick = function () {
+                    window.open(link);
+                }
             }
         }
     };

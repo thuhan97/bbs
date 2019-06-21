@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Events\UserNotice;
 use App\Helpers\NotificationHelper;
 use App\Http\Requests\SendBroadcastRequest;
 use App\Models\Notification;
@@ -115,9 +116,7 @@ class PostController extends AdminBaseController
         $url = $request->get('url', url('/'));
 
         $userModel = User::select('id', 'name', 'last_activity_at')
-            ->where('status', ACTIVE_STATUS)
-            ->has('firebase_tokens')
-            ->with('firebase_tokens');
+            ->where('status', ACTIVE_STATUS);
         //
         if (empty($userIds) || $userIds[0] == null) {
             //nothing
@@ -128,13 +127,7 @@ class PostController extends AdminBaseController
         $notifications = [];
         foreach ($users as $user) {
             $notifications[] = NotificationHelper::generateNotify($user->id, $title, $content, 0, NOTIFICATION_TYPE['post'], $url);
-            $devices = [];
-            foreach ($user->firebase_tokens as $firebase_token) {
-                $devices[] = $firebase_token->token;
-            }
-            if (!empty($devices)) {
-                NotificationHelper::sendPushNotification($devices, $title, $content, $url);
-            }
+            event(new UserNotice($user, $title, $content, $url));
         }
         Notification::insertAll($notifications);
 

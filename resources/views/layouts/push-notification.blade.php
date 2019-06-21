@@ -49,6 +49,7 @@
 
         messaging.onMessage(function (payload) {
             $("#favicon").attr("href", "/img/favicons/favicon-unread.ico");
+            blinkNotificationCount();
             var notification = new Notification(payload.notification.title, {
                 body: payload.notification.body,
                 icon: payload.data.icon || '{{JVB_LOGO_URL}}'

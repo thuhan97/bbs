@@ -21,7 +21,7 @@ class NotificationHelper
             'sender_id' => $fromId,
             'title' => $title,
             'content' => $content,
-            'data' => $url,
+            'data' => $url ?? url('/'),
         ];
     }
 

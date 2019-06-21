@@ -112,7 +112,7 @@ class PostController extends AdminBaseController
         $userIds = $request->get('users_id');
         $title = $request->get('title');
         $content = $request->get('content');
-        $url = $request->get('url', url('/'));
+        $url = $request->get('url', env('APP_URL'));
 
         $userModel = User::select('id', 'name', 'last_activity_at')
             ->where('status', ACTIVE_STATUS)

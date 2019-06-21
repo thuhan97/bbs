@@ -599,7 +599,7 @@ if (!function_exists('show_timeout_event')) {
             } else {
                 $hour = $diff->format('%h');
                 if ($hour > 0) {
-                    return $day . ' giờ';
+                    return $hour . ' giờ';
                 } else {
                     $minute = $diff->format('%i');
                     if ($minute > 0) {

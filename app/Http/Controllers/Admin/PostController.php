@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Helpers\NotificationHelper;
 use App\Http\Requests\SendBroadcastRequest;
+use App\Models\Notification;
 use App\Models\Post;
 use App\Models\User;
 use App\Repositories\Contracts\IPostRepository;
@@ -124,8 +125,9 @@ class PostController extends AdminBaseController
             $userModel = $userModel->whereIn('id', $userIds);
         }
         $users = $userModel->get();
-
+        $notifications = [];
         foreach ($users as $user) {
+            $notifications[] = NotificationHelper::generateNotify($user->id, $title, $content, 0, NOTIFICATION_TYPE['post'], $url);
             $devices = [];
             foreach ($user->firebase_tokens as $firebase_token) {
                 $devices[] = $firebase_token->token;
@@ -134,6 +136,8 @@ class PostController extends AdminBaseController
                 NotificationHelper::sendPushNotification($devices, $title, $content, $url);
             }
         }
+        Notification::insertAll($notifications);
+
         flash()->success('Gửi thông báo thành công!');
         return redirect(route('admin::posts.broadcast'));
     }

@@ -41,7 +41,7 @@ $baseRoute = 'admin::posts';
             <div class="form-group margin-b-5 margin-t-5{{ $errors->has('url') ? ' has-error' : '' }}">
                 <label for="url">Đường dẫn</label>
                 <input type="text" class="form-control" name="url" placeholder="https://bbs.hatoq.com/etc..."
-                       value="{!! old('url') !!} " required>
+                       value="{!! old('url') !!}">
 
                 @if ($errors->has('url'))
                     <div class="help-block">

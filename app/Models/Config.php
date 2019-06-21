@@ -42,6 +42,7 @@ class Config extends Model
         'time_ot_early_at',
         'weekly_report_title',
         'html_weekly_report_template',
+        'html_request_device_template',
         'late_time_rule_json',
         'lastest_event_image',
     ];

@@ -1993,6 +1993,12 @@ td.blank, .type-1, .type-2 {
         overflow-y: auto;
         max-height: 350px;
     }
+
+    .divContent {
+        padding: 0 1rem;
+        max-height: 400px;
+        overflow-y: auto;
+    }
 }
 
 @media (min-width: 1024px) {

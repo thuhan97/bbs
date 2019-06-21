@@ -165,9 +165,11 @@ $isStaff = !auth()->user()->isManager();
                                 @endif
                             </div>
                             <div class="form-group">
-                                <label>Nội dung (hiện trạng/lý do/chi tiết thiết bị cần đề xuất) *</label>
+                                <label>Nội dung (điền đẩy đủ thông tin) *</label>
                                 <textarea class="form-control" id="content" name="content"
-                                          placeholder="Viết chi tiết nội dung về thiết bị ..."></textarea>
+                                          placeholder="Viết chi tiết nội dung về thiết bị ...">
+                                    {!! $config->html_request_device_template !!}
+                                </textarea>
                                 @if ($errors->has('content'))
                                     <span class="help-block">
                                          <strong>{{ $errors->first('content') }}</strong>
@@ -257,7 +259,11 @@ $isStaff = !auth()->user()->isManager();
 @endsection
 
 @push('extend-css')
-    <link rel="stylesheet" href="{{asset_ver('css/share_experience.css')}}">
+    <style>
+        .divContent {
+            padding: 0 1rem;
+        }
+    </style>
 @endpush
 @push('footer-scripts')
     <script src="{{ asset_ver('js/jquery.validate.min.js') }}"></script>

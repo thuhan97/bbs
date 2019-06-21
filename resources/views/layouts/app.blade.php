@@ -4,16 +4,9 @@ $imageUrl = url($config->lastest_event_image);
         <!DOCTYPE html>
 <html lang="{{ app()->getLocale() }}">
 <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="robots" content="noindex, nofollow, noarchive">
-    <link rel="icon" type="image/png" href="/favicon.png">
-    <!-- CSRF Token -->
-    <meta name="csrf-token" content="{{ csrf_token() }}">
-
     <meta property="og:image" content="{{$imageUrl}}">
     <meta itemprop="image" content="{{$imageUrl}}">
+    @include('layouts.partials.frontend.meta')
 
     <title>{{ config('app.name', 'BBS') }}</title>
 

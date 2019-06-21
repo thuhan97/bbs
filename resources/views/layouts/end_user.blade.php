@@ -1,16 +1,10 @@
 <!DOCTYPE html>
 <html lang="{{ app()->getLocale() }}">
 <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="robots" content="noindex, nofollow, noarchive">
-    <link rel="icon" type="image/png" href="/favicon.png">
-    <link rel="manifest" href="/manifest.json">
-    <!-- CSRF Token -->
-    <meta name="csrf-token" content="{{ csrf_token() }}">
+
     <meta property="og:image" content="{{JVB_LOGO_URL}}">
     <meta itemprop="image" content="{{JVB_LOGO_URL}}">
+    @include('layouts.partials.frontend.meta')
     <title>{{ config('app.name', 'BBS') }} @hasSection('page-title') | @yield('page-title') @endif</title>
 
     <!-- Styles -->

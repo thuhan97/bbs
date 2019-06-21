@@ -48,7 +48,7 @@
             });
 
         messaging.onMessage(function (payload) {
-            $("link[rel*='icon']").attr("href", "favicon-n.png");
+            $("#favicon").attr("href", "/img/favicons/favicon-unread.ico");
             var notification = new Notification(payload.notification.title, {
                 body: payload.notification.body,
                 icon: payload.data.icon || '{{JVB_LOGO_URL}}'

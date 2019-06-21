@@ -183,6 +183,9 @@ foreach ($notifications as $notification) {
 
             $("#btnNotification").click(function () {
                 if (titleBlink) clearInterval(titleBlink);
+                $("#favicon").attr("href", "/img/favicons/favicon.ico");
+                document.title = originalTitle;
+
                 if ($(".lblNotifyBagde").attr('data-count') == 0) {
                     $("#notification .dropdown-item").removeClass('notify-read-0').addClass('notify-read-1');
                 } else {
@@ -193,7 +196,7 @@ foreach ($notifications as $notification) {
                         success: function (data) {
                             $(".lblNotifyBagde").attr('data-count', 0).text(0).hide();
                         }
-                    })
+                    });
                 }
             });
         })

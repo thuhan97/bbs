@@ -11,7 +11,8 @@ $(function () {
     });
     bbsChannel.bind('App\\Events\\MeetingNoticeEvent', function (notice) {
         var data = notice.data;
-        myNotify.pushNotify(data.title, data.content, data.image_url, data.url, data.logo_url);
+        if (data.user_ids.indexOf(userId) >= 0)
+            myNotify.pushNotify(data.title, data.content, data.image_url, data.url, data.logo_url);
     });
 
     bbsChannel.bind('App\\Events\\WorkExperienceNoticeEvent', function (notice) {

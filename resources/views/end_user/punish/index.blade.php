@@ -141,7 +141,7 @@
                 }]
             },
             options: {
-                responsive: true,
+                // responsive: true,
                 tooltips: {
                     callbacks: {
                         label: formatTootip
@@ -162,7 +162,7 @@
                 }]
             },
             options: {
-                responsive: true,
+                // responsive: true,
                 tooltips: {
                     callbacks: {
                         label: formatTootip

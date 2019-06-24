@@ -2011,6 +2011,10 @@ td.blank, .type-1, .type-2 {
     .custom-modal {
         top: -303px;
     }
+
+    #modal-form.approval-form.show .modal-dialog {
+        transform: translate(25%, 25%);
+    }
 }
 
 .wrap-text {

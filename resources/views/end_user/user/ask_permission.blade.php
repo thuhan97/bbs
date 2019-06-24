@@ -781,7 +781,7 @@
                 $(".title-permission").text("Xin OT");
                 $('#work_day_ot').datepicker("setDate", (date));
             });
-            $('.approve').on('click', function () {
+            $(document).on('click', '.approve', function () {
                 var otThis = $(this);
                 if (otThis.attr('id') === 'btn-reject') {
                     $('.approve-type').attr('value', 2)

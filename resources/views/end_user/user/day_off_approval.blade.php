@@ -280,7 +280,7 @@
 
         <form action="{{ route('edit_day_off_detail') }}" method="post" id="edit-day-off">
             @csrf
-            <div class="modal fade modal-open custom-modal" id="modal-form" tabindex="-1" role="dialog"
+            <div class="modal fade modal-open custom-modal approval-form" id="modal-form" tabindex="-1" role="dialog"
                  aria-labelledby="myModalLabel"
                  aria-hidden="true">
                 <div class="modal-dialog modal-center approval-ipad-pro" role="document">

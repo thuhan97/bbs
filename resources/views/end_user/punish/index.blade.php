@@ -116,6 +116,8 @@
 
 @endsection
 @push('extend-js')
+    <script type="text/javascript" src="{{ asset_ver('js/libs/Chart.min.js') }}"></script>
+
     <script>
         $(function () {
             $('.custom-select').change(function () {
@@ -141,7 +143,7 @@
                 }]
             },
             options: {
-                // responsive: true,
+                responsive: true,
                 tooltips: {
                     callbacks: {
                         label: formatTootip
@@ -162,7 +164,7 @@
                 }]
             },
             options: {
-                // responsive: true,
+                responsive: true,
                 tooltips: {
                     callbacks: {
                         label: formatTootip

@@ -76,15 +76,27 @@ $type = request('type', $reportType);
                            class="text-black"
                         >
                             <h5 class="mb-0">
-                                <i class="fas fa-sticky-note"
+                                <i class="fas @if($report->report_type) fa-sticky-note @else fa-flag @endif"
                                    @if($report->color_tag) style="color: {{$report->color_tag}}" @endif></i>
 
                                 {{$report->getTitle($type, $year, $month, \Illuminate\Support\Facades\Auth::id())}}
                                 <i class="fas fa-angle-down rotate-icon"></i>
-                                <span class="txt-time float-right mr-2"><i class="fas fa-clock "
-                                                                           title="{{$report->created_at}}"></i> <span
-                                            class="time-subcribe"
-                                            data-time="{{$report->created_at}}">{{get_beautiful_time($report->created_at)}}</span></span>
+                                <span class="txt-time float-right mr-2">
+                                    <?php
+                                    $inReport = $report->receivers->firstWhere('id', auth()->id());
+
+                                    if (!$inReport)
+                                        $inReport = $report->reportReplies->firstWhere('user_id', auth()->id());
+                                    $totalReply = $report->reportReplies->count();
+                                    ?>
+                                    @if($inReport && $totalReply)
+                                        <i class="fas fa-comments text-warning" title="{{$totalReply}} phản hồi">
+                                            <span class="badge badge-info">{{$totalReply}}</span>
+                                        </i>
+                                    @endif
+                                    <i class="fas fa-clock" title="{{$report->created_at}}"></i>
+                                    <span class="time-subcribe"
+                                          data-time="{{$report->created_at}}">{{get_beautiful_time($report->created_at)}}</span></span>
 
                             </h5>
                         </a>

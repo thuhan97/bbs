@@ -1594,6 +1594,21 @@ td.blank, .type-1, .type-2 {
     /*position: relative;*/
 }
 
+#report .txt-time .fa-comments {
+    position: relative;
+}
+
+#report .txt-time .fa-comments .badge {
+    position: absolute;
+    font-size: 8px;
+    top: -8px;
+    left: 7px;
+    color: white;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+}
+
 @media (min-width: 768px) and (max-width: 1000px) {
     #app {
         padding-top: 0rem !important;

@@ -163,6 +163,8 @@ class ReportController extends Controller
                 $team = $user->team();
                 if ($team)
                     $data['color_tag'] = $team->color;
+
+                $data['report_type'] = $reportType;
                 $report = new Report($data);
                 $report->save();
                 $user->notify(new SentReport($report));

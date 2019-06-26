@@ -8,7 +8,7 @@ $name = $team->name ?? $config->name;
 <!-- Sidebar -->
 <div class="sidebar fixed sidebar-fixed position-fixed" id="slide-out" style="transform: translateX(-100%);">
 
-    <div class="text-center mb-xl-4">
+    <div class="text-center mb-xxl-4">
         <a href="/" class="logo-wrapper waves-effect">
             <img src="{{$logoUrl}}" onerror="this.src='{{JVB_LOGO_URL}}'" class="img-fluid" alt="">
         </a>

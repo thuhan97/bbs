@@ -259,6 +259,10 @@
     .group-btn-search-day-off {
         margin-left: -165px !important;
     }
+
+    .mb-xxl-4 {
+        margin-bottom: 1.5rem !important;
+    }
 }
 
 .btn, .btn:active, .btn:focus, .btn:hover {
@@ -1970,6 +1974,7 @@ td.blank, .type-1, .type-2 {
 }
 
 @media (max-width: 1400px) {
+
     .bg-img-day-off {
         max-height: 547px;
         overflow: auto;
@@ -2014,6 +2019,22 @@ td.blank, .type-1, .type-2 {
         max-height: 400px;
         overflow-y: auto;
     }
+}
+
+@media (min-width: 1024px) and (max-width: 1400px) {
+    .sidebar-fixed .logo-wrapper img {
+        max-height: 120px;
+    }
+
+    .sidebar-fixed .logo-wrapper {
+        padding: 0;
+        margin-bottom: 1rem;
+    }
+
+    .sidebar-fixed .list-group-flush .list-group-item {
+        padding: 8px 12px;
+    }
+
 }
 
 @media (min-width: 1024px) {

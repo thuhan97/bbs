@@ -30,4 +30,15 @@ class MeetingRoom extends Model
             ->orWhere('description', 'like', '%' . $searchTerm . '%')
             ->orWhere('other', 'like', '%' . $searchTerm . '%');
     }
+
+    public function getDetailAttribute()
+    {
+        $seats = $this->attributes['seats'];
+        $description = $this->attributes['description'];
+        return
+            "Số ghế: $seats
+            Mô tả: $description
+            ";
+    }
+
 }

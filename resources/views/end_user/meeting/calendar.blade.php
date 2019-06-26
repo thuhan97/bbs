@@ -6,7 +6,7 @@
     <div class="row my-3">
         <div class="col-6 mt-2">
             @foreach($meeting_rooms as $room)
-                <span class="mr-3" data-toggle="tooltip" title="{!! nl2br($room->description) !!}">
+                <span class="mr-3" data-toggle="tooltip" data-html="true" title="{!! nl2br($room->detail) !!}">
                 <i class="fa fa-circle ml-0" style="color: {{$room->color}}"></i> Room {{$room->name}}
                 </span>
             @endforeach

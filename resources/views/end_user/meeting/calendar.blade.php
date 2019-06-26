@@ -45,15 +45,20 @@
                             <div class="col-6">
                                 <div class="row">
                                     <div class="col-6 start_time">
-
-                                        <label class="ml-0">Thời gian bắt đầu *</label>
+                                        <label class="ml-0">
+                                            <span class="d-block d-sm-none">Từ *</span>
+                                            <span class="d-none d-sm-block">Thời gian bắt đầu *</span>
+                                        </label>
                                         <div class="  timepicker">
                                             <input class="form-control" name="start" id="start_time" data-format="hh:mm"
                                                    data-provide="timepicker">
                                         </div>
                                     </div>
                                     <div class="col-6 mb-1 end_time">
-                                        <label class="ml-0">Thời gian kết thúc *</label>
+
+                                        <label class="ml-0">
+                                            <span class="d-block d-sm-none">Đến *</span>
+                                            <span class="d-none d-sm-block">Thời gian kết thúc *</span></label>
                                         <div class=" bootstrap-timepicker timepicker">
                                             <input class="form-control  timepicker " name="end" id="end_time"
                                                    data-format="hh:mm" data-provide="timepicker">
@@ -137,9 +142,9 @@
 
     <!-- show modal -->
     <div class="modal fade" id="showModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content modal-center-content"
-                 style="width: 450px;padding: 5px;margin-top: 100px;font-size: 13px;">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content"
+            >
                 <div class="modal-header text-center">
                     <h4 class="font-weight-normal " id="show-title">Lịch họp</h4>
                 </div>
@@ -147,9 +152,9 @@
                     <input type="hidden" name="id" id="id_booking" value="">
                     <input type="hidden" name="start_date" id="start_date" value="">
                     <h6 class="font-weight-normal">Nội dung:</h6>
-                    <p id="show-content"></p>
+                    <div id="show-content"></div>
                     <h6 class="font-weight-normal">Thành phần tham gia:</h6>
-                    <p id="show-object"></p>
+                    <div id="show-object"></div>
                     <hr/>
                     <div class="row mb-2">
                         <div class="col-6">
@@ -184,8 +189,8 @@
     <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
         <div class="modal-dialog" role="document">
 
-            <div class="modal-content modal-center-content"
-                 style="width: 450px;padding: 5px;margin-top: 100px;font-size: 13px;">
+            <div class="modal-content"
+            >
 
                 <div class="modal-body">
                     <h6>Bạn có chắc chắn muốn hủy buổi họp này không?</h6>
@@ -201,8 +206,8 @@
     <div class="modal fade" id="deleteSuccessModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
         <div class="modal-dialog" role="document">
 
-            <div class="modal-content modal-center-content"
-                 style="width: 450px;padding: 5px;margin-top: 100px;font-size: 13px;">
+            <div class="modal-content"
+            >
 
                 <div class="modal-body">
                     <h6 id="message" class="text-center"></h6>
@@ -215,7 +220,7 @@
     </div>
     <div class="modal fade" id="alertModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
         <div class="modal-dialog" role="document">
-            <div class="modal-content modal-center-content">
+            <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="alert_title">Cảnh báo
                     </h5>

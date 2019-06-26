@@ -137,7 +137,7 @@ $(function () {
                         $('#id_booking').val(calEvent.id);
                         $('#start_date').val(calEvent.start.format('YYYY-MM-DD'));
                         $('#show-title').text(booking.title);
-                        $('#show-content').text(booking.content);
+                        $('#show-content').html(booking.content.replace(/(?:\r\n|\r|\n)/g, '<br>'));
                         $('#show-object').text(data.participants.join(', '));
                         $('#show-meeting').text(data.meeting);
                         $('#show-creator').text(booking.creator.name);

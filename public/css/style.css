@@ -2104,7 +2104,6 @@ td.blank, .type-1, .type-2 {
 }
 
 @media (min-width: 1700px) {
-
     .fix-with-detail {
         max-width: 11% !important;
     }

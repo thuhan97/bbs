@@ -182,9 +182,11 @@ $(function () {
                     data: data,
                     type: 'GET',
                     success: function (data) {
-                        $('#deleteModal').modal('hide');
-                        $('#message').text('Bạn đã hủy thành công buổi họp!')
-                        $('#deleteSuccessModal').modal();
+                        if (data && data.messages == 'success') {
+                            $('#deleteModal').modal('hide');
+                            $('#message').text('Bạn đã hủy thành công buổi họp!')
+                            $('#deleteSuccessModal').modal();
+                        }
                     },
                     fail: function (data) {
                         $('#deleteModal').modal('hide');

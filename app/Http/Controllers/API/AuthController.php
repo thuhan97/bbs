@@ -114,6 +114,12 @@ class AuthController extends Controller
         return $this->respond(['token' => $token]);
     }
 
+    public function user(Request $request)
+    {
+        $user = JWTAuth::parseToken()->authenticate();
+        return new UserResource($user);
+    }
+
     /**
      * @return \Illuminate\Http\JsonResponse
      */

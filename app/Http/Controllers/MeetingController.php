@@ -193,7 +193,7 @@ class MeetingController extends Controller
         $id = $request->id;
 
         $meeting = Meeting::find($id);
-        if ($meeting) {
+        if ($meeting && $meeting->users_id == Auth::id()) {
             Booking::where('meeting_id', $id)->forceDelete();
             $meeting->delete();
             return response()->json(["messages" => "success"]);

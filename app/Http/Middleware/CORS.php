@@ -23,7 +23,7 @@ class CORS
         // ALLOW OPTIONS METHOD
         $headers = [
             'Access-Control-Allow-Methods' => 'POST, GET, OPTIONS, PUT, DELETE',
-            'Access-Control-Allow-Headers' => 'Content-Type, X-Auth-Token, X-CSRF-Token, X-XSRF-Token, Origin, Authorization'
+            'Access-Control-Allow-Headers' => 'Content-Type, X-Auth-Token, X-CSRF-Token, X-XSRF-Token, Origin, Authorization, authorization, content-type'
         ];
 
         $response = $next($request);

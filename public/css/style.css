@@ -2028,7 +2028,8 @@ td.blank, .type-1, .type-2 {
 
     .sidebar-fixed .logo-wrapper {
         padding: 0;
-        margin-bottom: 1rem;
+        margin-top: 5px;
+        margin-bottom: 5px;
     }
 
     .sidebar-fixed .list-group-flush .list-group-item {

@@ -14,6 +14,8 @@ class ProjectTransformer extends Fractal\TransformerAbstract
 {
     public function transform(Project $item)
     {
-        return $item->toArray();
+        $data = $item->toArray();
+        $data['creator'] = $item->leader->name ?? '';
+        return $data;
     }
 }

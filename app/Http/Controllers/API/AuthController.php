@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\RegisterFormRequest;
 use App\Http\Resources\UserDetailResource;
-use App\Http\Resources\UserResource;
 use App\Models\User;
 use App\Repositories\Contracts\IUserRepository;
 use App\Services\Contracts\IPotatoService;
@@ -15,6 +14,7 @@ use App\Traits\RESTActions;
 use App\Transformers\UserTransformer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\ValidationException as ValidationExceptionAlias;
 use Tymon\JWTAuth\Exceptions\TokenInvalidException;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
@@ -59,10 +59,10 @@ class AuthController extends Controller
     }
 
     /**
-     * @param \Illuminate\Http\Request $request
+     * @param Request $request
      *
-     * @return UserResource|\Illuminate\Http\JsonResponse
-     * @throws \Illuminate\Validation\ValidationException
+     * @return UserDetailResource
+     * @throws ValidationExceptionAlias
      */
     public function login(Request $request)
     {
@@ -78,7 +78,7 @@ class AuthController extends Controller
                 ]], 422);
         }
 
-        return (new UserResource($request->user()))
+        return (new UserDetailResource($request->user()))
             ->additional([
                 'meta' => [
                     'token' => $token

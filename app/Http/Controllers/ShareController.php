@@ -7,25 +7,27 @@ use App\Http\Requests\ShareRequest;
 use App\Models\Comment;
 use App\Models\Share;
 use App\Services\NotificationService;
+use App\Services\ShareService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class ShareController extends Controller
 {
     public $notificationService;
-    public function __construct()
+    /**
+     * @var ShareService
+     */
+    private $service;
+
+    public function __construct(ShareService $service, NotificationService $notificationService)
     {
-        $this->notificationService = app()->make(NotificationService::class);
+        $this->service = $service;
+        $this->notificationService = $notificationService;
     }
 
     public function listShareDocument(Request $request)
     {
-        $search = $request->get('search');
-        $perPage = $request->get('page_size', DEFAULT_PAGE_SIZE);
-
-        $list_document = Share::where('type', '=', SHARE_DOCUMENT)
-            ->search($search)
-            ->orderBy('created_at', 'desc')->paginate($perPage);
+        $list_document = $this->service->documentList($request, $search, $perPage);
 
         return view('end_user.share.index', compact('list_document', 'search', 'perPage'));
     }
@@ -36,7 +38,7 @@ class ShareController extends Controller
         $pathBase = base_path();
         $fileurl = $pathBase . $list_document->file;
         $name = explode('/', $list_document->file);
-        header('Content-Disposition: attachment; filename="' . basename(end($name)).'"');
+        header('Content-Disposition: attachment; filename="' . basename(end($name)) . '"');
         @readfile($fileurl);
         exit;
     }
@@ -65,13 +67,7 @@ class ShareController extends Controller
 
     public function shareExperience(Request $request)
     {
-        $search = $request->get('search');
-        $perPage = $request->get('page_size', DEFAULT_PAGE_SIZE);
-        $list_experience = Share::where('type', '=', SHARE_EXPERIENCE)
-            ->search($search)
-            ->orderBy('created_at', 'desc')
-            ->paginate($perPage);
-
+        $list_experience = $this->service->experienceList($request, $search, $perPage);
 
         return view('end_user.share.share_experience', compact('list_experience', 'search', 'perPage'));
     }

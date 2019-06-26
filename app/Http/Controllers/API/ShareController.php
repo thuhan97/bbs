@@ -3,56 +3,82 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Services\Contracts\IReportService;
+use App\Services\ShareService;
 use App\Traits\RESTActions;
-use App\Transformers\ReportTransformer;
+use App\Transformers\ShareDocumentTransformer;
+use App\Transformers\ShareExperienceTransformer;
+use App\Transformers\ShareTransformer;
 use Illuminate\Http\Request;
+use Illuminate\View\View as ViewAlias;
 
 class ShareController extends Controller
 {
     use RESTActions;
 
     /**
-     * @var IReportService
+     * @var ShareService
      */
-    private $reportService;
+    private $shareService;
+    /**
+     * @var ShareExperienceTransformer
+     */
+    private $experienceTransformer;
+    /**
+     * @var ShareDocumentTransformer
+     */
+    private $documentTransformer;
 
     /**
-     * ReportController constructor.
+     * ShareController constructor.
      *
-     * @param IReportService    $reportService
-     * @param ReportTransformer $transformer
+     * @param ShareService             $shareService
+     * @param ShareDocumentTransformer $transformer
      */
     public function __construct(
-        IReportService $reportService,
-        ReportTransformer $transformer
+        ShareService $shareService,
+        ShareTransformer $transformer,
+        ShareDocumentTransformer $documentTransformer,
+        ShareExperienceTransformer $experienceTransformer
     )
     {
-        $this->reportService = $reportService;
+        $this->shareService = $shareService;
+        $this->documentTransformer = $documentTransformer;
+        $this->experienceTransformer = $experienceTransformer;
         $this->transformer = $transformer;
     }
 
     /**
      * @param Request $request
      *
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     * @return \Illuminate\Contracts\View\Factory|ViewAlias
      */
-    public function index(Request $request)
+    public function document(Request $request)
     {
-        $reports = $this->reportService->search($request, $perPage, $search);
-        return $this->respondTransformer($reports);
+        $shares = $this->shareService->documentList($request, $perPage, $search);
+        return $this->respondTransformer($shares, $this->documentTransformer, 'documents');
+    }
+
+    /**
+     * @param Request $request
+     *
+     * @return \Illuminate\Contracts\View\Factory|ViewAlias
+     */
+    public function experience(Request $request)
+    {
+        $shares = $this->shareService->documentList($request, $perPage, $search);
+        return $this->respondTransformer($shares, $this->experienceTransformer, 'experiences');
     }
 
     /**
      * @param $id
      *
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     * @return \Illuminate\Contracts\View\Factory|ViewAlias
      */
     public function detail($id)
     {
-        $report = $this->reportService->detail($id);
-        if ($report != null) {
-            return $this->respondTransformer($report);
+        $share = $this->shareService->detail($id);
+        if ($share != null) {
+            return $this->respondTransformer($share);
         }
         return $this->respondNotfound();
     }

@@ -45,5 +45,12 @@ Route::group([
 
         Route::get('/projects', 'ProjectController@index')->name('projects');
         Route::get('/projects/{id}', 'ProjectController@detail')->name('projects_detail');
+
+        Route::get('/regulations', 'RegulationController@index')->name('regulations');
+        Route::get('/regulations/{id}', 'RegulationController@detail')->name('regulations_detail');
+
+        Route::get('/share/document', 'ShareController@document')->name('share_document');
+        Route::get('/share/experience', 'ShareController@experience')->name('share_experience');
+        Route::get('/share-detail/{id}', 'ShareController@detail')->name('share_detail');
     });
 });

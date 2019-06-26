@@ -18,7 +18,6 @@ use App\Models\User;
 use App\Models\UserTeam;
 use App\Services\Contracts\IMeetingService;
 use Carbon\Carbon;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
@@ -204,11 +203,11 @@ class MeetingService extends AbstractService implements IMeetingService
             $positions['P-' . $value] = $name;
         }
         $results['Chức vụ'] = $positions;
-        $allProject=Project::select(DB::raw("CONCAT('PR-', projects.id) as id"), 'name')
-           ->whereHas('projectMembers',function ($query){
-               $query->where('user_id',Auth::id());
-            })->where('status',ACTIVE_STATUS)->orderBy('name')
-            ->pluck('name','id')->toArray();
+        $allProject = Project::select(DB::raw("CONCAT('PR-', projects.id) as id"), 'name')
+            ->whereHas('projectMembers', function ($query) {
+                $query->where('user_id', Auth::id());
+            })->where('status', ACTIVE_STATUS)->orderBy('name')
+            ->pluck('name', 'id')->toArray();
         $results['Dự án'] = $allProject;
 
         $teams = Team::select(DB::raw("CONCAT('T-', teams.id) as id"), DB::raw("CONCAT(groups.name, ' - ', teams.name) as name"))
@@ -220,7 +219,6 @@ class MeetingService extends AbstractService implements IMeetingService
 
         $users = User::select('id', DB::raw('CONCAT(staff_code, " - ", name) as name'))->where('status', ACTIVE_STATUS)->orderBy('jobtitle_id', 'desc')->orderBy('staff_code')->pluck('name', 'id')->toArray();
         $results['Danh sách nhân viên'] = $users;
-
 
         return $results;
     }
@@ -248,8 +246,8 @@ class MeetingService extends AbstractService implements IMeetingService
         $users = User::select('id', 'name', 'jobtitle_id', 'position_id')->get();
         $userTeams = UserTeam::select('id', 'user_id', 'team_id')->get();
         $teams = Team::select('id', 'leader_id', 'name')->get();
-        $projectMembers=ProjectMember::select('id','user_id');
-        $project=Project::select('id','leader_id');
+        $projectMembers = ProjectMember::select('id', 'user_id');
+        $project = Project::select('id', 'leader_id');
 
         $userIds = [$meeting->users_id];
         $participantIds = is_array($meeting->participants) ? $meeting->participants : [$meeting->participants];

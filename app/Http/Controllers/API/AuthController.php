@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\RegisterFormRequest;
+use App\Http\Resources\UserDetailResource;
 use App\Http\Resources\UserResource;
 use App\Models\User;
 use App\Repositories\Contracts\IUserRepository;
@@ -117,7 +118,7 @@ class AuthController extends Controller
     public function user(Request $request)
     {
         $user = JWTAuth::parseToken()->authenticate();
-        return new UserResource($user);
+        return (new UserDetailResource($user));
     }
 
     /**

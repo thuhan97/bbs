@@ -24,9 +24,11 @@ Route::group([
     Route::post('/login', 'AuthController@login')->name('login');
 
     Route::group([
-//        'middleware' => ['jwt.auth'],
+        'middleware' => ['jwt.auth'],
     ], function () {
         Route::get('/user', 'AuthController@user')->name('user');
+        Route::get('/logout', 'AuthController@logout')->name('logout');
+        Route::get('/auth/logout', 'AuthController@logout')->name('auth_logout');
         Route::get('/users', 'UserController@index')->name('users');
         Route::get('/users/{id}', 'UserController@detail')->name('users_detail');
 
